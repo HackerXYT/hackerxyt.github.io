@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<meta name="keywords" content="hackerx site, giorgikas bot, giorgikas, hackerx bot, hackerx.hopto.org, hackerx.ddns.net, ioam21, ioam21 is a bot, asteris0 is a bot, asteris0"><link rel="shortlinkUrl" href="https://bit.ly/3mEouka">
+	<title>HackerX Site</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+	<link rel="icon" href="https://i.ibb.co/2jKXddF/hackerxlogo.png">
+	<link rel="apple-touch-icon" href="./Photos/apple-touch-icon.png">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="script.js"></script>
+</head>
+<body>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
+
+:root{
+	--main-background: #0b0c0f;
+	--main-fonts-color: rgb(255, 255, 255);
+	--main-decor-color:#002fff;
+    --main-header-background:#000000;
+	--main-font-family: 'Poppins', sans-serif;
+}
+
+*{
+	margin: 0;
+	padding: 0;
+	scroll-behavior: smooth;
+}
+
+main{
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	background: var(--main-background);
+}
+
+html {
+  cursor: url('./Cursors/cursor.png'), default;
+}
+
+/*────────────────── 
+       header
+──────────────────*/
+
+header{
+	margin: 0 auto;
+	width: 100%;
+	height: 70px;
+	display: flex;
+    align-items: center; 
+	justify-content: space-around; 
+    background: transparent;
+	position: fixed;
+	top: 0;
+	transition: 0.3s;
+	z-index: 5;
+}
+.nav-show{
+	opacity: 0;
+}
+
+header:hover{
+	opacity: 1;
+	background: var(--main-header-background);
+}
+
+.logo img{
+	padding-top: 5px;
+	height: 50px;
+	cursor: pointer;
+}
+
+.nav-bar{
+	list-style:none;
+	position: relative;
+	display: inline-flex;
+}
+
+a.nav-link{
+	margin: 2px;
+	padding: 5px 10px;
+	text-decoration: none;
+	color: var(--main-fonts-color);
+	font-family: var(--main-font-family);
+	cursor: pointer;
+	text-transform: uppercase;
+}
+
+.active{
+	background: var(--main-decor-color);
+}
+
+.nav-link:hover {
+	color: #00fffb;
+    background: rgb(255, 0, 0);
+}
+
+/*──────────────────
+       home
+──────────────────*/
+#home{ 	
+	margin: auto;
+	height: 100vh;
+	color: var(--main-fonts-color);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
+#home .filter{
+	background: url('https://images.unsplash.com/photo-1547844149-792ce502416a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80') no-repeat;
+	background-size: cover;
+	background-position:center;
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+	opacity:.20;
+}  
+
+.intro {
+	text-align:center;
+    color: var(--main-fonts-color);
+	z-index: 1;
+	margin: auto;
+	padding: 20px;
+}
+
+.intro  p{
+    margin: 5px;
+	font-size:1.2rem;
+	font-family: var(--main-font-family);
+	text-align:center;
+}
+
+ h3{
+	padding-bottom: 15px;
+    letter-spacing: normal;
+    font-family: var(--main-font-family);
+	font-style: normal;
+	font-size: 60px;
+	color: var(--main-fonts-color);
+	text-shadow: 0px 0px 40px var(--main-decor-color);
+}
+
+
+/*──────────────────
+    social media
+──────────────────*/
+
+.social-media{
+	padding: 10px;
+	display: flex;
+	position: center;
+    align-items: space-around;
+	justify-content:center;
+}
+
+.social-media a {
+    margin: 10px;
+    font-size: 2rem;
+    text-align:center;
+    display: inline-block;
+	color: var(--main-fonts-color);
+}
+
+.social-media a i{
+	cursor: pointer;
+}
+
+.social-media  a:hover {
+	color: rgb(255, 0, 0);
+	text-shadow: 0 0 50px rgb(255, 0, 0);
+}
+
+/*──────────────────
+      projects
+──────────────────*/
+
+#projects{
+	margin-top:100px;
+    height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+    justify-content: center;
+	text-align:center;
+	color: var(--main-fonts-color);
+}
+#projects h3{
+    padding-top: 70px;
+}
+#projects p{
+	font-family: var(--main-font-family);
+	font-size:1.2rem;
+	padding: 10px;
+}
+
+.work{
+	display: flex; 
+	flex: 1;
+    flex-wrap: wrap;
+    justify-content:center;
+	align-items: center;
+	padding: 20px;
+}
+
+.card{
+	display: flex;
+	flex-direction: column;
+	margin: 20px;
+	width: 300px;
+	height:250px;
+	border-radius:12px;
+    background: rgb(0,0,0)
+}
+
+.card img{
+	width: 100%;
+	height:70%;
+	border-radius:10px 10px 0px 0px;
+}
+
+.card .work-content{
+	text-align: center;
+	padding: 10px 5px;
+	font-size: 1rem;
+	color: var(--main-fonts-color);
+	font-family: var(--main-font-family);
+	cursor: pointer;
+}
+
+.card a{
+	text-decoration: none;
+}
+
+.card .work-content:hover{
+    color:#0091ff;
+}
+
+.card:hover{
+	box-shadow: 0 0 1.5rem rgb(255, 0, 0);
+}
+
+/*──────────────────
+      Contact
+──────────────────*/
+
+#contact{
+	margin: auto;
+	padding-bottom: 20px;
+	height: 600px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	color: var(--main-fonts-color);
+}
+	
+#contact p{
+	padding:10px;
+	text-align:center;
+	font-size:1.2rem;
+	font-family: var(--main-font-family);
+}
+
+/*────────────────── 
+       footer
+──────────────────*/
+
+footer {
+	width: 100%;
+	height: 100%;
+    background-color: var(--main-header-background);
+}
+
+.copyright {
+	color: #fff;
+	font-size: 1.2rem;
+	line-height: 40px;
+	text-align: center;
+}
+
+.copyright a{
+	color: #fff;
+	font-size: 1rem;
+	letter-spacing: 1px;
+    text-decoration: none;
+}
+
+.copyright a:hover{
+	color: var(--main-decor-color);
+}
+
+/*──── hr ─────*/
+
+hr {
+    background: var(--main-decor-color);
+	margin: 2px;
+	height: 3px;
+	width: 150px;
+    border-radius:5px;
+	border: hidden;
+	margin-inline-start: auto;
+    margin-inline-end: auto;
+}
+
+/*────────────────── 
+     Scrollbar
+──────────────────*/
+::-webkit-Scrollbar{
+    width: 5px; 
+	background: rgba(5,5,5,1);
+}
+::-webkit-Scrollbar-thumb{
+	border-radius: 10px;
+	background: var(--main-decor-color);
+	box-shadow: inset 0 0 20px rgb(255, 0, 0);
+}
+::-webkit-Scrollbar-track{
+	margin-top: 80px;
+	border-radius: 10px;
+}
+
+/*────────────────── 
+     hamburger
+──────────────────*/
+.hamburger {
+	display: none;
+}
+
+.hamburger div{
+	width: 30px;
+	height: 3px;
+	background: #dbdbdb;
+	margin: 5px;
+	transition:all 0.9s ease;
+}
+
+.toggle .line1{
+	transform: rotate(-45deg) translate(-5px,6px);
+}
+
+.toggle .line2{
+	opacity: 0;
+}
+
+.toggle .line3{
+	transform: rotate(45deg) translate(-5px,-6px);
+}
+
+@keyframes navLinkFade{
+	from{
+		opacity:0;
+		transform: translatex(50px);
+	}
+	to{
+		opacity: 1;
+		transform:translatex(0px);
+	}
+}
+
+/*────────────────── 
+    media queries
+──────────────────*/
+
+@media only screen and (max-width: 1484px) and (min-width: 1214px) {
+	.work{
+        padding:20px 20%;
+    }
+}
+@media only screen and (max-width: 1214px) and (min-width: 1000px) {
+	.work{
+        padding:20px 12%;
+    }
+}
+
+
+@media only screen and (max-width: 500px) {
+
+	#home, #projects, #contact{
+        overflow-x: hidden;
+	}
+	header{
+		background-color: var(--main-header-background);
+	}
+	.logo{
+		position:absolute;
+		top: 2px;
+		left: 30px;
+	}
+	.nav-show{
+		opacity: 1;
+	}	 
+	.nav-bar{
+		position:fixed;
+		top: 0px;
+		right:0;
+		width:60%;
+		height: 100vh;
+		display:flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content:space-evenly;
+		background:var(--main-header-background);
+		transform:translatex(100%);
+		transition: transform 0.5s ease-in;
+		z-index: -1;
+	}
+	.hamburger{
+		position:absolute;
+		top: 17px;
+		right: 25%;
+		display: block;
+		cursor:pointer;
+		z-index: 5;
+	}	
+	.nav-bar li{
+		opacity:0;
+	}
+}
+
+.nav-active{
+	transform:translatex(0%);
+}
+
+code {
+  color: #ffffff;
+  font: inherit;
+}
+</style>
+
+	<div class="container">
+
+		<!--────────────────Header────(https://i.ibb.co/1YV5qk1/idfkk212.png)───────────-->
+		<header>
+			<a class="logo" href="#home">
+				<img src="https://i.ibb.co/1YV5qk1/idfkk212.png" alt="err" />
+			</a>
+			<nav>
+				<ul class="nav-bar">
+					<div class="bg"></div>
+					<li><a class="nav-link active" href="#home">Home</a></li>
+					<li><a class="nav-link" href="#projects">Main</a></li>
+					<li><a class="nav-link" href="#contact">Contact</a></li>
+				</ul>
+
+				<div class="hamburger">
+				<div class="line1"></div>
+            <div class="line2"></div>
+				<div class="line3"></div>
+			</div>
+		</nav>
+	</header>
+	<main>
+			<!--─────────────────Home────────────────-->
+			<div id="home">
+				<div class="filter"></div>
+				<section class="intro">
+					<h3>HackerX Site
+						<hr>
+					</h3>
+					<p>Welcome To HackerX Site   <strong>V2!</strong>
+					<p>Have Fun!
+						<p><code>Javascript is disabled!</p></code>
+
+						<!--────social media links─────-->
+
+					<div class="social-media">
+						<a href="https://www.instagram.com/greg_papostol_/"
+							target="https://www.instagram.com/greg_papostol_/"><i class='fab fa-instagram'></i></a>
+						<a href="./discord" target=""><i
+								class="fab fa-discord"></i></a>
+						<a href="https://www.youtube.com/hackerxyt" target="https://www.youtube.com/hackerxyt"><i
+								class="fab fa-youtube"></i></a>
+								<a href="./developers/"><i
+								class="fas fa-code"></i></a>
+					</div>
+
+				</section>
+			</div>
+
+			<!--───────────────Projects───────────────-->
+			<div id="projects">
+				<h3>Main Page
+					<hr>
+				</h3>
+				<p>Here's HackerX Site Main Page, Including Videos, News, Updates etc.</p>
+				<div class="work-box">
+					<div class="work">
+						<!--───────────────card───────────────-->
+						<div class="card">
+							<img src="/Photos/obsf3.webp" alt="cow3.webp"  width="1000" />
+							<a href="https://www.youtube.com/watch?v=ms9DKNXRV-c"
+								target="https://www.youtube.com/watch?v=ms9DKNXRV-c">
+								<!--Link to project-->
+								<div class="work-content">Όταν Βαριέσαι Στο Fortnite 3</div>
+							</a>
+						</div>
+						<div class="card">
+							<img class="work-img" src="/Photos/IOAM21.jpg">
+							<a href="https://www.youtube.com/watch?v=ZmI4Iet4GuU&t=2s" target="_blank">
+								<!--Link to project-->
+								<div class="work-content">IOAM21 is a BOT</div>
+							</a>
+						</div>
+						<div class="card">
+							<img src="tut1.gif" alt="tutorial#1.gif"  width="1000" />
+							<a href="https://www.youtube.com/watch?v=WTKOhHpYSQk"
+								target="https://www.youtube.com/watch?v=WTKOhHpYSQk">
+								<!--Link to project-->
+								<div class="work-content">Discord Hacks #1</div>
+							</a>
+						</div>
+						<div class="card">
+							<img src="/Photos/bot.webp" alt="bot1.webp"  width="1000" />
+							<a href="https://www.youtube.com/watch?v=R94MnMkRX7M" target="_blank">
+								<!--Link to project-->
+								<div class="work-content">Asteris0 is a BOT</div>
+							</a>
+						</div>
+						<div class="card">
+							<img src="/Photos/v4.webp" alt="av4.webp"  width="1000" />
+							<a href="https://www.youtube.com/watch?v=VK9V7Vcovx4"
+								target="https://www.youtube.com/watch?v=VK9V7Vcovx4">
+								<!--Link to project-->
+								<div class="work-content">Βρήκαμε Τον Justin! | Arena V4</div>
+							</a>
+						</div>
+						<div class="card">
+							<img src="/Photos/COD.jpg" alt="cod.jpg"  width="1000" />
+							<a href="./CodSeries/"
+								>
+								<!--Link to project-->
+								<div class="work-content">Call Of Duty Series</div>
+							</a>
+						</div>
+						<div class="card">
+							<img src="https://media.discordapp.net/attachments/753365057114734674/852880521159901224/Cytron_Rp_Server_logo_minecraft.jpg" alt="cytronrplogo"  width="1" />
+							<a href="./cytronsite/"
+								>
+								<!--Link to project-->
+								<div class="work-content">Cytron Site Comeback!</div>
+							</a>
+						</div>
+						<div class="card">
+							<img src="https://i.ibb.co/ypNYc2d/XGames.jpg" alt="err" width="1" />
+							<a href="./XGames"
+								>
+								<!--Link to project-->
+								<div class="work-content">XGames</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--──────────────Contact────────────────-->
+			<div id="contact">
+				<!--────social media links─────-->
+				<h3>Contact.
+					<hr>
+				</h3>
+				<p>Here Are All My Social Media Accounts</p>
+				<div class="social-media">
+						<a href="https://www.instagram.com/greg_papostol_/"
+							target="https://www.instagram.com/greg_papostol_/"><i class='fab fa-instagram'></i></a>
+						<a href="./discord" target=""><i
+								class="fab fa-discord"></i></a>
+						<a href="https://www.youtube.com/hackerxyt" target="https://www.youtube.com/hackerxyt"><i
+								class="fab fa-youtube"></i></a>
+								<a href="./developers/"><i
+								class="fas fa-code"></i></a>
+					</div>
+				<iframe src="https://discord.com/widget?id=803961416008728576&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+				<p>Make sure to join our Discord Server Too!</p>
+		</main>
+		<footer class="copyright">© 2021
+			<a href="https://replit.com/@MemeGuy21" target="_blank"> HackerX</a>
+		</footer>
+</body>
+
+</html>

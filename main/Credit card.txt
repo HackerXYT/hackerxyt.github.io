@@ -1,0 +1,58 @@
+Credit Cards Provided By T50
+Given to: 21
+
+
+ 1. BRAND 	: MASTERCARD
+    NUMBER	: 5239127233024374
+    BANK		: AFFINITY BANK
+    NAME		: Eden Espinoza
+    ADDRESS	: 1701 Brooklyn Street
+    COUNTRY	: UNITED STATES
+    MONEY	: $940
+    CVV/CVV2	: 776
+    EXPIRY	: 01/2026
+    PIN		: 8022
+    
+ 2. BRAND 	: MASTERCARD
+    NUMBER	: 5239124480410596
+    BANK		: AFFINITY BANK
+    NAME		: Thopok Lees
+    ADDRESS	: 3819 Chardonnay Drive
+    COUNTRY	: UNITED STATES
+    MONEY	: $844
+    CVV/CVV2	: 846
+    EXPIRY	: 03/2021
+    PIN		: 3598
+    
+ 3. BRAND 	: MASTERCARD
+    NUMBER	: 5239128721725779
+    BANK		: AFFINITY BANK
+    NAME		: Eliza van Soest
+    ADDRESS	: 609 Black Oak Hollow Road
+    COUNTRY	: UNITED STATES
+    MONEY	: $886
+    CVV/CVV2	: 405
+    EXPIRY	: 10/2026
+    PIN		: 7838
+    
+ 4. BRAND 	: MASTERCARD
+    NUMBER	: 5239129787001600
+    BANK		: AFFINITY BANK
+    NAME		: Kazia Kroemer
+    ADDRESS	: 2733 Norman Street
+    COUNTRY	: UNITED STATES
+    MONEY	: $882
+    CVV/CVV2	: 249
+    EXPIRY	: 08/2024
+    PIN		: 2036
+    
+ 5. BRAND 	: MASTERCARD
+    NUMBER	: 5239125975750396
+    BANK		: AFFINITY BANK
+    NAME		: Niklas Ambessa
+    ADDRESS	: 2590 Bond Street
+    COUNTRY	: UNITED STATES
+    MONEY	: $824
+    CVV/CVV2	: 693
+    EXPIRY	: 11/2023
+    PIN		: 7405

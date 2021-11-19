@@ -1,0 +1,201 @@
+:root {
+  --ui-blue: #99dff4;
+  --current-ui: #ffb300;
+  --background: #0e0e0e;
+  --range-gradient: 50%;
+  --weight: 400;
+}
+
+body {
+  font-family: "Orbitron", sans-serif;
+  font-weight: 400 900;
+  background: var(--background);
+  color: var(--current-ui);
+  display: grid;
+  place-content: center;
+  height: 100vh;
+}
+
+.wrapper {
+  position: relative;
+  width: 1080px;
+  height: 600px;
+  display: grid;
+  place-content: center;
+}
+
+.range-key {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.right-border {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.dial-wrapper {
+  position: relative;
+  width: 466px;
+  height: 466px;
+  z-index: 3;
+  display: grid;
+  place-content: center;
+}
+
+.dial-ui {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.dial-numbers {
+  pointer-events: none;
+  position: relative;
+  text-align: center;
+  line-height: 1;
+}
+
+.number {
+  font-size: 100px;
+}
+
+.units {
+  color: var(--ui-blue);
+  font-weight: 400;
+  display: block;
+  font-size: 25px;
+  letter-spacing: 4px;
+}
+
+.bounce-wrapper {
+  height: 400px;
+  position: absolute;
+  right: 100px;
+  top: 100px;
+  border: 1px solid currentColor;
+  border-bottom: 8px solid;
+  width: 120px;
+  overflow: hidden;
+}
+
+.ball {
+  position: absolute;
+  bottom: -2px;
+  left: 30px;
+  border-radius: 100%;
+  height: 60px;
+  width: 60px;
+  border: 3px solid var(--ui-blue);
+  z-index: 10;
+  will-change: transform;
+}
+
+.bounce-simulation {
+  display: block;
+  text-transform: uppercase;
+  position: absolute;
+  top: 60px;
+  letter-spacing: 1px;
+  right: 100px;
+  width: 123px;
+}
+
+.thicc {
+  font-weight: var(--weight);
+}
+
+.range-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-top: -8px;
+  font-size: 16px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ui-blue);
+}
+
+.gravity-range {
+  position: absolute;
+  color: currentColor;
+  top: 0;
+  left: 170px;
+  width: 600px;
+  height: 90px;
+  cursor: pointer;
+  background-color: transparent;
+  transform-origin: top left;
+  transform: rotate(-90deg) translateX(-100%);
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+.gravity-range, .gravity-range::-webkit-slider-runnable-track, .gravity-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+.gravity-range::-webkit-slider-runnable-track {
+  height: 2px;
+  background: linear-gradient(to right, currentColor var(--range-gradient), #364c52 var(--range-gradient), #364c52);
+}
+.gravity-range::-moz-range-track {
+  height: 2px;
+  background: #364c52;
+}
+.gravity-range::-moz-range-progress {
+  background-color: currentColor;
+}
+.gravity-range::-webkit-slider-thumb {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  background: var(--background);
+  border: 1px solid var(--ui-blue);
+  margin-top: -14px;
+}
+.gravity-range::-moz-range-thumb {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  background: var(--background);
+  border: 1px solid var(--ui-blue);
+}
+
+.ring {
+  position: absolute;
+  top: 17px;
+  left: 215px;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--ui-blue);
+  border-radius: 100%;
+  pointer-events: none;
+}
+.ring--0 {
+  height: 50px;
+  width: 50px;
+  opacity: 0.7;
+}
+.ring--1 {
+  height: 60px;
+  width: 60px;
+  opacity: 0.6;
+}
+.ring--2 {
+  height: 70px;
+  width: 70px;
+  opacity: 0.5;
+}
+.ring--3 {
+  height: 80px;
+  width: 80px;
+  opacity: 0.4;
+}
+.ring--4 {
+  height: 90px;
+  width: 90px;
+  opacity: 0.3;
+}

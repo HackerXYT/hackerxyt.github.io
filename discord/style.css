@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css?family=Libre+Franklin:400,700&subset=latin");
+html {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  font: 100px/100px "Libre Franklin";
+  font-weight: 900;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+.child {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  letter-spacing: -5px;
+  mix-blend-mode: overlay;
+  text-shadow: 0 0 5px #fff;
+  color: #fff6;
+}
+
+svg {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}

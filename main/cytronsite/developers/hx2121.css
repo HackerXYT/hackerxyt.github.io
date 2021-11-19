@@ -1,0 +1,46 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+h1 {
+  font-family: "Montserrat", sans-serif;
+}
+
+p {
+  font-family: "Open Sans", sans-serif;
+  text-align: justify;
+}
+
+.blue-bg {
+  position: fixed;
+  background: url(https://www.google.com/url?sa=i&url=http%3A%2F%2Finspired-inc.com%2Fpure-white-background-85a2a7fd%2F&psig=AOvVaw36e7_QkF83jAihH6k7h84q&ust=1625760270291000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCJjM6Iqr0fECFQAAAAAdAAAAABAD);
+  background-size: cover;
+  background-color: #58aff6;
+  top: 0;
+  height: 400px;
+  width: 100vw;
+  z-index: -1;
+  overflow-x: hidden;
+}
+
+.white-bg {
+  position: absolute;
+  top: 0;
+  background-color: rgb(255, 255, 255);
+  min-height: 500px;
+  margin: 210px 0px;
+  width: 100vw;
+  height: 100vh;
+  transform: skewY(5deg);
+  z-index: -1;
+}
+
+.content {
+  position: absolute;
+  top: 0;
+  margin: 250px 10vw;
+  max-width: 60vw;
+  background-color: transparent;
+}
+
+.shadow {
+  box-shadow: -2px -5px 5px 0px rgb(255, 255, 255);
+}

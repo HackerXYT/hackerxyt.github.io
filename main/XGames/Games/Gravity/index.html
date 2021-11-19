@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>XGames - Gravity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet"> 
+<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!-- component wrapper -->
+<div class="wrapper">
+
+  <!-- left border/key -->
+  <svg class="range-key" xmlns="http://www.w3.org/2000/svg" width="159" height="600" viewBox="0 0 159 600">
+    <defs>
+      <linearGradient id="gradient" x1="50%" x2="50%" y1="0%" y2="100%">
+        <stop offset="0%" stop-color="#C50000" />
+        <stop offset="50%" stop-color="#FFB300" />
+        <stop offset="100%" stop-color="#198D00" />
+      </linearGradient>
+    </defs>
+    <path fill="url(#gradient)" fill-rule="evenodd" d="M159 0v2h-13.1a49 49 0 00-48.5 42l-.1.7-65 498A49 49 0 0080.7 598H159v2H62a62 62 0 01-62-62V62A62 62 0 0162 0h97z" />
+  </svg>
+
+  <!--  range input label  -->
+  <label class="range-label" for="grav">Gravity Preference</label>
+  <input name="grav" id="grav" class="gravity-range" type="range" id="vol" min="0" max="100" value="50">
+
+  <!--  the dial  -->
+  <div class="dial-wrapper">
+    <svg class="dial-ui" xmlns="http://www.w3.org/2000/svg" width="466" height="466" viewBox="0 0 466 466">
+      <defs>
+        <filter id="shadow" width="126.9%" height="126.9%" x="-13.4%" y="-13.4%" filterUnits="objectBoundingBox">
+          <feMorphology in="SourceAlpha" operator="dilate" radius="6.5" result="shadowSpreadOuter1" />
+          <feOffset in="shadowSpreadOuter1" result="shadowOffsetOuter1" />
+          <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="10" />
+          <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1" />
+          <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0" />
+        </filter>
+      </defs>
+      <g fill="none" fill-rule="evenodd" transform="translate(1 1)">
+        <circle cx="232" cy="232" r="232" opacity=".4" stroke="var(--ui-blue)" />
+        <path class="grav-o-meter" stroke="currentColor" stroke-width="10" d="M377.5 375a204 204 0 10-290.3.7" opacity=".8" />
+        <path stroke="#99DFF4" stroke-dasharray="1 14.7" stroke-width="54" d="M377.5 375a204 204 0 10-290.3.7" opacity=".4" />
+        <g fill="#0E0E0E" stroke-width="3" transform="translate(59 59)">
+          <circle filter="url(#shadow)" cx="173" cy="173" r="175" fill="#000" />
+        </g>
+        <g class="dial" fill="#0E0E0E" stroke-width="3" transform="translate(59 59)">
+          <circle cx="173" cy="173" r="175" stroke="var(--ui-blue)" />
+          <circle cx="70" cy="270" r="8" stroke="var(--ui-blue)" />
+        </g>
+      </g>
+    </svg>
+
+    <!--  dial numbers    -->
+    <p class="dial-numbers">
+      <span class="number thicc">9.8</span>
+      <span class="units">M/S/S</span>
+    </p>
+  </div>
+
+  <!--  simulation text  -->
+  <span class="thicc bounce-simulation">bounce<br />simulation</span>
+
+  <!--  simulation wrapper  -->
+  <div class="bounce-wrapper">
+    <!--   bouncy ball   -->
+    <div class="ball"></div>
+  </div>
+
+  <div class="ring ring--0"></div>
+  <div class="ring ring--1"></div>
+  <div class="ring ring--2"></div>
+  <div class="ring ring--3"></div>
+  <div class="ring ring--4"></div>
+
+  <!--  right border  -->
+  <svg class="right-border" xmlns="http://www.w3.org/2000/svg" width="159" height="600" viewBox="0 0 159 600">
+    <path fill="#99DFF4" fill-rule="evenodd" d="M0 0v2h85a49 49 0 0149 48.2V549c0 27-22 49-49 49H0v2h97a62 62 0 0062-62V62A62 62 0 0097 0H0z" />
+  </svg>
+</div>
+<!-- partial -->
+  <script src='https://unpkg.co/gsap@3/dist/gsap.min.js'></script>
+<script src='https://assets.codepen.io/16327/InertiaPlugin.min.js'></script>
+<script src='https://unpkg.com/gsap@3/dist/Draggable.min.js'></script>
+<script src='https://assets.codepen.io/16327/DrawSVGPlugin3.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>XGames - Kill The King - Vue </title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div :class="{'pressed': pressed}" id='app'>
+  <audio controls='' crossorigin='anonymous' style='display: none;'>
+    <source src='https://assets.codepen.io/217233/ktkBgAudio.mp3' type='audio/mp3'>
+  </audio>
+  <div class='game'>
+    <div :class="{'show': gameover}" class='game_lose'>
+      <div class='inner'>
+        <h1>YOU RAN OUT OF TIME!</h1>
+        <p>King Trost was victorious. Refresh to try again.</p>
+        <p>
+          Be sure to
+          <a href='https://www.codepen.io/jcoulterdesign'>follow me on Codepen</a>
+          for more pointless stuff.
+        </p>
+      </div>
+    </div>
+    <div :class="{'show': gamewin}" class='game_win'>
+      <div class='inner'>
+        <h1>YOU WIN!</h1>
+        <p>King Trost was slain. Congratulations!</p>
+        <p>
+          Be sure to
+          <a href='https://www.codepen.io/jcoulterdesign'>follow me on Codepen</a>
+          for more pointless stuff.
+        </p>
+      </div>
+    </div>
+    <div :class="{'gamestarted': gameStarted}" class='game_intro'>
+      <div :class="{'gamestarted': introClicked}" class='game_intro__inner start'>
+        <img src='https://assets.codepen.io/217233/ktkLogo.png'>
+        <br>
+        <p @click='introClicked = !introClicked, audioController.play("crushyou")' class='begin'>BEGIN GAME</p>
+      </div>
+      <div :class="{'gamestarted': !introClicked}" class='game_intro__inner end'>
+        <div class='dialogue'>
+          <span>King Trost</span>
+          <p>HAHAHA, YOU HONESTLY THINK YOU CAN DEFEAT ME!? MY MEN WILL CRUSH YOU, BOY.</p>
+          <p @click='introClicked = !introClicked, startGame()' class='continue'>Continue</p>
+        </div>
+        <img class='king' src='https://assets.codepen.io/217233/kingTrost.png'>
+      </div>
+    </div>
+    <div class='game_inner'>
+      <div :class="{'active': tooltip}" class='game_inner__tooltip'>
+        <div class='space'></div>
+        <div class='smash'>Smash the spacebar!</div>
+      </div>
+      <div class='game_inner__footer'>
+        <div class='madeby'>
+          Made by
+          <a href='https://www.codepen.io/jcoulterdesign' target='_blank'>Jamie Coulter</a>
+        </div>
+        <div class='resources'>
+          <div class='ui_xp'>
+            <img src='https://assets.codepen.io/217233/ktkXpIxon.png'>
+            {{ xp }}xp
+          </div>
+        </div>
+      </div>
+      <div class='game_inner__left'>
+        <div class='buttons'>
+          <img :class="{'off': !audioController.sfxOn}" @click='audioController.sfxOn = !audioController.sfxOn' src='https://assets.codepen.io/217233/ktkSfxButton.png'>
+          <img :class="{'off': muteBg}" @click='toggleBg()' src='https://assets.codepen.io/217233/ktkBgButton.png'>
+        </div>
+        <div class='logo'>
+          <img src='https://assets.codepen.io/217233/ktkLogo.png'>
+        </div>
+        <div class='timer'>
+          <img src='https://assets.codepen.io/217233/ktkTimerBg.png'>
+          <div class='timer_inner'>
+            <div class='minutes'>
+              {{ minutes }}
+            </div>
+            <div class='seconds'>
+              {{ seconds }}
+            </div>
+            <div class='ms'>
+              {{ ms }}
+            </div>
+          </div>
+        </div>
+        <div class='ui'>
+          <div class='ui_progress'>
+            <div class='ui_progress__stage'>
+              STAGE {{ stage }}
+            </div>
+            <div class='ui_progress__bar'>
+              <div :style='{width: `${((500 / enemiesPerStage) * (enemiesDefeated + 1)) - ((500 / enemiesPerStage) / 2)}px`}' class='inner'></div>
+              <div class='outer'></div>
+            </div>
+            <div class='ui_progress__icons'>
+              <div :key='enemies' class='icon' v-for='(enemies, index) in enemiesPerStage'>
+                <div :class="{'complete': index &lt; enemiesDefeated, 'active': index == enemiesDefeated}" class='icon_bg'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='center'>
+          <div class='characters'>
+            <div :class="{'run': stageComplete}" class='player'>
+              <div class='stats'>
+                <div class='ui_strength'>
+                  <img src='https://assets.codepen.io/217233/ktkStrengthIcon.png'>
+                  {{ strength }} STR
+                  <br>
+                </div>
+                <div class='ui_intelligence'>
+                  <img src='https://assets.codepen.io/217233/ktkKnowledgeIcon.png'>
+                  {{ intelligence }} INT
+                </div>
+                <div class='ui_speed'>
+                  <img src='https://assets.codepen.io/217233/ktkSpeedIcon.png'>
+                  {{ speed }} SPD
+                </div>
+              </div>
+              <div :class="{'pressed': pressed}" class='player_sprite'></div>
+            </div>
+            <div :class="{'run': stageComplete}" class='enemy'>
+              <div :class="{'pressed': pressed, 'killed' : enemyKilled, 'boss' : boss}" :style='{filter: `hue-rotate(${80 * (stage - 1)}deg)`}' class='enemy_sprite'></div>
+              <div :class="{'pressed': pressed}" class='enemy_hit'>
+                {{ damage }}
+              </div>
+              <div :class="{'killed': enemyKilled}" class='enemy_xp'>
+                <img src='https://assets.codepen.io/217233/ktkXpIxon.png'>
+                {{ xpGained }}xp
+              </div>
+              <div class='enemy_health'>
+                <div class='enemy_health_stats'>
+                  <div class='name'>
+                    {{ enemy.name }}
+                  </div>
+                  <div class='level'>
+                    HP: {{ enemy.health }}
+                  </div>
+                </div>
+                <div :style='{width: `${100 * (enemy.health / enemy.initHealth)}%`}' class='enemy_health_inner'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='game_inner__right' v-if='shoppingPhase'>
+        <div class='timer'>
+          <img src='https://assets.codepen.io/217233/ktkTimerBg.png'>
+          <div class='timer_inner'>
+            <div class='minutes'>
+              {{ minutes }}
+            </div>
+            <div class='seconds'>
+              {{ seconds }}
+            </div>
+            <div class='ms'>
+              {{ ms }}
+            </div>
+          </div>
+        </div>
+        <p>Spend your gold and experience on upgrades</p>
+        <div class='xp'>
+          <img src='https://assets.codepen.io/217233/ktkXpIxon.png'>
+          {{ xp }}xp
+        </div>
+        <div class='upgrades'>
+          <div :key='upgrades.name' class='upgrades_upgrade' v-for='(upgrade, index) in upgrades'>
+            <h2>{{ index != 0 ? upgrade.type != upgrades[index - 1].type ? upgrade.type : '' : 'Skills' }}</h2>
+            <div :class="{'max' : upgrade.level &gt; upgrade.maxLevel, 'available': upgrade.type == 'stat' ? xp &gt;= upgrade.cost : gold &gt;= upgrade.cost, 'bought': upgrade.bought}" @click='buy(index, upgrade.type, upgrade.stat);audioController.play("upgrade")' @mouseenter='audioController.play("hover")' class='upgrade'>
+              <div class='name'>{{ upgrade.names }}</div>
+              <div class='description'>{{ upgrade.descriptions }}</div>
+              <div class='cost'>
+                Cost: {{ upgrade.cost }} {{ upgrade.type == "stat" ? 'xp' : 'gold' }}
+              </div>
+              <div class='effect'>
+                +{{ upgrade.type == "stat" ? upgrade.increment : upgrade.damage }} {{ upgrade.metric }}
+              </div>
+              <div class='level' v-if="upgrade.type == 'stat'">
+                Level: {{ upgrade.level }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div @click='exitShoppingPhase' class='nextPhase'>Next round</div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.9/vue.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>

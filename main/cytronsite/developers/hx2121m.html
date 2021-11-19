@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Cytron | Developer Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="blue-bg"></div>
+<div class="white-bg shadow"></div>
+<div class="content">
+  <h1>Cytron Developer Portal</h1>
+<xmp>
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Cytron Site | Main</title>
+	<meta name="description" content="Join Our City. New Start, New Jobs, New Ways To Play RP" />
+	<link rel="icon" href="https://media.discordapp.net/attachments/753365057114734674/852884253221060619/Untitled-1.jpg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="./main.css">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+
+
+</head>
+<body>
+<div class="container" x-data="{ rightSide: false, leftSide: false }">
+  <div class="left-side" :class="{'active' : leftSide}">
+    <div class="left-side-button" @click="leftSide = !leftSide">
+      <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      <svg stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+  <path d="M19 12H5M12 19l-7-7 7-7"/>
+</svg>
+    </div>
+    <div class="logo">CYTRON</div>
+    <div class="side-wrapper">
+      <div class="side-title">MENU</div>
+      <div class="side-menu">
+        <a href="index.html">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+            <path d="M9 22V12h6v10" />
+          </svg>
+          Home
+        </a>
+        <a href="/404/404.html">
+          <svg stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+          </svg>
+          Patch Notes 
+        </a>
+        <a href="/404/404.html">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <path d="M21 15l-5-5L5 21" />
+          </svg>
+          Galery
+        </a>
+        <a href="/404/404.html">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <path d="M16 2v4M8 2v4M3 10h18" />
+          </svg>
+          Events
+        </a>
+				        </a>
+        <a href="/labymod/fix.html">
+          <svg class="svg-icon" viewBox="0 0 20 20" stroke="currentColor" stroke-width="1">
+							<path d="M14.999,8.543c0,0.229-0.188,0.417-0.416,0.417H5.417C5.187,8.959,5,8.772,5,8.543s0.188-0.417,0.417-0.417h9.167C14.812,8.126,14.999,8.314,14.999,8.543 M12.037,10.213H5.417C5.187,10.213,5,10.4,5,10.63c0,0.229,0.188,0.416,0.417,0.416h6.621c0.229,0,0.416-0.188,0.416-0.416C12.453,10.4,12.266,10.213,12.037,10.213 M14.583,6.046H5.417C5.187,6.046,5,6.233,5,6.463c0,0.229,0.188,0.417,0.417,0.417h9.167c0.229,0,0.416-0.188,0.416-0.417C14.999,6.233,14.812,6.046,14.583,6.046 M17.916,3.542v10c0,0.229-0.188,0.417-0.417,0.417H9.373l-2.829,2.796c-0.117,0.116-0.71,0.297-0.71-0.296v-2.5H2.5c-0.229,0-0.417-0.188-0.417-0.417v-10c0-0.229,0.188-0.417,0.417-0.417h15C17.729,3.126,17.916,3.313,17.916,3.542 M17.083,3.959H2.917v9.167H6.25c0.229,0,0.417,0.187,0.417,0.416v1.919l2.242-2.215c0.079-0.077,0.184-0.12,0.294-0.12h7.881V3.959z"></path>
+						</svg>
+          LabyMob Fix
+        </a>
+				        </a>
+        <a href="/dev/dev.html">
+          <svg class="svg-icon" viewBox="0 0 20 20" stroke="currentColor" stroke-width="1">
+							<path d="M17.927,5.828h-4.41l-1.929-1.961c-0.078-0.079-0.186-0.125-0.297-0.125H4.159c-0.229,0-0.417,0.188-0.417,0.417v1.669H2.073c-0.229,0-0.417,0.188-0.417,0.417v9.596c0,0.229,0.188,0.417,0.417,0.417h15.854c0.229,0,0.417-0.188,0.417-0.417V6.245C18.344,6.016,18.156,5.828,17.927,5.828 M4.577,4.577h6.539l1.231,1.251h-7.77V4.577z M17.51,15.424H2.491V6.663H17.51V15.424z"></path>
+						</svg>
+          Developers
+        </a>
+      </div>
+    </div>
+     </span>
+      <span class="developer">
+        <img src="http://cytron.ddns.net:2121" />
+      </span>
+    </a>
+  </div>
+  <div class="main">
+    <div class="search-bar">
+      <input type="text" placeholder="Search" />
+      <button class="right-side-button" @click="rightSide = !rightSide">
+         <svg viewBox="0 0 20 20" width="24" height="24" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M15.94,10.179l-2.437-0.325l1.62-7.379c0.047-0.235-0.132-0.458-0.372-0.458H5.25c-0.241,0-0.42,0.223-0.373,0.458l1.634,7.376L4.06,10.179c-0.312,0.041-0.446,0.425-0.214,0.649l2.864,2.759l-0.724,3.947c-0.058,0.315,0.277,0.554,0.559,0.401l3.457-1.916l3.456,1.916c-0.419-0.238,0.56,0.439,0.56-0.401l-0.725-3.947l2.863-2.759C16.388,10.604,16.254,10.22,15.94,10.179M10.381,2.778h3.902l-1.536,6.977L12.036,9.66l-1.655-3.546V2.778z M5.717,2.778h3.903v3.335L7.965,9.66L7.268,9.753L5.717,2.778zM12.618,13.182c-0.092,0.088-0.134,0.217-0.11,0.343l0.615,3.356l-2.938-1.629c-0.057-0.03-0.122-0.048-0.184-0.048c-0.063,0-0.128,0.018-0.185,0.048l-2.938,1.629l0.616-3.356c0.022-0.126-0.019-0.255-0.11-0.343l-2.441-2.354l3.329-0.441c0.128-0.017,0.24-0.099,0.295-0.215l1.435-3.073l1.435,3.073c0.055,0.116,0.167,0.198,0.294,0.215l3.329,0.441L12.618,13.182z"></path></svg>
+      </button>
+    </div>
+    <div class="main-container">
+      <div class="profile">
+        <div class="profile-avatar">
+          <img src="https://i.ibb.co/bvmygcp/cytronnn.jpg" alt="" class="profile-img">
+          <div class="profile-name">Cytron</div>
+        </div>
+        <img src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/140139160/original/21eb64830829e6f8a5a3499ed213925ee9267c4c/create-a-custom-minecraft-map.jpg" alt="" class="profile-cover">
+        <div class="profile-menu">
+          <a class="profile-menu-link active">Main</a>
+          <a class="profile-menu-link">About</a>
+          <a class="profile-menu-link">Owners</a>
+          <a class="profile-menu-link">IP Adress</a>
+          <a class="profile-menu-link">More</a>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="timeline-left">
+          <div class="intro box">
+            <div class="intro-title">
+              Introduction
+              <button class="intro-menu"></button>
+            </div>
+            <div class="info">
+              <div class="info-item">
+                Cytron RP
+              </div>
+              <div class="info-item">
+                Instructions: <a href="/instructions/instructions.html">Here</a>
+              </div>
+							<div class="info-item">
+                Texture Pack: <a href="https://www.dropbox.com/sh/99pbuy9vejl4d48/AAAJhj4pUmiLvk742LNdvnZAa?dl=1">Download</a>
+              </div>
+            </div>
+          </div>
+          <div class="event box">
+            <div class="event-wrapper">
+              <img src="https://media.discordapp.net/attachments/753365057114734674/852880521159901224/Cytron_Rp_Server_logo_minecraft.jpg" class="event-img" />
+              <div class="event-date">
+                <div class="event-month">Jun</div>
+                <div class="event-day">30</div>
+              </div>
+              <div class="event-title">Server Launch</div>
+              <div class="event-subtitle">30 Jun, 2021 09:00PM</div>
+            </div>
+          </div>
+          <div class="pages box">
+            <div class="intro-title">
+              Owners
+              <button class="intro-menu"></button>
+            </div>
+            <div class="user">
+              <img src="https://media.discordapp.net/attachments/688790479910862862/859428544765493248/unnamed.jpg" alt="" class="user-img">
+              <div class="username">IOAM21</div>
+            </div>
+            <div class="user">
+              <img src="https://media.discordapp.net/attachments/688790479910862862/859428363013718046/Original_HACKER_X_LOGO_png_BRIGHTEN.jpg" alt="" class="user-img">
+              <div class="username">HackerX</div>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-right">
+          <div class="status box">
+            <div class="status-menu">
+              <a class="status-menu-item active" href="#">Status</a>
+              <a class="status-menu-item" href="#">Photos</a>
+              <a class="status-menu-item" href="#">Videos</a>
+            </div>
+            <div class="status-main">
+              <img src="https://i.ibb.co/bvmygcp/cytronnn.jpg" class="status-img">
+              <textarea class="status-textarea" placeholder="Write something to Cytron.."></textarea>
+            </div>
+            <div class="status-actions">
+              <a href="#" class="status-action">
+                <svg viewBox="-42 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M333.7 123.3c0 33.9-12.2 63.2-36.2 87.2-24 24-53.3 36.1-87.1 36.1h-.1c-33.9 0-63.2-12.1-87.1-36.1-24-24-36.2-53.3-36.2-87.2 0-33.9 12.2-63.2 36.2-87.2 24-24 53.2-36 87-36.1h.2c33.8 0 63.2 12.2 87.1 36.1 24 24 36.2 53.3 36.2 87.2zm0 0" fill="#ffbb85" />
+                  <path d="M427.2 424c0 26.7-8.5 48.3-25.3 64.3-16.5 15.7-38.4 23.7-65 23.7H90.2c-26.6 0-48.5-8-65-23.7C8.5 472.3 0 450.7 0 423.9c0-10.2.3-20.4 1-30.2a302.7 302.7 0 0112.1-64.9c3.3-10.3 7.8-20.5 13.4-30.3 5.8-10.2 12.5-19 20.1-26.3a89 89 0 0129-18.2c11.2-4.4 23.7-6.7 37-6.7 5.2 0 10.3 2.2 20 8.5l21 13.5c6.6 4.3 15.7 8.3 27 11.9a107.7 107.7 0 0033 5.3c11 0 22-1.8 33-5.3 11.2-3.6 20.3-7.6 27-12l21-13.4c9.7-6.3 14.7-8.5 20-8.5 13.3 0 25.7 2.3 37 6.7a89 89 0 0128.9 18.2c7.6 7.3 14.4 16.1 20.2 26.3 5.5 9.8 10 20 13.3 30.3a305.5 305.5 0 0112.1 64.9c.7 9.8 1 20 1 30.2zm0 0" fill="#6aa9ff" />
+                  <path d="M210.4 246.6h-.1V0c34 0 63.3 12.2 87.2 36.1 24 24 36.2 53.3 36.2 87.2 0 33.9-12.2 63.2-36.2 87.2-24 24-53.3 36.1-87.1 36.1zm0 0" fill="#f5a86c" />
+                  <path d="M427.2 424c0 26.7-8.5 48.3-25.3 64.3-16.5 15.7-38.4 23.7-65 23.7H210.2V286.5h3.3c11 0 22-1.8 33-5.3 11.2-3.6 20.3-7.6 27-12l21-13.4c9.7-6.3 14.7-8.5 20-8.5 13.3 0 25.7 2.3 37 6.7a89 89 0 0128.9 18.2c7.6 7.3 14.4 16.1 20.2 26.3 5.5 9.8 10 20 13.3 30.3a305.5 305.5 0 0112.1 64.9c.7 9.8 1 20 1 30.2zm0 0" fill="#2682ff" />
+                </svg>
+                People
+              </a>
+              <a href="#" class="status-action">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <path d="M87.084 192c-.456-5.272-.688-10.6-.688-16C86.404 78.8 162.34 0 256.004 0s169.6 78.8 169.6 176c0 5.392-.232 10.728-.688 16h.688c0 96.184-169.6 320-169.6 320s-169.6-223.288-169.6-320h.68zm168.92 32c36.392 1.024 66.744-27.608 67.84-64-1.096-36.392-31.448-65.024-67.84-64-36.392-1.024-66.744 27.608-67.84 64 1.096 36.392 31.448 65.024 67.84 64z" fill="#e21b1b" />
+                </svg>
+                Check in
+              </a>
+              <a href="#" class="status-action">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <circle cx="256" cy="256" r="256" fill="#ffca28" />
+                  <g fill="#6d4c41">
+                    <path d="M399.68 208.32c-8.832 0-16-7.168-16-16 0-17.632-14.336-32-32-32s-32 14.368-32 32c0 8.832-7.168 16-16 16s-16-7.168-16-16c0-35.296 28.704-64 64-64s64 28.704 64 64c0 8.864-7.168 16-16 16zM207.68 208.32c-8.832 0-16-7.168-16-16 0-17.632-14.368-32-32-32s-32 14.368-32 32c0 8.832-7.168 16-16 16s-16-7.168-16-16c0-35.296 28.704-64 64-64s64 28.704 64 64c0 8.864-7.168 16-16 16z" />
+                  </g>
+                  <path d="M437.696 294.688c-3.04-4-7.744-6.368-12.736-6.368H86.4c-5.024 0-9.728 2.336-12.736 6.336-3.072 4.032-4.032 9.184-2.688 14.016C94.112 390.88 170.08 448.32 255.648 448.32s161.536-57.44 184.672-139.648c1.376-4.832.416-9.984-2.624-13.984z" fill="#fafafa" />
+                </svg>
+                Mood
+              </a>
+              <button class="status-share">Share</button>
+            </div>
+          </div>
+										          <div class="album box">
+            <div class="status-main">
+              <img src="https://i.ibb.co/DM1CPph/Original-HACKER-X-LOGO-png-BRIGHTEN.jpg" class="status-img" />
+              <div class="album-detail">
+                <div class="album-title"><strong>HackerX</strong> posted a new <span>announcement</span></div>
+                <div class="album-date">5 Jul 2021</div>
+              </div>
+              <button class="intro-menu"></button>
+            </div>
+            <div class="album-content">Cytron Update 1.1, Removed Plugin: <strong>"ClearLag"</strong>
+                </div>
+              </div>
+					          <div class="album box">
+            <div class="status-main">
+              <img src="https://i.ibb.co/DM1CPph/Original-HACKER-X-LOGO-png-BRIGHTEN.jpg" class="status-img" />
+              <div class="album-detail">
+                <div class="album-title"><strong>HackerX</strong> posted a new <span>announcement</span></div>
+                <div class="album-date">2 Jul 2021</div>
+              </div>
+              <button class="intro-menu"></button>
+            </div>
+            <div class="album-content">Καλωσορίσατε Στον Cytron RP! Κάντε Join Στον <a href="https://discord.gg/utUjZc2Zhh"><strong>Discord Server μας</strong></a>
+                </div>
+              </div>
+					          <div class="album box">
+            <div class="status-main">
+              <img src="https://i.ibb.co/DM1CPph/Original-HACKER-X-LOGO-png-BRIGHTEN.jpg" class="status-img" />
+              <div class="album-detail">
+                <div class="album-title"><strong>HackerX</strong> posted a new <span>announcement</span></div>
+                <div class="album-date">1 Jul 2021</div>
+              </div>
+              <button class="intro-menu"></button>
+            </div>
+            <div class="album-content">New! Added Live Map! Link: <a href="http://cytron.ddns.net:2121"><strong>http://cytron.ddns.net:2121</strong></a>
+              <div class="album-photos">
+                <img src="https://media.discordapp.net/attachments/753365057114734674/859434206160748574/unknown.png" alt="" class="album-photo" />
+                <div class="album-right">
+                </div>
+								</div>
+            </div>
+						            <div class="album-actions">
+              <a href="#" class="album-action">
+                <svg stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                  <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                </svg>
+                87
+              </a>
+              <a href="#" class="album-action">
+                <svg stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1" viewBox="0 0 24 24">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                </svg>
+                20
+              </a>
+              <a href="#" class="album-action">
+                <svg stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1" viewBox="0 0 24 24">
+                  <path d="M17 1l4 4-4 4" />
+                  <path d="M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4" />
+                  <path d="M21 13v2a4 4 0 01-4 4H3" />
+                </svg>
+                13
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="right-side" :class="{ 'active': rightSide }">
+    <div class="account">
+      <button class="account-button">
+        <svg stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1" viewBox="0 0 24 24">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+          <path d="M22 6l-10 7L2 6" />
+        </svg>
+      </button>
+      <button class="account-button">
+        <svg stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1" viewBox="0 0 24 24">
+          <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
+        </svg>
+      </button>
+      <span class="account-user">Guest
+        <img src="https://i.ibb.co/jL5jprj/0ba3d60362c7e6d256cfc1f37156bad9.jpg" alt="" class="account-profile" alt="">
+      </span>
+    </div>
+    <div class="side-wrapper contacts">
+      <div class="side-title">TOP MEMBERS</div>
+            <div class="user">
+              <img src="https://cdn.discordapp.com/avatars/395865363536936960/a_2d3cf1723500f04f666c95799f8e5e30.webp?size=128" alt="" class="user-img">
+              <div class="username"><strong>Aris13_YT</strong></div>
+            </div>
+						            <div class="user">
+              <img src="https://cdn.discordapp.com/avatars/779784084171653140/f4468d206ef574c6b36c2c5701baaeef.webp?size=128" alt="" class="user-img">
+              <div class="username"><strong>Mitsaras08</strong></div>
+            </div>
+            <div class="user">
+              <img src="data:image/webp;base64,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" alt="" class="user-img">
+              <div class="username"><strong>Knee Cutter</strong></div>
+            </div>
+    </div>
+    <div class="search-bar right-search">
+      <input type="text" placeholder="Search" />
+      <div class="search-bar-svgs">
+        <svg stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+        </svg>
+        <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 469.34 469.34">
+          <path d="M456.84 76.17l-64-64.06c-16.13-16.13-44.18-16.17-60.37.04L45.77 301.67a10.73 10.73 0 00-2.7 4.59L.41 455.73a10.68 10.68 0 0013.19 13.2l149.33-42.7c1.73-.5 3.3-1.42 4.58-2.7l289.33-286.98c8.06-8.07 12.5-18.78 12.5-30.19s-4.44-22.12-12.5-30.2zM285.99 89.74L325.25 129l-205 205-14.7-29.44a10.67 10.67 0 00-9.55-5.9H78.92L286 89.75zM26.2 443.14l13.9-48.64 34.74 34.74-48.64 13.9zm123.14-35.18L98.3 422.54l-51.5-51.5L61.38 320H89.4l18.38 36.77a10.67 10.67 0 004.77 4.77l36.78 18.39v28.03zm21.33-17.54v-17.09c0-4.04-2.28-7.72-5.9-9.54l-29.43-14.7 205-205 39.26 39.26-208.93 207.07zm271.11-268.7l-47.03 46.61L301 74.6l46.59-47c8.06-8.07 22.1-8.07 30.16 0l64 64c4.03 4.03 6.25 9.38 6.25 15.08s-2.22 11.05-6.22 15.05z" /></svg>
+        <svg stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14"/>
+    </svg>
+      </div>
+    </div>
+  </div>
+  <div class="overlay" @click="rightSide = false; leftSide = false" :class="{ 'active': rightSide || leftSide }"></div>
+</div>
+<!-- partial -->
+  <script src='https://cdn.jsdelivr.net/gh/alpinejs/alpine@v1.9.4/dist/alpine.js'></script>
+</body>
+</html>
+<!-- If you came here just to get the developers password.. Here ya go: cytronrp -->
+</xmp>
+	</p>Click <a href="/index.html">here</a> to return to the main site
+	</p>Click <a href="/developers/loading.html">here</a> to see the loading page
+	</p>Click <a href="/404/404.html">here</a> to see the 404 page
+	</p>Click <a href="/temp.html">here</a> to see temp.html
+	</p>Click <a href="hx2121.html">here</a> for desktop mode
+</div>
+<!-- partial -->
+  <script  src="./instructions.js"></script>
+
+</body>
+</html>
