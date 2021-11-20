@@ -4,29 +4,10 @@ Check Out The New Updated HackerX Site
 
 ## Discord
 
-Join my discord by clicking [here](https://pip.pypa.io/en/stable/) to install foobar.
-
-```bash
-pip install foobar
-```
-
-## Usage
-
-```python
-import foobar
-
-# returns 'words'
-foobar.pluralize('word')
-
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
-```
+Join my discord by clicking [here](https://discord.gg/E9WfmCxS6W)
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
