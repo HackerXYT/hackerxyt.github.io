@@ -45,7 +45,7 @@ html {
 
 body {
   font-family: var(--body-font);
-  background-image: url("/dashboard/assets/banner3.jpg");
+  background-image: url("/hackerxbot/dashboard/assets/banner3.jpg");
   background-size: cover;
   background-position: center;
   display: flex;
