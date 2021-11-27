@@ -1,0 +1,140 @@
+.button {
+  --background: #1A1C27;
+  --background-hover: #292C3B;
+  --background-progress: #999EB4;
+  --background-progress-active: #275EFE;
+  --background-progress-success: #292C3B;
+  --text: #fff;
+  --success-text: #292C3B;
+  display: flex;
+  align-items: center;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  border: 0;
+  padding: 0;
+  line-height: 21px;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  background: none;
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  --letters-y: 0px;
+  --letters-r: 0deg;
+  --letters-o: 1;
+  --progress-opacity: 0;
+  --background-opacity: 1;
+  --progress: 157;
+  --progress-y: .5px;
+  --progress-sx: 1;
+  --progress-sy: 1;
+  --success-opacity: 0;
+}
+.button:hover {
+  --fill: var(--background-hover);
+}
+.button.active {
+  --fill: var(--background-progress);
+  --fill-delay: .2s;
+  --fill-duration: .4s;
+}
+.button.success {
+  --success-background: var(--background-progress-success);
+}
+.button svg {
+  display: block;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  right: 0;
+}
+.button svg.background {
+  height: 45px;
+  top: 0;
+  opacity: var(--background-opacity);
+  fill: var(--fill, var(--background));
+  transition: fill var(--fill-duration, 0.2s) linear var(--fill-delay, 0s);
+}
+.button svg.progress {
+  height: 32px;
+  bottom: -13px;
+  stroke: var(--background-progress);
+  fill: none;
+  stroke-width: 7;
+  stroke-linecap: round;
+  pointer-events: none;
+  opacity: var(--progress-opacity);
+  transform: translateY(var(--progress-y)) scale(var(--progress-sx), var(--progress-sy)) translateZ(0);
+}
+.button svg.progress path:last-child {
+  stroke-dasharray: 157;
+  stroke-dashoffset: var(--progress);
+  stroke: var(--success-background, var(--background-progress-active));
+  transition: stroke 0.2s linear;
+}
+.button .label,
+.button .success {
+  z-index: 1;
+}
+.button .label {
+  position: relative;
+  display: flex;
+  padding: 12px 40px;
+  opacity: var(--letters-o);
+}
+.button .label span {
+  display: block;
+  transform: translateY(calc(var(--letters-y) * var(--move))) translateZ(0) rotate(calc(var(--letters-r) * var(--rotate) * var(--part)));
+}
+.button .success {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 12px;
+  color: var(--success-text);
+  opacity: var(--success-opacity);
+}
+
+html {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: inherit;
+}
+*:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  font-family: "Inter", Arial;
+  justify-content: center;
+  align-items: center;
+  background: #ECEEF6;
+}
+body .dribbble {
+  position: fixed;
+  display: block;
+  right: 20px;
+  bottom: 20px;
+}
+body .dribbble img {
+  display: block;
+  height: 28px;
+}
+body .twitter {
+  position: fixed;
+  display: block;
+  right: 64px;
+  bottom: 14px;
+}
+body .twitter svg {
+  width: 32px;
+  height: 32px;
+  fill: #1da1f2;
+}
