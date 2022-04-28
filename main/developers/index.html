@@ -1,0 +1,75 @@
+<script>
+		window.onload = function() {
+    document.addEventListener("contextmenu", function(e){
+      e.preventDefault();
+    }, false);
+    document.addEventListener("keydown", function(e) {
+    //document.onkeydown = function(e) {
+      // "I" key
+      if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+        disabledEvent(e);
+				window.location.href = "https://hackerx.hopto.org/main/banned.html";
+      }
+      // "J" key
+      if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+        disabledEvent(e);
+				window.location.href = "https://hackerx.hopto.org/main/banned.html";
+      }
+      // "S" key + macOS
+      if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+        disabledEvent(e);
+				window.location.href = "https://hackerx.hopto.org/main/banned.html";
+      }
+      // "U" key
+      if (e.ctrlKey && e.keyCode == 85) {
+        disabledEvent(e);
+				window.location.href = "https://hackerx.hopto.org/main/banned.html";
+      }
+      // "F12" key
+      if (event.keyCode == 123) {
+        disabledEvent(e);
+				window.location.href = "https://hackerx.hopto.org/main/banned.html";
+      }
+    }, false);
+    function disabledEvent(e){
+      if (e.stopPropagation){
+        e.stopPropagation();
+      } else if (window.event){
+        window.event.cancelBubble = true;
+      }
+      e.preventDefault();
+      return false;
+    }
+  };
+	</script>
+<!DOCTYPE html>
+<html lang="en" >
+
+<!-- Mirrored from www.hackerx.xyz/main/developers/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 06 Apr 2022 17:56:38 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0.1; url=portal/index.html" />
+  <title>Warning!</title>
+	<meta name="description" content="developer portal" />
+	<link rel="icon"    bhref="https://i.ibb.co/2jKXddF/hackerxlogo.png">
+  <link rel="stylesheet" href="../../../cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<div class="wrapper">
+    <div>
+      This Path Is Made For <twentyone>Developers ONLY</twentyone>
+    </div>
+		<br></br>
+		<div class="typing-demo" id="div1" style="visibility:hidden;">
+			You're Being Redirected Automatically
+		</div>
+</div>
+  <script src='../../../codepen.io/denic/pen/YzyPzKG.html'></script>
+	<script src='script.js'></script>
+</body>
+
+<!-- Mirrored from www.hackerx.xyz/main/developers/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 06 Apr 2022 17:56:39 GMT -->
+</html>

@@ -1,0 +1,252 @@
+.loading {
+  --arm-front: 24deg;
+  --arm-front-end: -48deg;
+  --arm-back: 164deg;
+  --arm-back-end: -50deg;
+  --leg-front: 40deg;
+  --leg-front-end: 30deg;
+  --leg-back: 120deg;
+  --leg-back-end: -36deg;
+  --board-r: 0deg;
+  --board-x: 0px;
+  --body-r: 12deg;
+  --body-y: -65%;
+  --body-x: -85%;
+  --skate-x: 0px;
+  --skate-y: 0px;
+  --color: #F9A28E;
+  --line-top-x: 0%;
+  --line-bottom-x: 0%;
+  position: relative;
+}
+.loading .skate {
+  position: relative;
+  width: 40px;
+  height: 46px;
+  transform: translate(var(--skate-x), var(--skate-y)) translateZ(0);
+}
+.loading .skate .body {
+  background: var(--color);
+  height: 15px;
+  width: 7px;
+  border-radius: 4px;
+  transform-origin: 4px 11px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(var(--body-x), var(--body-y)) rotate(var(--body-r)) translateZ(0);
+}
+.loading .skate .body:before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  bottom: 16px;
+  left: 0;
+  position: absolute;
+  background: var(--color);
+  transform: translateY(-0.5px);
+}
+.loading .skate .body .arm,
+.loading .skate .body .arm:before,
+.loading .skate .body .leg,
+.loading .skate .body .leg:before {
+  content: "";
+  width: var(--w, 11px);
+  height: 4px;
+  top: var(--t, 0);
+  left: var(--l, 2px);
+  border-radius: 2px;
+  transform-origin: 2px 2px;
+  position: absolute;
+  background: var(--color);
+  transform: rotate(var(--r, 0deg));
+}
+.loading .skate .body .arm:before {
+  --l: 8px;
+}
+.loading .skate .body .arm.front {
+  --r: var(--arm-front);
+}
+.loading .skate .body .arm.front:before {
+  --r: var(--arm-front-end);
+}
+.loading .skate .body .arm.back {
+  --r: var(--arm-back);
+}
+.loading .skate .body .arm.back:before {
+  --r: var(--arm-back-end);
+}
+.loading .skate .body .leg {
+  --w: 11px;
+  --t: 11px;
+}
+.loading .skate .body .leg:before {
+  --t: 0;
+  --l: 8px;
+}
+.loading .skate .body .leg.front {
+  --r: var(--leg-front);
+}
+.loading .skate .body .leg.front:before {
+  --r: var(--leg-front-end);
+}
+.loading .skate .body .leg.back {
+  --l: 1px;
+  --r: var(--leg-back);
+}
+.loading .skate .body .leg.back:before {
+  --r: var(--leg-back-end);
+}
+.loading .skate .board {
+  position: absolute;
+  left: 2px;
+  bottom: -1px;
+  transform: translateX(var(--board-x)) rotate(var(--board-r)) translateZ(0);
+  transform-origin: 7px 5.5px;
+}
+.loading .skate .board svg {
+  display: block;
+  width: 34px;
+  height: 8px;
+  fill: var(--color);
+}
+.loading .line {
+  height: 3px;
+  border-radius: 1px;
+  overflow: hidden;
+  position: absolute;
+  right: 105%;
+  top: 18px;
+  width: 16px;
+  transform: scaleY(0.75);
+}
+.loading .line:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background: var(--color);
+  transform: translateX(var(--x, var(--line-top-x)));
+}
+.loading .line.bottom {
+  --x: var(--line-bottom-x);
+  width: 13px;
+  top: 24px;
+}
+
+.link {
+  position: absolute;
+  right: 32px;
+  top: 32px;
+}
+.link svg {
+  display: block;
+  width: 32px;
+  height: 32px;
+}
+
+#keyboard {
+  display: grid;
+  grid-gap: 8px;
+  position: absolute;
+  left: 50%;
+  bottom: 48px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  transform: translateX(-50%);
+}
+#keyboard button {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  height: 36px;
+  width: 40px;
+  border-radius: 7px;
+  background: #2C2C31;
+  border: none;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(var(--scale, 1)) translateZ(0);
+  transition: transform 0.15s;
+}
+#keyboard button svg {
+  display: block;
+  width: 8px;
+  height: 8px;
+  fill: var(--color, #7F7F85);
+  transition: fill 0.15s;
+}
+#keyboard button.up {
+  grid-row: 1;
+  grid-column: 2;
+}
+#keyboard button.left {
+  grid-row: 2;
+  grid-column: 1;
+}
+#keyboard button.right {
+  grid-row: 2;
+  grid-column: 3;
+}
+#keyboard button.down {
+  grid-row: 2;
+  grid-column: 2;
+}
+#keyboard button.pressed {
+  --scale: .95;
+  --color: #fff;
+}
+#keyboard span {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -24px;
+  line-height: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #7F7F85;
+  text-align: center;
+  transition: opacity 0.25s;
+}
+#keyboard span strong {
+  transition: color 0.15s;
+  color: var(--color, #7F7F85);
+}
+#keyboard span.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+#keyboard span.pressed {
+  --color: #fff;
+}
+
+html {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: inherit;
+}
+*:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #242428;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}

@@ -1,0 +1,68 @@
+HTTrack3.49-2+htsswf+htsjava launched on Wed, 06 Apr 2022 20:53:28 at https://www.hackerx.xyz/ +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qiC1%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "en, *" https://www.hackerx.xyz/ -O1 "C:\My Web Sites\sitex" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+20:53:28	Warning: 	Cache: damaged cache, trying to repair
+20:53:28	Warning: 	Cache: 43741 bytes successfully recovered in 23 entries
+20:53:28	Warning: 	engine: warning: temporary file C:/My Web Sites/sitex/cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css.tmp already exists
+20:53:28	Warning: 	engine: warning: temporary file C:/My Web Sites/sitex/vjs.zencdn.net/5-unsafe/video-js.css.tmp already exists
+20:53:28	Warning: 	engine: warning: temporary file C:/My Web Sites/sitex/www.hackerx.xyz/main/style.css.tmp already exists
+20:53:28	Warning: 	engine: warning: temporary file C:/My Web Sites/sitex/www.hackerx.xyz/main/streaming/index.html.tmp already exists
+20:53:28	Warning: 	engine: warning: temporary file C:/My Web Sites/sitex/www.hackerx.xyz/main/playlist/index.html.tmp already exists
+20:53:28	Warning: 	engine: warning: temporary file C:/My Web Sites/sitex/www.hackerx.xyz/main/developers/index.html.tmp already exists
+20:53:28	Warning: 	engine: warning: temporary file C:/My Web Sites/sitex/www.hackerx.xyz/main/[01221].html.tmp already exists
+20:53:28	Warning: 	engine: warning: temporary file C:/My Web Sites/sitex/www.hackerx.xyz/main/xbot/index.html.tmp already exists
+20:53:28	Warning: 	engine: warning: temporary file C:/My Web Sites/sitex/www.hackerx.xyz/main/XGames/index.html.tmp already exists
+20:53:28	Warning: 	engine: warning: temporary file C:/My Web Sites/sitex/www.hackerx.xyz/main/cytronsite/index.html.tmp already exists
+20:56:42	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/main/[01221] (from https://www.hackerx.xyz/main/)
+20:56:46	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/main/streaming/script.js (from https://www.hackerx.xyz/main/streaming/)
+20:56:46	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/main/playlist/script.js (from https://www.hackerx.xyz/main/playlist/)
+20:56:49	Error: 	"Forbidden" (403) at link https://codepen.io/denic/pen/YzyPzKG.js (from https://www.hackerx.xyz/main/developers/)
+20:56:49	Warning: 	Retry after error -5 (Unable to get server's address: No such host is known. ) at link https://hackerxbot.myvnc.com/dashboard/assets/hackerxbot.png (from https://www.hackerx.xyz/main/xbot/)
+20:56:57	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/dashboard/ (from https://www.hackerx.xyz/main/xbot/)
+20:56:57	Warning: 	Retry after error -5 (Unable to get server's address: unknown error) at link https://hackerxbot.myvnc.com/dashboard/assets/hackerx.png (from https://www.hackerx.xyz/main/xbot/)
+20:56:59	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/logs/ (from https://www.hackerx.xyz/main/xbot/)
+20:57:00	Error: 	"Forbidden" (403) at link https://codepen.io/denic/pen/YzyPzKG.css (from https://www.hackerx.xyz/main/XGames/)
+20:57:07	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/main/bookmark/script.js (from https://www.hackerx.xyz/main/bookmark/)
+20:57:10	Warning: 	Retry after error -5 (Unable to get server's address: unknown error) at link https://hackerxbot.myvnc.com/dashboard/assets/hackerxbot.png (from https://www.hackerx.xyz/main/xbot/)
+20:57:11	Warning: 	File not parsed, looks like binary: https://www.hackerx.xyz/main/xbot/assets/css/fonts/Montserrat-Black.svg
+20:57:11	Warning: 	Warning: store application/octet-stream without scan: C:/My Web Sites/sitex/www.hackerx.xyz/main/xbot/assets/css/fonts/Montserrat-Black.svg
+20:57:11	Warning: 	File not parsed, looks like binary: https://www.hackerx.xyz/main/xbot/assets/css/fonts/Montserrat-Bold.svg
+20:57:11	Warning: 	Warning: store application/octet-stream without scan: C:/My Web Sites/sitex/www.hackerx.xyz/main/xbot/assets/css/fonts/Montserrat-Bold.svg
+20:57:11	Warning: 	File not parsed, looks like binary: https://www.hackerx.xyz/main/xbot/assets/css/fonts/Montserrat-Regular.svg
+20:57:11	Warning: 	Warning: store application/octet-stream without scan: C:/My Web Sites/sitex/www.hackerx.xyz/main/xbot/assets/css/fonts/Montserrat-Regular.svg
+20:57:11	Warning: 	File not parsed, looks like binary: https://www.hackerx.xyz/main/xbot/assets/css/fonts/Montserrat-Light.svg
+20:57:11	Warning: 	Warning: store application/octet-stream without scan: C:/My Web Sites/sitex/www.hackerx.xyz/main/xbot/assets/css/fonts/Montserrat-Light.svg
+20:57:11	Warning: 	Retry after error -5 (Unable to get server's address: unknown error) at link https://hackerxbot.myvnc.com/dashboard/assets/banneroringinal.jpg (from https://www.hackerx.xyz/main/xbot/assets/css/main.css)
+20:57:11	Warning: 	Retry after error -5 (Unable to get server's address: unknown error) at link https://hackerxbot.myvnc.com/dashboard/assets/hackerx.png (from https://www.hackerx.xyz/main/xbot/)
+20:57:15	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/dashboard/assets/icon.png (from https://www.hackerx.xyz/main/xbot/dashboard/)
+20:57:20	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/dashboard/assets/hackerxbot.png (from https://www.hackerx.xyz/main/xbot/dashboard/)
+20:57:38	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/cytronsite/apple-touch-icon.png (from https://www.hackerx.xyz/main/cytronsite/main/)
+20:57:38	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/404/ (from https://www.hackerx.xyz/main/cytronsite/main/)
+20:57:38	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/cytronsite/labymod (from https://www.hackerx.xyz/main/cytronsite/main/)
+20:57:38	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/cytronsite/dev/ (from https://www.hackerx.xyz/main/cytronsite/main/)
+20:57:39	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/cytronsite/instructions/ (from https://www.hackerx.xyz/main/cytronsite/main/)
+20:57:39	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/cytronsite/cytronpack/ (from https://www.hackerx.xyz/main/cytronsite/main/)
+20:57:39	Error: 	"Error when decompressing" (-1) at link https://www.hackerx.xyz/404 (from https://www.hackerx.xyz/main/cytronsite/main/)
+20:57:39	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/cytronsite/404/ (from https://www.hackerx.xyz/main/cytronsite/main/)
+20:57:39	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/main/developers/portal/forgot/style.css (from https://www.hackerx.xyz/main/developers/portal/forgot/)
+20:57:39	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/main/developers/portal/forgot/script.js (from https://www.hackerx.xyz/main/developers/portal/forgot/)
+20:57:40	Error: 	"Unable to get server's address: unknown error" (-5) after 2 retries at link https://hackerxbot.myvnc.com/dashboard/assets/hackerxbot.png (from https://www.hackerx.xyz/main/xbot/)
+20:57:40	Warning: 	Retry after error -5 (Unable to get server's address: unknown error) at link https://hackerxbot.myvnc.com/dashboard/assets/banneroringinal.jpg (from https://www.hackerx.xyz/main/xbot/assets/css/main.css)
+20:57:40	Error: 	"Unable to get server's address: unknown error" (-5) after 2 retries at link https://hackerxbot.myvnc.com/dashboard/assets/hackerx.png (from https://www.hackerx.xyz/main/xbot/)
+20:57:40	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/main/xbot/dashboard/src/script.js (from https://www.hackerx.xyz/main/xbot/dashboard/src/)
+20:57:40	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/main/xbot/logs/style.css (from https://www.hackerx.xyz/main/xbot/logs/)
+20:57:51	Error: 	"Forbidden" (403) at link https://codepen.io/ste-vg/pen/zBVakw.js (from https://www.hackerx.xyz/main/XGames/Games/Stack/)
+20:57:51	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/XGames/Select/style.css (from https://www.hackerx.xyz/main/XGames/Select/loading/)
+20:57:52	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/main/cytronsite/main/apple-touch-icon.png (from https://www.hackerx.xyz/main/cytronsite/main/2.html)
+20:57:52	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/main/developers/portal/forgot/POST (from https://www.hackerx.xyz/main/developers/portal/forgot/done.html)
+20:57:52	Error: 	"Unable to get server's address: unknown error" (-5) after 2 retries at link https://hackerxbot.myvnc.com/dashboard/assets/banneroringinal.jpg (from https://www.hackerx.xyz/main/xbot/assets/css/main.css)
+20:57:52	Error: 	"Not Found" (404) at link https://assets.codepen.io/217233/ktkTrostKilled.png (from https://www.hackerx.xyz/main/XGames/Games/kill-the-kingvue/style.css)
+20:57:52	Error: 	"Not Found" (404) at link https://www.hackerx.xyz/Cursors/cursor.png (from https://www.hackerx.xyz/main/cytronsite/main/2.css)
+
+HTTrack Website Copier/3.49-2 mirror complete in 4 minutes 24 seconds : 207 links scanned, 169 files written (239178107 bytes overall), 151 files updated [233171665 bytes received at 883226 bytes/sec], 3701130 bytes transferred using HTTP compression in 115 files, ratio 29%, 2.8 requests per connection
+(31 errors, 26 warnings, 0 messages)
