@@ -270,17 +270,17 @@ if (product == null	&& localStorage.getItem("username") == null) {
 		//ACCOUNT VERIFICATION
 		if(identifier === "21") {
 			document.getElementById('usernamesuccess').innerHTML = identifier;
-		} else if(identifier === "dritsas") {
+		} else if(identifier === "Twentyone") {
 			document.getElementById('usernamesuccess').innerHTML = identifier;
-		} else if(identifier === "tala") {
+		} else if(identifier === "Talamagas") {
 			document.getElementById('usernamesuccess').innerHTML = identifier;
-		} else if(identifier === "psaltiras") {
+		} else if(identifier === "Psaltiras") {
 			document.getElementById('usernamesuccess').innerHTML = identifier;
-		} else if(identifier === "kyriakos") {
+		} else if(identifier === "Kyriakos") {
 			document.getElementById('usernamesuccess').innerHTML = identifier;
 		} else if(identifier === "giorgikas") {
 			document.getElementById('usernamesuccess').innerHTML = identifier;
-		} else if(identifier === "developer") {
+		} else if(identifier === "Dritsas") {
 			document.getElementById('usernamesuccess').innerHTML = identifier;
 		} else if(sessionStorage.getItem("bypass-verification") === "true") {
 			document.getElementById('usernamesuccess').innerHTML = `<span style="color:red">BYPASSED:${identifier}</span>`;

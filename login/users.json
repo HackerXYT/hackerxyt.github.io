@@ -22,5 +22,11 @@
 		"password": "a9212210ad337a0af7cbb266d5f0deae",
 		"name": "Dritsas",
 		"pfp": "https://www.twentyonecore.com/pfp/Dritsas.png"		
+	},
+	"u5": {
+		"email": "psaltiras@hackerx.xyz",
+		"password": "error",
+		"name": "Psaltiras",
+		"pfp": "https://www.twentyonecore.com/pfp/none.png"		
 	}
 }
