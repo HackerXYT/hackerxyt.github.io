@@ -5,7 +5,7 @@ const BtnLog = document.getElementById("login-form-submit");
 const BtnLogger = document.getElementById("signup-form-submit");
 const formlog = document.getElementById("login-form");
 const formlogger = document.getElementById("signup-form");
-const serverredirect = "https://language.twentyonecore.com/language/register.html?identity="
+const serverredirect = "/language/register.html?identity="
 document.getElementById("container").style.visibility = "visible";
 document.getElementById("message").style.visibility = "visible";
 
