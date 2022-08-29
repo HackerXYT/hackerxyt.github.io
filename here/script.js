@@ -197,5 +197,5 @@ function exit() {
 function logoff() {
 	localStorage.clear()
 	sessionStorage.clear()
-	window.location.href = "https://www.twentyonecore.com/logout.html"
+	window.location.href = "/"
 }
