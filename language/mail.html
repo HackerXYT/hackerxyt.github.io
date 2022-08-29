@@ -1,0 +1,15 @@
+<script src="https://smtpjs.com/v3/smtp.js"></script>
+<script>
+      Email.send({
+        Host: "smtp.gmail.com",
+        Username: "twentysix383@gmail.com",
+        Password: "HackerX2007",
+        To: 'gregpap03@gmail.com',
+        From: "twentysix383@gmail.com",
+        Subject: "Sending Email using javascript",
+        Body: "Well that was easy!!",
+      })
+        .then(function (message) {
+          alert("mail sent successfully")
+        });
+</script>

@@ -1,0 +1,458 @@
+<xmp>const express = require("express")
+const app = express()
+
+app.use(express.static(__dirname + "/public/"), (_, res, next) => {
+  res.status(404)
+  res.sendFile(__dirname + "/404.html")
+});
+
+app.listen(8080);
+
+app.get("/", (req, res) => {
+  res.send("HackerX Bot Is Online, Working On Version 3.0! Discord Link: https://dsc.gg/hackerx")
+})
+
+app.listen(3000, () => {
+  console.log("Notice: 2 Servers Version.")
+  console.log("Starting Up")
+})
+let Discord = require("discord.js")
+let client = new Discord.Client()
+
+Discord.Constants.DefaultOptions.ws.properties.$browser = "Discord Android"
+
+client.on("guildMemberAdd", member => {
+  if(member.guild.id === "803961416008728576") {
+    client.channels.cache.get("803961416549007365").send(`<a:ww:857321014145187900><a:ee:857321078157213696><a:ll:857321033271214081><a:cc:857321040333504562><a:oo:857321049980272691><a:mm:857321056611074099><a:ee:857321078157213696><a:rainbowc:857321065416359956> To HackerX's Cave ${member}!`)
+    console.log("New Member Joined")
+  }
+})
+client.on("guildMemberAdd", member => {
+  if(member.guild.id === "864467045390090250") {
+    client.channels.cache.get("864467045412110342").send(`<a:ww:857321014145187900><a:ee:857321078157213696><a:ll:857321033271214081><a:cc:857321040333504562><a:oo:857321049980272691><a:mm:857321056611074099><a:ee:857321078157213696><a:rainbowc:857321065416359956> στο YLYL ${member}! Διαβασε τα <#866639908528979988>!`)
+    console.log("New Member Joined")
+  }
+})
+client.on("guildMemberRemove", member => {
+  let goodbyembed = new Discord.MessageEmbed()
+.setAuthor(`${member.user.tag} just left!`, member.user.avatarURL())
+.setDescription("Sad! Let's just hope that they enjoyed their stay <:unlove:879341266842837002>")
+.setColor("FF0000");
+member.guild.channels.cache.get("880927065694670858").send(goodbyembed)
+
+        .catch((err) => console.log(err));
+});
+
+client.on("ready", () => {
+    const channel = client.channels.cache.get("878633230499196928");
+    if (!channel) return console.error("The channel does not exist!");
+    channel.join().then(connection => {
+        // Yay, it worked!
+				client.user.setActivity("NEW VIDEO! CHECK #「📢」announcements", {
+  type: "STREAMING",
+  url: "https://www.twitch.tv/hackerxofficial"
+});
+        console.log("Successfully connected.")
+				console.log("No Errors Detected");
+    }).catch(e => {
+
+        // Oh no, it errored! Let's log it to console :)
+        console.error(e);
+    });
+});
+
+client.on("message", message => {
+if(message.content === "ping") {
+  message.channel.send("pong!")
+  console.log("requested!")
+  client.user.setPresence({ activity: { name: "unavailable" }, status: "idle" })
+  client.user.setPresence({ activity: { name: "test bot up!" }, status: "dnd" })
+	app.get("/", (req, res) => {
+  res.send("sent")
+})
+}
+if(message.content.startsWith("!hack")) {
+const user = message.mentions.users.first();
+if(!user) return message.channel.send("Mention Someone to hack")
+message.channel.send("**[25%]** Grabbing IP..").then(m => {
+setTimeout(() => {
+m.edit("**[50%]** IP GRABBED! Looking for email and password..").then(m2 => {
+setTimeout(() => {
+m2.edit(`**[75%]** DONE! email: ${user.username}@gmail.com | password: ${user.username}2636!`).then(m3 => {
+setTimeout(() => {
+m3.edit("**[100%]** Sending Info To HackerX's Servers..").then(m4 => {
+setTimeout(() => {
+m4.edit(`done hacking ${user}! all info was sent online.`)
+}, 5500);
+});
+}, 2800);
+});
+}, 4500);
+});
+}, 5000);
+});
+};
+if(message.content.startsWith("!default")) {
+	client.user.setActivity("HackerX's Videos!", { type: 'WATCHING' })
+}
+if (message.content.toLowerCase() == "shutdown<@637280694091120680>error2121") {
+        message.channel.send("Shutting down...").then(() => {
+            process.exit();
+        })
+    }
+if(message.content.startsWith("-thank")) {
+let victim = message.mentions.users.first()
+ if(!victim) message.reply("Mention someone to thank.")
+ else{
+ message.channel.send(`${victim} Was thanked by ${message.author}!`)
+
+ }
+ }
+if(message.channel.id === "803961417056780333") 
+if (message.content === "hi") {
+	message.channel.send("hey")
+}
+if(message.channel.id === "808421793924382771") 
+if (message.content === "!emergency") {
+	message.channel.send("guild.memberCount Updated ** ${guild.memberCount} **")
+}
+if(message.channel.id === "803961417056780333") 
+if (message.content === "!emergency x2162dwa") {
+	message.channel.send("Access Denied")
+}
+const https = require('https');
+ const url = 'https://www.reddit.com/r/memes/hot/.json?limit=100';
+
+ if (message.content.startsWith('!meme')) {
+ https.get(url, result => {
+ var body = '';
+ result.on('data', chunk => {
+ body += chunk;
+ });
+
+ result
+ .on('end', () => {
+ var response = JSON.parse(body);
+ var index =
+ response.data.children[Math.floor(Math.random() * 99) + 1].data;
+
+ var link = 'https://reddit.com' + index.permalink;
+
+ if (index.post_hint !== 'image') {
+ var text = index.selftext;
+ const textembed = new Discord.MessageEmbed()
+ .setTitle(`${title}`)
+ .setColor('RANDOM')
+ .setURL(link);
+
+ message.channel.send(textembed);
+ }
+
+ var image = index.preview.images[0].source.url.replace('&amp;', '&');
+ var title = index.title;
+ var subRedditName = index.subreddit_name_prefixed;
+
+ if (index.post_hint !== 'image') {
+ const textembed = new Discord.MessageEmbed()
+ .setTitle(`${title}`)
+ .setColor('RANDOM')
+ .setURL(link);
+
+ message.channel.send(textembed);
+ }
+ const imageembed = new Discord.MessageEmbed()
+ .setTitle(`${title}`)
+ .setImage(image)
+ .setColor('RANDOM')
+ .setURL(link);
+ message.channel.send(imageembed);
+ })
+ .on('error', function(e) {
+ console.log('Got an error: ', e);
+ });
+ });
+ }
+
+if(message.content.startsWith("!status;dnd")) {
+  client.user.setPresence({ activity: { name: "HackerX Bot V2.0! Commands List: !xcommands" }, status: "dnd" })
+	message.channel.send("done!")
+  console.log("Status Changed To DND")
+}
+if(message.content.startsWith(`-dm`)){
+ const whattosend = message.content.slice("".length).trim().split(/ +/);
+whattosend.shift().toLowerCase().split(" ")[1]
+const member = message.mentions.members.first() || message.guild.members.cache.get(whattosend[0])
+if(!member) return message.channel.send('Provide a user!')
+if(!whattosend[1]) return message.channel.send('What do you want to send to them?')
+member.send(whattosend.slice(1).join(" "))
+console.log("Sent Message")
+}
+if(message.content.startsWith("!warn")) {
+ let victim = message.mentions.users.first()
+ if(!victim) message.reply("mention someone to warn.")
+ else {
+ let embed = new Discord.MessageEmbed()
+ .setTitle("Warnings")
+ .setDescription(`${victim} got warned by ${message.author}!`)
+ .setColor("RANDOM")
+ .setFooter(`Moderater : ${message.author.username}`)
+ .setTimestamp()
+ 
+ message.channel.send(embed)
+ console.log("Warned Member")
+ }
+}
+if (message.content === '!pp') {
+ let pp = [
+ '',
+ '=',
+ '==',
+ '===',
+ '====',
+ '=====',
+ '======',
+ '=======',
+ '===========',
+ '=================='
+ ];
+ message.reply(
+ `Your pp is :- 8${pp[Math.floor(Math.random() * pp.length)]}D`
+ );
+ }
+if (message.content === "set;downtime") {
+  message.channel.send("updating...")
+  client.user.setPresence({ activity: { name: "updating.." }, status: "idle" })
+  message.channel.send("Downtime Has Started!")
+  console.log("Update Started")
+   }
+if (message.content === "botinfo") {
+  let embed = new Discord.MessageEmbed()
+  .setTitle("HackerX Bot Info")
+  .setDescription("Version 2.0.0")
+  .setColor("RED")
+  .setFooter("Coded By HackerX")
+  message.channel.send(embed)
+  console.log("Info Sent")
+}
+if(message.content.toLowerCase() === "=help") {
+  let embed = new Discord.MessageEmbed()
+  .setTitle("𝗖𝗼𝗺𝗺𝗮𝗻𝗱𝘀 | HackerX")
+  .addField(":rofl: 𝗙𝗨𝗡",
+  "!kill, !deadmeme, >rps, !kill, , πες μου κατι καλο, !ping, ?ping, nameme, -dm, !pp")
+  
+ 
+ .addField(":wrench: 𝗨𝘁𝗶𝗹𝗶𝘁𝘆",
+ "=help, adobepremiere2020free, status;invisible, botinfo")
+ 
+ 
+ .addField(":hammer: 𝗠𝗼𝗱𝗲𝗿𝗮𝘁𝗶𝗼𝗻",
+ "!warn, -thank,")
+ 
+  .setColor("RANDOM")
+  .setFooter("𝙈𝙤𝙧𝙚 𝘾𝙤𝙢𝙢𝙖𝙣𝙙𝙨 𝙒𝙞𝙡𝙡 𝘽𝙚 𝙎𝙤𝙤𝙣 𝘼𝙫𝙖𝙞𝙡𝙖𝙗𝙡𝙚! 𝙁𝙤𝙧 𝘽𝙪𝙜𝙨/ 𝙋𝙧𝙤𝙗𝙡𝙚𝙢𝙨 𝘿𝙢 𝙃𝙖𝙘𝙠𝙚𝙧𝙓#9378")
+  message.channel.send(embed)
+  console.log("Commands Sent")
+ }
+if(message.content.toLowerCase().startsWith("!whois")) {
+let user = message.mentions.users.first() || message.author;
+let member = message.mentions.members.first() || message.member;
+let e = new Discord.MessageEmbed()
+.setColor("#C724B1")
+.setTimestamp()
+.addFields({
+name: "User Joined Server At",
+value: member.joinedAt
+}, {
+name: "User Created At",
+value: user.createdAt
+}, {
+name: "User Name & Tag",
+value: user.tag
+}, {
+name: "User ID",
+value: user.id
+})
+.setThumbnail(user.displayAvatarURL({ dynamic: true }))
+message.channel.send(e);
+};
+if (message.content === "!xcommands") {
+  let embed = new Discord.MessageEmbed()
+  .setTitle("HackerX Bot Commands")
+  .setDescription("botinfo, adobepremiere2020free, status;invisible, !sendlogo, !deadmeme, πες μου κατι καλο, !say hi, !ping, ?ping, nameme, !kill, hi (only available in channel #σπηλιά), -thank, !warn, -dm, !mute, !pp, !unmute, !whois, >rps")
+  .setColor("RANDOM")
+  .setFooter("Made By HackerX")
+  message.channel.send(embed)
+  console.log("Sent Commands")
+}
+if (message.content === "status;invisible") {
+  client.user.setPresence({ activity: { name: "HackerX's Cave! For Commands Type !xcommands" }, status: "dnd" })
+  console.log("Status Changed To Dnd")
+}
+if (message.content === "!sendlogo") {
+  let image = new Discord.MessageAttachment("https://cdn.discordapp.com/attachments/799187036648898590/808398344165916763/Original_HACKER_X_LOGO_png_BRIGHTEN-removebg-preview.png", "hackerxlogo.png")
+  message.channel.send(image)
+  console.log("Sent Logo")
+}
+if (message.content === "!deadmeme") {
+  let image = new Discord.MessageAttachment("https://cdn.discordapp.com/attachments/740119847463288953/808401286176702556/unknown.png", "hackerxmemes.png")
+  message.channel.send(image)
+  console.log("Sent Dead-Meme")
+}
+if (message.content === "!rps" || message.content === "!Rps" || message.content === "!RPS") {
+ message.channel.send(":x: | PICK AN OBJECT TO PLAY RPS WITH! EXAMPLE: ****>rps rock**** | :x:")
+ }
+
+ if (message.content === "!rps rock" || message.content === "!Rps rock" || message.content === "!RPS ROCK") {
+ let replies = ["YOU CHOSE ***ROCK***, I CHOSE ***PAPER***. ****PAPER**** WINS!", "YOU CHOSE ***ROCK***, I CHOSE ***SCISSORS***. ****ROCK**** WINS!", "YOU CHOSE ***ROCK***, I CHOSE ***ROCK***. IT'S A TIE!"]
+ message.channel.send(replies[Math.floor(Math.random() * replies.length)])
+ }
+
+ if (message.content === "!rps paper" || message.content === "!Rps paper" || message.content === "!RPS PAPER") {
+ let replies = ["YOU CHOSE ***PAPER***, I CHOSE ***ROCK***. ****PAPER**** WINS!", "YOU CHOSE ***PAPER***, I CHOSE ***SCISSORS***. ****SCISSORS**** WIN!", "YOU CHOSE ***PAPER***, I CHOSE ***PAPER***. IT'S A TIE!"]
+ message.channel.send(replies[Math.floor(Math.random() * replies.length)])
+ }
+
+ if (message.content === "!rps scissors" || message.content === "!Rps scissors" || message.content === "!RPS SCISSORS") {
+ let replies = ["YOU CHOSE ***SCISSORS***, I CHOSE ***ROCK***. ****ROCK WINS!****", "YOU CHOSE ***SCISSORS***, I CHOSE ***PAPER***. ****SCISSORS WIN!***", "YOU CHOSE ***SCISSORS***, I CHOSE ***SCISSORS***. ****SCISSORS**** WIN!"]
+ message.channel.send(replies[Math.floor(Math.random() * replies.length)])
+ console.log("Played RPS")
+ }
+if (message.content === "πες μου κατι καλο") {
+  message.channel.send("ummm")
+	let image = new Discord.MessageAttachment("https://www.wikihow.com/images/5/50/Make-Sweet-Potato-Chips-Final.jpg", "potatolivesmatter.png")
+  message.channel.send(image)
+	message.channel.send("you are a successfull potato :)")
+  console.log("Answered Potato")
+   }
+if (message.content.startsWith('-ban')) {
+if(message.member.hasPermission("BAN_MEMBERS")) {
+ const user = message.mentions.users.first();
+ 
+ if (user) {
+ 
+ const member = message.guild.member(user);
+
+ if (member) {
+
+ member
+ .ban({
+ reason: 'They were bad!',
+ })
+ .then(() => {
+ // We let the message author know we were able to ban the person
+ message.reply("Successfully banned ${user.tag}");
+ })
+ .catch(err => {
+
+ message.reply("I was unable to ban the member");
+ 
+ console.error(err);
+ });
+ } else {
+ 
+ message.reply("That user isn't in this guild!");
+ }
+ } else {
+ 
+ message.reply("You didn't mention the user to ban!");
+ }
+ }
+}
+if (message.content === "?ping") {
+message.channel.send(`:signal_strength: **${client.ws.ping}ms** Latency!`)
+console.log("Latency Sent")
+}
+if(message.content === "nameme") {
+	let nicknames = ["cutie", "extra cute", "idiot", "dumbass", "Einstein:)", "good guy", "extra extra cute", "stoopid"]
+	message.channel.send(`${nicknames[Math.floor(Math.random() * nicknames.length)]} is your new name!`)
+  console.log("Named Someone")
+}
+if (message.content.startsWith("!say")) {
+ 
+  let sentence = message.content.split(" ");
+  sentence.shift();
+  sentence = sentence.join(" ");
+  if (!sentence) message.reply("Τι Θέλεις Να Πω;")
+  message.delete();
+ 
+  if (sentence.startsWith("!")) {
+  message.reply("Προσπαθεις να εκτελεσεις μια εντολη με εμενα? Ενα Αθωο Bot? :'( Απο οτι φαινεται δεν μπορεις")
+  console.log(message.author.username + " said :! " + sentence)
+  return;
+  }
+ 
+  if (sentence.includes("@")) {
+  message.reply("Δεν θα pingareis Κανένα")
+  console.log(message.author.username + " said :- " + sentence)
+  return;
+  }
+ 
+  if (sentence.includes("@everyone") || sentence.includes("@here")) {
+  console.log(message.author.username + " said :- " + sentence)
+  message.reply("sike")
+  return;
+  }
+ 
+  if (sentence != "-say" || "@everyone") {
+  message.channel.send(sentence);
+  }
+  console.log(message.author.username + " said :- " + sentence)
+  } else {
+  
+  
+ }
+if (message.content.startsWith("_kick")) {
+ if (message.member.hasPermission("KICK_MEMBERS")) {
+ let member = message.mentions.members.first()
+ if (!member) message.channel.send("Please mention someone")
+ else {
+ member.kick().then(mem => {
+ message.channel.send(`Kicked ${mem.user.username}!`)
+ })
+ }
+ } else {
+ message.reply("You don't have the permission to do that...")
+ }
+ }
+ if(message.content.startsWith("!kill")) {
+	 let victim = message.mentions.users.first()
+	 if(!victim) message.reply("Κάνε Mention Κάποιον Για Να Σκοτώσεις")
+	 else {
+		 message.channel.send(`${victim} Died lol`)
+	 }
+ }
+if (message.content.startsWith("-kick")) {
+ if (message.member.hasPermission("MEMBERS")) {
+ let member = message.mentions.members.first()
+ if (!member) message.channel.send("Please mention someone")
+ else {
+ member.kick().then(mem => {
+ message.channel.send(`Kicked ${mem.user.username}!`)
+ })
+ }
+ } else {
+ message.reply("You don't have the permission to do that...")
+ }
+ }
+ if(message.content.startsWith("!kill")) {
+	 let victim = message.mentions.users.first()
+	 if(!victim) message.reply("Κάνε Mention Κάποιον Για Να Σκοτώσεις")
+	 else {
+		 message.channel.send(`${victim} Died lol`)
+	 }
+ }
+ if (message.content === "ping") {
+  message.channel.send("pong!")
+   }
+   if (message.content === "status") {
+  message.channel.send("@everyone")
+	message.channel.send("available")
+  message.channel.send("VERSION 2.0.0")
+  message.channel.send("Test new commands by typing !xcommands !")
+  message.channel.send("Stay Tuned For More Updates!")
+   }
+})
+
+client.login(process.env.token)</xmp>
+
+<a href="/verify.html" target="_blank"> Private Server</a>

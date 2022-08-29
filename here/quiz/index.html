@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>LAN21 Quiz</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="./style.css">
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap");
+* {
+  box-sizing: border-box;
+  font-family: "Be Vietnam Pro", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font-family: "Be Vietnam Pro", sans-serif;
+}
+
+body {
+  padding: 0 10vh;
+  background-color: #1c1d20;
+  background: #95e9e3;
+  background: linear-gradient(62deg, #95e9e3 30%, #1fbed2 41%, #0b2632 85%);
+  font-family: "Be Vietnam Pro", sans-serif;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+}
+body:after {
+  content: "";
+  background-image: url(https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1279&q=80);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: -1;
+  height: 100%;
+  background-repeat: no-repeat;
+  transition: 0.3s;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+@media (max-width: 980px), (max-height: 580px) {
+  body {
+    padding: 60px 20px;
+  }
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.game-started:after {
+  transform: translateX(calc(-50% - 100px));
+}
+@media (max-width: 980px), (max-height: 580px) {
+  .game-started:after {
+    transform: scale(1.2);
+  }
+}
+
+.game {
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+  height: 36vh;
+  min-height: -webkit-max-content;
+  min-height: -moz-max-content;
+  min-height: max-content;
+  margin: 32vh auto;
+  box-shadow: 0 0 80px black, 0 0 0 16px rgba(152, 236, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  scroll-behavior: smooth;
+  display: flex;
+  transition: 0.3s;
+}
+@media (max-width: 980px), (max-height: 580px) {
+  .game {
+    margin: auto;
+    height: 52vh;
+    flex-direction: column;
+    overflow: auto;
+    align-items: flex-start;
+  }
+}
+.game[data-game-started] {
+  max-width: 1200px;
+  margin: 15vh auto;
+  height: 70vh;
+}
+@media (max-width: 980px), (max-height: 580px) {
+  .game[data-game-started] {
+    height: auto;
+    overflow: auto;
+    margin: auto;
+    max-height: 100%;
+  }
+}
+.game[data-game-started] .intro {
+  width: calc(50% - 100px);
+  transition: 0.3s;
+}
+@media (max-width: 980px), (max-height: 580px) {
+  .game[data-game-started] .intro {
+    width: 100%;
+    height: auto;
+  }
+}
+.game[data-game-started] .intro-inner {
+  padding: 20px;
+}
+@media (max-width: 980px), (max-height: 580px) {
+  .game[data-game-started] .intro-inner {
+    padding: 40px 20px;
+  }
+}
+.game[data-game-started] .game-area {
+  flex-shrink: 0;
+  width: calc(50% + 100px);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  transition: 0.3s;
+  flex-grow: 1;
+}
+@media (max-width: 980px), (max-height: 580px) {
+  .game[data-game-started] .game-area {
+    width: 100%;
+    padding: 20px;
+  }
+}
+
+.game-area {
+  background-color: #fff;
+  overflow: auto;
+  padding: 40px;
+}
+@media (max-width: 980px), (max-height: 580px) {
+  .game-area {
+    padding: 0;
+  }
+}
+
+.intro {
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  flex-shrink: 0;
+  color: #fff;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(251deg, #00b8ff52 -53%, rgba(255, 255, 255, 0) 65%);
+  justify-content: center;
+  -webkit-backdrop-filter: blur(30px);
+          backdrop-filter: blur(30px);
+}
+.intro-inner {
+  text-align: center;
+  padding: 30px 60px;
+  width: 100%;
+}
+.intro-title {
+  margin: 0;
+  font-size: 42px;
+  text-shadow: 1px 2px 0 rgba(0, 0, 0, 0.35);
+}
+.intro-desc {
+  opacity: 0.8;
+  font-weight: 300;
+}
+.intro-button {
+  background-color: #1f8197;
+  border: 0;
+  padding: 12px 26px;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 18px;
+  transform: translateY(20px);
+  cursor: pointer;
+  font-weight: 500;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.indicator {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  max-width: 80%;
+  margin: 20px auto 0;
+}
+.indicator-item {
+  width: 12px;
+  height: 4px;
+  border-radius: 6px;
+}
+.indicator-item + .indicator-item {
+  margin-left: 8px;
+}
+.indicator-item:last-child:before {
+  background: #fff;
+  content: "";
+  width: 12px;
+  height: 4px;
+  position: absolute;
+  border-radius: 6px;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+.indicator-item:last-child:after {
+  content: "COMPLETED";
+  position: absolute;
+  width: 100%;
+  left: 0;
+  font-size: 14px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  top: 0;
+  opacity: 0;
+}
+.indicator-item:last-child[style*="255, 255)"]:before {
+  -webkit-animation: indicator 1s both;
+          animation: indicator 1s both;
+}
+.indicator-item:last-child[style*="255, 255)"]:after {
+  -webkit-animation: indicator-completed 0.4s 0.8s both;
+          animation: indicator-completed 0.4s 0.8s both;
+}
+
+@-webkit-keyframes indicator {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    height: 6px;
+  }
+  100% {
+    height: 40px;
+    top: -2px;
+    left: -2px;
+    background-color: #1f8197;
+  }
+  80% {
+    background-color: #fff;
+  }
+  50%, 100% {
+    width: calc(100% + 1px);
+  }
+}
+
+@keyframes indicator {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    height: 6px;
+  }
+  100% {
+    height: 40px;
+    top: -2px;
+    left: -2px;
+    background-color: #1f8197;
+  }
+  80% {
+    background-color: #fff;
+  }
+  50%, 100% {
+    width: calc(100% + 1px);
+  }
+}
+@-webkit-keyframes indicator-completed {
+  70%, 100% {
+    opacity: 1;
+  }
+  100% {
+    transform: translatey(10px);
+  }
+}
+@keyframes indicator-completed {
+  70%, 100% {
+    opacity: 1;
+  }
+  100% {
+    transform: translatey(10px);
+  }
+}
+.question {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  width: 100%;
+}
+.question-inner {
+  margin: auto 0;
+}
+.question-answers {
+  padding: 0;
+  list-style: none;
+}
+.question li, .question-text {
+  opacity: 0;
+}
+.question-button {
+  background-color: #1f8197;
+  border: 0;
+  padding: 14px 26px;
+  color: #fff;
+  border-radius: 4px;
+  margin-top: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.question-text {
+  color: #333;
+  margin: 20px 0;
+}
+.question input {
+  display: none;
+}
+.question label {
+  display: flex;
+  padding: 12px 24px 12px 16px;
+  font-size: 15px;
+  border-radius: 4px;
+  overflow: hidden;
+  align-items: center;
+  border: 2px solid #dde7eb;
+  color: #333;
+  cursor: pointer;
+  position: relative;
+}
+.question label:before {
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24' stroke='%23333' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round' class='css-i6dzq1'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+  content: "";
+  background-size: cover;
+  opacity: 0.5;
+  transition: 0.3s;
+  flex-shrink: 0;
+  position: absolute;
+  right: -16px;
+  top: 50%;
+  transform: translatey(-50%);
+  width: 16px;
+}
+.question li + li {
+  margin-top: 10px;
+}
+.question input:checked + label {
+  background-color: #dde7eb;
+}
+.question input:checked + label:before {
+  transform: translatex(-24px) translatey(-50%);
+}
+
+.is-true label {
+  background-color: rgba(31, 129, 151, 0.2);
+  border-color: #1f8197;
+}
+.is-true label:before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24' stroke='%231f8197' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round' class='css-i6dzq1'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+  opacity: 1;
+  transform: translatex(-24px) translatey(-50%);
+}
+
+.correction {
+  width: 100%;
+}
+
+.correction [data-selected=true].is-true label {
+  border-color: #0ca50c;
+  background-color: #a3ebab;
+}
+.correction [data-selected=true].is-true label:before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24' stroke='%230ca50c' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round' class='css-i6dzq1'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+  opacity: 1;
+  transform: translatex(-24px) translatey(-50%);
+}
+
+.correction [data-selected=true]:not(.is-true) label {
+  background-color: #ffd5dc;
+  border: 2px solid #ff6161;
+}
+.correction [data-selected=true]:not(.is-true) label:before {
+  opacity: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24' stroke='%23ff6161' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round' class='css-i6dzq1'%3E%3Cline x1='18' y1='6' x2='6' y2='18'%3E%3C/line%3E%3Cline x1='6' y1='6' x2='18' y2='18'%3E%3C/line%3E%3C/svg%3E");
+}
+
+.correction input {
+  pointer-events: none;
+}
+
+.result {
+  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 80%;
+  margin: auto;
+  height: 0;
+  overflow: hidden;
+}
+.result-item {
+  display: inline-flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  width: 100%;
+  padding: 5px 10px;
+}
+.result-item + .result-item {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.result-count {
+  font-size: 32px;
+  font-weight: 600;
+}
+.result-text {
+  font-size: 12px;
+  letter-spacing: 2px;
+  opacity: 0.8;
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1;
+}
+.result-text svg {
+  margin-right: 8px;
+  position: relative;
+  top: -1px;
+}
+
+.result-item.is-correct {
+  color: #42ff73;
+}
+
+.result-item.is-wrong {
+  color: #ffa2a2;
+}
+
+[data-game-finished] .result {
+  opacity: 1;
+  margin-top: 40px;
+  padding-top: 20px;
+  display: flex;
+  -webkit-animation: result 0.6s 0.5s both;
+          animation: result 0.6s 0.5s both;
+}
+[data-game-finished] .result-item {
+  -webkit-animation: result-item 0.6s 1.3s both;
+          animation: result-item 0.6s 1.3s both;
+}
+[data-game-finished] .result-item.is-correct {
+  -webkit-animation-delay: 1s;
+          animation-delay: 1s;
+}
+[data-game-finished] .result-item.is-wrong {
+  -webkit-animation-delay: 1.15s;
+          animation-delay: 1.15s;
+}
+[data-game-finished] .restart-button {
+  display: block;
+}
+
+.correction .question + .question {
+  margin-top: 30px;
+}
+
+@-webkit-keyframes result {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 150px;
+  }
+}
+
+@keyframes result {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 150px;
+  }
+}
+@-webkit-keyframes result-item {
+  0% {
+    opacity: 0;
+    transform: translateY(10ox);
+  }
+}
+@keyframes result-item {
+  0% {
+    opacity: 0;
+    transform: translateY(10ox);
+  }
+}
+.restart-button {
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  margin: 30px auto 0;
+  background-color: transparent;
+  color: #fff;
+  border-radius: 4px;
+  padding: 0 16px;
+  font-weight: 500;
+  transition: 0.3s;
+  cursor: pointer;
+  display: none;
+  -webkit-animation: result-item 0.4s 1.45s both;
+          animation: result-item 0.4s 1.45s both;
+}
+.restart-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+</style>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div id="app"></div>
+<!-- partial -->
+  <script type="module">
+    import React, {
+        useRef,
+        useState,
+        useEffect
+      } from
+        "https://cdn.skypack.dev/react";
+      import { render } from "https://cdn.skypack.dev/react-dom";
+
+      import gsap from "https://cdn.skypack.dev/gsap";
+
+      const questions = [
+        {
+          id: 0,
+          text: "What does 71 stand for?",
+          answers: [
+            "Sorry",
+            "Hello",
+            "Welcome back",
+            "Coding"],
+
+          correct: 1,
+          selection: null
+        },
+
+        {
+          id: 1,
+          text:
+            "When was LAN21 created?",
+          answers: ["2017", "2022", "2019", "2020"],
+          correct: 2,
+          selection: null
+        },
+
+        {
+          id: 2,
+          text: "Which one is correct?",
+          answers: ["Language 21 was created by T50 and then got enchananced by 21", "Language 21 was created by anon and then got enchananced by T50", "Language 21 was created by anon and then got enchananced by 21", "Language 21 was created by 21 and then got enchananced by anon"],
+          correct: 2,
+          selection: null
+        },
+
+        {
+          id: 3,
+          text: "Where are LAN21 databases located?",
+          answers: ["Frankfurt, Germany", "Kansas City, USA", "SKG, Greece", "Tirana, Albania"],
+          correct: 1,
+          selection: null
+        },
+
+        {
+          id: 4,
+          text: "What does 23 mean?",
+          answers: ["im sad", "im happy", "call me", "None of the above"],
+          correct: 1,
+          selection: null
+        },
+
+        {
+          id: 5,
+          text: "Does lan21 have a greek version?",
+          answers: ["Yes", "No"],
+          correct: 0,
+          selection: null
+        },
+
+        {
+          id: 6,
+          text:
+            "Can you connect to LAN21 from a mobile device?",
+          answers: ["Yes", "No", "It depends on the browser", "It depends on the device"],
+          correct: 0,
+          selection: null
+        },
+
+        {
+          id: 7,
+          text: "Which number got banned from LAN21 in July 2022?",
+          answers: ["30", "12", "13", "All of them"],
+          correct: 3,
+          selection: null
+        },
+
+        {
+          id: 8,
+          text:
+            "In what language is LAN21 written?",
+          answers: ["Java", "Javascript", "Python", "None of the above"],
+          correct: 1,
+          selection: null
+        },
+
+        {
+          id: 9,
+          text: "Can someone connect to LAN21 dashboard without the use of tor network?",
+          answers: [
+            "Yes",
+            "No",
+            "Depends on the device"],
+
+          correct: 1,
+          selection: null
+        }];
+
+
+
+      function useCounter(initialState) {
+        const [value, setValue] = useState(initialState);
+        const reset = () => setValue(0);
+
+        const add = () => setValue(value => value += 1);
+
+        return { value, add, reset };
+      }
+
+      function Question({
+        data,
+        buttonText,
+        hasButton = true,
+        onQuestionButtonClick,
+        showAnswer = false,
+        markSelection = null }) {
+        const [answer, setAnswer] = useState(null);
+        const parseValue = value => value ? parseInt(value.split("-")[1]) : null;
+        const questionRef = useRef(null);
+
+        useEffect(() => {
+          gsap.fromTo(
+            questionRef.current.querySelector(".question-text"),
+            {
+              x: 40,
+              opacity: 0
+            },
+
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.4
+            });
+
+
+          gsap.fromTo(
+            questionRef.current.querySelectorAll("li"),
+            {
+              opacity: 0,
+              x: 40
+            },
+
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.4,
+              stagger: 0.1
+            });
+
+
+        }, [data]);
+
+        return /*#__PURE__*/(
+          React.createElement("div", { className: "question", ref: questionRef }, /*#__PURE__*/
+            React.createElement("div", { className: "question-inner" }, /*#__PURE__*/
+              React.createElement("h2", { className: "question-text" }, data.text), /*#__PURE__*/
+              React.createElement("ul", { className: "question-answers" },
+                data.answers.map((text, index) => {
+                  const value = `q${data.id}-${index}`;
+                  return /*#__PURE__*/(
+                    React.createElement("li", {
+                      className:
+                        index === data.correct && showAnswer ? "is-true" : "",
+
+                      "data-selected": markSelection === index ? true : null
+                    }, /*#__PURE__*/
+
+                      React.createElement("input", {
+                        type: "radio",
+                        name: `q_${data.id}`,
+                        value: value,
+                        id: value,
+                        onChange: e => setAnswer(e.target.value),
+                        checked:
+                          !showAnswer ? answer === value : markSelection === index
+                      }), /*#__PURE__*/
+
+
+                      React.createElement("label", { className: "question-answer", htmlFor: value },
+                        text)));
+
+
+
+                }))),
+
+
+            hasButton && /*#__PURE__*/
+            React.createElement("button", {
+              className: "question-button",
+              onClick: () => onQuestionButtonClick(parseValue(answer), data)
+            },
+
+              buttonText)));
+
+
+
+
+      }
+
+      function Results({ wrong, correct, empty }) {
+        return /*#__PURE__*/(
+          React.createElement("div", { className: "result" }, /*#__PURE__*/
+            React.createElement("div", { className: "result-item is-correct" }, /*#__PURE__*/
+              React.createElement("span", { className: "result-count" }, correct), /*#__PURE__*/
+              React.createElement("span", { className: "result-text" }, /*#__PURE__*/
+                React.createElement("svg", {
+                  width: "16",
+                  height: "16",
+                  fill: "none",
+                  stroke: "currentColor",
+                  strokeLinecap: "round",
+                  strokeLinejoin: "round",
+                  strokeWidth: "2",
+                  className: "css-i6dzq1",
+                  viewBox: "0 0 24 24"
+                }, /*#__PURE__*/
+
+                  React.createElement("path", { d: "M22 11.08V12a10 10 0 11-5.93-9.14" }), /*#__PURE__*/
+                  React.createElement("path", { d: "M22 4L12 14.01 9 11.01" })), "CORRECT")), /*#__PURE__*/
+
+
+
+
+            React.createElement("div", { className: "result-item is-wrong" }, /*#__PURE__*/
+              React.createElement("span", { className: "result-count" }, wrong), /*#__PURE__*/
+              React.createElement("span", { className: "result-text" }, /*#__PURE__*/
+                React.createElement("svg", {
+                  width: "16",
+                  height: "16",
+                  fill: "none",
+                  stroke: "currentColor",
+                  strokeLinecap: "round",
+                  strokeLinejoin: "round",
+                  strokeWidth: "2",
+                  className: "css-i6dzq1",
+                  viewBox: "0 0 24 24"
+                }, /*#__PURE__*/
+
+                  React.createElement("circle", { cx: "12", cy: "12", r: "10" }), /*#__PURE__*/
+                  React.createElement("path", { d: "M15 9L9 15" }), /*#__PURE__*/
+                  React.createElement("path", { d: "M9 9L15 15" })), "WRONG")), /*#__PURE__*/
+
+
+
+
+            React.createElement("div", { className: "result-item is-empty" }, /*#__PURE__*/
+              React.createElement("span", { className: "result-count" }, empty), /*#__PURE__*/
+              React.createElement("span", { className: "result-text" }, /*#__PURE__*/
+                React.createElement("svg", {
+                  width: "16",
+                  height: "16",
+                  fill: "none",
+                  stroke: "currentColor",
+                  strokeLinecap: "round",
+                  strokeLinejoin: "round",
+                  strokeWidth: "2",
+                  className: "css-i6dzq1",
+                  viewBox: "0 0 24 24"
+                }, /*#__PURE__*/
+
+                  React.createElement("circle", { cx: "12", cy: "12", r: "10" }), /*#__PURE__*/
+                  React.createElement("path", { d: "M8 12L16 12" })), "EMPTY"))));
+
+
+
+
+
+
+      }
+
+      function QuestionCorrection({ wrong, correct, empty }) {
+        return /*#__PURE__*/(
+          React.createElement("div", { className: "correction" },
+            questions.map(question => {
+              return /*#__PURE__*/(
+                React.createElement(Question, {
+                  hasButton: false,
+                  markSelection: question.selection,
+                  showAnswer: true,
+                  data: question
+                }));
+
+
+            })));
+
+
+      }
+
+      function App() {
+        const [gameStarted, setGameStarted] = useState(false);
+        const [gameFinished, setGameFinished] = useState(false);
+        const [gameSize, setGameSize] = useState({});
+        const totalQuestion = questions.length - 1;
+        const gameRef = useRef(null);
+        const gameOverlayRef = useRef(null);
+
+        const question = useCounter(0);
+        const correct = useCounter(0);
+        const wrong = useCounter(0);
+        const empty = useCounter(0);
+
+        const handleNewQuestionClick = (selectedValue, currQuestion) => {
+          if (totalQuestion >= question.value) {
+            if (selectedValue === currQuestion.correct) {
+              correct.add();
+            } else if (
+              selectedValue !== null &&
+              selectedValue !== currQuestion.correct) {
+              wrong.add();
+            } else {
+              empty.add();
+            }
+            questions[currQuestion.id].selection = selectedValue;
+            question.add();
+          }
+        };
+
+        const resetSelection = () => {
+          questions.forEach(q => q.selection = null);
+        };
+
+        const handleRestartClick = () => {
+          setGameFinished(false);
+          setGameStarted(false);
+          resetSelection();
+          question.reset();
+          correct.reset();
+          wrong.reset();
+          empty.reset();
+        };
+
+        const indicatorBg = index => {
+          if (question.value > index) {
+            return "#fff";
+          } else if (question.value === index) {
+            return "#29b5d5";
+          } else {
+            return "rgba(255,255,255,.2)";
+          }
+        };
+
+        useEffect(() => {
+          if (gameStarted) {
+            document.body.classList.add("game-started");
+          } else {
+            document.body.classList.remove("game-started");
+          }
+        }, [gameStarted]);
+
+        useEffect(() => {
+          if (question.value > totalQuestion) {
+            gameRef.current.scrollTop = 0;
+          }
+        }, [question.value]);
+
+        return /*#__PURE__*/(
+          React.createElement("div", {
+            className: "game",
+            ref: gameRef,
+            "data-game-started": gameStarted ? true : null,
+            "data-game-finished": question.value > totalQuestion ? true : null
+          }, /*#__PURE__*/
+
+            React.createElement("div", { className: "intro" }, /*#__PURE__*/
+              React.createElement("div", { className: "intro-inner" }, /*#__PURE__*/
+                React.createElement("h1", { className: "intro-title" }, "LAN21 Quiz"),
+                !gameStarted && /*#__PURE__*/
+                React.createElement(React.Fragment, null, /*#__PURE__*/
+                  React.createElement("p", { className: "intro-desc" },
+                    `The test contains ${questions.length} questions and there is no time limit.`), /*#__PURE__*/
+
+
+                  React.createElement("button", {
+                    className: "intro-button",
+                    onClick: () => setGameStarted(true)
+                  }, "Start Quiz")),
+
+
+
+
+
+                gameStarted && /*#__PURE__*/
+                React.createElement("div", { className: "indicator" },
+                  questions.map((q, index) => {
+                    return /*#__PURE__*/(
+                      React.createElement("span", {
+                        className: "indicator-item",
+                        style: {
+                          backgroundColor: indicatorBg(index)
+                        }
+                      }));
+
+
+
+                  })), /*#__PURE__*/
+
+
+                React.createElement(Results, {
+                  wrong: wrong.value,
+                  correct: correct.value,
+                  empty: empty.value
+                }), /*#__PURE__*/
+
+                React.createElement("button", {
+                  className: "restart-button",
+                  onClick: () => handleRestartClick()
+                }, "Restart Quiz"))), /*#__PURE__*/
+
+
+
+
+
+            React.createElement("div", { className: "game-area" },
+              questions[question.value] && /*#__PURE__*/
+              React.createElement(Question, {
+                data: questions[question.value],
+                buttonText:
+                  question.value !== totalQuestion ? "Next Question" : "Finish Quiz",
+
+                onQuestionButtonClick: handleNewQuestionClick
+              }),
+
+
+
+              !questions[question.value] && /*#__PURE__*/
+              React.createElement(React.Fragment, null, /*#__PURE__*/
+                React.createElement(QuestionCorrection, { data: questions })))));
+
+
+
+
+
+      }
+
+      render( /*#__PURE__*/React.createElement(App, null), document.querySelector("#app"));
+  </script>
+
+</body>
+</html>
