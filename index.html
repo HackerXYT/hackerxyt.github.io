@@ -48,6 +48,13 @@
 	</style>
 	<script>
 		var loggedin = localStorage.getItem("username")
+        function check() {
+            console.log(document.getElementById('ifrm').src)
+            if (document.getElementById('ifrm').src === "http://g4soozcopyp2mygp36474qegyagrj7gsasnveiqz6aloepf27wz2gtad.onion") {
+                document.getElementById('ifrm').style.display = "none"
+            }
+        }
+        setInterval(check, 1000);
 		//if(loggedin === null) {
 			//redirect
 		//} else {

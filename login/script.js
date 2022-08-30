@@ -13,8 +13,8 @@ if (typeof window._isTor != 'undefined' && window._isTor == true) {
 		var usingtor = true;
 		console.log("using tor")
     } else {
-		var usingtor = false;
-		console.log("not using tor")
+		var usingtor = true;
+		console.log("not using tors")
 		console.log(usingtor)
     }
 
