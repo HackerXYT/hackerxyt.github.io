@@ -3,18 +3,21 @@ const updaterequired = false
 function offline() {
 	if(navigator.onLine) {
         if(document.getElementById('bodyy').style.display = 'none') {
+			//$('#d1').html('🙉Back Online!')
+			//setTimeout(function() {
 			document.getElementById('bodyy').style.display = 'block';
-			document.getElementById('offline').style.display = 'none';
-			$('#d1').fadeOut();
+			document.getElementById('d1').style.display = 'none';
+			//}, 2000);
 		} else {
 			//good
 		}
     } else {
         document.getElementById('bodyy').style.display = 'none';
-		//document.getElementById('d1').style.color = 'white';
+		document.getElementById('d1').style.display = 'block';
+		document.getElementById('d1').style.color = 'white';
 		document.getElementById('d1').style.visibility = 'visible';
-		document.getElementById('d1').innerHTML = '🙈You are offline!';
-		//document.getElementById("d1").classList.add('center');
+		document.getElementById('d1').innerHTML = '<h2>🙈You are offline!</h2>';
+		document.getElementById("d1").classList.add('text-center');
     }
 }
 setInterval(offline, 1000);

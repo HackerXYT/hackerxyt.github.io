@@ -313,6 +313,15 @@ background-color: #333333;
   text-align: center;
 }
 
+.text-centering {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+}
+
 #bottom {
    position:absolute;
    bottom:0;
