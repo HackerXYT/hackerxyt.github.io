@@ -13,8 +13,8 @@ if (typeof window._isTor != 'undefined' && window._isTor == true) {
 		var usingtor = true;
 		console.log("using tor")
     } else {
-		var usingtor = true;
-		console.log("not using tors")
+		var usingtor = false;
+		console.log("not using tor")
 		console.log(usingtor)
     }
 
@@ -243,6 +243,9 @@ function signup() {
 function twentyonelogin() {
 	document.getElementById("or").style.display = "block";
 	if(usingtor === true) {
+		document.getElementById("or").style.color = "green";
+		document.getElementById("or").innerHTML = `Loading..`
+		document.getElementById("ors").style.display = "block";
 		window.location.href = "http://g4soozcopyp2mygp36474qegyagrj7gsasnveiqz6aloepf27wz2gtad.onion/"
 	} else if(usingtor === false) {
 		document.getElementById("or").style.color = "red";
