@@ -9,6 +9,15 @@ const serverredirect = "/language/register.html?identity="
 document.getElementById("container").style.visibility = "visible";
 document.getElementById("message").style.visibility = "visible";
 
+if(localStorage.getItem("username") === null) {
+	console.log("Welcome, Login")
+} else {
+	if(localStorage.getItem('rememberme') === null) {
+		window.location.href = "./prompt/"
+	} else {
+		window.location.href = "/language/?username=" + localStorage.getItem('rememberme')
+	}
+}
 if (typeof window._isTor != 'undefined' && window._isTor == true) {
 		var usingtor = true;
 		console.log("using tor")

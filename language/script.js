@@ -1,5 +1,6 @@
 const updaterequired = false
 
+//skip load if urlparam or localStorage skipload = true
 function offline() {
 	if(navigator.onLine) {
         if(document.getElementById('bodyy').style.display = 'none') {
@@ -25,138 +26,7 @@ var rememberme = localStorage.getItem("username")
 if(rememberme === null) {
 	console.log("auto")
 } else if(rememberme === "cock") {
-	clearTimeout(timeone)
-	clearTimeout(timetwo)
-	clearTimeout(timethree)
-	clearTimeout(timefour)
-	clearTimeout(timefive)
-	clearTimeout(timesix)
-	clearTimeout(timeseven)
-	clearTimeout(timeeight)
-	clearTimeout(timenine)
-	clearTimeout(timeten)
-	$('#welcome').fadeOut();
-	$('#no2').fadeOut();
-	$('#no3').fadeOut()
-	$('#no4').fadeOut()
-	$('#main').fadeIn();
-	document.getElementById('no4').className = 'fullscreen fadeOut';
-	document.getElementById('main').style.display = 'block';
-		$('#main').fadeIn();
-	$('#footer').fadeIn();
-	$('#bottom').fadeIn();
-	$('#news').fadeIn();
-	$('#bottom').fadeIn();
-	$('#toggle').fadeIn();
-	$('#replit-badge').fadeOut();
-	$('#news').fadeIn();
-		setTimeout(function() {
-			$('#incase').html('Loading News. - Tap To Cancel');
-			setTimeout(function() {
-				$('#incase').html('Loading News.. - Tap To Cancel');
-				setTimeout(function() {
-					$('#incase').html('Loading News... - Tap To Cancel');
-					setTimeout(function() {
-						$('#incase').html('Loading News - Tap To Cancel');
-						setTimeout(function() {
-							$('#incase').html('Loading News. - Tap To Cancel');
-							setTimeout(function() {
-								$('#incase').html('Loading News.. - Tap To Cancel');
-								setTimeout(function() {
-									$('#incase').html('Loading News... - Tap To Cancel');
-									setTimeout(function() {
-										$('#incase').html('Loading News - Tap To Cancel');
-										setTimeout(function() {
-											$('#incase').html('Loading News. - Tap To Cancel');
-											setTimeout(function() {
-												$('#incase').html('Loading News.. - Tap To Cancel');
-												setTimeout(function() {
-													$('#incase').html('Loading News... - Tap To Cancel');
-													setTimeout(function() {
-														$('#incase').html('Loading News - Tap To Cancel');
-														setTimeout(function() {
-															$('#incase').html('Loading News. - Tap To Cancel');
-															setTimeout(function() {
-																$('#incase').html('Loading News.. - Tap To Cancel');
-																setTimeout(function() {
-																	$('#incase').html('Loading News... - Tap To Cancel');
-																	setTimeout(function() {
-																		$('#incase').html('Loading News - Tap To Cancel');
-																		setTimeout(function() {
-																			$('#incase').html('Loading News. - Tap To Cancel');
-																			setTimeout(function() {
-																				$('#incase').html('Loading News.. - Tap To Cancel');
-																				setTimeout(function() {
-																					$('#incase').html('Loading News... - Tap To Cancel');
-																					setTimeout(function() {
-																						$('#incase').html('Loading News - Tap To Cancel');
-																						setTimeout(function() {
-																							$('#incase').html('Loading News. - Tap To Cancel');
-																							setTimeout(function() {
-																								$('#incase').html('Loading News.. - Tap To Cancel');
-																								setTimeout(function() {
-																									$('#incase').html('Loading News... - Tap To Cancel');
-																								}, 400);
-																							}, 400);
-																						}, 400);
-																					}, 400);
-																				}, 400);
-																			}, 400);
-																		}, 400);
-																	}, 400);
-																}, 400);
-															}, 400);
-														}, 400);
-													}, 400);
-												}, 400);
-											}, 400);
-										}, 400);
-									}, 400);
-								}, 400);
-							}, 400);
-						}, 400);
-					}, 400);
-				}, 400);
-			}, 400);
-		}, 400);
-		clearTimeout(newstime)
-		document.getElementById('incase').style.color = 'magenta';
-		var news = setTimeout(function() {
-			document.getElementById('incase').style.color = 'green';
-			$('#incase').html('In case you missed: ');
-			$('#news1').fadeIn('slow');
-			setTimeout(function() {
-			$('#news1info').fadeIn('slow');
-			setTimeout(function() {
-				$('#news1').fadeOut('slow');
-				setTimeout(function() {
-					$('#news2').fadeIn('slow');
-					setTimeout(function() {
-						$('#news2info').fadeIn('slow');
-						setTimeout(function() {
-							$('#news2').fadeOut('fast');
-							$('#news2info').fadeOut('fast');
-							$('#news3').fadeIn('slow');
-							setTimeout(function() {
-								$('#news3info').fadeIn('slow');
-								setTimeout(function() {
-									$('#news3').fadeOut('fast');
-									$('#news3info').fadeOut('fast');
-									setTimeout(function() {
-										$('#news4').fadeIn('slow');
-										setTimeout(function() {
-											$('#news').fadeOut('slow');
-											$('#news4').fadeOut('slow');
-											}, 2400);
-										}, 400);
-									}, 2400);
-								}, 1000);
-							}, 2600);
-						}, 1000);
-					}, 1100);
-				}, 3500);
-			}, 2500);
-		}, 9500);
+	//nothing
 }
 function check() {
 	var body = document.getElementById('body')
@@ -165,9 +35,9 @@ function check() {
 		window.location.href = "quit.js"
 		body.parentNode.removeChild(body)
 	} else if(sessionStorage.getItem("access") === "granted") {
-		console.log("Security Check Done")
+		//done
 	} else {
-		console.log("Security Check Done")
+		//done
 	}
 }
 
@@ -218,6 +88,43 @@ var product = urlParams.get('username');
 const notifycontrol = urlParams.get('notify');
 var identifier = urlParams.get('username');
 const compatible = urlParams.get('desktopcompatible');
+const skip = urlParams.get('skipload');
+
+if(skip === "true" || localStorage.getItem('skipload') === "true"){
+	console.log("skipped")
+	clearTimeout(timeone)
+	clearTimeout(timetwo)
+	clearTimeout(timethree)
+	clearTimeout(timefour)
+	clearTimeout(timefive)
+	clearTimeout(timesix)
+	clearTimeout(timeseven)
+	clearTimeout(timeeight)
+	clearTimeout(timenine)
+	clearTimeout(timeten)
+	clearTimeout(news)
+	$('#welcome').fadeOut();
+	$('#no2').fadeOut();
+	$('#no3').fadeOut()
+	$('#no4').fadeOut()
+	$('#main').fadeIn();
+	document.getElementById('no4').className = 'fullscreen fadeOut';
+	document.getElementById('main').style.display = 'block';
+		$('#main').fadeIn();
+	$('#footer').fadeIn();
+	$('#bottom').fadeIn();
+	$('#news').fadeIn();
+	$('#bottom').fadeIn();
+	$('#toggle').fadeIn();
+	$('#replit-badge').fadeOut();
+	$('#news').fadeOut();
+	$('#incase').fadeOut();
+	setTimeout(function() {
+			$('#footer').fadeOut('slow');
+		}, 1700)
+} else {
+	console.log("no")
+}
 
 if(product === null && identifier === null) {
 	if(rememberme === null) {
