@@ -11,10 +11,11 @@ document.getElementById("message").style.visibility = "visible";
 
 if (typeof window._isTor != 'undefined' && window._isTor == true) {
 		var usingtor = true;
-		var torone = "http://"
-		var tortwo = "g4soozcopyp2mygp36474qegyagrj7gsasnveiqz6aloepf27wz2gtad.onion/"
+		console.log("using tor")
     } else {
 		var usingtor = false;
+		console.log("not using tor")
+		console.log(usingtor)
     }
 
 function readTextFile(file, callback) {
@@ -241,19 +242,19 @@ function signup() {
 
 function twentyonelogin() {
 	document.getElementById("or").style.display = "block";
-	if(usingtor = true) {
+	if(usingtor === true) {
 		window.location.href = "http://g4soozcopyp2mygp36474qegyagrj7gsasnveiqz6aloepf27wz2gtad.onion/"
-	} else {
+	} else if(usingtor === false) {
 		document.getElementById("or").style.color = "red";
 		document.getElementById("or").innerHTML = `Connect to the Tor Network First!`
 		document.getElementById("ors").style.display = "block";
 		document.getElementById("ors").style.color = "red";
 		document.getElementById("ors").innerHTML = `Connect to the Tor Network First!`
+		setTimeout(function () {
+			document.getElementById("or").style.color = "black"
+			document.getElementById("ors").style.color = "black";
+			document.getElementById("or").innerHTML = `or use your T50 account`
+			document.getElementById("ors").innerHTML = `or use your T50 account`
+		}, 5000);
 	}
-	setTimeout(function () {
-		document.getElementById("or").style.color = "black"
-		document.getElementById("ors").style.color = "black";
-		document.getElementById("or").innerHTML = `or use your T50 account`
-		document.getElementById("ors").innerHTML = `or use your T50 account`
-	}, 5000);
 }
