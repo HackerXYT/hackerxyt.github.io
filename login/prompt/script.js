@@ -9,6 +9,12 @@ const serverredirect = "/language/?username="
 sessionStorage.setItem("rememberme", "false");
 
 const username = localStorage.getItem('username');
+function loggedin() {
+if(username === null) {
+	window.location.href = "/"
+}
+}
+setInterval(loggedin(), 100);
 document.getElementById("msg").innerHTML = `<h4>Hello, ${username} <br><br>Looks Like You're Already Logged In.<br>Do You Want To Continue With This Account?</h4>`
 document.getElementById("login-form-submit").innerHTML = `Continue with ${username}`
 function logout() {
