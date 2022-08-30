@@ -68,60 +68,63 @@ BtnLog.addEventListener("click", (e) => {
 	var value = password;
 	var result = MD5(value);
 	readTextFile("./users.json", function(text) {
-		document.getElementById("msg").innerHTML = "Η Σύνδεση με τον διακομιστή απέτυχε."
+		document.getElementById("msg").innerHTML = "Could Not Connect To Server!"
 		document.getElementById("msg").style.color = "red";
 		var user = JSON.parse(text)
 		if (email === user.u1.email) {
 			if (result === user.u1.password) {
 				document.getElementById("msg").style.color = "green";
-				document.getElementById("msg").innerHTML = "Καλωσορίσατε, " + user.u1.name + "!"
+				document.getElementById("msg").innerHTML = "Welcome Back, " + user.u1.name + "!"
 				document.getElementById("container").style.visibility = "hidden";
 				document.getElementById("message").style.visibility = "visible";
 				window.location.href = serverredirect + user.u1.name + "&pfp=" + user.u1.pfp
 				//ADD
 			} else {
 				document.getElementById("msg").style.color = "red";
-				document.getElementById("msg").innerHTML = "Ο κωδικός που πληκτρολογήσατε είναι λάθος"
+				document.getElementById("msg").innerHTML = "The password you entered is incorrect"
 			}
 		} else if (email === user.u2.email) {
 			if (result === user.u2.password) {
 				document.getElementById("msg").style.color = "green";
-				document.getElementById("msg").innerHTML = "Καλωσορίσατε, " + user.u2.name + "!"
+				document.getElementById("msg").innerHTML = "Welcome Back, " + user.u2.name + "!"
 				document.getElementById("container").style.visibility = "hidden";
 				document.getElementById("message").style.visibility = "visible";
 				window.location.href = serverredirect + user.u2.name + "&pfp=" + user.u2.pfp
 				//ADD
 			} else {
 				document.getElementById("msg").style.color = "red";
-				document.getElementById("msg").innerHTML = "Ο κωδικός που πληκτρολογήσατε είναι λάθος"
+				document.getElementById("msg").innerHTML = "The password you entered is incorrect"
 			}
 		} else if (email === user.u3.email) {
 			if (result === user.u3.password) {
 				document.getElementById("msg").style.color = "green";
-				document.getElementById("msg").innerHTML = "Καλωσορίσατε, " + user.u3.name + "!"
+				document.getElementById("msg").innerHTML = "Welcome Back, " + user.u3.name + "!"
 				document.getElementById("container").style.visibility = "hidden";
 				document.getElementById("message").style.visibility = "visible";
 				window.location.href = serverredirect + user.u3.name + "&pfp=" + user.u4.pfp
 				//ADD
 			} else {
 				document.getElementById("msg").style.color = "red";
-				document.getElementById("msg").innerHTML = "Ο κωδικός που πληκτρολογήσατε είναι λάθος"
+				document.getElementById("msg").innerHTML = "The password you entered is incorrect"
 			}
 		} else if (email === user.u4.email) {
 			if (result === user.u4.password) {
 				document.getElementById("msg").style.color = "green";
-				document.getElementById("msg").innerHTML = "Καλωσορίσατε, " + user.u4.name + "!"
+				document.getElementById("msg").innerHTML = "Welcome Back, " + user.u4.name + "!"
 				document.getElementById("container").style.visibility = "hidden";
 				document.getElementById("message").style.visibility = "visible";
 				window.location.href = serverredirect + user.u4.name + "&pfp=" + user.u4.pfp
 				//ADD
 			} else {
 				document.getElementById("msg").style.color = "red";
-				document.getElementById("msg").innerHTML = "Ο κωδικός που πληκτρολογήσατε είναι λάθος"
+				document.getElementById("msg").innerHTML = "The password you entered is incorrect"
 			}
 		} else {
-			document.getElementById("msg").innerHTML = "Αυτό το email δεν υπάρχει στο σύστημά μας."
+			document.getElementById("msg").innerHTML = "This email is not linked to an account in our system."
 			document.getElementById("msg").style.color = "red";
+			setTimeout(function () {
+				container.classList.add("right-panel-active");
+			}, 1450);
 		}
 	})
 })
@@ -132,6 +135,15 @@ BtnLogger.addEventListener("click", (e) => {
 	const email = formlogger.email.value;
 	const password = formlogger.password.value;
 	const name = formlogger.name.value;
+  		var validRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  		if (email.match(validRegex)) {
+    		//ok
+  		} else {
+    	document.getElementById("or").style.display = "block";
+		document.getElementById("or").style.color = "red";
+		document.getElementById("or").innerHTML = "Invalid email adress."
+    	return false;
+  		}
 	readTextFile("./users.json", function(text) {
 		var user = JSON.parse(text)
 		if(email === user.u1.email) {
