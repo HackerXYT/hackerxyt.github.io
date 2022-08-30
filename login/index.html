@@ -20,55 +20,55 @@
 	<div class="container" id="container">
 		<div class="form-container sign-up-container">
 			<form id="signup-form" action="#">
-				<h1>Δημιουργια λογαριασμου</h1>
+				<h1>Account creation</h1>
 				<div class="social-container">
-					<a href="#" onclick="twentyonelogin()" class="social"><svg xmlns="http://www.w3.org/2000/svg" version="1.0"
-							width="25pt" height="25pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
-							<g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
-								<path
-									d="M1967 3524 c-301 -67 -475 -268 -503 -580 l-7 -74 215 0 215 0 12 71 c29 175 131 251 282 209 137 -38 164 -267 52 -459 -93 -162 -344 -411 -706 -701 l-67 -54 2 -165 3 -166 658 -3 657 -2 0 185 0 185 -350 2 -349 3 82 65 c115 92 331 310 405 409 127 170 171 287 179 476 6 148 -6 217 -58 324 -38 76 -132 175 -206 214 -121 64 -371 94 -516 61z" />
-								<path d="M2930 3290 l0 -210 130 0 130 0 0 -750 0 -750 235 0 235 0 0 960 0 960 -365 0 -365 0 0 -210z" />
-							</g>
-						</svg></a>
+					<a href="#" onclick="twentyonelogin()" class="social"><svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="13pt" height="13pt" viewBox="0 0 512.000000 512.000000"
+						preserveAspectRatio="xMidYMid meet">
+					
+						<g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+							<path d="M460 4565 l0 -555 728 -2 727 -3 3 -2003 2 -2002 645 0 645 0 0 2005
+										0 2005 725 0 725 0 0 555 0 555 -2100 0 -2100 0 0 -555z" />
+						</g>
+					</svg></a>
 				</div>
-				<span>ή χρησιμοποιήστε τον twentyonecore λογαριασμό σας</span>
-				<input name="name" type="text" placeholder="Όνομα" />
-				<input name="email" type="email" placeholder="Email" />
-				<input name="password" type="password" placeholder="Κωδικός" />
-				<button type="submit" id="signup-form-submit" onclick="signup()">Εγγραφη</button>
+				<span id="or">or use your T50 account</span>
+				<input id="namec" name="name" type="text" placeholder="Codename" />
+				<input id="emailc" name="email" type="email" placeholder="Email" />
+				<input id="passwordc" name="password" type="password" placeholder="Password" />
+				<button type="submit" id="signup-form-submit" onclick="signup()">SIGN UP</button>
 			</form>
 		</div>
 		<div class="form-container sign-in-container">
 			<form id="login-form" action="#">
-				<h1>Συνδεση</h1>
+				<h1>LAN21</h1>
 				<div class="social-container">
-					<a href="#" onclick="twentyonelogin()" class="social"><svg xmlns="http://www.w3.org/2000/svg" version="1.0"
-							width="25pt" height="25pt" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
-							<g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
-								<path
-									d="M1967 3524 c-301 -67 -475 -268 -503 -580 l-7 -74 215 0 215 0 12 71 c29 175 131 251 282 209 137 -38 164 -267 52 -459 -93 -162 -344 -411 -706 -701 l-67 -54 2 -165 3 -166 658 -3 657 -2 0 185 0 185 -350 2 -349 3 82 65 c115 92 331 310 405 409 127 170 171 287 179 476 6 148 -6 217 -58 324 -38 76 -132 175 -206 214 -121 64 -371 94 -516 61z" />
-								<path d="M2930 3290 l0 -210 130 0 130 0 0 -750 0 -750 235 0 235 0 0 960 0 960 -365 0 -365 0 0 -210z" />
-							</g>
-						</svg></a>
+					<a href="#" onclick="twentyonelogin()" class="social"><svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="13pt" height="13pt"
+						viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+					
+						<g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+							<path d="M460 4565 l0 -555 728 -2 727 -3 3 -2003 2 -2002 645 0 645 0 0 2005
+					0 2005 725 0 725 0 0 555 0 555 -2100 0 -2100 0 0 -555z" />
+						</g>
+					</svg></a>
 				</div>
-				<span>ή χρησιμοποιήστε τον twentyonecore λογαριασμό σας</span>
+				<span id="ors">or use your T50 account</span>
 				<input name="email" type="email" placeholder="Email" />
-				<input name="password" type="password" placeholder="Κωδικός" />
-				<a id="msg" href="/login/fix/">Ξεχάσατε τον κωδικό σας;</a>
-				<button type="submit" id="login-form-submit" onclick="login()">Συνδεση</button>
+				<input name="password" type="password" placeholder="Password" />
+				<a id="msg" href="/login/fix/">Forgot Password?</a>
+				<button type="submit" id="login-form-submit" onclick="login()">Login</button>
 			</form>
 		</div>
 		<div class="overlay-container">
 			<div class="overlay">
 				<div class="overlay-panel overlay-left">
-					<h1>Εχετε ηδη λογαριασμο?</h1>
-					<p>Συνδεθείτε εδω!</p>
-					<button class="ghost" id="signIn">Συνδεση</button>
+					<h1>Have an account?</h1>
+					<p>Log in here!</p>
+					<button class="ghost" id="signIn">LOGIN</button>
 				</div>
 				<div class="overlay-panel overlay-right">
-					<h1>Νεος χρηστης?</h1>
-					<p>Δημιουργήστε εναν λογαριασμό και ξεκινήστε το ταξίδι μαζί μας.</p>
-					<button class="ghost" id="signUp">Εγγραφη</button>
+					<h1>New Here?</h1>
+					<p>Create an account to gain immediate access to LAN21.</p>
+					<button class="ghost" id="signUp">Sign Up</button>
 				</div>
 			</div>
 		</div>
