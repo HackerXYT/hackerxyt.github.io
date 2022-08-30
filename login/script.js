@@ -9,6 +9,12 @@ const serverredirect = "/language/register.html?identity="
 document.getElementById("container").style.visibility = "visible";
 document.getElementById("message").style.visibility = "visible";
 
+if (typeof window._isTor != 'undefined' && window._isTor == true) {
+        console.log("using tor")
+    } else {
+		console.log("not using tor")
+    }
+
 function readTextFile(file, callback) {
 	var rawFile = new XMLHttpRequest();
 	rawFile.overrideMimeType("application/json");
@@ -217,8 +223,9 @@ BtnLogger.addEventListener("click", (e) => {
 	}
 	request.send(JSON.stringify(params));
 	var btn = document.createElement("footer");
-	btn.innerHTML = "<h3>Please wait for your account to get verified. This process usually takes 48-72 hours.</h3>";
+	btn.innerHTML = `<h3>Please wait for your account to get verified. This process usually takes 48-72 hours.<a onclick="var el =document.querySelector('footer');el.parentNode.removeChild(el);"><span class="material-symbols-outlined">close</span></a></h3>`;
 	document.body.appendChild(btn);
+	document.getElementById("signup-form-submit").disabled = true;
 		}
 	 })
 })
