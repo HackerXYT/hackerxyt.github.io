@@ -15,7 +15,6 @@ if (typeof window._isTor != 'undefined' && window._isTor == true) {
     } else {
 		var usingtor = false;
 		console.log("not using tor")
-		console.log(usingtor)
     }
 
 function readTextFile(file, callback) {
