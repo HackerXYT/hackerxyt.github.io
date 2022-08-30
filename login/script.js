@@ -248,10 +248,10 @@ function twentyonelogin() {
 		window.location.href = "http://g4soozcopyp2mygp36474qegyagrj7gsasnveiqz6aloepf27wz2gtad.onion/"
 	} else if(usingtor === false) {
 		document.getElementById("or").style.color = "red";
-		document.getElementById("or").innerHTML = `Connect to the Tor Network First!`
+		document.getElementById("or").innerHTML = `You're not connected to the Tor Network!`
 		document.getElementById("ors").style.display = "block";
 		document.getElementById("ors").style.color = "red";
-		document.getElementById("ors").innerHTML = `Connect to the Tor Network First!`
+		document.getElementById("ors").innerHTML = `You're not connected to the Tor Network!`
 		setTimeout(function () {
 			document.getElementById("or").style.color = "black"
 			document.getElementById("ors").style.color = "black";
