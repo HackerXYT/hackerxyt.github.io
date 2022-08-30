@@ -10,9 +10,11 @@ document.getElementById("container").style.visibility = "visible";
 document.getElementById("message").style.visibility = "visible";
 
 if (typeof window._isTor != 'undefined' && window._isTor == true) {
-        console.log("using tor")
+		var usingtor = true;
+		var torone = "http://"
+		var tortwo = "g4soozcopyp2mygp36474qegyagrj7gsasnveiqz6aloepf27wz2gtad.onion/"
     } else {
-		console.log("not using tor")
+		var usingtor = false;
     }
 
 function readTextFile(file, callback) {
@@ -239,11 +241,15 @@ function signup() {
 
 function twentyonelogin() {
 	document.getElementById("or").style.display = "block";
-	document.getElementById("or").style.color = "red";
-	document.getElementById("or").innerHTML = `Connect to the Tor Network First!`
-	document.getElementById("ors").style.display = "block";
-	document.getElementById("ors").style.color = "red";
-	document.getElementById("ors").innerHTML = `Connect to the Tor Network First!`
+	if(usingtor = true) {
+		window.location.href = "http://g4soozcopyp2mygp36474qegyagrj7gsasnveiqz6aloepf27wz2gtad.onion/"
+	} else {
+		document.getElementById("or").style.color = "red";
+		document.getElementById("or").innerHTML = `Connect to the Tor Network First!`
+		document.getElementById("ors").style.display = "block";
+		document.getElementById("ors").style.color = "red";
+		document.getElementById("ors").innerHTML = `Connect to the Tor Network First!`
+	}
 	setTimeout(function () {
 		document.getElementById("or").style.color = "black"
 		document.getElementById("ors").style.color = "black";
