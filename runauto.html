@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <iframe id="ifrm" src="./language/?username=21" frameborder="0" marginheight="0" marginwidth="0" width="100%"
+    <iframe id="ifrm" src="./language/?username=21&skipload=true" frameborder="0" marginheight="0" marginwidth="0" width="100%"
         height="100%" scrolling="auto">
     </iframe>
 
@@ -50,6 +50,7 @@
 </style>
 <script>
 		var loggedin = localStorage.getItem("username")
+        localStorage.setItem("skipload", "true");
 		//if(loggedin === null) {
 			//redirect
 		//} else {
