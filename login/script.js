@@ -252,9 +252,18 @@ function twentyonelogin() {
 	document.getElementById("or").style.display = "block";
 	if(usingtor === true) {
 		document.getElementById("or").style.color = "green";
-		document.getElementById("or").innerHTML = `Loading..`
+		document.getElementById("or").innerHTML = `Requesting Access..`
+		document.getElementById("or").style.display = "block";
+		document.getElementById("ors").style.color = "green";
+		document.getElementById("ors").innerHTML = `Requesting Access..`
 		document.getElementById("ors").style.display = "block";
 		setTimeout(function () {
+			document.getElementById("or").style.color = "cyan";
+			document.getElementById("or").innerHTML = `Access Granted!`
+			document.getElementById("or").style.display = "block";
+			document.getElementById("ors").style.color = "cyan";
+			document.getElementById("ors").innerHTML = `Access Granted!`
+			document.getElementById("ors").style.display = "block";
 			window.location.href = "http://g4soozcopyp2mygp36474qegyagrj7gsasnveiqz6aloepf27wz2gtad.onion/"
 			}, 1450);
 	} else if(usingtor === false) {
