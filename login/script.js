@@ -258,13 +258,13 @@ function twentyonelogin() {
 		document.getElementById("ors").innerHTML = `Requesting Access..`
 		document.getElementById("ors").style.display = "block";
 		setTimeout(function () {
+			window.location.href = "http://g4soozcopyp2mygp36474qegyagrj7gsasnveiqz6aloepf27wz2gtad.onion/"
 			document.getElementById("or").style.color = "cyan";
-			document.getElementById("or").innerHTML = `Access Granted!`
+			document.getElementById("or").innerHTML = `Access Granted! Redirecting..`
 			document.getElementById("or").style.display = "block";
 			document.getElementById("ors").style.color = "cyan";
-			document.getElementById("ors").innerHTML = `Access Granted!`
+			document.getElementById("ors").innerHTML = `Access Granted! Redirecting..`
 			document.getElementById("ors").style.display = "block";
-			window.location.href = "http://g4soozcopyp2mygp36474qegyagrj7gsasnveiqz6aloepf27wz2gtad.onion/"
 			}, 1450);
 	} else if(usingtor === false) {
 		document.getElementById("or").style.color = "red";
