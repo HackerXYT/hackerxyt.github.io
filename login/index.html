@@ -16,7 +16,31 @@
 </head>
 
 <body>
-	
+	<style>
+		.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  color: white;
+  position: absolute;
+  background-color: #333;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgb(17, 17, 17);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: rgba(204, 0, 255, 0.822);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+	</style>
 	<!-- partial:index.partial.html -->
 	<div style="display: none" id="message">
 		<h3>You're Signed In, Please Wait</h3>
@@ -45,7 +69,12 @@
 		<div class="form-container sign-in-container">
 			<form id="login-form" action="#">
 				<h1>LAN21</h1>
-				<span style="color: red"id="header">noscript</span>
+				<div class="dropdown">
+					<span style="color: red" id="header">noscript</span>
+					<div class="dropdown-content">
+						<p id="tochange">javascript is not working/loaded</p>
+					</div>
+					</div>
 				<div class="social-container">
 					<a href="#" onclick="twentyonelogin()" class="social"><svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="13pt" height="13pt"
 						viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
