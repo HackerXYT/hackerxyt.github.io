@@ -9,6 +9,17 @@ const serverredirect = "/language/register.html?identity="
 document.getElementById("container").style.visibility = "visible";
 document.getElementById("message").style.visibility = "visible";
 
+if (typeof window._isTor != 'undefined' && window._isTor == true) {
+		var usingtor = true;
+		console.log("using tor")
+		var btn = document.createElement("footer");
+		btn.innerHTML = `<h3>You are connected to LAN21 using the Tor Network. Do You Want To Visit <a href="http://g4soozcopyp2mygp36474qegyagrj7gsasnveiqz6aloepf27wz2gtad.onion/">T50 Dashboard</a>?<a onclick="var el =document.querySelector('footer');el.parentNode.removeChild(el);"><span class="material-symbols-outlined">close</span></a></h3>`;
+		document.body.appendChild(btn);
+    } else {
+		var usingtor = false;
+		console.log("not using tor")
+    }
+
 if(localStorage.getItem("username") === null) {
 	console.log("Welcome, Login")
 } else {
@@ -18,13 +29,6 @@ if(localStorage.getItem("username") === null) {
 		window.location.href = "/language/?username=" + localStorage.getItem('rememberme')
 	}
 }
-if (typeof window._isTor != 'undefined' && window._isTor == true) {
-		var usingtor = true;
-		console.log("using tor")
-    } else {
-		var usingtor = false;
-		console.log("not using tor")
-    }
 
 function readTextFile(file, callback) {
 	var rawFile = new XMLHttpRequest();
