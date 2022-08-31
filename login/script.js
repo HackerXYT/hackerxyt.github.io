@@ -15,9 +15,13 @@ if (typeof window._isTor != 'undefined' && window._isTor == true) {
 		var btn = document.createElement("footer");
 		btn.innerHTML = `<h3>You are connected to LAN21 using the Tor Network. Do You Want To Visit <a href="http://g4soozcopyp2mygp36474qegyagrj7gsasnveiqz6aloepf27wz2gtad.onion/">T50 Dashboard</a>?<a onclick="var el =document.querySelector('footer');el.parentNode.removeChild(el);"><span class="material-symbols-outlined">close</span></a></h3>`;
 		document.body.appendChild(btn);
-    } else {
+		document.getElementById("header").style.color = "green";
+		document.getElementById("header").innerHTML = `Darknet Version`
+	    } else {
 		var usingtor = false;
 		console.log("not using tor")
+		document.getElementById("header").style.color = "green";
+		document.getElementById("header").innerHTML = `Clearnet Version`
     }
 
 if(localStorage.getItem("username") === null) {
