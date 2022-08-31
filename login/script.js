@@ -17,7 +17,7 @@ if (typeof window._isTor != 'undefined' && window._isTor == true) {
 		document.body.appendChild(btn);
 		document.getElementById("header").style.color = "red";
 		document.getElementById("header").innerHTML = `Darknet Version`
-		document.getElementById("tochange").innerHTML = `To exit darknet version of lan21 you'll need to leave the tor network.`
+		document.getElementById("tochange").innerHTML = `To exit darknet version of lan21 you'll need to disconnect from the tor network.`
 	    } else {
 		var usingtor = false;
 		console.log("not using tor")
