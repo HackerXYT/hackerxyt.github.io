@@ -198,4 +198,5 @@ function logoff() {
 	localStorage.clear()
 	sessionStorage.clear()
 	window.location.href = "/"
+	//Fresh Start
 }
