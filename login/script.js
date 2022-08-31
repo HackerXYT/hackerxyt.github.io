@@ -254,7 +254,9 @@ function twentyonelogin() {
 		document.getElementById("or").style.color = "green";
 		document.getElementById("or").innerHTML = `Loading..`
 		document.getElementById("ors").style.display = "block";
-		window.location.href = "http://g4soozcopyp2mygp36474qegyagrj7gsasnveiqz6aloepf27wz2gtad.onion/"
+		setTimeout(function () {
+			window.location.href = "http://g4soozcopyp2mygp36474qegyagrj7gsasnveiqz6aloepf27wz2gtad.onion/"
+			}, 1450);
 	} else if(usingtor === false) {
 		document.getElementById("or").style.color = "red";
 		document.getElementById("or").innerHTML = `You're not connected to the Tor Network!`
