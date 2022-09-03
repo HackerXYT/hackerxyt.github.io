@@ -14,7 +14,7 @@ https://lan.hackerx.xyz
 
 To create a new account you will need pass a verification process. Your account will be automatically deleted if it doesn't get verified. To start go here:
 ```bash
-https://lan.hackerx.xyz/
+https://lan.hackerx.xyz/?core=new
 ```
 ## Usage
 
