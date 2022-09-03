@@ -1,10 +1,10 @@
 # LAN21
 
-Language Twentyone Project Hosted By TwentyoneCore. Easily Get Access Without The Tor Network
+LAN21 is a twentyonecore project created by T50
 
 ## Gaining Access
 
-Use a browser of your choice to reach the following URL.
+Use a browser of your choice to reach this URL.
 
 ```bash
 https://lan.hackerx.xyz
@@ -12,9 +12,11 @@ https://lan.hackerx.xyz
 
 ## Creating an account
 
-To create a new account you will need pass a verification process. Your account will be automatically deleted if it doesn't get verified.
-----
- To start go here:
+###  To create a new LAN21 account you will need to request access from admins.
+#### Fill in the required gaps and press enter.
+![error loading image](http://lan.hackerx.xyz/assets/readme/register.png)
+#### Your account will be automatically deleted if it doesn't get verified. 
+To start go here:
 ```bash
 https://lan.hackerx.xyz/?core=new
 ```
