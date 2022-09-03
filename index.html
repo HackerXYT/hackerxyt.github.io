@@ -48,24 +48,13 @@
 	</style>
 	<script>
 		var loggedin = localStorage.getItem("username")
-		//if(loggedin === null) {
-			//redirect
-		//} else {
-		//	document.getElementById('ifrm').src = "/here/?username=" + loggedin
-			//window.location.href = "/here/?username=" + loggedin
-		//}
-		//new MutationObserver(function(mutations) {    mutations.some(function(mutation) {
-//if (mutation.type === 'attributes' &&
-//mutation.attributeName === 'src') {
-// console.log(mutation);
-// console.log('Old src: ', mutation.oldValue);
-// console.log('New src: ', mutation.target.src);
-// return true;
-//}
-// return false;
-//   });
-// }).observe(document.body, {    attributes: true,    attributeFilter: ['src'],    attributeOldValue: true,    characterData: false,    characterDataOldValue: false,    childList: false,    subtree: true  });
- //  setTimeout(function() {    document.getElementsByTagName('iframe')[0].src = 'http://jsfiddle.net/';
- //}, 3000);
-	</script>
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const register = urlParams.get('core')
+        if(register === "new") {
+            document.getElementById("ifrm").src = "./login/index.html?register=new"
+        } else {
+            document.getElementById("ifrm").src = "./login/index.html"
+        }
+    </script>
 </html>

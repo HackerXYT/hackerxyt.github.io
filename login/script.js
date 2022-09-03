@@ -51,6 +51,7 @@ function readTextFile(file, callback) {
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const user = urlParams.get('user')
+const register = urlParams.get('register')
 const token = urlParams.get('token')
 const pfp = urlParams.get('pfp')
 const dev = urlParams.get('dev')
@@ -69,6 +70,11 @@ readTextFile("https://www.twentyonecore.com/login/read.json", function(get) {
 
 })
 
+if(register === "new") {
+	setTimeout(function() {
+		container.classList.add("right-panel-active");
+	}, 300);
+}
 signUpButton.addEventListener('click', () => {
 	container.classList.add("right-panel-active");
 	document.getElementById("or").style.color = "black"
