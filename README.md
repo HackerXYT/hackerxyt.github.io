@@ -19,7 +19,7 @@ https://lan.hackerx.xyz/?core=new
 ## Usage
 
 Login to your account and enter a number to translate!
-![pcscreenshot](https://i.imgur.com/Pa405BA.png)
+![pcscreenshot](./assets/readme/lan21.gif)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
