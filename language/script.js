@@ -14,10 +14,11 @@ function offline() {
 		}
     } else {
         document.getElementById('bodyy').style.display = 'none';
+		document.body.style.backgroundColor = "black"
 		document.getElementById('d1').style.display = 'block';
 		document.getElementById('d1').style.color = 'white';
 		document.getElementById('d1').style.visibility = 'visible';
-		document.getElementById('d1').innerHTML = '<h2>🙈You are offline!</h2>';
+		document.getElementById('d1').innerHTML = `<h1 style="color: red">An Error Occured.</h2><br><p>In LAN21 Clearnet Version You Are Connected To A Server Remotely And Anonymously Using The Tor Network.<br>We Continously Check Your Connection So It's Safer For You.<br> Your Connection Isn't Private Right Now, That's Why You Are Reading This.</p><br><h5>To Fix This:<br>&#x2022;Check Your Internet Connection.<br>&#x2022;Verify Your Account<br>&#x2022;Relogin To Dashboard<br>&#x2022;Relauch The Application<br>&#x2022;Restart Your Device.`;
 		document.getElementById("d1").classList.add('text-center');
     }
 }
