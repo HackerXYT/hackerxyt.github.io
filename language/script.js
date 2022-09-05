@@ -123,7 +123,7 @@ if (product == null	&& localStorage.getItem("username") == null) {
 	console.log('access denied');
 	document.getElementById('html').style.visibility = 'hidden';
 	document.body.style.backgroundColor = 'red';
-	window.location.href = 'https://language.twentyonecore.com';
+	window.location.href = '/';
 } else {
 	if(product === null) {var a = localStorage.getItem("username")} else {//no
 	}
