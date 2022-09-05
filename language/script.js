@@ -3,6 +3,7 @@ const updaterequired = false
 //skip load if urlparam or localStorage skipload = true
 function offline() {
 	if(navigator.onLine) {
+		document.body.style.backgroundColor = "#383838"
         if(document.getElementById('bodyy').style.display = 'none') {
 			//$('#d1').html('🙉Back Online!')
 			//setTimeout(function() {
@@ -22,7 +23,7 @@ function offline() {
 		document.getElementById("d1").classList.add('text-center');
     }
 }
-setInterval(offline, 1000);
+setInterval(offline, 500);
 var rememberme = localStorage.getItem("username")
 if(rememberme === null) {
 	console.log("auto")
