@@ -23,7 +23,7 @@ https://lan.hackerx.xyz/?core=new
 ```
 ## Usage
 
-Login to your account and enter a number to translate!
+Enter A Number, Press Enter and Press Escape To Clear
 ---
 <img src="/assets/readme/lan21.gif?raw=true">
 

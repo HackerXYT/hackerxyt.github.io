@@ -55,6 +55,7 @@ const register = urlParams.get('register')
 const token = urlParams.get('token')
 const pfp = urlParams.get('pfp')
 const dev = urlParams.get('dev')
+
 readTextFile("https://www.twentyonecore.com/login/read.json", function(get) {
 	var result = JSON.parse(get)
 	const check = result.tokenone
