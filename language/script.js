@@ -98,6 +98,7 @@ if(skip === "true" || localStorage.getItem('skipload') === "true"){
 	clearTimeout(timetwo)
 	clearTimeout(timethree)
 	clearTimeout(timefour)
+	clearTimeout(newstime)
 	clearTimeout(timefive)
 	clearTimeout(timesix)
 	clearTimeout(timeseven)
@@ -105,6 +106,13 @@ if(skip === "true" || localStorage.getItem('skipload') === "true"){
 	clearTimeout(timenine)
 	clearTimeout(timeten)
 	clearTimeout(news)
+	clearTimeout(tor1)
+	clearTimeout(tor2)
+	clearTimeout(tor3)
+	clearTimeout(tor4)
+	clearTimeout(tor5)
+	clearTimeout(tor6)
+	clearTimeout(tor7)
 	$('#welcome').fadeOut();
 	$('#no2').fadeOut();
 	$('#no3').fadeOut()
@@ -250,7 +258,7 @@ if (product == null	&& localStorage.getItem("username") == null) {
 	var timeeight = setTimeout(function() {
 		$('#footer').fadeIn();
 		$('#news').fadeIn();
-		var newstime = setTimeout(function() {
+		newstime = setTimeout(function() {
 			$('#incase').html('Loading News. - Tap To Cancel');
 			setTimeout(function() {
 				$('#incase').html('Loading News.. - Tap To Cancel');
@@ -370,25 +378,25 @@ if (product == null	&& localStorage.getItem("username") == null) {
 	}, 11800);
 
 	//UPPER NOTICE
-	setTimeout(function() {
+	tor1 = setTimeout(function() {
 		$('#footer').fadeOut('slow');
 	}, 13500);
-	setTimeout(function() {
+	tor2 = setTimeout(function() {
 		$('#footer').fadeIn('slow');
 	}, 14500);
-	setTimeout(function() {
+	tor3 = setTimeout(function() {
 		$('#footer').fadeOut('slow');
 	}, 15500);
-	setTimeout(function() {
+	tor4 = setTimeout(function() {
 		$('#footer').fadeIn('slow');
 	}, 16500);
-	setTimeout(function() {
+	tor5 = setTimeout(function() {
 		$('#footer').fadeOut('slow');
 	}, 17500);
-	setTimeout(function() {
+	tor6 = setTimeout(function() {
 		$('#footer').fadeIn('slow');
 	}, 18500);
-	setTimeout(function() {
+	tor7 = setTimeout(function() {
 		$('#footer').fadeOut('slow');
 	}, 19500);
 } 
