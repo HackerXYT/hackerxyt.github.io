@@ -152,6 +152,18 @@ BtnLog.addEventListener("click", (e) => {
 				document.getElementById("msg").style.color = "red";
 				document.getElementById("msg").innerHTML = "The password you entered is incorrect"
 			}
+		} else if (email === user.u6.email) {
+			if (result === user.u6.password) {
+				document.getElementById("msg").style.color = "green";
+				document.getElementById("msg").innerHTML = "Welcome Back, " + user.u6.name + "!"
+				document.getElementById("container").style.visibility = "hidden";
+				document.getElementById("message").style.visibility = "visible";
+				window.location.href = serverredirect + user.u6.name + "&pfp=" + user.u6.pfp
+				//ADD
+			} else {
+				document.getElementById("msg").style.color = "red";
+				document.getElementById("msg").innerHTML = "The password you entered is incorrect"
+			}
 		} else {
 			document.getElementById("msg").innerHTML = "This email is not linked to an account in our system."
 			document.getElementById("msg").style.color = "red";

@@ -28,5 +28,11 @@
 		"password": "error",
 		"name": "Psaltiras",
 		"pfp": "https://www.twentyonecore.com/pfp/none.png"		
+	},
+	"u6": {
+		"email": "anon@twentyonecore.com",
+		"password": "400344e000fcdb7834c135f8c3dbd3d0",
+		"name": "Anon",
+		"pfp": "https://www.twentyonecore.com/pfp/none.png"		
 	}
 }
