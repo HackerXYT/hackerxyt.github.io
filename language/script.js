@@ -158,6 +158,8 @@ if (product == null	&& localStorage.getItem("username") == null) {
 			document.getElementById('usernamesuccess').innerHTML = identifier;
 		} else if(identifier === "Dritsas") {
 			document.getElementById('usernamesuccess').innerHTML = identifier;
+		} else if(identifier === "anon") {
+			document.getElementById('usernamesuccess').innerHTML = identifier;
 		} else if(sessionStorage.getItem("bypass-verification") === "true") {
 			document.getElementById('usernamesuccess').innerHTML = `<span style="color:red">BYPASSED:${identifier}</span>`;
 		} else {
