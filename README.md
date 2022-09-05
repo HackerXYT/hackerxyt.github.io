@@ -15,6 +15,7 @@ https://lan.hackerx.xyz
 ###  To create a new LAN21 account you will need to request access from admins.
 #### Fill in the required gaps and press enter.
 <img src="/assets/readme/register.gif?raw=true">
+
 #### Your account will be automatically deleted if it doesn't get verified. 
 To start go here:
 ```bash
