@@ -92,50 +92,6 @@ var identifier = urlParams.get('username');
 const compatible = urlParams.get('desktopcompatible');
 const skip = urlParams.get('skipload');
 
-if(skip === "true" || localStorage.getItem('skipload') === "true"){
-	console.log("skipped")
-	clearTimeout(timeone)
-	clearTimeout(timetwo)
-	clearTimeout(timethree)
-	clearTimeout(timefour)
-	clearTimeout(newstime)
-	clearTimeout(timefive)
-	clearTimeout(timesix)
-	clearTimeout(timeseven)
-	clearTimeout(timeeight)
-	clearTimeout(timenine)
-	clearTimeout(timeten)
-	clearTimeout(news)
-	clearTimeout(tor1)
-	clearTimeout(tor2)
-	clearTimeout(tor3)
-	clearTimeout(tor4)
-	clearTimeout(tor5)
-	clearTimeout(tor6)
-	clearTimeout(tor7)
-	$('#welcome').fadeOut();
-	$('#no2').fadeOut();
-	$('#no3').fadeOut()
-	$('#no4').fadeOut()
-	$('#main').fadeIn();
-	document.getElementById('no4').className = 'fullscreen fadeOut';
-	document.getElementById('main').style.display = 'block';
-		$('#main').fadeIn();
-	$('#footer').fadeIn();
-	$('#bottom').fadeIn();
-	$('#news').fadeIn();
-	$('#bottom').fadeIn();
-	$('#toggle').fadeIn();
-	$('#replit-badge').fadeOut();
-	$('#news').fadeOut();
-	$('#incase').fadeOut();
-	setTimeout(function() {
-			$('#footer').fadeOut('slow');
-		}, 1700)
-} else {
-	console.log("no")
-}
-
 if(product === null && identifier === null) {
 	if(rememberme === null) {
 		console.error("User Is Not Logged In")
@@ -258,9 +214,9 @@ if (product == null	&& localStorage.getItem("username") == null) {
 	var timeeight = setTimeout(function() {
 		$('#footer').fadeIn();
 		$('#news').fadeIn();
-		newstime = setTimeout(function() {
+		setTimeout(function() {
 			$('#incase').html('Loading News. - Tap To Cancel');
-			setTimeout(function() {
+			newstime =  setTimeout(function() {
 				$('#incase').html('Loading News.. - Tap To Cancel');
 				setTimeout(function() {
 					$('#incase').html('Loading News... - Tap To Cancel');
@@ -328,7 +284,7 @@ if (product == null	&& localStorage.getItem("username") == null) {
 			}, 400);
 		}, 400);
 		document.getElementById('incase').style.color = 'magenta';
-		var news = setTimeout(function() {
+		news = setTimeout(function() {
 			document.getElementById('incase').style.color = 'green';
 			$('#incase').html('In case you missed: ');
 			$('#news1').fadeIn('slow');
@@ -541,3 +497,46 @@ function cancelnews() {
 }
 
 //RANDOM WELCOME SCREEN EG. WECLOME, WELCOME BACK, GREAT TO SEE YOU, LONG TIME NO SEE, HELLO
+
+if(skip === "true" || localStorage.getItem('skipload') === "true"){
+	console.log("skipped")
+	clearTimeout(timeone)
+	clearTimeout(timetwo)
+	clearTimeout(timethree)
+	clearTimeout(timefour)
+	clearTimeout(timefive)
+	clearTimeout(timesix)
+	clearTimeout(timeseven)
+	clearTimeout(timeeight)
+	clearTimeout(timenine)
+	clearTimeout(timeten)
+	clearTimeout(news)
+	clearTimeout(tor1)
+	clearTimeout(tor2)
+	clearTimeout(tor3)
+	clearTimeout(tor4)
+	clearTimeout(tor5)
+	clearTimeout(tor6)
+	clearTimeout(tor7)
+	$('#welcome').fadeOut();
+	$('#no2').fadeOut();
+	$('#no3').fadeOut()
+	$('#no4').fadeOut()
+	$('#main').fadeIn();
+	document.getElementById('no4').className = 'fullscreen fadeOut';
+	document.getElementById('main').style.display = 'block';
+		$('#main').fadeIn();
+	$('#footer').fadeIn();
+	$('#bottom').fadeIn();
+	$('#news').fadeIn();
+	$('#bottom').fadeIn();
+	$('#toggle').fadeIn();
+	$('#replit-badge').fadeOut();
+	$('#news').fadeOut();
+	$('#incase').fadeOut();
+	setTimeout(function() {
+			$('#footer').fadeOut('fast');
+		}, 1500)
+} else {
+	console.log("no")
+}
