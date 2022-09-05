@@ -24,7 +24,7 @@ https://lan.hackerx.xyz/?core=new
 
 Login to your account and enter a number to translate!
 ---
-+<img src="/assets/readme/lan21.gif?raw=true" width="200px">
+<img src="/assets/readme/lan21.gif?raw=true">
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
