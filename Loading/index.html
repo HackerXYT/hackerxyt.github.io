@@ -25,6 +25,14 @@
 <!-- partial -->
   <script  src="./script.js"></script>
   <script>
+    const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      var changes = urlParams.get('text');
+      if(changes === null) {
+        //nothing
+      } else {
+        document.getElementById("text").innerHTML = changes
+      }
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         document.getElementById("text").style.fontSize = "50px"; 
       }

@@ -51,10 +51,10 @@
 <script>
 		var loggedin = localStorage.getItem("username")
         localStorage.setItem("skipload", "true");
-        document.getElementById('ifrm').src = "/Loading/"
-        setTimeout(function() {
-           document.getElementById('ifrm').src = "./language/?username=21&skipload=true" 
-        }, 4000);
+        document.getElementById('ifrm').src = "/Loading/?text=Connecting.."
+            setTimeout(function () {
+                document.getElementById('ifrm').src = "./language/?username=21&skipload=true"
+            }, 4000);
 		//if(loggedin === null) {
 			//redirect
 		//} else {
