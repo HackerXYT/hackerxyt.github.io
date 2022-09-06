@@ -30,6 +30,17 @@
       var changes = urlParams.get('text');
       if(changes === null) {
         //nothing
+      } else if(changes === "runautofunc") {
+        document.getElementById("text").innerHTML = "Connecting to server..";
+        setTimeout(function() {
+          $('#text').fadeOut("500");
+        }, 650)
+        setTimeout(function () {
+          document.getElementById("text").innerHTML = "Welcome Back!";
+        }, 1100)
+        setTimeout(function () {
+          $('#text').fadeIn("500");
+        }, 1100)
       } else {
         document.getElementById("text").innerHTML = changes
       }
