@@ -195,8 +195,26 @@ function exit() {
 }
 
 function logoff() {
+	document.getElementById("sure").innerHTML = "Are You Sure?"
+	document.getElementById("asure").onclick = sure;
+	//Fresh Start
+}
+
+//document.getElementById("asure").addEventListener("click", function() {
+//	var times = + Number(1)
+//	console.log(times)
+//	if(times === 1) {
+		//none
+//	} else if(times === 2) {
+//		var buttclick = "true"
+//		console.log(buttclick)
+//	}
+//});
+
+function sure() {
+	document.getElementById("sure").innerHTML = "Logging off...";
+	console.log("Bye!")
 	localStorage.clear()
 	sessionStorage.clear()
-	window.location.href = "/"
-	//Fresh Start
+	window.location.href = "/";
 }
