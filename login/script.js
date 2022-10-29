@@ -23,7 +23,7 @@ if (typeof window._isTor != 'undefined' && window._isTor == true) {
 		console.log("not using tor")
 		document.getElementById("header").style.color = "green";
 		document.getElementById("header").innerHTML = `Clearnet Version`
-		document.getElementById("tochange").innerHTML = `To change LAN21 version you'll need to connect to the <a href="https://www.torproject.org/">tor network</a>!`
+		document.getElementById("tochange").innerHTML = `To change LAN21 version you'll need to connect to the <a target="_blank" href="https://www.torproject.org/">tor network</a>!`
     }
 
 if(localStorage.getItem("username") === null) {
