@@ -1,6 +1,6 @@
-# Twentyonecore
+# LAN21
 
-twentyonecore
+LAN21 is a twentyonecore project created by T50
 
 ## Gaining Access
 
@@ -19,7 +19,7 @@ https://lan.hackerx.xyz
 #### Your account will be automatically deleted if it doesn't get verified. 
 To start go here:
 ```bash
-https://lan.hackerx.xyz/Lan21/?core=new
+https://lan.hackerx.xyz/?core=new
 ```
 ## Usage
 
