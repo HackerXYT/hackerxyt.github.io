@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Select</title>
+	<link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+	<!-- partial:index.partial.html -->
+
+	<body>
+		<div class="container">
+			<div class="card">
+				<div class="face face1">
+					<div class="content">
+						<img src="icons8-question-mark-90.png">
+						<h3>Questions</h3>
+					</div>
+				</div>
+				<div class="face face2">
+					<div class="content">
+						<p>Recover Your Account By Answering Questions About You</p>
+						<a href="question.html">Choose</a>
+					</div>
+				</div>
+			</div>
+			<div class="card">
+				<div class="face face1">
+					<div class="content">
+						<img src="icons8-translation-100.png">
+						<h3>LAN21</h3>
+					</div>
+				</div>
+				<div class="face face2">
+					<div class="content">
+						<p>Recover Your Account By Translating Some Words From Lan21 Correctly</p>
+						<a href="./lan21method">Choose</a>
+					</div>
+				</div>
+			</div>
+			<div class="card">
+				<div class="face face1">
+					<div class="content">
+						<img src="icons8-helping-hand-100.png">
+						<h3>Contact</h3>
+					</div>
+				</div>
+				<div class="face face2">
+					<div class="content">
+						<p>Get Admins' Help</p>
+						<a href="mailto:help@hackerx.xyz">Choose</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<!-- partial -->
+
+</body>
+<script>
+	var user = localStorage.getItem("Recovery")
+	if (user === "21" || user === "dritsas" || user === "talamagas" || user === "psaltiras") {
+		console.log("Account Exists!")
+	} else {
+		window.location.href = "./err.html"
+	}
+</script>
+
+</html>
