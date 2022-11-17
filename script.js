@@ -1,3 +1,7 @@
+if(localStorage.getItem("User") != null) {
+    console.log("Welcome, " + localStorage.getItem("User"))
+    document.getElementById("signin").content = "My Account"
+}
 function sendMessage() {
 	  let username = document.getElementById("cf-name").value; 
 	  let useremail = document.getElementById("cf-email").value; 
