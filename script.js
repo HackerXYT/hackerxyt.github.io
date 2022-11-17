@@ -1,8 +1,20 @@
+var d = new Date();
+var time = d.getHours();
 if(localStorage.getItem("User") != null) {
+    var exists = localStorage.getItem("User")
     console.log("Welcome, " + localStorage.getItem("User"))
     document.getElementById('signin').textContent = 'My Account';
     document.getElementById('signup').textContent = 'Sign Out';
     document.getElementById('mb-4').textContent = 'Welcome, ' + localStorage.getItem("User");
+		if (time === "1" || time === "2" || time === "3" || time === "4" || time === "5" || time === "6") {
+			document.getElementById("mb-4").innerHTML = "Good night, <b>" + exists + "</b>"
+		} else if (time < 12) {
+			document.getElementById("mb-4").innerHTML = "Good morning, <b>" + exists + "</b>"
+		} else if (time > 12) {
+			document.getElementById("mb-4").innerHTML = "Good afternoon, <b>" + exists + "</b>"
+		} else {
+			console.error("Could Not Get Time")
+		}
 }
 function sendMessage() {
 	  let username = document.getElementById("cf-name").value; 
