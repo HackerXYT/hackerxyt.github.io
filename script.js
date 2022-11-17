@@ -1,6 +1,8 @@
 if(localStorage.getItem("User") != null) {
     console.log("Welcome, " + localStorage.getItem("User"))
-    document.getElementById("signin").content = "My Account"
+    document.getElementById('signin').textContent = 'My Account';
+    document.getElementById('signup').textContent = 'Sign Out';
+    document.getElementById('mb-4').textContent = 'Welcome, ' + localStorage.getItem("User");
 }
 function sendMessage() {
 	  let username = document.getElementById("cf-name").value; 
@@ -70,4 +72,12 @@ function server() {
     if(window.location.href === "https://www.twentyonecore.com"||window.location.href === "http://www.twentyonecore.com") {
         console.log("%cCurrent Server: Replit", "color: yellow; font-size: xx-large");
     } 
+}
+
+function checkone() {
+    if(document.getElementById('signup').textContent === "Sign Out") {
+        localStorage.clear();
+        sessionStorage.clear();
+        location.reload()
+    }
 }
