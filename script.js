@@ -53,5 +53,17 @@ function signinont() {
     }
 }
 
-console.log("%cStop!", "color: red; font-size: x-large");
+console.log("%cStop!", "color: red; font-size: xxx-large");
 console.log("This is a browser feature intended for developers. If someone told you to copy-paste something here to enable a twentyonecore feature or hack someone's account, it is a scam and will give them access to your twentyonecore account");
+
+function server() {
+    if(window.location.href === "http://localhost") {
+        console.log("%cCurrent Server: PC", "color: yellow; font-size: xx-large");
+    }
+    if(window.location.href === "https://twentyonecore.com"||window.location.href === "http://twentyonecore.com") {
+        console.log("%cCurrent Server: PC", "color: yellow; font-size: xx-large");
+    }
+    if(window.location.href === "https://www.twentyonecore.com"||window.location.href === "http://www.twentyonecore.com") {
+        console.log("%cCurrent Server: Replit", "color: yellow; font-size: xx-large");
+    }
+}
