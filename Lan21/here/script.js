@@ -27,7 +27,7 @@ function readTextFile(file, callback) {
 	};
 	rawFile.send(null);
 }
-readTextFile('/version.json', function(get) {
+readTextFile('/Lan21/version.json', function(get) {
 	var version = JSON.parse(get);
 	document.getElementById('bottom').innerHTML = 'Current Version: ' + version.version;
 });
