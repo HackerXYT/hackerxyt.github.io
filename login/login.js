@@ -22,8 +22,7 @@ setTimeout(function() {
 
 const queryString = window.location.search;
 //console.log(queryString);
-const urlParams = new URLSearchParams(queryString);
-
+const urlParams = new URLSearchParams(queryString)
 const product = urlParams.get('twentyonecorelogin')
 const ip = urlParams.get('identifier')
 const dev = urlParams.get('dev')
