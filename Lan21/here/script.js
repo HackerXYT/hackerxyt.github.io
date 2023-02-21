@@ -174,7 +174,7 @@ removeIcon.addEventListener("click", () => {
 function logout() {
 	localStorage.clear()
 	sessionStorage.clear()
-	window.location.href = "https://www.twentyonecore.com/logout.html"
+	window.location.href = "https://twentyonecore.com/logout.html"
 }
 
 window.onscroll = () => { window.scroll(0, 0); };
