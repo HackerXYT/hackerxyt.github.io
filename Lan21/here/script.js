@@ -27,7 +27,7 @@ function readTextFile(file, callback) {
 	};
 	rawFile.send(null);
 }
-readTextFile('/version.json', function(get) {
+readTextFile('/Lan21/version.json', function(get) {
 	var version = JSON.parse(get);
 	document.getElementById('bottom').innerHTML = 'Current Version: ' + version.version;
 });
@@ -137,7 +137,7 @@ function fetchApi(word) {
 	wrapper.classList.remove("active");
 	infoText.style.color = "#000";
 	infoText.innerHTML = `Searching the meaning of <span>"${word}"</span>`;
-	let url = `/language/language/${word}.json`;
+	let url = `Lan21/language/language/${word}.json`;
 	fetch(url).then(response => response.json()).then(result => data(result, word)).catch(() => {
 		if (word === "12" || word === "13" || word === "74" || word === "30") {
 			infoText.style.color = "red"
