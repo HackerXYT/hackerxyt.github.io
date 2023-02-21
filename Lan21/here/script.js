@@ -12,7 +12,7 @@ const urlParams = new URLSearchParams(queryString);
 const product = urlParams.get('username');
 localStorage.setItem("username", product)
 if(product === null){
-	window.location.href = "https://language.twentyonecore.com/"
+	window.location.href = "/Lan21"
 } else {
 	console.log("Welcome back, " + product + "!")
 }
@@ -216,5 +216,5 @@ function sure() {
 	console.log("Bye!")
 	localStorage.clear()
 	sessionStorage.clear()
-	window.location.href = "/";
+	window.location.href = "/Lan21/";
 }

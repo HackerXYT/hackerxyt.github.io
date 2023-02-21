@@ -5,7 +5,7 @@ const BtnLog = document.getElementById("login-form-submit");
 const BtnLogger = document.getElementById("signup-form-submit");
 const formlog = document.getElementById("login-form");
 const formlogger = document.getElementById("signup-form");
-const serverredirect = "/language/register.html?identity="
+const serverredirect = "./language/register.html?identity="
 document.getElementById("container").style.visibility = "visible";
 document.getElementById("message").style.visibility = "visible";
 
@@ -32,7 +32,7 @@ if(localStorage.getItem("username") === null) {
 	if(localStorage.getItem('rememberme') === null) {
 		window.location.href = "./prompt/"
 	} else {
-		window.location.href = "/language/?username=" + localStorage.getItem('rememberme')
+		window.location.href = "./language/?username=" + localStorage.getItem('rememberme')
 	}
 }
 
@@ -56,7 +56,7 @@ const token = urlParams.get('token')
 const pfp = urlParams.get('pfp')
 const dev = urlParams.get('dev')
 
-readTextFile("https://www.twentyonecore.com/login/read.json", function(get) {
+readTextFile("https://twentyonecore.com/login/read.json", function(get) {
 	var result = JSON.parse(get)
 	const check = result.tokenone
 	if (token === check) {
