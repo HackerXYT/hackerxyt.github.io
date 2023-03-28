@@ -1,0 +1,30 @@
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+	const api_key = 'e6938c1768cdf209464e1b9ae7b568dd';
+const title = 'Your Title';
+const message = 'Your Message';
+const icon = 'http://yourwebsite.com/icon.png';
+const url = 'https://chatvia.memeguy21.repl.co/';
+const segment_id = 999;
+
+const data = {
+  title: title,
+  message: message,
+  icon: icon,
+  url: url
+};
+
+const headers = {
+  Authorization: `api_key=${api_key}`,
+	'Access-Control-Allow-Origin': '*'
+};
+
+axios.post('https://Proxy.memeguy21.repl.co', { data, headers })
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+</script>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="el" style="overflow: hidden;">
+
+<head>
+	<meta charset="utf-8">
+  <title>Βιντεο Κληση</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@400;500;600&family=Josefin+Slab&display=swap" rel="stylesheet">
+  <link href="css/video.css"
+    rel="stylesheet">
+  <!-- <link rel="stylesheet" href="/css/main.css" /> -->
+
+</head>
+
+<body class="h-100">
+	<section class="section-container">
+  <div class="fullscreen-media-container video overlay">
+    <div class="remote_div" id="div2">
+      <video id="remoteVideo" class="" autoplay playsinline></video>
+    </div>
+    <div class="overlay-content-container">
+      <div class="partner-text-container">
+        <button class="button-mic-element size-s">
+          <span class="icon icon-mic-inactive">
+            <svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 9.08786V9.08786C4.78197 9.08746 3.79467 8.10016 3.79428 6.88214V3.20571V3.20566C3.7947 1.98764 4.78202 1.00036 6.00005 1H6.00005C7.21807 1.00039 8.20537 1.98769 8.20576 3.20571V6.88214V6.8821C8.20618 8.09988 7.21931 9.08744 6.00152 9.08786C6.00103 9.08786 6.00054 9.08786 6.00005 9.08786L6 9.08786Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M11 7V7C11 9.76142 8.76142 12 6 12V12C3.23858 12 1 9.76142 1 7V7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M6 13.5V12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+        </button>
+        <span id="indicator" class="name">Κανεις Δεν Ειναι Συνδεδεμενος</span>
+      </div>
+      <div class="ui-container">
+        <div class="navigation-controls-container">
+          <button class="button-mic-element switch">
+            <span class="icon icon-mic-active">
+              <svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="active" fill-rule="evenodd" clip-rule="evenodd" d="M8.95576 3.20547C8.95523 1.57343 7.63209 0.250528 6.00004 0.25C4.368 0.250488 3.04484 1.57367 3.04428 3.20571V6.88238C3.04469 8.16353 4.10998 9.25418 5.25 9.6642V11.1317C3.38532 10.682 1.75 9.00277 1.75 7H0.25C0.25 9.92145 2.42874 12.334 5.25 12.7015V13.5C5.25 13.9142 5.58579 14.25 6 14.25C6.41421 14.25 6.75 13.9142 6.75 13.5V12.7015C9.57126 12.334 11.75 9.92144 11.75 7H10.25C10.25 9.00277 8.61468 10.682 6.75 11.1317V9.66461C7.89054 9.25478 8.95607 8.16336 8.95576 6.88184V3.20547ZM7.45576 6.88236C7.45604 7.68593 6.80386 8.33758 6.00029 8.33786C5.19637 8.3376 4.54467 7.68578 4.54428 6.8819V3.20566C4.5447 2.40186 5.19624 1.75036 6.00004 1.75C6.80385 1.75039 7.45537 2.40215 7.45576 3.20596V6.88236Z" fill="white" />
+                <path class="inactive" fill-rule="evenodd" clip-rule="evenodd" d="M6.00004 0.25C7.63209 0.250528 8.95523 1.57343 8.95576 3.20547V6.88184C8.95589 7.43109 8.76024 7.94543 8.4468 8.38614L9.42825 9.36759C9.9368 8.69098 10.25 7.87647 10.25 7H11.75C11.75 8.31745 11.3069 9.53141 10.5617 10.501L11.4298 11.3692C11.7227 11.6621 11.7227 12.1369 11.4298 12.4298C11.1369 12.7227 10.6621 12.7227 10.3692 12.4298L9.501 11.5617C8.71848 12.1631 7.7768 12.5678 6.75 12.7015V13.5C6.75 13.9142 6.41421 14.25 6 14.25C5.58579 14.25 5.25 13.9142 5.25 13.5V12.7015C2.42874 12.334 0.25 9.92145 0.25 7H1.75C1.75 9.00277 3.38532 10.682 5.25 11.1317V9.6642C4.10998 9.25418 3.04469 8.16353 3.04428 6.88238V5.10494L0.46967 2.53033C0.176777 2.23744 0.176777 1.76256 0.46967 1.46967C0.762563 1.17678 1.23744 1.17678 1.53033 1.46967L3.05201 2.99135C3.16233 1.45936 4.44008 0.250467 6.00004 0.25ZM4.54428 6.60494V6.8819C4.54467 7.68578 5.19637 8.3376 6.00029 8.33786C6.08714 8.33783 6.17223 8.33019 6.25491 8.31557L4.54428 6.60494ZM7.38688 7.32622L4.54428 4.48362V3.20566C4.5447 2.40186 5.19624 1.75036 6.00004 1.75C6.80385 1.75039 7.45537 2.40215 7.45576 3.20596V6.88236C7.45581 7.03714 7.43166 7.18628 7.38688 7.32622ZM7.33167 9.39233C7.14348 9.50189 6.94787 9.5935 6.75 9.66461V11.1317C7.3164 10.9951 7.86163 10.7451 8.3463 10.407L7.33167 9.39233Z" fill="white" />
+              </svg>
+            </span>
+          </button>
+          <button class="button-cam-element switch">
+            <span onclick="stopcam()" class="icon icon-cam-active">
+              <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="active" fill-rule="evenodd" clip-rule="evenodd" d="M10 8.6732V8.70915C10 9.95203 8.99288 10.9591 7.75 10.9591H2.5C1.25712 10.9591 0.25 9.95203 0.25 8.70915V4.04248C0.25 2.7996 1.25712 1.79248 2.5 1.79248H7.75C8.99288 1.79248 10 2.7996 10 4.04248V4.07807L11.3098 3.02401C12.2916 2.23343 13.75 2.93294 13.75 4.1923V8.55897C13.75 9.81849 12.2912 10.518 11.3095 9.72699L10 8.6732ZM1.75 4.04248C1.75 3.62803 2.08555 3.29248 2.5 3.29248H7.75C8.16445 3.29248 8.5 3.62803 8.5 4.04248V5.64432C8.5 5.64462 8.5 5.64402 8.5 5.64432V7.1062C8.5 7.1064 8.5 7.106 8.5 7.1062V8.70915C8.5 9.1236 8.16445 9.45915 7.75 9.45915H2.5C2.08555 9.45915 1.75 9.1236 1.75 8.70915V4.04248ZM10 6.74781L12.25 8.5585V4.19277L10 6.00346V6.74781Z" fill="white" />
+                <path class="inactive" fill-rule="evenodd" clip-rule="evenodd" d="M1.58294 0.528126C1.32232 0.206181 0.850056 0.156469 0.528111 0.417091C0.206166 0.677714 0.156454 1.14998 0.417076 1.47192L1.08291 2.29442C0.574711 2.70691 0.250007 3.33662 0.250007 4.04234V8.70901C0.250007 9.95188 1.25713 10.959 2.50001 10.959H7.75001C7.86138 10.959 7.97087 10.9509 8.0779 10.9353L8.91708 11.9719C9.1777 12.2939 9.64996 12.3436 9.97191 12.083C10.2939 11.8223 10.3436 11.3501 10.0829 11.0281L9.42336 10.2133C9.78187 9.8148 10 9.28743 10 8.70901V8.67306L11.3095 9.72685C12.2913 10.5179 13.75 9.81834 13.75 8.55883V4.19216C13.75 2.93279 12.2916 2.23329 11.3098 3.02387L10 4.07794V4.04234C10 2.79946 8.99289 1.79234 7.75001 1.79234H2.60635L1.58294 0.528126ZM2.02674 3.46033C1.85783 3.59781 1.75001 3.8074 1.75001 4.04234V8.70901C1.75001 9.12346 2.08555 9.459 2.50001 9.459H6.88281L2.02674 3.46033ZM8.4414 9.00034L3.82064 3.29234H7.75001C8.16446 3.29234 8.50001 3.62789 8.50001 4.04234V8.70901C8.50001 8.81235 8.47914 8.91078 8.4414 9.00034ZM12.25 4.19263L10 6.0033V6.74769L12.25 8.55836V4.19263Z" fill="white" />
+              </svg>
+            </span>
+          </button>
+          <a onclick="hangup()"><button class="button-share-element">
+            <span onclick="hangup()" class="icon icon-share">
+              <svg width="21" height="20" viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" baseProfile="full" enable-background="new 0 0 76.00 76.00"
+                xml:space="preserve">
+                <path fill="red" fill-opacity="1" stroke-width="0.2" stroke-linejoin="round"
+                  d="M 16.2013,39.582L 15.4175,39.4096L 14.8094,38.9315L 14.4029,38.2193L 14.25,37.364L 14.25,34.9055C 14.25,33.184 14.6023,31.6057 15.3069,30.1704C 16.0116,28.7352 16.9698,27.4788 18.1818,26.4013C 19.3937,25.3237 20.8095,24.4424 22.429,23.7573C 24.0486,23.0722 25.7732,22.6277 27.6031,22.4239L 31.304,22.0792L 34.9918,21.8256L 39.109,21.715L 42.966,21.8451L 46.101,22.0987L 48.9628,22.489C 50.7276,22.7318 52.3883,23.199 53.945,23.8906C 55.5017,24.5822 56.8567,25.4625 58.0101,26.5313C 59.1635,27.6002 60.0752,28.8468 60.7451,30.2712C 61.4151,31.6956 61.75,33.2599 61.75,34.964L 61.75,37.4486L 61.5874,38.2681L 61.1386,38.9511L 60.4785,39.4096L 59.6752,39.582L 51.8897,39.582L 51.0994,39.4096L 50.4588,38.9413L 50.0327,38.2584L 49.8799,37.4226L 49.8799,32.1217L 49.7075,31.1656L 49.2295,30.3818L 48.5075,29.8452C 48.23,29.7108 47.9286,29.6436 47.6034,29.6436L 28.7413,29.6436C 28.4161,29.6436 28.0974,29.7108 27.7852,29.8452L 26.9722,30.3818L 26.4128,31.1851C 26.2697,31.4973 26.1982,31.8225 26.1982,32.1607L 26.1982,37.364L 26.0356,38.2193L 25.5803,38.9315L 24.9104,39.4096L 24.1038,39.582L 16.2013,39.582 Z M 34.8333,41.1667L 41.1666,41.1667L 41.1667,52.6458L 45.9167,47.8958L 45.9167,54.2292L 38,62.5417L 30.0833,54.2292L 30.0833,47.8958L 34.8333,52.6458L 34.8333,41.1667 Z " />
+              </svg>
+            </span>
+          </button></a>
+          <button class="button-settings">
+            <span></span>
+          </button>
+        </div>
+      </div>
+      <div class="cam-container">
+        <div class="video">
+          <div class="local_div" id="div1" style="">
+            <video id="localVideo" class="" autoplay muted playsinline></video>
+          </div>
+        </div>
+        <div class="content">
+          <span class="name">Εσεις</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+  
+
+  
+
+  <!-- Import SocketIO for signalling -->
+  <script src="./scripts/howler.js"></script>
+
+  <script src="https://unpkg.com/socket.io-client@2/dist/socket.io.slim.js"></script>
+
+  <!-- Import WebRTC adapter for compatibility with all the browsers  -->
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  
+  <!-- Import TURN config -->
+  <script src="scripts/config.js"></script>
+
+  <!-- Import script containing WebRTC related functions -->
+  <script src="scripts/webrtc.js"></script>
+
+  <script src="scripts/videocall.js"></script>
+  
+  <script>
+    navigator.mediaDevices.enumerateDevices()
+        .then(devices => {
+          // Filter out only audio input devices
+          const audioDevices = devices.filter(device => device.kind === 'audioinput');
+
+          // Find the device that is being used as the default microphone
+          const defaultMic = audioDevices.find(device => device.label.toLowerCase().includes('microphone'));
+
+          // Log the name of the default microphone to the console
+          console.log('Default Microphone:', defaultMic.label);
+        })
+        .catch(error => {
+          console.error('Error getting media devices:', error);
+        });
+
+
+
+        //...
+        navigator.mediaDevices.enumerateDevices()
+            .then(devices => {
+              const audioDevices = [];
+              const videoDevices = [];
+
+              devices.forEach(device => {
+                if (device.kind === 'audioinput') {
+                  audioDevices.push(device);
+                } else if (device.kind === 'videoinput') {
+                  videoDevices.push(device);
+                }
+              });
+
+              console.log('Available audio devices:');
+              audioDevices.forEach(device => {
+                console.log(`${device.label} (${device.deviceId})`);
+              });
+
+              console.log('Available video devices:');
+              videoDevices.forEach(device => {
+                console.log(`${device.label} (${device.deviceId})`);
+              });
+            })
+            .catch(error => {
+              console.error('Error getting media devices:', error);
+            });
+
+            const constraints = {
+                audio: {
+                  deviceId: {
+                    exact: '4af3d752fa32d0400dc75d4f6b0c6b83dca6957c0878bb69baff2f9150e7dfe4'
+                  }
+                }
+              };
+
+              navigator.mediaDevices.getUserMedia(constraints)
+                .then(stream => {
+                  // Use the MediaStream object to start a new video call
+                  // ...
+                })
+                .catch(error => {
+                  console.error('Error getting media devices:', error);
+                });
+
+  </script>
+</body>
+
+</html>

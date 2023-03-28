@@ -1,0 +1,29 @@
+body {
+  overflow: hidden;
+}
+
+.preventselect {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+.allowselect {
+  -webkit-user-select: text;
+  /* Safari */
+  -ms-user-select: text;
+  /* IE 10 and IE 11 */
+  user-select: text;
+  /* Standard syntax */
+}
+
+iframe {
+  display: block;
+    /* iframes are inline by default */
+    background: #000;
+    border: none;
+    /* Reset default border */
+    height: 100vh;
+    /* Viewport-relative units */
+    width: 100vw;
+}

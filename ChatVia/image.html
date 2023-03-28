@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Image to Base64 Encoder</title>
+  </head>
+  <body>
+    <h1>Image to Base64 Encoder</h1>
+    <input type="file" id="imageFileInput" onchange="encodeImageToBase64()">
+    <br>
+    <textarea id="base64TextArea" cols="50" rows="10"></textarea>
+  </body>
+  <script>
+		function encodeImageToBase64() {
+  const input = document.getElementById('imageFileInput');
+  const file = input.files[0];
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    const base64Text = reader.result.split(',')[1];
+    document.getElementById('base64TextArea').value = base64Text;
+  };
+
+  reader.readAsDataURL(file);
+}
+
+	</script>
+</html>
