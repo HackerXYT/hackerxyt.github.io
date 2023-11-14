@@ -1,4 +1,4 @@
-current_version = "???"
+current_version = "T50-1.0.0"
 console.log("Current version: " + current_version)
 try {
     try {

@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+	body{
+		background-color: #232323;
+		color: #fff
+	}
+	a {
+		color: #954646
+	}
+</style>
 <script>
 	const updated = true
 
@@ -9,6 +18,19 @@
 	//} else {
 	//	document.title = "ChatVia Offline";
 	//}
+	function redirectToAnotherPage() {
+            // Get the URL of the previous page
+            var previousPageUrl = document.referrer;
+			console.log("Previously:'",previousPageUrl,"'")
+
+            // Check if the previous page is on the same site
+            if (previousPageUrl.indexOf(window.location.origin) !== -1) {
+                // Redirect to another page
+                window.location.href = '1index.html';
+            }
+            // Otherwise, do nothing
+        }
+	redirectToAnotherPage()
 </script>
 
 <head>
@@ -17,16 +39,17 @@
 	 <style>
         img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"] {
     display: none;
-}
+	}
     </style>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 
 </head>
 
 <body>
-	<h3>Sorry I Dont Know You D:</h3>
+	<h3>Connection Blocked</h3>
+	<a href="1index.html">Reconnect</a>
 </body>
 <script>
-  window.location.href = "1index.html"
+  //window.location.href = "1index.html"
 </script>
 </html>

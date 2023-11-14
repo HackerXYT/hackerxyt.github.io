@@ -62,6 +62,7 @@
                   s.parentNode.insertBefore(g, s);
           }(document, "script"));
   </script>
+  <script src="scripts/localhost.js"></script>
   <!-- End PushAlert -->
 
 </head>
@@ -133,9 +134,10 @@
               <i class="ri-user-settings-line"></i>
             </a>
           </li>
-          <li onclick="set2()" class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Συνομιλιες">
+          <li onclick="set2()" class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="T50">
             <a class="nav-link active" id="set2" data-bs-toggle="pill" href="#pills-chat" role="tab">
-              <i class="ri-chat-1-line"></i>
+              <!--<i class="ri-chat-1-line"></i>-->
+              <img style="width: 20px;height: 20px" src="./icons/t50.png"></img>
             </a>
           </li>
           <li onclick="set3()" class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Αρχεια Καταγραφής">
@@ -478,9 +480,9 @@
           <!-- Start chats content -->
           <div>
             <div class="px-4 pt-4">
-              <h4 class="mb-4">Συνομιλιες
+              <h4 class="mb-4">T50
                 <div class="user-chat-nav float-end">
-                  <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Αλλαγη Προσωπικης Συνομιλιας">
+                  <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Συνομιλιες T50">
                     <button type="button"
                       class="btn btn-link text-decoration-none text-muted font-size-18 py-0" onclick="change_chatting_user()">
                       <i class="ri-user-add-line"></i>
@@ -488,44 +490,21 @@
                   </div>
                 </div>
 
-
+                
                 <div class="user-chat-nav float-end">
-                  <div data-bs-toggle="tooltip" data-bs-placement="bottom">
+                  
                     <button id="database_toggle" type="button"
                       class="btn text-decoration-none text-muted font-size-18 py-0" onclick="database_on_off()">
                       <i class="ri-database-2-line"></i>
                     </button>
                     
-                    <button id="t50_toggle" type="button"
-                      class="btn text-decoration-none text-muted font-size-18 py-0" onclick="t50_on_off()">
-                      <svg width="20px" height="20px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-
-                      <defs>
-
-                      <style>.c{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;}</style>
-
-                      </defs>
-
-                      <g id="a">
-
-                      <g>
-
-                      <line class="c" x1="14.852" y1="11.85" x2="33.148" y2="11.85"/>
-
-                      <line class="c" x1="24" y1="36.15" x2="24" y2="11.85"/>
-
-                      </g>
-
-                      </g>
-
-                      <g id="b">
-
-                      <circle class="c" cx="24" cy="24" r="21.5"/>
-
-                      </g>
-
-                      </svg>
-                    </button>
+                    <div id="t50_updating" style="display:none" class="user-chat-nav float-end">
+                      <div data-bs-toggle="tooltip" data-bs-placement="bottom">
+                        <button style="background: none" type="button"
+                          class="btn text-decoration-none text-muted font-size-18 py-0" onclick="change_client()">
+                          <img style="height: 30px;width:30px;margin:0;z-index: 0;" src="icons/engine.gif"></img>
+                        </button>
+                      </div>
                   </div>
                 </div>
                 

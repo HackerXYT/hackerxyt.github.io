@@ -1,4 +1,4 @@
-current_version = "???"
+current_version = "T50-1.0"
 console.log("Current version: " + current_version)
 try {
     try {
@@ -40,6 +40,7 @@ readTextFile("https://03.memeguy21.repl.co/update.json", function(data) {
     current_server_version = version.current
     if(current_version >= version.current) {
         console.log("Up To Date")
+        console.log("T50?", current_version.includes("T50"))
     } else {
         update_found.play()
         document.getElementById("updaterequired").click()
