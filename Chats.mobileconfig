@@ -18,11 +18,11 @@
 				<key>PayloadType</key>
 				<string>com.apple.webClip.managed</string>
 				<key>PayloadUUID</key>
-				<string>79d299d5-8577-4092-b877-d158899aa4c6</string>
+				<string>fb33979c-ef7f-4edc-82f8-dc61fa8f01d0</string>
 				<key>PayloadVersion</key>
 				<integer>1</integer>
 				<key>URL</key>
-				<string>https://maroonverticalvolume.tsintsantson.repl.co/frame.html</string>
+				<string>http://team50.sytes.net/frame.html</string>
 			</dict>
 		</array>
 		<key>PayloadDisplayName</key>
@@ -34,7 +34,7 @@
 		<key>PayloadType</key>
 		<string>Configuration</string>
 		<key>PayloadUUID</key>
-		<string>1aa6e0c7-52c4-434a-ac4d-0c8ee80ae53e</string>
+		<string>fb5a350d-9c2d-4c6a-905e-02f93b52d2ed</string>
 		<key>PayloadVersion</key>
 		<integer>1</integer>
 	</dict>
