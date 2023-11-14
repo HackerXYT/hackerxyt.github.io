@@ -6,7 +6,9 @@ ip = ""
 
 if (debug === y) {
     setTimeout(function () {
-        document.getElementById("t50_updating").style.display = "block"
+        if(sessionStorage.getItem(debug) !== "on") {
+            document.getElementById("t50_updating").style.display = "block"
+        }
     }, 1500)
 }
 
@@ -44,3 +46,27 @@ function pingIPs() {
         });
     }
 }
+
+function checkpingIPs() {
+    for (let i = 2; i <= 22; i++) {
+        let ip = '192.168.1.' + i;
+        let port = 8080;
+
+        checkServer(ip, port, function (isReachable) {
+            if (!isReachable) {
+                if(window.location.href.includes('http://' + ip + ':' + port)) {
+                    console.log("Currently Connected To Debug Server")
+                    sessionStorage.setItem("debug", "on")
+                    document.getElementById("t50_updating").style.display = "none"
+                } else {
+                    console.error("Fuck It I Can't Do This Shit")
+                    
+                }
+            }
+        });
+    }
+}
+
+setTimeout(function () {
+    checkpingIPs()
+}, 1500)
