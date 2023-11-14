@@ -1,0 +1,64 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100vh;
+  overflow: hidden;
+  
+  background:
+  repeating-radial-gradient(
+  circle at center,
+    #444 0 10%,
+    #111 10% 20%
+  );
+  
+  touch-action: none;
+}
+
+canvas {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+h1 {
+  text-shadow: 0 0 3px #4b4b4b;
+  font-family: "Arial", Arial, serif;
+  color: white;
+  left: 0;
+  line-height: 200px;
+  margin-top: -100px;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  width: 100%;
+}
+
+.fading {
+  -webkit-animation-duration: 10s;
+  -webkit-animation-name: fading;
+  animation-duration: 10s;
+  animation-name: fading;
+}
+
+@-webkit-keyframes fading {
+  from {
+    color: rgb(255, 255, 255);
+  }
+
+  to {
+    color: rgb(255, 0, 0);
+  }
+}
+
+@keyframes fading {
+  from {
+    color: rgb(255, 255, 255);
+  }
+
+  to {
+    color: rgb(255, 0, 0);
+  }
+}

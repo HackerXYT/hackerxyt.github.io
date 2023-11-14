@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Begin Account Recovery</title>
+	<link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+	<!-- partial:index.partial.html -->
+	<div class="form__group field">
+		<input type="input" onKeyPress="enterpressalert(event, this)" class="form__field"
+			placeholder="What's Your Username?" id='name' required />
+		<label for="name" class="form__label">What's Your Username?</label>
+	</div>
+	<!-- partial -->
+
+</body>
+<script>
+	function enterpressalert(e, textarea) {
+		var code = (e.keyCode ? e.keyCode : e.which);
+		if (code == 13) { //Enter keycode
+			var value = document.getElementById("name").value;
+			console.log("ok")
+			localStorage.setItem("Recovery", value);
+			window.location.href = "/login/recovery/"
+		}
+	}
+</script>
+
+</html>

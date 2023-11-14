@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>HackerXBot</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet" href="./style.css">
+<link rel="icon" href="https://i.ibb.co/2jKXddF/hackerxlogo.png">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="dark-light">
+    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" /></svg>
+   </div>
+<div class="app">
+ <div class="header">
+  <div class="menu-circle"></div>
+  <div class="header-menu">
+   <a class="menu-link is-active" href="#">Dashboard</a>
+   <a class="menu-link notify" href="#">Patch Notes</a>
+   <a class="menu-link" href="/dashboard/commands/">Commands</a>
+   <a class="menu-link notify" href="/dashboard/src/">SRC</a>
+  </div>
+  <div class="search-bar">
+   <input type="text" placeholder="Search">
+  </div>
+  <div class="header-profile">
+   <div class="notification">
+    <span class="notification-number">3</span>
+    <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell">
+     <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
+    </svg>
+   </div>
+   <svg viewBox="0 0 512 512" fill="currentColor">
+    <path d="M448.773 235.551A135.893 135.893 0 00451 211c0-74.443-60.557-135-135-135-47.52 0-91.567 25.313-115.766 65.537-32.666-10.59-66.182-6.049-93.794 12.979-27.612 19.013-44.092 49.116-45.425 82.031C24.716 253.788 0 290.497 0 331c0 7.031 1.703 13.887 3.006 20.537l.015.015C12.719 400.492 56.034 436 106 436h300c57.891 0 106-47.109 106-105 0-40.942-25.053-77.798-63.227-95.449z" />
+   </svg>
+   <img class="profile-img" src="/dashboard/assets/icon.png" alt="">
+  </div>
+ </div>
+ <div class="wrapper">
+  <div class="left-side">
+   <div class="side-wrapper">
+    <div class="side-title">Dashboard</div>
+    <div class="side-menu">
+     <a href="#">
+      <svg viewBox="0 0 512 512">
+       <g xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+        <path d="M0 0h128v128H0zm0 0M192 0h128v128H192zm0 0M384 0h128v128H384zm0 0M0 192h128v128H0zm0 0" data-original="#bfc9d1" />
+       </g>
+       <path xmlns="http://www.w3.org/2000/svg" d="M192 192h128v128H192zm0 0" fill="currentColor" data-original="#82b1ff" />
+       <path xmlns="http://www.w3.org/2000/svg" d="M384 192h128v128H384zm0 0M0 384h128v128H0zm0 0M192 384h128v128H192zm0 0M384 384h128v128H384zm0 0" fill="currentColor" data-original="#bfc9d1" />
+      </svg>
+      Bot
+     </a>
+     <a href="#">
+      <svg viewBox="0 0 488.932 488.932" fill="currentColor">
+       <path d="M243.158 61.361v-57.6c0-3.2 4-4.9 6.7-2.9l118.4 87c2 1.5 2 4.4 0 5.9l-118.4 87c-2.7 2-6.7.2-6.7-2.9v-57.5c-87.8 1.4-158.1 76-152.1 165.4 5.1 76.8 67.7 139.1 144.5 144 81.4 5.2 150.6-53 163-129.9 2.3-14.3 14.7-24.7 29.2-24.7 17.9 0 31.8 15.9 29 33.5-17.4 109.7-118.5 192-235.7 178.9-98-11-176.7-89.4-187.8-187.4-14.7-128.2 84.9-237.4 209.9-238.8z" />
+      </svg>
+      Updates
+      <span class="notification-number updates">3</span>
+     </a>
+    </div>
+   </div>
+   <div class="side-wrapper">
+    <div class="side-title">Site</div>
+    <div class="side-menu">
+     <a href="/dashboard/src/">
+      Source Code
+     </a>
+     <a href="/logs/">
+      Logs
+     </a>
+     <a href="#">
+      Help
+     </a>
+     <a href="#">
+      Socials
+     </a>
+     <a href="https://discord.gg/E9WfmCxS6W">
+      HackerX's Cave
+     </a>
+    </div>
+   </div>
+   <div class="side-wrapper">
+    <div class="side-title">Important</div>
+    <div class="side-menu">
+     <a href="https://hackerx.statuspage.io/">
+      Status
+     </a>
+    </div>
+   </div>
+   <div class="side-wrapper">
+    <div class="side-menu">
+    </div>
+   </div>
+  </div>
+  <div class="main-container">
+   <div class="content-wrapper">
+    <div class="content-wrapper-header">
+     <div class="content-wrapper-context">
+      <h3 class="img-content">
+       HackerX Bot
+      </h3>
+      <div class="content-text">Check Out The New Features Including Live Bot Logs!</div>
+      <a href="/logs/"><button class="content-button">Check Logs</button></a>
+     </div>
+     <img class="content-wrapper-img" src="/dashboard/assets/hackerxbot.png" alt="">
+    </div>
+    <div class="content-section">
+     <div class="content-section-title">Installed</div>
+     <ul>
+      <li class="adobe-product">
+       <div class="products">
+        <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 30 30" width="30px" height="30px">    <path d="M24.707,8.793l-6.5-6.5C18.019,2.105,17.765,2,17.5,2H7C5.895,2,5,2.895,5,4v22c0,1.105,0.895,2,2,2h16c1.105,0,2-0.895,2-2 V9.5C25,9.235,24.895,8.981,24.707,8.793z M18,10c-0.552,0-1-0.448-1-1V3.904L23.096,10H18z"/></svg>
+        Live Logs
+       </div>
+       <span class="status">
+        <span class="status-circle green"></span>
+        New!</span>
+       <div class="button-wrapper">
+        <a href="/logs/"><button class="content-button status-button open">Open</button></a>
+        <div class="menu">
+         <button class="dropdown">
+          <ul>
+           <li><a href="/dashboard/commands/">All Commands</a></li>
+           <li><a href="https://hackerx.statuspage.io/">Status</a></li>
+          </ul>
+         </button>
+        </div>
+       </div>
+      </li>
+      <li class="adobe-product">
+       <div class="products">
+        <svg fill="#000000" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 30 30" width="30px" height="30px">    <path d="M24.707,8.793l-6.5-6.5C18.019,2.105,17.765,2,17.5,2H7C5.895,2,5,2.895,5,4v22c0,1.105,0.895,2,2,2h16c1.105,0,2-0.895,2-2 V9.5C25,9.235,24.895,8.981,24.707,8.793z M18,10c-0.552,0-1-0.448-1-1V3.904L23.096,10H18z"/></svg>
+        Source Code
+       </div>
+       <span class="status">
+        <span class="status-circle green"></span>
+        Now Available!</span>
+       <div class="button-wrapper">
+        <a href="/dashboard/src/"><button class="content-button status-button open">Open</button></a>
+        <div class="menu">
+         <button class="dropdown">
+          <ul>
+           <li><a href="/dashboard/commands/">All Commands</a></li>
+           <li><a href="https://hackerx.statuspage.io/">Status</a></li>
+          </ul>
+         </button>
+        </div>
+       </div>
+      </li>
+     </ul>
+    </div>
+    <div class="content-section">
+     <div class="content-section-title">Top Commands</div>
+     <div class="apps-card">
+      <div class="app-card">
+       <span>
+        =help
+       </span>
+       <div class="app-card__subtext">Shows all commands that can be used with HackerXBot</div>
+       <div class="app-card-buttons">
+        <a href="https://discord.gg/E9WfmCxS6W"<button class="content-button status-button">Test It Out!</button></a>
+        <div class="menu"></div>
+       </div>
+      </div>
+      <div class="app-card">
+       <span>
+        -dm
+       </span>
+       <div class="app-card__subtext">Sends A Message To A User As HackerXBot! <strong>Usage: -dm <@user> whattosend</strong></div>
+       <div class="app-card-buttons">
+        <a href="https://discord.gg/E9WfmCxS6W"<button class="content-button status-button">Test It Out!</button></a>
+        <div class="menu"></div>
+       </div>
+      </div>
+      <div class="app-card">
+       <span>
+        !kill
+       </span>
+       <div class="app-card__subtext"><i>Kills</i> someone in the server <strong>Usage: !kill <@user></strong></div>
+       <div class="app-card-buttons">
+        <a href="https://discord.gg/E9WfmCxS6W"<button class="content-button status-button">Test It Out!</button></a>
+        <div class="menu"></div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+ <div class="overlay-app"></div>
+</div>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>

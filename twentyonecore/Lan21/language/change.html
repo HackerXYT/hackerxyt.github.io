@@ -1,0 +1,7 @@
+<script>
+    const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+var product = urlParams.get('user');
+localStorage.setItem("username", product)
+</script>
+<h2>You may close this window now.</h2>

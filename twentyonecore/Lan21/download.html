@@ -1,0 +1,13 @@
+<html>
+	<head>
+		<title>Fetching Info.</title>
+	</head>
+	<body>
+		<p>Downloading..</p>
+	</body>
+	<script>
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString); 
+		const product = urlParams.get('username')
+	</script>
+</html>

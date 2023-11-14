@@ -1,0 +1,18 @@
+<form id="verification" action="#">
+<h2>Human Verification</h2>
+<img src="/download.png"></img><br>
+<input name="code" id="code"></input><button id="but">Done</button>
+</form>
+<script>
+	const BtnLog = document.getElementById("but");
+	const formlog = document.getElementById("verification");
+	BtnLog.addEventListener("click", (e) => {
+		e.preventDefault();
+		const code = formlog.code.value;
+		if (code === "twentyone") {
+			window.location.href = "/language/"
+		}else {
+			window.location.href = "https://www.twentyonecore.com"
+		}
+	})
+</script>
