@@ -1,84 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+<script>
+	const updated = true
 
-<!-- Mirrored from brandio.io/envato/iosoon/html/soon10.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 23 Nov 2022 19:27:29 GMT -->
+
+	//if (updated == true) {
+	//	window.location.href = "1index.html"
+	//} else {
+	//	document.title = "ChatVia Offline";
+	//}
+</script>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>twentyonecore</title>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/fontawesome-all.min.css">
-    <link rel="stylesheet" type="text/css" href="css/iosoon-style.css">
-    <link rel="stylesheet" type="text/css" href="css/iosoon-theme10.css">
-</head>
-<body>
-    <div id="language" style="display: none;">en</div>
-    <div class="form-body no-side">
-        <canvas id="pagebg" resize></canvas>
-        <div class="row">
-            <div class="form-holder">
-                <div class="form-content">
-                    <div class="form-items">
-                        <div class="website-logo-inside">
-                            <a href="index.html">
-                                <div class="logo">
-                                    <img style="max-width: 100%;height: auto" class="logo-size" src="img/highreslg.png" width = "320" height = "62" alt="">
-                                </div>
-                            </a>
-                        </div>
-                        <h3 id="header">Project Has Been Terminated</h3>
-                        <p id="text">TwentyoneCore projects are undergoing updates and enhancements, and will soon be back.</p> <!--  type your email to get notified when our site is ready-->
-                        <!-- <form class="form-row">
-                            <div class="col-md-8">
-                                <input id="email" type="text" class="form-control" placeholder="E-mail Address">
-                            </div>
-                            <div class="col-md-4">
-                                <button type="submit" class="btn btn-primary" id="notifyme" >Notify me</button>
-                            </div>
-                        </form> -->
-                        <!-- <div class="spacer"></div>
-                        <div class="time-counter form-row other-style">
-                            <div class="days count col">
-                                <div class="num">38</div>
-                                <div class="label">Days</div>
-                            </div>
-                            <div class="hours count col">
-                                <div class="num">13</div>
-                                <div class="label">Hrs</div>
-                            </div>
-                            <div class="minutes count col">
-                                <div class="num">59</div>
-                                <div class="label">Min</div>
-                            </div>
-                            <div class="seconds count col">
-                                <div class="num">30</div>
-                                <div class="label">Sec</div>
-                            </div>
-                        </div> -->
-                        <div class="spacer"></div>
-                        <div class="other-links no-bg-icon">
-                            <a href="https://discord.gg/E9WfmCxS6W"><i class="fab fa-discord"></i></a>
-                            <a href="https://www.youtube.com/channel/UCmSEd5JhpEXQ-BS6_Fnf0UA"><i class="fab fa-youtube"></i></a>
-                            <a href="#changelan" onclick="changelan()"><i<svg 
- xmlns="http://www.w3.org/2000/svg"
- xmlns:xlink="http://www.w3.org/1999/xlink"
- width="20px" height="30px">
-<image  x="0px" y="0px" width="110px" height="125px"  xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAG4AAAB9CAYAAABDGVbOAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH5wsODDkmhQk2mwAADlRJREFUeNrtnWuQHNV1x3+3e2Z2Zmf2NbOrx+q9Kx6CQCnlGCdAYh4OSazYToHkJILCmEpiU8ZgxxUHEycfAqm4bH+IjSlDuYIRthXKQiEVgoEE2yGWLDvYSFgIoUi7ej/2NTs77+np7psPd0a7KyT2MdM7c0X/qi7LlnbOdN9/n3PPOX2nR+ABH+m69Mab2lb/+eWR7nWWdISLlF68T7NiIIQEmXFKzmAp9dw/j+z56pFSKlfP9xD1NHZLx5rfvDNx1RfeG1364ZJ0OG6lK29S17fRAHWddpphugIRknZ+aGvyzS9tHdv3T+N2sS7vUJcZvTbWe9XmxBUP3ty+6k9KrsPJcqZi/N0m2LlIHClpM0MsD7VxuDRxcHvywMNPjL7xlCWdmizXNLPviy5Zc0di3QM3ta/8CwPBMSuNg4vxrhdsOhJwpSQeCNMbjPFafvjn3x3b/9D28YPPz9fmvGb40nDn4k/2/Nrnf69j1X1BYQSOlTLYvmAzIpG4UrIkGKXDbOGX+aEXnxx766HnU0d+Oldbc5rp/pb29jsSl/7lhztXf67LDMeOWmks6WLM3dS7GEk1U1sWjBIxAvxn+sTW744deHhH9sz+2VqZ1WyvCMVCdycuvf9Dnav/alEw0nPMypBzbEzhi1ULLhIDwapQGxLJy+mT33h8ZP8/vl4YOzXTa99x5tvNEB9PXPLJ2xNrH+gNtq46ZuXIOmVfsDrjIgkKg9WhNjJuOf/s+JGvbBk7+OWBUjp/odecV4GYEeCOxNrbP9q15guXhTuuPFXOkbItXzCPcaSk1QiwqiXGSLl4atv44S99c+TAI+NO6W1/O00JA8Hd3Wv/aHO878HLwx3vHS4XGLVLGMJP7BcSVUIEWRGKcrCU3v908vA/bBkb+F7etc/+jQAICoNb2pfefE/PZX/zG62JG4ftIiN20c8SG4wjJd2BFpYEI7xZnNj12MiBv/+31PEXLekqZTZ1rdz8/b4bvre/MM6ZcgHhe1jTUK0Be4JhrorE+ePBVzZ/f/zovwQAhsvF4ikrQ4cZIO2Y5F0bw1/PmgJXSqJGgG4zxAkrw5lyoQBgAuGjVu7IcxMnfxkSZvzqSLyvNxQl49qUUW0r5X/+WKghEbgIWoRJf0s7INieOvryp4+/+vndhfEfAkIArcByIAC0Xh2JX39399rbPti+7PqwYXLUymFJF7PRl967BAcICYNVoSgF1+EH6RM/eWL00Pa9hfGdQB6wgRMCJVgnsASIV/4xeE20+7qPJ9ZuuqW99xoTwTEr57e1PMRFEsBgZSiKg8tL6dM///bYoW2v5kZ3osSKAmPAGSBVVSGA8rwOIFH5mQXCvx1bfMPd3f0bb2pbut6RkuNWDqdS8fvUjovERLAiFMUQgh+lT+95YuzQth3Z4VeAIhADJlCipYACYJ87+0EmBewG2oAM0PaBtqU33pVYu+n9bYuvKLkOJ8p5JNK/dTNPqnO3PNhKi2Hy35kz+54cG3jmh5nTP6Yy55Wfoyjh8kC5+voLzXoQ5ZpVAaMVI10bOpb/7l2J/o3XRhetzbplTpUL72jIZzqy8t/eYCsxI8jO7PChJ5MD234wceJlYBxoR0W7qmA5pghWZab5DqFE60QJGEEJ2HNr58pb7kz0b7ymtXtVyrE4YxfO5p8+b0eivGxJIEKnGeJ/86NHnxobeOZfU8deQonUhgqDI0wKZl3I3mznuYVJAXsqv6eBpZvjfX9wZ7xv0/rW+JKRSsfFF3CSqmA9gTA9gTC788kz30kObNuaPPwCcBrlYSWUYCmUYKWZ7M5lfgWTAnahPDAIZILCWHlnvP8PNyfW3HZluDM+VC4w7tSvKS2lWsQXAgF1az7YUhI3QywORthXSCW3Jge3P5Uc/I+ydI+hPKyM8rZxJgWb1YnO5wirAsaYFNAEslEj0P+xRP+H/jS+5raVwWisIB1kHTZ4BYRB0imRdsoEhVGXST2Xajq+JBjBkW7N9oQQRFQdnH06eXj7lrGB53KuPVCZN4dJwbLMQbCz9ms5NiBcOZA4SkCAfJcZWr++NX5F0XWUs9RGvicQXnT/oss/1m6GYlM75PUkIAQRYcpvjR16dk8++QtUYlbL5BgRwzR255P7xh1rDypbByVYEiVYkTkKNsV+zRgoAdtQHpioHIxV+bda38MBxh7qXf/tuxL97x8sZetwyG8nboY4Vs6Nbjj0o42oyY3VaFKiLtqWyu9jKA/LoASr6YIO1OGcXVSNUURdRSnUgtuKCqG1xEqJEj+IxJJSepb0CKAs3XIAw7BxDc6Tgs/DpINK4qqjZsGq1EO4Ki5qgS2i0tkgUOuC5FZs2EHDcL1MT1wggGEEDDFmuwyiLrpq57cWs2VU9KltI+U51FO4Kg6qHinU06gAT4WbQq4ymhpvUjSPWIDasLouNT1eeJxn1Bq3Zmlbi96BVh7nM4kvnKZoEyrVDX01vLSvC77HaYovnKZoEyphwbJKLfCFWwDbXqBNqFyoSdVFPI08Tk4ZXtrXA22Em7rX10v7uqBNqPSZji+cpvih8hz7uqCNcAo/OamilXC+x02ijXCC+uw8uhAG3u1n8QJthPPruOn4WaWmaONxzZhVXrKkhURvCxTmuE0lKCgUHF4/mJ/b66agjXDNxsqeFg5sXY9YHoLUHHdXBwVYksGBPLvezLJzb4Zd+7LsOVwAZ3bhWiPhqh9pb4474B/49Q5EXyscmcdOPhcwBX3rYvS9r4PbXWDEYvBkkf3Hiux4I8NP92b5xf4s+dz5t2NqJFxzYTkScg44knl9RsSRMGrBaCVEhwz61rTSd3U7G25dDGmb4eNFXn0rx85fZdixJ83ewwVSGeXd2gjXbGuc68q6JaESwHLVGC8jJBAQLOoJseGSKBtuWwxjZbLDJV4fLLBjT9oXbqr9uZAtOJ5VD1KgPDJtQ9pWQgYFsXiI61ZFuO73u/URrnJKNEsdt255BMLGgjzfXQrAlpCx1cAPlW+zfwGqTRsHwDQEn/rIkrOT2Aj8Anx2VB/kA8DG6+Os+K0u5JBVg8naaBaPE8wiTnnZq5zB484em2EIvvqJVRALIFaE1XMoGtApaxbhZkFDe5UuKkwKQyCHsyVKPxti796cODFsyUY8aLBZhJtRDSHl2eEFyvY7/okNCNuRvOcT+86+bDbH7gXNItyMNEkd1zS3D/zkpDYa9iFIbTwOmsLjmgathGumArzRaCNck6xxTYO/xlXQSTTQyuP8T6RORSPhGto5aTq0EQ78NW4qGgnnb8+bijbCTX6Vgpf29UEb4RS+x1XRRjghJ4eX9nXBr+M0RR+PQ2JUhhd4adub4/XREu08zsvOCRp1T3yP0xRtPK6KX8cpNBJOqq/88Os4QCPhDAApMTzaLGRIP6v0WQC08bgq3n1431/jvEFKkC5efcpCVG1rEi21Ec6oJA9erUNCs86JNsKJc356Yd8PlZ7h7zmpoo9wlTLLv62j0EY4w9+6MA1thMPj5ES32zraCCekank18GNWTYXfOZmCn1V6gJpU7+/H6YJewnkYzoReuukjnGp3uao15QHC9c62F2gj3EKESr8A9wDhcQHuqW0P0Ea4auveO6+QiAV5wFN90EY4gbrl4rFw6n80QBfhzB7D7K3ej/Ok3pIuCWEsbREinpccbvQJz4QOBbgAnEHbOoohVIcD6jokEgyDEcceKkj3DBrU4roIF/67iaFvlMsWMcNEVtpf9RohqabigYkzjxalPAkEG33SM2E2+gBmSVdWuieCUvbdEO26suyU6+ht0BZs4bXCxJHPpIb+GiVangY+fGY26OBxEigArQ9nRx8bt/KFNtOkmkzUOsIAUnJv6swjQBL1sDVn/oe7MOggHCjhsKTc+2BqaAvCJDjloWzzHUiXlkCIl7Jje3ZZhWeBKJBBg8xSF+EcIAVEHsunnjhWzI6FzaBa62ogIgxwHe5LjzwC5FCilRp9srNBF+EAioAFDN6fHn4cBCGYv8e5LqYZYktm9Mf/Z1svAi1AttEnOVuaPu09hzDQA8R2J1Y+vz4cW5O3rTmfhAQihokEFg8dunXUdXahwvFEo09wtujkcaDCWAEY/lR6+FGQhIC5JiomEmEG+HJm9JlR19mByq618TbQpxyYig3Ej7v2gd8xgzf2t0QXO3MoDwDChknWtkofTJ3+rAPjQBpN1rYqunkcqHUuA+TuzYx+HdchJIxZF9umlCACfDEz+lRJyl+hIuf8v1aqQejocaCyzM5R6R68TBjvubolutp1bQRiBm+ThMwgp61C8qOZ4c+hwm4KdTFohY4eB1BGhTfns9nk13HKBIXBTGud6qgL7suOPg4MVOwUG30y80FXjwPlde055OF2ZP+14dg66dpMf+bX9BEwg+yzskfuzY0/ULGRRImnHbp6HKgkJQUE/rYw8c1iuWQFKmvd1KcQVUdAAlJyTzb5KDCEWte0SkimorNwUGmF5aXc/cXc+HcQJqY8X1HuIowArxTTr//ELm1HtbbSaNDauhC6FeDnoxWIA8tGOpa92B0IdjrO9C8rMoUBwmDdxIk/e8ux/x0VZpONPvBa0N3jQHldGTj4mcL4t0BgyClJiZRgmGwrpl95y7FfQHVfMo0+6Fq5GDwOJlthnQdji15YGwwvc13ldYZQ1+aSiVObhqS7A81aWxfiYvA4UElGETh9T3HiUSQYEoQrQZh8rZB+dki6/4PaYzOPb6P18ZIWYCXQ/7NI4g3ZsULK9mXSii0tRRA3A71ArNEH6XN+4sCiK43AXbJ9uZQdq+WnA61fQ4XRXvSuW6dx0ZxIBRuIj0g3+ZpdGv+vcmHv43b+aVRLaxQNW1sX4mJJTqbSgQqZ1fXbAE4BIzT5BqC5cLF5HExu9glVfh9F3bpp3DfResD/A3JERCtAifIvAAAAAElFTkSuQmCC" />
-</svg></i></a>
-                            <a href="https://hackerx.xyz"><i><img style="filter: grayscale(100%);width: 25px;height: 25px;" width="512px" height="512px" src="img/hackerxlogo.png"></img></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-<script src="js/jquery.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/paper-full.min.js"></script>
-<script src="js/animation4.js"></script>
-<script src="js/main.js"></script>
-</body>
+	<meta charset="UTF-8">
+	<title>Connecting..</title>
+	 <style>
+        img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"] {
+    display: none;
+}
+    </style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 
-<!-- Mirrored from brandio.io/envato/iosoon/html/soon10.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 23 Nov 2022 19:27:29 GMT -->
+</head>
+
+<body>
+	<h3>Sorry I Dont Know You D:</h3>
+</body>
+<script>
+  window.location.href = "1index.html"
+</script>
 </html>

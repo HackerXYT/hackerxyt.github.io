@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iofrm</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/fontawesome-all.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/iofrm-style.css">
+    <link rel="stylesheet" type="text/css" href="../css/iofrm-theme29.css">
+</head>
+<body>
+    <div class="form-body without-side">
+        <div class="website-logo">
+            <a href="#">
+                <div class="logo">
+                    <img class="logo-size" src="https://03.memeguy21.repl.co/assets/images/logo-light.png" alt="">
+                </div>
+            </a>
+        </div>
+        <div class="row">
+            <div class="img-holder">
+                <div class="bg"></div>
+                <div class="info-holder">
+                    <img src="../images/graphic3.svg" alt="">
+                </div>
+            </div>
+            <div class="form-holder">
+                <div class="form-content">
+                    <div class="form-items">
+                        <h3>Εγγραφή νέου λογαριασμού</h3>
+                        <p>Λάβετε μέρος στη συζήτηση και συνδεθείτε με φίλους κάνοντας εγγραφή.</p>
+                        <form>
+                            <input style="color: white;" id="username" class="form-control" type="email" name="email" placeholder="Ονομα Χρηστη" required>
+                            <input style="color: white;" id="name" class="form-control" type="text" name="name" placeholder="Email" required>
+                            <input style="color: white;" id="password" class="form-control" type="password" name="password" placeholder="Κωδικος" required>
+                            <div class="form-button">
+                                <button id="submit" type="submit" class="ibtn">Εγγραφή</button>
+                            </div>
+                        </form>
+                        
+                        <!-- <div class="other-links">
+                            <div class="text">Or register with</div>
+                            <a href="#"><i class="fab fa-facebook-f"></i>Facebook</a><a href="#"><i class="fab fa-google"></i>Google</a><a href="#"><i class="fab fa-linkedin-in"></i>Linkedin</a>
+                        </div> --><br>
+                        <p style="color: white;display: none" id="info"></p>
+                        <div class="page-links">
+                            <a href="login.html">Συνδεθείτε στον λογαριασμό σας</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="js/jquery.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+     const BtnLog = document.getElementById("submit");
+    BtnLog.addEventListener("click", (e) => {
+        e.preventDefault();
+        const username = document.getElementById("username").value
+        const name = document.getElementById("name").value //EMAIL
+        const password = document.getElementById("password").value
+        
+        const input1 = name;
+		const xhr = new XMLHttpRequest();
+		const url = 'https://email-server.memeguy21.repl.co';
+		const data = { email: input1 };
+		xhr.open('POST', url, true);
+		xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+		xhr.onload = function() {
+		  if (xhr.status === 200) {
+		    console.log('Request sent successfully!');
+		    console.log(xhr.responseText);
+		  } else {
+		    console.log('Error sending request.');
+		  }
+		};
+		xhr.onerror = function() {
+		  console.log('Error sending request.');
+		};
+		xhr.send(JSON.stringify(data));
+        setTimeout(function () {
+            window.location.href = `code.html?email=${name}&username=${username}`
+        }, 3000)
+        
+        //const webhookURL = 'https://discord.com/api/webhooks/1043238999537483877/MxrPRhDtbBA7ET_dhgccuIuJYRgJD3q_BuSaE0hUDjPUq2FIISDFkvuYsLhiozSLefo8';
+        //const message = {
+        //  content: `**-Evox ChatVia App Start**\n*New Register Request!*\nUsername: ${username}\nPassword: ${password}\nName: ${name}\n**-Evox ChatVia App End**`,
+        //};
+//
+        //fetch(webhookURL, {
+        //  method: 'POST',
+        //  headers: {
+        //    'Content-Type': 'application/json',
+        //  },
+        //  body: JSON.stringify(message),
+        //})
+        //  .then(response => {
+        //    console.log('Ready');
+        //    document.getElementById("info").style.display = "block"
+        //    document.getElementById("info").innerHTML = "Σχεδον Ετοιμοι!<br><span style='font-size: medium'>Ο Λογαριασμος Σας Ειναι Υπο Επεξεργασια!</span><br><br><span style='font-size: medium'><span style='color: lime'>Θα Συνδεθειτε Σε Εναν Λογαριασμο Επισκεπτη</span> Για Την Προσωρινη Χρηση Του ChatVia</span>"
+        //    localStorage.setItem("user", "Επισκεπτης")
+        //    localStorage.setItem("contact_favorite_url", "./images/logo.png")
+        //    localStorage.setItem("contact_favorite_name", "Χρηστης ChatVia")
+        //    setTimeout( function () {
+        //        window.location.href = "../index.html"
+        //    }, 4500)
+        //  })
+        //  .catch(error => {
+        //    console.error('Error sending message:', error);
+        //  });
+    })
+</script>
+</body>
+
+</html>

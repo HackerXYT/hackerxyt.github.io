@@ -1,0 +1,99 @@
+body {
+  zoom: 98%;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 50px;
+}
+.preventselect {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+.allowselect {
+  -webkit-user-select: text;
+  /* Safari */
+  -ms-user-select: text;
+  /* IE 10 and IE 11 */
+  user-select: text;
+  /* Standard syntax */
+}
+
+iframe {
+  display: block;
+    /* iframes are inline by default */
+    background: #000;
+    border: none;
+    /* Reset default border */
+    height: 100vh;
+    /* Viewport-relative units */
+    width: 100vw;
+}
+
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-10px, 0); }
+  20% { transform: translate(10px, 0); }
+  30% { transform: translate(-10px, 0); }
+  40% { transform: translate(10px, 0); }
+  50% { transform: translate(-10px, 0); }
+  60% { transform: translate(10px, 0); }
+  70% { transform: translate(-10px, 0); }
+  80% { transform: translate(10px, 0); }
+  90% { transform: translate(-10px, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+.shake {
+  animation-name: shake;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+}
+
+#title-bar {
+  height: 26px;
+  background-color: #2f3241;
+  -webkit-app-region: drag;
+}
+
+#close-button {
+  -webkit-app-region: no-drag;
+  position: fixed;
+  top: 0;
+  right: 1%;
+  width: 25px;
+  height: 25px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#close-button:hover {
+
+  cursor: pointer;
+}
+
+#close:hover {
+  -moz-transition: all .1s ease-in;
+  -o-transition: all .1s ease-in;
+  -webkit-transition: all .1s ease-in;
+  transition: all .1s ease-in;
+  fill: #ff0000
+}
+
+#bar-logo {
+  position: relative;
+  top: 0;
+  left: 5px;
+  width: 66.825px;
+  height: 19.44px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+}

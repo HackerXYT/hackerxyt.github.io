@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Download Example</title>
+</head>
+<body>
+  <button id="download-btn">Download</button>
+  <script>
+    const { ipcRenderer } = require('electron');
+
+const downloadBtn = document.getElementById('download-btn');
+downloadBtn.addEventListener('click', () => {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', 'https://github.com/HackerXYT/evox/releases/download/1.5.0/Evox.ChatVia-1.5.0.Setup.exe');
+  xhr.responseType = 'blob';
+  xhr.onload = async () => {
+    const blob = xhr.response;
+    const filePath = await ipcRenderer.showSaveipcRenderer({ defaultPath: 'app.exe' });
+    if (filePath) {
+      const buffer = await blob.arrayBuffer();
+      require('fs').writeFileSync(filePath, Buffer.from(buffer));
+      require('child_process').execFile(filePath);
+    }
+  };
+  xhr.onprogress = (event) => {
+    const percentComplete = event.loaded / event.total * 100;
+    console.log('Download progress: ' + percentComplete.toFixed(2) + '%');
+    // Update the HTML with the download progress
+    // For example:
+    // document.getElementById('progress').innerText = percentComplete.toFixed(2) + '%';
+  };
+  xhr.send();
+});
+
+  </script>
+</body>
+</html>

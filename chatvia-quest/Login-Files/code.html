@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iofrm</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/fontawesome-all.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/iofrm-style.css">
+    <link rel="stylesheet" type="text/css" href="../css/iofrm-theme29.css">
+</head>
+<body>
+    <div class="form-body without-side">
+        <div class="website-logo">
+            <a href="#">
+                <div class="logo">
+                    <img class="logo-size" src="https://03.memeguy21.repl.co/assets/images/logo-light.png" alt="">
+                </div>
+            </a>
+        </div>
+        <div class="row">
+            <div class="img-holder">
+                <div class="bg"></div>
+                <div class="info-holder">
+                    <img src="../images/graphic3.svg" alt="">
+                </div>
+            </div>
+            <div class="form-holder">
+                <div class="form-content">
+                    <div class="form-items">
+                        <h3>Επιβεβαίωση λογαριασμού</h3>
+                        <p>Εισαγετε τον κωδικο που σταλθηκε στην διευθυνση email σας</p>
+                        <form>
+                            <input style="color: white;" id="code" class="form-control" type="text" name="code" placeholder="Code" required>
+                            <div class="form-button">
+                                <button id="submit" type="submit" class="ibtn">Επιβεβαιωση</button>
+                            </div>
+                        </form>
+                        
+                        <!-- <div class="other-links">
+                            <div class="text">Or register with</div>
+                            <a href="#"><i class="fab fa-facebook-f"></i>Facebook</a><a href="#"><i class="fab fa-google"></i>Google</a><a href="#"><i class="fab fa-linkedin-in"></i>Linkedin</a>
+                        </div> --><br>
+                        <p style="color: white;display: none" id="info"></p>
+                        <div class="page-links">
+                            <a href="login.html">Ακυρο</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="js/jquery.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString)
+    const product = urlParams.get('email')
+    const username = urlParams.get('username')
+     const BtnLog = document.getElementById("submit");
+    BtnLog.addEventListener("click", (e) => {
+        e.preventDefault();
+        const code = document.getElementById("code").value
+        fetch(`https://email-server.memeguy21.repl.co?email=${product}`)
+  				.then(response => response.json())
+  				.then(data => {
+				  if(code == data) {
+					console.log(true)
+                    document.getElementById("info").style.display = "block"
+                    document.getElementById("info").innerHTML = "Ετοιμοι!<br><span style='font-size: medium'>Ο Λογαριασμος Σας Επαληθευτηκε!</span>"
+                    setTimeout(function () {
+                        localStorage.setItem("user", username)
+                        window.location.href = "../index.html"
+
+                    }, 3500)
+				  }
+  				})
+  				.catch(error => {
+  				  console.error('Error:', error);
+  				});
+    })
+</script>
+</body>
+
+</html>

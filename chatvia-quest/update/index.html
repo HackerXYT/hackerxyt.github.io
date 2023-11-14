@@ -1,0 +1,93 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>ChatVia</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="container">
+  <img src="../images/logo1.png" alt="chatvia" />
+  <div class="progress">
+    <div class="progress-bar">
+      <div class="shadow"></div>
+    </div>
+    <p style="display: none" id="text">Η Νέα Έκδοση Του ChatVia Εγκαθίσταται..</p>
+  </div>
+</div>
+<!-- partial -->
+  
+</body>
+<script>
+  function readTextFile(file, callback) {
+	var rawFile = new XMLHttpRequest();
+	rawFile.overrideMimeType('application/json');
+	rawFile.open('GET', file, true);
+	rawFile.onreadystatechange = function() {
+		if (rawFile.readyState === 4 && rawFile.status == '200') {
+			callback(rawFile.responseText);
+		}
+	};
+	rawFile.send(null);
+}
+
+  readTextFile("https://03.memeguy21.repl.co/update.json", function(data) {
+    var version = JSON.parse(data)
+    url = version.update_url
+    current_server_version = version.current
+
+  setTimeout(function () {
+      $("#text").fadeIn("slow");
+  }, 1000)
+  setTimeout(function () {
+      $("#text").fadeOut("slow");
+      setTimeout(function () {
+        document.getElementById("text").innerHTML = "Όταν ολοκληρωθεί η εγκατάσταση, αυτό το παράθυρο θα κλείσει."
+        $("#text").fadeIn("slow");
+      }, 1000)
+    }, 8000)
+    setTimeout(function () {
+        $("#text").fadeOut("slow");
+        setTimeout(function () {
+          document.getElementById("text").innerHTML = `Τότε, μεταβείτε στον φάκελο λήψεων και εκκινήστε το αρχείο Evox.ChatVia-${version.current}.Setup<br><span style="display: none" id="temp">Διαφορετικά εκκινήστε την εφαρμογή Update.exe</span>`
+          $("#text").fadeIn("slow");
+          setTimeout( function() {
+            $("#temp").fadeIn("slow");
+          }, 3000)
+        }, 1000)
+      }, 15000)
+    })
+
+    setTimeout(function () {
+      $("#text").fadeOut("fast");
+          setTimeout(function () {
+            document.getElementById("text").innerHTML = "";
+            var timeleft = 82;
+            var downloadTimer = setInterval(function () {
+              if (timeleft <= 0) {
+                clearInterval(downloadTimer);
+                $("#text").fadeOut("fast");
+                setTimeout(function () {
+                  document.getElementById("text").innerHTML = "Έτοιμοι! Η Εφαρμογή Θα Κλείσει Αυτόματα Στα Επόμενα Δευτερόλεπτα";
+                  $("#text").fadeIn("fast");
+                }, 2000)
+              } else {
+                document.getElementById("text").innerHTML = "Χρόνος που απομένει " + timeleft + " δευτερόλεπτα.";
+              }
+              timeleft -= 1;
+            }, 1000);
+            setTimeout(function() {
+              $("#text").fadeIn("slow");
+            }, 5000)
+          }, 2000)
+        }, 35000)
+
+        setTimeout(function() {
+    window.close()
+  }, 130000)
+</script>
+</html>
