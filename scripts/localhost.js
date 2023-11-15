@@ -41,6 +41,7 @@ function pingIPs() {
         checkServer(ip, port, function (isReachable) {
             if (!isReachable) {
                 // Redirect to the IP that is not reachable
+                $("#t50_updating").fadeOut("slow")
                 window.location.href = 'http://' + ip + ':' + port;
             }
         });
