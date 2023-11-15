@@ -1,1 +1,3 @@
 debug = "on"
+
+Description: When debug value is set to on localhost.js shows a new button that searches ip adresses from range 192.168.1.2:8080 to 192.168.1.22:8080. The ip that is recheable is the one that the page redirects itself to.
