@@ -101,3 +101,17 @@ function database_on_off() {
     disconnected.play()
   }
 }
+
+setInterval(function () {
+  // Get all images on the page
+  var allImages = document.querySelectorAll('img');
+
+  // Iterate through each image
+  allImages.forEach(function (img) {
+      // Set an onerror event handler to detect 404 errors
+      img.onerror = function () {
+          // Replace the source with the specified URL
+          img.src = 'https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png';
+      };
+  });
+}, 1000); // Run every 1000 milliseconds (1 second)

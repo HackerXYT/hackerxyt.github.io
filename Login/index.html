@@ -15,15 +15,17 @@
 <div class="form-wrapper">
   <h1>Sign In</h1>
   <form action="#">
+    <p style="display: none" id="info_1">Error Here</p> <!-- Error -->
     <div class="form-control">
-      <input type="text" required>
+      <input id="username" type="text" required>
       <label>Email or phone number</label>
     </div>
+    <p style="display:none" id="info_2">Error Here</p> <!-- Error -->
     <div class="form-control">
-      <input type="password" required>
+      <input id="password" type="password" required>
       <label>Password</label>
     </div>
-    <button type="submit">Sign In</button>
+    <button id="submit" type="submit">Sign In</button>
     <div class="form-help">
       <div class="remember-me">
         <input type="checkbox" id="remember-me" checked>
@@ -34,11 +36,13 @@
   </form>
   <p>New to T50? <a href="#">Sign up now</a></p>
   <small>
-    This page is protected by Moretti services to ensure you're not a threat to our services.
+    This page is protected by Moretti to ensure you're not a threat to our services.
     <a href="#">Learn more.</a>
   </small>
 </div>
-<!-- partial -->
-  
+<!-- Green Color Error: syntax error
+     Red Color Error: server error -->
+  <script src="login.js"></script>
+  <script></script>
 </body>
 </html>

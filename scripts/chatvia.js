@@ -254,6 +254,7 @@ $('#general_logs').append(`<li class="left"><div class="conversation-list"><div 
 // The user count. Can change when someone joins/leaves
 socket.on('count', function(data) {
 $('.user-count').html(data);
+calling.play()
 });
 
 msgtime1 = "";
@@ -517,7 +518,6 @@ if(data.user != user) {
 document.getElementById("updatelastmsg").innerHTML = `${data.user}: Εικονα`
 return;
 } else {
-        console.log("%cMessage in general by me", 'color: cyan')
 $('#mainchat').append(`<li class="right">
                             <div class="conversation-list">
                                 <div class="chat-avatar">
@@ -834,10 +834,21 @@ if(localStorage.getItem("auto_connect_database") == "true") {
 </div>
 </li>`)
 } else {
-  $('#mainchat').append(`<li class="right">
+  let url;
+  url = `https://03.memeguy21.repl.co/user-profiles/${user}.png`
+
+  fetch(url)
+    .then(response => {
+      if (response.status === 404) {
+        console.log('URL returns a 404 Not Found');
+        url = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+      } else {
+        console.log('URL is accessible');
+      }
+      $('#mainchat').append(`<li class="right">
 <div class="conversation-list">
 <div class="chat-avatar">
-  <img src="https://03.memeguy21.repl.co/user-profiles/${user}.png" alt="">
+  <img src="${url}" alt="">
 </div>
 
 <div class="user-chat-content">
@@ -867,6 +878,46 @@ if(localStorage.getItem("auto_connect_database") == "true") {
 </div>
 </div>
 </li>`)
+    })
+    .catch(error => {
+      url = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+      console.error('Error checking URL:', error);
+      $('#mainchat').append(`<li class="right">
+<div class="conversation-list">
+<div class="chat-avatar">
+  <img src="${url}" alt="">
+</div>
+
+<div class="user-chat-content">
+  <div class="ctext-wrap">
+    <div class="ctext-wrap-content">
+      <p class="mb-0">
+        ${data.message}
+      </p>
+      <p class="chat-time mb-0"><i class="ri-time-line align-middle"></i>
+        <span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span>
+      </p>
+    </div>
+    <div class="dropdown align-self-start">
+      <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        <i class="ri-more-2-fill"></i>
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">Αντιγραφη <i class="ri-file-copy-line float-end text-muted"></i></a>
+        <a class="dropdown-item" onclick="saveinchat(e)" href="#">Αποθηκευση <i class="ri-save-line float-end text-muted"></i></a>
+        <a class="dropdown-item" href="#">Προωθηση <i class="ri-chat-forward-line float-end text-muted"></i></a>
+        <a class="dropdown-item" href="#">Διαγραφη <i class="ri-delete-bin-line float-end text-muted"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="conversation-name">${data.user}</div>
+</div>
+</div>
+</li>`)
+    });
+
+  
 }
     //console.log("The message is sent by me")
     
@@ -923,40 +974,48 @@ document.getElementById("lastmsgtime").innerHTML = "τωρα"
   $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="images/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Ο Χρηστης ${data.user} εστειλε ενα μηνυμα</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
         new_message_sound.play()
         //$('#mainchat').append('<p><strong>' + data.user + '</strong>: ' + data.message + '</p>');
-        $('#mainchat').append(`<li class="left">
-<div class="conversation-list">
-<div class="chat-avatar">
-  <img src="https://03.memeguy21.repl.co/user-profiles/${data.user}.png" alt="">
-</div>
+        let url;
+  url = `https://03.memeguy21.repl.co/user-profiles/${data.user}.png`
 
-<div class="user-chat-content">
-  <div class="ctext-wrap">
-    <div class="ctext-wrap-content">
-      <p class="mb-0">
-        ${data.message}
-      </p>
-      <p class="chat-time mb-0"><i class="ri-time-line align-middle"></i>
-        <span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span>
-      </p>
+  fetch(url)
+    .then(response => {
+      if (response.status === 404) {
+        console.log('URL returns a 404 Not Found');
+        url = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+        $('#mainchat').append(`<li class="left">
+    <div class="conversation-list">
+    <div class="chat-avatar">
+      <img src="${url}" alt="">
     </div>
-    <div class="dropdown align-self-start">
-      <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false">
-        <i class="ri-more-2-fill"></i>
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">Αντιγραφη <i class="ri-file-copy-line float-end text-muted"></i></a>
-        <a class="dropdown-item" onclick="saveinchat(e)" href="#">Αποθηκευση <i class="ri-save-line float-end text-muted"></i></a>
-        <a class="dropdown-item" href="#">Προωθηση <i class="ri-chat-forward-line float-end text-muted"></i></a>
-        <a class="dropdown-item" href="#">Διαγραφη <i class="ri-delete-bin-line float-end text-muted"></i></a>
+    
+    <div class="user-chat-content">
+      <div class="ctext-wrap">
+        <div class="ctext-wrap-content">
+          <p class="mb-0">
+            ${data.message}
+          </p>
+          <p class="chat-time mb-0"><i class="ri-time-line align-middle"></i>
+            <span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span>
+          </p>
+        </div>
+        <div class="dropdown align-self-start">
+          <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <i class="ri-more-2-fill"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Αντιγραφη <i class="ri-file-copy-line float-end text-muted"></i></a>
+            <a class="dropdown-item" onclick="saveinchat(e)" href="#">Αποθηκευση <i class="ri-save-line float-end text-muted"></i></a>
+            <a class="dropdown-item" href="#">Προωθηση <i class="ri-chat-forward-line float-end text-muted"></i></a>
+            <a class="dropdown-item" href="#">Διαγραφη <i class="ri-delete-bin-line float-end text-muted"></i></a>
+          </div>
+        </div>
       </div>
+      <div class="conversation-name">${data.user}</div>
     </div>
-  </div>
-  <div class="conversation-name">${data.user}</div>
-</div>
-</div>
-</li>`)
-        document.getElementById("updatelastmsg").innerHTML = `${data.user}: ${data.message}`
+    </div>
+    </li>`)
+            document.getElementById("updatelastmsg").innerHTML = `${data.user}: ${data.message}`
     var id = Math.floor(Math.random() * 10000) + 1;
 
 const now = new Date();
@@ -971,6 +1030,110 @@ const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}`;
 localStorage.setItem(`saved_msg_${id}`, data.message)
 localStorage.setItem(`saved_user_${id}`, `${data.user}`)
 localStorage.setItem(`saved_date_${id}`, formattedDate)
+      } else {
+        console.log('URL is accessible');
+        $('#mainchat').append(`<li class="left">
+    <div class="conversation-list">
+    <div class="chat-avatar">
+      <img src="${url}" alt="">
+    </div>
+    
+    <div class="user-chat-content">
+      <div class="ctext-wrap">
+        <div class="ctext-wrap-content">
+          <p class="mb-0">
+            ${data.message}
+          </p>
+          <p class="chat-time mb-0"><i class="ri-time-line align-middle"></i>
+            <span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span>
+          </p>
+        </div>
+        <div class="dropdown align-self-start">
+          <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <i class="ri-more-2-fill"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Αντιγραφη <i class="ri-file-copy-line float-end text-muted"></i></a>
+            <a class="dropdown-item" onclick="saveinchat(e)" href="#">Αποθηκευση <i class="ri-save-line float-end text-muted"></i></a>
+            <a class="dropdown-item" href="#">Προωθηση <i class="ri-chat-forward-line float-end text-muted"></i></a>
+            <a class="dropdown-item" href="#">Διαγραφη <i class="ri-delete-bin-line float-end text-muted"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="conversation-name">${data.user}</div>
+    </div>
+    </div>
+    </li>`)
+            document.getElementById("updatelastmsg").innerHTML = `${data.user}: ${data.message}`
+    var id = Math.floor(Math.random() * 10000) + 1;
+
+const now = new Date();
+const day = now.getDate().toString().padStart(2, '0');
+const month = (now.getMonth() + 1).toString().padStart(2, '0');
+const year = now.getFullYear().toString().slice(-2);
+const hours = now.getHours().toString().padStart(2, '0');
+const minutes = now.getMinutes().toString().padStart(2, '0');
+const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}`;
+
+
+localStorage.setItem(`saved_msg_${id}`, data.message)
+localStorage.setItem(`saved_user_${id}`, `${data.user}`)
+localStorage.setItem(`saved_date_${id}`, formattedDate)
+      }
+    })
+    .catch(error => {
+      console.error('Error checking URL:', error);
+      $('#mainchat').append(`<li class="left">
+    <div class="conversation-list">
+    <div class="chat-avatar">
+      <img src="${url}" alt="">
+    </div>
+    
+    <div class="user-chat-content">
+      <div class="ctext-wrap">
+        <div class="ctext-wrap-content">
+          <p class="mb-0">
+            ${data.message}
+          </p>
+          <p class="chat-time mb-0"><i class="ri-time-line align-middle"></i>
+            <span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span>
+          </p>
+        </div>
+        <div class="dropdown align-self-start">
+          <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <i class="ri-more-2-fill"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Αντιγραφη <i class="ri-file-copy-line float-end text-muted"></i></a>
+            <a class="dropdown-item" onclick="saveinchat(e)" href="#">Αποθηκευση <i class="ri-save-line float-end text-muted"></i></a>
+            <a class="dropdown-item" href="#">Προωθηση <i class="ri-chat-forward-line float-end text-muted"></i></a>
+            <a class="dropdown-item" href="#">Διαγραφη <i class="ri-delete-bin-line float-end text-muted"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="conversation-name">${data.user}</div>
+    </div>
+    </div>
+    </li>`)
+            document.getElementById("updatelastmsg").innerHTML = `${data.user}: ${data.message}`
+    var id = Math.floor(Math.random() * 10000) + 1;
+
+const now = new Date();
+const day = now.getDate().toString().padStart(2, '0');
+const month = (now.getMonth() + 1).toString().padStart(2, '0');
+const year = now.getFullYear().toString().slice(-2);
+const hours = now.getHours().toString().padStart(2, '0');
+const minutes = now.getMinutes().toString().padStart(2, '0');
+const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}`;
+
+
+localStorage.setItem(`saved_msg_${id}`, data.message)
+localStorage.setItem(`saved_user_${id}`, `${data.user}`)
+localStorage.setItem(`saved_date_${id}`, formattedDate)
+    });
+    
     }
 }
 
@@ -1299,7 +1462,7 @@ for (let key in localStorage) {
 }
 setTimeout(function() {
 // An array of localStorage keys to clear
-window.location.href='./Login-Files/login.html'
+window.location.href='./Login'
 
 //localStorage.clear()
 //LOOP AND CLEAR ONLY REQUIRED

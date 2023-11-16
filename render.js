@@ -128,7 +128,7 @@ for (var i = 0; i < elements.length; i++) {
 }
 window.addEventListener("load", (event) => {
     if (!user) {
-        window.location.href = "./Login-Files/login.html"
+        window.location.href = "./Login"
         return;
     }
     if(localStorage.getItem("bypass") == "offline") {
@@ -799,7 +799,7 @@ function updateemail() {
 	  if (xhr.status === 200) {
 	    console.log('Request sent successfully!');
 	    console.log(xhr.responseText);
-      if(xhr.responseText == "received POST request.") {
+      default_time = setTimeout(function() {
         $("#dropdown34").fadeOut("slow", function() {
           document.getElementById("dropdown34").innerHTML = `<div id="add_edit_email_place"><div class="mb-3">
                           <label for="updatemail" class="form-label">Προσθηκη Email / Τελευταιο Βημα</label>
@@ -812,7 +812,9 @@ function updateemail() {
                         </div>
                         <button onclick="verify_code('${input1}')" style="color: lime" type="button" class="btn btn-light btn-sm"><b>Επαληθευση</b></button>&nbsp;`
         })
-      } else if(xhr.responseText == "error, exists") {
+      }, 3000)
+      if(xhr.responseText == "error, exists") {
+        clearTimeout(default_time)
         $("#dropdown34").fadeOut("slow", function() {
           document.getElementById("dropdown34").innerHTML = `<div id="add_edit_email_place"><div class="mb-3">
                           <h5 for="updatemail" class="form-label">Προσθηκη Email / Τελευταιο Βημα</h5>
@@ -825,6 +827,7 @@ function updateemail() {
                         </div>
                         <button onclick="verify_code('${input1}')" style="color: lime" type="button" class="btn btn-light btn-sm"><b>Επαληθευση</b></button>&nbsp;`
         })
+        $("#dropdown34").fadeIn("slow")
       }
 	  } else {
 	    console.log('Error sending request.');
@@ -866,7 +869,7 @@ function verify_code(email) {
       </svg><br><br><p id="info_show_loading_email_change" style="color: white">Περιμένετε..</p>`
       
       fetch(`https://email-server.memeguy21.repl.co?email=${email}`)
-        .then(response => response.json())
+        .then(response => response.text())
         .then(data => {
 	      if(code == data) {
 	      console.log(true)
