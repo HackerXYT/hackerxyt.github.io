@@ -35,7 +35,7 @@ body {
 }
 
 .website-logo .logo {
-    background-image: url("/Login-Files/logo-light.png");
+    background-image: url("../icons/t50 - Copy.png");
 }
 
 .website-logo .logo img {
@@ -47,7 +47,7 @@ body {
 }
 
 .website-logo-inside .logo {
-    background-image: url("/Login-Files/logo-light.png");
+    background-image: url("../icons/t50 - Copy.png");
 }
 
 .website-logo-inside .logo img {
@@ -533,10 +533,16 @@ body {
     }
 
     .website-logo .logo {
-        background-image: url("../Login-Files/logo-light.png");
+        background-image: url("../icons/t50 - Copy.png");
+        height: 75px;
+        width: 75px;
+        left: 50%;
+        right: 50%;
     }
 
     .form-body.without-side .website-logo .logo {
-        background-image: url("../Login-Files/logo-light.png");
+        background-image: url("../icons/t50 - Copy.png");
+        left: 50%;
+        right: 50%;
     }
 }
