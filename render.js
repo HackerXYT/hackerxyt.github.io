@@ -527,6 +527,7 @@ function change_emoji_4() {
 }
 
 function showgeneral() {
+  sessionStorage.setItem("chat", "logs_general")
     document.getElementById("new_hide_1").style.display = "none"
     $("#send_messages_section").fadeOut("fast");
     //document.getElementById("send_messages_section").style.display = "none"
@@ -543,6 +544,7 @@ function showgeneral() {
 }
 
 function showerrors() {
+  sessionStorage.setItem("chat", "logs_errors")
     document.getElementById("new_hide_2").style.display = "none"
     $("#send_messages_section").fadeOut("fast");
     //document.getElementById("send_messages_section").style.display = "none"

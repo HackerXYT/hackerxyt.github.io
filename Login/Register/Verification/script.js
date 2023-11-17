@@ -19,7 +19,8 @@ if(username == null || email == null) {
     },
     body: JSON.stringify({
       email: email,
-      username: username
+      username: username,
+      method: "t50-code"
     })
   })
   .then(response => response.text())
@@ -110,14 +111,7 @@ BtnLog.addEventListener("click", (e) => {
     })
     .catch(error => {
       console.error('Fetch error:', error);
-      if(error.contains("401")) {
-        console.log("401 Error, Code Is Wrong Or Account Doesn't Exist!")
-      }
     });
-
-   
-    
-    
 })
 
 function reset() {

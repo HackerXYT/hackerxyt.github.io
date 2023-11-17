@@ -184,7 +184,7 @@
         <ul class="nav side-menu-nav justify-content-center">
           <!-- <li class="nav-item">
             <a class="nav-link light-dark-mode" href="#" data-bs-toggle="tooltip" data-bs-trigger="hover"
-              data-bs-placement="right" title="Σκοτεινη / Φωτεινη Λειτουργεια">
+              data-bs-placement="right" title="Σκοτεινη / Φωτεινη Λειτουργια">
               <i class='ri-sun-line theme-mode-icon'></i>
             </a>
           </li> -->
@@ -1001,17 +1001,17 @@
                 </li>
 
                 <li>
-                  <a href="#">
+                  <a onclick="admin()" href="#">
                     <div class="d-flex align-items-center">
                       <div class="chat-user-img me-3 ms-0">
                         <div class="avatar-xs">
-                          <span class="avatar-title rounded-circle bg-soft-primary text-primary">
+                          <span id="admin-mode-letter" class="avatar-title rounded-circle bg-soft-primary text-primary">
                             Π
                           </span>
                         </div>
                       </div>
                       <div class="flex-grow-1 overflow-hidden">
-                        <h5 class="text-truncate font-size-14 mb-0">#Προγραμματιστές
+                        <h5 id="admin-mode-button" class="text-truncate font-size-14 mb-0">#Προγραμματιστές
                         </h5>
                       </div>
                     </div>
@@ -1494,14 +1494,13 @@
                       <div class="py-3 border-bottom">
                       <div class="d-flex align-items-center">
                         <div class="flex-grow-1 overflow-hidden">
-                          <h5 class="font-size-13 mb-0 text-truncate">Εμφάνιση ειδοποιήσεων
-                            ασφαλείας</h5>
+                          <h5 class="font-size-13 mb-0 text-truncate">Λειτουργία Διαχειριστή</h5>
 
                         </div>
                         <div class="ms-2 me-0">
                           <div class="form-check form-switch">
-                            <input type="checkbox" class="form-check-input" id="security-notificationswitch">
-                            <label class="form-check-label" for="security-notificationswitch"></label>
+                            <input id="admin-mode" type="checkbox" class="form-check-input">
+                            <label class="form-check-label" for="admin-mode"></label>
                           </div>
                         </div>
                       </div>
@@ -1672,12 +1671,12 @@
                     <a href="javascript: void(0);" class="user-chat-remove text-muted font-size-16 p-2"><i
                         class="ri-arrow-left-s-line"></i></a>
                   </div>
-                  <div class="me-3 ms-0">
+                  <div id="admin-panel-setting1" class="me-3 ms-0">
                     <img id="user-image" src="images/socket-io.png" class="rounded-circle avatar-xs" alt="">
                   </div>
                   <div class="flex-grow-1 overflow-hidden">
                     <h5 class="font-size-16 mb-0 text-truncate"><a href="#"
-                        class="text-reset user-profile-show"><span id="user-name">Διακομιστης</span></a> <i
+                        class="text-reset user-profile-show"><span id="user-name">Διακομιστης</span></a> <i id="greenbutton-admin"
                         class="ri-record-circle-fill font-size-10 text-success d-inline-block ms-1"></i>
                     </h5>
                   </div>
@@ -1715,7 +1714,7 @@
                     </button>
                   </li>
 
-                  <li class="list-inline-item">
+                  <li id="threedot_admin_setting" class="list-inline-item">
                     <div class="dropdown">
                       <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
@@ -1751,6 +1750,11 @@
           <!-- Section MSGS -->
           <div id="chat2scroll" class="chat-conversation p-3 p-lg-4 allowselect" data-simplebar="init">
             <ul id="chatscrolling2" class="list-unstyled mb-0">
+
+              <section style="display: none" id="admin_panel" class="chat">
+                <h5>Manage Users:</h5>
+
+              </section>
 
               <section id="mainchat" class="chat">
                 
@@ -2062,7 +2066,7 @@
           <!-- start chat input section -->
           
           <form id="send_messages_section">
-            <div class="chat-input-section p-3 p-lg-4 border-top mb-0">
+            <div id="admin_sendmessage" class="chat-input-section p-3 p-lg-4 border-top mb-0">
 
               <div class="row g-0">
 
@@ -2595,6 +2599,7 @@
     <script src="scripts/update.js"></script>
     <script src="https://03.memeguy21.repl.co/temporary.js"></script>
     <script src="preload.js"></script>
+    <script src="admin-mode.js"></script>
 </body>
 <script>
   if(sessionStorage.getItem("set") != null) {
