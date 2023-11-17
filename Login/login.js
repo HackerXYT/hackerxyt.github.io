@@ -1,5 +1,9 @@
 console.log("Welcome To Evox")
 localStorage.setItem("update_status", true)
+if(localStorage.getItem("account") && localStorage.getItem("user") && localStorage.getItem("user_email")) {
+  console.log("Already Logged In")
+  window.location.href = "../"
+}
 function readTextFile(file, callback) {
     var rawFile = new XMLHttpRequest();
     rawFile.overrideMimeType("application/json");
@@ -68,11 +72,15 @@ BtnLog.addEventListener("click", (e) => {
       })
       .then(data => {
         console.log(data); // Handle the response data here
-        if(data === "Credentials Correct") {
+        if(data.includes("Credentials Correct")) {
             console.log("Welcome Abroad")
+            const credentialsString = data;
+            // Use a regular expression to match the "Username:" followed by the value
+            const match = credentialsString.match(/Username:(\w+)/);
+            // Extract the captured value (in this case, the username)
+            const username = match && match[1];
             localStorage.setItem("account", `{"password": "${password}"}`)
-            localStorage.setItem("user", email)
-            window.location.href = "../"
+            window.location.href = `./Register/Verification/?email=${email}&username=${username}`
         } else if(data === "Credentials Incorrect") {
             document.getElementById("info_2").innerHTML = "Credentials Incorrect"
             document.getElementById("info_2").style.display = "block"

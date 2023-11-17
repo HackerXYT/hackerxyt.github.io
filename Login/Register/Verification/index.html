@@ -2,8 +2,8 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>095 Creation - Login Page</title>
-  <link rel="stylesheet" href="./style.css">
+  <title>095 Creation - Verification Page</title>
+  <link rel="stylesheet" href="style.css">
 
 </head>
 <body>
@@ -13,17 +13,16 @@
 </nav>
 
 <div class="form-wrapper">
-  <h1>Sign In</h1>
+  <h1>Verification</h1>
   <form action="#">
     <p style="display: none" id="info_1">Error Here</p> <!-- Error -->
     <div class="form-control">
-      <input id="username" type="text" required>
-      <label>Email or phone number</label>
+      <input id="email" value="error" type="text" disabled>
     </div>
-    <p style="display:none" id="info_2">Error Here</p> <!-- Error -->
+    <p style="display: none" id="info_2">Error Here</p> <!-- Error -->
     <div class="form-control">
-      <input id="password" type="password" required>
-      <label>Password</label>
+      <input id="code" type="text" required>
+      <label>Verification Code</label>
     </div>
     <button id="submit" type="submit">Sign In</button>
     <div class="form-help">
@@ -34,7 +33,7 @@
       <a href="#">Need help?</a>
     </div>
   </form>
-  <p>New to T50? <a href="./Register/">Sign up now</a></p>
+  <p>Changed Your Mind? <a onclick="reset()" href="#reset">Go Back</a></p>
   <small>
     This page is protected by Moretti to ensure you're not a threat to our services.
     <a href="#">Learn more.</a>
@@ -42,7 +41,7 @@
 </div>
 <!-- Green Color Error: syntax error
      Red Color Error: server error -->
-  <script src="login.js"></script>
+  <script src="script.js"></script>
   <script></script>
 </body>
 </html>
