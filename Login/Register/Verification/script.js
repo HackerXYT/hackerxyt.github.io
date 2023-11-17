@@ -121,6 +121,8 @@ BtnLog.addEventListener("click", (e) => {
 })
 
 function reset() {
+  console.error("Function Needs Fixing (T50Server-Side)")
+  window.location.href = "/"
   const uri = `https://email-server.memeguy21.repl.co/email?email=${email}&code=delete`;
 
 
@@ -134,14 +136,40 @@ function reset() {
     .then(data => {
       console.log(data); // Handle the response data here
       if(data === "200") {
+        console.log("Task 1 Completed, Email Server Deleted Account Successfully")
         //CONTINUE TO DELETE INFO FROM MAIN T50 CLEAN SERVER
+        var password = JSON.parse(localStorage.getItem("account")).password
+        console.log("LocalStorage Password:", password)
+        fetch('https://team50-accounts-database-clear.memeguy21.repl.co/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      username: username,
+      email: email,
+      password: password,
+      func: "delete"
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    console.log(data);
+    if(data === "Account Deleted From DB") {
+      console.log("Task 2 Completed, T50 Server Deleted Account Successfully")
+      window.location.href = "/"
+    }
+    
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+
       }
     })
     .catch(error => {
       console.error('Fetch error:', error);
-      if(error.contains("401")) {
-        console.log("401 Error, Code Is Wrong Or Account Doesn't Exist!")
-      }
     });
 }
 
