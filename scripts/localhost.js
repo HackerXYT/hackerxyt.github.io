@@ -1,7 +1,7 @@
 const y = "running"
 const n = "off"
 
-debug = y
+debug = n
 ip = ""
 
 if (debug === y) {
