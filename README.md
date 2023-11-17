@@ -1,3 +1,2 @@
 # hackerxyt.github.io
-LAN21
-Private Server
+T50 Private Clearnet Server
