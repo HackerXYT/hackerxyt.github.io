@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Apache Error Pages | AGPL License | https://github.com/justinhartman/Apache-Error-Pages -->
+    <meta charset="utf-8">
+    <title>404 - Resource not found</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="fontawesome-all.css">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="breakpoints.css">
+</head>
+<body>
+    <div id="container">
+        <!-- 
+            We can use the following Font Awesome Icons & Colours:
+
+            <i class="fas fa-info-circle green"></i>
+            <i class="fas fa-exclamation-triangle orange"></i>
+            <i class="fas fa-times-circle red"></i>
+         -->
+        <div id="echoerror"><i class="fas fa-times-circle red"></i></div>
+    </div>
+    <div style="display: none" id="errormsg">
+        :~$ Error 401!<br>
+        Unauthorized<br>
+        <br>
+        Error: Authentication Failed
+<br>
+We're sorry, but the verification process during app startup has failed. It appears that the account credentials saved on your device do not match the ones stored in our database. This could be due to the account being deleted or the password being changed.
+<br>
+As a result, you will be automatically logged out of your current session. Please log in again with your updated credentials to continue using the app.
+<br>
+If you believe this is an error or if you have recently changed your password, please ensure you are entering the correct login information. If the issue persists, contact our support team for further assistance.
+<br>
+Thank you for your understanding.
+
+    </div>
+    <button onclick="reset()">Reset Session</button>
+    <script type="text/javascript">
+        var charIndex = -1;
+        var stringLength = 0;
+        var inputText;
+        function writeContent()
+        {
+            inputText = document.getElementById('errormsg').innerHTML;
+            if (charIndex === -1) {
+                charIndex = 0;
+                stringLength = inputText.length;
+            }
+            var initString = document.getElementById('echoerror').innerHTML;
+            initString = initString.replace(/<span.*$/gi,"");
+
+            var theChar = inputText.charAt(charIndex);
+            var nextFourChars = inputText.substr(charIndex,4);
+
+            if (nextFourChars === '<br>') {
+                theChar = '<br>';
+                charIndex+=3;
+            }
+
+            initString = initString + theChar + "<span id='blink'>▌</span>";
+            document.getElementById('echoerror').innerHTML = initString;
+
+            time = 15;
+            charIndex = charIndex/1 +1;
+            if (charIndex <= stringLength) {
+                setTimeout('writeContent(false)',time);
+            }
+        }
+        writeContent();
+        
+
+        function reset() {
+            localStorage.clear()
+            sessionStorage.clear()
+            window.location.href = "/"
+        }
+    </script>
+</body>
+</html>

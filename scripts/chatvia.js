@@ -35,6 +35,27 @@ rawFile.onreadystatechange = function() {
 rawFile.send(null);
 }
 
+    function AccountAuth() {
+      fetch(`https://team50-accounts-database-clear.memeguy21.repl.co/?email=${localStorage.getItem("user_email")}&password=${JSON.parse(localStorage.getItem("account")).password}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.text();
+      })
+      .then(data => {
+        if(data.includes("Credentials Correct")) {
+          console.log("Account Info Verified")
+        } else {
+          console.error("Verification Failed!")
+          window.location.href = "./AuthFailure"
+        }
+          })
+      .catch(error => {
+        console.error('Fetch error:', error);
+      });
+    }
+    AccountAuth()
 
 function checkImage(url, callback) {
 var img = new Image();
@@ -121,6 +142,11 @@ var sound = new Howl({
 src: ['https://03.memeguy21.repl.co/Google_Event.mp3'],
 volume: 0.9
 });
+
+var connecting = new Howl({
+  src: ['./internal/connecting.mp3'],
+  volume: 0.9
+  });
 
 var connection_closed = new Howl({
 src: ['./internal/connection_closed.mp3'],

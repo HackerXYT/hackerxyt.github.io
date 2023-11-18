@@ -12,9 +12,10 @@ if(localStorage.getItem("admin") === "true") {
 // Add an event listener to the checkbox
 checkbox.addEventListener('change', function() {
   // Check if the checkbox is checked
+  myFunction();
   if (checkbox.checked) {
     // Run your function here
-    myFunction();
+   
   }
 });
 // Your function to run when the checkbox is checked
@@ -22,7 +23,20 @@ function myFunction() {
     if(localStorage.getItem("admin") === "true") {
         localStorage.setItem("admin", "false")
         alert("Admin Panel Has Been Disabled")
+        document.getElementById("admin-mode-letter").innerHTML = "Π"
+        document.getElementById("admin-mode-button").innerHTML = "#Προγραμματιστές"
+        //Add Remove all admin section contents
+        $("#admin_panel").fadeOut("slow", function() {
+          $("#admin_panel").html("Sorry, You Don't Have Access To This Section.")
+            $("#admin_panel").fadeIn("slow")
+        })
     } else {
+      if(user !== "papostol") {
+        console.error("Sorry No Permission")
+        error("Cannot enable Admin Mode; no permission is granted for this account.")
+        checkbox.checked = false
+        return;
+      }
         alert('Enabling Admin Panel..');
         document.getElementById("admin-mode-letter").innerHTML = "Τ50"
         document.getElementById("admin-mode-button").innerHTML = "#Διαχειριστής"
@@ -45,6 +59,8 @@ function getAdmin() {
   })
   .then(data => {
     console.log(data); // Handle the response data here
+    console.error("Failed Code! Rejected!")
+    return;
     var accountsArray = JSON.parse(data);
 
     // Get the admin_panel element
@@ -111,6 +127,10 @@ function getAdmin() {
 }
 
 function admin() {
+  if(localStorage.getItem("admin") !== "true") {
+    not_ready.play()
+    return;
+  }
     document.getElementById("new_message_badge_2").style.display = "none"
     sessionStorage.setItem("chat", "admin")
     document.getElementById("unread_chat").style.display = "none"
@@ -167,22 +187,143 @@ function delete_account(what) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      username: "no",
+      username: "sorry, no idea",
       email: what,
-      password: "no",
+      password: sessionStorage.getItem(what),
       func: "delete"
     })
   })
   .then(response => response.text())
   .then(data => {
     console.log(data);
-    if(data === "Account Deleted From DB") {
-      console.log("Task 2 Completed, T50 Server Deleted Account Successfully")
-      window.location.href = "/"
+    if(data !== null) {
+      console.log("Task Completed, T50 Server Deleted Account Successfully")
+      notyf.success(`Ο Λογαριασμος ${what} διαγραφτηκε με επιτυχια`);
+      setTimeout(function() {
+        document.getElementById("admin_panel").innerHTML = `<h5>Manage Users:</h5>`
+      }, 2500)
+      
+      run()
     }
     
   })
   .catch(error => {
     console.error(error);
   });
+}
+
+function run() {
+  if(localStorage.getItem("admin") !== "true") {
+    console.error("Cannot Continue, Admin Mode Disabled")
+    error("Cannot Continue, Admin Mode Disabled")
+    error_sound.play()
+    return;
+  }
+const url = `https://team50-accounts-database-clear.memeguy21.repl.co/?admin=t50_username/password&password=yes`;
+console.log("starting db info")
+    fetch(url)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.text();
+  })
+  .then(data => {
+    console.log(data); // Handle the response data here
+    console.log(data); // Handle the response data here
+var accountsObject = JSON.parse(data);
+
+//Create SessionStorage For Emails And Passwords
+for (var email in accountsObject) {
+    if (accountsObject.hasOwnProperty(email)) {
+        var account = accountsObject[email];
+
+        // Set sessionStorage values
+        sessionStorage.setItem(email, account.password);
+    }
+}
+// Get the admin_panel element
+var adminPanel = document.getElementById('admin_panel');
+
+// Iterate through the keys of the object
+for (var email in accountsObject) {
+    if (accountsObject.hasOwnProperty(email)) {
+        // Get the account object for the current email
+        var account = accountsObject[email];
+
+        // Create HTML elements
+        var paragraph = document.createElement('p');
+
+        // Create a text node for the email
+        var emailTextNode = document.createTextNode('Email: ' + account.email);
+
+        var button = document.createElement('button');
+        var buttonText = document.createTextNode(`Delete: ${account.email}`);
+
+        // Add a class to the button
+        button.classList.add('btn');
+        button.classList.add('btn-light');
+        button.classList.add('btn-sm');
+
+        // Add an onclick attribute to the button
+        button.onclick = function() {
+            delete_account(account.email);
+        };
+        button.title = account.email;
+      
+
+        button.appendChild(buttonText);
+        // Create a span element with an ID for the username
+        var usernameSpan = document.createElement('span');
+        usernameSpan.id = 'username-' + email;
+        var usernameTextNode = document.createTextNode('Username: ' + account.username);
+        usernameSpan.appendChild(usernameTextNode);
+
+        // Create a span element with an ID for the password
+        var passwordSpan = document.createElement('span');
+        passwordSpan.id = 'password-' + email;
+        var passwordTextNode = document.createTextNode('Password: ' + account.password);
+        passwordSpan.appendChild(passwordTextNode);
+
+        // Append text nodes to the paragraph element
+        paragraph.appendChild(emailTextNode);
+        paragraph.appendChild(document.createElement('br'));
+        paragraph.appendChild(usernameSpan);
+        paragraph.appendChild(document.createElement('br'));
+        paragraph.appendChild(passwordSpan);
+        paragraph.appendChild(document.createElement('br'));
+        paragraph.appendChild(button);
+
+        // Append the paragraph element to the admin_panel
+        adminPanel.appendChild(paragraph);
+    }
+}
+
+  })
+  .catch(error => {
+    console.error('Fetch error:', error);
+  });
+}
+
+function connect_admin_db(what) {
+  if(what === "admin") {
+    //RUN
+    connecting.play()
+    $("#loading-admin").fadeIn("slow")
+    $("#admin-connect-btn").html("Connecting")
+    run()
+    setTimeout(function() {
+      connected_to_server.play()
+      connecting.stop()
+      $("#loading-admin").fadeOut("slow")
+      $("#admin-info").fadeOut("slow")
+      $("#manage-admin-h5").fadeIn("slow")
+    }, 2500)
+  } else {
+    console.log("Sorry, Cannot Continue.")
+    $("#admin-info").fadeOut("slow", function() {
+      $("#admin-info").html("An Error Occured, You Cannot Continue")
+      error("Error: Connect to database action for admin failed. Is the password correct?")
+    })
+  }
 }

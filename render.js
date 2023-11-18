@@ -574,7 +574,7 @@ function connect_disconnect() {
         document.getElementById("notification_offline").remove();
         console.log("Online")
     } else if(checkBox.checked === false) {
-        $('#mainchat').append(`<li id="notification_offline" class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./images/system.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0"><h4 style="color: lightcoral">Προσοχη!</h4>Η Συνδεση Με Τον Διακομιστη Σταματησε!<br>Τα Μηνυματα Που Πληκτρολογησετε Απο Τωρα Θα Αποθηκευθουν Για Αποστολη Μεχρι Να Επιστρεψει Η Συνδεση Με Τον Διακομιστη!</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Συστημα</div></div></div></li>`)
+        $('#mainchat').append(`<li id="notification_offline" style="display:none" class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./images/system.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0"><h5 style="color: lightcoral">Προσοχη!</h5>Η Συνδεση Με Τον Διακομιστη Σταματησε!</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Συστημα</div></div></div></li>`)
         error_sound.play()
         socket.disconnect()
         console.log("Offline")
@@ -1748,4 +1748,12 @@ function go_to(where) {
   } else if(where == "settings") {
     document.getElementById("set6").click()
   }
+}
+
+function error(msg) {
+  $('#error_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div>
+  <div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">
+  ${msg}</p><p class="chat-time mb-0">
+  <i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div>
+  </div><div class="conversation-name">T50</div></div></div></li>`)
 }
