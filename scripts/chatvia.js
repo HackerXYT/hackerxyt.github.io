@@ -250,6 +250,7 @@ $.getJSON('https://api.bigdatacloud.net/data/ip-geolocation?key=' + apiKey, func
     document.getElementById("profilelocation").innerHTML = datac.country.name
     document.getElementById("profilelocation2").innerHTML = datac.country.name
     document.getElementById("carrier").innerHTML = datac.network.carriers[0].name
+    document.getElementById("ipaddr").innerHTML = datac.ip
 });
 var elms = document.querySelectorAll("[id='pfpprofile']");
 document.getElementById("update_pfp_after_change").src = `https://03.memeguy21.repl.co/user-profiles/${localStorage.getItem("user") || 'Ανωνυμος'}.png`
