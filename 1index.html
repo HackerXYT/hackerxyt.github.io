@@ -3,6 +3,7 @@
 
 
 <head>
+  <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP" defer></script>
   <script>
     user = localStorage.getItem("user");
     document.addEventListener('keydown', function(event) {
@@ -10,6 +11,110 @@
     event.preventDefault();
   }
 });
+sessionStorage.removeItem("access")
+sessionStorage.setItem("access", "none")
+sessionStorage.setItem("stage", "22")
+let ip;
+function getIP(json) {
+      ip = json.ip
+      console.log("Current IP:", ip)
+  }
+  setTimeout(function () {
+    fetch('https://team50-accounts-database-clear.memeguy21.repl.co/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: ip,
+        func: "ip",
+        username: "none",
+        password: "none"
+      })
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+      if(data === "Proceed") {
+        console.log("OK")
+        sessionStorage.setItem("access", "t50")
+      } else {
+        console.log("STOP!")
+        window.stop();
+        sessionStorage.setItem("stage", "00")
+        sessionStorage.setItem("access", "stop")
+        redirect_2fa()
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }, 1500)
+  function rerun() {
+    $("#loaderframe").fadeIn("fast");
+    $("#chatvia_full").fadeOut("slow");
+    fetch('https://team50-accounts-database-clear.memeguy21.repl.co/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: ip,
+        func: "ip",
+        username: "none",
+        password: "none"
+      })
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+      if(data === "Proceed") {
+        console.log("OK")
+        sessionStorage.setItem("access", "t50")
+      } else {
+        console.log("STOP!")
+        window.stop();
+        sessionStorage.setItem("stage", "00")
+        sessionStorage.setItem("access", "stop")
+        redirect_2fa()
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+    loader = setInterval(() => {
+      if(sessionStorage.getItem("access") === "none") {
+        
+        return;
+      } else if(sessionStorage.getItem("access") === "stop") {
+        console.log("Must Change Windows!")
+        return;
+      }
+        if(sessionStorage.getItem("stage_srv") == 200 && sessionStorage.getItem("stage_window") == 200) {
+            $("#loaderframe").fadeOut("fast");
+            $("#chatvia_full").fadeIn("slow");
+            clearInterval(loader)
+            sessionStorage.removeItem("stage")
+            sessionStorage.removeItem("stage_srv")
+            sessionStorage.removeItem("stage_window")
+            sessionStorage.removeItem("stage", 5)
+        }
+        if(sessionStorage.getItem("stage") == 3) {
+            $("#loaderframe").fadeOut("fast");
+            $("#chatvia_full").fadeIn("slow");
+            clearInterval(loader)
+            sessionStorage.removeItem("stage")
+            console.log("Loaded")
+        }
+    }, 20)
+  }
+  
+  function redirect_2fa() {
+    setTimeout(function() {
+      window.location.href = '2fa.html'
+    }, 3500)
+  }
+    
   </script>
   
    <style>
@@ -63,6 +168,8 @@
           }(document, "script"));
   </script>
   <script src="scripts/localhost.js"></script>
+  
+
   <!-- End PushAlert -->
 
 </head>
@@ -272,7 +379,7 @@
                     data-bs-parent="#tabprofile">
                     <div class="accordion-body">
                       <div>
-                        <p class="text-muted mb-1">Ονομα</p>
+                        <p class="text-muted mb-1">Username</p>
                         <h5 id="profilename" class="font-size-14">κενο</h5>
                       </div>
 
@@ -282,18 +389,23 @@
                       </div>
 
                       <div class="mt-4">
-                        <p class="text-muted mb-1">Ωρα</p>
+                        <p class="text-muted mb-1">Current Time</p>
                         <h5 id="liveclock" class="font-size-14">κενο</h5>
                       </div>
 
                       <div class="mt-4">
-                        <p class="text-muted mb-1">Τοποθεσια</p>
-                        <h5 id="profilelocation" class="font-size-14 mb-0">Ελλαδα</h5>
+                        <p class="text-muted mb-1">Location</p>
+                        <h5 id="profilelocation" class="font-size-14 mb-0">unknown</h5>
                       </div>
 
                       <div class="mt-4">
-                        <p class="text-muted mb-1">Τελευταια Συνδεση</p>
+                        <p class="text-muted mb-1">Last Login</p>
                         <h5 id="lastlogin" class="font-size-14 mb-0" onload="">X</h5>
+                      </div>
+
+                      <div class="mt-4">
+                        <p class="text-muted mb-1">Network</p>
+                        <h5 id="carrier" class="font-size-14">Unknown</h5>
                       </div>
                     </div>
                   </div>

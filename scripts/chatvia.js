@@ -247,8 +247,9 @@ let apiKey = 'bdc_1c1de60e20e64208b35420e170705c84';
 $.getJSON('https://api.bigdatacloud.net/data/ip-geolocation?key=' + apiKey, function(data) {
     var info = JSON.stringify(data, null, 2);
     var datac = JSON.parse(info)
-    document.getElementById("profilelocation").innerHTML = datac.country.isoAlpha2
-    document.getElementById("profilelocation2").innerHTML = datac.country.isoAlpha2
+    document.getElementById("profilelocation").innerHTML = datac.country.name
+    document.getElementById("profilelocation2").innerHTML = datac.country.name
+    document.getElementById("carrier").innerHTML = datac.network.carriers[0].name
 });
 var elms = document.querySelectorAll("[id='pfpprofile']");
 document.getElementById("update_pfp_after_change").src = `https://03.memeguy21.repl.co/user-profiles/${localStorage.getItem("user") || 'Ανωνυμος'}.png`
@@ -1166,6 +1167,7 @@ localStorage.setItem(`saved_date_${id}`, formattedDate)
 });
 
 socket.on('disconnect', () => {
+  rerun()
 $('#general_logs').append(`<li id="reconnectdiv" class="left"><div id="reconnect" class="conversation-list"><div class="chat-avatar"><img src="images/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Εγινε Αποσυνδεση Απο Τον Διακομιστη</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
 socket.emit('message', {
     user: "Διακομιστης",

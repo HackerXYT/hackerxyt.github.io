@@ -87,6 +87,44 @@ setInterval(() => {
     text.style.color = "#ff230f"
     text.innerHTML = "Εγινε&nbsp;Αποσυνδεση&nbsp;Απο&nbsp;Τον&nbsp;Διακομιστη.&nbsp;Ελεγξτε&nbsp;Την&nbsp;Συνδεση&nbsp;Σας&nbsp;Στο&nbsp;Διαδικτυο."
   }
+  if(sessionStorage.getItem("stage") == "00") {
+    text.style.color = "#ad1c40"
+    text.innerHTML = "Unauthorized&nbsp;access&nbsp;to&nbsp;T50&nbsp;is&nbsp;restricted due&nbsp;to&nbsp;user&nbsp;non-compliance."
+    // Get the SVG element
+var svgElement = document.getElementById("load_icon");
+
+// Get all circle elements inside the SVG
+var circles = svgElement.getElementsByTagName("circle");
+
+// Set the fill color for each circle
+for (var i = 0; i < circles.length; i++) {
+  circles[i].setAttribute("fill", "#ad1c40");
+}
+  } else if(sessionStorage.getItem("stage") == "22") {
+    text.style.color = "#b84333"
+    text.innerHTML = "Authorizing&nbsp;Client&nbsp;For&nbsp;T50"
+    // Get the SVG element
+var svgElement = document.getElementById("load_icon");
+
+// Get all circle elements inside the SVG
+var circles = svgElement.getElementsByTagName("circle");
+
+// Set the fill color for each circle
+for (var i = 0; i < circles.length; i++) {
+  circles[i].setAttribute("fill", "#b84333");
+}
+  } else {
+    // Get the SVG element
+var svgElement = document.getElementById("load_icon");
+
+// Get all circle elements inside the SVG
+var circles = svgElement.getElementsByTagName("circle");
+
+// Set the fill color for each circle
+for (var i = 0; i < circles.length; i++) {
+  circles[i].setAttribute("fill", "#fff");
+}
+  }
 }, 10);
 setTimeout( function () {
   if(sessionStorage.getItem("stage_srv") == null && sessionStorage.getItem("stage_window") == 200) {

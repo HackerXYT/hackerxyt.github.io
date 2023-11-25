@@ -1,30 +1,63 @@
+<html>
+  <button onclick="run()">RUN</button>
+</html>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-	const api_key = 'e6938c1768cdf209464e1b9ae7b568dd';
-const title = 'Your Title';
-const message = 'Your Message';
-const icon = 'http://yourwebsite.com/icon.png';
-const url = 'https://chatvia.memeguy21.repl.co/';
-const segment_id = 999;
+//	const api_key = 'e6938c1768cdf209464e1b9ae7b568dd';
+//const title = 'Your Title';
+//const message = 'Your Message';
+//const icon = 'http://yourwebsite.com/icon.png';
+//const url = 'https://chatvia.memeguy21.repl.co/';
+//const segment_id = 999;
+//
+//const data = {
+//  title: title,
+//  message: message,
+//  icon: icon,
+//  url: url
+//};
+//
+//const headers = {
+//  Authorization: `api_key=${api_key}`,
+//	'Access-Control-Allow-Origin': '*'
+//};
+//
+//axios.post('https://Proxy.memeguy21.repl.co', { data, headers })
+//  .then(response => {
+//    console.log(response.data);
+//  })
+//  .catch(error => {
+//    console.error(error);
+//  });
+let ip;
 
-const data = {
-  title: title,
-  message: message,
-  icon: icon,
-  url: url
-};
+function run() {
+  fetch('https://team50-accounts-database-clear.memeguy21.repl.co/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: ip,
+        func: "ip",
+        username: "none",
+        password: "none"
+      })
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+  
 
-const headers = {
-  Authorization: `api_key=${api_key}`,
-	'Access-Control-Allow-Origin': '*'
-};
-
-axios.post('https://Proxy.memeguy21.repl.co', { data, headers })
-  .then(response => {
-    console.log(response.data);
-  })
-  .catch(error => {
-    console.error(error);
-  });
+    function getIP(json) {
+      ip = json.ip
+  }
+  
 
 </script>
+<script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>

@@ -137,6 +137,13 @@ window.addEventListener("load", (event) => {
     }
     sessionStorage.setItem("stage_window", 200)
     loader = setInterval(() => {
+      if(sessionStorage.getItem("access") === "none") {
+        
+        return;
+      } else if(sessionStorage.getItem("access") === "stop") {
+        console.log("Must Change Windows!")
+        return;
+      }
         if(sessionStorage.getItem("stage_srv") == 200 && sessionStorage.getItem("stage_window") == 200) {
             $("#loaderframe").fadeOut("fast");
             $("#chatvia_full").fadeIn("slow");
