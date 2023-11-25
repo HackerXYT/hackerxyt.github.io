@@ -54,6 +54,9 @@ function submit() {
                 });
             } else if(data === "Incorrect") {
               $("#submit").html("Verification Failed!")
+              setTimeout(function() {
+                window.location.href = "./AuthFailure/"
+              }, 900)
               console.error("Verification Failed!")
             }
               })
