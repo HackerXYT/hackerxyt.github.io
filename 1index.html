@@ -3,6 +3,7 @@
 
 
 <head>
+  <script src="scripts/howler.js"></script>
   <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP" defer></script>
   <script>
     user = localStorage.getItem("user");
@@ -15,6 +16,13 @@ sessionStorage.removeItem("access")
 sessionStorage.setItem("access", "none")
 sessionStorage.setItem("stage", "22")
 let ip;
+setTimeout(function() {
+  var t50_error = new Howl({
+	src: ['./internal/t50/t50-error.mp3'],
+	volume: 0.7
+});
+}, 900)
+
 function getIP(json) {
       ip = json.ip
       console.log("Current IP:", ip)
@@ -39,6 +47,7 @@ function getIP(json) {
         console.log("OK")
         sessionStorage.setItem("access", "t50")
       } else {
+        t50_error()
         console.log("STOP!")
         window.stop();
         sessionStorage.setItem("stage", "00")
@@ -2724,7 +2733,7 @@ function getIP(json) {
     <!-- <script src="https://unpkg.com/socket.io-client@2/dist/socket.io.slim.js"></script>-->
     <!-- <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script> -->
     <script src="./offline/socket.io.min.js"></script>
-    <script src="scripts/howler.js"></script>
+    
     <!--<script defer src="update.js"></script> learn how to integrate node.js first -->
     <script defer src="scripts/chatvia.js"></script>
     <script defer src="scripts/chatvia5.js"></script>

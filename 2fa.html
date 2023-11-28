@@ -35,6 +35,12 @@
       margin-bottom: 10px;
     }
 
+    p {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
     .code-input {
       display: flex;
       justify-content: center;
@@ -81,18 +87,22 @@
 </head>
 <body>
   <h2>Client Authentication</h2>
+  <p>IP not whitelisted.<br>Enter T50 Verification App's code.</p>
   <div class="code-input">
-    <input type="number" size="1" id="input1" oninput="moveToNext(this, 'input2')" >
-    <input type="number" size="1" id="input2" oninput="moveToNext(this, 'input3')" >
-    <input type="number" size="1" id="input3" oninput="moveToNext(this, 'input4')" >
-    <input type="number" size="1" id="input4" oninput="moveToNext(this, 'input5')" >
-    <input type="number" size="1" id="input5" oninput="moveToNext(this, 'input6')" >
-    <input type="number" size="1" id="input6">
+    <input type="number" pattern="[0-9]*" size="1" id="input1" oninput="moveToNext(this, 'input2')" >
+    <input type="number" pattern="[0-9]*" size="1" id="input2" oninput="moveToNext(this, 'input3')" >
+    <input type="number" pattern="[0-9]*" size="1" id="input3" oninput="moveToNext(this, 'input4')" >
+    <input type="number" pattern="[0-9]*" size="1" id="input4" oninput="moveToNext(this, 'input5')" >
+    <input type="number" pattern="[0-9]*" size="1" id="input5" oninput="moveToNext(this, 'input6')" >
+    <input type="number" pattern="[0-9]*" size="1" id="input6">
   </div>
-  <button style="display: none" id="submit">Submit</button>
+  <button style="display: block" onclick="submit()" id="submit">Begin</button>
   <script src="scripts/2fa.js"></script>
   <script src="scripts/2fa-srv.js"></script>
+  <script src="scripts/howler.js"></script>
+  <script src="scripts/howl-2fa.js"></script>
   <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP" defer></script>
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 </body>
 </html>
