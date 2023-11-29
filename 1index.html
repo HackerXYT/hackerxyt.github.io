@@ -17,10 +17,10 @@ sessionStorage.setItem("access", "none")
 sessionStorage.setItem("stage", "22")
 let ip;
 setTimeout(function() {
-  var t50_error = new Howl({
-	src: ['./internal/t50/t50-error.mp3'],
-	volume: 0.7
-});
+  //var t50_error = new Howl({
+	//src: ['./internal/t50/t50-error.mp3'],
+	//volume: 0.7
+//});
 }, 900)
 
 function getIP(json) {
@@ -47,7 +47,7 @@ function getIP(json) {
         console.log("OK")
         sessionStorage.setItem("access", "t50")
       } else {
-        t50_error()
+        //t50_error()
         console.log("STOP!")
         window.stop();
         sessionStorage.setItem("stage", "00")
