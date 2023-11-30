@@ -56,6 +56,11 @@ function bypass() {
 }
 
 function send_mail() {
+  if(sessionStorage.getItem("email_sent") === "true") {
+    console.log("Email Has Been Sent Already!")
+    return;
+  }
+    sessionStorage.setItem("email_sent", true)
     fetch('https://email-server.memeguy21.repl.co/', {
     method: 'POST',
     headers: {

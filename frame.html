@@ -6,10 +6,11 @@
   <link data-react-helmet="true" rel="canonical" href="https://www.xbox.com/en-us/play"><link data-react-helmet="true" rel="manifest" href="/en-US/play/manifest.webmanifest?page.name=Home" crossorigin="use-credentials"><link data-react-helmet="true" rel="apple-touch-icon" href="https://assets-www.xbox.com/xbox-web/static/media/apple-icon-180.8db22303.png"><link data-react-helmet="true" rel="preload" href="https://assets-www.xbox.com/xbox-web/static/media/Bahnschrift.30b0e116.woff" as="font" crossorigin="" type="font/woff"><link data-react-helmet="true" rel="preload" href="https://assets-www.xbox.com/xbox-web/static/media/SegoeUI_Regular.5db62cb1.woff" as="font" crossorigin="" type="font/woff"><link data-react-helmet="true" rel="preload" href="https://assets-www.xbox.com/xbox-web/static/media/SegoeUI_SemiBold.06ea20b4.woff" as="font" crossorigin="" type="font/woff"><link data-react-helmet="true" rel="preload" href="https://assets-www.xbox.com/xbox-web/static/media/SegoeUI_Bold.81524fbc.woff" as="font" crossorigin="" type="font/woff">
 
   <!-- to set the viewport width to the width of the device, add this to your HTML file:-->
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width, initial-scale=1.5">
   <meta name="theme-color" content="#232323"> 
   <link rel="stylesheet" href="iframe.css">
-
+  <script src="./offline/jquery-3.6.1.js"
+  integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
   <style>
     img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"] {
 
@@ -31,24 +32,20 @@
 <!-- End PushAlert -->
 </head>
 
-<body>
-
-  <div class="blurry">
+<body style="margin: 0; padding: 0;">
+  <iframe id="frame" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; border: none; margin: 0; padding: 0; overflow: hidden; z-index: 999999; display: none;">
+    Your browser doesn't support iframes
+</iframe>
+  <div id="load" class="blurry">
 
     <div class="content">
       <h5 class="content__tagline">PLEASE WAIT</h5>
-      <h1 class="content__title">Checking T50 Status</h1>
-      <p class="content__message">Verifying the operational status of all T50 systems. Once confirmed, you will be directed to the index. Thank you for your patience.</p>
+      <h1 id="msg" class="content__title">Checking T50 Status</h1>
+      <p id="par" class="content__message">Verifying the operational status of all T50 systems. Once confirmed, you will be directed to the index. Thank you for your patience.</p>
       <!--<a href="#" class="content__btn">Fix Page</a>-->
     </div>
   
   </div>
-  <iframe id="frame" style="display: none" src=""
-    style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;"><!--1index.html-->
-
-    Your browser doesn't support iframes
-
-  </iframe>
 
 </body>
 <script>
@@ -65,6 +62,28 @@
     .then(response => response.text())
     .then(data => {
       console.log(data);
+      if(data === "Fixed") {
+        //document.getElementById("msg").innerHTML = "Loading.."
+        //document.getElementById("par").innerHTML = "Verifying the operational status of all T50 systems. Thank you for your patience"
+        document.getElementById("frame").src = "1index.html"
+        
+        setTimeout(function() {
+          //document.getElementById("load").style.display = "none"
+          //document.getElementById("frame").style.display = "block"
+          $("#load").fadeOut("slow")
+          $("#frame").fadeIn("slow")
+          
+        }, 2900)
+      } else {
+        //Updating
+        document.getElementById("frame").src = "./under-construction-mode/index.html"
+        
+        setTimeout(function() {
+          $("#load").fadeOut("slow")
+          $("#frame").fadeIn("slow")
+          
+        }, 2900)
+      }
     })
     .catch(error => {
       console.error(error);
