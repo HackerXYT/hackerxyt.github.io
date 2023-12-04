@@ -320,7 +320,7 @@ function changechat() {
             document.getElementById("emoji").focus();
         } 
         document.getElementById("new_message_badge_2").style.display = "none"
-        sessionStorage.setItem("chat", "Placeholder")
+        sessionStorage.setItem("chat", "Γρηγορης")
         document.getElementById("unread_chat").style.display = "none"
         localStorage.setItem("chat_2_read", "true");
         document.getElementById("video_call_name").innerHTML = localStorage.getItem("contact_favorite_name")
@@ -357,13 +357,13 @@ function changechat() {
         document.getElementById("emoji").focus();
     } 
     document.getElementById("new_message_badge_2").style.display = "none"
-    sessionStorage.setItem("chat", "Placeholder")
+    sessionStorage.setItem("chat", "Γρηγορης")
     document.getElementById("unread_chat").style.display = "none"
     $("#download_files").fadeOut("fast");
     //document.getElementById("download_files").style.display = "none"
     localStorage.setItem("chat_2_read", "true");
-    document.getElementById("video_call_name").innerHTML = "Placeholder"
-    document.getElementById("pfp_video").src = "https://03.memeguy21.repl.co/user-profiles/Placeholder.png"
+    document.getElementById("video_call_name").innerHTML = "Γρηγορης"
+    document.getElementById("pfp_video").src = "https://03.memeguy21.repl.co/user-profiles/Γρηγορης.png"
     document.getElementById("start_video_call" ).setAttribute( "onClick", "start_private_call();" );
     //$("#send_messages_section").fadeOut("fast");
     //document.getElementById("send_messages_section").style.display = "none"
@@ -374,18 +374,18 @@ function changechat() {
     document.getElementById("changechat1").classList.remove("unread");
     document.getElementById("changechat1").classList.add("active");
     document.getElementById("changechat2").classList.remove("active");
-    document.getElementById("user-name").innerHTML = "Placeholder"
-    document.getElementById("user-image").src = "https://03.memeguy21.repl.co/user-profiles/Placeholder.png"
+    document.getElementById("user-name").innerHTML = "Γρηγορης"
+    document.getElementById("user-image").src = "https://03.memeguy21.repl.co/user-profiles/Γρηγορης.png"
     document.getElementById("mainchat").style.display = "none"
     $("#secondchat").fadeIn("fast");
     //document.getElementById("secondchat").style.display = "block"
-    document.getElementById("user-info-image").src = "https://03.memeguy21.repl.co/user-profiles/Placeholder.png"
-    document.getElementById("user-info-name").innerHTML = "Placeholder"
+    document.getElementById("user-info-image").src = "https://03.memeguy21.repl.co/user-profiles/Γρηγορης.png"
+    document.getElementById("user-info-name").innerHTML = "Γρηγορης"
     document.getElementById("user-info-text").innerHTML = "Βιογραφικο Χρηστη"
-    document.getElementById("profilename1").innerHTML = "Placeholder"
+    document.getElementById("profilename1").innerHTML = "Γρηγορης"
     document.getElementById("user-info-email").innerHTML = `gregpap03@gmail.com`
     document.getElementById("user-info-location").innerHTML = `Αθηνα, Ελλαδα`
-    $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Εγινε αλλαγη συνομιλιας σε Placeholder</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">T50</div></div></div></li>`)
+    $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Εγινε αλλαγη συνομιλιας σε Γρηγορης</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
 }
 
 function returntochat() {
@@ -433,7 +433,7 @@ function returntochat() {
     document.getElementById("profilename1").innerHTML = "T50"
     document.getElementById("user-info-email").innerHTML = `01506@onion.org`
     document.getElementById("user-info-location").innerHTML = `???`
-    $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Εγινε επιστροφη στην αρχικη συνομιλια</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">T50</div></div></div></li>`)
+    $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Εγινε επιστροφη στην αρχικη συνομιλια</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
 }
 
 var current_emoji = localStorage.getItem("emoji")
@@ -469,7 +469,7 @@ function change_emoji_1() {
         document.getElementById("emoji_4").style.color = "white"
         document.getElementById("emoji_1").style.color = "lime"
         document.getElementById("emoji_button").innerHTML = `<i class="ri-emotion-laugh-line"></i>`
-        $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Η φατσουλα αλλαξε σε 😂</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">T50</div></div></div></li>`)
+        $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Η φατσουλα αλλαξε σε 😂</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
     }
 }
 
@@ -489,7 +489,7 @@ function change_emoji_2() {
         document.getElementById("emoji_4").style.color = "white"
         document.getElementById("emoji_1").style.color = "white"
         document.getElementById("emoji_button").innerHTML = `<i class="ri-emotion-sad-line"></i>`
-        $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Η φατσουλα αλλαξε σε 😢</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">T50</div></div></div></li>`)
+        $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Η φατσουλα αλλαξε σε 😢</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
     }
 }
 
@@ -509,7 +509,7 @@ function change_emoji_3() {
         document.getElementById("emoji_4").style.color = "white"
         document.getElementById("emoji_1").style.color = "white"
         document.getElementById("emoji_button").innerHTML = `<i class="ri-emotion-line"></i>`
-        $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Η φατσουλα αλλαξε σε 😊</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">T50</div></div></div></li>`)
+        $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Η φατσουλα αλλαξε σε 😊</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
     }
 }
 
@@ -529,7 +529,7 @@ function change_emoji_4() {
         document.getElementById("emoji_4").style.color = "lime"
         document.getElementById("emoji_1").style.color = "white"
         document.getElementById("emoji_button").innerHTML = `<i class="ri-heart-fill"></i>`
-        $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Η φατσουλα αλλαξε σε ❤️</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">T50</div></div></div></li>`)
+        $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Η φατσουλα αλλαξε σε ❤️</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
     }
 }
 
@@ -547,7 +547,7 @@ function showgeneral() {
     document.getElementById("error_logs").style.display = "none"
     document.getElementById("changechat1").classList.remove("active");
     document.getElementById("changechat2").classList.remove("active");
-    $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Εγινε αλλαγη συνομιλιας σε #Γενικα</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">T50</div></div></div></li>`)
+    $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Εγινε αλλαγη συνομιλιας σε #Γενικα</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
 }
 
 function showerrors() {
@@ -564,7 +564,7 @@ function showerrors() {
     document.getElementById("error_logs").style.display = "block"
     document.getElementById("changechat1").classList.remove("active");
     document.getElementById("changechat2").classList.remove("active");
-    $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Εγινε αλλαγη συνομιλιας σε #Σφαλματα</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">T50</div></div></div></li>`)
+    $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Εγινε αλλαγη συνομιλιας σε #Σφαλματα</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
 }
 
 
@@ -660,7 +660,7 @@ function start_private_call() {
 	});
     if(user === "Αλεξια") {
           sessionStorage.setItem("connect_with", "ALEXIA")
-        } else if(user === "Placeholder") {
+        } else if(user === "Γρηγορης") {
           sessionStorage.setItem("connect_with", "GREGORY")
         }
     window.location.href = "index_video.html"
@@ -936,7 +936,7 @@ function change_chatting_user() {
         document.getElementById('add_edit_email_place').style.display = 'none'
     }
     current_name = user
-    if(current_name == "Placeholder") { 
+    if(current_name == "Γρηγορης") { 
         document.getElementById("memberLabel2").style.color = "red";
         document.getElementById("memberCheck2").disabled = true;
     } else if(current_name == "Αλεξια") {
@@ -961,7 +961,7 @@ function change_chatting_user() {
 
     if(localStorage.getItem("contact_favorite_name") != null) {
         var favorite_now = localStorage.getItem("contact_favorite_name")
-        if(favorite_now == "Placeholder") { 
+        if(favorite_now == "Γρηγορης") { 
             document.getElementById("memberCheck2").checked = true;
         } else if(favorite_now == "Αλεξια") {
             document.getElementById("memberCheck1").checked = true;
@@ -1025,10 +1025,10 @@ checkbox_no1.addEventListener('change', function() {
     if(localStorage.getItem("contact_favorite_name") != null) {
         localStorage.removeItem("contact_favorite_name")
         localStorage.removeItem("contact_favorite_url")
-        document.getElementById("chat_2_user_pfp").src = "https://03.memeguy21.repl.co/user-profiles/Placeholder.png"
-        document.getElementById("change_chatting_user_username").innerHTML = "Placeholder"
-        document.getElementById("first_letter_contacts").innerHTML = "P"
-        document.getElementById("contact_name_change").innerHTML = "Placeholder"
+        document.getElementById("chat_2_user_pfp").src = "https://03.memeguy21.repl.co/user-profiles/Γρηγορης.png"
+        document.getElementById("change_chatting_user_username").innerHTML = "Γρηγορης"
+        document.getElementById("first_letter_contacts").innerHTML = "Γ"
+        document.getElementById("contact_name_change").innerHTML = "Γρηγορης"
         checkbox_no1.checked = false
         checkbox_no2.checked = false
         checkbox_no3.checked = false
@@ -1055,9 +1055,9 @@ function change_chatting() {
         }
         //Αλεξια is checked
     } else if(check2.checked == true) {
-        if(user != "Placeholder") {
-            localStorage.setItem("contact_favorite_url", "https://03.memeguy21.repl.co/user-profiles/Placeholder.png")
-            localStorage.setItem("contact_favorite_name", "Placeholder")
+        if(user != "Γρηγορης") {
+            localStorage.setItem("contact_favorite_url", "https://03.memeguy21.repl.co/user-profiles/Γρηγορης.png")
+            localStorage.setItem("contact_favorite_name", "Γρηγορης")
             document.getElementById("chat_2_user_pfp").src = localStorage.getItem("contact_favorite_url")
             document.getElementById("change_chatting_user_username").innerHTML = localStorage.getItem("contact_favorite_name")
             let firstLetter = localStorage.getItem("contact_favorite_name").charAt(0);
@@ -1066,7 +1066,7 @@ function change_chatting() {
         } else {
             not_ready.play()
         }
-        //Placeholder is checked
+        //Γρηγορης is checked
     } else if(check3.checked == true) {
         //Επισκεπτης is checked
         localStorage.setItem("contact_favorite_url", "https://03.memeguy21.repl.co/user-profiles/Επισκεπτης.png")

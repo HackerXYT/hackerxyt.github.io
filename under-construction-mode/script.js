@@ -1,5 +1,4 @@
 // logout() send_mail() bypass()
-
 let check;
 my_mail = localStorage.getItem("user_email")
 username = localStorage.getItem("user")
