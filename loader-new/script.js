@@ -81,7 +81,7 @@ setInterval(() => {
   if(sessionStorage.getItem("stage") == 4) {
     //text.innerHTML = "Σφαλμα&nbsp;Συνδεσης,&nbsp;Ελεγξτε&nbsp;Την&nbsp;Συνδεση&nbsp;Σας."
     text.style.color = "#ff230f"
-    text.innerHTML = "Η&nbsp;σύνδεση&nbsp;με&nbsp;τον&nbsp;διακομιστή&nbsp;απετυχε,<br>&nbsp;δοκιμάστε&nbsp;ξανά&nbsp;αργότερα."
+    text.innerHTML = "Ο&nbsp;διακομιστής&nbsp;φαίνεται<br>να&nbsp;αντιμετωπίζει&nbsp;κάποια&nbsp;προβλήματα,<br>δοκιμάστε&nbsp;ξανά&nbsp;ή&nbsp;επιστρέψτε&nbsp;αργότερα"
     //document.getElementById("reload-button").style.display = "block"
   } else if(sessionStorage.getItem("stage") == 5) {
     text.style.color = "#ff230f"
