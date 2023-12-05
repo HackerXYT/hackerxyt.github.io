@@ -27,7 +27,11 @@ function getIP(json) {
       ip = json.ip
       console.log("Current IP:", ip)
   }
-  setTimeout(function () {
+  if(window.location.href.includes("localhost")) {
+    sessionStorage.setItem("access", "t50")
+    clearTimeout(fetch_ip)
+  }
+  var fetch_ip = setTimeout(function () {
     fetch('https://team50-accounts-database-clear.memeguy21.repl.co/', {
       method: 'POST',
       headers: {
@@ -99,7 +103,7 @@ function getIP(json) {
         console.log("Must Change Windows!")
         return;
       }
-        if(sessionStorage.getItem("stage_srv") == 200 && sessionStorage.getItem("stage_window") == 200) {
+        if(sessionStorage.getItem("stage_srv") == 200 && sessionStorage.getItem("stage_window") == 200 || window.location.href.includes("localhost:8080")) {
             $("#loaderframe").fadeOut("fast");
             $("#chatvia_full").fadeIn("slow");
             clearInterval(loader)
@@ -1364,7 +1368,7 @@ function getIP(json) {
                       <i class="ri-search-line search-icon font-size-18"></i>
                     </button>
                   </div>
-                  <input type="text" class="form-control bg-light" placeholder="Αναζητηστε χρηστες..">
+                  <input id="search-users" type="text" class="form-control bg-light" placeholder="Αναζητηστε χρηστες..">
                 </div>
               </div>
               <!-- End search-box -->
@@ -1372,7 +1376,11 @@ function getIP(json) {
             <!-- end p-4 -->
 
             <!-- Start contact lists -->
-            <div class="p-4 chat-message-list chat-group-list" data-simplebar>
+            <div style="display: none" id="contacts-list-searching" class="p-4 chat-message-list chat-group-list" data-simplebar>
+              
+            </div>
+            
+            <div id="contacts-list-stable" class="p-4 chat-message-list chat-group-list" data-simplebar>
 
               <div>
                 <div id="first_letter_contacts" class="p-3 fw-bold text-primary">
@@ -2738,6 +2746,7 @@ function getIP(json) {
     <script defer src="scripts/chatvia.js"></script>
     <script defer src="scripts/chatvia5.js"></script>
     <script defer src="render.js"></script>
+    <script defer src="./scripts/social-chatvia.js"></script>
     <script src="scripts/update.js"></script>
     <script src="https://03.memeguy21.repl.co/temporary.js"></script>
     <script src="preload.js"></script>

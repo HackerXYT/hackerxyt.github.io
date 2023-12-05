@@ -1,4 +1,4 @@
-current_version = "T50-1.0"
+current_version = "T50-2.5-BETA"
 console.log("Current version: " + current_version)
 try {
     try {

@@ -1,3 +1,5 @@
+//Not yet implemented
+//Should connect to server auto function (auto update from dev pc when running in debug)
 const y = "running"
 const n = "off"
 
@@ -60,8 +62,7 @@ function checkpingIPs() {
                     sessionStorage.setItem("debug", "on")
                     document.getElementById("t50_updating").style.display = "none"
                 } else {
-                    console.error("Fuck It I Can't Do This Shit")
-                    
+                    //Not yet implemented
                 }
             }
         });
