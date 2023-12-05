@@ -85,7 +85,7 @@ setInterval(() => {
     //document.getElementById("reload-button").style.display = "block"
   } else if(sessionStorage.getItem("stage") == 5) {
     text.style.color = "#ff230f"
-    text.innerHTML = "Εγινε&nbsp;Αποσυνδεση&nbsp;Απο&nbsp;Τον&nbsp;Διακομιστη.&nbsp;Ελεγξτε&nbsp;Την&nbsp;Συνδεση&nbsp;Σας&nbsp;Στο&nbsp;Διαδικτυο."
+    text.innerHTML = "Εγινε&nbsp;Αποσυνδεση&nbsp;Απο&nbsp;Τον&nbsp;Διακομιστη.&nbsp;<br>Ελεγξτε&nbsp;Την&nbsp;Συνδεση&nbsp;Σας&nbsp;Στο&nbsp;Διαδικτυο."
   }
   if(sessionStorage.getItem("stage") == "00") {
     text.style.color = "#ad1c40"
