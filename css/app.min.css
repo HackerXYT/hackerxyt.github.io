@@ -1504,3 +1504,27 @@
  }
 
  /*# sourceMappingURL=app.min.css.map */
+/*Plane Loading +3*/
+ .loading {
+	width: 50px;
+	height:40px;
+  }
+  
+  .loading--plane {
+	width: 70px;
+	stroke-dasharray: 425.59;
+	stroke-dashoffset: 425.59;
+	animation: plane-loading-animation 3s linear infinite;
+  }
+  
+  @keyframes plane-loading-animation {
+	50% {
+	  stroke-dashoffset: 425.59;
+	}
+	50% {
+	  stroke-dashoffset: 0;
+	}
+	100% {
+	  stroke-dashoffset: -425.59;
+	}
+  }

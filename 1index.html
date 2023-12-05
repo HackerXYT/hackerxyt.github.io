@@ -254,10 +254,10 @@ function getIP(json) {
               <i class="ri-user-settings-line"></i>
             </a>
           </li>
-          <li onclick="set2()" class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="T50">
+          <li onclick="set2()" class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Chats">
             <a class="nav-link active" id="set2" data-bs-toggle="pill" href="#pills-chat" role="tab">
               <!--<i class="ri-chat-1-line"></i>-->
-              <img style="width: 20px;height: 20px" src="./icons/t50.png"></img>
+              <img style="width: 20px;height: 20px" src="./icons/t50 - Copy.png"></img>
             </a>
           </li>
           <li onclick="set3()" class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Αρχεια Καταγραφής">
@@ -287,7 +287,6 @@ function getIP(json) {
                 class="profile-user rounded-circle">
             </a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" onclick="go_to(profile)" href="#">Προφιλ <i class="ri-profile-line float-end text-muted"></i></a>
               <a class="dropdown-item" onclick="go_to('settings')" href="#">Ρυθμισεις <i class="ri-settings-3-line float-end text-muted"></i></a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" onclick="logout()" href="#">Αποσυνδεση
@@ -314,7 +313,6 @@ function getIP(json) {
                 class="profile-user rounded-circle">
             </a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" onclick="go_to('profile')" href="#">Προφιλ <i class="ri-profile-line float-end text-muted"></i></a>
               <a class="dropdown-item" onclick="go_to('settings')" href="#">Ρυθμισεις <i class="ri-settings-3-line float-end text-muted"></i></a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" onclick="logout()" href="#">Αποσυνδεση
@@ -369,7 +367,7 @@ function getIP(json) {
             <!-- Start user-profile-desc -->
             <div class="p-4 user-profile-desc" data-simplebar>
               <div class="text-muted">
-                <p class="mb-4">Εδω ειναι το προφιλ σας.<br>Αυτο φαινεται και στους αλλους χρηστες.</p>
+                <p class="mb-4">Explore user details, including username, time, and essential connection information</p>
               </div>
 
 
@@ -606,7 +604,7 @@ function getIP(json) {
           <!-- Start chats content -->
           <div>
             <div class="px-4 pt-4">
-              <h4 class="mb-4">T50
+              <h4 class="mb-4">T50 Chats
                 <div class="user-chat-nav float-end">
                   <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Συνομιλιες T50">
                     <button type="button"
@@ -1368,7 +1366,7 @@ function getIP(json) {
                       <i class="ri-search-line search-icon font-size-18"></i>
                     </button>
                   </div>
-                  <input id="search-users" type="text" class="form-control bg-light" placeholder="Αναζητηστε χρηστες..">
+                  <input autocomplete="off" id="search-users" type="text" class="form-control bg-light" placeholder="Αναζητηστε χρηστες..">
                 </div>
               </div>
               <!-- End search-box -->
