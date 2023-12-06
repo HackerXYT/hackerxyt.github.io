@@ -70,5 +70,6 @@ function checkpingIPs() {
 }
 
 setTimeout(function () {
-    checkpingIPs()
+    console.log("Would Normally Ping Local IP's. Function Is Disabled")
+    //checkpingIPs()
 }, 1500)

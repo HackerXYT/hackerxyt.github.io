@@ -21,15 +21,11 @@
     </div>
     <p style="display: none" id="info_2">Error Here</p> <!-- Error -->
     <div class="form-control">
-      <input id="code" type="text" required>
+      <input id="code" type="number" pattern="[0-9]*" required>
       <label>Verification Code</label>
     </div>
     <button id="submit" type="submit">Sign In</button>
     <div class="form-help">
-      <div class="remember-me">
-        <input type="checkbox" id="remember-me" checked>
-        <label for="remember-me">Remember me</label>
-      </div>
       <a href="#">Need help?</a>
     </div>
   </form>

@@ -1797,7 +1797,7 @@ function cookies_reset() {
   var cookieName = pushalertCookie ? pushalertCookie.name : null;
   console.log("Cookie Name:", cookieName);
   if(cookieName !== null) {
-    document.getElementById("msg-cookie").innerHTML = `<br>You Will Stop Receiving Notifications If You Continue. Delete PushAlert Cookies? <button class="btn btn-danger" onclick="deleteCookie('${cookieName}')">Yes</button>&nbsp;<button class="btn btn-primary" onclick='$("#msg-cookie").fadeOut("slow")'>No</button>`
+    document.getElementById("msg-cookie").innerHTML = `<br>You Will Stop Receiving Notifications If You Continue. Delete PushAlert Cookies?<br><button class="btn btn-danger" onclick="deleteCookie('${cookieName}')">Yes</button>&nbsp;<button class="btn btn-primary" onclick='$("#msg-cookie").fadeOut("slow")'>No</button>`
     $("#msg-cookie").fadeIn("slow")
     return;
   }
@@ -1819,4 +1819,38 @@ function deleteAllCookies() {
   }
 
   window.location.reload()
+}
+
+
+if (isMobileDevice()) {
+  showNotification();
+}
+
+function isMobileDevice() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+function truncateString(inputString) {
+  let maxLength = 65
+  if (inputString.length > maxLength) {
+      return inputString.slice(0, maxLength) + "....";
+  }
+  return inputString;
+}
+
+function showNotification(user, msg) {
+  var notification = $('#notification');
+  msg_fixed = truncateString(msg)
+  notification.html(`${user}:<br>${msg_fixed}`)
+  notification.slideDown().animate({
+      top: '20px'
+  }, 500);
+
+  setTimeout(function () {
+      notification.animate({
+          top: '-100px'
+      }, 500, function () {
+          notification.slideUp();
+      });
+  }, 3000); // Adjust the time (in milliseconds) the notification stays visible
 }

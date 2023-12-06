@@ -138,6 +138,23 @@ function getIP(json) {
 
 }
 
+#notification {
+            display: none;
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: linear-gradient(to right, #333333, #1a1a1a);
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
     </style>
 
   <meta charset="utf-8" />
@@ -2715,7 +2732,7 @@ function getIP(json) {
     </div>
     </span>
     <!-- end  layout wrapper -->
-
+    <div id="notification">Test-User:<br>67 Characters Max</div>
     <!-- JAVASCRIPT -->
     <script type="text/javascript" src="./scripts/md5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>

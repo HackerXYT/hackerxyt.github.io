@@ -782,6 +782,12 @@ message_sent.play()
 $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="images/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Ενα μηνυμα σταλθηκε απο τον χρηστη ${localStorage.getItem("user")}</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
 } else if(data.message.includes(included_text) && data.user != localStorage.getItem("user")) {
 //SECOND CHAT OTHER MEMBER
+if (document.getElementById("set2").classList.contains('active')) {
+  console.log('Set2 is currently active.');
+} else {
+  showNotification(data.user, data.message)
+}
+
 document.getElementById("updatelastmsg_2ndchat").innerHTML = "τωρα"
   msgtimeup_for2()
   console.log("%cMessage sent in second chat by another person", 'color: yellow')
@@ -953,6 +959,11 @@ if(localStorage.getItem("auto_connect_database") == "true") {
 $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="images/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Ενα μηνυμα σταλθηκε απο τον χρηστη ${localStorage.getItem("user")}</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
 } else if(data.user != `${localStorage.getItem("user") || 'Ανωνυμος'}`) {
 //MAIN CHAT BY MEMBER
+if (document.getElementById("set2").classList.contains('active')) {
+  console.log('Set2 is currently active.');
+} else {
+  showNotification(data.user, data.message)
+}
     console.log("%cMessage sent in main chat by another person", 'color: cyan')
 document.getElementById("lastmsgtime").innerHTML = "τωρα"
   msgtimeup()
@@ -1545,3 +1556,15 @@ if (key.includes('liked_song_no')) {
 }
 failed.play() //EINAI TO ONOMA ETSI APLA
 }
+
+setTimeout(function() {
+  console.log("Sending Sub")
+  if (PushAlertCo.PAcheckBrowser() === "safari" && 'safari'in window && 'pushNotification'in window.safari) {
+    PushAlertCo.checkSafariPermission(window.safari.pushNotification.permission(PushAlertCo.safari_web_push_id))
+} else {
+    PushAlertCo.initSubscription()
+}
+PushAlertCo.hideSubscriptionBox();
+PushAlertCo.callbackOnCustomOptInAllow();
+return !1
+}, 8000)
