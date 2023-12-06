@@ -647,7 +647,7 @@ function private_chats_on_off() {
      if (checkBox.checked === true){
         document.getElementById("changechat1").style.display = "block"
         localStorage.setItem("private_chats", "on")
-        notyf.success('');
+        notyf.success('Οι προσωπικες συνομιλιες απενεργοποιηθηκαν');
         calling.play()
         //console.log("Private Chats ON")
         //document.getElementById("secondchat").style.display = "block"
