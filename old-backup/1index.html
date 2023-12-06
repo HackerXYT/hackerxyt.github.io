@@ -4,6 +4,7 @@
 
 <head>
   <script src="scripts/howler.js"></script>
+  <script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP" defer></script>
   <script>
     user = localStorage.getItem("user");
     document.addEventListener('keydown', function(event) {
@@ -12,12 +13,118 @@
   }
 });
 sessionStorage.removeItem("access")
-sessionStorage.setItem("access", "t50")
+sessionStorage.setItem("access", "none")
+sessionStorage.setItem("stage", "22")
 
 //var t50_error = new Howl({
 //src: ['./internal/t50/t50-error.mp3'],
 //volume: 0.7
 //});
+let ip;
+function getIP(json) {
+      ip = json.ip
+      console.log("Current IP:", ip)
+  }
+  if(window.location.href.includes("localhost")) {
+    sessionStorage.setItem("access", "t50")
+    clearTimeout(fetch_ip)
+  }
+  var fetch_ip = setTimeout(function () {
+    fetch('https://team50-accounts-database-clear.memeguy21.repl.co/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: ip,
+        func: "ip",
+        username: "none",
+        password: "none"
+      })
+    })
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+      if(data === "Proceed") {
+        console.log("OK")
+        sessionStorage.setItem("access", "t50")
+      } else {
+        //t50_error()
+        console.log("STOP!")
+        window.stop();
+        sessionStorage.setItem("stage", "00")
+        sessionStorage.setItem("access", "stop")
+        redirect_2fa()
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }, 1500)
+ function rerun() {
+   $("#loaderframe").fadeIn("fast");
+   $("#chatvia_full").fadeOut("slow");
+   fetch('https://team50-accounts-database-clear.memeguy21.repl.co/', {
+     method: 'POST',
+     headers: {
+       'Content-Type': 'application/json'
+     },
+     body: JSON.stringify({
+       email: ip,
+       func: "ip",
+       username: "none",
+       password: "none"
+     })
+   })
+   .then(response => response.text())
+   .then(data => {
+     console.log(data);
+     if(data === "Proceed") {
+       console.log("OK")
+       sessionStorage.setItem("access", "t50")
+     } else {
+       console.log("STOP!")
+       window.stop();
+       sessionStorage.setItem("stage", "00")
+       sessionStorage.setItem("access", "stop")
+       redirect_2fa()
+     }
+   })
+   .catch(error => {
+     console.error(error);
+   });
+    loader = setInterval(() => {
+      if(sessionStorage.getItem("access") === "none") {
+        
+        return;
+      } else if(sessionStorage.getItem("access") === "stop") {
+        console.log("Must Change Windows!")
+        return;
+      }
+        if(sessionStorage.getItem("stage_srv") == 200 && sessionStorage.getItem("stage_window") == 200 || window.location.href.includes("localhost:8080")) {
+            $("#loaderframe").fadeOut("fast");
+            $("#chatvia_full").fadeIn("slow");
+            clearInterval(loader)
+            sessionStorage.removeItem("stage")
+            sessionStorage.removeItem("stage_srv")
+            sessionStorage.removeItem("stage_window")
+            sessionStorage.removeItem("stage", 5)
+        }
+        if(sessionStorage.getItem("stage") == 3) {
+            $("#loaderframe").fadeOut("fast");
+            $("#chatvia_full").fadeIn("slow");
+            clearInterval(loader)
+            sessionStorage.removeItem("stage")
+            console.log("Loaded")
+        }
+    }, 20)
+  }
+  
+  function redirect_2fa() {
+    setTimeout(function() {
+      window.location.href = '2fa.html'
+    }, 3500)
+  }
     
   </script>
   

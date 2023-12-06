@@ -1822,21 +1822,23 @@ function deleteAllCookies() {
 }
 
 
-if (isMobileDevice()) {
-  showNotification();
-}
+//if (isMobileDevice()) {
+//  showNotification();
+//}
 
 function isMobileDevice() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
 function truncateString(inputString) {
-  let maxLength = 65
-  if (inputString.length > maxLength) {
-      return inputString.slice(0, maxLength) + "....";
+  // Check if inputString is defined and not null
+  if (inputString && inputString.length > 65) {
+    return inputString.slice(0, 65) + "....";
   }
+  // Return inputString as is if it's either undefined, null, or not longer than 65 characters
   return inputString;
 }
+
 
 function showNotification(user, msg) {
   var notification = $('#notification');
