@@ -1,4 +1,4 @@
-current_version = "T50-2.5.2"
+current_version = "2.5.2"
 console.log("Current version: " + current_version)
 try {
     try {
@@ -40,7 +40,7 @@ readTextFile("https://03.memeguy21.repl.co/update.json", function(data) {
     current_server_version = version.current
     if(current_version >= version.current) {
         console.log("Up To Date")
-        console.log("T50?", current_version.includes("T50"))
+        console.log("T50:", true)
     } else {
         update_found.play()
         document.getElementById("updaterequired").click()
@@ -76,14 +76,14 @@ function manual_update() {
         const file = url
         if(current_version == current_server_version) {
             notification.play()
-            document.getElementById("manual_update").innerHTML = `<b style="font-size: 25px">ChatVia ${current_version}</b><br><span style="color: lime">ειστε ενημερωμενοι στην νεοτερη εκδοση<br><br><button onclick="downloadlatest()" style="color: grey" type="button" class="btn btn-light btn-sm"><b>Επιδιόρθωση Σφαλματων</b></button></span>`
+            document.getElementById("manual_update").innerHTML = `<b style="font-size: 25px">T50 ${current_version}</b><br><span style="color: lime">ειστε ενημερωμενοι στην νεοτερη εκδοση<br><br><button onclick="downloadlatest()" style="color: grey" type="button" class="btn btn-light btn-sm"><b>Επιδιόρθωση Σφαλματων</b></button></span>`
         } else if(current_version > current_server_version) {
-            document.getElementById("manual_update").innerHTML = `<b style="font-size: 25px">ChatVia ${current_version}<span style="color: red">→</span><span style="color: magenta">${current_server_version}</span></b><br><span style="color: #0099ff">η υποβάθμιση είναι διαθέσιμη!<br><br>
+            document.getElementById("manual_update").innerHTML = `<b style="font-size: 25px">T50 ${current_version}<span style="color: red">→</span><span style="color: magenta">${current_server_version}</span></b><br><span style="color: #0099ff">η υποβάθμιση είναι διαθέσιμη!<br><br>
             <button onclick="downloadlatest()" style="color: lime" type="button" class="btn btn-light btn-sm"><b>Ληψη</b></button>&nbsp;</span>`
             update_found.play()
         } else {
 
-            document.getElementById("manual_update").innerHTML = `<b style="font-size: 25px">ChatVia ${current_version}→<span style="color: lime">${current_server_version}</span></b><br><span style="color: #0099ff">μια νεα εκδοση ειναι διαθεσιμη!<br><br>
+            document.getElementById("manual_update").innerHTML = `<b style="font-size: 25px">T50 ${current_version}→<span style="color: lime">${current_server_version}</span></b><br><span style="color: #0099ff">μια νεα εκδοση ειναι διαθεσιμη!<br><br>
             <button onclick="downloadlatest()" style="color: lime" type="button" class="btn btn-light btn-sm"><b>Ληψη</b></button>&nbsp;</span>`
             update_found.play()
         }

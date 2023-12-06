@@ -1,4 +1,16 @@
-var notyf = new Notyf();
+var notyf = new Notyf({
+  duration: 1000,
+  position: {
+    y: 'top',
+  },
+  types: [
+    {
+      type: 'info',
+      background: 'blue',
+      icon: false
+    }
+  ]
+});
 sessionStorage.removeItem("input-text-chat-2")
 sessionStorage.removeItem("input-text")
 if(localStorage.getItem("auto_connect_database") == "true") {
@@ -635,7 +647,7 @@ function private_chats_on_off() {
      if (checkBox.checked === true){
         document.getElementById("changechat1").style.display = "block"
         localStorage.setItem("private_chats", "on")
-        notyf.success('Οι προσωπικες συνομιλιες ενεργοποιηθηκαν');
+        notyf.success('');
         calling.play()
         //console.log("Private Chats ON")
         //document.getElementById("secondchat").style.display = "block"
