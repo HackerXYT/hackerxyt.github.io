@@ -85,6 +85,8 @@ function verifycode(username, email) {
 const BtnLog = document.getElementById("submit");
 BtnLog.addEventListener("click", (e) => {
     e.preventDefault();
+    $("#loading_indicator").fadeIn("fast")
+    $("#loading_indicator_error").fadeOut("fast")
     //document.getElementById("info").style.display = "block"
     //document.getElementById("info").style.color = "white"
     //document.getElementById("info").innerHTML = `Παρακαλω Περιμενετε..`
@@ -103,14 +105,29 @@ BtnLog.addEventListener("click", (e) => {
     .then(data => {
       console.log(data); // Handle the response data here
       if(data === code) {
+        $("#loading_indicator").fadeOut("fast")
         console.log("Verified, Welcome To T50!")
         localStorage.setItem("user", username)
         localStorage.setItem("user_email", email)
         window.location.href = "../../../"
+      } else {
+        document.getElementById("submit").innerHTML = "Wrong Code, Try Again"
+      $("#loading_indicator").fadeOut("fast")
+      $("#loading_indicator_error").fadeIn("fast")
+      setTimeout(function() {
+        document.getElementById("submit").innerHTML = "Complete"
+      }, 3500)
       }
     })
     .catch(error => {
+      document.getElementById("submit").innerHTML = "Wrong Code, Try Again"
+      $("#loading_indicator").fadeOut("fast")
+      $("#loading_indicator_error").fadeIn("fast")
+      setTimeout(function() {
+        document.getElementById("submit").innerHTML = "Complete"
+      }, 3500)
       console.error('Fetch error:', error);
+      
     });
 })
 

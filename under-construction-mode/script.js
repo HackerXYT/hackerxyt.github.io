@@ -1,5 +1,6 @@
 // logout() send_mail() bypass()
 let check;
+sessionStorage.removeItem("loggedin")
 my_mail = localStorage.getItem("user_email")
 username = localStorage.getItem("user")
 
@@ -11,6 +12,7 @@ if(my_mail === null) {
     document.getElementById("logout_btn").style.display = "none"
 }
 if(username === null && my_mail === null) {
+  sessionStorage.setItem("loggedin", "no")
     //not logged in
     document.getElementById("continue_btn").style.display = "none"
     document.getElementById("logout_btn").style.display = "none"
@@ -55,6 +57,9 @@ function bypass() {
 }
 
 function send_mail() {
+  if(sessionStorage.getItem("loggedin") === "no") {
+    window.location.href = "../Login/"
+  }
   if(sessionStorage.getItem("email_sent") === "true") {
     console.log("Email Has Been Sent Already!")
     return;

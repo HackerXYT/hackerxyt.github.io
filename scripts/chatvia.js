@@ -1556,15 +1556,3 @@ if (key.includes('liked_song_no')) {
 }
 failed.play() //EINAI TO ONOMA ETSI APLA
 }
-
-setTimeout(function() {
-  console.log("Sending Sub")
-  if (PushAlertCo.PAcheckBrowser() === "safari" && 'safari'in window && 'pushNotification'in window.safari) {
-    PushAlertCo.checkSafariPermission(window.safari.pushNotification.permission(PushAlertCo.safari_web_push_id))
-} else {
-    PushAlertCo.initSubscription()
-}
-PushAlertCo.hideSubscriptionBox();
-PushAlertCo.callbackOnCustomOptInAllow();
-return !1
-}, 8000)

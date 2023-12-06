@@ -167,3 +167,39 @@ nav a img {
     margin: 25px 0 40px;
   }
 }
+
+.loading {
+  width: 50px;
+  height:40px;
+  margin: 40px auto;
+}
+
+.loading--plane {
+  width: 70px;
+  stroke-dasharray: 425.59;
+  stroke-dashoffset: 425.59;
+  animation: plane-loading-animation 3s linear infinite;
+}
+
+@keyframes plane-loading-animation {
+  50% {
+    stroke-dashoffset: 425.59;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -425.59;
+  }
+}
+
+.icon {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px; /* Adjust the distance from the right side as needed */
+  width: 20px; /* Set the width of your SVG icon */
+  height: 20px; /* Set the height of your SVG icon */
+  fill: #888; /* Set the color of your SVG icon */
+}

@@ -1101,7 +1101,7 @@ function change_to_contacts() {
 }
 
 //Start Functions For Pesonal Music
-var file = `https://03.memeguy21.repl.co/evox/music_${user}.json`
+var file = `https://03.memeguy21.repl.co/evox/music_Γρηγορης.json` //CHANGE ME THIS IS DEFAULT
 readTextFile(file, function(text) {
 		var info = JSON.parse(text)
         var el = info.el
