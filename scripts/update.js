@@ -74,6 +74,10 @@ function manual_update() {
     console.log("manual update")
         console.log("Manual update version: " + current_version)
         const file = url
+        //notification.play()
+        update_found.play()
+        document.getElementById("manual_update").innerHTML = `<b style="font-size: 25px">T50 ${current_version}</b><br><span style="color: lime">ειστε ενημερωμενοι στην νεοτερη εκδοση<br><br><button onclick="downloadlatest()" style="color: grey" type="button" class="btn btn-light btn-sm"><b>Επιδιόρθωση Σφαλματων</b></button></span>`
+        return;
         if(current_version == current_server_version) {
             notification.play()
             document.getElementById("manual_update").innerHTML = `<b style="font-size: 25px">T50 ${current_version}</b><br><span style="color: lime">ειστε ενημερωμενοι στην νεοτερη εκδοση<br><br><button onclick="downloadlatest()" style="color: grey" type="button" class="btn btn-light btn-sm"><b>Επιδιόρθωση Σφαλματων</b></button></span>`
