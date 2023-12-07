@@ -951,7 +951,7 @@ function change_chatting_user() {
     if(current_name == "Placeholder") { 
         document.getElementById("memberLabel2").style.color = "red";
         document.getElementById("memberCheck2").disabled = true;
-    } else if(current_name == "Αλεξια") {
+    } else if(current_name == "21") {
         document.getElementById("memberLabel1").style.color = "red";
         document.getElementById("memberCheck1").disabled = true;
     } else if(current_name == "Επισκεπτης") {
@@ -975,7 +975,7 @@ function change_chatting_user() {
         var favorite_now = localStorage.getItem("contact_favorite_name")
         if(favorite_now == "Placeholder") { 
             document.getElementById("memberCheck2").checked = true;
-        } else if(favorite_now == "Αλεξια") {
+        } else if(favorite_now == "21") {
             document.getElementById("memberCheck1").checked = true;
         } else if(favorite_now == "Επισκεπτης") {
             document.getElementById("memberCheck3").checked = true;
@@ -1054,9 +1054,9 @@ function change_chatting() {
     var check2 = document.getElementById('memberCheck2')
     var check3 = document.getElementById('memberCheck3')
     if(check1.checked == true) {
-        if(user != "Αλεξια") {
-            localStorage.setItem("contact_favorite_url", "https://03.memeguy21.repl.co/user-profiles/Αλεξια.png")
-            localStorage.setItem("contact_favorite_name", "Αλεξια")
+        if(user != "21") {
+            localStorage.setItem("contact_favorite_url", "https://03.memeguy21.repl.co/user-profiles/21.png")
+            localStorage.setItem("contact_favorite_name", "21")
             document.getElementById("chat_2_user_pfp").src = localStorage.getItem("contact_favorite_url")
             document.getElementById("change_chatting_user_username").innerHTML = localStorage.getItem("contact_favorite_name")
             let firstLetter = localStorage.getItem("contact_favorite_name").charAt(0);

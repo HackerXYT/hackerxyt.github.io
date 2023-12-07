@@ -138,15 +138,47 @@ function appendContact(email) {
           return response.text();
         })
         .then(data => {
+          console.log("Username fetch ok")
             const username = data
             fetch(`https://ChatVia-Database.memeguy21.repl.co?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
   .then(response => response.text())
   .then(pfp_data => {
+    console.log("pfp fetch ok")
+    fetch(`https://t50-social-database.memeguy21.repl.co?username=${username}&method=status`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(status => {
+          console.log("status fetch ok")
+          console.log(`${username} is ${status}`)
+          appenduser(username, email, pfp_data, status)
+    
+          
+        }).catch(error => console.error(error));     
   
-
     // Create HTML elements
-    const li = document.createElement("li");
-    li.className = "unread";
+    
+  }).catch(error => console.error(error));      
+  })
+        .catch(error => {
+          console.error('Fetch error:', error);
+        });
+    // Extract username from email (you can modify this logic based on your actual data)
+    
+}
+
+function appenduser(username, email, pfp_data, status) {
+  var searchText = document.getElementById('contacts-list-searching').innerHTML;
+
+  if (searchText.includes(username) || searchText.includes(email)) {
+      console.log(`Stopping the function because ${username}/${email} is found.`);
+      return;
+  }
+  const li = document.createElement("li");
+  li.className = "unread";
 
     const a = document.createElement("a");
     a.href = "#";
@@ -155,7 +187,8 @@ function appendContact(email) {
     div1.className = "d-flex";
 
     const div2 = document.createElement("div");
-    div2.className = "chat-user-img away align-self-center me-3 ms-0";
+    div2.className = "chat-user-img offline align-self-center me-3 ms-0"; //online-away-unknown for offline
+    div2.id = `${username}_div`
 
     const img = document.createElement("img");
     img.id = `imagebase64temp`;
@@ -191,14 +224,16 @@ function appendContact(email) {
     // Append the new elements to the existing container
     document.getElementById("contacts-list-searching").appendChild(li);
     document.getElementById("contacts-list-searching").innerHTML = `<ul class="list-unstyled chat-list chat-user-list">`+document.getElementById("contacts-list-searching").innerHTML
-  }).catch(error => console.error(error));      
-  })
-        .catch(error => {
-          console.error('Fetch error:', error);
-        });
-    // Extract username from email (you can modify this logic based on your actual data)
-    
+    if(status === "online") {
+      let oldhtml = document.getElementById(`${username}_div`).innerHTML
+      document.getElementById(`${username}_div`).classList.remove("offline");
+      document.getElementById(`${username}_div`).classList.add("online");
+      document.getElementById(`${username}_div`).innerHTML = `${oldhtml}<span class="user-status"></span>`
+    } else {
+      let oldhtml = document.getElementById(`${username}_div`).innerHTML
+      document.getElementById(`${username}_div`).innerHTML = `${oldhtml}<span class="user-status"></span>`
+      console.log("user offline, no change")
+    }
 }
-
 /*TO DO: 1. Add user pfps by connecting to db OK! (Prompt User to Add pfp on account register [not done]) 
 2. Show only the accounts that match the search criteria (not all registered accounts) OK!  */
