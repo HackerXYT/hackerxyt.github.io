@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="theme-color" content="#202d33" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#202d33" media="(prefers-color-scheme: dark)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" 
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Login Page</title>
+    <style>
+         @font-face { font-family: "SF"; src: url('SFUIText-Medium.ttf'); } 
+
+
+        body {
+            font-family: "SF";
+            margin: 0;
+            padding: 0;
+            position: relative;
+            min-height: 100vh;
+            background-color: #222;
+            overflow: hidden;
+            touch-action: manipulation;
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10 and IE 11 */
+            user-select: none; /* Standard syntax */
+        }
+
+        img {
+          user-drag: none; /* Disable dragging */
+          user-select: none; /* Disable selection */
+          -moz-user-select: none; /* Firefox support */
+        }
+
+        .background {
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: blur(10px);
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-color: transparent;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .logo {
+            width: 185px;
+            height: 185px;
+            position: absolute;
+            top: -195px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        ::placeholder {
+            color: #c4cbd2;
+        }
+
+        .input-box {
+            font-family: "SF";
+            width: 250px;
+            height: 40px;
+            border: none;
+            border-radius: 3px;
+            outline: none;
+            background-color: rgba(252, 252, 252, 0.259);
+            margin: 10px 0;
+            padding: 10px;
+            color: #fff;
+            font-size: 16px;
+            transition: background-color 1s;
+        }
+
+        .transparent-button {
+            font-family: "SF";
+            width: 250px;
+            height: 40px;
+            border: 2px solid #a7b3bf;
+            border-radius: 5px;
+            background: transparent;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .bottom-logo {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 320px;
+            height: 102px;
+        }
+        #check-group {
+    animation: 0.32s ease-in-out 1.03s check-group;
+    transform-origin: center;
+}
+
+#check-group #check {
+    animation: 0.34s cubic-bezier(0.65, 0, 1, 1) 0.8s forwards check;
+    stroke-dasharray: 0, 75px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+#check-group #outline {
+    animation: 0.38s ease-in outline;
+    transform: rotate(0deg);
+    transform-origin: center;
+}
+
+#check-group #white-circle {
+    animation: 0.35s ease-in 0.35s forwards circle;
+    transform: none;
+    transform-origin: center;
+}
+
+@keyframes outline {
+  from {
+    stroke-dasharray: 0, 345.576px;
+  }
+  to {
+    stroke-dasharray: 345.576px, 345.576px;
+  }
+}
+@keyframes circle {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
+}
+@keyframes check {
+  from {
+    stroke-dasharray: 0, 75px;
+  }
+  to {
+    stroke-dasharray: 75px, 75px;
+  }
+}
+@keyframes check-group {
+  from {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.09);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.centered-text {
+    display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #c4cbd2;
+    }
+    .settings-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+        .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    padding: 20px;
+    background-color: rgb(252, 252, 252);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+    z-index: 999;
+    display: none;
+}
+.popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+</style>
+
+    </style>
+</head>
+<body>
+    <div class="background" style="background: repeating-radial-gradient(circle, #1e3336, #28333c, #1c2f3e, #1d3236, #213639 20px);"></div>
+    
+    <div id="container" class="container" style="display: none">
+        <img src="evox-logo.png" alt="Logo" class="logo" id="myLogo">
+        <input autocomplete="off" id="username" type="text" class="input-box" placeholder="Username">
+        <input autocomplete="off" id="password" type="password" class="input-box" placeholder="Password">
+        <button id="submit" class="transparent-button">Login</button><br>
+    </div>
+    <a href="#" id="register" onclick="goto_register()" style="display: none"><p style="position: absolute;bottom: 30px;left: 50%;transform: translateX(-50%);height: 90px;font-size: large;color:#c4cbd2">Register</p></a>
+    <img style="display: none;user-drag: none;user-select: none;" id="bottom-logo" src="another_logo.png" alt="Another Logo" class="bottom-logo">
+    <div id="popup" class="popup">
+        <span onclick="close_popup()" class="popup-close"><svg onclick="close_popup()" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z" fill="#000000"/></svg></span>
+        <!-- Content of the popup -->
+        <h2>Settings</h2>
+        <h3>Username: <span id="settings_username_ph">"USER"</span></h3>
+        <p><br>
+        Log Out  <a style="color: red" onclick="logoff()"><svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="24px" height="24px" viewBox="0 0 16 16"><path d="M1.3 3.75h5.88V2.5H1.3A1.25 1.25 0 0 0 .05 3.75v8.5A1.25 1.25 0 0 0 1.3 13.5h5.88v-1.25H1.3z"/><path d="m15.4 7-4-2.74-.71 1 3.08 2.1H4.71v1.26h9.07l-3.08 2.11.71 1L15.4 9a1.24 1.24 0 0 0 0-2z"/></svg></a><br>
+        Delete Account <a style="color: red" onclick="delete_acc()"><svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+            <path d="M18.41 18.09L15.59 20.91" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18.41 20.91L15.59 18.09" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12.1601 10.87C12.0601 10.86 11.9401 10.86 11.8301 10.87C9.45006 10.79 7.56006 8.84 7.56006 6.44C7.56006 3.99 9.54006 2 12.0001 2C14.4501 2 16.4401 3.99 16.4401 6.44C16.4301 8.84 14.5401 10.79 12.1601 10.87Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 21.8101C10.18 21.8101 8.37005 21.3501 6.99005 20.4301C4.57005 18.8101 4.57005 16.1701 6.99005 14.5601C9.74005 12.7201 14.25 12.7201 17 14.5601" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg></a><br>
+            Restart <a onclick="restart()"><svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+                <path fill="none" stroke="#000000" stroke-width="2" d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8"/>
+              </svg></a><br>
+        </p>
+    </div>
+    <div id="text" style="display: none" class="centered-text">
+        
+        
+      </div>
+      <!-- <div style="display: block" class="settings-button"> Reload Button - Not Ready
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24px" width="24px" version="1.1" id="_x32_" viewBox="0 0 512 512" xml:space="preserve">
+            <style type="text/css">
+                .st0{fill:#fff;}
+            </style>
+            <g>
+                <path class="st0" d="M446.025,92.206c-40.762-42.394-97.487-69.642-160.383-72.182c-15.791-0.638-29.114,11.648-29.752,27.433   c-0.638,15.791,11.648,29.114,27.426,29.76c47.715,1.943,90.45,22.481,121.479,54.681c30.987,32.235,49.956,75.765,49.971,124.011   c-0.015,49.481-19.977,94.011-52.383,126.474c-32.462,32.413-76.999,52.368-126.472,52.382   c-49.474-0.015-94.025-19.97-126.474-52.382c-32.405-32.463-52.368-76.992-52.382-126.474c0-3.483,0.106-6.938,0.302-10.364   l34.091,16.827c3.702,1.824,8.002,1.852,11.35,0.086c3.362-1.788,5.349-5.137,5.264-8.896l-3.362-149.834   c-0.114-4.285-2.88-8.357-7.094-10.464c-4.242-2.071-9.166-1.809-12.613,0.738L4.008,182.45c-3.05,2.221-4.498,5.831-3.86,9.577   c0.61,3.759,3.249,7.143,6.966,8.974l35.722,17.629c-1.937,12.166-3.018,24.602-3.018,37.279   c-0.014,65.102,26.475,124.31,69.153,166.944C151.607,465.525,210.8,492.013,275.91,492   c65.095,0.014,124.302-26.475,166.937-69.146c42.678-42.635,69.167-101.842,69.154-166.944   C512.014,192.446,486.844,134.565,446.025,92.206z"/>
+            </g>
+            </svg>
+    </div>-->
+      <div style="display: none" id="settings" class="settings-button"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+        <!-- You can customize the icon or text inside the button -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48" id="Layer_2" data-name="Layer 2"><defs><style>.cls-1{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;}</style></defs><path class="cls-1" d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z"/></svg>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script>
+    $('.settings-button').click(function() {
+        if(document.getElementById("popup").style.display == ""||document.getElementById("popup").style.display == "none") {
+            document.getElementById("settings_username_ph").innerHTML = localStorage.getItem("username")
+            $('#popup').fadeIn("slow");
+        } else if(document.getElementById("popup").style.display == "block") {
+            $('#popup').fadeOut("slow");
+        }
+        
+        });
+    let auto_login_username = localStorage.getItem("username")
+    let auto_login_password = localStorage.getItem("password")
+    if(auto_login_username && auto_login_password) {
+        $( "#container" ).fadeOut( "slow", function() {
+            document.getElementById("text").innerHTML = `
+                <h1>Please Wait..</h1><br><p>Your account information is being retrieved</p>`
+            $( "#text" ).fadeIn( "slow", function() {
+                const url = `https://evox-app-data.memeguy21.repl.co/users/${auto_login_username}.json`;
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                console.log("Username Exists");//Show text html
+                const response = JSON.parse(xhr.responseText);
+                const account_password = response.password;
+                if (account_password !== auto_login_password) {
+                    console.log("Wrong Password");//Show text html
+                    localStorage.removeItem("username")
+                    localStorage.removeItem("password")
+                    $( "#text" ).fadeOut( "slow", function() {
+                    enable()
+                    document.getElementById("username").value = auto_login_username
+                    $( "#container" ).fadeIn( "slow", function() {
+                        fadeError("2")
+
+                    })
+                })
+                } else {
+                    console.log("Correct Password");//Show text html
+                    sessionStorage.removeItem("last_pass_tried")
+                    sessionStorage.removeItem("last_username_tried")
+                        $( "#container" ).fadeOut( "slow", function() {
+                            
+                        $( "#text" ).fadeOut( "slow", function() {
+                            document.getElementById("text").innerHTML = `
+                            <h1>Welcome To Evox</h1><br>
+                            <p>We are updating Evox with new features!<br>Thank you for joining us, ${auto_login_username}.<!--<br><br>Click here to <a style="color: red" onclick="delete_acc()">Delete Your Account</a>-->`
+                            $( "#text" ).fadeIn( "slow", function() {
+                      // Animation complete.
+                      $( "#bottom-logo" ).fadeOut( "fast", function() {
+                        setTimeout(function() {
+                document.getElementById("bottom-logo").src = "footer-in.png"
+                $( "#bottom-logo" ).fadeIn( "slow", function() {
+                })
+            }, 1000)
+                            })
+                        $( "#settings" ).fadeIn( "slow", function() {
+            
+        })
+                    });
+                    });
+                    });
+                    
+                }
+            } else {
+                console.log('Username does not exist');//Show text html
+                localStorage.removeItem("username")
+                localStorage.removeItem("password")
+                $( "#text" ).fadeOut( "slow", function() {
+                    enable()
+                    document.getElementById("username").value = auto_login_username
+                    document.getElementById("password").value = auto_login_password
+                    $( "#container" ).fadeIn( "slow", function() {
+                        fadeError("1")
+                    })
+                })
+                //setTimeout(function() {
+                //    window.location.reload()
+                //}, 1000)
+
+            }
+        };
+    
+        // Send the request
+        xhr.send();
+            });
+        })
+    } else {
+        $( "#container" ).fadeIn( "slow", function() {
+        $( "#bottom-logo" ).fadeIn( "slow", function() {
+            $( "#register" ).fadeIn( "slow", function() {})
+        })
+    })
+    }
+    let username;
+    let password;
+    $( "#submit" ).on( "click", function() {
+        document.getElementById("submit").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 44 44" stroke="#fff">
+            <g fill="none" fill-rule="evenodd" stroke-width="2">
+                <circle cx="22" cy="22" r="1">
+                    <animate attributeName="r" begin="0s" dur="1.8s" values="1; 20" calcMode="spline" keyTimes="0; 1" keySplines="0.165, 0.84, 0.44, 1" repeatCount="indefinite"/>
+                    <animate attributeName="stroke-opacity" begin="0s" dur="1.8s" values="1; 0" calcMode="spline" keyTimes="0; 1" keySplines="0.3, 0.61, 0.355, 1" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="22" cy="22" r="1">
+                    <animate attributeName="r" begin="-0.9s" dur="1.8s" values="1; 20" calcMode="spline" keyTimes="0; 1" keySplines="0.165, 0.84, 0.44, 1" repeatCount="indefinite"/>
+                    <animate attributeName="stroke-opacity" begin="-0.9s" dur="1.8s" values="1; 0" calcMode="spline" keyTimes="0; 1" keySplines="0.3, 0.61, 0.355, 1" repeatCount="indefinite"/>
+                </circle>
+            </g>
+        </svg>`
+        document.getElementById("submit").disabled = true;
+        username = document.getElementById("username").value;
+        password = document.getElementById("password").value;
+        
+        if(username == "") {
+            fadeError("1")
+            console.log("Type Something!"); //Show text html
+            enable()
+            return;
+        } else if(password == "") {
+            fadeError("2")
+            console.log("Type Something!"); //Show text html
+            enable()
+            return;
+        }
+        if(sessionStorage.getItem("last_pass_tried") && sessionStorage.getItem("last_username_tried")) {
+            if(sessionStorage.getItem("last_pass_tried") == password && sessionStorage.getItem("last_username_tried") == username) {
+                console.log("Please do not spam our systems!") //Show text html
+                enable()
+                fadeError("3")
+                return;
+            }
+        }
+        sessionStorage.setItem("last_pass_tried", password)
+        sessionStorage.setItem("last_username_tried", username)
+        // Submit Clicked
+        const url = `https://evox-app-data.memeguy21.repl.co/users/${username}.json`;
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+    
+        // Set the request header (optional)
+        xhr.setRequestHeader('Content-Type', 'application/json');
+    
+        // Handle the response
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                console.log("Username Exists");//Show text html
+                const response = JSON.parse(xhr.responseText);
+                const account_password = response.password;
+                if (account_password !== password) {
+                    fadeError("2")
+                    console.log("Wrong Password");//Show text html
+                    enable()
+                } else {
+                    console.log("Correct Password");//Show text html
+                    document.getElementById("submit").innerHTML = `<svg width="30px" height="30px" viewBox="0 0 133 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="check-group" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><circle id="filled-circle" fill="#07b481" cx="66.5" cy="66.5" r="54.5"/><circle id="white-circle" fill="#FFFFFF" cx="66.5" cy="66.5" r="55.5"/><circle id="outline" stroke="#07b481" stroke-width="4" cx="66.5" cy="66.5" r="54.5"/><polyline id="check" stroke="#FFFFFF" stroke-width="5.5" points="41 70 56 85 92 49"/></g></svg>`
+                    sessionStorage.removeItem("last_pass_tried")
+                    sessionStorage.removeItem("last_username_tried")
+                    setTimeout(function () {
+                        $( "#container" ).fadeOut( "slow", function() {
+                            document.getElementById("text").innerHTML = `
+                            <h1>Welcome To Evox</h1><br>
+                            <p>We are updating Evox with new features!<br>Thank you for joining us, ${username}.<!--<br><br>Click here to <a style="color: red" onclick="delete_acc()">Delete Your Account</a></p>--></p>`
+                        $( "#text" ).fadeIn( "slow", function() {
+                            localStorage.setItem("username", username)
+                            localStorage.setItem("password", password)
+                            $( "#bottom-logo" ).fadeOut( "fast", function() {
+                                setTimeout(function() {
+                document.getElementById("bottom-logo").src = "footer-in.png"
+                $( "#bottom-logo" ).fadeIn( "slow", function() {
+                })
+            }, 1000)
+                            })
+                            $( "#settings" ).fadeIn( "slow", function() {
+                                $( "#register" ).fadeOut( "slow", function() {})
+
+            
+        })
+                      // Animation complete.
+                    });
+                    });
+                    }, 1500)
+                    
+                }
+            } else {
+                fadeError("1")
+                console.log('Username does not exist');//Show text html
+                enable()
+            }
+        };
+    
+        // Send the request
+        xhr.send();
+    });
+
+    
+     // Fade duration in milliseconds
+    
+    function fadeError(method) {
+        var targetColor = "rgb(255, 99, 71)";
+        var fadeDuration = 2000;
+        let element;
+        if(method == "1") {
+            element = document.getElementById("username");
+            element.style.backgroundColor = targetColor;
+        } else if(method == "2") {
+            element = document.getElementById("password");
+            element.style.backgroundColor = targetColor;
+        } else if(method == "3") {
+            element1 = document.getElementById("username");
+            element1.style.backgroundColor = targetColor;
+            element2 = document.getElementById("password");
+            element2.style.backgroundColor = targetColor;
+            setTimeout(function () {
+                element1.style.backgroundColor = "rgba(252, 252, 252, 0.259)";
+                element2.style.backgroundColor = "rgba(252, 252, 252, 0.259)";
+            }, 2000)
+            return;
+        }
+        setTimeout(function (){
+            element.style.backgroundColor = "rgba(252, 252, 252, 0.259)";
+        }, 2000)
+    }
+
+    function enable() {
+        setTimeout(function (){
+            $( "#register" ).fadeIn( "slow", function() {})
+            document.getElementById("submit").disabled = false;
+            document.getElementById("submit").innerHTML = `Login`
+        },500)
+    }
+    const input = document.getElementById('username');
+    const button = document.getElementById('submit');
+    input.addEventListener('keyup', function(event) {
+      if (event.keyCode === 13) {
+        // Simulate a click on the button
+        button.click();
+      }
+    });
+    const input2 = document.getElementById('password');
+    input2.addEventListener('keyup', function(event) {
+      if (event.keyCode === 13) {
+        // Simulate a click on the button
+        button.click();
+      }
+    });
+
+
+    var holdTimer;
+
+    function startHoldTimer() {
+      holdTimer = setTimeout(doSomething, 500); // 2000 milliseconds = 2 seconds
+    }
+
+    function cancelHoldTimer() {
+      clearTimeout(holdTimer);
+    }
+
+    function doSomething() {
+        if (confirm('Log off your account?')) {
+          // Save it!
+          $( "#bottom-logo" ).fadeOut( "fast", function() {
+            setTimeout(function() {
+                document.getElementById("bottom-logo").src = "another_logo.png"
+                $( "#bottom-logo" ).fadeIn( "slow", function() {
+                })
+            }, 1000)
+            
+        })
+        localStorage.removeItem("username")
+        localStorage.removeItem("password")
+        $( "#text" ).fadeOut( "slow", function() {
+        enable()
+        $( "#settings" ).fadeOut( "slow", function() {
+            document.getElementById("username").value = ""
+            document.getElementById("password").value = ""
+            $( "#container" ).fadeIn( "slow", function() {
+            })
+        })
+        })
+        } else {
+          // Do nothing!
+        }
+    }
+
+    var button2 = document.getElementById("settings");
+    button2.addEventListener("mousedown", startHoldTimer);
+    button2.addEventListener("mouseup", cancelHoldTimer);
+    button2.addEventListener("mouseleave", cancelHoldTimer);
+    
+    // Touch events
+    button2.addEventListener("touchstart", startHoldTimer);
+    button2.addEventListener("touchend", cancelHoldTimer);
+    button2.addEventListener("touchcancel", cancelHoldTimer);
+
+    function goto_register() {
+        $( "#container" ).fadeOut( "slow", function() {
+            $( "#bottom-logo" ).fadeOut( "slow", function() {
+                $( "#register" ).fadeOut( "slow", function() {
+                window.location.href = "./register.html"
+            })
+            })
+            })
+    }
+
+    function delete_acc() {
+        const jsonUrl = `https://evox-app-data.memeguy21.repl.co/users/${localStorage.getItem("username")}-${localStorage.getItem("password")}.remove`;
+
+                        fetch(jsonUrl)
+                                $( "#bottom-logo" ).fadeOut( "fast", function() {
+            setTimeout(function() {
+                document.getElementById("bottom-logo").src = "another_logo.png"
+                $( "#bottom-logo" ).fadeIn( "slow", function() {
+                })
+            }, 1000)
+            
+        })
+        localStorage.removeItem("username")
+        localStorage.removeItem("password")
+        $( "#text" ).fadeOut( "slow", function() {
+            $( "#popup" ).fadeOut( "slow", function() {
+        })
+        enable()
+        $( "#settings" ).fadeOut( "slow", function() {
+            document.getElementById("username").value = ""
+            document.getElementById("password").value = ""
+            $( "#container" ).fadeIn( "slow", function() {
+            })
+        })
+        })
+    }
+
+    function logoff() {
+        $("#popup").fadeOut("slow")
+        doSomething()
+    }
+
+    function close_popup() {
+        $("#popup").fadeOut("slow")
+    }
+
+    function restart() {
+        $( "#popup" ).fadeOut( "fast", function() {
+            $( "#text" ).fadeOut( "fast", function() {
+                $( "#bottom-logo" ).fadeOut( "fast", function() {
+                    $( "#settings" ).fadeOut( "fast", function() {
+                    window.location.reload()
+                })
+                })
+            })
+           
+        })
+        
+    }
+
+    document.addEventListener('touchmove', function (event) {
+      event.preventDefault();
+    }, { passive: false });
+</script>
+</html>

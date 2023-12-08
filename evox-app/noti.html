@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Push Notification Using Web-Push</title>
+</head>
+<body>
+    <h1>Push Notification Using Web-Push</h1>
+
+</body>
+	<script>
+		// Public VAPID Key
+		const publicVapidKey = "BLZ54ubDwvVJ07Kw6CsC-ovaSYtaH2XtL478aohUhBZ9KxqC5p6yVRXGNdelHO6YJFpGQdkvdzmgJ7zR6IwxY40";
+
+		// Function to register the service worker and subscribe to push notifications
+		async function registerServiceWorker() {
+				try {
+						// Register the service worker
+						const register = await navigator.serviceWorker.register('/worker.js', {
+								scope: '/'
+						});
+
+						// Subscribe to push notifications
+						const subscription = await register.pushManager.subscribe({
+								userVisibleOnly: true,
+								applicationServerKey: publicVapidKey,
+						});
+
+						// Send subscription to the server
+					try {
+							const response = await fetch("https://webpush.memeguy21.repl.co/subscribe", {
+									method: "POST",
+									mode: "cors",
+									credentials: "same-origin",
+									headers: {
+											"Content-Type": "application/json",
+									},
+									body: JSON.stringify(subscription),
+							});
+
+							if (!response.ok) {
+									throw new Error(`HTTP error! Status: ${response.status}`);
+							}
+
+							// Continue processing if the response is successful
+					} catch (error) {
+							console.error("Error during fetch:", error);
+					}
+
+				} catch (error) {
+						console.error("Error registering service worker:", error);
+				}
+		}
+
+		// Check if the browser supports service workers
+		if ('serviceWorker' in navigator) {
+				registerServiceWorker().catch(console.log);
+		}
+	</script>
+</html>

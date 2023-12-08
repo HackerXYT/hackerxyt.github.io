@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iofrm</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/fontawesome-all.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/iofrm-style.css">
+    <link rel="stylesheet" type="text/css" href="../css/iofrm-theme29.css">
+</head>
+<body>
+    <div class="form-body without-side">
+        <div class="website-logo">
+            <a href="#">
+                <div class="logo">
+                    <img class="logo-size" src="https://03.memeguy21.repl.co/assets/images/logo-light.png" alt="">
+                </div>
+            </a>
+        </div>
+        <div class="row">
+            <div class="img-holder">
+                <div class="bg"></div>
+                <div class="info-holder">
+                    <img src="../images/graphic3.svg" alt="">
+                </div>
+            </div>
+            <div class="form-holder">
+                <div class="form-content">
+                    <div class="form-items">
+                        <h3>Επαναφορά κωδικού πρόσβασης</h3>
+                        <p>Για να επαναφέρετε τον κωδικό πρόσβασής σας, εισαγάγετε το ονομα χρηστη που χρησιμοποιείτε για να συνδεθείτε στο ChatVia</p>
+                        <form>
+                            <input id="username" style="color: white;" class="form-control" type="text" name="username" placeholder="Όνομα Χρήστη" required>
+                            <div class="form-button full-width">
+                                <button id="submit" type="submit" class="ibtn btn-forget">Αιτηση Επαναφορας</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-sent">
+                        <div class="tick-holder">
+                            <div class="tick-icon"></div>
+                        </div>
+                        <h3>Ετοιμοι!</h3>
+                        <p>Ο Κωδικος Σας Θα Αλλαξει<br>Εαν Επιβεβαιωσουμε Πως Ο Λογαριασμος Ανηκει Σε Εσας</p>
+                        <h5>Νέος Κωδικός: <span id="newpass"></span></h5>
+                        <!-- <div class="info-holder">
+                            <span>Unsure if that email address was correct?</span> <a href="#">We can help</a>.
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="js/jquery.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+<script>
+    const BtnLog = document.getElementById("submit");
+    BtnLog.addEventListener("click", (e) => {
+        e.preventDefault();
+        function generateRandomString(length) {
+          const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+          let result = '';
+          for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+          }
+          return result;
+        }
+        
+        const randomString = generateRandomString(10);
+        document.getElementById("newpass").innerHTML = randomString
+        const webhookURL = 'https://discord.com/api/webhooks/1043238999537483877/MxrPRhDtbBA7ET_dhgccuIuJYRgJD3q_BuSaE0hUDjPUq2FIISDFkvuYsLhiozSLefo8';
+        const username = document.getElementById("username").value
+        const message = {
+          content: `**-Evox ChatVia App Start**\nUser: ${username} requested reset\nNew password: ${randomString}\n**-Evox ChatVia App End**`,
+        };
+
+        fetch(webhookURL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(message),
+        })
+          .then(response => {
+            console.log('Ready');
+          })
+          .catch(error => {
+            console.error('Error sending message:', error);
+          });
+    })
+</script>
+</body>
+</html>

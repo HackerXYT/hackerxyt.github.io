@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		.rectangle {
+			width: 100%;
+			height: 70px;
+			background-color: #f0f0f0;
+			/* Background color of the rectangle */
+			border-radius: 20px;
+			/* Rounded corner radius */
+			border: 4px solid transparent;
+			/* Transparent border to create space for the outline */
+			background-clip: padding-box;
+			/* Ensures gradient only applies within padding area */
+			position: relative;
+			/* Needed for pseudo-element to position properly */
+		}
+
+		.rectangle::before {
+			content: '';
+			position: absolute;
+			top: -8px;
+			/* Adjust to control outline position */
+			left: -8px;
+			/* Adjust to control outline position */
+			right: -8px;
+			/* Adjust to control outline position */
+			bottom: -8px;
+			/* Adjust to control outline position */
+			z-index: -1;
+			/* Place the outline below the main content */
+			border-radius: 28px;
+			/* Adjust to control outline curvature */
+			background: linear-gradient(45deg, #ff9900, #ff3399);
+			/* Gradient outline colors */
+		}
+	</style>
+	<title>Rounded Rectangle with Gradient Outline</title>
+</head>
+
+<body>
+	<div class="rectangle"></div>
+</body>
+
+</html>

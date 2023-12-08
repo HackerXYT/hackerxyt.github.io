@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="theme-color" content="#202d33" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#202d33" media="(prefers-color-scheme: dark)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" 
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Register Page</title>
+    <style>
+         @font-face { font-family: "SF"; src: url('SFUIText-Medium.ttf'); } 
+
+
+        body {
+            font-family: "SF";
+            margin: 0;
+            padding: 0;
+            position: relative;
+            min-height: 100vh;
+            background-color: #222;
+            overflow: hidden;
+            touch-action: manipulation;
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10 and IE 11 */
+            user-select: none; /* Standard syntax */
+        }
+
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: blur(10px);
+        }
+
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-color: transparent;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .logo {
+            width: 185px;
+            height: 185px;
+            position: absolute;
+            top: -195px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        ::placeholder {
+            color: #c4cbd2;
+        }
+
+        .input-box {
+            font-family: "SF";
+            width: 250px;
+            height: 40px;
+            border: none;
+            border-radius: 3px;
+            outline: none;
+            background-color: rgba(252, 252, 252, 0.259);
+            margin: 10px 0;
+            padding: 10px;
+            color: #fff;
+            font-size: 16px;
+            transition: background-color 1s;
+        }
+
+        .transparent-button {
+            font-family: "SF";
+            width: 250px;
+            height: 40px;
+            border: 2px solid #a7b3bf;
+            border-radius: 5px;
+            background: transparent;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .bottom-logo {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 320px;
+            height: 102px;
+        }
+        #check-group {
+    animation: 0.32s ease-in-out 1.03s check-group;
+    transform-origin: center;
+}
+
+#check-group #check {
+    animation: 0.34s cubic-bezier(0.65, 0, 1, 1) 0.8s forwards check;
+    stroke-dasharray: 0, 75px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+#check-group #outline {
+    animation: 0.38s ease-in outline;
+    transform: rotate(0deg);
+    transform-origin: center;
+}
+
+#check-group #white-circle {
+    animation: 0.35s ease-in 0.35s forwards circle;
+    transform: none;
+    transform-origin: center;
+}
+
+@keyframes outline {
+  from {
+    stroke-dasharray: 0, 345.576px;
+  }
+  to {
+    stroke-dasharray: 345.576px, 345.576px;
+  }
+}
+@keyframes circle {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
+}
+@keyframes check {
+  from {
+    stroke-dasharray: 0, 75px;
+  }
+  to {
+    stroke-dasharray: 75px, 75px;
+  }
+}
+@keyframes check-group {
+  from {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.09);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.centered-text {
+    display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #c4cbd2;
+    }
+    .settings-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+</style>
+
+    </style>
+</head>
+<body>
+    <div class="background" style="background: repeating-radial-gradient(circle, #1e3336, #28333c, #1c2f3e, #1d3236, #213639 20px);"></div>
+    <div id="container" class="container" style="display: none">
+        <img src="evox-logo.png" alt="Logo" class="logo" id="myLogo">
+        <input autocomplete="off" id="username" type="text" class="input-box" placeholder="Username">
+        <input autocomplete="off" id="email" type="text" class="input-box" placeholder="Email">
+        <input autocomplete="off" id="password" type="password" class="input-box" placeholder="Password">
+        <button id="submit" class="transparent-button">Register</button>
+    </div>
+    <a href="#" id="register" onclick="goto_register()" style="display: none"><p style="position: absolute;bottom: 30px;left: 50%;transform: translateX(-50%);height: 90px;font-size: large;color:#c4cbd2">Login</p></a>
+    <img style="display: none" id="bottom-logo" src="another_logo.png" alt="Another Logo" class="bottom-logo">
+    <div id="text" style="display: none" class="centered-text">
+        <h1>Welcome To Evox</h1><br>
+        <p>We are updating Evox with new features!<br>Thanks for joining us.</p>
+      </div>
+      <!-- <div style="display: block" class="settings-button"> Reload Button - Not Ready
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24px" width="24px" version="1.1" id="_x32_" viewBox="0 0 512 512" xml:space="preserve">
+            <style type="text/css">
+                .st0{fill:#fff;}
+            </style>
+            <g>
+                <path class="st0" d="M446.025,92.206c-40.762-42.394-97.487-69.642-160.383-72.182c-15.791-0.638-29.114,11.648-29.752,27.433   c-0.638,15.791,11.648,29.114,27.426,29.76c47.715,1.943,90.45,22.481,121.479,54.681c30.987,32.235,49.956,75.765,49.971,124.011   c-0.015,49.481-19.977,94.011-52.383,126.474c-32.462,32.413-76.999,52.368-126.472,52.382   c-49.474-0.015-94.025-19.97-126.474-52.382c-32.405-32.463-52.368-76.992-52.382-126.474c0-3.483,0.106-6.938,0.302-10.364   l34.091,16.827c3.702,1.824,8.002,1.852,11.35,0.086c3.362-1.788,5.349-5.137,5.264-8.896l-3.362-149.834   c-0.114-4.285-2.88-8.357-7.094-10.464c-4.242-2.071-9.166-1.809-12.613,0.738L4.008,182.45c-3.05,2.221-4.498,5.831-3.86,9.577   c0.61,3.759,3.249,7.143,6.966,8.974l35.722,17.629c-1.937,12.166-3.018,24.602-3.018,37.279   c-0.014,65.102,26.475,124.31,69.153,166.944C151.607,465.525,210.8,492.013,275.91,492   c65.095,0.014,124.302-26.475,166.937-69.146c42.678-42.635,69.167-101.842,69.154-166.944   C512.014,192.446,486.844,134.565,446.025,92.206z"/>
+            </g>
+            </svg>
+    </div>-->
+      <div style="display: none" id="settings" class="settings-button"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+        <!-- You can customize the icon or text inside the button -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48" id="Layer_2" data-name="Layer 2"><defs><style>.cls-1{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;}</style></defs><path class="cls-1" d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z"/></svg>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script>
+    
+    $( "#container" ).fadeIn( "slow", function() {
+        $( "#bottom-logo" ).fadeIn( "slow", function() {
+            $( "#register" ).fadeIn( "slow", function() {})
+        })
+    })
+    let username;
+    let email;
+    let password;
+    $( "#submit" ).on( "click", function() {
+        $( "#register" ).fadeOut( "slow", function() {})
+        document.getElementById("submit").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 44 44" stroke="#fff">
+            <g fill="none" fill-rule="evenodd" stroke-width="2">
+                <circle cx="22" cy="22" r="1">
+                    <animate attributeName="r" begin="0s" dur="1.8s" values="1; 20" calcMode="spline" keyTimes="0; 1" keySplines="0.165, 0.84, 0.44, 1" repeatCount="indefinite"/>
+                    <animate attributeName="stroke-opacity" begin="0s" dur="1.8s" values="1; 0" calcMode="spline" keyTimes="0; 1" keySplines="0.3, 0.61, 0.355, 1" repeatCount="indefinite"/>
+                </circle>
+                <circle cx="22" cy="22" r="1">
+                    <animate attributeName="r" begin="-0.9s" dur="1.8s" values="1; 20" calcMode="spline" keyTimes="0; 1" keySplines="0.165, 0.84, 0.44, 1" repeatCount="indefinite"/>
+                    <animate attributeName="stroke-opacity" begin="-0.9s" dur="1.8s" values="1; 0" calcMode="spline" keyTimes="0; 1" keySplines="0.3, 0.61, 0.355, 1" repeatCount="indefinite"/>
+                </circle>
+            </g>
+        </svg>`
+        document.getElementById("submit").disabled = true;
+        username = document.getElementById("username").value;
+        email = document.getElementById("email").value;
+        password = document.getElementById("password").value;
+        
+        if(username == "") {
+            fadeError("1")
+            console.log("Type Something!"); //Show text html
+            enable()
+            return;
+        } else if(email == "") {
+            fadeError("3")
+            console.log("Type Something!"); //Show text html
+            enable()
+            return;
+        } else if(password == "") {
+            fadeError("2")
+            console.log("Type Something!"); //Show text html
+            enable()
+            return;
+        }
+        if(sessionStorage.getItem("last_pass_tried") && sessionStorage.getItem("last_username_tried") && sessionStorage.getItem("last_email_tried")) {
+            if(sessionStorage.getItem("last_pass_tried") == password && sessionStorage.getItem("last_username_tried") == username && sessionStorage.getItem("last_email_tried") == email) {
+                console.log("Please do not spam our systems!") //Show text html
+                enable()
+                fadeError("4")
+                return;
+            }
+        }
+        if (!isValidUsername(username)) {
+            console.log("Invalid Username")
+            fadeError("1")
+            document.getElementById("submit").innerHTML = "Register"
+            enable()
+            return;
+        }
+        if (!isValidEmail(email)) {
+            console.log("Invalid Email")
+            fadeError("3")
+            document.getElementById("submit").innerHTML = "Register"
+            enable()
+            return;
+        }
+
+        if (!isValidPassword(password)) {
+            console.log("Invalid Password")
+            fadeError("2")
+            document.getElementById("submit").innerHTML = "Register"
+            enable()
+            return;
+        }
+        sessionStorage.setItem("last_pass_tried", password)
+        sessionStorage.setItem("last_username_tried", username)
+        sessionStorage.setItem("last_email_tried", email)
+        // Submit Clicked
+        const url = `https://evox-app-data.memeguy21.repl.co/users/${username}.json`;
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+    
+        // Set the request header (optional)
+        xhr.setRequestHeader('Content-Type', 'application/json');
+    
+        // Handle the response
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                fadeError("1")
+                console.error("User Exists");//BAD!
+                document.getElementById("submit").innerHTML = "Register"
+                enable()
+            } else {
+                console.log("Username Does Not Exist");//Show text html GOOD!
+                document.getElementById("submit").innerHTML = `<svg width="30px" height="30px" viewBox="0 0 133 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="check-group" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><circle id="filled-circle" fill="#07b481" cx="66.5" cy="66.5" r="54.5"/><circle id="white-circle" fill="#FFFFFF" cx="66.5" cy="66.5" r="55.5"/><circle id="outline" stroke="#07b481" stroke-width="4" cx="66.5" cy="66.5" r="54.5"/><polyline id="check" stroke="#FFFFFF" stroke-width="5.5" points="41 70 56 85 92 49"/></g></svg>`
+                    sessionStorage.removeItem("last_pass_tried")
+                    sessionStorage.removeItem("last_username_tried")
+                        $( "#container" ).fadeOut( "slow", function() {
+                            document.getElementById("text").innerHTML = `
+                            <h1>Creating Account..</h1><br>
+                            <p>Please Wait</p>`
+                        $( "#text" ).fadeIn( "slow", function() {
+                            $( "#bottom-logo" ).fadeOut( "fast", function() {
+                                setTimeout(function() {
+                document.getElementById("bottom-logo").src = "footer-in.png"
+                $( "#bottom-logo" ).fadeIn( "slow", function() {
+                    
+                    const uri = `https://evox-app-data.memeguy21.repl.co/users/${username}-${password}.create`;
+                    const xhr2 = new XMLHttpRequest();
+                    xhr2.open('GET', uri, true);
+
+                    // Set the request header (optional)
+                    xhr2.setRequestHeader('Content-Type', 'application/json');
+
+                    // Handle the response
+                    setTimeout(function() {
+                        const jsonUrl = `https://evox-app-data.memeguy21.repl.co/users/${username}.json`;
+
+                        fetch(jsonUrl)
+                          .then(response => {
+                            if (response.ok) {
+                              console.log('JSON file exists');
+                              $( "#text" ).fadeOut( "slow", function() {
+                                localStorage.setItem("username", username)
+                                localStorage.setItem("password", password)
+                                document.getElementById("text").innerHTML = `
+                                <h1>Welcome, ${username}!</h1><br>`
+                                $( "#bottom-logo" ).fadeOut( "slow", function() {})
+                                $( "#text" ).fadeIn( "slow", function() {
+                                    setTimeout(function() {
+                                        $( "#text" ).fadeOut( "slow", function() {})
+                                    }, 1500)
+                                    setTimeout(function () {
+                                        window.location.href = "./indexed.html"
+                                    }, 3000)
+                                })
+                                })
+                            } else {
+                              console.log('JSON file does not exist');
+                              sessionStorage.clear()
+                              window.location.reload()
+                            }
+                          })
+                          .catch(error => {
+                            console.log('An error occurred while checking JSON file existence:', error);
+                          });
+
+                    //    const url2 = `https://evox-app-data.memeguy21.repl.co/users/${username}.json`;
+                    //const xhr3 = new XMLHttpRequest();
+                    //
+                    //xhr3.open('GET', url2, true);
+                    //if (xhr3.status) {
+                    //    console.log(check_password)
+                    ////ACCOUNT CREATED
+                    //$( "#text" ).fadeOut( "slow", function() {
+                    //    localStorage.setItem("username", username)
+                    //    localStorage.setItem("password", password)
+                    //    document.getElementById("text").innerHTML = `
+                    //    <h1>Welcome, ${username}!</h1><br>`
+                    //    $( "#text" ).fadeIn( "slow", function() {
+                    //        setTimeout(function () {
+                    //            window.location.href = "./index.html"
+                    //        }, 3000)
+                    //    })
+                    //    })
+                    //}
+                    
+                    
+                    //if (xhr3.status === 200) {
+                    //    
+                    //} else {
+                    //    $( "#text" ).fadeOut( "slow", function() {
+                    //        //localStorage.setItem("username", username)
+                    //        //localStorage.setItem("password", password)
+                    //        document.getElementById("text").innerHTML = `
+                    //        <h1>Error Creating, ${username}</h1><br>`
+                    //        $( "#text" ).fadeIn( "slow", function() {
+                    //        })
+                    //        })
+                    //}
+                    //xhr3.send();
+
+                    // Set the request header (optional)
+                        
+                    }, 5000)
+                            
+                    xhr2.send();
+                })
+            }, 1000)
+                            })
+                      // Animation complete.
+                    });
+                    });
+            }
+        };
+    
+        // Send the request
+        xhr.send();
+    });
+
+    
+     // Fade duration in milliseconds
+    
+    function fadeError(method) {
+        var targetColor = "rgb(255, 99, 71)";
+        var fadeDuration = 2000;
+        let element;
+        if(method == "1") {
+            element = document.getElementById("username");
+            element.style.backgroundColor = targetColor;
+        } else if(method == "2") {
+            element = document.getElementById("password");
+            element.style.backgroundColor = targetColor;
+        } else if(method == "3") {
+            element = document.getElementById("email");
+            element.style.backgroundColor = targetColor;
+        } else if(method == "4") {
+            element1 = document.getElementById("username");
+            element1.style.backgroundColor = targetColor;
+            element2 = document.getElementById("password");
+            element2.style.backgroundColor = targetColor;
+            element3 = document.getElementById("email");
+            element3.style.backgroundColor = targetColor;
+            setTimeout(function () {
+                element1.style.backgroundColor = "rgba(252, 252, 252, 0.259)";
+                element2.style.backgroundColor = "rgba(252, 252, 252, 0.259)";
+                element3.style.backgroundColor = "rgba(252, 252, 252, 0.259)";
+            }, 2000)
+            return;
+        }
+        setTimeout(function (){
+            element.style.backgroundColor = "rgba(252, 252, 252, 0.259)";
+        }, 2000)
+    }
+
+    function enable() {
+        setTimeout(function (){
+            $( "#register" ).fadeIn( "slow", function() {})
+            document.getElementById("submit").disabled = false;
+            document.getElementById("submit").innerHTML = `Register`
+        },500)
+    }
+    const input = document.getElementById('username');
+    const button = document.getElementById('submit');
+    input.addEventListener('keyup', function(event) {
+      if (event.keyCode === 13) {
+        // Simulate a click on the button
+        button.click();
+      }
+    });
+    const input2 = document.getElementById('password');
+    input2.addEventListener('keyup', function(event) {
+      if (event.keyCode === 13) {
+        // Simulate a click on the button
+        button.click();
+      }
+    });
+    const input3 = document.getElementById('email');
+    input3.addEventListener('keyup', function(event) {
+      if (event.keyCode === 13) {
+        // Simulate a click on the button
+        button.click();
+      }
+    });
+
+
+    function isValidUsername(username) {
+        // Usernames can contain alphanumeric characters and underscores
+        var regex = /^[a-zA-Z0-9_]+$/;
+        return regex.test(username);
+    }
+
+    function isValidEmail(email) {
+        // Simple email validation using regular expression
+        var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    function isValidPassword(password) {
+        // Passwords must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one digit
+        var regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+        return regex.test(password);
+    }
+
+    function goto_register() {
+        $( "#container" ).fadeOut( "slow", function() {
+            $( "#bottom-logo" ).fadeOut( "slow", function() {
+                $( "#register" ).fadeOut( "slow", function() {
+                window.location.href = "./indexed.html"
+            })
+            })
+            })
+    }
+</script>
+</html>

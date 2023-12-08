@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="client.css">
+</head>
+<body id="body">
+ 
+    <div class="background"></div>
+    <div id="container" class="container">
+        <div id="cont">
+            <img id="img" src="t50_marios_design2.png" alt="Centered Image" class="centered-image">
+            <p id="welcome" style="display: none">
+                <span style="display:none;color: #18191a;font-family: 'Bold';font-size: larger" id="name">Commander</span>
+                <span style="color: #18191a;" id="first_name">*********</span>&nbsp;Is&nbsp;Back&nbsp;Online
+            </p>
+            <p id="notice" style="font-family:'Bold';font-size:larger;color:#8c8d8f;display:none">
+                New <span style="color:#bf1313">T50</span> <span style="color:#37a32a">Updates</span> And <span style="color:#e8e4e4">Messages</span> Will Show Up Here
+            </p>
+        </div>
+    </div>
+    
+    <!-- Rounded Rectangle Chatbox Code -->
+    <div class="rectangle-container">
+        <div class="rectangle">
+            <p>Hello</p>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+</body>
+<script>
+    const container = document.getElementById('body');
+    container.style.transition = 'background-color 5s ease';
+    container.style.backgroundColor = "#5e222e";
+</script>
+</html>

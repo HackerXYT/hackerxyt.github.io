@@ -1,0 +1,132 @@
+body {
+  zoom: 98%;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 50px;
+}
+.preventselect {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+.allowselect {
+  -webkit-user-select: text;
+  /* Safari */
+  -ms-user-select: text;
+  /* IE 10 and IE 11 */
+  user-select: text;
+  /* Standard syntax */
+}
+
+iframe {
+  display: block;
+    /* iframes are inline by default */
+    background: #000;
+    border: none;
+    /* Reset default border */
+    height: 100vh;
+    /* Viewport-relative units */
+    width: 100vw;
+}
+
+@keyframes shake {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-10px, 0); }
+  20% { transform: translate(10px, 0); }
+  30% { transform: translate(-10px, 0); }
+  40% { transform: translate(10px, 0); }
+  50% { transform: translate(-10px, 0); }
+  60% { transform: translate(10px, 0); }
+  70% { transform: translate(-10px, 0); }
+  80% { transform: translate(10px, 0); }
+  90% { transform: translate(-10px, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+.shake {
+  animation-name: shake;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+}
+
+#title-bar {
+  height: 26px;
+  background-color: #2f3241;
+  -webkit-app-region: drag;
+}
+
+#close-button {
+  -webkit-app-region: no-drag;
+  position: fixed;
+  width: 25px;
+  height: 25px;
+  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  position: relative; /* Add this line */
+  position: absolute; /* Add this line */
+  right: 0; /* Adjust this value as needed */
+  top: 0; /* Adjust this value as needed */
+  border: none;
+}
+
+#close {
+  position: absolute; /* Add this line */
+  right: 0; /* Adjust this value as needed */
+  top: 0; /* Adjust this value as needed */
+}
+
+#close-button:hover {
+  cursor: pointer;
+}
+
+#close:hover {
+  -moz-transition: all .1s ease-in;
+  -o-transition: all .1s ease-in;
+  -webkit-transition: all .1s ease-in;
+  transition: all .1s ease-in;
+  fill: #ff0000
+}
+
+#bar-logo {
+  position: relative;
+  top: 0;
+  left: 5px;
+  width: 66.825px;
+  height: 19.44px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.box {
+  width: 300px;
+  aspect-ratio: 1;
+  clip-path: polygon(93.30% 75.00%,50.00% 100.00%,6.70% 75.00%,6.70% 25.00%,50.00% 0.00%,93.30% 25.00%,93.30% 75.00%,90.70% 26.50%,50.00% 3.00%,9.30% 26.50%,9.30% 73.50%,50.00% 97.00%,90.70% 73.50%,90.70% 26.50%);
+  display: grid;
+}
+.box:before {
+  content: "";
+  background: conic-gradient(#000 30%,hsl(0 100% 70%) 90%,#000);
+  animation: r 2s ease-in-out infinite;
+}
+@keyframes r {
+  to {
+    rotate: 1turn;
+    filter: hue-rotate(1turn);
+  }
+}
+
+input[disabled] {
+  color: black;
+  opacity: 0.5;
+  cursor: not-allowed;
+}

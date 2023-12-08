@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <title>Project Evox</title>
+    </head>
+    <body>
+        <input placeholder="username" id="username">
+        <input placeholder="email" id="email">
+        <input placeholder="password" id="password"><button onclick="Start()">Start</button><br><br>
+        <input placeholder="code" id="code"><button onclick="Verify()">Verify</button>
+		<button onclick="Check()">Check</button><span id="text">Inactive</span>
+    </body>
+    <script>
+        function Start() {
+            const username = document.getElementById("username").value
+            const email = document.getElementById("email").value
+            const password = document.getElementById("password").value
+            const xhr = new XMLHttpRequest();
+		    const url = `https://evox-app-data.memeguy21.repl.co/users/${username}-${password}-${email}.create`;
+		    xhr.open('GET', url, true);
+		    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+		    xhr.onload = function() {
+		      if (xhr.status === 200) {
+		        console.log('Request sent successfully!');
+		        console.log(xhr.responseText);
+		      } else {
+		        console.log('Error sending request.');
+		      }
+		    };
+		    xhr.onerror = function() {
+		      console.log('Error sending request.');
+		    };
+		    xhr.send("wakeup");
+        }
+
+        function Verify() {
+            const username = document.getElementById("username").value
+            var decodedEmail = document.getElementById("email").value
+            const email = decodedEmail.replace("@", "%40");
+            const code = document.getElementById("code").value
+            const xhr = new XMLHttpRequest();
+		    const url = `https://evox-app-data.memeguy21.repl.co/users/${username}-${email}-${code}.verify`;
+		    xhr.open('GET', url, true);
+		    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+		    xhr.onload = function() {
+		      if (xhr.status === 200) {
+		        console.log('Request sent successfully!');
+		        console.log(xhr.responseText);
+		      } else {
+		        console.log('Error sending request.');
+		      }
+		    };
+		    xhr.onerror = function() {
+		      console.log('Error sending request.');
+		    };
+		    xhr.send("wakeup");
+        }
+
+		function Check() {
+			
+		}
+    </script>
+</html>
+

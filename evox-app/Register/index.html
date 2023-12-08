@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="theme-color" content="#202d33" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#202d33" media="(prefers-color-scheme: dark)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" 
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Register Page</title>
+    <link rel="stylesheet" href="assets/client.css"><link rel="stylesheet" href="assets/secondary.css">
+</head>
+<body>
+    <div class="background" style="background: repeating-radial-gradient(circle, #1e3336, #28333c, #1c2f3e, #1d3236, #213639 20px);"></div>
+    <div id="container" class="container" style="display: none">
+        <img src="evox-logo.png" alt="Logo" class="logo" id="myLogo">
+        <input autocomplete="off" id="username" type="text" class="input-box" placeholder="Username">
+        <input autocomplete="off" id="email" type="text" class="input-box" placeholder="Email">
+        <input autocomplete="off" id="password" type="password" class="input-box" placeholder="Password">
+        <button id="submit" class="transparent-button">Register</button>
+    </div>
+    <a href="#" id="register" onclick="goto_register()" style="display: none"><p style="position: absolute;bottom: 30px;left: 50%;transform: translateX(-50%);height: 90px;font-size: large;color:#c4cbd2">Login</p></a>
+    <img style="display: none" id="bottom-logo" src="another_logo.png" alt="Another Logo" class="bottom-logo">
+    <div id="text" style="display: none" class="centered-text">
+        <h1>Welcome To Evox</h1><br>
+        <p>We are updating Evox with new features!<br>Thanks for joining us.</p>
+      </div>
+      <!-- <div style="display: block" class="settings-button"> Reload Button - Not Ready
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24px" width="24px" version="1.1" id="_x32_" viewBox="0 0 512 512" xml:space="preserve">
+            <style type="text/css">
+                .st0{fill:#fff;}
+            </style>
+            <g>
+                <path class="st0" d="M446.025,92.206c-40.762-42.394-97.487-69.642-160.383-72.182c-15.791-0.638-29.114,11.648-29.752,27.433   c-0.638,15.791,11.648,29.114,27.426,29.76c47.715,1.943,90.45,22.481,121.479,54.681c30.987,32.235,49.956,75.765,49.971,124.011   c-0.015,49.481-19.977,94.011-52.383,126.474c-32.462,32.413-76.999,52.368-126.472,52.382   c-49.474-0.015-94.025-19.97-126.474-52.382c-32.405-32.463-52.368-76.992-52.382-126.474c0-3.483,0.106-6.938,0.302-10.364   l34.091,16.827c3.702,1.824,8.002,1.852,11.35,0.086c3.362-1.788,5.349-5.137,5.264-8.896l-3.362-149.834   c-0.114-4.285-2.88-8.357-7.094-10.464c-4.242-2.071-9.166-1.809-12.613,0.738L4.008,182.45c-3.05,2.221-4.498,5.831-3.86,9.577   c0.61,3.759,3.249,7.143,6.966,8.974l35.722,17.629c-1.937,12.166-3.018,24.602-3.018,37.279   c-0.014,65.102,26.475,124.31,69.153,166.944C151.607,465.525,210.8,492.013,275.91,492   c65.095,0.014,124.302-26.475,166.937-69.146c42.678-42.635,69.167-101.842,69.154-166.944   C512.014,192.446,486.844,134.565,446.025,92.206z"/>
+            </g>
+            </svg>
+    </div>-->
+      <div style="display: none" id="settings" class="settings-button"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+        <!-- You can customize the icon or text inside the button -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48" id="Layer_2" data-name="Layer 2"><defs><style>.cls-1{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;}</style></defs><path class="cls-1" d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z"/></svg>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="./assets/document.js"></script>
+<script src="./assets/communicate.js"></script>
+<script defer src="./assets/client.js"></script>
+</html>

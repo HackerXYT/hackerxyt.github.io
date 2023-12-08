@@ -3,7 +3,6 @@
 
 
 <head>
-  <script src="scripts/howler.js"></script>
   <script>
     user = localStorage.getItem("user");
     document.addEventListener('keydown', function(event) {
@@ -11,75 +10,19 @@
     event.preventDefault();
   }
 });
-sessionStorage.removeItem("access")
-sessionStorage.setItem("access", "t50")
-
-function status_post() {
-  console.log("Interval Req")
-  fetch('https://t50-social-database.memeguy21.repl.co/', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                    username: user, //is defined
-                    method: "status",
-                    what: "online"
-                  })
-                })
-                .then(response => response.text())
-                .then(data => {
-                  console.log("Reloaded Status:", data)
-                })
-                .catch(error => {
-                  console.error(error);
-                });
-}
-
-//var t50_error = new Howl({
-//src: ['./internal/t50/t50-error.mp3'],
-//volume: 0.7
-//});
-    
   </script>
-  
-   <style>
-
-        img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"] {
-
-    display: none;
-
-}
-
-#notification {
-            display: none;
-            position: fixed;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 400px;
-            background: linear-gradient(to right, #333333, #1a1a1a);
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-        }
-
-    </style>
 
   <meta charset="utf-8" />
 
   <title>ChatVia</title>
-  <meta name="viewport" content="width=device-width, initial-scale=2.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta content="Responsive Bootstrap 4 Chat App" name="description" />
   <meta content="Themesbrand" name="author" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <link rel="stylesheet" href="./offline/notyf.min.css">
   <!-- App favicon -->
-  <link rel="shortcut icon" href="./t50/socket-io.png">
+  <link rel="shortcut icon" href="images/socket-io.png">
 
   <!-- magnific-popup css -->
   <link href="css/loading.css" rel="stylesheet" type="text/css"/>
@@ -100,19 +43,7 @@ function status_post() {
   <!-- App Css-->
   <link href="css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
   <link href="index.css" rel="stylesheet" type="text/css" />
-  <!-- PushAlert -->
-  <script type="text/javascript">
-          (function(d, t) {
-                  var g = d.createElement(t),
-                  s = d.getElementsByTagName(t)[0];
-                  g.src = "https://cdn.pushalert.co/integrate_8a93f9a9ab08de982ee711b3570d1e0a.js";
-                  s.parentNode.insertBefore(g, s);
-          }(document, "script"));
-  </script>
-  <script src="scripts/localhost.js"></script>
-  
 
-  <!-- End PushAlert -->
 
 </head>
 <style>
@@ -120,17 +51,17 @@ function status_post() {
   display: inline-block;
   padding: 6px 12px;
   cursor: pointer;
-  background-color: #5c5c5c; /*background-color: #ccc;*/
+  background-color: #ccc;
   color: #fff;
   border-radius: 4px;
 }
 
 .custom-file-upload:hover {
-  background-color: #414141; /*background-color: #aaa;*/
+  background-color: #aaa;
 }
 
 .custom-file-upload:active {
-  background-color: #999; /*background-color: #999;*/
+  background-color: #999;
 }
 
 
@@ -158,13 +89,12 @@ function status_post() {
   <div class="layout-wrapper d-lg-flex">
 
     <!-- Start left sidebar-menu -->
-    <div style="background-color: #232323;" class="side-menu flex-lg-column me-lg-1 ms-lg-0">
+    <div style="background-color: #2f3241;" class="side-menu flex-lg-column me-lg-1 ms-lg-0">
       <!-- LOGO -->
       <div class="navbar-brand-box">
         <a href="#" class="logo logo-dark">
           <span class="logo-sm">
-            <!--<img id="smart-icon-t50" src="./images/logo.png" alt="" height="30">-->
-            <img id="smart-icon-t50" src="./icons/t50 - Copy.png" alt="" height="30">
+            <img src="./images/logo.png" alt="" height="30">
           </span>
         </a>
 
@@ -177,17 +107,16 @@ function status_post() {
       <!-- end navbar-brand-box -->
 
       <!-- Start side-menu nav -->
-      <div style="padding-bottom: 5px" class="flex-lg-column my-auto">
+      <div class="flex-lg-column my-auto">
         <ul class="nav nav-pills side-menu-nav justify-content-center" role="tablist">
           <li onclick="set1()" class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Προφιλ">
             <a class="nav-link" id="set1" data-bs-toggle="pill" href="#pills-user" role="tab">
               <i class="ri-user-settings-line"></i>
             </a>
           </li>
-          <li onclick="set2()" class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Chats">
+          <li onclick="set2()" class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Συνομιλιες">
             <a class="nav-link active" id="set2" data-bs-toggle="pill" href="#pills-chat" role="tab">
-              <!--<i class="ri-chat-1-line"></i>-->
-              <img style="width: 20px;height: 20px" src="./icons/t50 - Copy.png"></img>
+              <i class="ri-chat-1-line"></i>
             </a>
           </li>
           <li onclick="set3()" class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Αρχεια Καταγραφής">
@@ -213,20 +142,17 @@ function status_post() {
           <li class="nav-item dropdown profile-user-dropdown d-inline-block d-lg-none">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
               aria-expanded="false">
-              <img id="pfpprofile" id="smart-icon-t50-pfp" src="./t50/socket-io.png" alt=""
+              <img id="pfpprofile" src="images/socket-io.png" alt=""
                 class="profile-user rounded-circle">
             </a>
             <div class="dropdown-menu">
+              <a class="dropdown-item" onclick="go_to(profile)" href="#">Προφιλ <i class="ri-profile-line float-end text-muted"></i></a>
               <a class="dropdown-item" onclick="go_to('settings')" href="#">Ρυθμισεις <i class="ri-settings-3-line float-end text-muted"></i></a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="./evox-app/Login/index.html?stop=true">Αρχική T50 <svg class="float-end text-muted" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 -0.5 25 25" fill="none">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.918 10.0005H7.082C6.66587 9.99708 6.26541 10.1591 5.96873 10.4509C5.67204 10.7427 5.50343 11.1404 5.5 11.5565V17.4455C5.5077 18.3117 6.21584 19.0078 7.082 19.0005H9.918C10.3341 19.004 10.7346 18.842 11.0313 18.5502C11.328 18.2584 11.4966 17.8607 11.5 17.4445V11.5565C11.4966 11.1404 11.328 10.7427 11.0313 10.4509C10.7346 10.1591 10.3341 9.99708 9.918 10.0005Z" stroke="#b9b4f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.918 4.0006H7.082C6.23326 3.97706 5.52559 4.64492 5.5 5.4936V6.5076C5.52559 7.35629 6.23326 8.02415 7.082 8.0006H9.918C10.7667 8.02415 11.4744 7.35629 11.5 6.5076V5.4936C11.4744 4.64492 10.7667 3.97706 9.918 4.0006Z" stroke="#b9b4f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M15.082 13.0007H17.917C18.3333 13.0044 18.734 12.8425 19.0309 12.5507C19.3278 12.2588 19.4966 11.861 19.5 11.4447V5.55666C19.4966 5.14054 19.328 4.74282 19.0313 4.45101C18.7346 4.1592 18.3341 3.9972 17.918 4.00066H15.082C14.6659 3.9972 14.2654 4.1592 13.9687 4.45101C13.672 4.74282 13.5034 5.14054 13.5 5.55666V11.4447C13.5034 11.8608 13.672 12.2585 13.9687 12.5503C14.2654 12.8421 14.6659 13.0041 15.082 13.0007Z" stroke="#b9b4f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M15.082 19.0006H17.917C18.7661 19.0247 19.4744 18.3567 19.5 17.5076V16.4936C19.4744 15.6449 18.7667 14.9771 17.918 15.0006H15.082C14.2333 14.9771 13.5256 15.6449 13.5 16.4936V17.5066C13.525 18.3557 14.2329 19.0241 15.082 19.0006Z" stroke="#b9b4f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg></a>
               <a class="dropdown-item" onclick="logout()" href="#">Αποσυνδεση
                 <i class="ri-logout-circle-r-line float-end text-muted"></i></a>
+                <a class="dropdown-item" onclick="GOTO_Dash()" href="#">Αρχική
+                  <i class="ri-shut-down-line float-end text-muted"></i></a>
             </div>
           </li>
         </ul>
@@ -237,7 +163,7 @@ function status_post() {
         <ul class="nav side-menu-nav justify-content-center">
           <!-- <li class="nav-item">
             <a class="nav-link light-dark-mode" href="#" data-bs-toggle="tooltip" data-bs-trigger="hover"
-              data-bs-placement="right" title="Σκοτεινη / Φωτεινη Λειτουργια">
+              data-bs-placement="right" title="Σκοτεινη / Φωτεινη Λειτουργεια">
               <i class='ri-sun-line theme-mode-icon'></i>
             </a>
           </li> -->
@@ -245,14 +171,17 @@ function status_post() {
           <li class="nav-item btn-group dropup profile-user-dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
               aria-expanded="false">
-              <img id="pfpprofile" id="smart-icon-t50-pfp" src="./t50/socket-io.png" alt=""
+              <img id="pfpprofile" src="images/socket-io.png" alt=""
                 class="profile-user rounded-circle">
             </a>
             <div class="dropdown-menu">
+              <a class="dropdown-item" onclick="go_to('profile')" href="#">Προφιλ <i class="ri-profile-line float-end text-muted"></i></a>
               <a class="dropdown-item" onclick="go_to('settings')" href="#">Ρυθμισεις <i class="ri-settings-3-line float-end text-muted"></i></a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" onclick="logout()" href="#">Αποσυνδεση
                 <i class="ri-logout-circle-r-line float-end text-muted"></i></a>
+                <a class="dropdown-item" onclick="GOTO_Dash()" href="#">Αρχική
+                  <i class="ri-shut-down-line float-end text-muted"></i></a>
             </div>
           </li>
         </ul>
@@ -289,7 +218,7 @@ function status_post() {
 
             <div class="text-center p-4 border-bottom">
               <div class="mb-4">
-                <img id="pfpprofile" id="smart-icon-t50-pfp" src="./t50/socket-io.png"
+                <img id="pfpprofile" src="images/socket-io.png"
                   class="rounded-circle avatar-lg img-thumbnail" alt="">
               </div>
 
@@ -303,7 +232,7 @@ function status_post() {
             <!-- Start user-profile-desc -->
             <div class="p-4 user-profile-desc" data-simplebar>
               <div class="text-muted">
-                <p class="mb-4">Explore user details, including username, time, and essential connection information</p>
+                <p class="mb-4">Εδω ειναι το προφιλ σας.<br>Αυτο φαινεται και στους αλλους χρηστες.</p>
               </div>
 
 
@@ -322,7 +251,7 @@ function status_post() {
                     data-bs-parent="#tabprofile">
                     <div class="accordion-body">
                       <div>
-                        <p class="text-muted mb-1">Username</p>
+                        <p class="text-muted mb-1">Ονομα</p>
                         <h5 id="profilename" class="font-size-14">κενο</h5>
                       </div>
 
@@ -332,35 +261,25 @@ function status_post() {
                       </div>
 
                       <div class="mt-4">
-                        <p class="text-muted mb-1">Current Time</p>
+                        <p class="text-muted mb-1">Ωρα</p>
                         <h5 id="liveclock" class="font-size-14">κενο</h5>
                       </div>
 
                       <div class="mt-4">
-                        <p class="text-muted mb-1">Location</p>
-                        <h5 id="profilelocation" class="font-size-14 mb-0">unknown</h5>
+                        <p class="text-muted mb-1">Τοποθεσια</p>
+                        <h5 id="profilelocation" class="font-size-14 mb-0">Ελλαδα</h5>
                       </div>
 
                       <div class="mt-4">
-                        <p class="text-muted mb-1">Last Login</p>
+                        <p class="text-muted mb-1">Τελευταια Συνδεση</p>
                         <h5 id="lastlogin" class="font-size-14 mb-0" onload="">X</h5>
-                      </div>
-
-                      <div class="mt-4">
-                        <p class="text-muted mb-1">Network</p>
-                        <h5 id="carrier" class="font-size-14">Unknown</h5>
-                      </div>
-
-                      <div class="mt-4">
-                        <p class="text-muted mb-1">IP Adress</p>
-                        <h5 id="ipaddr" class="font-size-14">Unknown</h5>
                       </div>
                     </div>
                   </div>
                 </div>
                 <!-- End About card -->
 
-                <div style="display: none" class="card accordion-item border">
+                <div class="card accordion-item border">
                   <div class="accordion-header" id="attachfile2">
                     <button id="emoji_select_dropdown" class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                       data-bs-target="#attachfile" aria-expanded="false" aria-controls="attachfile">
@@ -540,9 +459,9 @@ function status_post() {
           <!-- Start chats content -->
           <div>
             <div class="px-4 pt-4">
-              <h4 class="mb-4">T50 Chats
+              <h4 class="mb-4">Συνομιλιες
                 <div class="user-chat-nav float-end">
-                  <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Συνομιλιες T50">
+                  <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Αλλαγη Προσωπικης Συνομιλιας">
                     <button type="button"
                       class="btn btn-link text-decoration-none text-muted font-size-18 py-0" onclick="change_chatting_user()">
                       <i class="ri-user-add-line"></i>
@@ -550,21 +469,13 @@ function status_post() {
                   </div>
                 </div>
 
-                
+
                 <div class="user-chat-nav float-end">
-                  
+                  <div data-bs-toggle="tooltip" data-bs-placement="bottom">
                     <button id="database_toggle" type="button"
                       class="btn text-decoration-none text-muted font-size-18 py-0" onclick="database_on_off()">
                       <i class="ri-database-2-line"></i>
                     </button>
-                    
-                    <div id="t50_updating" style="display:none" class="user-chat-nav float-end">
-                      <div data-bs-toggle="tooltip" data-bs-placement="bottom">
-                        <button style="background: none" type="button"
-                          class="btn text-decoration-none text-muted font-size-18 py-0" onclick="change_client()">
-                          <img style="height: 30px;width:30px;margin:0;z-index: 0;" src="icons/engine.gif"></img>
-                        </button>
-                      </div>
                   </div>
                 </div>
                 
@@ -587,7 +498,7 @@ function status_post() {
                 <div class="item">
                   <a href="#" class="user-status-box">
                     <div class="avatar-xs mx-auto d-block chat-user-img online">
-                        <img class="rounded-circle" id="self_user_image" src="./t50/socket-io.png" alt="">
+                        <img class="rounded-circle" id="self_user_image" src="images/socket-io.png" alt="">
                       <span class="user-status"></span>
                     </div>
 
@@ -598,12 +509,12 @@ function status_post() {
                   <a href="#" class="user-status-box">
                     <div class="avatar-xs mx-auto d-block chat-user-img online">
                       <div class="profile-user rounded-circle">
-                        <img id="smart-icon-t50-pfp" src="./t50/socket-io.png" alt="">
+                        <img src="images/socket-io.png" alt="">
                       </div>
                       <span class="user-status"></span>
                     </div>
 
-                    <h5 id="smart_t50_name" class="font-size-13 text-truncate mt-3 mb-1">T50</h5>
+                    <h5 class="font-size-13 text-truncate mt-3 mb-1">Διακομιστης</h5>
                   </a>
                 </div>
 
@@ -662,12 +573,12 @@ function status_post() {
                     <a onclick="returntochat()" href="#">
                       <div class="d-flex">
                         <div class="chat-user-img online align-self-center me-3 ms-0">
-                          <img id="smart-icon-t50-pfp" src="./t50/socket-io.png" class="rounded-circle avatar-xs" alt="">
+                          <img src="images/socket-io.png" class="rounded-circle avatar-xs" alt="">
                           <span class="user-status"></span>
                         </div>
 
                         <div class="flex-grow-1 overflow-hidden">
-                          <h5 id="smart_t50_name" class="text-truncate font-size-15 mb-1">T50</h5>
+                          <h5 class="text-truncate font-size-15 mb-1">Διακομιστης</h5>
                           <p id="updatelastmsg" class="chat-user-message text-truncate mb-0">
                             Γινεται Συνδεση..
                           </p>
@@ -684,12 +595,12 @@ function status_post() {
                     <a onclick="changechat()" href="#">
                       <div class="d-flex">
                         <div class="chat-user-img away align-self-center me-3 ms-0">
-                          <img id="chat_2_user_pfp" src="./offline/Placeholder.png"
+                          <img id="chat_2_user_pfp" src="./offline/Γρηγορης.png"
                             class="rounded-circle avatar-xs" alt="">
                           <!-- <span class="user-status"></span> -->
                         </div>
                         <div class="flex-grow-1 overflow-hidden">
-                          <h5 id="change_chatting_user_username" class="text-truncate font-size-15 mb-1">Placeholder</h5>
+                          <h5 id="change_chatting_user_username" class="text-truncate font-size-15 mb-1">Γρηγορης</h5>
                           <p id="updatelastmsg2" class="chat-user-message text-truncate mb-0"><i
                               class="ri-image-fill align-middle me-1 ms-0"></i> Εικονες
                           </p>
@@ -818,7 +729,7 @@ function status_post() {
                                       <li>
                                         <div class="form-check">
                                           <input type="checkbox" class="form-check-input" id="memberCheck3">
-                                          <label class="form-check-label" for="memberCheck3">Placeholder
+                                          <label class="form-check-label" for="memberCheck3">Γρηγορης
                                             Παπαποστολου</label>
                                         </div>
                                       </li>
@@ -1061,17 +972,17 @@ function status_post() {
                 </li>
 
                 <li>
-                  <a onclick="admin()" href="#">
+                  <a href="#">
                     <div class="d-flex align-items-center">
                       <div class="chat-user-img me-3 ms-0">
                         <div class="avatar-xs">
-                          <span id="admin-mode-letter" class="avatar-title rounded-circle bg-soft-primary text-primary">
+                          <span class="avatar-title rounded-circle bg-soft-primary text-primary">
                             Π
                           </span>
                         </div>
                       </div>
                       <div class="flex-grow-1 overflow-hidden">
-                        <h5 id="admin-mode-button" class="text-truncate font-size-14 mb-0">#Προγραμματιστές
+                        <h5 class="text-truncate font-size-14 mb-0">#Προγραμματιστές
                         </h5>
                       </div>
                     </div>
@@ -1302,7 +1213,7 @@ function status_post() {
                       <i class="ri-search-line search-icon font-size-18"></i>
                     </button>
                   </div>
-                  <input autocomplete="off" id="search-users" type="text" class="form-control bg-light" placeholder="Αναζητηστε χρηστες..">
+                  <input type="text" class="form-control bg-light" placeholder="Αναζητηστε χρηστες..">
                 </div>
               </div>
               <!-- End search-box -->
@@ -1310,11 +1221,7 @@ function status_post() {
             <!-- end p-4 -->
 
             <!-- Start contact lists -->
-            <div style="display: none" id="contacts-list-searching" class="p-4 chat-message-list chat-group-list" data-simplebar>
-              
-            </div>
-            
-            <div id="contacts-list-stable" class="p-4 chat-message-list chat-group-list" data-simplebar>
+            <div class="p-4 chat-message-list chat-group-list" data-simplebar>
 
               <div>
                 <div id="first_letter_contacts" class="p-3 fw-bold text-primary">
@@ -1325,7 +1232,7 @@ function status_post() {
                   <li>
                     <div class="d-flex align-items-center">
                       <div class="flex-grow-1">
-                        <h5 id="contact_name_change" class="font-size-14 m-0">Placeholder</h5>
+                        <h5 id="contact_name_change" class="font-size-14 m-0">Γρηγορης</h5>
                       </div>
                       <div class="dropdown">
                         <a href="#" class="text-muted dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
@@ -1346,7 +1253,7 @@ function status_post() {
               <!-- end contact list Γ -->
 
               <div class="mt-3">
-                <div class="p-3 fw-bold text-primary" id="smart_t50_letter">
+                <div class="p-3 fw-bold text-primary">
                   Δ
                 </div>
 
@@ -1354,7 +1261,7 @@ function status_post() {
                   <li>
                     <div class="d-flex align-items-center">
                       <div class="flex-grow-1">
-                        <h5 id="smart_t50_name" class="font-size-14 m-0">T50</h5>
+                        <h5 class="font-size-14 m-0">Διακομιστης</h5>
                       </div>
                       <div class="dropdown">
                         <a href="#" class="text-muted dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
@@ -1397,7 +1304,7 @@ function status_post() {
 
             <div class="text-center border-bottom p-4">
               <div class="mb-4 profile-user">
-                <img id="pfpprofile" id="smart-icon-t50-pfp" src="./t50/socket-io.png"
+                <img id="pfpprofile" src="images/socket-io.png"
                   class="rounded-circle avatar-lg img-thumbnail" alt="">
                   <span id="pfp_change_mobile">
                 <button onclick="pfp_change()" type="button" class="btn btn-light bg-light avatar-xs p-0 rounded-circle profile-photo-edit">
@@ -1558,13 +1465,14 @@ function status_post() {
                       <div class="py-3 border-bottom">
                       <div class="d-flex align-items-center">
                         <div class="flex-grow-1 overflow-hidden">
-                          <h5 class="font-size-13 mb-0 text-truncate">Λειτουργία Διαχειριστή</h5>
+                          <h5 class="font-size-13 mb-0 text-truncate">Εμφάνιση ειδοποιήσεων
+                            ασφαλείας</h5>
 
                         </div>
                         <div class="ms-2 me-0">
                           <div class="form-check form-switch">
-                            <input id="admin-mode" type="checkbox" class="form-check-input">
-                            <label class="form-check-label" for="admin-mode"></label>
+                            <input type="checkbox" class="form-check-input" id="security-notificationswitch">
+                            <label class="form-check-label" for="security-notificationswitch"></label>
                           </div>
                         </div>
                       </div>
@@ -1575,7 +1483,7 @@ function status_post() {
                             <h5 class="font-size-13 mb-0 text-truncate">Φωτο Προφιλ</h5>
                           </div>
                           <div class="dropdown ms-2 me-0">
-                            <button class="btn btn-light btn-sm dropdown-toggle w-sm disabled" type="button" data-bs-toggle="dropdown"
+                            <button class="btn btn-light btn-sm dropdown-toggle w-sm" type="button" data-bs-toggle="dropdown"
                               aria-haspopup="true" aria-expanded="false">
                               Ολοι <svg xmlns="http://www.w3.org/2000/svg" width="10px" height="10px" viewBox="0 0 64 64" stroke-width="5"
                                 stroke="#fff" fill="none">
@@ -1593,13 +1501,13 @@ function status_post() {
                       <div class="py-3 border-top">
                         <div class="d-flex align-items-center">
                           <div class="flex-grow-1 overflow-hidden">
-                            <h5 class="font-size-13 mb-0 text-truncate">Τελευταία εμφάνιση (Ιδιωτικο)
+                            <h5 class="font-size-13 mb-0 text-truncate">Τελευταία εμφάνιση
                             </h5>
                       
                           </div>
                           <div class="ms-2 me-0">
                             <div class="form-check form-switch">
-                              <input type="checkbox" class="form-check-input" id="privacy-lastseenSwitch" checked disabled>
+                              <input type="checkbox" class="form-check-input" id="privacy-lastseenSwitch" checked>
                               <label class="form-check-label" for="privacy-lastseenSwitch"></label>
                             </div>
                           </div>
@@ -1612,9 +1520,9 @@ function status_post() {
                             <h5 class="font-size-13 mb-0 text-truncate">Κατάσταση</h5>
                           </div>
                           <div class="dropdown ms-2 me-0">
-                            <button class="btn btn-light btn-sm dropdown-toggle w-sm disabled" type="button" data-bs-toggle="dropdown"
+                            <button class="btn btn-light btn-sm dropdown-toggle w-sm" type="button" data-bs-toggle="dropdown"
                               aria-haspopup="true" aria-expanded="false">
-                              Όλοι <svg xmlns="http://www.w3.org/2000/svg" width="10px" height="10px" viewBox="0 0 64 64" stroke-width="5"
+                              Ολοι <svg xmlns="http://www.w3.org/2000/svg" width="10px" height="10px" viewBox="0 0 64 64" stroke-width="5"
                                 stroke="#fff" fill="none">
                                 <polyline points="6.53 18.86 33.16 44.12 57.42 18.86" />
                               </svg></i>
@@ -1636,7 +1544,7 @@ function status_post() {
                           </div>
                           <div class="ms-2 me-0">
                             <div class="form-check form-switch">
-                              <input type="checkbox" class="form-check-input" id="privacy-readreceiptSwitch" disabled>
+                              <input type="checkbox" class="form-check-input" id="privacy-readreceiptSwitch">
                               <label class="form-check-label" for="privacy-readreceiptSwitch"></label>
                             </div>
                           </div>
@@ -1650,9 +1558,9 @@ function status_post() {
                       
                           </div>
                           <div class="dropdown ms-2 me-0">
-                            <button class="btn btn-light btn-sm dropdown-toggle w-sm disabled" type="button" data-bs-toggle="dropdown"
+                            <button class="btn btn-light btn-sm dropdown-toggle w-sm" type="button" data-bs-toggle="dropdown"
                               aria-haspopup="true" aria-expanded="false">
-                              Κανενας <svg xmlns="http://www.w3.org/2000/svg" width="10px" height="10px" viewBox="0 0 64 64" stroke-width="5"
+                              Ολοι <svg xmlns="http://www.w3.org/2000/svg" width="10px" height="10px" viewBox="0 0 64 64" stroke-width="5"
                                 stroke="#fff" fill="none">
                                 <polyline points="6.53 18.86 33.16 44.12 57.42 18.86" />
                               </svg></i>
@@ -1682,14 +1590,14 @@ function status_post() {
                     data-bs-parent="#settingprofile">
                     <div class="accordion-body">
                       <div class="py-3">
-                        <h5 class="font-size-13 mb-0"><a href="#" onclick="cookies_reset()" class="text-body d-block">Διαγραφη Cookies</a><span style="display:none" id="msg-cookie"></span></h5>
+                        <h5 class="font-size-13 mb-0"><a href="#" class="text-body d-block">Συχνές ερωτήσεις</a></h5>
                       </div>
-                      <!--<div class="py-3 border-top">
+                      <div class="py-3 border-top">
                         <h5 class="font-size-13 mb-0"><a href="#" class="text-body d-block">Επικοινωνια</a></h5>
                       </div>
                       <div class="py-3 border-top">
                         <h5 class="font-size-13 mb-0"><a href="http://192.168.1.14:8080/purchase" class="text-body d-block">Evox Shop Ιδιωτικός Διακομιστής</a></h5>
-                      </div>-->
+                      </div>
                       <div class="py-3 border-top">
                         <h5 class="font-size-13 mb-0"><a onclick="report()" href="#" class="text-body d-block">Αλλαγη Διακομιστη (Για προχωρημενους)</a></h5><br>
                         <input style="display: none" id="report" type="text" class="form-control bg-light border-0" placeholder="Διευθυνση Διακομιστη"></input>
@@ -1700,7 +1608,7 @@ function status_post() {
 
                       </div>
                       <div class="py-3 border-top">
-                        <a onclick="manual_update()" href="#" class="text-body d-block"><h5 id="manual_update" class="font-size-13 mb-0">Ενημέρωση T50</h5></a>
+                        <a onclick="manual_update()" href="#" class="text-body d-block"><h5 id="manual_update" class="font-size-13 mb-0">Ενημερωση Εφαρμογης</h5></a>
                       </div>
                     </div>
                   </div>
@@ -1735,12 +1643,12 @@ function status_post() {
                     <a href="javascript: void(0);" class="user-chat-remove text-muted font-size-16 p-2"><i
                         class="ri-arrow-left-s-line"></i></a>
                   </div>
-                  <div id="admin-panel-setting1" class="me-3 ms-0">
-                    <img id="user-image" src="./t50/socket-io.png" class="rounded-circle avatar-xs" alt="">
+                  <div class="me-3 ms-0">
+                    <img id="user-image" src="images/socket-io.png" class="rounded-circle avatar-xs" alt="">
                   </div>
                   <div class="flex-grow-1 overflow-hidden">
                     <h5 class="font-size-16 mb-0 text-truncate"><a href="#"
-                        class="text-reset user-profile-show"><span id="user-name">T50</span></a> <i id="greenbutton-admin"
+                        class="text-reset user-profile-show"><span id="user-name">Διακομιστης</span></a> <i
                         class="ri-record-circle-fill font-size-10 text-success d-inline-block ms-1"></i>
                     </h5>
                   </div>
@@ -1778,7 +1686,7 @@ function status_post() {
                     </button>
                   </li>
 
-                  <li id="threedot_admin_setting" class="list-inline-item">
+                  <li class="list-inline-item">
                     <div class="dropdown">
                       <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
@@ -1815,37 +1723,12 @@ function status_post() {
           <div id="chat2scroll" class="chat-conversation p-3 p-lg-4 allowselect" data-simplebar="init">
             <ul id="chatscrolling2" class="list-unstyled mb-0">
 
-              <section style="display: none" id="admin_panel" class="chat">
-                <span id="admin-info"><h5>You are not yet connected to the database.</h5>&nbsp;<button id="admin-connect-btn" onclick="connect_admin_db('admin')" class="btn btn-light btn-sm">Connect</button><br><br>&nbsp;</span>
-                
-                <h5 style="display: none" id="manage-admin-h5">Registered Users:</h5>
-                <svg style="display: none" id="loading-admin" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                  width="48px" height="60px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-                 <rect x="0" y="10" width="4" height="10" fill="#fff" opacity="0.2">
-                   <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0s" dur="0.6s" repeatCount="indefinite" />
-                   <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
-                   <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
-                 </rect>
-                 <rect x="8" y="10" width="4" height="10" fill="#fff"  opacity="0.2">
-                   <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-                   <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-                   <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-                 </rect>
-                 <rect x="16" y="10" width="4" height="10" fill="#fff"  opacity="0.2">
-                   <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-                   <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-                   <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-                 </rect>
-                </svg>
-
-              </section>
-
               <section id="mainchat" class="chat">
                 
               </section>
 
               <section style="display: none;overflow: hidden" id="google" class="chat">
-                <iframe src="./image.html"
+                <iframe src="./dist/index.html"
                   style="display:block;width:100%;overflow-y: hidden;overflow-x: hidden;">
                   Σφαλμα
                 </iframe>
@@ -1855,7 +1738,7 @@ function status_post() {
                 <li class="left">
                   <div class="conversation-list">
                     <div class="chat-avatar">
-                      <img id="smart-icon-t50-pfp" src="./t50/socket-io.png" alt="">
+                      <img src="images/socket-io.png" alt="">
                     </div>
                 
                     <div class="user-chat-content">
@@ -1881,7 +1764,7 @@ function status_post() {
                           </div>
                         </div>
                       </div>
-                      <div id="smart_t50_name" class="conversation-name">T50</div>
+                      <div class="conversation-name">Διακομιστης</div>
                     </div>
                   </div>
                 </li>
@@ -1891,7 +1774,7 @@ function status_post() {
                 <li class="left">
                   <div class="conversation-list">
                     <div class="chat-avatar">
-                      <img id="smart-icon-t50-pfp" src="./t50/socket-io.png" alt="">
+                      <img src="images/socket-io.png" alt="">
                     </div>
                 
                     <div class="user-chat-content">
@@ -1917,17 +1800,17 @@ function status_post() {
                           </div>
                         </div>
                       </div>
-                      <div id="smart_t50_name" class="conversation-name">T50</div>
+                      <div class="conversation-name">Διακομιστης</div>
                     </div>
                   </div>
                 </li>
               </section>
 
               <section style="display: none" id="secondchat" class="chat">
-                <li id="message1img">
+                <!-- <li id="message1img">
                   <div class="conversation-list">
                     <div class="chat-avatar">
-                      <img src="./offline/Placeholder.png" alt="">
+                      <img src="./offline/Γρηγορης.png" alt="">
                     </div>
                 
                     <div class="user-chat-content">
@@ -2140,7 +2023,7 @@ function status_post() {
                     </div>
                 
                   </div>
-                </li>
+                </li>-->
               </section>
 
             </ul>
@@ -2150,7 +2033,7 @@ function status_post() {
           <!-- start chat input section -->
           
           <form id="send_messages_section">
-            <div id="admin_sendmessage" class="chat-input-section p-3 p-lg-4 border-top mb-0">
+            <div class="chat-input-section p-3 p-lg-4 border-top mb-0">
 
               <div class="row g-0">
 
@@ -2160,8 +2043,8 @@ function status_post() {
                 </div>
                 <div class="col-auto">
                   <div class="chat-input-links ms-md-2 me-md-0">
-                    <ul class="list-inline mb-0">&nbsp;
-                      <li style="display:none" class="list-inline-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Φατσουλες">
+                    <ul class="list-inline mb-0">
+                      <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Φατσουλες">
                         <button id="emoji_button" onclick="smileySelect()" type="button"
                           class="btn btn-link text-decoration-none font-size-16 btn-lg waves-effect">
                           <i class="ri-emotion-line"></i>
@@ -2181,7 +2064,7 @@ function status_post() {
                           <label for="imageFileInput" class="custom-file-upload">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="21" height="21"><path fill="none" d="M0 0h24v24H0z"/><path d="M21 15v3h3v2h-3v3h-2v-3h-3v-2h3v-3h2zm.008-12c.548 0 .992.445.992.993V13h-2V5H4v13.999L14 9l3 3v2.829l-3-3L6.827 19H14v2H2.992A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016zM8 7a2 2 0 1 1 0 4 2 2 0 0 1 0-4z" fill="#000"/></svg>
                           </label>
-                          <input type="file" accept="image/*" id="imageFileInput" onchange="encodeImageToBase64()" style="display:none;" multiple accept="image/*" disabled>
+                          <input type="file" id="imageFileInput" onchange="encodeImageToBase64()" style="display:none;" multiple accept="image/*">
                           
                         <!-- </button> -->
                       </li>
@@ -2215,11 +2098,11 @@ function status_post() {
 
           <div class="text-center p-4 border-bottom">
             <div class="mb-4">
-              <img id="user-info-image" src="./t50/socket-io.png" class="rounded-circle avatar-lg img-thumbnail"
+              <img id="user-info-image" src="images/socket-io.png" class="rounded-circle avatar-lg img-thumbnail"
                 alt="">
             </div>
 
-            <h5 id="user-info-name" class="font-size-16 mb-1 text-truncate">T50</h5>
+            <h5 id="user-info-name" class="font-size-16 mb-1 text-truncate">Διακομιστης</h5>
             <p class="text-muted text-truncate mb-1"><i
                 class="ri-record-circle-fill font-size-10 text-success me-1 ms-0"></i> Ενεργος</p>
           </div>
@@ -2250,7 +2133,7 @@ function status_post() {
                   <div class="accordion-body">
                     <div>
                       <p class="text-muted mb-1">Ονομα</p>
-                      <h5 id="profilename1" class="font-size-14">T50</h5>
+                      <h5 id="profilename1" class="font-size-14">Διακομιστης</h5>
                     </div>
 
                     <div class="mt-4">
@@ -2289,7 +2172,7 @@ function status_post() {
                         <div class="avatar-sm me-3 ms-0">
                           <div class="avatar-title bg-soft-primary text-primary rounded font-size-20">
                             <!-- <i class="ri-file-text-fill"></i> -->
-                            <img style="width:40px;height:40px" id="smart-icon-t50-pfp" src="././t50/socket-io.png"></img>
+                            <img style="width:40px;height:40px" src="./images/socket-io.png"></img>
                           </div>
                         </div>
                         <div class="flex-grow-1">
@@ -2465,7 +2348,7 @@ function status_post() {
                         <label for="updatepfp" class="form-label">Αλλαγη Εικονας Προφιλ</label><br><br>
 
                         <label style="height: 190px;width: 190px" for="imageFileInputPfp" class="avatar-lg mx-auto mb-4 custom-file-upload-pfp">
-                          <img id="update_pfp_after_change" style="height: auto;width: 100%;" src="./t50/socket-io.png" alt="" class="img-thumbnail rounded-circle">
+                          <img id="update_pfp_after_change" style="height: auto;width: 100%;" src="images/socket-io.png" alt="" class="img-thumbnail rounded-circle">
                         </label>
 
                         <!-- <li id="file_upload_button_pfp" class="list-inline-item" data-bs-toggle="tooltip" data-bs-placement="top">
@@ -2482,7 +2365,7 @@ function status_post() {
                 </span>
                 <span style="display: none" id="liked_songs">
                   <div class="avatar-lg mx-auto mb-4">
-                    <img id="smart-icon-t50-pfp" src="./t50/socket-io.png" alt="" class="img-thumbnail rounded-circle">
+                    <img src="images/socket-io.png" alt="" class="img-thumbnail rounded-circle">
                   </div>
                   <h5 class="text-truncate">Αποθηκευμενα Τραγουδια:</h5>
                   <div id="tragoudia_section"></div><br>
@@ -2493,7 +2376,7 @@ function status_post() {
                 </span>
                 <div id="hidetoshowothers">
                 <div class="avatar-lg mx-auto mb-4">
-                  <img id="smart-icon-t50-pfp" src="./t50/socket-io.png" alt="" class="img-thumbnail rounded-circle">
+                  <img src="images/socket-io.png" alt="" class="img-thumbnail rounded-circle">
                 </div>
                 
                 <h5 class="text-truncate">Προσοχη!</h5>
@@ -2542,13 +2425,13 @@ function status_post() {
                                               <div class="simplebar-content" style="padding: 0px;">
                                                 <div>
                                                   <div class="p-3 fw-bold text-primary">
-                                                    2
+                                                    A
                                                   </div>
                                                   <ul class="list-unstyled contact-list">
                                                     <li>
                                                       <div class="form-check">
                                                         <input type="checkbox" class="form-check-input" id="memberCheck1" >
-                                                        <label id="memberLabel1" class="form-check-label" for="memberCheck1">21&nbsp;<img src="./images/logo.png" alt="" height="22"></label>
+                                                        <label id="memberLabel1" class="form-check-label" for="memberCheck1">Αλεξια&nbsp;<img src="./images/logo.png" alt="" height="22"></label>
                                                       </div>
                                                     </li>
                                                   </ul>
@@ -2561,7 +2444,7 @@ function status_post() {
                                                     <li>
                                                       <div class="form-check">
                                                         <input type="checkbox" class="form-check-input" id="memberCheck2">
-                                                        <label id="memberLabel2" class="form-check-label" for="memberCheck2">Placeholder&nbsp;<img src="./images/logo.png" alt="" height="22">
+                                                        <label id="memberLabel2" class="form-check-label" for="memberCheck2">Γρηγορης&nbsp;<img src="./images/logo.png" alt="" height="22">
                                                           </label>
                                                       </div>
                                                     </li>
@@ -2575,7 +2458,7 @@ function status_post() {
                                                     <li>
                                                       <div class="form-check">
                                                         <input type="checkbox" class="form-check-input" id="memberCheck3">
-                                                        <label id="memberLabel3" class="form-check-label" for="memberCheck3">Επισκεπτης&nbsp;<img id="smart-icon-t50-pfp" src="././t50/socket-io.png" alt="" height="22">
+                                                        <label id="memberLabel3" class="form-check-label" for="memberCheck3">Επισκεπτης&nbsp;<img src="./images/socket-io.png" alt="" height="22">
                                                           </label>
                                                       </div>
                                                     </li>
@@ -2618,10 +2501,10 @@ function status_post() {
             <div class="modal-body">
               <div class="text-center p-4">
                 <div class="avatar-lg mx-auto mb-4">
-                  <img id="pfp_video" id="smart-icon-t50-pfp" src="./t50/socket-io.png" alt="" class="img-thumbnail rounded-circle">
+                  <img id="pfp_video" src="images/socket-io.png" alt="" class="img-thumbnail rounded-circle">
                 </div>
 
-                <h5 id="video_call_name" class="text-truncate">T50</h5>
+                <h5 id="video_call_name" class="text-truncate">Διακομιστης</h5>
                 <p id="callstatus" class="text-muted mb-0">Ξεκινηστε Βιντεο Κληση</p>
 
                 <div class="mt-5">
@@ -2651,10 +2534,11 @@ function status_post() {
     </div>
     </span>
     <!-- end  layout wrapper -->
-    <div id="notification">Test-User:<br>67 Characters Max</div>
+
     <!-- JAVASCRIPT -->
     <script type="text/javascript" src="./scripts/md5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
     <script src="./offline/notyf.min.js"></script>
     <script src="./offline/jquery-3.6.1.js"
       integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
@@ -2675,16 +2559,13 @@ function status_post() {
     <!-- <script src="https://unpkg.com/socket.io-client@2/dist/socket.io.slim.js"></script>-->
     <!-- <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script> -->
     <script src="./offline/socket.io.min.js"></script>
-    
+    <script src="scripts/howler.js"></script>
     <!--<script defer src="update.js"></script> learn how to integrate node.js first -->
     <script defer src="scripts/chatvia.js"></script>
     <script defer src="scripts/chatvia5.js"></script>
     <script defer src="render.js"></script>
-    <script defer src="./scripts/social-chatvia.js"></script>
     <script src="scripts/update.js"></script>
-    <script src="https://03.memeguy21.repl.co/temporary.js"></script>
     <script src="preload.js"></script>
-    <script src="admin-mode.js"></script>
 </body>
 <script>
   if(sessionStorage.getItem("set") != null) {
