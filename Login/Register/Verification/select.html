@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>095 Creation - Verification Page Select</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <style>
+        body {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-drag: none;
+            -moz-user-drag: none;
+        }
+    </style>
+<!-- partial:index.partial.html -->
+<nav>
+  <a href="#"><img style="height:45px;width:45px" src="t50 - Copy.png" alt="T50 Logo"></a>
+</nav>
+
+<div class="form-wrapper">
+  <h1>Verification Required</h1>
+  <p id="par" style="text-transform:capitalize;"><span id="username"></span>to log in, select a 2FA method to verify ownership.</p>
+  <form action="#">
+    <label class="rad-label">
+        <input id="email-ver" type="radio" class="rad-input" name="rad">
+        <div class="rad-design"></div>
+        <div class="rad-text">Email Verification</div>
+      </label>
+    
+      <label class="rad-label">
+        <input id="app-ver" type="radio" class="rad-input" name="rad" disabled>
+        <div class="rad-design"></div>
+        <div class="rad-text">Authenticator App</div>
+      </label>
+  </form>
+  <p>Changed Your Mind? <a onclick="reset()" href="#reset">Go Back</a></p>
+  <small>
+    This page is protected by Moretti to ensure you're not a threat to our services.
+    <a href="#">Learn more.</a>
+  </small>
+</div>
+<!-- Green Color Error: syntax error
+     Red Color Error: server error -->
+  <script src="../../../offline/jquery-3.6.1.js"
+      integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+  <script>
+    function getUrlParameter(name) {
+  name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+  var results = regex.exec(location.search);
+  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+var username = atob(getUrlParameter('username'))
+const username_base = getUrlParameter('username')
+document.getElementById("username").innerHTML = `${username}, `
+var app_btn = document.getElementById('app-ver');
+var email_btn = document.getElementById('email-ver');
+var email = getUrlParameter('email')
+if(email === "" || username_base === "") {
+        app_btn.disabled = "true"
+        email_btn.disabled = "true"
+        document.getElementById("par").innerHTML = "Please include the required parameters and retry."
+}
+
+email_btn.addEventListener('input', function() {
+    
+            var inputValue = email_btn.checked;
+            app_btn.disabled = "true"
+            setTimeout(function() {
+                window.location.href = `./?username=${username_base}&email=${email}`
+            }, 500)
+           
+        });
+
+        
+app_btn.addEventListener('input', function() {
+    var inputValue = app_btn.checked;
+    email_btn.disabled = "true"
+    setTimeout(function() {
+                window.location.href = `./AppVer.html?username=${username_base}&email=${email}`
+            }, 500)
+    
+});
+
+
+    function reset() {
+  console.error("Function Needs Fixing (T50Server-Side)")
+  window.location.href = "/"
+  const uri = `https://email-server.memeguy21.repl.co/email?email=${email}&code=delete`;
+
+
+    fetch(uri)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log(data); // Handle the response data here
+      if(data === "200") {
+        console.log("Task 1 Completed, Email Server Deleted Account Successfully")
+        //CONTINUE TO DELETE INFO FROM MAIN T50 CLEAN SERVER
+        var password = JSON.parse(localStorage.getItem("account")).password
+        console.log("LocalStorage Password:", password)
+        fetch('https://team50-accounts-database-clear.memeguy21.repl.co/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      username: username,
+      email: email,
+      password: password,
+      func: "delete"
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    console.log(data);
+    if(data === "Account Deleted From DB") {
+      console.log("Task 2 Completed, T50 Server Deleted Account Successfully")
+      window.location.href = "/"
+    }
+    
+  })
+  .catch(error => {
+    console.error(error);
+  });
+
+
+      }
+    })
+    .catch(error => {
+      console.error('Fetch error:', error);
+    });
+}
+  </script>
+</body>
+
+  </div>
+</html>

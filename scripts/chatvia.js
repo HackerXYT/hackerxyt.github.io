@@ -44,7 +44,7 @@ rawFile.send(null);
         return response.text();
       })
       .then(data => {
-        if(data.includes("Credentials Correct")) {
+        if(data.includes("Credentials Correct") && localStorage.getItem("acc-verified") === "true") {
           console.log("Account Info Verified")
         } else {
           console.error("Verification Failed!")
@@ -219,9 +219,8 @@ window.location.reload()
 })
 var socket = io(localStorage.getItem("srv"));
 socket.on('connect', () => {
-  setInterval(status_post, 15000)//20 sec
-  status_post()
-  database_on_off()
+  setInterval(status_post, 5000)//5 sec
+  loadserver()
 console.log("%cConnected", 'color: green')
 sessionStorage.setItem("stage_srv", 200)
 });

@@ -6,8 +6,8 @@ function getUrlParameter(name) {
   return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
-var username = getUrlParameter('username');
-var email = getUrlParameter('email');
+var username = atob(getUrlParameter('username'))
+var email = atob(getUrlParameter('email'))
 if(username == null || email == null) {
   console.error("Cannot Proceed!")
 } else {
@@ -109,6 +109,7 @@ BtnLog.addEventListener("click", (e) => {
         console.log("Verified, Welcome To T50!")
         localStorage.setItem("user", username)
         localStorage.setItem("user_email", email)
+        localStorage.setItem("acc-verified", true)
         window.location.href = "../../../"
       } else {
         document.getElementById("submit").innerHTML = "Wrong Code, Try Again"

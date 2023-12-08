@@ -7,6 +7,7 @@ document.getElementById('search-users').addEventListener('input', function() {
     return;
   }
     console.log('User is typing inside search-users');
+    $("#contacts-list-searching").fadeIn("slow");
     $("#contacts-list-stable").fadeOut("slow", function() {
         //Loading Indicator
         document.getElementById("contacts-list-searching").innerHTML = `<div class="loading loading--circle" title="Loading">
@@ -181,7 +182,12 @@ function appenduser(username, email, pfp_data, status) {
   li.className = "unread";
 
     const a = document.createElement("a");
-    a.href = "#";
+    a.href = `#${username}_add`;
+    //a.addEventListener("click", function() {//FIX ME
+    //  console.log("Clicked!");
+    //  favorite(username, pfp_data);
+    //});
+
 
     const div1 = document.createElement("div");
     div1.className = "d-flex";
@@ -237,3 +243,47 @@ function appenduser(username, email, pfp_data, status) {
 }
 /*TO DO: 1. Add user pfps by connecting to db OK! (Prompt User to Add pfp on account register [not done]) 
 2. Show only the accounts that match the search criteria (not all registered accounts) OK!  */
+
+function favorite(x, pfp) {
+  let url = `data:image/png;base64,${pfp}`
+  localStorage.setItem("contact_favorite_url", url)
+        localStorage.setItem("contact_favorite_name", x)
+        document.getElementById("chat_2_user_pfp").src = localStorage.getItem("contact_favorite_url")
+        document.getElementById("change_chatting_user_username").innerHTML = localStorage.getItem("contact_favorite_name")
+        let firstLetter = localStorage.getItem("contact_favorite_name").charAt(0);
+        document.getElementById("first_letter_contacts").innerHTML = firstLetter
+        document.getElementById("contact_name_change").innerHTML = localStorage.getItem("contact_favorite_name")
+        $('#mainchat').append(`<li class="left">
+      <div class="conversation-list">
+        <div class="chat-avatar">
+        <img src="./images/system.png" alt="">
+        </div>
+
+        <div class="user-chat-content">
+          <div class="ctext-wrap">
+            <div class="ctext-wrap-content">
+              <p class="mb-0">
+                Η Αγαπημενη Επαφη Αλλαξε Με Επιτυχια Στον Χρηστη ${x}!
+              </p>
+              <p class="chat-time mb-0"><i class="ri-time-line align-middle"></i>
+                <span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span>
+              </p>
+            </div>
+            <div class="dropdown align-self-start">
+              <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <i class="ri-more-2-fill"></i>
+              </a>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Αντιγραφη <i class="ri-file-copy-line float-end text-muted"></i></a>
+                <a class="dropdown-item" onclick="saveinchat(e)" href="#">Αποθηκευση <i class="ri-save-line float-end text-muted"></i></a>
+                <a class="dropdown-item" href="#">Προωθηση <i class="ri-chat-forward-line float-end text-muted"></i></a>
+                <a class="dropdown-item" href="#">Διαγραφη <i class="ri-delete-bin-line float-end text-muted"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="conversation-name">Συστημα</div>
+        </div>
+      </div>
+    </li>`)
+}

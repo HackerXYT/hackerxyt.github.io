@@ -8,10 +8,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="fontawesome-all.css">
     <link rel="stylesheet" href="main.css">
+    <style>
+        .dark-button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 75%;
+      text-align: center;
+      text-decoration: none;
+      color: #fff;
+      background-color: #535353; /* Dark green color, you can change it */
+      border: 2px solid #9e3b2a;
+      border-radius: 4px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .dark-button:hover {
+      background-color: #9e3b2a; /* Darker green color on hover, you can change it */
+      color: #fff;
+    }
+    </style>
     <link rel="stylesheet" href="breakpoints.css">
 </head>
 <body>
-    <div id="container">
+    <button class="dark-button" onclick="reset()">Reset Session</button>
+    <div  id="container">
+       
         <!-- 
             We can use the following Font Awesome Icons & Colours:
 
@@ -21,6 +42,7 @@
          -->
         <div id="echoerror"><i class="fas fa-times-circle red"></i></div>
     </div>
+    
     <div style="display: none" id="errormsg">
         :~$ Error 401!<br>
         Unauthorized<br>
@@ -36,7 +58,7 @@ If you believe this is an error or if you have recently changed your password, p
 Thank you for your understanding.
 
     </div>
-    <button onclick="reset()">Reset Session</button>
+    
     <script type="text/javascript">
         var charIndex = -1;
         var stringLength = 0;

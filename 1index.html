@@ -29,7 +29,7 @@ function status_post() {
                 })
                 .then(response => response.text())
                 .then(data => {
-                  console.log("Sent Online Req:", data)
+                  console.log("Reloaded Status:", data)
                 })
                 .catch(error => {
                   console.error(error);

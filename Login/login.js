@@ -80,7 +80,9 @@ BtnLog.addEventListener("click", (e) => {
             // Extract the captured value (in this case, the username)
             const username = match && match[1];
             localStorage.setItem("account", `{"password": "${password}"}`)
-            window.location.href = `./Register/Verification/?email=${email}&username=${username}`
+            var base64email = btoa(email);
+            var base64username = btoa(username);
+            window.location.href = `./Register/Verification/select.html?email=${base64email}&username=${base64username}`
         } else if(data === "Credentials Incorrect") {
             document.getElementById("info_2").innerHTML = "Credentials Incorrect"
             document.getElementById("info_2").style.display = "block"
