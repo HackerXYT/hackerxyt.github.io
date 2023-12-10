@@ -1,4 +1,4 @@
-current_version = "2.5.6"
+current_version = "2.5.7"
 console.log("Current version: " + current_version)
 try {
     try {
