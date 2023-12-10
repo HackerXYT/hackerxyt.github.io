@@ -232,11 +232,13 @@ if (auto_login_username && auto_login_password) {
 	})
 } else {
 	$("#container").fadeIn("slow", function() {
+		show_dash()
 		$("#bottom-logo").fadeIn("slow", function() {
 			$("#register").fadeIn("slow", function() { })
 		})
 	})
 }
+
 let username;
 let password;
 $("#submit").on("click", function() {
@@ -789,4 +791,104 @@ function load_app(application) {
 		})
 	}
 
+}
+
+function show_dash() {
+	$("#container").fadeOut("slow", function() {
+		$("#text").fadeOut("fast", function() {
+			document.getElementById("text").innerHTML = `
+	<h1>Welcome to T50</h1><br>
+	<p style="text-align: center">All systems are operational.<br>Client is ready to connect, ${auto_login_username}.<!--<br><br>Click here to <a style="color: red" onclick="delete_acc()">Delete Your Account</a></p>--></p>
+								<a style="display: none" onclick="load_app('chatvia')" href="#" id="app1"><img style="height:115px;width:115px;" src="../chatvia-select.png" alt="Logo" ></a>&nbsp;<a style="display: none" onclick="load_app('t50')" href="#" id="app2"><img style="height:115px;width:115px;" src="../t50-select.png" alt="Logo" ></a>			
+
+	<div style="display: none" class="loading loading--dots" title="Loading" id="loadapp">
+<svg version="1.1" id="loading-dots" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+viewBox="0 0 512 512" xml:space="preserve">
+<path d="M60.952,195.048C27.343,195.048,0,222.391,0,256s27.343,60.952,60.952,60.952
+s60.952-27.343,60.952-60.952S94.562,195.048,60.952,195.048z">
+<animate
+attributeName="fill"
+dur="3s"
+begin="0s"
+repeatCount="indefinite"
+values="#B200ED;
+#2596be;
+#B200ED;"/>
+</path>
+<path d="M256,195.048c-33.609,0-60.952,27.343-60.952,60.952s27.343,60.952,60.952,60.952
+s60.952-27.343,60.952-60.952S289.609,195.048,256,195.048z">      <animate
+attributeName="fill"
+dur="3s" 
+begin="1s"
+repeatCount="indefinite"
+values="#B200ED;
+#2596be;
+#B200ED;"/>
+</path>
+<path d="M451.048,195.048c-33.609,0-60.952,27.343-60.952,60.952s27.343,60.952,60.952,60.952
+S512,289.609,512,256S484.657,195.048,451.048,195.048z">
+<animate
+attributeName="fill"
+dur="3s" 
+begin="2s"
+repeatCount="indefinite"
+values="#B200ED;
+#2596be;
+#B200ED;"/>
+</path>
+</svg>
+</div><p style="display:none" id="notice_text_app">Loading&nbsp;apps..</p>`
+			$("#text").fadeIn("slow", function() {
+				localStorage.setItem("username", auto_login_username)
+				localStorage.setItem("password", auto_login_password)
+				$("#bottom-logo").fadeOut("fast", function() {
+
+					setTimeout(function() {
+						document.getElementById("bottom-logo").src = "footer-in.png"
+						$("#bottom-logo").fadeIn("slow", function() {
+							$("#notice_text_app").fadeIn("slow")
+							$("#loadapp").fadeIn("slow", function() {
+
+								setTimeout(function() {
+									$("#notice_text_app").fadeOut("slow")
+									$("#loadapp").fadeOut("slow", function() {
+
+											$("#app2").fadeIn("slow", function() {
+
+											})
+
+									})
+								}, 2000)
+
+							})
+							setTimeout(function() {
+								$("#bottom-logo").fadeOut("fast", function() {
+
+									document.getElementById("bottom-logo").src = "evox-verified.png"
+									$("#bottom-logo").fadeIn("slow", function() {
+										setTimeout(function() {
+											$("#bottom-logo").fadeOut("fast", function() {
+												document.getElementById("bottom-logo").src = "footer-in.png"
+												$("#bottom-logo").fadeIn("slow", function() {
+
+												})
+											})
+										}, 5000)
+									})
+								})
+							}, 2000)
+						})
+					}, 1000)
+				})
+			})
+
+
+			$("#settings").fadeIn("slow", function() {
+				$("#register").fadeOut("slow", function() { })
+
+
+			})
+			// Animation complete.
+		});
+	});
 }

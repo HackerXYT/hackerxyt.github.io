@@ -53,7 +53,7 @@ window.location.href='./Login'
 
 function bypass() {
     sessionStorage.setItem("construction_mode", true)
-    window.location.href = "../1index.html"
+    window.location.href = "../evox-app/"
 }
 
 function send_mail() {

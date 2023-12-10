@@ -110,7 +110,12 @@ BtnLog.addEventListener("click", (e) => {
         localStorage.setItem("user", username)
         localStorage.setItem("user_email", email)
         localStorage.setItem("acc-verified", true)
-        window.location.href = "../../../"
+        if(sessionStorage.getItem("login:redirect")) {
+          window.location.href = `../../..${sessionStorage.getItem("login:redirect")}`
+        } else {
+          window.location.href = "../../../"
+        }
+        
       } else {
         document.getElementById("submit").innerHTML = "Wrong Code, Try Again"
       $("#loading_indicator").fadeOut("fast")

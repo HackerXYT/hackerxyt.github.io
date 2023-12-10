@@ -15,6 +15,22 @@
             user-drag: none;
             -moz-user-drag: none;
         }
+        
+.shake {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25%, 75% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+}
     </style>
 <!-- partial:index.partial.html -->
 <nav>
@@ -31,7 +47,7 @@
         <div class="rad-text">Email Verification</div>
       </label>
     
-      <label class="rad-label">
+      <label id="shakeButton" style="transition: transform 0.3s ease-in-out;" class="rad-label">
         <input id="app-ver" type="radio" class="rad-input" name="rad" disabled>
         <div class="rad-design"></div>
         <div class="rad-text">Authenticator App</div>
@@ -48,6 +64,15 @@
   <script src="../../../offline/jquery-3.6.1.js"
       integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
   <script>
+    document.getElementById('shakeButton').addEventListener('click', function() {
+  // Add the 'shake' class to the button
+  this.classList.add('shake');
+
+  // Remove the 'shake' class after the animation completes
+  setTimeout(() => {
+    this.classList.remove('shake');
+  }, 500);
+});
     function getUrlParameter(name) {
   name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
   var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
