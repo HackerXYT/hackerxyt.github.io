@@ -1,4 +1,4 @@
-current_version = "2.5.7"
+current_version = "2.5.8-BETA"
 console.log("Current version: " + current_version)
 try {
     try {
@@ -45,13 +45,13 @@ readTextFile("https://03.memeguy21.repl.co/update.json", function(data) {
         update_found.play()
         document.getElementById("updaterequired").click()
         update_found.play()
-        document.getElementById("updatetext").innerHTML = `Μια Νεα Εκδοση Ειναι Διαθεσιμη Για Την Εφαρμογη ChatVia!<br>Εγκαταστηστε Την Καινουρια Εκδοση <b style="color: lime">${current_server_version}</b>, Για Να Λαβετε Ολα Τα Νεα Προνομια!`
+        document.getElementById("updatetext").innerHTML = `Μια Νεα Εκδοση Ειναι Διαθεσιμη Για Την Εφαρμογη T50!<br>Εγκαταστηστε Την Καινουρια Εκδοση <b style="color: lime">${current_server_version}</b>, Για Να Λαβετε Ολα Τα Νεα Προνομια!`
         console.warn("Update Needed")
         if(version.required === "yes") {
             $('#updatetext').html("Μια νεα εκδοση ειναι διαθεσιμη και πρεπει να εγκατασταθει!<br>Παρακαλουμε πατηστε το κουμπι Εγκατασταση");
             console.log("Text Ready")
         } else if(bug_fix_update === "yes") {
-        document.getElementById("updatetext").innerHTML = `Μια Νεα Ενημέρωση Επιδιόρθωσης Σφαλμάτων Ειναι Διαθεσιμη Για Την Εφαρμογη ChatVia!<br>Εγκαταστηστε Την Νεα Εκδοση <b style="color: lime">${current_server_version}</b>, Για Να Εχετε Την Καλυτερη Εμπειρια Χρηστη!`
+        document.getElementById("updatetext").innerHTML = `Μια Νεα Ενημέρωση Επιδιόρθωσης Σφαλμάτων Ειναι Διαθεσιμη Για Την Εφαρμογη T50!<br>Εγκαταστηστε Την Νεα Εκδοση <b style="color: lime">${current_server_version}</b>, Για Να Εχετε Την Καλυτερη Εμπειρια Χρηστη!`
         }
     }
 })
