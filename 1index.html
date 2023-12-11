@@ -36,6 +36,8 @@ function status_post() {
                 });
 }
 
+
+
 //var t50_error = new Howl({
 //src: ['./internal/t50/t50-error.mp3'],
 //volume: 0.7
@@ -1550,6 +1552,9 @@ function status_post() {
                           </div>
                         </div>
                       </div>
+                      
+
+                      
                       </div>
                   </div>
                   <div id="security" class="accordion-collapse collapse" aria-labelledby="security1"
@@ -1569,6 +1574,17 @@ function status_post() {
                         </div>
                       </div>
                       </div>
+                      <br>
+                      <div class="d-flex align-items-center">
+                        <div class="flex-grow-1 overflow-hidden">
+                          <h5 class="font-size-13 mb-0 text-truncate">Two Factor Authentication</h5>
+                  
+                        </div>
+                        <div class="ms-2 me-0">
+                          <button id="button_2fa" onclick="twofa()" type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal"><b>Enable</b></button>
+                        </div>
+                      </div>
+                      <p style="display: none" id="secret">Secret Key: ghghghghgh</p>
                       <div class="py-3">
                         <div class="d-flex align-items-center">
                           <div class="flex-grow-1 overflow-hidden">

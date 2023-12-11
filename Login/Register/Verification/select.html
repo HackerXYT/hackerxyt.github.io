@@ -47,8 +47,8 @@
         <div class="rad-text">Email Verification</div>
       </label>
     
-      <label id="shakeButton" style="transition: transform 0.3s ease-in-out;" class="rad-label">
-        <input id="app-ver" type="radio" class="rad-input" name="rad" disabled>
+      <label class="rad-label">
+        <input id="app-ver" type="radio" class="rad-input" name="rad">
         <div class="rad-design"></div>
         <div class="rad-text">Authenticator App</div>
       </label>
@@ -64,15 +64,15 @@
   <script src="../../../offline/jquery-3.6.1.js"
       integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
   <script>
-    document.getElementById('shakeButton').addEventListener('click', function() {
-  // Add the 'shake' class to the button
-  this.classList.add('shake');
-
-  // Remove the 'shake' class after the animation completes
-  setTimeout(() => {
-    this.classList.remove('shake');
-  }, 500);
-});
+//    document.getElementById('shakeButton').addEventListener('click', function() {
+//  // Add the 'shake' class to the button
+//  this.classList.add('shake');
+//
+//  // Remove the 'shake' class after the animation completes
+//  setTimeout(() => {
+//    this.classList.remove('shake');
+//  }, 500);
+//});
     function getUrlParameter(name) {
   name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
   var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -103,10 +103,11 @@ email_btn.addEventListener('input', function() {
 
         
 app_btn.addEventListener('input', function() {
+  console.log("clicked")
     var inputValue = app_btn.checked;
     email_btn.disabled = "true"
     setTimeout(function() {
-                window.location.href = `./AppVer.html?username=${username_base}&email=${email}`
+                window.location.href = `./AppVer/?username=${username_base}&email=${email}`
             }, 500)
     
 });

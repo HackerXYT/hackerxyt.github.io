@@ -1868,3 +1868,38 @@ function showNotification(user, msg) {
       });
   }, 3000); // Adjust the time (in milliseconds) the notification stays visible
 }
+
+function twofa() {
+  document.getElementById("button_2fa").innerHTML = "Enabling"
+  fetch('https://2fa-t50.memeguy21.repl.co/', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    email: localStorage.getItem("user_email"), //is defined
+                    password: JSON.parse(localStorage.getItem("account")).password
+                  })
+                })
+                .then(response => response.text())
+                .then(data => {
+                  console.log(data)
+                  if(data === "Exists") {
+                    document.getElementById("button_2fa").innerHTML = "Enabled"
+                  } else {
+                    document.getElementById("secret").innerHTML = `<img id="qrcode" src="${data}"></img><br><button id="qrcodebut" onclick="hideqr()">Ok</button>`
+                    $("#secret").fadeIn("slow")
+                    document.getElementById("button_2fa").innerHTML = "Auth In Progress"
+                  }
+                  
+                })
+                .catch(error => {
+                  console.error(error);
+                });
+}
+
+function hideqr() {
+  $("#qrcode").fadeOut("slow")
+  $("#qrcodebut").fadeOut("slow")
+  document.getElementById("button_2fa").innerHTML = "Ready"
+}

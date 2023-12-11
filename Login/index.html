@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>095 Creation - Login Page</title>
   <link rel="stylesheet" href="./style.css">
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
 
 </head>
 <body>
@@ -25,7 +27,10 @@
       <input id="password" type="password" required>
       <label>Password</label>
     </div>
-    <button id="submit" type="submit">Sign In</button>
+    <button style="display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;" id="submit" type="submit">Sign In</button>
     <div class="form-help">
       <div class="remember-me">
         <input type="checkbox" id="remember-me" checked>
