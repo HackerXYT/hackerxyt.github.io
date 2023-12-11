@@ -1903,3 +1903,24 @@ function hideqr() {
   $("#qrcodebut").fadeOut("slow")
   document.getElementById("button_2fa").innerHTML = "Ready"
 }
+
+fetch(`https://2fa-t50.memeguy21.repl.co/t50?email=${localStorage.getItem("user_email")}&method=check`)
+        .then(response => response.text())
+        .then(data => {
+	      console.log("2FA", data)
+        if(data === "Enabled") {
+          document.getElementById("2fa_div").innerHTML = `<button id="button_2fa_enabled" onclick="disable2fa()" type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal"><b>Disable</b></button>`
+        } else {
+          console.log("Stopping Here")
+        }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+
+function disable2fa() {
+  document.getElementById("2fa_h5").innerHTML = "Sorry, Cannot Do That Now"
+  setTimeout(function() {
+    document.getElementById("2fa_h5").innerHTML = "Two Factor Authentication"
+  }, 4000)
+}
