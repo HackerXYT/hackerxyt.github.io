@@ -49,6 +49,9 @@ function acc() {
 }
 
 function newnote() {
+    console.log("NOT READY!")
+    window.location.href = "https://weepymicroclosedsource.memeguy21.repl.co/srv"
+    return; ///FIX ME FIX ME FIX ME 
     let email = localStorage.getItem("t50-email")
     $("#loading").fadeIn("slow")
     //
