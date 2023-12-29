@@ -52,6 +52,7 @@ function setup() {
 					log("Loading Gateway", "green")
 					$("#container").fadeOut("fast")
 						$("#loading").fadeIn("slow")
+						$("#stuck").fadeOut("slow")
 						fetch(`https://team50-accounts-database-clear.memeguy21.repl.co/?applications=get&email=${localStorage.getItem("t50-email")}`)
 							.then(response => {
 								if (!response.ok) {
@@ -286,4 +287,17 @@ function logoff() {
 	    sessionStorage.removeItem(key);
 	});
 	restart()
+}
+
+function fix() {
+	var userResponse = window.confirm("This function will fix any errors created by beta builds. All local data will be deleted!");
+
+    // Check the user's response
+    if (userResponse) {
+		localStorage.clear()
+		sessionStorage.clear()
+		window.location.reload()
+    } else {
+        alert("Operation Cancelled");
+    }
 }

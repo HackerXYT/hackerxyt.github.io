@@ -39,6 +39,7 @@ function docready() {
       return;
     }
     $("#loading-div-text").fadeIn("slow", function() {
+      $("#stuck").fadeOut("slow")
         setTimeout(function() {
             $("#loading-div-text").fadeOut("slow", function() {
                 document.getElementById("loading-text").innerHTML = `Connecting To Database<span id="dots"></span>`
