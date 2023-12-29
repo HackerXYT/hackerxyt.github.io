@@ -47,13 +47,13 @@
         <div class="rad-text">Email Verification</div>
       </label>
     
-      <label class="rad-label">
+      <label style="display:none" id="auth_app_btn" class="rad-label">
         <input id="app-ver" type="radio" class="rad-input" name="rad">
         <div class="rad-design"></div>
         <div class="rad-text">Authenticator App</div>
       </label>
   </form>
-  <p>Changed Your Mind? <a onclick="reset()" href="#reset">Go Back</a></p>
+  <p>Changed Your Mind? <a onclick="history.back()" href="#reset">Go Back</a></p>
   <small>
     This page is protected by Moretti to ensure you're not a threat to our services.
     <a href="#">Learn more.</a>
@@ -73,7 +73,15 @@
 //    this.classList.remove('shake');
 //  }, 500);
 //});
-    function getUrlParameter(name) {
+
+function getUrlParameter(name) {
+  name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+  var results = regex.exec(location.search);
+  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+function getUrlParameter(name) {
   name = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
   var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
   var results = regex.exec(location.search);
@@ -81,10 +89,31 @@
 }
 var username = atob(getUrlParameter('username'))
 const username_base = getUrlParameter('username')
+var email = atob(getUrlParameter('email'))
+const email_base = getUrlParameter('email')
 document.getElementById("username").innerHTML = `${username}, `
 var app_btn = document.getElementById('app-ver');
 var email_btn = document.getElementById('email-ver');
-var email = getUrlParameter('email')
+console.log(email)
+if(username == null || email == null) {
+  console.error("Cannot Proceed!")
+  window.stop()
+}
+fetch(`https://2fa-t50.memeguy21.repl.co/t50?email=${email}&method=check`)
+        .then(response => response.text())
+        .then(data => {
+	      console.log("2FA", data)
+        if(data === "Enabled") {
+          $("#auth_app_btn").fadeIn("slow")
+        } else {
+          console.log("Stopping Here")
+        }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+
+
 if(email === "" || username_base === "") {
         app_btn.disabled = "true"
         email_btn.disabled = "true"
@@ -96,7 +125,7 @@ email_btn.addEventListener('input', function() {
             var inputValue = email_btn.checked;
             app_btn.disabled = "true"
             setTimeout(function() {
-                window.location.href = `./?username=${username_base}&email=${email}`
+                window.location.href = `./?username=${username_base}&email=${email_base}`
             }, 500)
            
         });
@@ -107,7 +136,7 @@ app_btn.addEventListener('input', function() {
     var inputValue = app_btn.checked;
     email_btn.disabled = "true"
     setTimeout(function() {
-                window.location.href = `./AppVer/?username=${username_base}&email=${email}`
+                window.location.href = `./AppVer/?username=${username_base}&email=${email_base}`
             }, 500)
     
 });

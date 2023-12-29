@@ -131,6 +131,8 @@ function admin() {
     not_ready.play()
     return;
   }
+  console.log("Sorry, Disabled")
+  return;
     document.getElementById("new_message_badge_2").style.display = "none"
     sessionStorage.setItem("chat", "admin")
     document.getElementById("unread_chat").style.display = "none"
@@ -219,6 +221,8 @@ function run() {
     error_sound.play()
     return;
   }
+  console.log("Sorry, Disabled")
+  return;
 const url = `https://team50-accounts-database-clear.memeguy21.repl.co/?admin=t50_username/password&password=yes`;
 console.log("starting db info")
     fetch(url)

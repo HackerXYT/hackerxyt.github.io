@@ -8,6 +8,10 @@ function getUrlParameter(name) {
 
 var username = atob(getUrlParameter('username'))
 var email = atob(getUrlParameter('email'))
+var method = getUrlParameter(camefrom)
+if(method === "register") {
+  console.log("Must Prompt User To Set A Profile Picture After Register")
+}
 if(username == null || email == null) {
   console.error("Cannot Proceed!")
 } else {

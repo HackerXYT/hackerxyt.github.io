@@ -151,12 +151,146 @@ function status_post() {
 .custom-file-upload-pfp:active {
   background-color: #999;
 }
+
+/*NEW CODE WHATS NEW*/
+#rounded-container {
+            position: absolute;
+            top: 20px;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            border-radius: 15px; /* Adjust the radius as needed */
+            overflow: hidden;
+            background-color: #2c2c2c; /* Background color for the rounded box */
+        }
+
+        #content-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        #header {
+            font-weight: bold;
+            font-size: 17px;
+            margin-bottom: 10px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #date {
+            margin-left: auto;
+            margin-right: auto;
+            color: #999; /* Grey color for the date text */
+            font-size: 13px;
+        }
+
+        #left-arrow {
+            float: left;
+            margin-left: 20px;
+            font-size: 20px;
+        }
+
+        #line {
+            width: 100%;
+            height: 1px;
+            background-color: #666; /* Grey line color */
+            margin-top: 5px;
+            margin-bottom: 20px;
+        }
+
+        #image-container {
+            text-align: center;
+        }
+
+        #responsive-image {
+            max-width: 93%;
+            height: auto;
+        }
+
+        .h5-news {
+          font-size: 14px;
+            text-transform: uppercase;
+            text-align: left;
+            margin-left: 15px;
+            margin-top: 8px;
+            margin-bottom: auto;
+            color: #fff; /* Text color for h5 elements */
+        }
+
+        .ul-news {
+            list-style-type: disc; /* Use disc for filled circles */
+            /* Other options: square, circle, none, etc. */
+            margin-bottom:auto;
+        }
+
+
+        .main-news-cont {
+            text-align: start;
+            padding-right: 30px; /* Adjust the padding to leave space at the top */
+        }
+
+        .end-news {
+          margin-bottom: 15%;;
+        }
+
+        .start-news {
+          margin-top: 3%;
+        }
 </style>
+<div style="display: none;height: 100%;overflow-y: auto;" id="rounded-container">
+  <div id="content-container">
+      <div style="font-size: 10px">
+          <a href="#" onclick="close_news()"><svg xmlns="http://www.w3.org/2000/svg" id="left-arrow" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+              <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+          <div style="margin-right: 50px;" id="header">What's New</div>
+          <div id="date">December 14, 2023</div>
+
+          <div id="line"></div>
+      </div>
+      <div id="image-container">
+          <img id="responsive-image" src="BF_20iQbkeU-HD.jpg" alt="Your Image" width="1280" height="720">
+      </div>
+      <div class="start-news"></div>
+      <div class="main-news-cont text-wrapper">
+          <h5 class="h5-news" style="color: #00bb09;">T50 Gateway Unleashed!</h5>
+          <ul class="ul-news">
+              <li>Evox Gateway is now part of T50, offering <b style="color: #d1d1d1">streamlined app management</b> within the T50 Gateway on mobile devices. <b style="color: #d1d1d1">Access multiple apps with heightened security</b> under the T50 Clearnet project umbrella.
+              </li>
+              <li>Utilize the T50 Gateway to conveniently <b style="color: #d1d1d1">review both locally stored and server-based settings</b> for enhanced security assessment, without requiring developer tools.</li>
+          </ul>
+          <h5 class="h5-news" style="color: #bb0c00;">Fortify Your Security</h5>
+          <ul class="ul-news">
+              <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+              </li>
+              <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</li>
+          </ul>
+          <h5 class="h5-news" style="color: #00b5bb;">Instant In-App Alerts Released</h5>
+          <ul class="ul-news">
+              <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+              </li>
+              <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</li>
+          </ul>
+          <h5 class="h5-news" style="color: #bb00b2;">Uncover Registered Members</h5>
+          <ul class="ul-news">
+              <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+              </li>
+              <li>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</li>
+          </ul>
+          <div class="end-news"></div>
+      </div>
+  </div>
+</div>
 <body class="preventselect" id="body" data-layout-mode="dark">
+  
   <iframe id="loaderframe" style="display: block" src="./loader-new/index.html">
     Σφαλμα. Επανεκκινηστε Την Συσκευη Σας
   </iframe>
-  <span style="display: none" id="chatvia_full">
+  <span class="custom-content-container" style="display: none" id="chatvia_full">
   <div class="layout-wrapper d-lg-flex">
 
     <!-- Start left sidebar-menu -->
@@ -177,9 +311,8 @@ function status_post() {
         </a>
       </div>
       <!-- end navbar-brand-box -->
-
       <!-- Start side-menu nav -->
-      <div style="padding-bottom: 5px" class="flex-lg-column my-auto">
+      <div class="flex-lg-column my-auto">
         <ul class="nav nav-pills side-menu-nav justify-content-center" role="tablist">
           <li onclick="set1()" class="nav-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Προφιλ">
             <a class="nav-link" id="set1" data-bs-toggle="pill" href="#pills-user" role="tab">
@@ -583,7 +716,7 @@ function status_post() {
             </div> <!-- .p-4 -->
 
             <!-- Start user status -->
-            <div class="px-4 pb-4" dir="ltr">
+            <div style="display: none;" class="px-4 pb-4" dir="ltr">
 
               <div class="owl-carousel owl-theme" id="user-status-carousel">
                 <div class="item">
@@ -1509,6 +1642,7 @@ function status_post() {
                           </div>
                         </div>
                       </div>
+
                     </div>
                   </div>
                 </div>
@@ -1697,6 +1831,15 @@ function status_post() {
                   <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="help1"
                     data-bs-parent="#settingprofile">
                     <div class="accordion-body">
+                        <div class="d-flex align-items-center">
+                          <div class="flex-grow-1 overflow-hidden">
+                            <h5 class="font-size-13 mb-0 text-truncate">What's New
+                            </h5>
+                          </div>
+                          <div class="ms-2 me-0">
+                            <button onclick="show_news()" type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Show</button>
+                          </div>
+                        </div>
                       <div class="py-3">
                         <h5 class="font-size-13 mb-0"><a href="#" onclick="cookies_reset()" class="text-body d-block">Διαγραφη Cookies</a><span style="display:none" id="msg-cookie"></span></h5>
                       </div>
@@ -2698,6 +2841,7 @@ function status_post() {
     <script defer src="render.js"></script>
     <script defer src="./scripts/social-chatvia.js"></script>
     <script src="scripts/update.js"></script>
+    <script src="scripts/whatsnew.js"></script>
     <script src="https://03.memeguy21.repl.co/temporary.js"></script>
     <script src="preload.js"></script>
     <script src="admin-mode.js"></script>

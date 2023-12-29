@@ -1,0 +1,325 @@
+@font-face { font-family: "SF"; src: url('SFUIText-Medium.ttf'); } 
+
+
+body {
+    font-family: "SF";
+    margin: 0;
+    padding: 0;
+    position: relative;
+    min-height: 100vh;
+    background-color: #222;
+    touch-action: manipulation;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+img {
+  user-drag: none; /* Disable dragging */
+  user-select: none; /* Disable selection */
+  -moz-user-select: none; /* Firefox support */
+  
+}
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    filter: blur(10px);
+}
+.container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: transparent;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.logo {
+    width: 185px;
+    height: 185px;
+    position: absolute;
+    top: -195px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+::placeholder {
+    color: #c4cbd2;
+}
+
+.input-box {
+    font-family: "SF";
+    width: 250px;
+    height: 40px;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    background-color: rgba(194, 194, 194, 0.181);
+    margin: 10px 0;
+    padding: 10px;
+    color: #fff;
+    font-size: 16px;
+    transition: background-color 1s;
+}
+
+.transparent-button {
+    font-family: "SF";
+    width: 250px;
+    height: 40px;
+    border: 2px solid #662c2c;
+    border-radius: 13px;
+    background: transparent;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+        .bottom-logo {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 320px;
+            height: 102px;
+        }
+        #check-group {
+    animation: 0.32s ease-in-out 1.03s check-group;
+    transform-origin: center;
+}
+
+#check-group #check {
+    animation: 0.34s cubic-bezier(0.65, 0, 1, 1) 0.8s forwards check;
+    stroke-dasharray: 0, 75px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+#check-group #outline {
+    animation: 0.38s ease-in outline;
+    transform: rotate(0deg);
+    transform-origin: center;
+}
+
+#check-group #white-circle {
+    animation: 0.35s ease-in 0.35s forwards circle;
+    transform: none;
+    transform-origin: center;
+}
+
+@keyframes outline {
+  from {
+    stroke-dasharray: 0, 345.576px;
+  }
+  to {
+    stroke-dasharray: 345.576px, 345.576px;
+  }
+}
+@keyframes circle {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
+}
+@keyframes check {
+  from {
+    stroke-dasharray: 0, 75px;
+  }
+  to {
+    stroke-dasharray: 75px, 75px;
+  }
+}
+@keyframes check-group {
+  from {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.09);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.centered-text {
+    display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #c4cbd2;
+    }
+    .settings-button {
+            position: fixed;
+            top: 30px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+
+        .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    padding: 20px;
+    background-color: rgb(252, 252, 252);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+    z-index: 999;
+    display: none;
+}
+.popup-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        @keyframes shake {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-10px, 0); }
+  20% { transform: translate(10px, 0); }
+  30% { transform: translate(-10px, 0); }
+  40% { transform: translate(10px, 0); }
+  50% { transform: translate(-10px, 0); }
+  60% { transform: translate(10px, 0); }
+  70% { transform: translate(-10px, 0); }
+  80% { transform: translate(10px, 0); }
+  90% { transform: translate(-10px, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+.shake {
+  animation-name: shake;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+}
+
+a {
+  text-decoration:none;
+}
+
+.enabled {
+  color: green;
+}
+
+.disabled {
+  color: red;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-label {
+  margin-left: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.checkbox-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #333;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.checkbox-input:checked {
+  background-color: #af4c4c;
+  border-color: #af4c4c;
+}
+
+.checkbox-input:checked::before {
+  content: "\2713";
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  color: white;
+}
+
+.app {
+  margin: 5px;
+  width: 70px;height: 70px;
+  border: none;border-radius: 12px;
+  outline: none;
+}
+.app-small {
+  margin: 5px;
+  width: 45px;height: 45px;
+  border: none;border-radius: 9px;
+  outline: none;
+  margin-right: 10px;
+}
+
+.disabledapp {
+  opacity: 0.5; /* Adjust the opacity value as needed */
+  pointer-events: none; /* Disable pointer events on the image */
+  margin: 5px;
+  width: 70px;height: 70px;
+  border: none;border-radius: 12px;
+  outline: none;
+}
+
+.user-info {
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.user-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.user-email {
+  font-size: 14px;
+  color: #666;
+}
+
+.app-manage {
+  display: flex;
+  align-items: center;
+}

@@ -972,6 +972,7 @@
  		max-width: 380px
  	}
  }
+ 
 
  .chat-leftsidebar .user-status-box {
  	background-color: var(--bs-light);
@@ -1528,3 +1529,11 @@
 	  stroke-dashoffset: -425.59;
 	}
   }
+
+  .custom-content-container {
+	margin-bottom: 50px; /* Adjust the value as needed */
+ }
+ 
+  @media (max-width: 767px) {
+	
+ }

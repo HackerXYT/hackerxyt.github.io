@@ -120,9 +120,11 @@ BtnLog.addEventListener("click", (e) => {
   .then(data => {
     console.log(data);
     if(data === "Welcome Abroad") {
+        var base64email = btoa(email);
+        var base64username = btoa(username);
         console.log("Accepted!")
         localStorage.setItem("account", `{"password": "${password}"}`)
-        window.location.href = `./Verification/?email=${email}&username=${username}`
+        window.location.href = `./Verification/?email=${base64email}&username=${base64username}?camefrom=register`
     }
     else if(data === "Account Exists. Retry") {
       document.getElementById("info_2").innerHTML = "Email Is Linked To Another Account!"

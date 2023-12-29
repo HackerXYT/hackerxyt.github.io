@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="theme-color" content="#361e1e" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#361e1e" media="(prefers-color-scheme: dark)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" 
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="client.css"><link rel="stylesheet" href="secondary.css">
+</head>
+<style>
+    .gallery-container {
+            width: 100%;
+            max-width: 600px; /* Set a maximum width for larger screens */
+            margin: 0; /* Center the gallery on the page */
+        }
+
+        .image-wrapper {
+            width: 32.33%; /* Take 1/3 of the horizontal space */
+            float: left;
+            box-sizing: border-box;
+            position: relative;
+            margin: 2px
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Fill the container without stretching */
+            display: block;
+            
+        }
+</style>
+<body>
+    <div class="background" style="background: repeating-radial-gradient(circle, #361e1e, #3c2828, #3e1c1c, #361d1d, #392121 20px);"></div>
+    
+    <div id="container" class="container" style="display:none;margin-top: 105px;">
+        <img src="evox-logo.png" alt="Logo" class="logo" id="myLogo">
+        <span id="use_switch"><input autocomplete="off" id="email" type="email" class="input-box" placeholder="Email"></span>
+        <input autocomplete="off" id="password" type="password" class="input-box" placeholder="Password">
+        <p id="info_text" style="color: white;display: none"></p>
+        <button id="submit" onclick="login()" class="transparent-button">Login</button><br>
+        <p style="color: #a7b3bf">T50® registered under Evox Communications & Co.</p>
+    </div>
+    <div style="display: none" id="gateway">
+        <div class="centered-text">
+            <h2 style="margin:0">Welcome, <span id="user-text"></span></h2>
+            <p id="loading-apps-text">Loading your T50 applications..</p>
+            <div style="display: none" id="apps"></div>
+        </div>
+        
+        
+    </div>
+    <img style="display: none;user-drag: none;user-select: none;" id="bottom-logo" src="another_logo.png" alt="Another Logo" class="bottom-logo">
+    <img style="display: none;user-select: none;" id="bottom-logo-start" src="footer-in.png" alt="Another Logo" class="bottom-logo">
+    <div id="popup" class="popup">
+        <span onclick="close_popup()" class="popup-close"><svg onclick="close_popup()" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z" fill="#000000"/></svg></span>
+        <!-- Content of the popup -->
+        <h2 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">T50 Gateway</h2>
+        <div class="user-info">
+            <div class="user-circle">
+                <img id="usr-img" src="t50-img.png" alt="User Image">
+            </div>
+            <div class="user-details">
+                <div id="usr-name" class="user-name">Error</div>
+                <div id="usr-email" class="user-email">error@example.com</div>
+            </div>
+        </div>
+        <h3 style="margin-bottom: 0;">App Management</h3>
+        <div class="app-manage">
+            <img src="EvoxNotes.png" alt="Image" class="app-small">
+            <p id="notes-own-ui-status">err</p>
+          </div>
+          <div class="app-manage">
+            <img src="t50-img.png" alt="Image" class="app-small">
+            <p id="images-own-ui-status">err</p>
+          </div>
+          <div class="app-manage">
+            <img src="chatvia-img.png" alt="Image" class="app-small">
+            <p id="chatvia-own-ui-status">err</p>
+          </div>
+    
+        <h3 style="margin-bottom: 4px;">Preferences</h3>
+        <p style="margin-top:0%;margin-bottom: 2px;">
+            Auto-Login: <span id="auto-login"><a href="#autologin">Enabled</a></span><br>
+        </p>
+        <p style="margin-top: 2px;"><br>
+        Log Out  <a style="color: red" onclick="logoff()"><svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="24px" height="24px" viewBox="0 0 16 16"><path d="M1.3 3.75h5.88V2.5H1.3A1.25 1.25 0 0 0 .05 3.75v8.5A1.25 1.25 0 0 0 1.3 13.5h5.88v-1.25H1.3z"/><path d="m15.4 7-4-2.74-.71 1 3.08 2.1H4.71v1.26h9.07l-3.08 2.11.71 1L15.4 9a1.24 1.24 0 0 0 0-2z"/></svg></a><br>
+            Restart <a onclick="restart()"><svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+                <path fill="none" stroke="#000000" stroke-width="2" d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8"/>
+              </svg></a>
+        </p>
+    </div>
+
+    <div id="ld-scr" style="background-color: #333;height:250px;color: white" class="popup">
+        <span onclick="close_ld_set()" class="popup-close"><svg onclick="close_ld_set()" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z" fill="#fff"/></svg></span>
+        <!-- Content of the popup -->
+        <h3 style="margin-top: 10px;margin-bottom: 18.72px;">Pick A Loading Icon</h3>
+        <div id="list-icons">
+            <div class="set-ld">
+                <a onclick="beginld('1')" style="color: white" href="#ld1" id="ld1"><div id="box1" class="box">1</div></a>
+                <a onclick="beginld('2')" style="color: white" href="#ld2" id="ld2"><div id="box2" class="box">2</div></a>
+                <a onclick="beginld('3')" style="color: white" href="#ld3" id="ld3"><div id="box3" class="box">3</div></a>
+            </div>
+            <div class="set-ld">
+                <a onclick="beginld('4')" style="color: white" href="#ld4" id="ld4"><div id="box4" class="box">4</div></a>
+                <a onclick="beginld('5')" style="color: white" href="#ld5" id="ld5"><div id="box5" class="box">5</div></a>
+                <a onclick="beginld('6')" style="color: white" href="#ld6" id="ld6"><div id="box6" class="box">6</div></a>
+            </div>
+            <div class="set-ld">
+                <a onclick="beginld('7')" style="color: white" href="#ld7" id="ld7"><div id="box7" class="box">7</div></a>
+                <a onclick="beginld('8')" style="color: white" href="#ld8" id="ld8"><div id="box8" class="box">8</div></a>
+                <a onclick="beginld('9')" style="color: white" href="#ld9" id="ld9"><div id="box9" class="box">9</div></a>
+            </div>
+        </div>
+        <div id="list-alone" style="display: none;">
+        <p>Icon <span id="number-icon">NUM</span>:</p><div id="icon-inside" style="display: block; display: flex; justify-content: space-between;" class="item">
+                <i class="loader --1" style="display: inline-block; margin-right: 5px;"></i>
+            </div>
+            <button onclick="continue_ok()" style="position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); padding: 10px 20px; background-color: #3498db; color: #fff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;">Continue?</button></div>
+    </div>
+
+    <div id="text" style="display: none" class="centered-text">
+        
+        
+      </div>
+      <div style="display: none" id="rem-email-lock" class="settings-button"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+        <!-- You can customize the icon or text inside the button --><a id="l_u" href="#lock-unlock" onclick="l_u_email()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10.0288" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </a>
+    </div>
+      <div style="display: none" onclick="settings()" id="settings" class="settings-button"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+        <!-- You can customize the icon or text inside the button -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48" id="Layer_2" data-name="Layer 2"><defs><style>.cls-1{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;}</style></defs><path class="cls-1" d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z"/></svg>
+    </div>
+    <div id="loading-div-text" style="display: none;margin: 0;padding: 0;height: 100vh;position: relative;color: rgb(255, 255, 255)">
+        <div id="loading-text" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);text-align: center;">
+            <p>Wait</p>
+        </div>
+  </div>
+    <div style="display: block" id="loading" class="icon-container">
+        <div class="item">
+            <i class="loader --5"></i>
+        </div>
+      </div>
+      
+</body>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="functions.js"></script>
+<script src="gateway.js"></script>
+<!-- <script src="script.js"></script>
+<script src="new.js"></script>-->
+</html>
