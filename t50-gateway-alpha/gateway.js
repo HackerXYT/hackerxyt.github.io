@@ -24,6 +24,7 @@ function docready() {
       .then(data => {
         if(data.includes("Credentials Correct")) {
             log("Existing Account Verified!", "green")
+            sessionStorage.setItem("loaded", true)
             setup()
         } else {
             log("Existing Account Verification Failed!", "red")
@@ -36,6 +37,10 @@ function docready() {
       .catch(error => {
         console.error('Fetch error:', error);
       });
+      if(localStorage.getItem("remove-autolg") === "true") {
+        localStorage.removeItem("remove-autolg")
+        localStorage.removeItem("t50-autologin")
+      }
       return;
     }
     $("#loading-div-text").fadeIn("slow", function() {

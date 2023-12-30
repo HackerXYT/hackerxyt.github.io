@@ -44,7 +44,7 @@
         <button id="submit" onclick="login()" class="transparent-button">Login</button><br>
         <p style="color: #a7b3bf">T50® registered under Evox Communications & Co.</p>
     </div>
-    <div style="display: none" id="gateway">
+    <div class="gateway" style="display: none" id="gateway">
         <div class="centered-text">
             <h2 style="margin:0">Welcome, <span id="user-text"></span></h2>
             <p id="loading-apps-text">Loading your T50 applications..</p>
@@ -53,7 +53,7 @@
         
         
     </div>
-    <img style="display: none;user-drag: none;user-select: none;" id="bottom-logo" src="another_logo.png" alt="Another Logo" class="bottom-logo">
+    <img style="display: none;user-drag: none;user-select: none;" id="bottom-logo" src="footer-in.png" alt="Another Logo" class="bottom-logo">
     <img style="display: none;user-select: none;" id="bottom-logo-start" src="footer-in.png" alt="Another Logo" class="bottom-logo">
     <div id="popup" class="popup">
         <span onclick="close_popup()" class="popup-close"><svg onclick="close_popup()" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z" fill="#000000"/></svg></span>
@@ -93,33 +93,79 @@
               </svg></a>
         </p>
     </div>
-
-    <div id="ld-scr" style="background-color: #333;height:250px;color: white" class="popup">
-        <span onclick="close_ld_set()" class="popup-close"><svg onclick="close_ld_set()" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z" fill="#fff"/></svg></span>
+    <div id="buy-products" class="popup" style="background-color: #333; color: #dbdbdb">
+        <span onclick="buy_back()" style="position: absolute;top: 10px;left: 10px;cursor: pointer;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#dbdbdb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </span>
         <!-- Content of the popup -->
-        <h3 style="margin-top: 10px;margin-bottom: 18.72px;">Pick A Loading Icon</h3>
-        <div id="list-icons">
-            <div class="set-ld">
-                <a onclick="beginld('1')" style="color: white" href="#ld1" id="ld1"><div id="box1" class="box">1</div></a>
-                <a onclick="beginld('2')" style="color: white" href="#ld2" id="ld2"><div id="box2" class="box">2</div></a>
-                <a onclick="beginld('3')" style="color: white" href="#ld3" id="ld3"><div id="box3" class="box">3</div></a>
+        <h2 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Shopping Cart</h2>
+        <div style="display: none;" id="buynotes">
+            <div class="user-info">
+                <div class="app-manage">
+                    <img src="EvoxNotes.png" style="width: 60px;height:60px" alt="Image" class="app-small">
+                    <p id="notes-own-ui-status">T50 Notes</p>
+                  </div>   
             </div>
-            <div class="set-ld">
-                <a onclick="beginld('4')" style="color: white" href="#ld4" id="ld4"><div id="box4" class="box">4</div></a>
-                <a onclick="beginld('5')" style="color: white" href="#ld5" id="ld5"><div id="box5" class="box">5</div></a>
-                <a onclick="beginld('6')" style="color: white" href="#ld6" id="ld6"><div id="box6" class="box">6</div></a>
-            </div>
-            <div class="set-ld">
-                <a onclick="beginld('7')" style="color: white" href="#ld7" id="ld7"><div id="box7" class="box">7</div></a>
-                <a onclick="beginld('8')" style="color: white" href="#ld8" id="ld8"><div id="box8" class="box">8</div></a>
-                <a onclick="beginld('9')" style="color: white" href="#ld9" id="ld9"><div id="box9" class="box">9</div></a>
-            </div>
+            <h3 style="margin-bottom: 0;color:#ba6a6a">Explore T50 Notes</h3>
+            <p>Simplify your note management with our versatile application. T50 Notes offers robust security measures without compromising accessibility across all your devices—whether it's your PC, mobile, or even through Tor.</p>
+            <button id="submit" onclick="purchase('notes')" class="transparent-button" style="width:100%">Buy Now</button><br>
         </div>
-        <div id="list-alone" style="display: none;">
-        <p>Icon <span id="number-icon">NUM</span>:</p><div id="icon-inside" style="display: block; display: flex; justify-content: space-between;" class="item">
-                <i class="loader --1" style="display: inline-block; margin-right: 5px;"></i>
+        <div style="display: none;" id="buyimages">
+            <div class="user-info">
+                <div class="app-manage">
+                    <img src="t50-img.png" style="width: 60px;height:60px" alt="Image" class="app-small">
+                    <p id="notes-own-ui-status">T50 Images</p>
+                  </div>   
             </div>
-            <button onclick="continue_ok()" style="position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); padding: 10px 20px; background-color: #3498db; color: #fff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;">Continue?</button></div>
+            <h3 style="margin-bottom: 0;color:#ba6a6a">Explore T50 Images</h3>
+            <p>Securely safeguard your images using advanced hash encryption and comprehensive cryptographic processes. Rest assured, your gallery remains exclusively accessible to you, ensuring utmost privacy.</p>
+            <button id="submit" onclick="purchase('images')" class="transparent-button" style="width:100%">Buy Now</button><br>
+        </div>
+        <div style="display: none;" id="buychatvia">
+            <div class="user-info">
+                <div class="app-manage">
+                    <img src="chatvia-img.png" style="width: 60px;height:60px" alt="Image" class="app-small">
+                    <p id="notes-own-ui-status">Chatvia</p>
+                  </div>   
+            </div>
+            <h3 style="margin-bottom: 0;color:#ba6a6a">Explore Chatvia</h3>
+            
+            <p>Experience seamless connection with friends and associates through the power of Chatvia—an all-in-one application. Chatvia empowers you to engage in secure conversations while safeguarding your identity. Designed to give users complete control, Chatvia offers an immersive experience that makes you feel like a developer in command of your communication universe!</p>
+            <button id="submit" onclick="purchase('chatvia')" class="transparent-button" style="width:100%">Buy Now</button><br>
+        </div>
+        <div style="display: none;" id="purchase">
+            <div class="user-info">
+                <div class="app-manage">
+                    <img id="purch-app-img" src="EvoxNotes.png" style="width: 60px;height:60px" alt="Image" class="app-small">
+                    <p id="purch-app-text">T50 Notes</p>
+                  </div>   
+            </div>
+            <div id="choose_pm">
+                <h3 style="margin-bottom: 0;color:#ba6a6a">Choose Payment Method:</h3>
+                <label class="rad-label">
+                    <input id="cc-pm" type="radio" class="rad-input" name="rad">
+                    <div class="rad-design"></div>
+                    <div class="rad-text">Credit Card</div>
+                  </label>
+                  <label class="rad-label">
+                    <input id="pp-pm" type="radio" class="rad-input" name="rad">
+                    <div class="rad-design"></div>
+                    <div class="rad-text">PayPal</div>
+                  </label>
+                  <label class="rad-label">
+                    <input id="ccode-pm" type="radio" class="rad-input" name="rad">
+                    <div class="rad-design"></div>
+                    <div class="rad-text">Coupon Code</div>
+                  </label>
+            </div>
+            <div style="display:none" id="code_pm">
+                <h3 style="margin-bottom: 0;color:#ba6a6a">Enter Coupon Code:</h3>
+                <input style="width: auto;" autocomplete="off" id="coupon" type="text" class="input-box" placeholder="Coupon Code">
+            </div>
+            <span id="cont-pur"><button onclick="continue_purch()" class="transparent-button" style="width:100%">Continue</button></span><br>
+        </div>
     </div>
 
     <div id="text" style="display: none" class="centered-text">
@@ -135,7 +181,7 @@
     </div>
     <div onclick="fix()" id="stuck" style="position: fixed;
     top: 30px;
-    right: 50px;
+    right: 10px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -145,7 +191,7 @@
     cursor: pointer;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
         <!-- You can customize the icon or text inside the button -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 16 16" fill="none"><path d="M7.493 0.015 C 7.442 0.021,7.268 0.039,7.107 0.055 C 5.234 0.242,3.347 1.208,2.071 2.634 C 0.660 4.211,-0.057 6.168,0.009 8.253 C 0.124 11.854,2.599 14.903,6.110 15.771 C 8.169 16.280,10.433 15.917,12.227 14.791 C 14.017 13.666,15.270 11.933,15.771 9.887 C 15.943 9.186,15.983 8.829,15.983 8.000 C 15.983 7.171,15.943 6.814,15.771 6.113 C 14.979 2.878,12.315 0.498,9.000 0.064 C 8.716 0.027,7.683 -0.006,7.493 0.015 M8.853 1.563 C 9.967 1.707,11.010 2.136,11.944 2.834 C 12.273 3.080,12.920 3.727,13.166 4.056 C 13.727 4.807,14.142 5.690,14.330 6.535 C 14.544 7.500,14.544 8.500,14.330 9.465 C 13.916 11.326,12.605 12.978,10.867 13.828 C 10.239 14.135,9.591 14.336,8.880 14.444 C 8.456 14.509,7.544 14.509,7.120 14.444 C 5.172 14.148,3.528 13.085,2.493 11.451 C 2.279 11.114,1.999 10.526,1.859 10.119 C 1.618 9.422,1.514 8.781,1.514 8.000 C 1.514 6.961,1.715 6.075,2.160 5.160 C 2.500 4.462,2.846 3.980,3.413 3.413 C 3.980 2.846,4.462 2.500,5.160 2.160 C 6.313 1.599,7.567 1.397,8.853 1.563 M7.706 4.290 C 7.482 4.363,7.355 4.491,7.293 4.705 C 7.257 4.827,7.253 5.106,7.259 6.816 C 7.267 8.786,7.267 8.787,7.325 8.896 C 7.398 9.033,7.538 9.157,7.671 9.204 C 7.803 9.250,8.197 9.250,8.329 9.204 C 8.462 9.157,8.602 9.033,8.675 8.896 C 8.733 8.787,8.733 8.786,8.741 6.816 C 8.749 4.664,8.749 4.662,8.596 4.481 C 8.472 4.333,8.339 4.284,8.040 4.276 C 7.893 4.272,7.743 4.278,7.706 4.290 M7.786 10.530 C 7.597 10.592,7.410 10.753,7.319 10.932 C 7.249 11.072,7.237 11.325,7.294 11.495 C 7.388 11.780,7.697 12.000,8.000 12.000 C 8.303 12.000,8.612 11.780,8.706 11.495 C 8.763 11.325,8.751 11.072,8.681 10.932 C 8.616 10.804,8.460 10.646,8.333 10.580 C 8.217 10.520,7.904 10.491,7.786 10.530 " stroke="none" fill-rule="evenodd" fill="#fff"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 16 16" fill="none"><path d="M7.493 0.015 C 7.442 0.021,7.268 0.039,7.107 0.055 C 5.234 0.242,3.347 1.208,2.071 2.634 C 0.660 4.211,-0.057 6.168,0.009 8.253 C 0.124 11.854,2.599 14.903,6.110 15.771 C 8.169 16.280,10.433 15.917,12.227 14.791 C 14.017 13.666,15.270 11.933,15.771 9.887 C 15.943 9.186,15.983 8.829,15.983 8.000 C 15.983 7.171,15.943 6.814,15.771 6.113 C 14.979 2.878,12.315 0.498,9.000 0.064 C 8.716 0.027,7.683 -0.006,7.493 0.015 M8.853 1.563 C 9.967 1.707,11.010 2.136,11.944 2.834 C 12.273 3.080,12.920 3.727,13.166 4.056 C 13.727 4.807,14.142 5.690,14.330 6.535 C 14.544 7.500,14.544 8.500,14.330 9.465 C 13.916 11.326,12.605 12.978,10.867 13.828 C 10.239 14.135,9.591 14.336,8.880 14.444 C 8.456 14.509,7.544 14.509,7.120 14.444 C 5.172 14.148,3.528 13.085,2.493 11.451 C 2.279 11.114,1.999 10.526,1.859 10.119 C 1.618 9.422,1.514 8.781,1.514 8.000 C 1.514 6.961,1.715 6.075,2.160 5.160 C 2.500 4.462,2.846 3.980,3.413 3.413 C 3.980 2.846,4.462 2.500,5.160 2.160 C 6.313 1.599,7.567 1.397,8.853 1.563 M7.706 4.290 C 7.482 4.363,7.355 4.491,7.293 4.705 C 7.257 4.827,7.253 5.106,7.259 6.816 C 7.267 8.786,7.267 8.787,7.325 8.896 C 7.398 9.033,7.538 9.157,7.671 9.204 C 7.803 9.250,8.197 9.250,8.329 9.204 C 8.462 9.157,8.602 9.033,8.675 8.896 C 8.733 8.787,8.733 8.786,8.741 6.816 C 8.749 4.664,8.749 4.662,8.596 4.481 C 8.472 4.333,8.339 4.284,8.040 4.276 C 7.893 4.272,7.743 4.278,7.706 4.290 M7.786 10.530 C 7.597 10.592,7.410 10.753,7.319 10.932 C 7.249 11.072,7.237 11.325,7.294 11.495 C 7.388 11.780,7.697 12.000,8.000 12.000 C 8.303 12.000,8.612 11.780,8.706 11.495 C 8.763 11.325,8.751 11.072,8.681 10.932 C 8.616 10.804,8.460 10.646,8.333 10.580 C 8.217 10.520,7.904 10.491,7.786 10.530 " stroke="none" fill-rule="evenodd" fill="rgba(237, 17, 17, 0.56)"/></svg>
     </div>
       <div style="display: none" onclick="settings()" id="settings" class="settings-button"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
         <!-- You can customize the icon or text inside the button -->
@@ -161,7 +207,20 @@
             <i class="loader --5"></i>
         </div>
       </div>
-      
+
+      <div style="display: none;" class="loading loading--circle" title="Loading">
+        <svg version="1.1" id="loading-circle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+        <path d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+          <animateTransform attributeType="XML"
+            attributeName="transform"
+            type="rotate"
+            from="0 25 25"
+            to="360 25 25"
+            dur="0.6s"
+            repeatCount="indefinite"/>
+          </path>
+        </svg>
+      </div>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
