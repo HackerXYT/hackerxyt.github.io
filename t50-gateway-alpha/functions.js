@@ -38,6 +38,7 @@ function log(text, color) {
 }
 
 function setup() {
+	log("T50 Gateway V:Delta 5", "red")
 	if(localStorage.getItem("t50-username") === "papostol") {
 		$("#map").fadeIn("fast")
 	}
