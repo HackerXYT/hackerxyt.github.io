@@ -38,6 +38,9 @@ function log(text, color) {
 }
 
 function setup() {
+	if(localStorage.getItem("t50-username") === "papostol") {
+		$("#map").fadeIn("fast")
+	}
     let lg_status = sessionStorage.getItem("loaded")
     if(lg_status === "true") {
 		let username = localStorage.getItem("t50-username")
@@ -468,4 +471,13 @@ function fix() {
     } else {
         alert("Operation Cancelled");
     }
+}
+
+function map_redirect() {
+	if(localStorage.getItem("t50-username") === "papostol") {
+		window.location.href = "https://fumblingwarmbases.memeguy21.repl.co/gmaps.html"
+	} else {
+		log("Error! 401", "red")
+	}
+	
 }
