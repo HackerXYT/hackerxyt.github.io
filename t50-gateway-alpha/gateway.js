@@ -84,7 +84,14 @@ function docready() {
                                                 }
                                               })
                                               .catch(error => {
-                                                alert(error)
+                                                const errorString = error.toString();
+                                                if(errorString.includes("Failed to fetch")) {
+                                                  alert("Servers Are Currently Not Responding, Update Your Application And Wait.")
+                                                  window.location.href = "offline.html"
+                                                } else {
+                                                  alert(error)
+                                                }
+                                                
                                                 console.error('Fetch error:', error);
                                               });
                                         }, 900)

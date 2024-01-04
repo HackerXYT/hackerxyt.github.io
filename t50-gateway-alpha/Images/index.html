@@ -105,6 +105,22 @@
         </p>
     </div>
 
+    <div id="imgcontainerpopup" style="position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 730px; /* Set your desired container height */
+    width: 337.5px;
+    padding: 20px;
+    background-color: rgb(23, 23, 23);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+    z-index: 999;
+    display: none;">
+        <span onclick="close_img()" class="popup-close"><svg xmlns="http://www.w3.org/2000/svg" width="36px" height="36px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z" fill="#fff"/></svg></span>
+        <a id="hyper"><img id="showimg" style="width:100%; height: auto"></a>
+    </div>
+
     <div id="ld-scr" style="background-color: #333;height:250px;color: white" class="popup">
         <span onclick="close_ld_set()" class="popup-close"><svg onclick="close_ld_set()" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z" fill="#fff"/></svg></span>
         <!-- Content of the popup -->

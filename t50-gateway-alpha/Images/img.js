@@ -411,3 +411,19 @@ function fadeError(method) {
 		element.style.backgroundColor = "rgba(252, 252, 252, 0.259)";
 	}, 2000)
 }
+
+function showimg(data, id) {
+    document.getElementById("showimg").src = data
+    document.getElementById("hyper").href = data
+    document.getElementById("hyper").download = `Evox${id}.png`
+    $("#imgcontainerpopup").fadeIn("fast")
+}
+
+function close_img() {
+    $("#imgcontainerpopup").fadeOut("fast", function() {
+        document.getElementById("showimg").src = ""
+        document.getElementById("hyper").href = ""
+        document.getElementById("hyper").download = ""
+    })
+    
+}

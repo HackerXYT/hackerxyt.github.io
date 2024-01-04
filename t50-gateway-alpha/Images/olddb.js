@@ -79,8 +79,12 @@ function createElements(values) {
 
         // Create an <a> element
         const link = document.createElement('a');
-        link.href = value;
-        link.target = '_blank';
+        link.href = `#show?${value.substring(22, 50)}`;
+        //link.download = `Image${(index + 1)}.png`;
+        //link.target = '_blank';
+        link.onclick = function() {
+          showimg(`${value}`, index+1);
+        };
 
         // Create an <img> element
         const img = document.createElement('img');
