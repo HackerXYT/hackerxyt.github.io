@@ -5,7 +5,7 @@
 <head>
   <script src="scripts/howler.js"></script>
   <script>
-    alert("Servers are changing locations.\nYou might experience errors")
+    //alert("Servers are changing locations.\nYou might experience errors")
     user = localStorage.getItem("user");
     document.addEventListener('keydown', function(event) {
   if (event.altKey) {
@@ -25,7 +25,8 @@ function status_post() {
                   body: JSON.stringify({
                     username: user, //is defined
                     method: "status",
-                    what: "online"
+                    what: "online",
+                    email: localStorage.getItem("user_email")
                   })
                 })
                 .then(response => response.text())

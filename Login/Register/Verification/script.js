@@ -11,6 +11,7 @@ var email = atob(getUrlParameter('email'))
 let method = getUrlParameter("camefrom")
 if(method === "register") {//!!!!!!
   console.log("Must Prompt User To Set A Profile Picture After Register")
+  window.location.href = `./customize/?username=${username}&email=${email}`
 } else {
   console.log("no method")
 }

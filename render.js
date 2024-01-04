@@ -812,7 +812,7 @@ function updateemail() {
 	  elms[i].innerHTML = "Περιμένετε.."
   const input1 = new_mail;
 	const xhr = new XMLHttpRequest();
-	const url = 'https://email-server.memeguy21.repl.co';
+	const url = 'https://1ae8c6db-ea61-4bc7-b5fb-a2d0e77f2452-00-3aapnsyjaox5j.global.replit.dev';
 	const data = { email: input1, username: user, method: "edit_email" };
 	xhr.open('POST', url, true);
 	xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
@@ -889,7 +889,7 @@ function verify_code(email) {
        </rect>
       </svg><br><br><p id="info_show_loading_email_change" style="color: white">Περιμένετε..</p>`
       
-      fetch(`https://email-server.memeguy21.repl.co?email=${email}`)
+      fetch(`https://1ae8c6db-ea61-4bc7-b5fb-a2d0e77f2452-00-3aapnsyjaox5j.global.replit.dev/?email=${email}`)
         .then(response => response.text())
         .then(data => {
 	      if(code == data) {
@@ -1378,7 +1378,7 @@ function changepfp() {
         return;
       }
     connected_to_server.play()
-    fetch('https://ChatVia-Database.memeguy21.repl.co', {
+    fetch('https://9bf5b964-d0b6-4548-8f4f-f613686e2c98-00-39qaekzrxs2jq.global.replit.dev', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -1405,7 +1405,7 @@ function changepfp() {
         setTimeout( function() {
             server_complete.play()
         }, 200)
-        const url = `https://ChatVia-Database.memeguy21.repl.co?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+        const url = `https://9bf5b964-d0b6-4548-8f4f-f613686e2c98-00-39qaekzrxs2jq.global.replit.dev/?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
 
     fetch(url)
   .then(response => response.text())
@@ -1458,7 +1458,7 @@ function loadserver() {
         setTimeout( function() {
             server_complete.play()
         }, 200)
-        const url = `https://ChatVia-Database.memeguy21.repl.co?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+        const url = `https://9bf5b964-d0b6-4548-8f4f-f613686e2c98-00-39qaekzrxs2jq.global.replit.dev/?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
 
     fetch(url)
   .then(response => response.text())
@@ -1517,7 +1517,7 @@ function loadserveremail() {
     setTimeout( function() {
         server_complete.play()
     }, 200)
-    const url_EMAIL = `https://ChatVia-Database.memeguy21.repl.co?authorize=351c3669b3760b20615808bdee568f33&email=${user}`;
+    const url_EMAIL = `https://9bf5b964-d0b6-4548-8f4f-f613686e2c98-00-39qaekzrxs2jq.global.replit.dev/?authorize=351c3669b3760b20615808bdee568f33&email=${user}`;
 
 fetch(url_EMAIL)
 .then(response => response.text())
@@ -1538,7 +1538,7 @@ function setfavorite() {
 
     //SEND INFO TO SERVER
 
-    fetch('https://ChatVia-Database.memeguy21.repl.co', {
+    fetch('https://9bf5b964-d0b6-4548-8f4f-f613686e2c98-00-39qaekzrxs2jq.global.replit.dev', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -1562,7 +1562,7 @@ function setfavorite() {
 
     //SET NEW INFO
 
-    const url = `https://ChatVia-Database.memeguy21.repl.co?authorize=351c3669b3760b20615808bdee568f33&favorite=${user}`;
+    const url = `https://9bf5b964-d0b6-4548-8f4f-f613686e2c98-00-39qaekzrxs2jq.global.replit.dev/?authorize=351c3669b3760b20615808bdee568f33&favorite=${user}`;
 
     fetch(url)
   .then(response => response.text())
@@ -1724,7 +1724,7 @@ function dev_msg() {
 }
 
 function removepfp() {
-  const url = `https://ChatVia-Database.memeguy21.repl.co?authorize=351c3669b3760b20615808bdee568f33&remove=${user}:pfp`;
+  const url = `https://9bf5b964-d0b6-4548-8f4f-f613686e2c98-00-39qaekzrxs2jq.global.replit.dev/?authorize=351c3669b3760b20615808bdee568f33&remove=${user}:pfp`;
   connected_to_server.play()
 var elms = document.querySelectorAll("[id='pfpprofile']");
     for (var i = 0; i < elms.length; i++) {
@@ -1735,7 +1735,7 @@ var elms = document.querySelectorAll("[id='pfpprofile']");
   ))
   .then(data => {
     if(data == "200") { //Server Responded Saying That pfp Has Been Deleted
-      const url = `https://ChatVia-Database.memeguy21.repl.co?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+      const url = `https://9bf5b964-d0b6-4548-8f4f-f613686e2c98-00-39qaekzrxs2jq.global.replit.dev/?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
 
     fetch(url)
   .then(response => response.text())
@@ -1871,7 +1871,7 @@ function showNotification(user, msg) {
 
 function twofa() {
   document.getElementById("button_2fa").innerHTML = "Enabling"
-  fetch('https://2fa-t50.memeguy21.repl.co/', {
+  fetch('https://dd8045ca-794c-4174-8a59-a72eb2c00e80-00-34wzzecd6f30q.kirk.replit.dev/', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
@@ -1904,7 +1904,7 @@ function hideqr() {
   document.getElementById("button_2fa").innerHTML = "Ready"
 }
 
-fetch(`https://2fa-t50.memeguy21.repl.co/t50?email=${localStorage.getItem("user_email")}&method=check`)
+fetch(`https://dd8045ca-794c-4174-8a59-a72eb2c00e80-00-34wzzecd6f30q.kirk.replit.dev/t50?email=${localStorage.getItem("user_email")}&method=check`)
         .then(response => response.text())
         .then(data => {
 	      console.log("2FA", data)
