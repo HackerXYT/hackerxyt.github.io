@@ -166,7 +166,7 @@ function load(app) {
 		}
 	} else if(app === "images") {
 		if(images === "true") {
-			window.location.href = "https://img-type.memeguy21.repl.co/"
+			window.location.href = "https://f2cbd198-14f4-4485-86be-3a299ec42406-00-16cs847ngu2b1.kirk.replit.dev/"
 		} else {
 			log("App Not Owned!", "red")
 		}
