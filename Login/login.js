@@ -1,4 +1,25 @@
 console.log("Welcome To Evox")
+var notyf = new Notyf({
+  duration: 3000,
+  position: {
+    y: 'top',
+  }
+});
+notyf.error('Some Servers Are Offline');
+function isMobileDevice() {
+  return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+}
+
+// Remove the transformation if it's not a mobile device
+if (!isMobileDevice()) {
+  var htmlElement = document.querySelector('html');
+  htmlElement.style.transform = '1';
+} else {
+  var htmlElement = document.querySelector('html');
+  htmlElement.style.transform = 'scale(1.8)';
+  document.body.style.overflow = 'hidden';
+  console.log("Mobile")
+}
 localStorage.setItem("update_status", true)
 if(localStorage.getItem("account") && localStorage.getItem("user") && localStorage.getItem("user_email")) {
   console.log("Already Logged In")
@@ -82,7 +103,7 @@ localStorage.setItem("emoji", "😂")
         }
         return;
     }
-    const url = `https://team50-accounts-database-clear.memeguy21.repl.co/?email=${email}&password=${password}`;
+    const url = `https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/?email=${email}&password=${password}`;
 
     fetch(url)
       .then(response => {
@@ -142,7 +163,7 @@ localStorage.setItem("emoji", "😂")
 function register() {
     const email = document.getElementById("username").value
     const password = document.getElementById("password").value
-    fetch('https://team50-accounts-database-clear.memeguy21.repl.co/', {
+    fetch('https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

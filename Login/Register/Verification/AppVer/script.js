@@ -25,7 +25,7 @@ BtnLog.addEventListener("click", (e) => {
     //document.getElementById("info").style.color = "white"
     //document.getElementById("info").innerHTML = `Παρακαλω Περιμενετε..`
     const code = document.getElementById("code").value
-    const uri = `https://2fa-t50.memeguy21.repl.co/t50?email=${email}&code=${code}`;
+    const uri = `https://dd8045ca-794c-4174-8a59-a72eb2c00e80-00-34wzzecd6f30q.kirk.replit.dev/t50?email=${email}&code=${code}`;
 
 
     fetch(uri)
@@ -73,7 +73,7 @@ BtnLog.addEventListener("click", (e) => {
 function reset() {
   console.error("Function Needs Fixing (T50Server-Side)")
   window.location.href = "/"
-  const uri = `https://email-server.memeguy21.repl.co/email?email=${email}&code=delete`;
+  const uri = `https://1ae8c6db-ea61-4bc7-b5fb-a2d0e77f2452-00-3aapnsyjaox5j.global.replit.dev/email?email=${email}&code=delete`;
 
 
     fetch(uri)
@@ -90,7 +90,7 @@ function reset() {
         //CONTINUE TO DELETE INFO FROM MAIN T50 CLEAN SERVER
         var password = JSON.parse(localStorage.getItem("account")).password
         console.log("LocalStorage Password:", password)
-        fetch('https://team50-accounts-database-clear.memeguy21.repl.co/', {
+        fetch('https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -124,7 +124,7 @@ function reset() {
 }
 
 function login() {
-  const url = `https://evox-app-data.memeguy21.repl.co/users/${username}-undefined-${code}.verify`;
+  const url = `https://5802c6b5-2c9e-4291-97a5-d5e86e3d99c3-00-26p6j11qdypct.global.replit.dev/users/${username}-undefined-${code}.verify`;
   
 
   fetch(url)

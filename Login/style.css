@@ -6,7 +6,14 @@
 }
 
 html {
-  box-sizing: border-box;
+	transform: scale(1.8);
+  	box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+	html {
+		transform: scale(1);
+	}
 }
 
 body {

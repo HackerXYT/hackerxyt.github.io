@@ -57,7 +57,7 @@ function setup() {
 					$("#container").fadeOut("fast")
 						$("#loading").fadeIn("slow")
 						$("#stuck").fadeOut("slow")
-						fetch(`https://team50-accounts-database-clear.memeguy21.repl.co/?applications=get&email=${localStorage.getItem("t50-email")}`)
+						fetch(`https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/?applications=get&email=${localStorage.getItem("t50-email")}`)
 							.then(response => {
 								if (!response.ok) {
 									throw new Error(`HTTP error! Status: ${response.status}`);
@@ -256,7 +256,7 @@ function continue_purch(app) {
 function check_ccode(app) {
 	$("#loading").fadeIn("slow")
 	let coupon = document.getElementById("coupon").value
-	const url = `https://team50-accounts-database-clear.memeguy21.repl.co/?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
+	const url = `https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
 
     fetch(url)
       .then(response => {
@@ -412,7 +412,7 @@ function close_popup() {
 function pfp() {
 	let user = localStorage.getItem("t50-username")
 	if(user != null) {
-		const url = `https://ChatVia-Database.memeguy21.repl.co?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+		const url = `https://9bf5b964-d0b6-4548-8f4f-f613686e2c98-00-39qaekzrxs2jq.global.replit.dev/?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
 		fetch(url)
 		  .then(response => response.text())
 		  .then(data => {
@@ -476,7 +476,7 @@ function fix() {
 
 function map_redirect() {
 	if(localStorage.getItem("t50-username") === "papostol") {
-		window.location.href = "https://fumblingwarmbases.memeguy21.repl.co/gmaps.html"
+		window.location.href = "https://3dcb9862-7e27-4033-98f8-c0e7d083a51d-00-10oadmzrhdlfs.riker.replit.dev/gmaps.html"
 	} else {
 		log("Error! 401", "red")
 	}

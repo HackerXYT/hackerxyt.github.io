@@ -8,15 +8,22 @@ function getUrlParameter(name) {
 
 var username = atob(getUrlParameter('username'))
 var email = atob(getUrlParameter('email'))
-var method = getUrlParameter(camefrom)
-if(method === "register") {
+let method = getUrlParameter("camefrom")
+if(method === "register") {//!!!!!!
   console.log("Must Prompt User To Set A Profile Picture After Register")
+} else {
+  console.log("no method")
 }
-if(username == null || email == null) {
+if(username == null || email == null || sessionStorage.getItem("email_sent") === "true") {
   console.error("Cannot Proceed!")
+  if(sessionStorage.getItem("email_sent") === "true") {
+    document.getElementById("email").value = email
+    document.getElementById("code").disabled = false;
+    sessionStorage.setItem("help", "Exists")
+  }
 } else {
   document.getElementById("email").value = email
-  fetch('https://email-server.memeguy21.repl.co/', {
+  fetch('https://1ae8c6db-ea61-4bc7-b5fb-a2d0e77f2452-00-3aapnsyjaox5j.global.replit.dev/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -29,9 +36,18 @@ if(username == null || email == null) {
   })
   .then(response => response.text())
   .then(data => {
-    console.log(data);
+    console.log("Server says:",data);
+    if(data === "received POST request.") {
+      console.log("Sent!")
+      sessionStorage.setItem("email_sent", "true")
+      document.getElementById("code").disabled = false;
+      sessionStorage.setItem("help", "Sent")
+    }
     if(data === "error, exists") {
+      sessionStorage.setItem("email_sent", "true")
       console.log("Email Has Been Sent Previously, Try Using Latest Code Sent")
+      document.getElementById("code").disabled = false;
+      sessionStorage.setItem("help", "Exists")
     }
   })
   .catch(error => {
@@ -49,7 +65,7 @@ function verifycode(username, email) {
       }, 250)
   } else {
       code = document.getElementById("verification_code").value
-      const url = `https://evox-app-data.memeguy21.repl.co/users/${username}-undefined-${code}.verify`;
+      const url = `https://5802c6b5-2c9e-4291-97a5-d5e86e3d99c3-00-26p6j11qdypct.global.replit.dev/users/${username}-undefined-${code}.verify`;
       fetch(url)
       .then(response => {
         if (response.ok) {
@@ -96,7 +112,7 @@ BtnLog.addEventListener("click", (e) => {
     //document.getElementById("info").innerHTML = `Παρακαλω Περιμενετε..`
     const email = document.getElementById("email").value
     const code = document.getElementById("code").value
-    const uri = `https://email-server.memeguy21.repl.co/email?email=${email}&code=${code}`;
+    const uri = `https://1ae8c6db-ea61-4bc7-b5fb-a2d0e77f2452-00-3aapnsyjaox5j.global.replit.dev/email?email=${email}&code=${code}`;
 
 
     fetch(uri)
@@ -144,7 +160,7 @@ BtnLog.addEventListener("click", (e) => {
 function reset() {
   console.error("Function Needs Fixing (T50Server-Side)")
   window.location.href = "/"
-  const uri = `https://email-server.memeguy21.repl.co/email?email=${email}&code=delete`;
+  const uri = `https://1ae8c6db-ea61-4bc7-b5fb-a2d0e77f2452-00-3aapnsyjaox5j.global.replit.dev/email?email=${email}&code=delete`;
 
 
     fetch(uri)
@@ -161,7 +177,7 @@ function reset() {
         //CONTINUE TO DELETE INFO FROM MAIN T50 CLEAN SERVER
         var password = JSON.parse(localStorage.getItem("account")).password
         console.log("LocalStorage Password:", password)
-        fetch('https://team50-accounts-database-clear.memeguy21.repl.co/', {
+        fetch('https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -195,7 +211,7 @@ function reset() {
 }
 
 function login() {
-  const url = `https://evox-app-data.memeguy21.repl.co/users/${username}-undefined-${code}.verify`;
+  const url = `https://5802c6b5-2c9e-4291-97a5-d5e86e3d99c3-00-26p6j11qdypct.global.replit.dev/users/${username}-undefined-${code}.verify`;
   
 
   fetch(url)
@@ -233,4 +249,14 @@ function login() {
     .catch(error => {
       console.error('Fetch error:', error);
     });
+}
+
+
+function help() {
+  let me = sessionStorage.getItem("help")
+  if(me === "Exists") {
+    alert("Ensure you've received the initial email as a verification code has been sent. No additional emails will follow. Verify by checking your latest emails by T50 for the required code.")
+  } else if(me === "Sent") {
+    alert("Check your inbox for a recently sent email by T50.")
+  }
 }

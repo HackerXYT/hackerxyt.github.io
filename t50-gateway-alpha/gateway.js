@@ -12,7 +12,7 @@ function docready() {
     let acc = localStorage.getItem("t50pswd")
     let pswd = atob(acc)
     if(loggedin != null && autologin === "true") {
-        const url = `https://team50-accounts-database-clear.memeguy21.repl.co/?email=${loggedin}&password=${pswd}`;
+        const url = `https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/?email=${loggedin}&password=${pswd}`;
 
     fetch(url)
       .then(response => {
@@ -64,7 +64,7 @@ function docready() {
                                         $("#dots").html("...")
                                         setTimeout(function() {
                                             $("#dots").html("..")
-                                            fetch("https://team50-accounts-database-clear.memeguy21.repl.co/")
+                                            fetch("https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/")
                                             .then(response => {
                                                 if (!response.ok) {
                                                   throw new Error(`HTTP error! Status: ${response.status}`);
@@ -117,7 +117,7 @@ function login() {
     let email = document.getElementById("email").value
     let password = document.getElementById("password").value
     console.log(email, password)
-    const url = `https://team50-accounts-database-clear.memeguy21.repl.co/?email=${email}&password=${password}`;
+    const url = `https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/?email=${email}&password=${password}`;
 
     fetch(url)
       .then(response => {

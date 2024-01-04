@@ -64,6 +64,21 @@
   <script src="../../../offline/jquery-3.6.1.js"
       integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
   <script>
+    sessionStorage.removeItem("email_sent")
+    function isMobileDevice() {
+  return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+}
+
+// Remove the transformation if it's not a mobile device
+if (!isMobileDevice()) {
+  var htmlElement = document.querySelector('html');
+  htmlElement.style.transform = '1';
+} else {
+  var htmlElement = document.querySelector('html');
+  htmlElement.style.transform = 'scale(1.8)';
+  document.body.style.overflow = 'hidden';
+  console.log("Mobile")
+}
 //    document.getElementById('shakeButton').addEventListener('click', function() {
 //  // Add the 'shake' class to the button
 //  this.classList.add('shake');
@@ -99,7 +114,7 @@ if(username == null || email == null) {
   console.error("Cannot Proceed!")
   window.stop()
 }
-fetch(`https://2fa-t50.memeguy21.repl.co/t50?email=${email}&method=check`)
+fetch(`https://dd8045ca-794c-4174-8a59-a72eb2c00e80-00-34wzzecd6f30q.kirk.replit.dev/t50?email=${email}&method=check`)
         .then(response => response.text())
         .then(data => {
 	      console.log("2FA", data)
@@ -145,7 +160,7 @@ app_btn.addEventListener('input', function() {
     function reset() {
   console.error("Function Needs Fixing (T50Server-Side)")
   window.location.href = "/"
-  const uri = `https://email-server.memeguy21.repl.co/email?email=${email}&code=delete`;
+  const uri = `https://1ae8c6db-ea61-4bc7-b5fb-a2d0e77f2452-00-3aapnsyjaox5j.global.replit.dev/email?email=${email}&code=delete`;
 
 
     fetch(uri)
@@ -162,7 +177,7 @@ app_btn.addEventListener('input', function() {
         //CONTINUE TO DELETE INFO FROM MAIN T50 CLEAN SERVER
         var password = JSON.parse(localStorage.getItem("account")).password
         console.log("LocalStorage Password:", password)
-        fetch('https://team50-accounts-database-clear.memeguy21.repl.co/', {
+        fetch('https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
