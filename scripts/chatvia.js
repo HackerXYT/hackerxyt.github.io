@@ -36,7 +36,7 @@ rawFile.send(null);
 }
 
     function AccountAuth() {
-      fetch(`https://team50-accounts-database-clear.memeguy21.repl.co/?email=${localStorage.getItem("user_email")}&password=${JSON.parse(localStorage.getItem("account")).password}`)
+      fetch(`https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/?email=${localStorage.getItem("user_email")}&password=${JSON.parse(localStorage.getItem("account")).password}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -72,17 +72,17 @@ document.getElementById("self_user_name").innerHTML = localStorage.getItem("user
 if(localStorage.getItem("auto_connect_database") == "true") {
 document.getElementById("self_user_image").src = `data:image/png;base64,${localStorage.getItem("pfpdata")}`
 } else {
-checkImage(`https://03.memeguy21.repl.co/user-profiles/${localStorage.getItem("user")}.png`, function(exists) {
+checkImage(`https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${localStorage.getItem("user")}.png`, function(exists) {
 if (exists) {
 console.log("%cAll ok - SERVER 200", 'color: green')
-  document.getElementById("self_user_image").src = `https://03.memeguy21.repl.co/user-profiles/${localStorage.getItem("user")}.png`
+  document.getElementById("self_user_image").src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${localStorage.getItem("user")}.png`
 console.log('%cImage exists', 'color: green');
 } else {
-document.getElementById("self_user_image").src = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+document.getElementById("self_user_image").src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
 var elms = document.querySelectorAll("[id='pfpprofile']");
-document.getElementById("update_pfp_after_change").src = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+document.getElementById("update_pfp_after_change").src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
 for (var i = 0; i < elms.length; i++)
-    elms[i].src = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+    elms[i].src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
 console.log('%cImage does not exist', 'color: red');
 }
 });
@@ -139,7 +139,7 @@ if (!localStorage.getItem("device_info")) {
 
 
 var sound = new Howl({
-src: ['https://03.memeguy21.repl.co/Google_Event.mp3'],
+src: ['https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/Google_Event.mp3'],
 volume: 0.9
 });
 
@@ -164,12 +164,12 @@ volume: 1.5
 });
 
 var message = new Howl({
-src: ['https://03.memeguy21.repl.co/notification.mp3'],
+src: ['https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/notification.mp3'],
 volume: 1
 //Google_Event.mp3
 });
 var welcome = new Howl({
-src: ['https://03.memeguy21.repl.co/starting.mp3'],
+src: ['https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/starting.mp3'],
 volume: 2
 //Google_Event.mp3
 });
@@ -199,7 +199,7 @@ src: ['./internal/update_found.mp3'],
 volume: 1
 });
 
-var file = `https://03.memeguy21.repl.co/server.info.json`
+var file = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/server.info.json`
 readTextFile(file, function(text) {
 var info = JSON.parse(text)
 var srv = info.url
@@ -255,9 +255,9 @@ $.getJSON('https://api.bigdatacloud.net/data/ip-geolocation?key=' + apiKey, func
     document.getElementById("ipaddr").innerHTML = datac.ip
 });
 var elms = document.querySelectorAll("[id='pfpprofile']");
-document.getElementById("update_pfp_after_change").src = `https://03.memeguy21.repl.co/user-profiles/${localStorage.getItem("user") || 'Ανωνυμος'}.png`
+document.getElementById("update_pfp_after_change").src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${localStorage.getItem("user") || 'Ανωνυμος'}.png`
 for (var i = 0; i < elms.length; i++)
-    elms[i].src = `https://03.memeguy21.repl.co/user-profiles/${localStorage.getItem("user") || 'Ανωνυμος'}.png`
+    elms[i].src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${localStorage.getItem("user") || 'Ανωνυμος'}.png`
 $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="images/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Η εικονα προφιλ εφαρμοστηκε με επιτυχια</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
 
 var elm = document.querySelectorAll("[id='profilename']");
@@ -371,7 +371,7 @@ if (command === "!add") {
 
   //console.log("The value of x is now:", x);
 
-  let url = `https://03.memeguy21.repl.co/user-profiles/${x}.png`
+  let url = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${x}.png`
   let xhr = new XMLHttpRequest();
 
   xhr.onreadystatechange = function() {
@@ -470,7 +470,7 @@ if(data.user != user) {
   $('#mainchat').append(`<li class="left">
   <div class="conversation-list">
       <div class="chat-avatar">
-          <img src="https://03.memeguy21.repl.co/user-profiles/${data.user}.png" alt="">
+          <img src="https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${data.user}.png" alt="">
       </div>
 
       <div class="user-chat-content">
@@ -551,7 +551,7 @@ return;
 $('#mainchat').append(`<li class="right">
                             <div class="conversation-list">
                                 <div class="chat-avatar">
-                                    <img src="https://03.memeguy21.repl.co/user-profiles/${data.user}.png" alt="">
+                                    <img src="https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${data.user}.png" alt="">
                                 </div>
 
                                 <div class="user-chat-content">
@@ -749,7 +749,7 @@ message_sent.play()
   $('#secondchat').append(`<li class="right">
 <div class="conversation-list">
 <div class="chat-avatar">
-  <img src="https://03.memeguy21.repl.co/user-profiles/${user}.png" alt="">
+  <img src="https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${user}.png" alt="">
 </div>
 
 <div class="user-chat-content">
@@ -797,7 +797,7 @@ document.getElementById("updatelastmsg_2ndchat").innerHTML = "τωρα"
   $('#secondchat').append(`<li class="left">
 <div class="conversation-list">
 <div class="chat-avatar">
-  <img src="https://03.memeguy21.repl.co/user-profiles/${data.user}.png" alt="">
+  <img src="https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${data.user}.png" alt="">
 </div>
 
 <div class="user-chat-content">
@@ -871,13 +871,13 @@ if(localStorage.getItem("auto_connect_database") === "true") {
 </li>`)
 } else {
   let url;
-  url = `https://03.memeguy21.repl.co/user-profiles/${user}.png`
+  url = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${user}.png`
 
   fetch(url)
     .then(response => {
       if (response.status === 404) {
         console.log('URL returns a 404 Not Found');
-        url = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+        url = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
       } else {
         console.log('URL is accessible');
       }
@@ -916,7 +916,7 @@ if(localStorage.getItem("auto_connect_database") === "true") {
 </li>`)
     })
     .catch(error => {
-      url = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+      url = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
       console.error('Error checking URL:', error);
       $('#mainchat').append(`<li class="right">
 <div class="conversation-list">
@@ -1015,13 +1015,13 @@ document.getElementById("lastmsgtime").innerHTML = "τωρα"
   $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="images/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Ο Χρηστης ${data.user} εστειλε ενα μηνυμα</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
         new_message_sound.play()
         //$('#mainchat').append('<p><strong>' + data.user + '</strong>: ' + data.message + '</p>');
-  let url = `https://03.memeguy21.repl.co/user-profiles/${data.user}.png`
+  let url = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${data.user}.png`
 
   fetch(url)
     .then(response => {
       if (response.status === 404) {
         console.log('URL returns a 404 Not Found');
-        url = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+        url = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
         $('#mainchat').append(`<li class="left">
     <div class="conversation-list">
     <div class="chat-avatar">
@@ -1400,7 +1400,7 @@ notyf.success('Τo τραγουδι σταλθηκε στον διακομιστ
 function getsongs() {
 //Download Songs That Are Ready
 
-readTextFile("https://03.memeguy21.repl.co/ready.json", function(text) {
+readTextFile("https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/ready.json", function(text) {
     var ready = JSON.parse(text)
     //console.log(ready)
     $('#mainchat').append(`<li class="left">

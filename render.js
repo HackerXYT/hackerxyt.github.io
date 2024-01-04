@@ -100,8 +100,8 @@ for(var i = 0; i < elements.length; i++) {
         //document.getElementById("emoji").focus();
     }, 5000)
 } 
-document.getElementById("pfp_download").href = `https://03.memeguy21.repl.co/user-profiles/${user}.png`
-document.getElementById("profile_pfp_download").src = `https://03.memeguy21.repl.co/user-profiles/${user}.png`
+document.getElementById("pfp_download").href = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${user}.png`
+document.getElementById("profile_pfp_download").src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${user}.png`
 sessionStorage.setItem("music", "inactive")
 sessionStorage.removeItem("playing")
 
@@ -182,12 +182,12 @@ window.addEventListener("load", (event) => {
         document.getElementById("changechat1").style.display = "none"
     }
 });
-readTextFile("https://03.memeguy21.repl.co/saved_messages.json", function(saved) {
+readTextFile("https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/saved_messages.json", function(saved) {
     var data = JSON.parse(saved)
     if(data.user_id == user) {
       if(data.slot1.user != "κενο" && data.slot1.message != "κενο" && data.slot1.time_sent != "κενο") {
         console.log("Νεα αποθηκευμενα μηνυματα βρεθηκαν στην θεση 1")
-        $('#secondchat').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="https://03.memeguy21.repl.co/user-profiles/${data.slot1.user}.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">${data.slot1.message}</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${data.slot1.time_sent}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">${data.slot1.user}</div></div></div></li>`)
+        $('#secondchat').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${data.slot1.user}.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">${data.slot1.message}</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${data.slot1.time_sent}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">${data.slot1.user}</div></div></div></li>`)
         if(document.getElementById("new_message_count_2").innerHTML === "ΝΕΟ") {
             console.log("Αλλη λειτουργια εθεσε το στοιχειο ως ΝΕΟ, αλλαγη..")
             document.getElementById("new_message_count_2").innerHTML === "1"
@@ -201,7 +201,7 @@ readTextFile("https://03.memeguy21.repl.co/saved_messages.json", function(saved)
       }
       if(data.slot2.user != "κενο" && data.slot2.message != "κενο" && data.slot1.time_sent != "κενο") {
         console.log("Νεα αποθηκευμενα μηνυματα βρεθηκαν στην θεση 2")
-        $('#secondchat').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="https://03.memeguy21.repl.co/user-profiles/${data.slot2.user}.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">${data.slot2.message}</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${data.slot2.time_sent}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">${data.slot2.user}</div></div></div></li>`)
+        $('#secondchat').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${data.slot2.user}.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">${data.slot2.message}</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${data.slot2.time_sent}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">${data.slot2.user}</div></div></div></li>`)
         $('#updatelastmsg2').html(`${data.slot2.user}: ${data.slot2.message}`);
         if(document.getElementById("new_message_count_2").innerHTML === "ΝΕΟ") {
             console.log("Αλλη λειτουργια εθεσε το στοιχειο ως ΝΕΟ, αλλαγη..")
@@ -215,7 +215,7 @@ readTextFile("https://03.memeguy21.repl.co/saved_messages.json", function(saved)
       }
       if(data.slot3.user != "κενο" && data.slot3.message != "κενο" && data.slot1.time_sent != "κενο") {
         console.log("Νεα αποθηκευμενα μηνυματα βρεθηκαν στην θεση 3")
-        $('#secondchat').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="https://03.memeguy21.repl.co/user-profiles/${data.slot3.user}.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">${data.slot3.message}</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${data.slot3.time_sent}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">${data.slot3.user}</div></div></div></li>`)
+        $('#secondchat').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${data.slot3.user}.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">${data.slot3.message}</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${data.slot3.time_sent}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">${data.slot3.user}</div></div></div></li>`)
         $('#updatelastmsg2').html(`${data.slot3.user}: ${data.slot3.message}`);
         if(document.getElementById("new_message_count_2").innerHTML === "ΝΕΟ") {
             console.log("Αλλη λειτουργια εθεσε το στοιχειο ως ΝΕΟ, αλλαγη..")
@@ -229,7 +229,7 @@ readTextFile("https://03.memeguy21.repl.co/saved_messages.json", function(saved)
       }
       if(data.slot4.user != "κενο" && data.slot4.message != "κενο" && data.slot1.time_sent != "κενο") {
         console.log("Νεα αποθηκευμενα μηνυματα βρεθηκαν στην θεση 4")
-        $('#secondchat').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="https://03.memeguy21.repl.co/user-profiles/${data.slot4.user}.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">${data.slot4.message}</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${data.slot4.time_sent}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">${data.slot4.user}</div></div></div></li>`)
+        $('#secondchat').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${data.slot4.user}.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">${data.slot4.message}</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${data.slot4.time_sent}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">${data.slot4.user}</div></div></div></li>`)
         $('#updatelastmsg2').html(`${data.slot4.user}: ${data.slot4.message}`);
         if(document.getElementById("new_message_count_2").innerHTML === "ΝΕΟ") {
             console.log("Αλλη λειτουργια εθεσε το στοιχειο ως ΝΕΟ, αλλαγη..")
@@ -243,7 +243,7 @@ readTextFile("https://03.memeguy21.repl.co/saved_messages.json", function(saved)
       }
       if(data.slot4.user != "κενο" && data.slot4.message != "κενο" && data.slot1.time_sent != "κενο") {
         console.log("Νεα αποθηκευμενα μηνυματα βρεθηκαν στην θεση 4")
-        $('#secondchat').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="https://03.memeguy21.repl.co/user-profiles/${data.slot5.user}.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">${data.slot5.message}</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${data.slot5.time_sent}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">${data.slot5.user}</div></div></div></li>`)
+        $('#secondchat').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${data.slot5.user}.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">${data.slot5.message}</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${data.slot5.time_sent}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">${data.slot5.user}</div></div></div></li>`)
         $('#updatelastmsg2').html(`${data.slot5.user}: ${data.slot5.message}`);
         if(document.getElementById("new_message_count_2").innerHTML === "ΝΕΟ") {
             console.log("Αλλη λειτουργια εθεσε το στοιχειο ως ΝΕΟ, αλλαγη..")
@@ -375,7 +375,7 @@ function changechat() {
     //document.getElementById("download_files").style.display = "none"
     localStorage.setItem("chat_2_read", "true");
     document.getElementById("video_call_name").innerHTML = "Placeholder"
-    document.getElementById("pfp_video").src = "https://03.memeguy21.repl.co/user-profiles/Placeholder.png"
+    document.getElementById("pfp_video").src = "https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/Placeholder.png"
     document.getElementById("start_video_call" ).setAttribute( "onClick", "start_private_call();" );
     //$("#send_messages_section").fadeOut("fast");
     //document.getElementById("send_messages_section").style.display = "none"
@@ -387,11 +387,11 @@ function changechat() {
     document.getElementById("changechat1").classList.add("active");
     document.getElementById("changechat2").classList.remove("active");
     document.getElementById("user-name").innerHTML = "Placeholder"
-    document.getElementById("user-image").src = "https://03.memeguy21.repl.co/user-profiles/Placeholder.png"
+    document.getElementById("user-image").src = "https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/Placeholder.png"
     document.getElementById("mainchat").style.display = "none"
     $("#secondchat").fadeIn("fast");
     //document.getElementById("secondchat").style.display = "block"
-    document.getElementById("user-info-image").src = "https://03.memeguy21.repl.co/user-profiles/Placeholder.png"
+    document.getElementById("user-info-image").src = "https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/Placeholder.png"
     document.getElementById("user-info-name").innerHTML = "Placeholder"
     document.getElementById("user-info-text").innerHTML = "Βιογραφικο Χρηστη"
     document.getElementById("profilename1").innerHTML = "Placeholder"
@@ -1037,7 +1037,7 @@ checkbox_no1.addEventListener('change', function() {
     if(localStorage.getItem("contact_favorite_name") != null) {
         localStorage.removeItem("contact_favorite_name")
         localStorage.removeItem("contact_favorite_url")
-        document.getElementById("chat_2_user_pfp").src = "https://03.memeguy21.repl.co/user-profiles/Placeholder.png"
+        document.getElementById("chat_2_user_pfp").src = "https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/Placeholder.png"
         document.getElementById("change_chatting_user_username").innerHTML = "Placeholder"
         document.getElementById("first_letter_contacts").innerHTML = "P"
         document.getElementById("contact_name_change").innerHTML = "Placeholder"
@@ -1055,7 +1055,7 @@ function change_chatting() {
     var check3 = document.getElementById('memberCheck3')
     if(check1.checked == true) {
         if(user != "21") {
-            localStorage.setItem("contact_favorite_url", "https://03.memeguy21.repl.co/user-profiles/21.png")
+            localStorage.setItem("contact_favorite_url", "https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/21.png")
             localStorage.setItem("contact_favorite_name", "21")
             document.getElementById("chat_2_user_pfp").src = localStorage.getItem("contact_favorite_url")
             document.getElementById("change_chatting_user_username").innerHTML = localStorage.getItem("contact_favorite_name")
@@ -1068,7 +1068,7 @@ function change_chatting() {
         //Αλεξια is checked
     } else if(check2.checked == true) {
         if(user != "Placeholder") {
-            localStorage.setItem("contact_favorite_url", "https://03.memeguy21.repl.co/user-profiles/Placeholder.png")
+            localStorage.setItem("contact_favorite_url", "https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/Placeholder.png")
             localStorage.setItem("contact_favorite_name", "Placeholder")
             document.getElementById("chat_2_user_pfp").src = localStorage.getItem("contact_favorite_url")
             document.getElementById("change_chatting_user_username").innerHTML = localStorage.getItem("contact_favorite_name")
@@ -1081,7 +1081,7 @@ function change_chatting() {
         //Placeholder is checked
     } else if(check3.checked == true) {
         //Επισκεπτης is checked
-        localStorage.setItem("contact_favorite_url", "https://03.memeguy21.repl.co/user-profiles/Επισκεπτης.png")
+        localStorage.setItem("contact_favorite_url", "https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/Επισκεπτης.png")
             localStorage.setItem("contact_favorite_name", "Επισκεπτης")
             document.getElementById("chat_2_user_pfp").src = localStorage.getItem("contact_favorite_url")
             document.getElementById("change_chatting_user_username").innerHTML = localStorage.getItem("contact_favorite_name")
@@ -1089,7 +1089,7 @@ function change_chatting() {
             document.getElementById("first_letter_contacts").innerHTML = firstLetter
             document.getElementById("contact_name_change").innerHTML = localStorage.getItem("contact_favorite_name")
     } else {
-        localStorage.setItem("contact_favorite_url", "https://03.memeguy21.repl.co/user-profiles/Επισκεπτης.png")
+        localStorage.setItem("contact_favorite_url", "https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/Επισκεπτης.png")
             localStorage.setItem("contact_favorite_name", "Επισκεπτης")
             document.getElementById("chat_2_user_pfp").src = localStorage.getItem("contact_favorite_url")
             document.getElementById("change_chatting_user_username").innerHTML = localStorage.getItem("contact_favorite_name")
@@ -1113,7 +1113,7 @@ function change_to_contacts() {
 }
 
 //Start Functions For Pesonal Music
-var file = `https://03.memeguy21.repl.co/evox/music_Γρηγορης.json` //CHANGE ME THIS IS DEFAULT
+var file = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/evox/music_Γρηγορης.json` //CHANGE ME THIS IS DEFAULT
 readTextFile(file, function(text) {
 		var info = JSON.parse(text)
         var el = info.el
@@ -1486,17 +1486,17 @@ function disconnect_server() {
     document.getElementById("button_connect_database").style.display = "block"
     document.getElementById("database_toggle").innerHTML = `<i class="ri-database-2-line"></i>`
     localStorage.removeItem("auto_connect_database")
-    checkImage(`https://03.memeguy21.repl.co/user-profiles/${localStorage.getItem("user")}.png`, function(exists) {
+    checkImage(`https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${localStorage.getItem("user")}.png`, function(exists) {
       if (exists) {
         console.log("All ok - SERVER 200")
-          document.getElementById("self_user_image").src = `https://03.memeguy21.repl.co/user-profiles/${localStorage.getItem("user")}.png`
+          document.getElementById("self_user_image").src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${localStorage.getItem("user")}.png`
         console.log('Image exists');
       } else {
-        document.getElementById("self_user_image").src = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+        document.getElementById("self_user_image").src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
         var elms = document.querySelectorAll("[id='pfpprofile']");
-      document.getElementById("update_pfp_after_change").src = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+      document.getElementById("update_pfp_after_change").src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
       for (var i = 0; i < elms.length; i++)
-        elms[i].src = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+        elms[i].src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
         console.log('Image does not exist');
       }
     });
@@ -1596,7 +1596,7 @@ for (let i = 0; i < localStorage.length; i++) {
       messageElement.innerHTML = `<li id="${messageId}" class="right">
             <div class="conversation-list">
               <div class="chat-avatar">
-              <img src="https://03.memeguy21.repl.co/user-profiles/${userid}.png" alt="">
+              <img src="https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${userid}.png" alt="">
               </div>
   
               <div class="user-chat-content">
@@ -1635,7 +1635,7 @@ for (let i = 0; i < localStorage.length; i++) {
       messageElement.innerHTML =`<li id="${messageId}" class="left">
       <div class="conversation-list">
         <div class="chat-avatar">
-        <img src="https://03.memeguy21.repl.co/user-profiles/${userid}.png" alt="">
+        <img src="https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${userid}.png" alt="">
         </div>
 
         <div class="user-chat-content">

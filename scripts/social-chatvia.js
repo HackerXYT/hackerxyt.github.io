@@ -108,7 +108,7 @@ function getusernames() {
     return;
   } else {
     sessionStorage.setItem("donotrun", "true")
-    fetch("https://team50-accounts-database-clear.memeguy21.repl.co/?admin=t50_accountnames&password=yes")
+    fetch("https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/?admin=t50_accountnames&password=yes")
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -131,7 +131,7 @@ function getusernames() {
 
 function appendContact(email) {
     
-    fetch(`https://team50-accounts-database-clear.memeguy21.repl.co/?search=username&username=${email}`)
+    fetch(`https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/?search=username&username=${email}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -141,11 +141,11 @@ function appendContact(email) {
         .then(data => {
           console.log("Username fetch ok")
             const username = data
-            fetch(`https://ChatVia-Database.memeguy21.repl.co?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+            fetch(`https://9bf5b964-d0b6-4548-8f4f-f613686e2c98-00-39qaekzrxs2jq.global.replit.dev/?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
   .then(response => response.text())
   .then(pfp_data => {
     console.log("pfp fetch ok")
-    fetch(`https://t50-social-database.memeguy21.repl.co?username=${username}&method=status`)
+    fetch(`https://3f030d29-9094-4d82-963f-c62920b38af3-00-3dqq5infhall8.spock.replit.dev/?username=${username}&method=status`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

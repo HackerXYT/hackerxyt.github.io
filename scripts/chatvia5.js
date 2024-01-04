@@ -10,7 +10,7 @@ function remove_favorites() {
     if(localStorage.getItem("contact_favorite_name") != null) {
         localStorage.removeItem("contact_favorite_name")
         localStorage.removeItem("contact_favorite_url")
-        document.getElementById("chat_2_user_pfp").src = "https://03.memeguy21.repl.co/user-profiles/Γρηγορης.png"
+        document.getElementById("chat_2_user_pfp").src = "https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/Γρηγορης.png"
         document.getElementById("change_chatting_user_username").innerHTML = "Γρηγορης"
         document.getElementById("first_letter_contacts").innerHTML = "Γ"
         document.getElementById("contact_name_change").innerHTML = "Γρηγορης"
@@ -84,17 +84,17 @@ function database_on_off() {
     document.getElementById("button_connect_database").style.display = "block"
     toggle.innerHTML = `<i class="ri-database-2-line"></i>`
     localStorage.removeItem("auto_connect_database")
-    checkImage(`https://03.memeguy21.repl.co/user-profiles/${localStorage.getItem("user")}.png`, function(exists) {
+    checkImage(`https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${localStorage.getItem("user")}.png`, function(exists) {
       if (exists) {
         console.log("All ok - SERVER 200")
-          document.getElementById("self_user_image").src = `https://03.memeguy21.repl.co/user-profiles/${localStorage.getItem("user")}.png`
+          document.getElementById("self_user_image").src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/${localStorage.getItem("user")}.png`
         console.log('Image exists');
       } else {
-        document.getElementById("self_user_image").src = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+        document.getElementById("self_user_image").src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
         var elms = document.querySelectorAll("[id='pfpprofile']");
-      document.getElementById("update_pfp_after_change").src = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+      document.getElementById("update_pfp_after_change").src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
       for (var i = 0; i < elms.length; i++)
-        elms[i].src = `https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
+        elms[i].src = `https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png`
         console.log('Image does not exist');
       }
     });
@@ -111,7 +111,7 @@ setInterval(function () {
       // Set an onerror event handler to detect 404 errors
       img.onerror = function () {
           // Replace the source with the specified URL
-          img.src = 'https://03.memeguy21.repl.co/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png';
+          img.src = 'https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/%CE%95%CF%80%CE%B9%CF%83%CE%BA%CE%B5%CF%80%CF%84%CE%B7%CF%82.png';
       };
   });
 }, 1000); // Run every 1000 milliseconds (1 second)

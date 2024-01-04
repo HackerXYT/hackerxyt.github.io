@@ -30,7 +30,7 @@ function readTextFile(file, callback) {
 	rawFile.send(null);
 }
 
-readTextFile("https://03.memeguy21.repl.co/update.json", function(data) {
+readTextFile("https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/update.json", function(data) {
     var version = JSON.parse(data)
     url = version.update_url
     //get file size start

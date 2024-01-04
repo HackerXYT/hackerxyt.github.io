@@ -48,7 +48,7 @@ function myFunction() {
   // Add your custom code here
 }
 function getAdmin() {
-    const url = `https://team50-accounts-database-clear.memeguy21.repl.co/?admin=t50_accountnames&password=yes`;
+    const url = `https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/?admin=t50_accountnames&password=yes`;
 
     fetch(url)
   .then(response => {
@@ -150,11 +150,11 @@ function admin() {
     document.getElementById("changechat1").classList.add("active");
     document.getElementById("changechat2").classList.remove("active");
     document.getElementById("user-name").innerHTML = "Admin Panel"
-    document.getElementById("user-image").src = "https://03.memeguy21.repl.co/user-profiles/Γρηγορης.png"
+    document.getElementById("user-image").src = "https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/Γρηγορης.png"
     document.getElementById("mainchat").style.display = "none"
     $("#secondchat").fadeIn("fast");
     //document.getElementById("secondchat").style.display = "block"
-    document.getElementById("user-info-image").src = "https://03.memeguy21.repl.co/user-profiles/Γρηγορης.png"
+    document.getElementById("user-info-image").src = "https://7b7d38f4-3236-41bf-9c59-3a2a57fbc58d-00-1ws109ztxf2ow.worf.replit.dev/user-profiles/Γρηγορης.png"
     document.getElementById("user-info-name").innerHTML = "Γρηγορης"
     document.getElementById("user-info-text").innerHTML = "Βιογραφικο Χρηστη"
     document.getElementById("profilename1").innerHTML = "Γρηγορης"
@@ -183,7 +183,7 @@ setInterval(function() {
 
 function delete_account(what) {
     console.log(what)
-    fetch('https://team50-accounts-database-clear.memeguy21.repl.co/', {
+    fetch('https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -223,7 +223,7 @@ function run() {
   }
   console.log("Sorry, Disabled")
   return;
-const url = `https://team50-accounts-database-clear.memeguy21.repl.co/?admin=t50_username/password&password=yes`;
+const url = `https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/?admin=t50_username/password&password=yes`;
 console.log("starting db info")
     fetch(url)
   .then(response => {
