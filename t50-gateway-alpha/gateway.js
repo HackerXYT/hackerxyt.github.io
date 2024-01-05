@@ -88,8 +88,12 @@ function docready() {
                                                 if(errorString.includes("Failed to fetch")) {
                                                   alert("Servers Are Currently Not Responding, Update Your Application And Wait.")
                                                   window.location.href = "offline.html"
-                                                } else {
+                                                } else if(errorString.includes("Load Failed")) {
+                                                    alert("Servers Are Currently Not Responding. Please Check Back Later.")
+                                                  window.location.href = "offline.html"
+                                                }else {
                                                   alert(error)
+                                                window.location.href = "offline.html"
                                                 }
                                                 
                                                 console.error('Fetch error:', error);
