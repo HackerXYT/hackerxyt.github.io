@@ -57,7 +57,7 @@ function setup() {
 					$("#container").fadeOut("fast")
 						$("#loading").fadeIn("slow")
 						$("#stuck").fadeOut("slow")
-						fetch(`http://192.168.1.21?applications=get&email=${localStorage.getItem("t50-email")}`)
+						fetch(`https://gordon-lowest-nam-criticism.trycloudflare.com?applications=get&email=${localStorage.getItem("t50-email")}`)
 							.then(response => {
 								if (!response.ok) {
 									throw new Error(`HTTP error! Status: ${response.status}`);
@@ -256,7 +256,7 @@ function continue_purch(app) {
 function check_ccode(app) {
 	$("#loading").fadeIn("slow")
 	let coupon = document.getElementById("coupon").value
-	const url = `http://192.168.1.21?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
+	const url = `https://gordon-lowest-nam-criticism.trycloudflare.com?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
 
     fetch(url)
       .then(response => {

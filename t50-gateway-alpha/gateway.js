@@ -12,7 +12,7 @@ function docready() {
     let acc = localStorage.getItem("t50pswd")
     let pswd = atob(acc)
     if(loggedin != null && autologin === "true") {
-        const url = `http://192.168.1.21?email=${loggedin}&password=${pswd}`;
+        const url = `https://gordon-lowest-nam-criticism.trycloudflare.com?email=${loggedin}&password=${pswd}`;
 
     fetch(url)
       .then(response => {
@@ -64,7 +64,7 @@ function docready() {
                                         $("#dots").html("...")
                                         setTimeout(function() {
                                             $("#dots").html("..")
-                                            fetch("http://192.168.1.21")
+                                            fetch("https://gordon-lowest-nam-criticism.trycloudflare.com")
                                             .then(response => {
                                                 if (!response.ok) {
                                                   throw new Error(`HTTP error! Status: ${response.status}`);
@@ -121,7 +121,7 @@ function login() {
     let email = document.getElementById("email").value
     let password = document.getElementById("password").value
     console.log(email, password)
-    const url = `http://192.168.1.21?email=${email}&password=${password}`;
+    const url = `https://gordon-lowest-nam-criticism.trycloudflare.com?email=${email}&password=${password}`;
 
     fetch(url)
       .then(response => {
