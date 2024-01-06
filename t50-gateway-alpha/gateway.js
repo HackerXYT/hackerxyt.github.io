@@ -12,7 +12,7 @@ function docready() {
     let acc = localStorage.getItem("t50pswd")
     let pswd = atob(acc)
     if(loggedin != null && autologin === "true") {
-        const url = `https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/?email=${loggedin}&password=${pswd}`;
+        const url = `http://192.168.1.21?email=${loggedin}&password=${pswd}`;
 
     fetch(url)
       .then(response => {
@@ -64,7 +64,7 @@ function docready() {
                                         $("#dots").html("...")
                                         setTimeout(function() {
                                             $("#dots").html("..")
-                                            fetch("https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/")
+                                            fetch("http://192.168.1.21")
                                             .then(response => {
                                                 if (!response.ok) {
                                                   throw new Error(`HTTP error! Status: ${response.status}`);
@@ -72,7 +72,7 @@ function docready() {
                                                 return response.text();
                                               })
                                               .then(data => {
-                                                if(data === "Connection Blocked" && sessionStorage.getItem("skipped") !== "yes") {
+                                                if(data === "T50 Database Online" && sessionStorage.getItem("skipped") !== "yes") {
                                                     log("Server Online!", "green")
                                                     $("#container").fadeIn("slow", function() {
                                                         $("#loading").fadeOut("slow")
@@ -117,7 +117,7 @@ function login() {
     let email = document.getElementById("email").value
     let password = document.getElementById("password").value
     console.log(email, password)
-    const url = `https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/?email=${email}&password=${password}`;
+    const url = `http://192.168.1.21?email=${email}&password=${password}`;
 
     fetch(url)
       .then(response => {
@@ -147,7 +147,7 @@ function login() {
             console.log("Wrong Email/Password")
             email = ""
             password = ""
-        } else if(data === "Connection Blocked") {
+        } else if(data === "Account Doesn't Exist") {
             if(email === "" || password === "") {
 
             } else {
