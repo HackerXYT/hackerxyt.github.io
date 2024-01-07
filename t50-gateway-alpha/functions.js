@@ -166,7 +166,7 @@ function load(app) {
 		}
 	} else if(app === "images") {
 		if(images === "true") {
-			window.location.href = "./images/"
+			window.location.href = "./Images/"
 		} else {
 			log("App Not Owned!", "red")
 		}
