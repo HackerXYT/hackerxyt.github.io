@@ -57,7 +57,7 @@ function setup() {
 					$("#container").fadeOut("fast")
 						$("#loading").fadeIn("slow")
 						$("#stuck").fadeOut("slow")
-						fetch(`https://gordon-lowest-nam-criticism.trycloudflare.com?applications=get&email=${localStorage.getItem("t50-email")}`)
+						fetch(`https://evox-accounts-database.onrender.com?applications=get&email=${localStorage.getItem("t50-email")}`)
 							.then(response => {
 								if (!response.ok) {
 									throw new Error(`HTTP error! Status: ${response.status}`);
@@ -160,19 +160,19 @@ function load(app) {
 	let chatvia = localStorage.getItem("chatvia-owned")
 	if(app === "notes") {
 		if(notes === "true") {
-			window.location.href = "./Notes/index.html"
+			window.location.href = "#"
 		} else {
 			log("App Not Owned!", "red")
 		}
 	} else if(app === "images") {
 		if(images === "true") {
-			window.location.href = "https://f2cbd198-14f4-4485-86be-3a299ec42406-00-16cs847ngu2b1.kirk.replit.dev/"
+			window.location.href = "./images/"
 		} else {
 			log("App Not Owned!", "red")
 		}
 	} else if(app === "chatvia") {
 		if(chatvia === "true") {
-			window.location.href = "https://team50.sytes.net/1index.html"
+			window.location.href = "./customize/"
 		} else {
 			log("App Not Owned!", "red")
 		}
@@ -256,7 +256,7 @@ function continue_purch(app) {
 function check_ccode(app) {
 	$("#loading").fadeIn("slow")
 	let coupon = document.getElementById("coupon").value
-	const url = `https://gordon-lowest-nam-criticism.trycloudflare.com?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
+	const url = `https://evox-accounts-database.onrender.com?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
 
     fetch(url)
       .then(response => {
@@ -412,11 +412,11 @@ function close_popup() {
 function pfp() {
 	let user = localStorage.getItem("t50-username")
 	if(user != null) {
-		const url = `https://9bf5b964-d0b6-4548-8f4f-f613686e2c98-00-39qaekzrxs2jq.global.replit.dev/?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+		const url = `https://profile-database.onrender.com?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
 		fetch(url)
 		  .then(response => response.text())
 		  .then(data => {
-			document.getElementById("usr-img").src = `data:image/png;base64,${data}`
+			document.getElementById("usr-img").src = `${data}`
 		})
 		.catch(error => console.error(error));
 	}

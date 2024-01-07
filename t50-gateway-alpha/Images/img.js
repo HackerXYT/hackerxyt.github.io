@@ -60,7 +60,7 @@ function login() {
     let email = document.getElementById("email").value
     let password = document.getElementById("password").value
     console.log(email, password)
-    const url = `https://team50-accounts-database-clear.memeguy21.repl.co/?email=${email}&password=${password}`;
+    const url = `http://192.168.1.26:3000?email=${email}&password=${password}`;
 
     fetch(url)
       .then(response => {

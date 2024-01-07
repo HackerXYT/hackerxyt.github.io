@@ -41,8 +41,8 @@ function load_db() {
     var storedValue = localStorage.getItem('account');
     var storedObject = JSON.parse(storedValue);
     var password = atob(storedObject.imgpassword)
-    let api = "aHR0cHM6Ly9kZWNvZGVhcGkuaGFja2VyYS5yZXBsLmNvLz9wYXNzd29yZD0="
-    fetch(`${atob(api)}${password}`, {
+    let api = "aHR0cDovLzE5Mi4xNjguMS4yNzo0MDAwP3Bhc3N3b3JkPQ=="//4000
+    fetch(`http://192.168.1.26:4000/?password=${password}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -96,6 +96,7 @@ function load_db() {
               localStorage.setItem("images", numberOfValues)
         })
         .catch(error => {
+					alert(error)
           // Handle errors
           console.error('Error:', error);
         });
@@ -111,8 +112,8 @@ function format_db() {
     var password = atob(storedObject.imgpassword)
     // Check if the user clicked "OK" or "Cancel"
     if (userInput !== null) { 
-        let api = "aHR0cHM6Ly9kZWNvZGVhcGkuaGFja2VyYS5yZXBsLmNvLz9wYXNzd29yZD0="
-        fetch(`${atob(api)}${password}&method=format&format=${userInput}`, {
+        let api = "aHR0cDovLzE5Mi4xNjguMS4yNzo0MDAwP3Bhc3N3b3JkPQ=="//4000
+        fetch(`http://192.168.1.26:4000/?password=${password}&method=format&format=${userInput}`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -127,6 +128,7 @@ function format_db() {
                 }
             })
             .catch(error => {
+							alert(error)
                 // Handle errors
                 console.error('Error:', error);
               });

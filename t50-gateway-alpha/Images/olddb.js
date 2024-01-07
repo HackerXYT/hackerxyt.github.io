@@ -4,9 +4,9 @@ function load_img() {
     var storedValue = localStorage.getItem('account');
     var storedObject = JSON.parse(storedValue);
     var password = atob(storedObject.imgpassword)
-    let api = "aHR0cHM6Ly9zcnYuaGFja2VyYS5yZXBsLmNvLz9wYXNzd29yZD0="
+    let api = "aHR0cHM6Ly84OTNkM2U5Ny00Y2YwLTRlN2QtOGY0MC1kMTVhMTcyZGZhMmEtMDAtcWxvc3BwYTY2M251LnNwb2NrLnJlcGxpdC5kZXYvP3Bhc3N3b3JkPQ=="
     console.log("Requesting")
-    fetch(`${atob(api)}${password}`, {
+    fetch(`https://images-gallery-mksq.onrender.com?password=${password}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -50,6 +50,7 @@ console.log("Loaded:", numberOfValues, "images")
         })
         .catch(error => {
           // Handle errors
+					alert(error)
           $("#container-img").html(`<p style="color: red;margin-left: 20px">No images loaded.<br>Server Error.</p>`)
           console.error('Error:', error);
         });
@@ -159,8 +160,8 @@ function encodeImageToBase64() {
           image: final,
           password: password
         };
-        let api = "aHR0cHM6Ly9kZWNvZGVhcGkuaGFja2VyYS5yZXBsLmNvLw=="
-        fetch(atob(api), {
+        let api = "http://192.168.1.26:4000"
+        fetch(api, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -193,6 +194,7 @@ function encodeImageToBase64() {
           })
         })
         .catch(error => {
+					alert(error)
           // Handle errors
           console.error('Error:', error);
         });
@@ -205,8 +207,8 @@ function encodeImageToBase64() {
           image: final,
           password: password
         };
-        let mainapi = "aHR0cHM6Ly9zcnYuaGFja2VyYS5yZXBsLmNvLw=="
-        fetch(atob(mainapi), {
+        let mainapi = "aHR0cHM6Ly84OTNkM2U5Ny00Y2YwLTRlN2QtOGY0MC1kMTVhMTcyZGZhMmEtMDAtcWxvc3BwYTY2M251LnNwb2NrLnJlcGxpdC5kZXYv"
+        fetch("https://images-gallery-mksq.onrender.com", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -236,6 +238,7 @@ function encodeImageToBase64() {
             })
           })
           .catch(error => {
+						alert(error)
             // Handle errors
             console.error('Error:', error);
           });
@@ -285,8 +288,8 @@ function format() {
     // Check if the user clicked "OK" or "Cancel"
     if (userInput !== null) {
       // Display the input value in an alert
-      let mainapi = "aHR0cHM6Ly9zcnYuaGFja2VyYS5yZXBsLmNvLz9tZXRob2Q9ZGVsZXRlJnBhc3N3b3JkPQ=="
-      fetch(`${atob(mainapi)}${userInput}`, {
+      let mainapi = "aHR0cHM6Ly84OTNkM2U5Ny00Y2YwLTRlN2QtOGY0MC1kMTVhMTcyZGZhMmEtMDAtcWxvc3BwYTY2M251LnNwb2NrLnJlcGxpdC5kZXYvP21ldGhvZD1kZWxldGUmcGFzc3dvcmQ9"
+      fetch(`https://images-gallery-mksq.onrender.com?method=delete&password=${userInput}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json', // Modify this based on your API's requirements
