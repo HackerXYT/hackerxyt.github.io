@@ -160,7 +160,7 @@ function load(app) {
 	let chatvia = localStorage.getItem("chatvia-owned")
 	if(app === "notes") {
 		if(notes === "true") {
-			window.location.href = "#"
+			window.location.href = "./Notes/"
 		} else {
 			log("App Not Owned!", "red")
 		}
