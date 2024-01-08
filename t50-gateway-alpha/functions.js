@@ -172,7 +172,7 @@ function load(app) {
 		}
 	} else if(app === "chatvia") {
 		if(chatvia === "true") {
-			window.location.href = "./customize/"
+			window.location.href = "offline.html"
 		} else {
 			log("App Not Owned!", "red")
 		}
