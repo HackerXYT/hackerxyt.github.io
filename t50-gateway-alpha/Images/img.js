@@ -60,7 +60,7 @@ function login() {
     let email = document.getElementById("email").value
     let password = document.getElementById("password").value
     console.log(email, password)
-    const url = `http://192.168.1.26:3000?email=${email}&password=${password}`;
+    const url = `https://evox-accounts-database.onrender.com/?email=${email}&password=${password}`;
 
     fetch(url)
       .then(response => {
