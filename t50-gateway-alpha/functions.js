@@ -467,16 +467,10 @@ function logoff() {
 }
 
 function fix() {
-	var userResponse = window.confirm("This function will fix any errors created by beta builds. All local data will be deleted!");
-
-    // Check the user's response
-    if (userResponse) {
-		localStorage.clear()
-		sessionStorage.clear()
-		window.location.reload()
-    } else {
-        alert("Operation Cancelled");
-    }
+	alert("This function will fix any errors created by beta builds. All local data will be deleted! Quit the application now to cancel the operation.")
+	localStorage.clear()
+	sessionStorage.clear()
+	window.location.reload()
 }
 
 function shake_me(what) {
