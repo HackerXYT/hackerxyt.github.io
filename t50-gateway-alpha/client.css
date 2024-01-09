@@ -1,17 +1,19 @@
 @font-face { font-family: "SF"; src: url('SFUIText-Medium.ttf'); } 
 
+
 body {
   font-family: "SF";
   margin: 0;
   padding: 0;
   position: relative;
-  min-height: calc(100vh - var(--safe-area-inset-top) - var(--safe-area-inset-bottom));
+  min-height: 100vh;
   background: #333;
   background: radial-gradient(circle, #400000, #000000);
   touch-action: manipulation;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+  overflow: hidden;
 }
 img {
   user-drag: none; /* Disable dragging */
