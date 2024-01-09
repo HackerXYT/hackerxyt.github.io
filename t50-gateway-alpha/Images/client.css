@@ -47,7 +47,7 @@ img {
     width: 185px;
     height: 185px;
     position: absolute;
-    top: -195px;
+    top: -175px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -80,6 +80,17 @@ img {
     color: #fff;
     font-size: 16px;
     cursor: pointer;
+}
+.second-button {
+  font-family: "SF";
+  width: 210px;
+  height: 40px;
+  border: 2px solid #89a18bbb;
+  border-radius: 32px;
+  background: transparent;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
 }
 
         .bottom-logo {
@@ -259,4 +270,63 @@ a {
   text-align: center;
   font-size: 14px;
   color: white;
+}
+
+.user-info {
+  position: relative;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px;
+  width: 270px;
+  overflow: hidden; /* Ensure the gradient doesn't overflow */
+
+  /* Set the linear gradient as the background */
+  background: linear-gradient(circle, #400000, #000000);
+}
+
+.user-info::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 2px solid #6f2222ac; /* Set the border color */
+  border-radius: inherit;
+  z-index: -1; /* Place the border behind the content */
+}
+
+
+.user-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+.user-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  color: #fff;
+  font-size: 18px;
+  font-weight:normal;
+}
+
+.user-email {
+  font-size: 14px;
+  color: #666;
 }

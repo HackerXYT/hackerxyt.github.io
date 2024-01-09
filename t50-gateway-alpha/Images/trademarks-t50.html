@@ -39,19 +39,9 @@
     <div id="container" class="container" style="display:none">
         <img src="evox-logo.png" alt="Logo" class="logo" id="myLogo">
         <span id="use_switch"><input autocomplete="off" id="email" type="email" class="input-box" placeholder="Email"></span>
-        <div style="display: none" id="rem-user" class="user-info">
-            <div class="user-circle">
-                <img id="usr-img" src="loading.gif" alt="User Image">
-            </div>
-            <div class="user-details">
-                <div id="usr-name" class="user-name">Papostol</div>
-                <div id="usr-email" class="user-email">gregpap03@gmail.com</div>
-            </div>
-        </div>
         <input autocomplete="off" id="password" type="password" class="input-box" placeholder="Password">
         <p id="info_text" style="color: white;display: none"></p>
         <button id="submit" onclick="login()" class="transparent-button">Login</button><br>
-        <button id="change-acc" style="display: none;" onclick="ch_acc()" class="second-button">Change Account</button><br>
         <p style="color: #a7b3bf">T50 Images ownership is confirmed via linked account.</p>
     </div>
     <div style="display: none" id="gallery"><h2 id="header" style="color: white;margin-left: 20px;margin-top: 30px">Welcome Back, <span style="color: #e77979" id="usr">test</span>.</h2><p id="gallery-text" style="color: white;margin-left: 20px">Here is your personal encrypted gallery</p>
@@ -203,22 +193,6 @@
             <i class="loader --5"></i>
         </div>
       </div>
-      <div onclick="goback()" id="back" style="position: fixed;
-    top: 30px;
-    left: 25px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
-        <!-- You can customize the icon or text inside the button -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
-            <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#b2b2b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-    </div>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>

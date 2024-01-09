@@ -39,9 +39,6 @@ function log(text, color) {
 
 function setup() {
 	log("T50 Gateway V:Delta 5", "red")
-	if(localStorage.getItem("t50-username") === "papostol") {
-		$("#map").fadeIn("fast")
-	}
     let lg_status = sessionStorage.getItem("loaded")
     if(lg_status === "true") {
 		let username = localStorage.getItem("t50-username")
@@ -131,9 +128,13 @@ function setup() {
 											document.getElementById("apps").innerHTML = `<a onclick="buy('chatvia')" href="#loadapp-chatvia-disabled"><img src="chatvia-img.png" class="disabledapp"></img></a>`
 										}
 									}
+									if(localStorage.getItem("t50-username") === "papostol") {
+										log("Enabling Transports", "green")
+										document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('transports')" href="#loadapp-transports"><img src="T50Transports.png" class="app"></img></a>`
+									}
 									$("#apps").fadeIn("slow")
 									$("#loading-apps-text").fadeOut("slow", function() {
-										document.getElementById("loading-apps-text").innerHTML = `Here are the available T50 applications`
+										document.getElementById("loading-apps-text").innerHTML = `Here are the available Evox applications`
 										$("#loading-apps-text").fadeIn("slow")
 									})
 									$("#loading").fadeOut("slow")
@@ -172,9 +173,13 @@ function load(app) {
 		}
 	} else if(app === "chatvia") {
 		if(chatvia === "true") {
-			window.location.href = "offline.html"
+			window.location.href = "./customize/"
 		} else {
 			log("App Not Owned!", "red")
+		}
+	} else if(app === "transports") {
+		if(localStorage.getItem("t50-username") === "papostol") {
+			window.location.href = "./gmp/gmaps.html"
 		}
 	}
 }
@@ -212,10 +217,10 @@ function buy_back() {
 function purchase(app) {
 	if(app === "notes") {
 		document.getElementById("purch-app-img").src = "EvoxNotes.png"
-		document.getElementById("purch-app-text").innerHTML = "T50 Notes"
+		document.getElementById("purch-app-text").innerHTML = "Evox Notes"
 	} else if (app === "images") {
 		document.getElementById("purch-app-img").src = "t50-img.png"
-		document.getElementById("purch-app-text").innerHTML = "T50 Images"
+		document.getElementById("purch-app-text").innerHTML = "Evox Images"
 	} else if (app === "chatvia") {
 		document.getElementById("purch-app-img").src = "chatvia-img.png"
 		document.getElementById("purch-app-text").innerHTML = "Chatvia"
@@ -474,11 +479,9 @@ function fix() {
     }
 }
 
-function map_redirect() {
-	if(localStorage.getItem("t50-username") === "papostol") {
-		window.location.href = "https://3dcb9862-7e27-4033-98f8-c0e7d083a51d-00-10oadmzrhdlfs.riker.replit.dev/gmaps.html"
-	} else {
-		log("Error! 401", "red")
-	}
-	
+function shake_me(what) {
+	document.getElementById(`${what}`).classList.add('shake');
+        	setTimeout(function () {
+        	    document.getElementById(`${what}`).classList.remove('shake');
+        	}, 500);
 }

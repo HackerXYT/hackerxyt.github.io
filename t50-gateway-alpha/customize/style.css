@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;700&display=swap');
+
+html, body {
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  background:#eee;
+}
+
+.cards-wrapper {
+  width:100%;
+  height:300px;
+  max-width:1200px;
+  overflow-x:hidden;
+  position:relative;
+}
+
+.cards {
+  position:absolute;
+  top:15px;
+  left:50%;
+  transform:translateX(-110px);
+  display:flex;
+  flex-direction:row;
+  width:1300px;
+  justify-content:space-between;
+}
+
+.card {
+  width:220px;
+  height:260px;
+  border-radius:14px;
+  border:none;
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing:0.5px;
+  display:inline;
+  cursor:pointer;
+  box-sizing:border-box;
+  color:#000;
+}
+
+.card h2 {
+  font-size:2.6em;
+  font-weight:300;
+  margin-top:1.25em;
+}
+
+.card h4 {
+  text-transform:uppercase;
+}
+
+.icon svg {
+  overflow:visible;
+  stroke-width:1.25em;
+  width:3em;
+}
+
+.cards-wrapper::after {
+  content:'';
+  display:block;
+  position:absolute;
+  top:0;
+  width:100%;
+  max-width:1200px;
+  height:100%;
+  background:linear-gradient(90deg, #eee 0%, #ffffff00 30%, #ffffff00 70%, #eee 100%);
+  pointer-events:none;
+}
+
+.arrow-btn {
+  width:40px;
+  height:40px;
+  background:#fff;
+  border-radius:50%;
+  border:none;
+  box-shadow: 0 6px 8px #00000030;
+  position:absolute;
+  top:50%;
+  left:20px;
+  transform:translateY(-50%);
+  z-index:1000;
+  cursor:pointer;
+}
+
+.arrow-btn-next {
+  left:auto;
+  right:20px;
+}
+
+.arrow-btn svg {
+  fill:#333;
+  position:absolute;
+  height:80%;  
+  left:50%;
+  top:50%;
+  transform:translate(-60%,-50%);
+}
+
+.arrow-btn-next svg {
+  transform:translate(-40%,-50%);
+}
+
+.loader {
+	--color: rgb(0, 0, 0);
+	--size-mid: 6vmin;
+	--size-dot: 1.5vmin;
+	--size-bar: 0.4vmin;
+	--size-square: 3vmin;
+
+	width: 100%;
+}
+
+.loader::before,
+.loader::after {
+	content: '';
+	box-sizing: border-box;
+	position: absolute;
+}
+
+/**
+	loader --5
+**/
+.loader.--5::before,
+.loader.--5::after {
+	height: 3vmin;
+	width: var(--size-bar);
+	background-color: var(--color);
+	animation: loader-5 0.6s cubic-bezier(0, 0, 0.03, 0.9) infinite;
+}
+
+.loader.--5::before {
+	left: calc(50% - 1vmin);
+	top: calc(50% - 3vmin);
+}
+
+.loader.--5::after {
+	left: calc(50% + 1vmin);
+	top: calc(50% - 1vmin);
+	animation-delay: 0.2s;
+}
+
+@keyframes loader-5 {
+
+	0%,
+	88%,
+	100% {
+		opacity: 0;
+	}
+
+	0% {
+		transform: translateY(-6vmin);
+	}
+
+	33% {
+		opacity: 1;
+	}
+
+	33%,
+	88% {
+		transform: translateY(3vmin);
+	}
+}
+
+.loading {
+	width: 50px;
+	height: 40px;
+	margin: 40px auto;
+}
+
+
+.animation-ctn{
+  text-align:center;
+  margin-top:5em;
+}
+
+	@-webkit-keyframes checkmark {
+    0% {
+        stroke-dashoffset: 100px
+    }
+
+    100% {
+        stroke-dashoffset: 200px
+    }
+}
+
+@-ms-keyframes checkmark {
+    0% {
+        stroke-dashoffset: 100px
+    }
+
+    100% {
+        stroke-dashoffset: 200px
+    }
+}
+
+@keyframes checkmark {
+    0% {
+        stroke-dashoffset: 100px
+    }
+
+    100% {
+        stroke-dashoffset: 0px
+    }
+}
+
+@-webkit-keyframes checkmark-circle {
+    0% {
+        stroke-dashoffset: 480px
+   
+    }
+
+    100% {
+        stroke-dashoffset: 960px;
+      
+    }
+}
+
+@-ms-keyframes checkmark-circle {
+    0% {
+        stroke-dashoffset: 240px
+    }
+
+    100% {
+        stroke-dashoffset: 480px
+    }
+}
+
+@keyframes checkmark-circle {
+    0% {
+        stroke-dashoffset: 480px 
+    }
+
+    100% {
+        stroke-dashoffset: 960px
+    }
+}
+
+@keyframes colored-circle { 
+    0% {
+        opacity:0
+    }
+
+    100% {
+        opacity:100
+    }
+}
+
+/* other styles */
+/* .svg svg {
+    display: none
+}
+ */
+.inlinesvg .svg svg {
+    display: inline
+}
+
+/* .svg img {
+    display: none
+} */
+
+.icon--order-success svg polyline {
+    -webkit-animation: checkmark 0.25s ease-in-out 0.7s backwards;
+    animation: checkmark 0.25s ease-in-out 0.7s backwards
+}
+
+.icon--order-success svg circle {
+    -webkit-animation: checkmark-circle 0.6s ease-in-out backwards;
+    animation: checkmark-circle 0.6s ease-in-out backwards;
+}
+.icon--order-success svg circle#colored {
+    -webkit-animation: colored-circle 0.6s ease-in-out 0.7s backwards;
+    animation: colored-circle 0.6s ease-in-out 0.7s backwards;
+} 

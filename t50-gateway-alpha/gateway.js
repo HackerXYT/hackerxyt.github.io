@@ -86,28 +86,71 @@ function docready() {
                                               .catch(error => {
                                                 const errorString = error.toString();
                                                 if(errorString.includes("Failed to fetch")) {
-                                                  alert("Servers Are Currently Not Responding, Update Your Application And Wait.")
-                                                  window.location.href = "offline.html"
+                                                  //alert("Servers Are Currently Not Responding, Update Your Application And Wait.")
+                                                  //window.location.href = "offline.html"
                                                 } else if(errorString.includes("Load Failed")) {
-                                                    alert("Servers Are Currently Not Responding. Please Check Back Later.")
-                                                  window.location.href = "offline.html"
+                                                   // alert("Servers Are Currently Not Responding. Please Check Back Later.")
+                                                  //window.location.href = "offline.html"
                                                 }else {
-                                                  alert(error)
-                                                window.location.href = "offline.html"
+                                                  //alert(error)
+                                                //window.location.href = "offline.html"
                                                 }
+                                                $("#loading-div-text").fadeOut("fast")
+                                                $("#loading").fadeIn("fast")
+                                                document.getElementById("gateway").innerHTML = `<div class="centered-text">
+                                                <h2 id="text-me-two" style="margin:0">Welcome, <span id="user-text"></span></h2>
+                                               <p id="loading-apps-text"></p>
+                                                <div style="display: none" id="apps"></div>
+                                            </div>`
+                                            if(!localStorage.getItem("t50-username")) {
+                                              document.getElementById("text-me-two").innerHTML = `We Are Sorry.`
+                                              document.getElementById("loading-apps-text").innerHTML = `You cannot login at the moment.<br>Since you are new to the gateway,<br>you must wait until servers are back online`
+                                            } else {
+                                              document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
+                                              document.getElementById("loading-apps-text").innerHTML = `Servers are currently offline.`
+                                            }
+
+                                            $("#loading").fadeOut("fast")
+                                            let notes = localStorage.getItem("notes-owned")
+                                            let images = localStorage.getItem("images-owned")
+                                            let chatvia = localStorage.getItem("chatvia-owned")
+                                            if(notes === "true") {//OWN NOTES
+                                              document.getElementById("apps").innerHTML = `<a onclick="shake_me('notes-app')" href="#loadapp-notes-disabled"><img id="notes-app" src="EvoxNotes.png" class="disabledapp"></img></a>`
+                                            }
+                                            if(images === "true") {//OWN IMAGES
+                                              if(document.getElementById("apps").innerHTML != "") {
+                                                document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('images-app')" href="#loadapp-images"><img id="images-app" src="t50-img.png" class="disabledapp"></img></a>`
+                                              } else {
+                                                document.getElementById("apps").innerHTML = `<a onclick="shake_me('images-app')" href="#loadapp-images"><img id="images-app" src="t50-img.png" class="disabledapp"></img></a>`
+                                              }
+                                            }
+                                            if(chatvia === "true") { //OWN CHATVIA
+                                              if(document.getElementById("apps").innerHTML != "") {
+                                                document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('chatvia-app')" href="#loadapp-chatvia"><img id="chatvia-app" src="chatvia-img.png" class="disabledapp"></img></a>`
+                                              } else {
+                                                document.getElementById("apps").innerHTML = `<a onclick="shake_me('chatvia-app')" href="#loadapp-chatvia"><img id="chatvia-app" src="chatvia-img.png" class="disabledapp"></img></a>`
+                                              }
+                                            }
+                                            $("#gateway").fadeIn("fast", function() {
+                                              $("#apps").fadeIn("slow")
+                                            })
+                                           
+                                            
+
+
                                                 
                                                 console.error('Fetch error:', error);
                                               });
-                                        }, 900)
+                                        }, 450)
 
-                                    }, 300)
-                                }, 300)
-                            }, 300)
-                        }, 300)
-                    }, 300)
+                                    }, 150)
+                                }, 150)
+                            }, 150)
+                        }, 150)
+                    }, 150)
                 })
             })
-        }, 500)
+        }, 250)
         
     })
 }

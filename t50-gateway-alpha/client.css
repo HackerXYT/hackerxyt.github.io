@@ -2,16 +2,17 @@
 
 
 body {
-    font-family: "SF";
-    margin: 0;
-    padding: 0;
-    position: relative;
-    min-height: 100vh;
-    background-color: #222;
-    touch-action: manipulation;
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
+  font-family: "SF";
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100vh;
+  background: radial-gradient(circle, #400000, #000000);
+  touch-action: manipulation;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+  transition: background-color 1.3s; /* Removed 'border-color' from transition */
 }
 img {
   user-drag: none; /* Disable dragging */
@@ -178,7 +179,8 @@ img {
     transform: translate(-50%, -50%);
     width: 300px;
     padding: 20px;
-    background-color: rgb(252, 252, 252);
+    background: radial-gradient(circle, #000000, #180101);
+    color: white;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
     z-index: 999;

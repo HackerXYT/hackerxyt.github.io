@@ -36,14 +36,54 @@ $(document).ready(function() {
             document.getElementById("loading").innerHTML = `<div class="item">
             <i class="loader --6"></i>
         </div>`
-        document.getElementById("email").value = localStorage.getItem("rem-email")
-        document.getElementById("email").disabled = "true"
-        $("#container").fadeIn("slow");
-        setTimeout(function() {
-            $("#rem-email-lock").fadeIn("slow")
-            $("#loading").fadeOut("slow");
-            
-        }, 950)
+        //document.getElementById("email").value = localStorage.getItem("rem-email")
+       // document.getElementById("email").disabled = "true"
+       document.getElementById("use_switch").style.display = "none"
+       document.getElementById("rem-user").style.display = ""
+       let username = localStorage.getItem("t50-username")
+       var firstLetterUppercase = username.charAt(0).toUpperCase();
+
+        // Get the rest of the word (excluding the first letter)
+        var restOfWord = username.slice(1);
+
+        // Combine the first letter and the rest of the word
+        var result = firstLetterUppercase + restOfWord;
+
+       document.getElementById("usr-name").innerHTML = result
+       document.getElementById("usr-email").innerHTML = localStorage.getItem("t50-email")
+       document.getElementById("email").value = localStorage.getItem("t50-email")
+       let user = localStorage.getItem("t50-username")
+       if(user != null) {
+		    const url = `https://profile-database.onrender.com?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+		    fetch(url)
+		      .then(response => response.text())
+		      .then(data => {
+		    	document.getElementById("usr-img").src = `${data}`
+                $("#container").fadeIn("slow", function() {
+                    $("#change-acc").fadeIn("slow")
+                });
+                setTimeout(function() {
+                    //$("#rem-email-lock").fadeIn("slow")
+                    $("#loading").fadeOut("slow");
+                    
+                }, 950)
+		    })
+		    .catch(error => {
+                console.error('Fetch error:', error);
+                document.getElementById("usr-img").src = `loading.gif`
+                $("#container").fadeIn("slow", function() {
+                    $("#change-acc").fadeIn("slow")
+                });
+                setTimeout(function() {
+                    //$("#rem-email-lock").fadeIn("slow")
+                    $("#loading").fadeOut("slow");
+                    
+                }, 950)
+            });
+	    }
+    
+        
+        
         } else {
             $("#loading").fadeOut("slow");
             $("#container").fadeIn("slow");
@@ -426,4 +466,41 @@ function close_img() {
         document.getElementById("hyper").download = ""
     })
     
+}
+
+function goback() {
+    if(document.getElementById("back").innerHTML.includes("#00b300")) {
+        console.log("FIRE")
+        window.history.back()
+    }
+    document.getElementById("back").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+    <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#00b300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`
+    setTimeout(function() {
+        document.getElementById("back").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+    <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`
+    }, 3500)
+    
+}
+
+function ch_acc() {
+    let inner = document.getElementById("change-acc").innerHTML
+    console.log(document.getElementById("change-acc").innerHTML);
+    if(inner.includes("Login") === true) {
+        $("#use_switch").fadeOut("slow", function() {
+            document.getElementById("email").style.display = "none"
+            document.getElementById("email").value = localStorage.getItem("t50-email")
+                $("#rem-user").fadeIn("slow")
+            document.getElementById("change-acc").innerHTML = `Change Account`
+            return;
+            
+        })
+    }
+    document.getElementById("email").value = ""
+    $("#rem-user").fadeOut("slow", function() {
+        $("#email").fadeIn("slow")
+        $("#use_switch").fadeIn("slow")
+        document.getElementById("change-acc").innerHTML = `Login: ${localStorage.getItem("t50-username")}`
+    })
 }

@@ -1,5 +1,7 @@
 
 function load_img() {
+    document.getElementById("back").style.left = ""
+    document.getElementById("back").style.right = "55px"
     settings_reload()
     var storedValue = localStorage.getItem('account');
     var storedObject = JSON.parse(storedValue);
