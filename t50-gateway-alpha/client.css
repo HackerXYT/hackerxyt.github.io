@@ -8,7 +8,6 @@ body {
   position: relative;
   min-height: 100vh;
   background: #333;
-  background: radial-gradient(circle, #400000, #000000);
   touch-action: manipulation;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
@@ -22,13 +21,13 @@ img {
   
 }
 .background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    filter: blur(10px);
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   z-index: -1;
+   filter: blur(10px);
 }
 .container {
     position: fixed;

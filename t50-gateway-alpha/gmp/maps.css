@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Muli:700");
 
 body,html {
+    overflow: hidden;
     font-family: "Muli", sans-serif;
     color:antiquewhite;
     background-color: #333;
