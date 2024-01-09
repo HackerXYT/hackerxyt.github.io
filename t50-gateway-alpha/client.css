@@ -1,12 +1,16 @@
 @font-face { font-family: "SF"; src: url('SFUIText-Medium.ttf'); } 
 
+:root {
+  --safe-area-inset-top: env(safe-area-inset-top);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom);
+}
 
 body {
   font-family: "SF";
   margin: 0;
   padding: 0;
   position: relative;
-  min-height: 100vh;
+  min-height: calc(100vh - var(--safe-area-inset-top) - var(--safe-area-inset-bottom));
   background: #333;
   background: radial-gradient(circle, #400000, #000000);
   touch-action: manipulation;
@@ -14,6 +18,8 @@ body {
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
   overflow: hidden;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 img {
   user-drag: none; /* Disable dragging */
