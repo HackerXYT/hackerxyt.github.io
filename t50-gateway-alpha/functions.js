@@ -467,7 +467,7 @@ function logoff() {
 }
 
 function fix() {
-	alert("This function will fix any errors created by beta builds. All local data will be deleted! Quit the application now to cancel the operation.")
+	alert("This function will fix any local errors created by beta builds. All local data will be deleted! Quit the application now to cancel the operation.")
 	localStorage.clear()
 	sessionStorage.clear()
 	window.location.reload()
