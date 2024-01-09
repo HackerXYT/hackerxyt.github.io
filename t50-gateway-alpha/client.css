@@ -7,6 +7,7 @@ body {
   padding: 0;
   position: relative;
   min-height: 100vh;
+  background: #333;
   background: radial-gradient(circle, #400000, #000000);
   touch-action: manipulation;
   -webkit-user-select: none; /* Safari */
