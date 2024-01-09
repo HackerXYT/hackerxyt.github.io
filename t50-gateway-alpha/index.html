@@ -223,6 +223,17 @@
 </body>
 
 
+<script>
+    function setBodyHeight() {
+    document.body.style.height = window.innerHeight + 'px';
+}
+
+window.addEventListener('resize', setBodyHeight);
+window.addEventListener('orientationchange', setBodyHeight);
+
+// Initial call to set body height
+setBodyHeight();
+</script>
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script src="functions.js"></script>
 <script src="gateway.js"></script>
