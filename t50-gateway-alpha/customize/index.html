@@ -2,8 +2,9 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>5-card carousel</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="./style.css">
+  <title>Evox Customize</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="./style.css">
 
 </head>
 <body>
@@ -113,18 +114,8 @@
   <script src="evox.js"></script>
   <script>
     function goback() {
-    if(document.getElementById("back").innerHTML.includes("#00b300")) {
-        console.log("FIRE")
+      console.log("FIRE")
         window.history.back()
-    }
-    document.getElementById("back").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
-    <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#00b300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`
-    setTimeout(function() {
-        document.getElementById("back").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
-    <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`
-    }, 3500)
     
 }
   </script>

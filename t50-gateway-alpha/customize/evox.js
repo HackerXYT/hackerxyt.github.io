@@ -73,13 +73,14 @@ function setpfp() {
               } else if(localStorage.getItem("t50-username") === null) {
                 sessionStorage.setItem("user-username", localStorage.getItem("user"))
               }
-              fetch('http://192.168.1.26:5000', {
+              fetch('https://evox-accounts-database.onrender.com', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
                   },
                   body: JSON.stringify({
                     name: sessionStorage.getItem("user-username"),
+                    email: localStorage.getItem("t50-email"),
                     pfp: base64Data
                   })
                 })
