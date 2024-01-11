@@ -103,7 +103,7 @@
       return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
     }
 
-    function send() {
+    window.send = function send() {
         fetch('https://evox-notifications.onrender.com/notify?content='+document.getElementById("value").value, {
             method: 'POST',
             headers: new Headers({'Content-Type': 'application/json'}),
