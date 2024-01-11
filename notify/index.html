@@ -105,9 +105,8 @@
 
     window.send = function send() {
         fetch('https://evox-notifications.onrender.com/notify?content='+document.getElementById("value").value, {
-            method: 'POST',
+            method: 'GET',
             headers: new Headers({'Content-Type': 'application/json'}),
-            body: JSON.stringify(payload)
         })
         .then(res=> res.json())
         .then(function(data) {
