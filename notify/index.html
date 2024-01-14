@@ -78,7 +78,7 @@
         // we could also send to the server in the payload other things like the user's id. or something special for it to use later. We don't in this example.
         
         // Let's send this to the backend that will have everything it needs when it needs to notify us.
-        fetch('https://evox-notifications.onrender.com/newbrowser', {
+        fetch('http://192.168.1.21:5004/newbrowser', {
             method: 'POST',
             headers: new Headers({'Content-Type': 'application/json'}),
             body: JSON.stringify(payload)
@@ -104,7 +104,7 @@
     }
 
     window.send = function send() {
-        fetch('https://evox-notifications.onrender.com/notify?content='+document.getElementById("value").value, {
+        fetch('http://192.168.1.21:5004/notify?content='+document.getElementById("value").value, {
             method: 'GET',
             headers: new Headers({'Content-Type': 'application/json'}),
         })

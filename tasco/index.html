@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Tasco dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<!-- Include flatpickr JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="app">
+	<header class="app-header">
+		<div class="app-header-logo">
+			<div class="logo">
+				<span class="logo-icon">
+					<img src="https://assets.codepen.io/285131/almeria-logo.svg" />
+				</span>
+				<h1 class="logo-title">
+					<span>Evox Tasco</span>
+					<span>papostol</span>
+				</h1>
+			</div>
+		</div>
+		<div class="app-header-navigation">
+			<div class="tabs">
+				<a href="#">
+					Overview
+				</a>
+				<a href="#" class="active">
+					Payments
+				</a>
+				<a href="#">
+					Cards
+				</a>
+				<a href="#">
+					Account
+				</a>
+				<a href="#">
+					System
+				</a>
+				<a href="#">
+					Business
+				</a>
+			</div>
+		</div>
+		<div class="app-header-actions">
+			<button class="user-profile">
+				<span>Matheo Peterson</span>
+				<span>
+					<img src="https://assets.codepen.io/285131/almeria-avatar.jpeg" />
+				</span>
+			</button>
+			<div class="app-header-actions-buttons">
+				<button class="icon-button large">
+					<i class="ph-magnifying-glass"></i>
+				</button>
+				<button class="icon-button large">
+					<i class="ph-bell"></i>
+				</button>
+			</div>
+		</div>
+		<!--<div class="app-header-mobile">
+			<button class="icon-button large">
+				<i class="ph-list"></i>
+			</button>
+		</div>-->
+
+	</header>
+	<div class="app-body">
+		<div class="app-body-navigation">
+			<nav class="navigation">
+				<a href="#">
+					<i class="ph-browsers"></i>
+					<span>Dashboard</span>
+				</a>
+				<a href="#">
+					<i class="ph-check-square"></i>
+					<span>Scheduled</span>
+				</a>
+				<a href="#">
+					<i class="ph-swap"></i>
+					<span>Transfers</span>
+				</a>
+				<a href="#">
+					<i class="ph-file-text"></i>
+					<span>Templates</span>
+				</a>
+				<a href="#">
+					<i class="ph-globe"></i>
+					<span>SWIFT</span>
+				</a>
+				<a href="#">
+					<i class="ph-clipboard-text"></i>
+					<span>Exchange</span>
+				</a>
+			</nav>
+			<footer class="footer">
+				<h1>Almeria<small>©</small></h1>
+				<div>
+					Almeria ©<br />
+					All Rights Reserved 2021
+				</div>
+			</footer>
+		</div>
+		<div id="main-content" class="app-body-main-content">
+			<section class="service-section">
+				<h2>Services</h2>
+				<div class="service-section-header">
+					<div class="search-field">
+						<i class="ph-magnifying-glass"></i>
+						<input type="text" placeholder="Account number">
+					</div>
+					<div class="dropdown-field">
+						<select>
+							<option>Home</option>
+							<option>Work</option>
+						</select>
+						<i class="ph-caret-down"></i>
+					</div>
+					<button class="flat-button">
+						Search
+					</button>
+				</div>
+				<div class="tiles">
+					<article class="tile">
+						<div class="tile-header">
+							<i><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px" height="30px" viewBox="0 0 24 24" version="1.1" xml:space="preserve">
+
+								<style type="text/css">
+									.st0{display:none;}
+									.st1{display:inline;}
+									.st2{opacity:0.2;fill:none;stroke:#000000;stroke-width:3.000000e-02;stroke-miterlimit:10;}
+								</style>
+								
+								<g class="st0" id="grid_system"/>
+								
+								<g id="_icons">
+								
+								<g>
+								
+								<path d="M7,2H5C3.9,2,3,2.9,3,4v2c0,1.1,0.9,2,2,2h2c1.1,0,2-0.9,2-2V4C9,2.9,8.1,2,7,2z M5,6V4h2l0,2H5z"/>
+								
+								<path d="M7,9H5c-1.1,0-2,0.9-2,2v2c0,1.1,0.9,2,2,2h2c1.1,0,2-0.9,2-2v-2C9,9.9,8.1,9,7,9z M5,13v-2h2l0,2H5z"/>
+								
+								<path d="M7,16H5c-1.1,0-2,0.9-2,2v2c0,1.1,0.9,2,2,2h2c1.1,0,2-0.9,2-2v-2C9,16.9,8.1,16,7,16z M5,20v-2h2l0,2H5z"/>
+								
+								<path d="M12,6h9c0.6,0,1-0.4,1-1s-0.4-1-1-1h-9c-0.6,0-1,0.4-1,1S11.4,6,12,6z"/>
+								
+								<path d="M21,11h-9c-0.6,0-1,0.4-1,1s0.4,1,1,1h9c0.6,0,1-0.4,1-1S21.6,11,21,11z"/>
+								
+								<path d="M21,18h-9c-0.6,0-1,0.4-1,1s0.4,1,1,1h9c0.6,0,1-0.4,1-1S21.6,18,21,18z"/>
+								
+								</g>
+								
+								</g>
+								
+								</svg></i>
+							<h3>
+								<span>Schedule</span>
+								<span id="button1-date">date</span>
+							</h3>
+						</div>
+						<a onclick="schedule()" href="#">
+							<span>Go to service</span>
+							<span class="icon-button">
+								<i class="ph-caret-right-bold"></i>
+							</span>
+						</a>
+					</article>
+					<article class="tile">
+						<div class="tile-header">
+							<i><svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="32px" height="32px" viewBox="-2 -2 24 24" preserveAspectRatio="xMinYMin" class="jam jam-task-list"><path d="M6 0h8a6 6 0 0 1 6 6v8a6 6 0 0 1-6 6H6a6 6 0 0 1-6-6V6a6 6 0 0 1 6-6zm0 2a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V6a4 4 0 0 0-4-4H6zm6 7h3a1 1 0 0 1 0 2h-3a1 1 0 0 1 0-2zm-2 4h5a1 1 0 0 1 0 2h-5a1 1 0 0 1 0-2zm0-8h5a1 1 0 0 1 0 2h-5a1 1 0 1 1 0-2zm-4.172 5.243L7.95 8.12a1 1 0 1 1 1.414 1.415l-2.828 2.828a1 1 0 0 1-1.415 0L3.707 10.95a1 1 0 0 1 1.414-1.414l.707.707z"/></svg></i>
+							<h3>
+								<span>To-do</span>
+								<span id="button2-remain">${number} tasks remain</span>
+							</h3>
+						</div>
+						<a href="#">
+							<span>Go to service</span>
+							<span class="icon-button">
+								<i class="ph-caret-right-bold"></i>
+							</span>
+						</a>
+					</article>
+					<article class="tile">
+						<div class="tile-header">
+							<i><svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24" fill="none">
+								<path d="M20.3116 12.6473L20.8293 10.7154C21.4335 8.46034 21.7356 7.3328 21.5081 6.35703C21.3285 5.58657 20.9244 4.88668 20.347 4.34587C19.6157 3.66095 18.4881 3.35883 16.2331 2.75458C13.978 2.15033 12.8504 1.84821 11.8747 2.07573C11.1042 2.25537 10.4043 2.65945 9.86351 3.23687C9.27709 3.86298 8.97128 4.77957 8.51621 6.44561C8.43979 6.7254 8.35915 7.02633 8.27227 7.35057L8.27222 7.35077L7.75458 9.28263C7.15033 11.5377 6.84821 12.6652 7.07573 13.641C7.25537 14.4115 7.65945 15.1114 8.23687 15.6522C8.96815 16.3371 10.0957 16.6392 12.3508 17.2435L12.3508 17.2435C14.3834 17.7881 15.4999 18.0873 16.415 17.9744C16.5152 17.9621 16.6129 17.9448 16.7092 17.9223C17.4796 17.7427 18.1795 17.3386 18.7203 16.7612C19.4052 16.0299 19.7074 14.9024 20.3116 12.6473Z" stroke="#1C274C" stroke-width="1.5"/>
+								<path d="M16.415 17.9741C16.2065 18.6126 15.8399 19.1902 15.347 19.6519C14.6157 20.3368 13.4881 20.6389 11.2331 21.2432C8.97798 21.8474 7.85044 22.1495 6.87466 21.922C6.10421 21.7424 5.40432 21.3383 4.86351 20.7609C4.17859 20.0296 3.87647 18.9021 3.27222 16.647L2.75458 14.7151C2.15033 12.46 1.84821 11.3325 2.07573 10.3567C2.25537 9.58627 2.65945 8.88638 3.23687 8.34557C3.96815 7.66065 5.09569 7.35853 7.35077 6.75428C7.77741 6.63996 8.16368 6.53646 8.51621 6.44531" stroke="#1C274C" stroke-width="1.5"/>
+								<path d="M11.7769 10L16.6065 11.2941" stroke="#000" stroke-width="1.5" stroke-linecap="round"/>
+								<path d="M11 12.8975L13.8978 13.6739" stroke="#000" stroke-width="1.5" stroke-linecap="round"/>
+								</svg></i>
+							<h3>
+								<span>Quick Notes</span>
+								<span id="button3-notes">0 saved</span>
+							</h3>
+						</div>
+						<a href="#">
+							<span>Go to service</span>
+							<span class="icon-button">
+								<i class="ph-caret-right-bold"></i>
+							</span>
+						</a>
+					</article>
+				</div>
+				<div class="service-section-footer">
+					<p>Services are sorted by most used.</p>
+				</div>
+			</section>
+			<section id="transfers" class="transfer-section">
+				<div class="transfer-section-header">
+					<h2>Latest transfers</h2>
+					<div class="filter-options">
+						<p>Filter selected: more than 100 $</p>
+						<button class="icon-button">
+							<i class="ph-funnel"></i>
+						</button>
+						<button class="icon-button">
+							<i class="ph-plus"></i>
+						</button>
+					</div>
+				</div>
+				<div class="transfers">
+					<div class="transfer">
+						<div class="transfer-logo">
+							<img src="https://assets.codepen.io/285131/apple.svg" />
+						</div>
+						<dl class="transfer-details">
+							<div>
+								<dt>Apple Inc.</dt>
+								<dd>Apple ID Payment</dd>
+							</div>
+							<div>
+								<dt>4012</dt>
+								<dd>Last four digits</dd>
+							</div>
+							<div>
+								<dt>28 Oct. 21</dt>
+								<dd>Date payment</dd>
+							</div>
+						</dl>
+						<div class="transfer-number">
+							- $ 550
+						</div>
+					</div>
+					<div class="transfer">
+						<div class="transfer-logo">
+							<img src="https://assets.codepen.io/285131/pinterest.svg" />
+						</div>
+						<dl class="transfer-details">
+							<div>
+								<dt>Pinterest</dt>
+								<dd>2 year subscription</dd>
+							</div>
+							<div>
+								<dt>5214</dt>
+								<dd>Last four digits</dd>
+							</div>
+							<div>
+								<dt>26 Oct. 21</dt>
+								<dd>Date payment</dd>
+							</div>
+						</dl>
+						<div class="transfer-number">
+							- $ 120
+						</div>
+					</div>
+					<div class="transfer">
+						<div class="transfer-logo">
+							<img src="https://assets.codepen.io/285131/warner-bros.svg" />
+						</div>
+						<dl class="transfer-details">
+							<div>
+								<dt>Warner Bros.</dt>
+								<dd>Cinema</dd>
+							</div>
+							<div>
+								<dt>2228</dt>
+								<dd>Last four digits</dd>
+							</div>
+							<div>
+								<dt>22 Oct. 21</dt>
+								<dd>Date payment</dd>
+							</div>
+						</dl>
+						<div class="transfer-number">
+							- $ 70
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+		<div id="schedule-content" style="display: none" class="app-body-main-content">
+			<section class="service-section">
+				<h2>Schedule</h2>
+				<div class="service-section-header">
+					<div class="search-field">
+						<i class="ph-magnifying-glass"></i>
+						<input type="text" placeholder="Account number">
+					</div>
+					<div class="dropdown-field">
+						<select>
+							<option>Home</option>
+							<option>Work</option>
+						</select>
+						<i class="ph-caret-down"></i>
+					</div>
+					<button class="flat-button">
+						Search
+					</button>
+				</div>
+			</section>
+			<section class="section" id="today">
+				<div class="section-title">
+					<h3 id="todays-date-schedule">Today</h3>
+					<div class="more">
+						<svg t="1585986433287" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+							p-id="3285" width="16" height="16">
+							<!-- Your SVG paths here -->
+						</svg>
+					</div>
+				</div>
+				<ul id="todays-schedule" class="task-list">
+					<div style="display:none" id="list"></div>
+					<div id="loader-schedule" class="loader loader--style2" title="1">
+						<svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						   width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+						<path fill="#fff" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+						  <animateTransform attributeType="xml"
+							attributeName="transform"
+							type="rotate"
+							from="0 25 25"
+							to="360 25 25"
+							dur="0.6s"
+							repeatCount="indefinite"/>
+						  </path>
+						</svg>
+					  </div>
+				</ul>
+			</section>
+			
+			<section id="transfers" class="transfer-section">
+				
+				<div class="section-title">
+					<p class="time">Add Task</p>
+					<div class="more">
+						<svg t="1585986433287" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+							p-id="3285" width="16" height="16">
+							<!-- Your SVG paths here -->
+						</svg>
+					</div>
+				</div>
+				<ul id="todays-schedule" class="task-list">
+				<li class="task-list__item">
+					<div class="form-check">
+						<h2 style="margin-right: 10px">Choose Time:</h2>
+						<div class="modern-dark-box">
+							<p class="time"><input id="time_set" type="text" class="tasco-input flatpickr flatpickr-input clock">
+								<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script></p>
+						</div>
+					</div>
+				</li>
+				<h2 style="margin-bottom: 10px">Enter Task:</h2><input style="margin-bottom: 10px;width:260px;" id="task_label" class="tasco-input" placeholder="What would you like to do?">
+				<br>
+					<button onclick="task_add()" style="margin-bottom: 30px" class="tasco-button">Submit</button>
+					
+				</ul>
+			</section>
+		</div>
+		<div id="sidebar"class="app-body-sidebar">
+			<section class="payment-section">
+				<h2>New Payment</h2>
+				<div class="payment-section-header">
+					<p>Choose a card to transfer money</p>
+					<div>
+						<button class="card-button mastercard">
+							<svg width="2001" height="1237" viewBox="0 0 2001 1237" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<g id="a624784f2834e21c94a1c0c9a58bbbaa">
+									<path id="7869b07bea546aa59a5ee138adbcfd5a" d="M1270.57 1104.15H729.71V132.15H1270.58L1270.57 1104.15Z" fill="currentColor"></path>
+									<path id="b54e3ab4d7044a9f288082bc6b864ae6" d="M764 618.17C764 421 856.32 245.36 1000.08 132.17C891.261 46.3647 756.669 -0.204758 618.09 9.6031e-07C276.72 9.6031e-07 0 276.76 0 618.17C0 959.58 276.72 1236.34 618.09 1236.34C756.672 1236.55 891.268 1189.98 1000.09 1104.17C856.34 991 764 815.35 764 618.17Z" fill="currentColor"></path>
+									<path id="67f94b4d1b83252a6619ed6e0cc0a3a1" d="M2000.25 618.17C2000.25 959.58 1723.53 1236.34 1382.16 1236.34C1243.56 1236.54 1108.95 1189.97 1000.11 1104.17C1143.91 990.98 1236.23 815.35 1236.23 618.17C1236.23 420.99 1143.91 245.36 1000.11 132.17C1108.95 46.3673 1243.56 -0.201169 1382.15 -2.24915e-05C1723.52 -2.24915e-05 2000.24 276.76 2000.24 618.17" fill="currentColor"></path>
+								</g>
+							</svg>
+						</button>
+						<button class="card-button visa active">
+							<svg xmlns="http://www.w3.org/2000/svg" width="2500" height="2500" viewBox="0 0 141.732 141.732">
+								<g fill="currentColor">
+									<path d="M62.935 89.571h-9.733l6.083-37.384h9.734zM45.014 52.187L35.735 77.9l-1.098-5.537.001.002-3.275-16.812s-.396-3.366-4.617-3.366h-15.34l-.18.633s4.691.976 10.181 4.273l8.456 32.479h10.141l15.485-37.385H45.014zM121.569 89.571h8.937l-7.792-37.385h-7.824c-3.613 0-4.493 2.786-4.493 2.786L95.881 89.571h10.146l2.029-5.553h12.373l1.14 5.553zm-10.71-13.224l5.114-13.99 2.877 13.99h-7.991zM96.642 61.177l1.389-8.028s-4.286-1.63-8.754-1.63c-4.83 0-16.3 2.111-16.3 12.376 0 9.658 13.462 9.778 13.462 14.851s-12.075 4.164-16.06.965l-1.447 8.394s4.346 2.111 10.986 2.111c6.642 0 16.662-3.439 16.662-12.799 0-9.72-13.583-10.625-13.583-14.851.001-4.227 9.48-3.684 13.645-1.389z" />
+								</g>
+								<path d="M34.638 72.364l-3.275-16.812s-.396-3.366-4.617-3.366h-15.34l-.18.633s7.373 1.528 14.445 7.253c6.762 5.472 8.967 12.292 8.967 12.292z" fill="currentColor" />
+								<path fill="none" d="M0 0h141.732v141.732H0z" />
+							</svg>
+						</button>
+					</div>
+				</div>
+				<div class="payments">
+					<div class="payment">
+						<div class="card green">
+							<span>01/22</span>
+							<span>
+								•••• 4012
+							</span>
+						</div>
+						<div class="payment-details">
+							<h3>Internet</h3>
+							<div>
+								<span>$ 2,110</span>
+								<button class="icon-button">
+									<i class="ph-caret-right-bold"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="payment">
+						<div class="card olive">
+							<span>12/23</span>
+							<span>
+								•••• 2228
+							</span>
+						</div>
+						<div class="payment-details">
+							<h3>Universal</h3>
+							<div>
+								<span>$ 5,621</span>
+								<button class="icon-button">
+									<i class="ph-caret-right-bold"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="payment">
+						<div class="card gray">
+							<span>03/22</span>
+							<span>
+								•••• 5214
+							</span>
+						</div>
+						<div class="payment-details">
+							<h3>Gold</h3>
+							<div>
+								<span>$ 3,473</span>
+								<button class="icon-button">
+									<i class="ph-caret-right-bold"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="faq">
+					<p>Most frequently asked questions</p>
+					<div>
+						<label>Question</label>
+						<input type="text" placeholder="Type here">
+					</div>
+				</div>
+				<div class="payment-section-footer">
+					<button class="save-button">
+						Save
+					</button>
+					<button class="settings-button">
+						<i class="ph-gear"></i>
+						<span>More settings</span>
+					</button>
+				</div>
+			</section>
+		</div>
+	</div>
+</div>
+<!-- partial -->
+  <script src='https://unpkg.com/phosphor-icons'></script><script  src="./script.js"></script>
+
+</body>
+</html>
