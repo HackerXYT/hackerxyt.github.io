@@ -130,7 +130,9 @@ function setup() {
 									}
 									if(localStorage.getItem("t50-username") === "papostol") {
 										log("Enabling Transports", "green")
+										log("Enabling Tasco", "green")
 										document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('transports')" href="#loadapp-transports"><img src="T50Transports.png" class="app"></img></a>`
+										document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="tasco.png" class="app"></img></a>`
 									}
 									$("#apps").fadeIn("slow")
 									$("#loading-apps-text").fadeOut("slow", function() {
@@ -180,6 +182,10 @@ function load(app) {
 	} else if(app === "transports") {
 		if(localStorage.getItem("t50-username") === "papostol") {
 			window.location.href = "./gmp/gmaps.html"
+		}
+	} else if(app === "tasco") {
+		if(localStorage.getItem("t50-username") === "papostol") {
+			window.location.href = "../tasco/"
 		}
 	}
 }
