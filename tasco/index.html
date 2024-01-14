@@ -39,7 +39,7 @@
 				</span>
 				<h1 class="logo-title">
 					<span>Evox Tasco</span>
-					<span>papostol</span>
+					<span id="username-header">???</span>
 				</h1>
 			</div>
 		</div>
@@ -67,7 +67,7 @@
 		</div>
 		<div class="app-header-actions">
 			<button class="user-profile">
-				<span>Matheo Peterson</span>
+				<span>21</span>
 				<span>
 					<img src="https://assets.codepen.io/285131/almeria-avatar.jpeg" />
 				</span>
@@ -217,7 +217,7 @@
 								<span id="button3-notes">0 saved</span>
 							</h3>
 						</div>
-						<a href="#">
+						<a onclick="quicknotes()" href="#">
 							<span>Go to service</span>
 							<span class="icon-button">
 								<i class="ph-caret-right-bold"></i>
@@ -389,6 +389,57 @@
 				</ul>
 			</section>
 		</div>
+
+
+		<div id="notes-content" style="display: none" class="app-body-main-content">
+			<div onclick="newnote()" id="newnote" style="position: fixed;
+	top: 150px;
+	right: 30px;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+			<svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+				<g id="File / Note_Edit">
+				<path id="Vector" d="M10.0002 4H7.2002C6.08009 4 5.51962 4 5.0918 4.21799C4.71547 4.40973 4.40973 4.71547 4.21799 5.0918C4 5.51962 4 6.08009 4 7.2002V16.8002C4 17.9203 4 18.4801 4.21799 18.9079C4.40973 19.2842 4.71547 19.5905 5.0918 19.7822C5.5192 20 6.07899 20 7.19691 20H16.8031C17.921 20 18.48 20 18.9074 19.7822C19.2837 19.5905 19.5905 19.2839 19.7822 18.9076C20 18.4802 20 17.921 20 16.8031V14M16 5L10 11V14H13L19 8M16 5L19 2L22 5L19 8M16 5L19 8" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				</g>
+				</svg>
+	</div>
+			<section class="service-section">
+				<h2>Quick Notes <i><svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24" fill="none">
+					<path d="M20.3116 12.6473L20.8293 10.7154C21.4335 8.46034 21.7356 7.3328 21.5081 6.35703C21.3285 5.58657 20.9244 4.88668 20.347 4.34587C19.6157 3.66095 18.4881 3.35883 16.2331 2.75458C13.978 2.15033 12.8504 1.84821 11.8747 2.07573C11.1042 2.25537 10.4043 2.65945 9.86351 3.23687C9.27709 3.86298 8.97128 4.77957 8.51621 6.44561C8.43979 6.7254 8.35915 7.02633 8.27227 7.35057L8.27222 7.35077L7.75458 9.28263C7.15033 11.5377 6.84821 12.6652 7.07573 13.641C7.25537 14.4115 7.65945 15.1114 8.23687 15.6522C8.96815 16.3371 10.0957 16.6392 12.3508 17.2435L12.3508 17.2435C14.3834 17.7881 15.4999 18.0873 16.415 17.9744C16.5152 17.9621 16.6129 17.9448 16.7092 17.9223C17.4796 17.7427 18.1795 17.3386 18.7203 16.7612C19.4052 16.0299 19.7074 14.9024 20.3116 12.6473Z" stroke="#fff" stroke-width="1.5"/>
+					<path d="M16.415 17.9741C16.2065 18.6126 15.8399 19.1902 15.347 19.6519C14.6157 20.3368 13.4881 20.6389 11.2331 21.2432C8.97798 21.8474 7.85044 22.1495 6.87466 21.922C6.10421 21.7424 5.40432 21.3383 4.86351 20.7609C4.17859 20.0296 3.87647 18.9021 3.27222 16.647L2.75458 14.7151C2.15033 12.46 1.84821 11.3325 2.07573 10.3567C2.25537 9.58627 2.65945 8.88638 3.23687 8.34557C3.96815 7.66065 5.09569 7.35853 7.35077 6.75428C7.77741 6.63996 8.16368 6.53646 8.51621 6.44531" stroke="#fff" stroke-width="1.5"/>
+					<path d="M11.7769 10L16.6065 11.2941" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+					<path d="M11 12.8975L13.8978 13.6739" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+					</svg></i></h2>
+				<!--<div class="service-section-header">
+					<div class="search-field">
+						<i class="ph-magnifying-glass"></i>
+						<input type="text" placeholder="Account number">
+					</div>
+					<div class="dropdown-field">
+						<select>
+							<option>Home</option>
+							<option>Work</option>
+						</select>
+						<i class="ph-caret-down"></i>
+					</div>
+					<button class="flat-button">
+						Search
+					</button>
+				</div>-->
+			</section>
+			<div id="notes_section">
+				<p>Loading</p>
+				
+		</div>
+		</div>
+
+
 		<div id="sidebar"class="app-body-sidebar">
 			<section class="payment-section">
 				<h2>New Payment</h2>
@@ -488,8 +539,14 @@
 		</div>
 	</div>
 </div>
+<div id="popup" class="popup">
+	hello
+</div>
 <!-- partial -->
-  <script src='https://unpkg.com/phosphor-icons'></script><script  src="./script.js"></script>
+  <script src='https://unpkg.com/phosphor-icons'></script>
+  
+  <script src="./script.js"></script>
+  <script src="./quicknotes.js"></script>
 <script>
 	function goback() {
     if(document.getElementById("back").innerHTML.includes("#00b300")) {

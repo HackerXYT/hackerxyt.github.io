@@ -1,4 +1,5 @@
 const global_username = localStorage.getItem("t50-username")
+document.getElementById("username-header").innerHTML = global_username
 const currentDate = new Date();
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -25,13 +26,13 @@ function schedule() {
         set()
     }, 350)
 }
-
-        function set(day) {
+  function set(day) {
             if(day) {
                 dayOfWeek = day.toUpperCase();
             }
             const username = global_username
-            fetch(`https://tasco-db.onrender.com?method=get&username=${username}&day=${dayOfWeek}`)
+            //https://tasco-db.onrender.com
+            fetch(`http://192.168.1.21:4000?method=get&username=${username}&day=${dayOfWeek}`)
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -125,98 +126,98 @@ function convertTimeToMinutes(time) {
     console.error('Fetch error:', error);
   });
             
-        }
+}
 
-        flatpickr("#time_set", {
-          enableTime: true,
-          noCalendar: true,
-          dateFormat: "H:i",
-          time_24hr: true
-      });
+flatpickr("#time_set", {
+    enableTime: true,
+    noCalendar: true,
+    dateFormat: "H:i",
+    time_24hr: true
+});
         
 
-        function convertTimeToMinutes(timeString) {
-          const [hours, minutes] = timeString.split(':').map(Number);
-          return hours * 60 + minutes;
-        }
+function convertTimeToMinutes(timeString) {
+  const [hours, minutes] = timeString.split(':').map(Number);
+  return hours * 60 + minutes;
+}
 
-        var inputElement = document.getElementById("task_label");
+var inputElement = document.getElementById("task_label");
 
-    // Add an event listener for the keydown event
-    inputElement.addEventListener("keydown", function(event) {
-        // Check if the pressed key is Enter (key code 13)
-        if (event.keyCode === 13) {
-            // Call the function or perform the desired action
-            task_add();
-        }
+// Add an event listener for the keydown event
+inputElement.addEventListener("keydown", function(event) {
+    // Check if the pressed key is Enter (key code 13)
+    if (event.keyCode === 13) {
+        // Call the function or perform the desired action
+        task_add();
+    }
+});
+function task_add() {
+  const day_v = dayOfWeek
+  const time_v = document.getElementById("time_set").value
+  const label_v = document.getElementById("task_label").value
+  if(time_v!= "" && label_v != "") {
+    console.log(`Will now add:\n${time_v}--->${label_v} for day ${day_v}`)
+    addtask(day_v, time_v, label_v)
+  } else {
+    console.log(time_v, "time")
+    console.log(label_v, "label")
+    console.log("Error, fix inputs")
+  }
+  
+}
+function addtask(day_val, time_val, label_val) {
+  const url = 'http://192.168.1.21:4000/';
+
+  // Data to be sent in the request body (assuming it's JSON)
+  const data = {
+    method: 'set',
+    username: global_username,
+    day: day_val,
+    time: time_val,
+    label: label_val
+  };
+
+  // Fetch options for the POST request
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json', // Specify the content type as JSON
+      // Add any other headers if needed
+    },
+    body: JSON.stringify(data) // Convert the data to a JSON string
+  };
+
+  // Make the POST request using fetch
+  fetch(url, options)
+    .then(response => {
+      // Check if the request was successful (status code 2xx)
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      // Parse the JSON response
+      return response.text();
+    })
+    .then(data => {
+      // Handle the response data
+      console.log('Response data:', data);
+      if(data === "Ok") {
+        console.log("Done!")
+        reload()
+
+      }
+    })
+    .catch(error => {
+      // Handle any errors that occurred during the fetch
+      console.error('Fetch error:', error);
     });
-        function task_add() {
-          const day_v = dayOfWeek
-          const time_v = document.getElementById("time_set").value
-          const label_v = document.getElementById("task_label").value
-          if(time_v!= "" && label_v != "") {
-            console.log(`Will now add:\n${time_v}--->${label_v} for day ${day_v}`)
-            addtask(day_v, time_v, label_v)
-          } else {
-            console.log(time_v, "time")
-            console.log(label_v, "label")
-            console.log("Error, fix inputs")
-          }
-          
-        }
-    function addtask(day_val, time_val, label_val) {
-      const url = 'https://tasco-db.onrender.com/';
-
-// Data to be sent in the request body (assuming it's JSON)
-const data = {
-  method: 'set',
-  username: global_username,
-  day: day_val,
-  time: time_val,
-  label: label_val
-};
-
-// Fetch options for the POST request
-const options = {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json', // Specify the content type as JSON
-    // Add any other headers if needed
-  },
-  body: JSON.stringify(data) // Convert the data to a JSON string
-};
-
-// Make the POST request using fetch
-fetch(url, options)
-  .then(response => {
-    // Check if the request was successful (status code 2xx)
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    // Parse the JSON response
-    return response.text();
-  })
-  .then(data => {
-    // Handle the response data
-    console.log('Response data:', data);
-    if(data === "Ok") {
-      console.log("Done!")
-      reload()
-
-    }
-  })
-  .catch(error => {
-    // Handle any errors that occurred during the fetch
-    console.error('Fetch error:', error);
-  });
     }
 
-    function reload() {
+function reload() {
       document.getElementById("loader-schedule").style.display = ""
       document.getElementById("list").style.display = "none"
       document.getElementById("list").innerHTML = ""  
       const username = global_username
-            fetch(`https://tasco-db.onrender.com?method=get&username=${username}&day=${dayOfWeek}`)
+            fetch(`http://192.168.1.21:4000?method=get&username=${username}&day=${dayOfWeek}`)
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -309,4 +310,4 @@ function convertTimeToMinutes(time) {
     document.getElementById("todays-schedule").innerHTML = `<li class="task-list__item"><div class="form-check"><div class="modern-dark-box"><p class="time">Error</p></div><label class="form-check-label" for="notset">Server Offline</label></div></li>`;
     console.error('Fetch error:', error);
   });
-    }
+}

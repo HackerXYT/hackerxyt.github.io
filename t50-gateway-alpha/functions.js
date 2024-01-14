@@ -96,7 +96,7 @@ function setup() {
 										document.getElementById("apps").innerHTML = `<a onclick="load('notes')" href="#loadapp-notes"><img src="EvoxNotes.png" class="app"></img></a>`
 									} else {
 										localStorage.setItem("notes-owned", false)
-										document.getElementById("apps").innerHTML = `<a onclick="buy('notes')" href="#loadapp-notes-disabled"><img src="EvoxNotes.png" class="disabledapp"></img></a>`
+										//document.getElementById("apps").innerHTML = `<a onclick="buy('notes')" href="#loadapp-notes-disabled"><img src="EvoxNotes.png" class="disabledapp"></img></a>`
 									}
 									if(images === "owned") {//OWN IMAGES
 										localStorage.setItem("images-owned", true)
@@ -108,9 +108,9 @@ function setup() {
 									} else {
 										localStorage.setItem("images-owned", false)
 										if(document.getElementById("apps").innerHTML != "") {
-											document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
+											//document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
 										} else {
-											document.getElementById("apps").innerHTML = `<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
+											//document.getElementById("apps").innerHTML = `<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
 										}
 									}
 									if(chatvia === "owned") { //OWN CHATVIA
@@ -123,16 +123,16 @@ function setup() {
 									} else {
 										localStorage.setItem("chatvia-owned", false)
 										if(document.getElementById("apps").innerHTML != "") {
-											document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('chatvia')" href="#loadapp-chatvia-disabled"><img src="chatvia-img.png" class="disabledapp"></img></a>`
+											document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
 										} else {
-											document.getElementById("apps").innerHTML = `<a onclick="buy('chatvia')" href="#loadapp-chatvia-disabled"><img src="chatvia-img.png" class="disabledapp"></img></a>`
+											document.getElementById("apps").innerHTML = `<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
 										}
 									}
+									log("Enabling Tasco", "green")
+									document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="tasco.png" class="app"></img></a>`
 									if(localStorage.getItem("t50-username") === "papostol") {
 										log("Enabling Transports", "green")
-										log("Enabling Tasco", "green")
 										document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('transports')" href="#loadapp-transports"><img src="T50Transports.png" class="app"></img></a>`
-										document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="tasco.png" class="app"></img></a>`
 									}
 									$("#apps").fadeIn("slow")
 									$("#loading-apps-text").fadeOut("slow", function() {
@@ -184,9 +184,7 @@ function load(app) {
 			window.location.href = "./gmp/gmaps.html"
 		}
 	} else if(app === "tasco") {
-		if(localStorage.getItem("t50-username") === "papostol") {
 			window.location.href = "../tasco/"
-		}
 	}
 }
 

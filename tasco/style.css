@@ -1008,3 +1008,23 @@ input[type="time"]::-webkit-calendar-picker-indicator{
   text-decoration: line-through;
   color: rgb(129, 129, 129);
 }
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  height: auto;
+  padding: 20px;
+  background: radial-gradient(circle, #000000, #180101);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+  z-index: 999;
+  display: none;
+}
+
+.container {
+  text-align: center;
+}
