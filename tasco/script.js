@@ -31,7 +31,7 @@ function schedule() {
                 dayOfWeek = day.toUpperCase();
             }
             const username = global_username
-            fetch(`https://tasco-85lt.onrender.com?method=get&username=${username}&day=${dayOfWeek}`)
+            fetch(`https://tasco-db.onrender.com?method=get&username=${username}&day=${dayOfWeek}`)
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -165,7 +165,7 @@ function convertTimeToMinutes(time) {
           
         }
     function addtask(day_val, time_val, label_val) {
-      const url = 'https://tasco-85lt.onrender.com/';
+      const url = 'https://tasco-db.onrender.com/';
 
 // Data to be sent in the request body (assuming it's JSON)
 const data = {
@@ -216,7 +216,7 @@ fetch(url, options)
       document.getElementById("list").style.display = "none"
       document.getElementById("list").innerHTML = ""  
       const username = global_username
-            fetch(`https://tasco-85lt.onrender.com?method=get&username=${username}&day=${dayOfWeek}`)
+            fetch(`https://tasco-db.onrender.com?method=get&username=${username}&day=${dayOfWeek}`)
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
