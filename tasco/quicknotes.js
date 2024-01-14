@@ -24,7 +24,7 @@ function newnote() {
 function submitnewnote() {
     let value = document.getElementById("name_note_input").value
     if(value != null) {
-        const url = 'http://192.168.1.21:4000/';
+        const url = 'https://tasco-db.onrender.com/';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -81,7 +81,7 @@ inputElement.addEventListener("keydown", function(event) {
 function reload_notes() {
     //notes_section
 
-    const url = 'http://192.168.1.21:4000/';
+    const url = 'https://tasco-db.onrender.com/';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
