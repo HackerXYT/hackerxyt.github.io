@@ -1,13 +1,4 @@
-const global_username = localStorage.getItem("t50-username")
-document.getElementById("username-header").innerHTML = global_username
-const currentDate = new Date();
-const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-let dayOfWeek = daysOfWeek[currentDate.getDay()];
-const month = months[currentDate.getMonth()];
-const date = currentDate.getDate();
-const formattedDate = `${dayOfWeek} ${date}, ${month}`;
-document.getElementById("button1-date").innerHTML = formattedDate
+//text under schedule moved to important functions js
 document.getElementById("todays-date-schedule").innerHTML = formattedDate+ ":"
 //button2-remain tasks remaining
 //button3-notes how many quick notes saved
@@ -20,19 +11,28 @@ document.getElementById("sidebar").style.display = "none"
 
 
 function schedule() {
+  
+  document.getElementById("logo").src = "home.svg"
+  document.getElementById("logo-icon").onclick = home;
     setTimeout(function() {
         document.getElementById("main-content").style.display = "none"
         document.getElementById("schedule-content").style.display = "block"
-        set()
-    }, 350)
+        if(sessionStorage.getItem("schedule-saved")) {
+          document.getElementById("schedule-content").innerHTML = sessionStorage.getItem("schedule-saved")
+          sessionStorage.removeItem("schedule-saved")
+        } else {
+          set()
+        }
+        
+    }, 200)
 }
   function set(day) {
             if(day) {
                 dayOfWeek = day.toUpperCase();
             }
             const username = global_username
-            //https://tasco-db.onrender.com
-            fetch(`https://tasco-db.onrender.com?method=get&username=${username}&day=${dayOfWeek}`)
+            //http://192.168.1.21:4000/
+            fetch(`http://192.168.1.21:4000/?method=get&username=${username}&day=${dayOfWeek}`)
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -128,12 +128,12 @@ function convertTimeToMinutes(time) {
             
 }
 
-flatpickr("#time_set", {
-    enableTime: true,
-    noCalendar: true,
-    dateFormat: "H:i",
-    time_24hr: true
-});
+//flatpickr("#time_set", {
+//    enableTime: true,
+//    noCalendar: true,
+//    dateFormat: "H:i",
+//    time_24hr: true
+//});
         
 
 function convertTimeToMinutes(timeString) {
@@ -159,14 +159,14 @@ function task_add() {
     console.log(`Will now add:\n${time_v}--->${label_v} for day ${day_v}`)
     addtask(day_v, time_v, label_v)
   } else {
-    console.log(time_v, "time")
-    console.log(label_v, "label")
+    console.log(`Time value: ${time_v}`)
+    console.log(`Label value: ${label_v}`)
     console.log("Error, fix inputs")
   }
   
 }
 function addtask(day_val, time_val, label_val) {
-  const url = 'https://tasco-db.onrender.com/';
+  const url = 'http://192.168.1.21:4000/';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -217,7 +217,7 @@ function reload() {
       document.getElementById("list").style.display = "none"
       document.getElementById("list").innerHTML = ""  
       const username = global_username
-            fetch(`https://tasco-db.onrender.com?method=get&username=${username}&day=${dayOfWeek}`)
+            fetch(`http://192.168.1.21:4000/?method=get&username=${username}&day=${dayOfWeek}`)
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);

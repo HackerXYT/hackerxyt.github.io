@@ -18,10 +18,11 @@
 }
 
 body {
+  overflow: hidden;
   line-height: 1.5;
   min-height: 100vh;
   font-family: "Be Vietnam Pro", sans-serif;
-  background-color: var(--c-gray-900);
+  background-color: var(--c-gray-800);
   color: var(--c-text-primary);
   display: flex;
   padding-top: 3vw;
@@ -968,6 +969,24 @@ button:focus {
   cursor: pointer;
 }
 
+.tasco-textarea {
+  color: #fff;
+  padding: 10px;
+  border: 1px solid #555;
+  border-radius: 5px;
+  margin-right: 10px;
+  box-sizing: border-box;
+  background-color: #333;
+  resize: none; /* Disable textarea resizing if needed */
+  font-family: 'Arial', sans-serif; /* Set your preferred font-family */
+  font-size: 14px; /* Set your preferred font-size */
+  line-height: 1.5; /* Set your preferred line-height */
+  width: 100%; /* Adjust width as needed */
+  height: 500px; /* Adjust height as needed */
+  overflow: auto; /* Add scrollbars if content exceeds the textarea height */
+}
+
+
 /* Target the hour, minute, and second elements in WebKit browsers */
 .tasco-input::-webkit-datetime-edit-hour-field,
 .tasco-input::-webkit-datetime-edit-minute-field,
@@ -1026,5 +1045,66 @@ input[type="time"]::-webkit-calendar-picker-indicator{
 }
 
 .container {
+  text-align: center;
+}
+
+.gif-container {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.gif {
+  max-width: 50%;
+  max-height: 50%;
+  overflow: hidden; /* Ensure the shadow doesn't overflow */
+}
+
+.loading {
+  width: 50px;
+  height:40px;
+  margin: 40px auto;
+}
+
+.loading--plane {
+  width: 70px;
+  stroke-dasharray: 425.59;
+  stroke-dashoffset: 425.59;
+  animation: plane-loading-animation 3s linear infinite;
+}
+
+@keyframes plane-loading-animation {
+  50% {
+    stroke-dashoffset: 425.59;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -425.59;
+  }
+}
+
+.logo-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.logo-loading {
+  width: 100px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.svg-loading {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
 }

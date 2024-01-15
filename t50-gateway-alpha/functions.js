@@ -129,7 +129,7 @@ function setup() {
 										}
 									}
 									log("Enabling Tasco", "green")
-									document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="tasco.png" class="app"></img></a>`
+									document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="../tasco/tasco-app.png" class="app"></img></a>`
 									if(localStorage.getItem("t50-username") === "papostol") {
 										log("Enabling Transports", "green")
 										document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('transports')" href="#loadapp-transports"><img src="T50Transports.png" class="app"></img></a>`
@@ -184,7 +184,7 @@ function load(app) {
 			window.location.href = "./gmp/gmaps.html"
 		}
 	} else if(app === "tasco") {
-			window.location.href = "../tasco/"
+			window.location.href = `../tasco/`
 	}
 }
 
@@ -426,6 +426,7 @@ function pfp() {
 		  .then(response => response.text())
 		  .then(data => {
 			document.getElementById("usr-img").src = `${data}`
+			sessionStorage.setItem("pfp", data)
 		})
 		.catch(error => console.error(error));
 	}
@@ -467,6 +468,7 @@ function logoff() {
 	keysToRem.forEach(function(key) {
 	    sessionStorage.removeItem(key);
 	});
+	localStorage.clear()
 	restart()
 }
 
