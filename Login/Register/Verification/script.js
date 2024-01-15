@@ -26,7 +26,7 @@ if(username == null || email == null || sessionStorage.getItem("email_sent") ===
   }
 } else {
   document.getElementById("email").value = email
-  fetch('http://192.168.1.21:8000', {//email server
+  fetch('https://evox-emails.onrender.com', {//email server
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -118,7 +118,7 @@ BtnLog.addEventListener("click", (e) => {
     console.log(email)
     console.log(code)
     console.log("Function Verify")
-    const url = `http://192.168.1.21:8000/?email=${email}&code=${code}`;
+    const url = `https://evox-emails.onrender.com?email=${email}&code=${code}`;
     fetch(url)
     .then(response => {
       if (response.ok) {
