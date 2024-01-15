@@ -10,7 +10,7 @@ const date = currentDate.getDate();
 const formattedDate = `${dayOfWeek} ${date}, ${month}`;
 document.getElementById("button1-date").innerHTML = formattedDate
 function getnotes_num() {
-    const url = 'http://192.168.1.21:4000/';
+    const url = 'https://tasco-db.onrender.com';
   
     // Data to be sent in the request body (assuming it's JSON)
     const data = {

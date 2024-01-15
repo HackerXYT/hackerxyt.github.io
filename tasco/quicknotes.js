@@ -64,7 +64,7 @@ function submitnewnote() {
     cancel_newnote()
     let value = document.getElementById("name_note_input").value
     if(value != null) {
-        const url = 'http://192.168.1.21:4000/';
+        const url = 'https://tasco-db.onrender.com';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -113,7 +113,7 @@ function submitnewnote() {
 
 function reload_notes(is, whatname) {
     //notes_section
-    const url = 'http://192.168.1.21:4000/';
+    const url = 'https://tasco-db.onrender.com';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -226,7 +226,7 @@ function savenote() {
   const note_name = sessionStorage.getItem("current-note")
   console.log(`Note name ${note_name}, contents: ${note_contents}`)
   //show loading indicator
-  const url = 'http://192.168.1.21:4000/';
+  const url = 'https://tasco-db.onrender.com';
   const data = {
     notename: note_name,
     noteuser: global_username,
