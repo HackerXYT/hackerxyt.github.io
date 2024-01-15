@@ -7,11 +7,13 @@ function getUrlParameter(name) {
 }
 
 var username = atob(getUrlParameter('username'))
+console.log(username)
 var email = atob(getUrlParameter('email'))
+console.log(email)
 let method = getUrlParameter("camefrom")
 if(method === "register") {//!!!!!!
   console.log("Must Prompt User To Set A Profile Picture After Register")
-  window.location.href = `./customize/?username=${username}&email=${email}`
+  //window.location.href = `./customize/?username=${username}&email=${email}`
 } else {
   console.log("no method")
 }
@@ -24,7 +26,7 @@ if(username == null || email == null || sessionStorage.getItem("email_sent") ===
   }
 } else {
   document.getElementById("email").value = email
-  fetch('https://1ae8c6db-ea61-4bc7-b5fb-a2d0e77f2452-00-3aapnsyjaox5j.global.replit.dev/', {
+  fetch('http://192.168.1.21:8000', {//email server
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -113,19 +115,23 @@ BtnLog.addEventListener("click", (e) => {
     //document.getElementById("info").innerHTML = `Παρακαλω Περιμενετε..`
     const email = document.getElementById("email").value
     const code = document.getElementById("code").value
-    const uri = `https://1ae8c6db-ea61-4bc7-b5fb-a2d0e77f2452-00-3aapnsyjaox5j.global.replit.dev/email?email=${email}&code=${code}`;
-
-
-    fetch(uri)
+    console.log(email)
+    console.log(code)
+    console.log("Function Verify")
+    const url = `http://192.168.1.21:8000/?email=${email}&code=${code}`;
+    fetch(url)
     .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+      if (response.ok) {
+        return response.json();
+      } else {
+        console.error("Failed, Servers Offline Or Code Incorrect");
       }
-      return response.text();
     })
     .then(data => {
-      console.log(data); // Handle the response data here
-      if(data === code) {
+      const response = JSON.stringify(data);
+      console.log(response);
+      if (response === code) {
+        console.log("Account has been successfully activated, changing screens.");
         $("#loading_indicator").fadeOut("fast")
         console.log("Verified, Welcome To T50!")
         localStorage.setItem("user", username)
@@ -134,9 +140,8 @@ BtnLog.addEventListener("click", (e) => {
         if(sessionStorage.getItem("login:redirect")) {
           window.location.href = `../../..${sessionStorage.getItem("login:redirect")}`
         } else {
-          window.location.href = "../../../"
+          window.location.href = "../../../t50-gateway-alpha"
         }
-        
       } else {
         document.getElementById("submit").innerHTML = "Wrong Code, Try Again"
       $("#loading_indicator").fadeOut("fast")
@@ -154,7 +159,6 @@ BtnLog.addEventListener("click", (e) => {
         document.getElementById("submit").innerHTML = "Complete"
       }, 3500)
       console.error('Fetch error:', error);
-      
     });
 })
 

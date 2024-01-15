@@ -105,7 +105,7 @@ BtnLog.addEventListener("click", (e) => {
     }
       return;
   }
-    fetch('https://team50-accounts-database-clear.memeguy21.repl.co/', {
+    fetch('https://evox-accounts-database.onrender.com', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -124,7 +124,7 @@ BtnLog.addEventListener("click", (e) => {
         var base64username = btoa(username);
         console.log("Accepted!")
         localStorage.setItem("account", `{"password": "${password}"}`)
-        window.location.href = `./Verification/?email=${base64email}&username=${base64username}?camefrom=register`
+        window.location.href = `./Verification/?email=${base64email}&username=${base64username}&camefrom=register`
     }
     else if(data === "Account Exists. Retry") {
       document.getElementById("info_2").innerHTML = "Email Is Linked To Another Account!"
@@ -143,7 +143,7 @@ BtnLog.addEventListener("click", (e) => {
 })
 
 function login() {
-  const url = `https://team50-accounts-database-clear.memeguy21.repl.co/?email=${email}&password=${password}`;
+  const url = `https://evox-accounts-database.onrender.com/?email=${email}&password=${password}`;
 
   fetch(url)
     .then(response => {

@@ -103,7 +103,7 @@ localStorage.setItem("emoji", "😂")
         }
         return;
     }
-    const url = `https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/?email=${email}&password=${password}`;
+    const url = `https://evox-accounts-database.onrender.com?email=${email}&password=${password}`;
 
     fetch(url)
       .then(response => {
@@ -163,7 +163,7 @@ localStorage.setItem("emoji", "😂")
 function register() {
     const email = document.getElementById("username").value
     const password = document.getElementById("password").value
-    fetch('https://81992af4-74a1-4846-b740-ff50d36d0b7d-00-57s3ry5y7ill.global.replit.dev/', {
+    fetch('https://evox-accounts-database.onrender.com', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
