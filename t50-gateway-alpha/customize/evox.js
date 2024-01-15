@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $("#header").html("Welcome to T50!")
+    $("#header").html("Welcome to Evox!")
     $("#header").fadeIn("slow", function() {
         setTimeout(function() {
             $("#header").fadeOut("slow", function() {
