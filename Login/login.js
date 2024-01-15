@@ -1,11 +1,4 @@
 console.log("Welcome To Evox")
-var notyf = new Notyf({
-  duration: 3000,
-  position: {
-    y: 'top',
-  }
-});
-notyf.error('Some Servers Are Offline');
 function isMobileDevice() {
   return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
 }
