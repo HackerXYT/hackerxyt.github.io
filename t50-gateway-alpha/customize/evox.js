@@ -79,7 +79,7 @@ function setpfp() {
                     'Content-Type': 'application/json'
                   },
                   body: JSON.stringify({
-                    name: sessionStorage.getItem("user-username"),
+                    name: localStorage.getItem("t50-username"),
                     pfp: base64Data
                   })
                 })
