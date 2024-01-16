@@ -79,6 +79,19 @@ function schedule() {
     });
 
     var currentTime = new Date().toLocaleTimeString('en-US', {hour12: false, hour: '2-digit', minute: '2-digit'});
+    console.log("Time is:", currentTime);
+
+    if(currentTime.includes("24")) {
+      document.getElementById("list").style.display = ""
+
+    try {
+      document.getElementById("loader-schedule").style.display = "none";
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+      return;
+      
+    }
 
 // Convert the current time to minutes for easy comparison
 var currentTimeInMinutes = convertTimeToMinutes(currentTime);
