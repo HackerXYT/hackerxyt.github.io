@@ -81,15 +81,18 @@ function schedule() {
     var currentTime = new Date().toLocaleTimeString('en-US', {hour12: false, hour: '2-digit', minute: '2-digit'});
     console.log("Time is:", currentTime);
 
-    if(currentTime.includes("24")) {
-      document.getElementById("list").style.display = ""
+    // Convert currentTime to a number
+    var currentTimeNumber = parseInt(currentTime, 10);
 
-    try {
-      document.getElementById("loader-schedule").style.display = "none";
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
-      return;
+    // Check if currentTimeNumber is greater than or equal to 24
+    if (currentTimeNumber >= 24) {
+      document.getElementById("list").style.display = "";
+      try {
+        document.getElementById("loader-schedule").style.display = "none";
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
+        return;
       
     }
 
