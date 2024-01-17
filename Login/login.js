@@ -27,8 +27,10 @@ if (!isMobileDevice()) {
 }
 localStorage.setItem("update_status", true)
 if(localStorage.getItem("account") && localStorage.getItem("user") && localStorage.getItem("user_email")) {
-  console.log("Already Logged In")
-  if(sessionStorage.getItem("redirect") === "datacenter") {
+  let method = getUrlParameter('identifier')
+  console.log(method)
+  if(method === "datacenter-login") {
+    sessionStorage.setItem("redirect", "datacenter")
     console.log("requesting")
     fetch(`https://evox-datacenter.onrender.com/access-database?username=${localStorage.getItem("user")}&app=login&email=${localStorage.getItem("user_email")}`)
     .then(response => {
@@ -55,6 +57,7 @@ if(localStorage.getItem("account") && localStorage.getItem("user") && localStora
     
     return;
   }
+  console.log("Already Logged In")
   window.location.href = "../t50-gateway-alpha/"
 }
 function readTextFile(file, callback) {
