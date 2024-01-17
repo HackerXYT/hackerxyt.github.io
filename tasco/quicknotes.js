@@ -64,7 +64,7 @@ function submitnewnote() {
     cancel_newnote()
     let value = document.getElementById("name_note_input").value
     if(value != null) {
-        const url = 'https://tasco-db.onrender.com';
+        const url = 'https://evox-datacenter.onrender.com/tasco';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -113,7 +113,7 @@ function submitnewnote() {
 
 function reload_notes(is, whatname) {
     //notes_section
-    const url = 'https://tasco-db.onrender.com';
+    const url = 'https://evox-datacenter.onrender.com/tasco';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -237,7 +237,7 @@ function savenote() {
       repeatCount="indefinite"/>
   </path>
 </svg>`
-  const url = 'https://tasco-db.onrender.com';
+  const url = 'https://evox-datacenter.onrender.com/tasco';
   const data = {
     notename: note_name,
     noteuser: global_username,

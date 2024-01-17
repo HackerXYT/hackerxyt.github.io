@@ -8,7 +8,7 @@ function load_img() {
     var password = atob(storedObject.imgpassword)
     let api = "aHR0cHM6Ly84OTNkM2U5Ny00Y2YwLTRlN2QtOGY0MC1kMTVhMTcyZGZhMmEtMDAtcWxvc3BwYTY2M251LnNwb2NrLnJlcGxpdC5kZXYvP3Bhc3N3b3JkPQ=="
     console.log("Requesting")
-    fetch(`https://images-gallery-mksq.onrender.com?password=${password}`, {
+    fetch(`https://evox-datacenter.onrender.com/images-gallery/?password=${password}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -210,7 +210,7 @@ function encodeImageToBase64() {
           password: password
         };
         let mainapi = "aHR0cHM6Ly84OTNkM2U5Ny00Y2YwLTRlN2QtOGY0MC1kMTVhMTcyZGZhMmEtMDAtcWxvc3BwYTY2M251LnNwb2NrLnJlcGxpdC5kZXYv"
-        fetch("https://images-gallery-mksq.onrender.com", {
+        fetch("https://evox-datacenter.onrender.com/images-gallery/", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -291,7 +291,7 @@ function format() {
     if (userInput !== null) {
       // Display the input value in an alert
       let mainapi = "aHR0cHM6Ly84OTNkM2U5Ny00Y2YwLTRlN2QtOGY0MC1kMTVhMTcyZGZhMmEtMDAtcWxvc3BwYTY2M251LnNwb2NrLnJlcGxpdC5kZXYvP21ldGhvZD1kZWxldGUmcGFzc3dvcmQ9"
-      fetch(`https://images-gallery-mksq.onrender.com?method=delete&password=${userInput}`, {
+      fetch(`https://evox-datacenter.onrender.com/images-gallery/?method=delete&password=${userInput}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json', // Modify this based on your API's requirements

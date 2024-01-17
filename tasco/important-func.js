@@ -10,7 +10,7 @@ const date = currentDate.getDate();
 const formattedDate = `${dayOfWeek} ${date}, ${month}`;
 document.getElementById("button1-date").innerHTML = formattedDate
 function getnotes_num() {
-    const url = 'https://tasco-db.onrender.com';
+    const url = 'https://evox-datacenter.onrender.com/tasco';
   
     // Data to be sent in the request body (assuming it's JSON)
     const data = {

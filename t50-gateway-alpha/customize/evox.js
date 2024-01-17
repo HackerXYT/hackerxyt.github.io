@@ -73,7 +73,7 @@ function setpfp() {
               } else if(localStorage.getItem("t50-username") === null) {
                 sessionStorage.setItem("user-username", localStorage.getItem("user"))
               }
-              fetch('https://profile-database.onrender.com', {
+              fetch('https://evox-datacenter.onrender.com/profiles', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'

@@ -96,7 +96,7 @@ localStorage.setItem("emoji", "😂")
         }
         return;
     }
-    const url = `https://evox-accounts-database.onrender.com?email=${email}&password=${password}`;
+    const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}`;
 
     fetch(url)
       .then(response => {
@@ -156,7 +156,7 @@ localStorage.setItem("emoji", "😂")
 function register() {
     const email = document.getElementById("username").value
     const password = document.getElementById("password").value
-    fetch('https://evox-accounts-database.onrender.com', {
+    fetch('https://evox-datacenter.onrender.com/accounts', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

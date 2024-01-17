@@ -31,8 +31,8 @@ function schedule() {
                 dayOfWeek = day.toUpperCase();
             }
             const username = global_username
-            //https://tasco-db.onrender.com
-            fetch(`https://tasco-db.onrender.com?method=get&username=${username}&day=${dayOfWeek}`)
+            //https://evox-datacenter.onrender.com/tasco
+            fetch(`https://evox-datacenter.onrender.com/tasco?method=get&username=${username}&day=${dayOfWeek}`)
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -182,7 +182,7 @@ function task_add() {
   
 }
 function addtask(day_val, time_val, label_val) {
-  const url = 'https://tasco-db.onrender.com';
+  const url = 'https://evox-datacenter.onrender.com/tasco';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -233,7 +233,7 @@ function reload() {
       document.getElementById("list").style.display = "none"
       document.getElementById("list").innerHTML = ""  
       const username = global_username
-            fetch(`https://tasco-db.onrender.com?method=get&username=${username}&day=${dayOfWeek}`)
+            fetch(`https://evox-datacenter.onrender.com/tasco?method=get&username=${username}&day=${dayOfWeek}`)
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
