@@ -30,7 +30,7 @@ if(localStorage.getItem("account") && localStorage.getItem("user") && localStora
   console.log("Already Logged In")
   if(sessionStorage.getItem("redirect") === "datacenter") {
     console.log("requesting")
-    fetch(`https://evox-datacenter.onrender.com/access-database?username=${username}&app=login&email=${email}`)
+    fetch(`https://evox-datacenter.onrender.com/access-database?username=${localStorage.getItem("user")}&app=login&email=${localStorage.getItem("user_email")}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -40,10 +40,10 @@ if(localStorage.getItem("account") && localStorage.getItem("user") && localStora
     .then(data => {
       if(data) {
         if(window.location.href.includes("localhost") || window.location.href.includes("21")) {
-          window.location.href = `http://192.168.1.21:4000?id=${data}&username=${username}`
+          window.location.href = `http://192.168.1.21:4000?id=${data}&username=${localStorage.getItem("user")}`
           return;
         }
-        window.location.href = `https://evox-datacenter.onrender.com/?id=${data}&username=${username}`
+        window.location.href = `https://evox-datacenter.onrender.com/?id=${data}&username=${localStorage.getItem("user")}`
         return;
       } else {
         console.log("Task returned something unexpected..\n"+data)
