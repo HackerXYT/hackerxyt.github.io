@@ -58,7 +58,7 @@ if(localStorage.getItem("account") && localStorage.getItem("user") && localStora
     return;
   }
   console.log("Already Logged In")
-  window.location.href = "../t50-gateway-alpha/"
+  //window.location.href = "../t50-gateway-alpha/"
 }
 function readTextFile(file, callback) {
     var rawFile = new XMLHttpRequest();
