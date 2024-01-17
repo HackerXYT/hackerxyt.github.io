@@ -43,10 +43,8 @@ if(localStorage.getItem("account") && localStorage.getItem("user") && localStora
       if(data) {
         if(window.location.href.includes("localhost") || window.location.href.includes("21")) {
           window.location.href = `http://192.168.1.21:4000?id=${data}&username=${localStorage.getItem("user")}`
-          return;
         }
         window.location.href = `https://evox-datacenter.onrender.com/?id=${data}&username=${localStorage.getItem("user")}`
-        return;
       } else {
         console.log("Task returned something unexpected..\n"+data)
       }
@@ -55,7 +53,6 @@ if(localStorage.getItem("account") && localStorage.getItem("user") && localStora
       console.error('Fetch error:', error);
     });
     
-    return;
   }
   console.log("Already Logged In")
   //window.location.href = "../t50-gateway-alpha/"
