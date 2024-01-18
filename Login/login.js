@@ -27,34 +27,6 @@ if (!isMobileDevice()) {
 }
 localStorage.setItem("update_status", true)
 if(localStorage.getItem("account") && localStorage.getItem("user") && localStorage.getItem("user_email")) {
-  let method = getUrlParameter('identifier')
-  console.log(method)
-  if(method === "datacenter-login") {
-    sessionStorage.setItem("redirect", "datacenter")
-    console.log("requesting")
-    fetch(`https://evox-datacenter.onrender.com/access-database?username=${localStorage.getItem("user")}&app=login&email=${localStorage.getItem("user_email")}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.text();
-    })
-    .then(data => {
-      if(data) {
-        if(window.location.href.includes("localhost") || window.location.href.includes("21")) {
-          window.location.href = `http://192.168.1.21:4000?id=${data}&username=${localStorage.getItem("user")}`
-        }
-        window.location.href = `https://evox-datacenter.onrender.com/?id=${data}&username=${localStorage.getItem("user")}`
-      } else {
-        console.log("Task returned something unexpected..\n"+data)
-      }
-      
-    }).catch(error => {
-      console.error('Fetch error:', error);
-    });
-    
-  }
-  console.log("Already Logged In")
   //window.location.href = "../t50-gateway-alpha/"
 }
 function readTextFile(file, callback) {
