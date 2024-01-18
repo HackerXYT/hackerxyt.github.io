@@ -1,123 +1,31 @@
-<html>
-    <body>
-        <p id="welcomemsg">error</p>
-        <button id="register">REGISTER!</button>
-        <button id="send" onclick="send()">Send Now</button>
-        <input value="value" id="value">
+<!DOCTYPE html>
+<head>
+    <title>Notifications</title>
+</head>
+<body>
+    Running Firebase script
+</body>
 <script type="module">
-
-    let  vapidPublicKey =urlBase64ToUint8Array("BGbXJyDISya-zzTRKPOWiEf5Hk4W4kLHtjmIxYzon1b6KIDqL--3oz6r0AYTc-N3Es80KHuHTzlJS3rDldwCYUs"); // this is the PUBLIC Key, passed up from the backend that rendered this page.
-    
-    // Let's check if the browser supports notifications
-    if (!("Notification" in window)) {
-      alert("This browser does not support web push notification. This Demo has failed for you.  :'-( ");
-      document.getElementById("welcomemsg").innerHTML = "This browser does not support desktop notification. This Demo has failed :( ";
-    }
-    else {
-    
-        Notification.requestPermission(function(status) {
-            console.log('Notification Permissiong status:',status);
-        });
-        
-        if (Notification.permission === 'denied' )
-        { 
-            // fail early
-            document.getElementById("welcomemsg").innerHTML = "You've denied notification on a notifcation DEMO! I'm sad!";
-        } else {
-            
-            // We are a go. Everything is ready. 
-            // We've asked for notificaiton permissiongs. And we've been given it.
-            // Time to register our service worker to listen for notifications and pop them up when we receive them from the server.
-    
-            // Register the serviceWorker script at /serviceworker.js from our server if supported
-            if ('serviceWorker' in navigator) { // yes this browser has a serviceWorker functionality.
-    
-                // First. Let's de-register any web workers we have for this domain just in case damian was testing things.
-                // 1) Get all registered ServiceWorkers
-                navigator.serviceWorker.getRegistrations().then((registrations) => {
-                    // loop through them and un-register from them.
-                    for(let registration of registrations) {
-                            registration.unregister()
-                    }
-                }).catch(function(err) {
-                    console.log('Service Worker UNregistration failed: ', err);
-                });
-    
-                // we are calling this method so it can be called asynchronously 
-                try {
-                registerServiceWorker().catch(console.error)
-                } catch (ex) {
-                    console.log("Oh cool. Your browser requires a button to be pressed before we can notify you. Ok. \nBelow on the onclick we'll take care of that.")
-                }
-    
-    
-            } // end of  - if ('serviceWorker' in navigator) {
-        } // end of if (Notification.permission === 'denied' )
-    } // end of - if (!("Notification" in window))
-    
-    async function registerServiceWorker() {
-                // Register and get the notification details and send them to our back end server.
-                await navigator.serviceWorker.register('./serviceworker.js');
-                const register = await navigator.serviceWorker.ready; // we have to wait or there might be a race condition. Now GOOOOO!!!!!!
-                const subscription = await register.pushManager.subscribe({ userVisibleOnly: true,applicationServerKey: vapidPublicKey });
-                PostSubscriptionDetails(subscription);
-    }
-    
-    // we have to attach AFTER the function is defined. Attach to the "register" button required by some browsers
-    document.getElementById("register").addEventListener("click",()=> {
-        registerServiceWorker().catch(console.error);
-    })
-    
-    function PostSubscriptionDetails(Subscription) {
-        
-        // let's parse the details of the subscription we got back from the creator of this browser
-        let sub = JSON.parse(JSON.stringify(Subscription));
-        let token = sub.keys.p256dh;
-        let  auth = sub.keys.auth;
-        let payload = {endpoint:sub.endpoint,token:token,auth:auth};
-        // we could also send to the server in the payload other things like the user's id. or something special for it to use later. We don't in this example.
-        
-        // Let's send this to the backend that will have everything it needs when it needs to notify us.
-        fetch('http://192.168.1.21:5004/newbrowser', {
-            method: 'POST',
-            headers: new Headers({'Content-Type': 'application/json'}),
-            body: JSON.stringify(payload)
-        })
-        .then(res=> res.json())
-        .then(function(data) {
-            console.log(data)
-            document.getElementById("welcomemsg").innerHTML = "READY for Notifications!";
-            // Todo. Save anything you needed when you "regsitered" with the server and told him how to notify you.
-        });
-        
-    }
-    
-    // clean up data so it's easier to send. 
-    function urlBase64ToUint8Array(base64String) {
-      const padding = '='.repeat((4 - base64String.length % 4) % 4);
-      const base64 = (base64String + padding)
-        .replace(/\-/g, '+')
-        .replace(/_/g, '/')
-      ;
-      const rawData = window.atob(base64);
-      return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
-    }
-
-    window.send = function send() {
-        fetch('http://192.168.1.21:5004/notify?content='+document.getElementById("value").value, {
-            method: 'GET',
-            headers: new Headers({'Content-Type': 'application/json'}),
-        })
-        .then(res=> res.json())
-        .then(function(data) {
-            console.log(data)
-            document.getElementById("welcomemsg").innerHTML = "Sent!";
-            setTimeout(function() {
-                document.getElementById("welcomemsg").innerHTML = "READY for Notifications!";
-            }, 5000)
-            // Todo. Save anything you needed when you "regsitered" with the server and told him how to notify you.
-        });
-    }
-    </script>
-        </body>
-        </html>
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyBBa64tRd05AMn37okxNT6oy4EmKEmDCiU",
+      authDomain: "moretti-408718.firebaseapp.com",
+      projectId: "moretti-408718",
+      storageBucket: "moretti-408718.appspot.com",
+      messagingSenderId: "312180494267",
+      appId: "1:312180494267:web:22792f573d32040ddabe9e",
+      measurementId: "G-7WH1V22MY8"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+  </script>
+  </html>
