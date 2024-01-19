@@ -177,14 +177,6 @@ function login() {
         
         console.log(data);
         if(data.includes("Credentials Correct")) {
-          if(localStorage.getItem("restart-for-florida")) {
-            console.log("Florida Override!")
-            localStorage.removeItem("restart-for-florida")
-            localStorage.setItem("t50-autologin", true)
-            localStorage.setItem("remove-autolg", true)
-            restart()
-            return;
-          }
             console.log("Welcome Abroad")
             localStorage.setItem("t50pswd", `${btoa(password)}`)
             const credentialsString = data;
@@ -196,6 +188,14 @@ function login() {
             sessionStorage.setItem("loaded", true)
             sessionStorage.setItem("loggedin", email)
             sessionStorage.setItem("loggedinpswd", btoa(password))
+            if(localStorage.getItem("restart-for-florida")) {
+              console.log("Florida Override!")
+              localStorage.removeItem("restart-for-florida")
+              localStorage.setItem("t50-autologin", true)
+              localStorage.setItem("remove-autolg", true)
+              restart()
+              return;
+            }
             setup()
         } else if(data === "Credentials Incorrect") {
             fadeError("2")
