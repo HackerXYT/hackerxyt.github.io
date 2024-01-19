@@ -272,7 +272,7 @@ setBodyHeight();
                 console.log("Script is loaded but notifications are not yet accepted")
             } else {
                 console.log(`Loaded: "${flrd_id}"`)
-                clearInterval(florida_open_check)
+                
                 if(localStorage.getItem("t50-username") && localStorage.getItem("t50-autologin") === "true") {
                     log("Florida Info Ready!", "green")
                     localStorage.setItem("florida_device_id", flrd_id)
@@ -281,11 +281,14 @@ setBodyHeight();
                     console.log("User has recently logged out or is new")
                     //user has recently logged out or user is new to app
                     localStorage.setItem("restart-for-florida", "true")
-                } else if(document.getElementById("container").style.display == "" || document.getElementById("container").style.display == "block") {
+                } else if(document.getElementById("container").style.display === "") {
                     //login is shown right now, user has logged in in the past, waiting for new or same account login
                     console.log("User is returning after leaving")
                     localStorage.setItem("restart-for-florida", "true")
+                } else {
+                    console.log("Error occured while running florida")
                 }
+                clearInterval(florida_open_check)
             }
             
         }
