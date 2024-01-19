@@ -277,6 +277,10 @@ setBodyHeight();
                     log("Florida Info Ready!", "green")
                     localStorage.setItem("florida_device_id", flrd_id)
                     //can proceed sending florida id for account lc t50-username
+                } else if(sessionStorage.getItem("loaded")) {
+                    //page has loaded logged in and can proceed sending florida id for account lc t50-username (auto login disabled)
+                    log("Florida Info Ready!", "green")
+                    localStorage.setItem("florida_device_id", flrd_id)
                 } else if(!localStorage.getItem("t50-username")) {
                     console.log("User has recently logged out or is new")
                     //user has recently logged out or user is new to app
