@@ -58,6 +58,7 @@ function getnotes_num() {
 });
 
 function home() {
+  document.getElementById("back").style.display = ""
     if(document.getElementById("schedule-content").style.display != "none") {
         //schedule page is open, so:
         let scheduleinner = document.getElementById("schedule-content").innerHTML

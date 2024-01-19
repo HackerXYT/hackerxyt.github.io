@@ -11,6 +11,7 @@ document.getElementById("sidebar").style.display = "none"
 
 
 function schedule() {
+  document.getElementById("back").style.display = "none"
   
   document.getElementById("logo").src = "home.svg"
   document.getElementById("logo-icon").onclick = home;

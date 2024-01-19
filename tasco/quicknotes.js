@@ -1,4 +1,5 @@
 function quicknotes() {
+  document.getElementById("back").style.display = "none"
     setTimeout(function() {
         document.getElementById("main-content").style.display = "none"
         document.getElementById("notes-content").style.display = "block"
