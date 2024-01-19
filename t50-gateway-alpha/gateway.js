@@ -24,6 +24,13 @@ function docready() {
       .then(data => {
         if(data.includes("Credentials Correct")) {
             log("Existing Account Verified!", "green")
+            if(localStorage.getItem("restart-for-florida") === "true") {
+              localStorage.removeItem("restart-for-florida")
+              localStorage.setItem("t50-autologin", true)
+				      localStorage.setItem("remove-autolg", true)
+              restart()
+              return;
+            }
             sessionStorage.setItem("loaded", true)
             setup()
         } else {
