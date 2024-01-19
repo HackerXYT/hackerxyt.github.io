@@ -250,9 +250,35 @@ window.addEventListener('orientationchange', setBodyHeight);
 // Initial call to set body height
 setBodyHeight();
 </script>
+<script type="text/javascript">
+    (function(d, t) {
+            var g = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+            g.src = "https://cdn.pushalert.co/integrate_39bb4d416521e2257c115e376e0c052b.js";
+            s.parentNode.insertBefore(g, s);
+            let florida_open;
+            let florida_open_check = setInterval(function() {
+                let flrd_id = PushAlertCo.subs_id
+                if(flrd_id === null) {
+                    console.log("Not yet loaded")
+                } else {
+                    if(flrd_id === "") {
+                        console.log("Script is loaded but notifications are not yet accepted")
+                    } else {
+                        console.log(`Loaded: "${flrd_id}"`)
+                        clearInterval(flrd_id)
+                    }
+                    
+                }
+            }, 1000)
+    }(document, "script"));
+</script>
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script src="functions.js"></script>
 <script src="gateway.js"></script>
+<script>
+    
+</script>
 <!-- <script src="script.js"></script>
 <script src="new.js"></script>-->
 </html>
