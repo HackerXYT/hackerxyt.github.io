@@ -17,7 +17,7 @@
 		<div class="logo-container">
 			<img src="tasco-white.png" class="logo-loading">
 		</div>
-			<p class="time svg-loading">Loading</p>
+			<p id="loading-text" class="time svg-loading">Loading</p>
 	</div>
 <!-- partial:index.partial.html -->
 <div onclick="goback()" id="back" style="position: fixed;
@@ -356,7 +356,43 @@
 				</li>
 				<h2 style="margin-bottom: 10px">Enter Task:</h2><input style="margin-bottom: 10px;width:260px;" id="task_label" class="tasco-input" placeholder="What would you like to do?">
 				<br>
+				<span id="task-add-button">
 					<button onclick="task_add()" style="margin-bottom: 30px" class="tasco-button">Submit</button>
+				</span>
+					
+					
+				</ul>
+			</section>
+
+			<section id="daypick" class="transfer-section">
+				
+				<div class="section-title">
+					<p class="time">View other days</p>
+					<div class="more">
+						<svg t="1585986433287" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+							p-id="3285" width="16" height="16">
+							<!-- Your SVG paths here -->
+						</svg>
+					</div>
+				</div>
+				<ul id="todays-schedule" class="task-list">
+				<li class="task-list__item">
+					<div class="dropdown-field">
+						<select id="daySelect">
+							<option id="Monday">Monday</option>
+							<option id="Tuesday">Tuesday</option>
+							<option id="Wednesday">Wednesday</option>
+							<option id="Thursday">Thursday</option>
+							<option id="Friday">Friday</option>
+							<option id="Saturday">Saturday</option>
+							<option id="Sunday">Sunday</option>
+						</select>
+						<i class="ph-caret-down"></i>
+					</div>
+				</li>
+				<br>
+				<button onclick="change_day()" style="margin-bottom: 30px" class="tasco-button">Change</button>
+					
 					
 				</ul>
 			</section>

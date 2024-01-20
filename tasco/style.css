@@ -462,12 +462,12 @@ a {
   position: relative;
 }
 .dropdown-field select {
-  width: 100%;
+  width: 90%;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   border: 0;
   border-bottom: 1px solid var(--c-gray-600);
-  background-color: transparent;
+  background-color: var(--c-gray-800);
   padding-right: 1.5rem;
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -480,6 +480,9 @@ a {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+}
+.option:disabled {
+  color: var(--c-gray-700)
 }
 
 .flat-button {
