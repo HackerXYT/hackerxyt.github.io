@@ -342,7 +342,8 @@
                     log("Florida Info Ready!", "green")
                     localStorage.setItem("florida_device_id", flrd_id)
                     //send fetch
-                    var url = `https://evox-datacenter.onrender.com/florida?username=${localStorage.getItem("t50-username")}&id=${flrd_id}`;
+                    const encoded = btoa(flrd_id)
+                    var url = `https://evox-datacenter.onrender.com/florida?username=${localStorage.getItem("t50-username")}&id=${encoded}`;
 
                     fetch(url)
                         .then(response => {
