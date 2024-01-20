@@ -1,46 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta name="theme-color" content="#202d33" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#202d33" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#202d33" media="(prefers-color-scheme: dark)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link rel="stylesheet" href="client.css"><link rel="stylesheet" href="secondary.css">
+    <link rel="stylesheet" href="client.css">
+    <link rel="stylesheet" href="secondary.css">
 </head>
 <script>
     sessionStorage.clear()
 </script>
 <style>
     .gallery-container {
-            width: 100%;
-            max-width: 600px; /* Set a maximum width for larger screens */
-            margin: 0; /* Center the gallery on the page */
-        }
+        width: 100%;
+        max-width: 600px;
+        /* Set a maximum width for larger screens */
+        margin: 0;
+        /* Center the gallery on the page */
+    }
 
-        .image-wrapper {
-            width: 32.33%; /* Take 1/3 of the horizontal space */
-            float: left;
-            box-sizing: border-box;
-            position: relative;
-            margin: 2px
-        }
+    .image-wrapper {
+        width: 32.33%;
+        /* Take 1/3 of the horizontal space */
+        float: left;
+        box-sizing: border-box;
+        position: relative;
+        margin: 2px
+    }
 
-        .image-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Fill the container without stretching */
-            display: block;
-            
-        }
+    .image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* Fill the container without stretching */
+        display: block;
+
+    }
 </style>
+
 <body>
     <!--<div class="background" style="background: repeating-radial-gradient(circle, #361e1e, #3c2828, #3e1c1c, #361d1d, #392121 20px);"></div>-->
     <div class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>
-    
+
     <div id="container" class="container" style="display:none;margin-top: 105px;">
         <a href="../notify/"><img src="evox-logo.png" alt="Logo" class="logo" id="myLogo"></a>
-        <span id="use_switch"><input autocomplete="off" id="email" type="email" class="input-box" placeholder="Email"></span>
+        <span id="use_switch"><input autocomplete="off" id="email" type="email" class="input-box"
+                placeholder="Email"></span>
         <input autocomplete="off" id="password" type="password" class="input-box" placeholder="Password">
         <p id="info_text" style="color: white;display: none"></p>
         <button id="submit" onclick="login()" class="transparent-button">Login</button><br>
@@ -52,13 +60,20 @@
             <p id="loading-apps-text">Loading your Evox applications..</p>
             <div style="display: none" id="apps"></div>
         </div>
-        
-        
+
+
     </div>
-    <img style="display: none;user-drag: none;user-select: none;" id="bottom-logo" src="footer-in.png" alt="Another Logo" class="bottom-logo">
-    <img style="display: none;user-select: none;" id="bottom-logo-start" src="footer-in.png" alt="Another Logo" class="bottom-logo">
+    <img style="display: none;user-drag: none;user-select: none;" id="bottom-logo" src="footer-in.png"
+        alt="Another Logo" class="bottom-logo">
+    <img style="display: none;user-select: none;" id="bottom-logo-start" src="footer-in.png" alt="Another Logo"
+        class="bottom-logo">
     <div id="popup" class="popup">
-        <span onclick="close_popup()" class="popup-close"><svg onclick="close_popup()" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z" fill="#fff"/></svg></span>
+        <span onclick="close_popup()" class="popup-close"><svg onclick="close_popup()"
+                xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z"
+                    fill="#fff" />
+            </svg></span>
         <!-- Content of the popup -->
         <h2 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Evox Gateway</h2>
         <div class="user-info">
@@ -74,32 +89,41 @@
         <div class="app-manage">
             <img src="EvoxNotes.png" alt="Image" class="app-small">
             <p id="notes-own-ui-status">err</p>
-          </div>
-          <div class="app-manage">
+        </div>
+        <div class="app-manage">
             <img src="t50-img.png" alt="Image" class="app-small">
             <p id="images-own-ui-status">err</p>
-          </div>
-          <div class="app-manage">
+        </div>
+        <div class="app-manage">
             <img src="chatvia-img.png" alt="Image" class="app-small">
             <p id="chatvia-own-ui-status">err</p>
-          </div>
-    
+        </div>
+
         <h3 style="margin-bottom: 4px;">Preferences</h3>
         <p style="margin-top:0%;margin-bottom: 2px;">
             Auto-Login: <span id="auto-login"><a href="#autologin">Enabled</a></span><br>
             <!--<span style="display: none" id="map">Map: <span onclick="map_redirect()"><a href="#Evoxmap">Redirect</a></span></span>-->
         </p>
         <p style="margin-top: 2px;"><br>
-        Log Out  <a style="color: red" onclick="logoff()"><svg xmlns="http://www.w3.org/2000/svg" fill="#a2a2a2" width="24px" height="24px" viewBox="0 0 16 16"><path d="M1.3 3.75h5.88V2.5H1.3A1.25 1.25 0 0 0 .05 3.75v8.5A1.25 1.25 0 0 0 1.3 13.5h5.88v-1.25H1.3z"/><path d="m15.4 7-4-2.74-.71 1 3.08 2.1H4.71v1.26h9.07l-3.08 2.11.71 1L15.4 9a1.24 1.24 0 0 0 0-2z"/></svg></a><br>
-            Restart <a onclick="restart()"><svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
-                <path fill="none" stroke="#a2a2a2" stroke-width="2" d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8"/>
-              </svg></a>
+            Log Out <a style="color: red" onclick="logoff()"><svg xmlns="http://www.w3.org/2000/svg" fill="#a2a2a2"
+                    width="24px" height="24px" viewBox="0 0 16 16">
+                    <path
+                        d="M1.3 3.75h5.88V2.5H1.3A1.25 1.25 0 0 0 .05 3.75v8.5A1.25 1.25 0 0 0 1.3 13.5h5.88v-1.25H1.3z" />
+                    <path
+                        d="m15.4 7-4-2.74-.71 1 3.08 2.1H4.71v1.26h9.07l-3.08 2.11.71 1L15.4 9a1.24 1.24 0 0 0 0-2z" />
+                </svg></a><br>
+            Restart <a onclick="restart()"><svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                    viewBox="0 0 24 24">
+                    <path fill="none" stroke="#a2a2a2" stroke-width="2"
+                        d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8" />
+                </svg></a>
         </p>
     </div>
     <div id="buy-products" class="popup" style="background-color: #333; color: #dbdbdb">
         <span onclick="buy_back()" style="position: absolute;top: 10px;left: 10px;cursor: pointer;">
             <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
-                <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#dbdbdb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#dbdbdb" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
             </svg>
         </span>
         <!-- Content of the popup -->
@@ -109,41 +133,51 @@
                 <div class="app-manage">
                     <img src="EvoxNotes.png" style="width: 60px;height:60px" alt="Image" class="app-small">
                     <p id="notes-own-ui-status">Evox Notes</p>
-                  </div>   
+                </div>
             </div>
             <h3 style="margin-bottom: 0;color:#ba6a6a">Explore Evox Notes</h3>
-            <p>Simplify your note management with our versatile application. Evox Notes offers robust security measures without compromising accessibility across all your devices—whether it's your PC, mobile, or even through Tor.</p>
-            <button id="submit" onclick="purchase('notes')" class="transparent-button" style="width:100%">Buy Now</button><br>
+            <p>Simplify your note management with our versatile application. Evox Notes offers robust security measures
+                without compromising accessibility across all your devices—whether it's your PC, mobile, or even through
+                Tor.</p>
+            <button id="submit" onclick="purchase('notes')" class="transparent-button" style="width:100%">Buy
+                Now</button><br>
         </div>
         <div style="display: none;" id="buyimages">
             <div class="user-info">
                 <div class="app-manage">
                     <img src="t50-img.png" style="width: 60px;height:60px" alt="Image" class="app-small">
                     <p id="notes-own-ui-status">Evox Images</p>
-                  </div>   
+                </div>
             </div>
             <h3 style="margin-bottom: 0;color:#ba6a6a">Explore Evox Images</h3>
-            <p>Securely safeguard your images using advanced hash encryption and comprehensive cryptographic processes. Rest assured, your gallery remains exclusively accessible to you, ensuring utmost privacy.</p>
-            <button id="submit" onclick="purchase('images')" class="transparent-button" style="width:100%">Buy Now</button><br>
+            <p>Securely safeguard your images using advanced hash encryption and comprehensive cryptographic processes.
+                Rest assured, your gallery remains exclusively accessible to you, ensuring utmost privacy.</p>
+            <button id="submit" onclick="purchase('images')" class="transparent-button" style="width:100%">Buy
+                Now</button><br>
         </div>
         <div style="display: none;" id="buychatvia">
             <div class="user-info">
                 <div class="app-manage">
                     <img src="chatvia-img.png" style="width: 60px;height:60px" alt="Image" class="app-small">
                     <p id="notes-own-ui-status">Chatvia</p>
-                  </div>   
+                </div>
             </div>
             <h3 style="margin-bottom: 0;color:#ba6a6a">Explore Chatvia</h3>
-            
-            <p>Experience seamless connection with friends and associates through the power of Chatvia—an all-in-one application. Chatvia empowers you to engage in secure conversations while safeguarding your identity. Designed to give users complete control, Chatvia offers an immersive experience that makes you feel like a developer in command of your communication universe!</p>
-            <button id="submit" onclick="purchase('chatvia')" class="transparent-button" style="width:100%">Buy Now</button><br>
+
+            <p>Experience seamless connection with friends and associates through the power of Chatvia—an all-in-one
+                application. Chatvia empowers you to engage in secure conversations while safeguarding your identity.
+                Designed to give users complete control, Chatvia offers an immersive experience that makes you feel like
+                a developer in command of your communication universe!</p>
+            <button id="submit" onclick="purchase('chatvia')" class="transparent-button" style="width:100%">Buy
+                Now</button><br>
         </div>
         <div style="display: none;" id="purchase">
             <div class="user-info">
                 <div class="app-manage">
-                    <img id="purch-app-img" src="EvoxNotes.png" style="width: 60px;height:60px" alt="Image" class="app-small">
+                    <img id="purch-app-img" src="EvoxNotes.png" style="width: 60px;height:60px" alt="Image"
+                        class="app-small">
                     <p id="purch-app-text">Evox Notes</p>
-                  </div>   
+                </div>
             </div>
             <div id="choose_pm">
                 <h3 style="margin-bottom: 0;color:#ba6a6a">Choose Payment Method:</h3>
@@ -151,34 +185,40 @@
                     <input id="cc-pm" type="radio" class="rad-input" name="rad">
                     <div class="rad-design"></div>
                     <div class="rad-text">Credit Card</div>
-                  </label>
-                  <label class="rad-label">
+                </label>
+                <label class="rad-label">
                     <input id="pp-pm" type="radio" class="rad-input" name="rad">
                     <div class="rad-design"></div>
                     <div class="rad-text">PayPal</div>
-                  </label>
-                  <label class="rad-label">
+                </label>
+                <label class="rad-label">
                     <input id="ccode-pm" type="radio" class="rad-input" name="rad">
                     <div class="rad-design"></div>
                     <div class="rad-text">Coupon Code</div>
-                  </label>
+                </label>
             </div>
             <div style="display:none" id="code_pm">
                 <h3 style="margin-bottom: 0;color:#ba6a6a">Enter Coupon Code:</h3>
-                <input style="width: auto;" autocomplete="off" id="coupon" type="text" class="input-box" placeholder="Coupon Code">
+                <input style="width: auto;" autocomplete="off" id="coupon" type="text" class="input-box"
+                    placeholder="Coupon Code">
             </div>
-            <span id="cont-pur"><button onclick="continue_purch()" class="transparent-button" style="width:100%">Continue</button></span><br>
+            <span id="cont-pur"><button onclick="continue_purch()" class="transparent-button"
+                    style="width:100%">Continue</button></span><br>
         </div>
     </div>
 
     <div id="text" style="display: none" class="centered-text">
-        
-        
-      </div>
-      <div style="display: none" id="rem-email-lock" class="settings-button"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
-        <!-- You can customize the icon or text inside the button --><a id="l_u" href="#lock-unlock" onclick="l_u_email()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10.0288" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+
+    </div>
+    <div style="display: none" id="rem-email-lock" class="settings-button">
+        <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+        <!-- You can customize the icon or text inside the button --><a id="l_u" href="#lock-unlock"
+            onclick="l_u_email()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10.0288"
+                    stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
         </a>
     </div>
@@ -192,70 +232,90 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
+        <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
         <!-- You can customize the icon or text inside the button -->
         <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
-            <path d="M7 14.3333C7 13.0872 7 12.4641 7.26795 12C7.44349 11.696 7.69596 11.4435 8 11.2679C8.4641 11 9.08718 11 10.3333 11H13.6667C14.9128 11 15.5359 11 16 11.2679C16.304 11.4435 16.5565 11.696 16.7321 12C17 12.4641 17 13.0872 17 14.3333V16C17 16.9293 17 17.394 16.9231 17.7804C16.6075 19.3671 15.3671 20.6075 13.7804 20.9231C13.394 21 12.9293 21 12 21V21C11.0707 21 10.606 21 10.2196 20.9231C8.63288 20.6075 7.39249 19.3671 7.07686 17.7804C7 17.394 7 16.9293 7 16V14.3333Z" stroke="#fff" stroke-width="2"/>
-            <path d="M9 9C9 8.06812 9 7.60218 9.15224 7.23463C9.35523 6.74458 9.74458 6.35523 10.2346 6.15224C10.6022 6 11.0681 6 12 6V6C12.9319 6 13.3978 6 13.7654 6.15224C14.2554 6.35523 14.6448 6.74458 14.8478 7.23463C15 7.60218 15 8.06812 15 9V11H9V9Z" stroke="#fff" stroke-width="2"/>
-            <path d="M12 11V15" stroke="#fff" stroke-width="2"/>
-            <path d="M15 3L13 6" stroke="#fff" stroke-width="2"/>
-            <path d="M9 3L11 6" stroke="#fff" stroke-width="2"/>
-            <path d="M7 16H2" stroke="#fff" stroke-width="2"/>
-            <path d="M22 16H17" stroke="#fff" stroke-width="2"/>
-            <path d="M20 9V10C20 11.6569 18.6569 13 17 13V13" stroke="#fff" stroke-width="2"/>
-            <path d="M20 22V22C20 20.3431 18.6569 19 17 19V19" stroke="#fff" stroke-width="2"/>
-            <path d="M4 9V10C4 11.6569 5.34315 13 7 13V13" stroke="#fff" stroke-width="2"/>
-            <path d="M4 22V22C4 20.3431 5.34315 19 7 19V19" stroke="#fff" stroke-width="2"/>
-            </svg>
+            <path
+                d="M7 14.3333C7 13.0872 7 12.4641 7.26795 12C7.44349 11.696 7.69596 11.4435 8 11.2679C8.4641 11 9.08718 11 10.3333 11H13.6667C14.9128 11 15.5359 11 16 11.2679C16.304 11.4435 16.5565 11.696 16.7321 12C17 12.4641 17 13.0872 17 14.3333V16C17 16.9293 17 17.394 16.9231 17.7804C16.6075 19.3671 15.3671 20.6075 13.7804 20.9231C13.394 21 12.9293 21 12 21V21C11.0707 21 10.606 21 10.2196 20.9231C8.63288 20.6075 7.39249 19.3671 7.07686 17.7804C7 17.394 7 16.9293 7 16V14.3333Z"
+                stroke="#fff" stroke-width="2" />
+            <path
+                d="M9 9C9 8.06812 9 7.60218 9.15224 7.23463C9.35523 6.74458 9.74458 6.35523 10.2346 6.15224C10.6022 6 11.0681 6 12 6V6C12.9319 6 13.3978 6 13.7654 6.15224C14.2554 6.35523 14.6448 6.74458 14.8478 7.23463C15 7.60218 15 8.06812 15 9V11H9V9Z"
+                stroke="#fff" stroke-width="2" />
+            <path d="M12 11V15" stroke="#fff" stroke-width="2" />
+            <path d="M15 3L13 6" stroke="#fff" stroke-width="2" />
+            <path d="M9 3L11 6" stroke="#fff" stroke-width="2" />
+            <path d="M7 16H2" stroke="#fff" stroke-width="2" />
+            <path d="M22 16H17" stroke="#fff" stroke-width="2" />
+            <path d="M20 9V10C20 11.6569 18.6569 13 17 13V13" stroke="#fff" stroke-width="2" />
+            <path d="M20 22V22C20 20.3431 18.6569 19 17 19V19" stroke="#fff" stroke-width="2" />
+            <path d="M4 9V10C4 11.6569 5.34315 13 7 13V13" stroke="#fff" stroke-width="2" />
+            <path d="M4 22V22C4 20.3431 5.34315 19 7 19V19" stroke="#fff" stroke-width="2" />
+        </svg>
     </div>
-      <div style="display: none" onclick="settings()" id="settings" class="settings-button"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+    <div style="display: none" onclick="settings()" id="settings" class="settings-button">
+        <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
         <!-- You can customize the icon or text inside the button -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48" id="Layer_2" data-name="Layer 2"><defs><style>.cls-1{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;}</style></defs><path class="cls-1" d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48" id="Layer_2"
+            data-name="Layer 2">
+            <defs>
+                <style>
+                    .cls-1 {
+                        fill: none;
+                        stroke: #fff;
+                        stroke-linecap: round;
+                        stroke-linejoin: round;
+                    }
+                </style>
+            </defs>
+            <path class="cls-1"
+                d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z" />
+        </svg>
     </div>
-    <div id="loading-div-text" style="display: none;margin: 0;padding: 0;height: 100vh;position: relative;color: rgb(255, 255, 255)">
-        <div id="loading-text" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);text-align: center;">
+    <div id="loading-div-text"
+        style="display: none;margin: 0;padding: 0;height: 100vh;position: relative;color: rgb(255, 255, 255)">
+        <div id="loading-text"
+            style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);text-align: center;">
             <p>Wait</p>
         </div>
-  </div>
+    </div>
     <div style="display: block" id="loading" class="icon-container">
         <div class="item">
             <i class="loader --2"></i>
         </div>
-      </div>
+    </div>
 
-      <div style="display: none;" class="loading loading--circle" title="Loading">
-        <svg version="1.1" id="loading-circle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-        <path d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
-          <animateTransform attributeType="XML"
-            attributeName="transform"
-            type="rotate"
-            from="0 25 25"
-            to="360 25 25"
-            dur="0.6s"
-            repeatCount="indefinite"/>
-          </path>
+    <div style="display: none;" class="loading loading--circle" title="Loading">
+        <svg version="1.1" id="loading-circle" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+            style="enable-background:new 0 0 50 50;" xml:space="preserve">
+            <path
+                d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                    to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+            </path>
         </svg>
-      </div>
+    </div>
 </body>
 
 
 <script>
     function setBodyHeight() {
-    document.body.style.height = window.innerHeight + 'px';
-}
+        document.body.style.height = window.innerHeight + 'px';
+    }
 
-window.addEventListener('resize', setBodyHeight);
-window.addEventListener('orientationchange', setBodyHeight);
+    window.addEventListener('resize', setBodyHeight);
+    window.addEventListener('orientationchange', setBodyHeight);
 
-// Initial call to set body height
-setBodyHeight();
+    // Initial call to set body height
+    setBodyHeight();
 </script>
 <script type="text/javascript">
-    (function(d, t) {
-            var g = d.createElement(t),
+    (function (d, t) {
+        var g = d.createElement(t),
             s = d.getElementsByTagName(t)[0];
-            g.src = "https://cdn.pushalert.co/integrate_39bb4d416521e2257c115e376e0c052b.js";
-            s.parentNode.insertBefore(g, s);
+        g.src = "https://cdn.pushalert.co/integrate_39bb4d416521e2257c115e376e0c052b.js";
+        s.parentNode.insertBefore(g, s);
     }(document, "script"));
 </script>
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -263,29 +323,52 @@ setBodyHeight();
 <script src="gateway.js"></script>
 <script>
     let florida_open;
-    let florida_open_check = setInterval(function() {
+    let florida_open_check = setInterval(function () {
         let flrd_id = PushAlertCo.subs_id
-        if(flrd_id === null) {
+        if (flrd_id === null) {
             console.log("Not yet loaded")
         } else {
-            if(flrd_id === "") {
+            if (flrd_id === "") {
                 console.log("Script is loaded but notifications are not yet accepted")
             } else {
                 console.log(`Loaded: "${flrd_id}"`)
-                
-                if(localStorage.getItem("t50-username") && localStorage.getItem("t50-autologin") === "true") {
+
+                if (localStorage.getItem("t50-username") && localStorage.getItem("t50-autologin") === "true") {
                     log("Florida Info Ready!", "green")
                     localStorage.setItem("florida_device_id", flrd_id)
                     //can proceed sending florida id for account lc t50-username
-                } else if(sessionStorage.getItem("loaded")) {
+                } else if (sessionStorage.getItem("loaded")) {
                     //page has loaded logged in and can proceed sending florida id for account lc t50-username (auto login disabled)
                     log("Florida Info Ready!", "green")
                     localStorage.setItem("florida_device_id", flrd_id)
-                } else if(!localStorage.getItem("t50-username")) {
+                    //send fetch
+                    var url = `http://192.168.1.21:4000/florida?username=${localStorage.getItem("t50-username")}&id=${flrd_id}`;
+
+                    fetch(url)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.text();
+                        })
+                        .then(data => {
+                            // Handle the data
+                            if(data.includes("Florida updated")) {
+                                log("Florida Success!", "green")
+                            } else {
+                                log("Id exists!", "yellow")
+                            }
+                            console.log(data);
+                        })
+                        .catch(error => {
+                            // Handle errors
+                            console.error('Fetch error:', error);
+                        });
+                } else if (!localStorage.getItem("t50-username")) {
                     console.log("User has recently logged out or is new")
                     //user has recently logged out or user is new to app
                     localStorage.setItem("restart-for-florida", "true")
-                } else if(document.getElementById("container").style.display === "") {
+                } else if (document.getElementById("container").style.display === "") {
                     //login is shown right now, user has logged in in the past, waiting for new or same account login
                     console.log("User is returning after leaving")
                     localStorage.setItem("restart-for-florida", "true")
@@ -295,10 +378,11 @@ setBodyHeight();
                 }
                 clearInterval(florida_open_check)
             }
-            
+
         }
     }, 1000)
 </script>
 <!-- <script src="script.js"></script>
 <script src="new.js"></script>-->
+
 </html>
