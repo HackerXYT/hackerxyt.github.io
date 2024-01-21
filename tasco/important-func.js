@@ -10,7 +10,7 @@ const date = currentDate.getDate();
 const formattedDate = `${dayOfWeek} ${date}, ${month}`;
 document.getElementById("button1-date").innerHTML = formattedDate
 function getnotes_num() {
-  const url = 'http://192.168.1.21:4000/tasco';
+  const url = 'https://evox-datacenter.onrender.com/tasco';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -161,7 +161,7 @@ function remove_task(name) {
   if(!name) {
     console.log("No label defined!")
   }
-  fetch(`http://192.168.1.21:4000/tasco?method=delete&username=${global_username}&day=${dayOfWeek}&taskname=${name}`)
+  fetch(`https://evox-datacenter.onrender.com/tasco?method=delete&username=${global_username}&day=${dayOfWeek}&taskname=${name}`)
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -207,7 +207,7 @@ function finalize_edit() {
   document.getElementById("task_edit_button").disabled = true
   const taskname = document.getElementById("task_edit_input").placeholder
   const newtaskname = document.getElementById("task_edit_input").value
-  fetch(`http://192.168.1.21:4000/tasco?method=edit&username=${global_username}&day=${dayOfWeek}&taskname=${taskname}&newtaskname=${newtaskname}`)
+  fetch(`https://evox-datacenter.onrender.com/tasco?method=edit&username=${global_username}&day=${dayOfWeek}&taskname=${taskname}&newtaskname=${newtaskname}`)
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
