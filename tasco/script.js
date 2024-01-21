@@ -42,8 +42,8 @@ function set(day) {
   document.getElementById(`${dayOfWeek.charAt(0).toUpperCase()}${dayOfWeek.slice(1).toLowerCase()}`).disabled = true;
   document.getElementById(`${dayOfWeek.charAt(0).toUpperCase()}${dayOfWeek.slice(1).toLowerCase()}`).selected = true
   const username = global_username
-  //https://evox-datacenter.onrender.com/tasco
-  fetch(`https://evox-datacenter.onrender.com/tasco?method=get&username=${username}&day=${dayOfWeek}`)
+  //http://192.168.1.21:4000/tasco
+  fetch(`http://192.168.1.21:4000/tasco?method=get&username=${username}&day=${dayOfWeek}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -60,8 +60,9 @@ function set(day) {
         const timeB = convertTimeToMinutes(b.time);
         return timeA - timeB;
       });
-
+      let taskcount = 0
       jsonData.tasks.forEach(task => {
+        taskcount = taskcount + 1
         const li = document.createElement('li');
         li.className = 'task-list__item';
 
@@ -83,6 +84,10 @@ function set(day) {
         label.className = 'form-check-label';
         label.setAttribute('for', task.label.toLowerCase().replace(/\s+/g, ''));
         label.textContent = task.label;
+        label.id = `task${taskcount.toString()}`;
+        label.onclick = function() {
+          tasco_options(task.label, this.id);
+      };
 
         div.appendChild(label);
         li.appendChild(div);
@@ -131,6 +136,7 @@ function set(day) {
             childElement.classList.add('strikethrough-text');
           });
         }
+        document.getElementById("loader-schedule").style.display = "none"
       });
 
       // Function to convert time in HH:mm format to minutes
@@ -208,7 +214,7 @@ function custom_task_add(day) {
 
 }
 function addtask(day_val, time_val, label_val, custom) {
-  const url = 'https://evox-datacenter.onrender.com/tasco';
+  const url = 'http://192.168.1.21:4000/tasco';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -249,7 +255,9 @@ function addtask(day_val, time_val, label_val, custom) {
           set(day_val)
           return;
         }
-        reload()
+        document.getElementById("loader-schedule").style.display = ""
+        document.getElementById("list").innerHTML = ""
+        set()
 
       }
     })
@@ -264,7 +272,7 @@ function reload() {
   document.getElementById("list").style.display = "none"
   document.getElementById("list").innerHTML = ""
   const username = global_username
-  fetch(`https://evox-datacenter.onrender.com/tasco?method=get&username=${username}&day=${dayOfWeek}`)
+  fetch(`http://192.168.1.21:4000/tasco?method=get&username=${username}&day=${dayOfWeek}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -362,7 +370,7 @@ function reload() {
 function customday(day) {
   document.getElementById("loading-screen").style.display = ""
   document.getElementById("main").style.display = "none"
-  document.getElementById("loading-text").innerHTML = `<svg width="40px" height="40px" version="1.1" id="loading-circle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+  document.getElementById("loading-text").innerHTML = `<br><p>Rebuilding Data</p><br><svg width="40px" height="40px" version="1.1" id="loading-circle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
   <path d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z" fill="#fff">
     <animateTransform attributeType="XML"
       attributeName="transform"

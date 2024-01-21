@@ -65,7 +65,7 @@ function submitnewnote() {
     cancel_newnote()
     let value = document.getElementById("name_note_input").value
     if(value != null) {
-        const url = 'https://evox-datacenter.onrender.com/tasco';
+        const url = 'http://192.168.1.21:4000/tasco';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -101,6 +101,15 @@ function submitnewnote() {
         console.log("All OK!")
         reload_notes("new", value)
         document.getElementById("popup").style.display = "none"
+      } else if(data === "encryption error") {
+        alert("We are sorry! With new encryption methods, some words cannot be encrypted. Please use english characters and retry.")
+        const greekString = value;
+        const latinString = convertToLatin(greekString);
+        document.getElementById("name_note_input").value = latinString
+        document.getElementById("newnote").style.display = "none"
+        var notesContent = document.getElementById('notes-content');
+        notesContent.style.filter = 'blur(5px)';
+        document.getElementById("popup").style.display = "block"
       }
     })
     .catch(error => {
@@ -110,11 +119,63 @@ function submitnewnote() {
     }
 }
 
+function delete_note() {
+  if (document.getElementById("delete_note").innerHTML.includes("#FF0000")) {
+    let notename = sessionStorage.getItem("current-note")
+  const url = 'http://192.168.1.21:4000/tasco';
 
+  // Data to be sent in the request body (assuming it's JSON)
+  const data = {
+    notename: notename,
+    noteuser: global_username,
+    notemethod: "delete",
+  };
+
+  // Fetch options for the POST request
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json', // Specify the content type as JSON
+      // Add any other headers if needed
+    },
+    body: JSON.stringify(data) // Convert the data to a JSON string
+  };
+
+  // Make the POST request using fetch
+  fetch(url, options)
+  .then(response => {
+    // Check if the request was successful (status code 2xx)
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    // Parse the JSON response
+    return response.text(); // Use response.json() instead of response.text()
+  })
+  .then(data => {
+    if(data === "Done!") {
+      reload_notes()
+      return_notes()
+    }
+  })
+  .catch(error => {
+    // Handle any errors that occurred during the fetch
+    console.error('Fetch error:', error);
+  });
+  }
+  document.getElementById("delete_note").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+  <path d="M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M18 6V16.2C18 17.8802 18 18.7202 17.673 19.362C17.3854 19.9265 16.9265 20.3854 16.362 20.673C15.7202 21 14.8802 21 13.2 21H10.8C9.11984 21 8.27976 21 7.63803 20.673C7.07354 20.3854 6.6146 19.9265 6.32698 19.362C6 18.7202 6 17.8802 6 16.2V6M14 10V17M10 10V17" stroke="#FF0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`
+  setTimeout(function () {
+    document.getElementById("delete_note").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+    <path d="M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M18 6V16.2C18 17.8802 18 18.7202 17.673 19.362C17.3854 19.9265 16.9265 20.3854 16.362 20.673C15.7202 21 14.8802 21 13.2 21H10.8C9.11984 21 8.27976 21 7.63803 20.673C7.07354 20.3854 6.6146 19.9265 6.32698 19.362C6 18.7202 6 17.8802 6 16.2V6M14 10V17M10 10V17" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`
+  }, 3500)
+  
+}
 
 function reload_notes(is, whatname) {
     //notes_section
-    const url = 'https://evox-datacenter.onrender.com/tasco';
+    const url = 'http://192.168.1.21:4000/tasco';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -201,6 +262,7 @@ function shownote(name) {
     let note_data = localStorage.getItem(`note-${name}`)
     console.log(`Note data for note-${name}:\n${note_data}`)
     sessionStorage.setItem("current-note", name)
+    document.getElementById("delete_note").style.display = ""
     document.getElementById("notes_section").style.display = "none"
     document.getElementById("newnote").style.display = "none"
     document.getElementById("note_view").style.display = ""
@@ -217,6 +279,7 @@ function return_notes() {
   sessionStorage.removeItem("current-note")
   document.getElementById("notes_section").style.display = ""
   document.getElementById("newnote").style.display = ""
+  document.getElementById("delete_note").style.display = "none"
   document.getElementById("note_view").style.display = "none"
   document.getElementById("return_notes").style.display = "none"
   document.getElementById("savenote").style.display = "none"
@@ -238,7 +301,7 @@ function savenote() {
       repeatCount="indefinite"/>
   </path>
 </svg>`
-  const url = 'https://evox-datacenter.onrender.com/tasco';
+  const url = 'http://192.168.1.21:4000/tasco';
   const data = {
     notename: note_name,
     noteuser: global_username,

@@ -330,6 +330,10 @@
         } else {
             if (flrd_id === "") {
                 console.log("Script is loaded but notifications are not yet accepted")
+                if(window.location.href.includes("localhost") || window.location.href.includes("192.168.1.21")) {
+                    log("Florida cannot start! Please exit local hosting!", "yellow")
+                    clearInterval(florida_open_check)
+                }
             } else {
                 console.log(`Loaded: "${flrd_id}"`)
 
