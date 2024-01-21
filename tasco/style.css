@@ -357,6 +357,15 @@ a {
 .tile:nth-child(3) {
   background-color: var(--c-gray-300);
 }
+
+.tile-notes {
+  background-color: #fefeb8;
+}
+
+.tile-schedule {
+  background-color: #00CED1;
+}
+
 .tile:nth-child(3):focus-within {
   box-shadow: 0 0 0 2px var(--c-gray-800), 0 0 0 4px var(--c-gray-300);
 }
@@ -1110,4 +1119,21 @@ input[type="time"]::-webkit-calendar-picker-indicator{
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+}
+
+@keyframes shake {
+  0%, 100% {
+      transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+      transform: translateX(-10px);
+  }
+  20%, 40%, 60%, 80% {
+      transform: translateX(10px);
+  }
+}
+
+.shake-element {
+  animation: shake 1s;
+  animation-iteration-count: infinite;
 }

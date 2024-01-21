@@ -11,15 +11,26 @@ document.getElementById("sidebar").style.display = "none"
 
 
 function schedule() {
-  document.getElementById("back").style.display = "none"
+  let sort_schedule = localStorage.getItem("schedule-sort")
+  if (!sort_schedule) {
+    localStorage.setItem("schedule-sort", 1)
+  } else {
+    localStorage.setItem("schedule-sort", (Number(sort_schedule) + 1).toString())
+  }
+
+  //document.getElementById("back").style.display = "none"
+  $("#back").fadeOut("slow")
 
   document.getElementById("logo").src = "home.svg"
   document.getElementById("logo-icon").onclick = home;
   setTimeout(function () {
-    document.getElementById("main-content").style.display = "none"
-    document.getElementById("schedule-content").style.display = "block"
+    //document.getElementById("main-content").style.display = "none"
+    $("#main-content").fadeOut("fast", function () {
+      $("#schedule-content").fadeIn("fast")
+    })
+    //document.getElementById("schedule-content").style.display = "block"
     if (sessionStorage.getItem("schedule-saved")) {
-      document.getElementById("schedule-content").innerHTML = sessionStorage.getItem("schedule-saved")
+      set()
       sessionStorage.removeItem("schedule-saved")
     } else {
       set()
@@ -27,9 +38,20 @@ function schedule() {
 
   }, 200)
 }
-function set(day) {
+function set(day, custom) {
   if (day) {
-    dayOfWeek = day.toUpperCase();
+    if (day === daysOfWeek[currentDate.getDay()]) {
+      console.log(`${day} = ${daysOfWeek[currentDate.getDay()]}`)
+      custom = "false"
+      dayOfWeek = day.toUpperCase();
+      sessionStorage.removeItem("custom-day")
+    } else {
+      sessionStorage.setItem("custom-day", "true")
+      dayOfWeek = day.toUpperCase();
+    }
+
+  } else {
+    sessionStorage.removeItem("custom-day")
   }
   var weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
@@ -52,6 +74,8 @@ function set(day) {
     })
     .then(data => {
       const jsonData = data;
+
+      document.getElementById("list").innerHTML = ""
       const taskList = document.getElementById('list');
 
       // Sort tasks by time
@@ -85,9 +109,9 @@ function set(day) {
         label.setAttribute('for', task.label.toLowerCase().replace(/\s+/g, ''));
         label.textContent = task.label;
         label.id = `task${taskcount.toString()}`;
-        label.onclick = function() {
+        label.onclick = function () {
           tasco_options(task.label, this.id);
-      };
+        };
 
         div.appendChild(label);
         li.appendChild(div);
@@ -112,32 +136,33 @@ function set(day) {
 
       }
 
-      // Convert the current time to minutes for easy comparison
-      var currentTimeInMinutes = convertTimeToMinutes(currentTime);
+      if (!custom || custom === "false") {
+        console.log("Day isn't custom set")
+        // Convert the current time to minutes for easy comparison
+        var currentTimeInMinutes = convertTimeToMinutes(currentTime);
+        // Get all form-check elements
+        var formCheckElements = document.querySelectorAll('.form-check');
+        // Loop through each form-check element
+        formCheckElements.forEach(function (element) {
+          // Get the time from the form-check element's ID
+          var taskTime = element.id;
 
-      // Get all form-check elements
-      var formCheckElements = document.querySelectorAll('.form-check');
+          // Convert the task time to minutes for easy comparison
+          var taskTimeInMinutes = convertTimeToMinutes(taskTime);
 
-      // Loop through each form-check element
-      formCheckElements.forEach(function (element) {
-        // Get the time from the form-check element's ID
-        var taskTime = element.id;
+          // Check if the task time is before the current time
+          if (taskTimeInMinutes < currentTimeInMinutes) {
+            // Get all child elements inside the form-check element
+            var childElements = element.querySelectorAll('*');
 
-        // Convert the task time to minutes for easy comparison
-        var taskTimeInMinutes = convertTimeToMinutes(taskTime);
-
-        // Check if the task time is before the current time
-        if (taskTimeInMinutes < currentTimeInMinutes) {
-          // Get all child elements inside the form-check element
-          var childElements = element.querySelectorAll('*');
-
-          // Add the 'strikethrough-text' class to each child element
-          childElements.forEach(function (childElement) {
-            childElement.classList.add('strikethrough-text');
-          });
-        }
-        document.getElementById("loader-schedule").style.display = "none"
-      });
+            // Add the 'strikethrough-text' class to each child element
+            childElements.forEach(function (childElement) {
+              childElement.classList.add('strikethrough-text');
+            });
+          }
+          document.getElementById("loader-schedule").style.display = "none"
+        });
+      }
 
       // Function to convert time in HH:mm format to minutes
       function convertTimeToMinutes(time) {
@@ -162,10 +187,9 @@ function set(day) {
 }
 
 //flatpickr("#time_set", {
-//    enableTime: true,
-//    noCalendar: true,
-//    dateFormat: "H:i",
-//    time_24hr: true
+//  enableTime: true,
+//  noCalendar: true,
+//  dateFormat: "h:i K"
 //});
 
 
@@ -195,6 +219,13 @@ function task_add() {
     console.log(`Time value: ${time_v}`)
     console.log(`Label value: ${label_v}`)
     console.log("Error, fix inputs")
+    if (time_v === "") {
+      shake("time_set")
+    } else if (label_v === "") {
+      shake("task_label")
+    } else {
+      shake("time_set")
+    }
   }
 
 }
@@ -252,7 +283,7 @@ function addtask(day_val, time_val, label_val, custom) {
         console.log("Done!")
         if (custom === "true") {
           document.getElementById("list").innerHTML = ``
-          set(day_val)
+          set(day_val, "true")
           return;
         }
         document.getElementById("loader-schedule").style.display = ""
@@ -368,8 +399,10 @@ function reload() {
 }
 
 function customday(day) {
-  document.getElementById("loading-screen").style.display = ""
-  document.getElementById("main").style.display = "none"
+  sessionStorage.setItem("custom-day", "true")
+
+  //document.getElementById("loading-screen").style.display = ""
+  //document.getElementById("main").style.display = "none"
   document.getElementById("loading-text").innerHTML = `<br><p>Rebuilding Data</p><br><svg width="40px" height="40px" version="1.1" id="loading-circle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
   <path d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z" fill="#fff">
     <animateTransform attributeType="XML"
@@ -381,13 +414,22 @@ function customday(day) {
       repeatCount="indefinite"/>
   </path>
 </svg>`
+  $("#main").fadeOut("fast")
+  $("#loading-screen").fadeIn("fast")
+  
   document.getElementById("list").innerHTML = ``
-  set(day)
-  document.getElementById("todays-date-schedule").innerHTML = day
+  set(day, "true")
+  //21 Sun, i want Tuesday
+  //currentday = getDayNumber("SUNDAY")
+  let datenum = getFormattedDate(day)
+  document.getElementById("todays-date-schedule").innerHTML = `${day} ${datenum}`
   document.getElementById("task-add-button").innerHTML = `<button onclick="custom_task_add('${day}')" style="margin-bottom: 30px" class="tasco-button">Submit</button>`
   setTimeout(function () {
-    document.getElementById("loading-screen").style.display = "none"
-    document.getElementById("main").style.display = "block"
+    $("#loading-screen").fadeOut("fast", function() {
+      $("#main").fadeIn("fast")
+    })
+    //document.getElementById("loading-screen").style.display = "none"
+    //document.getElementById("main").style.display = "block"
   }, 1300)
 }
 
@@ -398,4 +440,80 @@ function change_day() {
   //console.log("Selected Text:", selectedOption.text);
   let day = selectedOption.text
   customday(day)
+}
+
+function getDayNumber(day) {
+  // Convert the day to uppercase
+  const uppercasedDay = day.toUpperCase();
+
+  // Define an object with day names and their corresponding numbers
+  const dayNumbers = {
+    'SUNDAY': 7,
+    'MONDAY': 1,
+    'TUESDAY': 2,
+    'WEDNESDAY': 3,
+    'THURSDAY': 4,
+    'FRIDAY': 5,
+    'SATURDAY': 6
+  };
+
+  // Check if the input day exists in the dayNumbers object
+  if (dayNumbers.hasOwnProperty(uppercasedDay)) {
+    // Return the day number
+    return dayNumbers[uppercasedDay];
+  } else {
+    // Return an error message for invalid input
+    return 'Invalid day input. Please provide a valid day.';
+  }
+}
+function getDayOfMonth() {
+  // Create a new Date object for the current date
+  const currentDate = new Date();
+
+  // Get the day of the month
+  const dayOfMonth = currentDate.getDate();
+
+  // Return the day of the month
+  return dayOfMonth;
+}
+
+function getFormattedDate(day) {
+  // Convert the day to uppercase
+  const uppercasedDay = day.toUpperCase();
+
+  // Define an object with day names and their corresponding numbers
+  const dayNumbers = {
+    'SUNDAY': 0,
+    'MONDAY': 1,
+    'TUESDAY': 2,
+    'WEDNESDAY': 3,
+    'THURSDAY': 4,
+    'FRIDAY': 5,
+    'SATURDAY': 6
+  };
+
+  // Define an array with month names
+  const monthNames = [
+    'January', 'February', 'March', 'April',
+    'May', 'June', 'July', 'August',
+    'September', 'October', 'November', 'December'
+  ];
+
+  // Create a new Date object for the current date
+  const currentDate = new Date();
+
+  // Calculate the difference in days between the current day and the target day
+  const dayDifference = dayNumbers[uppercasedDay] - currentDate.getDay();
+
+  // Set the date to the next occurrence of the target day
+  currentDate.setDate(currentDate.getDate() + dayDifference);
+
+  // Get the day of the month
+  const dayOfMonth = currentDate.getDate();
+
+  // Get the month name
+  const monthName = monthNames[currentDate.getMonth()];
+
+  // Return the formatted date string
+  return `${dayOfMonth}, ${monthName}`;
 }

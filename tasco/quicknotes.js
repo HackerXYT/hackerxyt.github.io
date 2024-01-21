@@ -1,8 +1,18 @@
 function quicknotes() {
-  document.getElementById("back").style.display = "none"
+  let sort_notes = localStorage.getItem("notes-sort")
+  if(!sort_notes) {
+    localStorage.setItem("notes-sort", 1)
+  } else {
+    localStorage.setItem("notes-sort", (Number(sort_notes) + 1).toString())
+  }
+  //document.getElementById("back").style.display = "none"
+  $("#back").fadeOut("slow")
     setTimeout(function() {
-        document.getElementById("main-content").style.display = "none"
-        document.getElementById("notes-content").style.display = "block"
+      $("#main-content").fadeOut("fast", function() {
+        $("#notes-content").fadeIn("fast")
+      })
+        //document.getElementById("main-content").style.display = "none"
+        //document.getElementById("notes-content").style.display = "block"
         document.getElementById("logo").src = "home.svg"
         document.getElementById("logo-icon").onclick = home;
         if(sessionStorage.getItem("notes-saved")) {
@@ -262,12 +272,19 @@ function shownote(name) {
     let note_data = localStorage.getItem(`note-${name}`)
     console.log(`Note data for note-${name}:\n${note_data}`)
     sessionStorage.setItem("current-note", name)
-    document.getElementById("delete_note").style.display = ""
-    document.getElementById("notes_section").style.display = "none"
-    document.getElementById("newnote").style.display = "none"
-    document.getElementById("note_view").style.display = ""
-    document.getElementById("return_notes").style.display = ""
-    document.getElementById("savenote").style.display = ""
+    //document.getElementById("delete_note").style.display = ""
+    //document.getElementById("notes_section").style.display = "none"
+    $("#newnote").fadeOut("fast")
+    $("#notes_section").fadeOut("fast",function() {
+      $("#delete_note").fadeIn("fast")
+      $("#note_view").fadeIn("fast")
+      $("#return_notes").fadeIn("fast")
+      $("#savenote").fadeIn("fast")
+    })
+    //document.getElementById("newnote").style.display = "none"
+    //document.getElementById("note_view").style.display = ""
+    //document.getElementById("return_notes").style.display = ""
+    //document.getElementById("savenote").style.display = ""
     document.getElementById("textarea").value = note_data
     document.getElementById("note_name_view").innerHTML = name
     //on exit clear id notes_section set loading as innerhtml, show notes_section and reload_notes
@@ -277,12 +294,20 @@ function shownote(name) {
 function return_notes() {
   //Go back to main notes view (The view where it shows all the notes)
   sessionStorage.removeItem("current-note")
-  document.getElementById("notes_section").style.display = ""
-  document.getElementById("newnote").style.display = ""
-  document.getElementById("delete_note").style.display = "none"
-  document.getElementById("note_view").style.display = "none"
-  document.getElementById("return_notes").style.display = "none"
-  document.getElementById("savenote").style.display = "none"
+  //document.getElementById("notes_section").style.display = ""
+  //document.getElementById("newnote").style.display = ""
+  //document.getElementById("delete_note").style.display = "none"
+  //document.getElementById("note_view").style.display = "none"
+  //document.getElementById("return_notes").style.display = "none"
+  //document.getElementById("savenote").style.display = "none"
+  $("#note_view").fadeOut("fast", function() {
+    $("#notes_section").fadeIn("fast")
+    $("#return_notes").fadeOut("fast")
+    $("#delete_note").fadeOut("fast")
+    $("#savenote").fadeOut("fast", function() {
+      $("#newnote").fadeIn("fast")
+    })
+  })
 }
 
 function savenote() {

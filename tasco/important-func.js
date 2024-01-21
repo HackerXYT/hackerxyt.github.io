@@ -53,21 +53,43 @@ getnotes_num()
 
 window.addEventListener('load', function () {
   document.body.style.overflow = 'auto';
-  document.getElementById("loading-screen").style.display = "none"
-  document.getElementById("main").style.display = "block"
+  $("#loading-screen").fadeOut("slow")
+  //document.getElementById("loading-screen").style.display = "none"
+  $("#main").fadeIn("slow")
+  //document.getElementById("main").style.display = "block"
+  sort_services()
 });
 
 function home() {
-  document.getElementById("back").style.display = ""
+  sort_services()
+  getnotes_num()
+  $("#back").fadeIn("slow")
+  //document.getElementById("back").style.display = ""
   if (document.getElementById("schedule-content").style.display != "none") {
     //schedule page is open, so:
     let scheduleinner = document.getElementById("schedule-content").innerHTML
     sessionStorage.setItem("schedule-saved", scheduleinner)//INNER HTML IS SAVED
-    document.getElementById("todays-schedule").innerHTML = ""
+    document.getElementById("todays-schedule").innerHTML = `<div id="loader-schedule" class="loader loader--style2" title="1">
+    <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px"
+      viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+      <path fill="#fff"
+        d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+        <animateTransform attributeType="xml" attributeName="transform" type="rotate"
+          from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+      </path>
+    </svg>
+  </div>${document.getElementById("todays-schedule").innerHTML}`
+    document.getElementById("list").style.display = "none"
     document.getElementById("logo").src = "tasco-close.png"
     document.getElementById("logo-icon").onclick = "";
-    document.getElementById("main-content").style.display = ""
-    document.getElementById("schedule-content").style.display = "none"
+    $("#schedule-content").fadeOut("fast", function() {
+      $("#main-content").fadeIn("slow")
+    })
+    
+    //document.getElementById("main-content").style.display = ""
+    
+    //document.getElementById("schedule-content").style.display = "none"
   }
   if (document.getElementById("notes-content").style.display != "none") {
     //notes page is open, so:
@@ -75,8 +97,13 @@ function home() {
     //document.getElementById("todays-schedule").innerHTML = ""
     document.getElementById("logo").src = "tasco-close.png"
     document.getElementById("logo-icon").onclick = "";
-    document.getElementById("main-content").style.display = ""
-    document.getElementById("notes-content").style.display = "none"
+    //document.getElementById("main-content").style.display = ""
+    $("#notes-content").fadeOut("fast", function() {
+      $("#main-content").fadeIn("slow")
+    })
+    
+    //document.getElementById("notes-content").style.display = "none"
+    
   }
   console.log("Going home")
 
@@ -172,7 +199,12 @@ function remove_task(name) {
     console.log(data)
     document.getElementById("list").innerHTML = ""
     document.getElementById("loader-schedule").style.display = ""
-    set()
+    if(sessionStorage.getItem("custom-day")) {
+      set(dayOfWeek, "true")
+    } else {
+      set()
+    }
+    
     document.getElementById("schedule-content").style.filter = '';
     document.getElementById("tasco_options").style.display = "none"
   }).catch(error => {
@@ -218,7 +250,11 @@ function finalize_edit() {
     console.log(data)
     document.getElementById("list").innerHTML = ""
     document.getElementById("loader-schedule").style.display = ""
-    set()
+    if(sessionStorage.getItem("custom-day")) {
+      set(dayOfWeek, "true")
+    } else {
+      set()
+    }
     document.getElementById("schedule-content").style.filter = '';
 
     document.getElementById("tasco_options").style.display = "none"
@@ -240,3 +276,63 @@ function cancel_options() {
   document.getElementById("task_edit_button").style.display = "none"
 }
 
+function sort_services() {
+  let sort_notes = localStorage.getItem("notes-sort")
+  let sort_schedule = localStorage.getItem("schedule-sort")
+  if(!sort_schedule || !sort_notes) {
+    console.log("Sorting System Doesn't Exist Yet")
+    return;
+  } else {
+    console.log("Sorting System Exists")
+    if(Number(sort_notes) > Number(sort_schedule)) { //Notes are used more than schedule
+      if(sessionStorage.getItem("changed") === "schedule->notes") { //schedule span has been changed to notes (service1 = notes, service2 = schedule)
+        //correct position
+      } else if(sessionStorage.getItem("changed") === "schedule->schedule") {//schedule span has been changed to schedule (service1 = schedule, service2 = notes)
+        let schedule_default_span = document.getElementById("service1").innerHTML
+        let notes_default_span = document.getElementById("service2").innerHTML
+        document.getElementById("service1").innerHTML = notes_default_span
+        document.getElementById("service2").innerHTML = schedule_default_span
+      }
+      sessionStorage.setItem("changed", "schedule->notes")
+      console.log("Notes are used more than schedule")
+      //let schedule_default_span = document.getElementById("service1").innerHTML
+      //let notes_default_span = document.getElementById("service2").innerHTML
+      //document.getElementById("service1").innerHTML = notes_default_span
+      //document.getElementById("service2").innerHTML = schedule_default_span
+    } else if(Number(sort_notes) == Number(sort_schedule)) {
+      console.log("Services are sorted equally")
+    } else {
+      if(sessionStorage.getItem("changed") === "schedule->notes") { //schedule span has been changed to notes (service1 = notes, service2 = schedule)
+        let schedule_default_span = document.getElementById("service2").innerHTML
+        let notes_default_span = document.getElementById("service1").innerHTML
+        document.getElementById("service1").innerHTML = schedule_default_span
+        document.getElementById("service2").innerHTML = notes_default_span
+      } else if(sessionStorage.getItem("changed") === "schedule->schedule") {//schedule span has been changed to schedule (service1 = schedule, service2 = notes)
+        //corect position
+      }
+      sessionStorage.setItem("changed", "schedule->schedule")
+      console.log("Schedule is used more than notes")
+      
+    }
+  }
+}
+
+function shake(elemid) {
+  var element = document.getElementById(elemid);
+
+    // Add the shake class to start the animation
+    function startShake() {
+        element.classList.add('shake-element');
+    }
+
+    // Remove the shake class to stop the animation
+    function stopShake() {
+        element.classList.remove('shake-element');
+    }
+
+    // Example: Start shaking after a delay (e.g., 2 seconds)
+    setTimeout(startShake, 100);
+    
+    // Example: Stop shaking after another delay (e.g., 5 seconds)
+    setTimeout(stopShake, 700);
+}
