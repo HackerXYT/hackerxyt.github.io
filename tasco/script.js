@@ -64,7 +64,7 @@ function set(day, custom) {
   document.getElementById(`${dayOfWeek.charAt(0).toUpperCase()}${dayOfWeek.slice(1).toLowerCase()}`).disabled = true;
   document.getElementById(`${dayOfWeek.charAt(0).toUpperCase()}${dayOfWeek.slice(1).toLowerCase()}`).selected = true
   const username = global_username
-  //https://evox-datacenter.onrender.com/tasco
+  //https://evox-datacenter.onrender.com/tasco || httpe://192.168.1.21:4000/tasco -> added "e"
   fetch(`https://evox-datacenter.onrender.com/tasco?method=get&username=${username}&day=${dayOfWeek}`)
     .then(response => {
       if (!response.ok) {
@@ -86,6 +86,54 @@ function set(day, custom) {
       });
       let taskcount = 0
       jsonData.tasks.forEach(task => {
+        if(task.type === "school") {
+          let difficulty;
+          console.log(task.label,"Task Is School Type")
+          if(task.difficulty === "easy") {
+            difficulty = "#006400"
+          } else if(task.difficulty === "medium") {
+            difficulty = "#A0522D"
+          } else if(task.difficulty === "hard") {
+            difficulty = "#8B0000"
+          } else if(task.difficulty === "brake") {
+            difficulty = "#06719e"
+          } else {
+            console.log("School task set operation failed!")
+            return;
+          }
+          taskcount = taskcount + 1
+          const li = document.createElement('li');
+          li.className = 'task-list__item';
+
+          const div = document.createElement('div');
+          div.className = 'form-check';
+          div.id = task.time
+
+          const modernDarkBox = document.createElement('div');
+          modernDarkBox.className = 'modern-dark-box';
+          modernDarkBox.style.backgroundColor = difficulty
+
+          const p = document.createElement('p');
+          p.className = 'time';
+          p.textContent = task.time;
+
+          modernDarkBox.appendChild(p);
+          div.appendChild(modernDarkBox);
+
+          const label = document.createElement('label');
+          label.className = 'form-check-label';
+          label.setAttribute('for', task.label.toLowerCase().replace(/\s+/g, ''));
+          label.textContent = task.label;
+          label.id = `task${taskcount.toString()}`;
+          label.onclick = function () {
+            tasco_options(task.label, this.id);
+          };
+
+          div.appendChild(label);
+          li.appendChild(div);
+          taskList.appendChild(li);
+          return;
+        }
         taskcount = taskcount + 1
         const li = document.createElement('li');
         li.className = 'task-list__item';
