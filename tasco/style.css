@@ -28,10 +28,13 @@ body {
   padding-top: 3vw;
   padding-bottom: 3vw;
   justify-content: center;
-  touch-action: manipulation;
+  -webkit-touch-callout: none; /* Disable the callout (long tap) menu */
+  -webkit-touch-action: manipulation; /* Disable double-tap-to-zoom, pinch-to-zoom, and long-tap-and-hold-to-drag */
+  touch-action: manipulation; /* Standardized property */
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+  user-drag: none;
 }
 
 *,
