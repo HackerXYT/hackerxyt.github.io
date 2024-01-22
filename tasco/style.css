@@ -1057,7 +1057,7 @@ input[type="time"]::-webkit-calendar-picker-indicator{
   width: 350px;
   height: auto;
   padding: 20px;
-  background: radial-gradient(circle, #000000, #180101);
+  background: radial-gradient(circle, #000000, #2e2e2e);
   color: white;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
