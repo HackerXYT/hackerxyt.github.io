@@ -12,7 +12,7 @@ function docready() {
     let acc = localStorage.getItem("t50pswd")
     let pswd = atob(acc)
     if(loggedin != null && autologin === "true") {
-        const url = `https://evox-datacenter.onrender.com/accounts?email=${loggedin}&password=${pswd}`;
+        const url = `https://evox-datacenter.onrender.com/accounts?email=${loggedin}&password=${pswd}&autologin=true`;
 
     fetch(url)
       .then(response => {
