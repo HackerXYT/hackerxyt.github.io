@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="secondary.css">
 </head>
 <script>
-    sessionStorage.clear()
+    //sessionStorage.clear()
 </script>
 <style>
     .gallery-container {
@@ -68,6 +68,97 @@
     <img style="display: none;user-select: none;" id="bottom-logo-start" src="footer-in.png" alt="Another Logo"
         class="bottom-logo">
     <div id="popup" class="popup">
+        <div id="account_options" style="display: none">
+            <div id="main_settings">
+            <span onclick="return_settings()" class="popup-close"><svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+                <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#b2b2b2" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg></span>
+            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Account Options</h3>
+            <div style="margin: 0 auto;
+            position: relative;" class="user-circle">
+                <img onclick="showUploadBox()" id="usr-img-opt" src="t50-img.png" alt="User Image">
+            </div>
+            <div style="height: auto;
+            margin: 0 auto;
+            padding: 10px;
+            position: relative;text-align: center;">
+                <div class="user-details">
+                    <div id="usr-name-opt" class="user-name">Error</div>
+                    <div id="usr-email-opt" class="user-email">error@example.com</div>
+                </div>
+            </div>
+            <div>
+                <a onclick="username_email_icon_show()" href="#" class="apple-button">Username & Emails<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"/>
+                    </svg></a><br>
+            <a onclick="pswd_secure()" href="#" class="apple-button">Password & Security<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"/>
+                </svg></a>
+            </div>
+            </div>
+            <div id="username_email_icon_show" style="display:none">
+                <span onclick="return_to_options('usr-emails')" style="position: fixed;
+                left: 30px;
+                right: 30px;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;"><svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+                    <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#b2b2b2" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg></span>
+                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Username & Emails</h3>
+                <a href="#" style="height: 50%" class="apple-button">Username<span id="options_section_1_username"></span><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"/>
+                    </svg></a>
+                    <p style="margin: 6px" class="user-email">EMAIL & PHONE NUMBERS</p>
+                    <a href="#" id="options_section_1_email" style="height: 50%" class="apple-button"></a>
+                    <p style="margin: 6px" class="user-email">These email addresses and phone numbers can be used to sign in. They can also be used to reach you with Chatvia, Evox® and more.</p>
+                    <a href="#" style="height: 50%" class="apple-button">Date of birth<span id="options_section_1_birthdate">Unknown</span></a>
+                    <p style="margin: 6px" class="user-email">SUBSCRIPTIONS</p>
+                    <a href="#" style="height: 50%" class="apple-button">Announcements<span id="options_section_1_announcements">Enabled</span></a>
+                    <p style="margin: 6px" class="user-email">Receive Evox® emails and communications including announcements, marketing, recommendations and updates about Evox products, services and software.</p>
+            </div>
+            <div id="pswd_secure" style="display:none">
+                <span onclick="return_to_options('security')" style="position: fixed;
+                left: 30px;
+                right: 30px;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;"><svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+                    <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#b2b2b2" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg></span>
+                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Password & Security</h3>
+                <a href="#" id="change_password" onclick="change_password()" style="height: 50%;color: #0083fe" class="apple-button">Change Password<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"/>
+                    </svg></a>
+                    <a href="#" style="height: 50%" class="apple-button">Sign in with Evox®<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"/>
+                        </svg></a>
+                    <p style="margin: 6px" class="user-email">Your Evox Account can be used to sign in to apps and websites.</p>
+                    <a href="#" style="height: 50%;" class="apple-button">Two Factor Authentication<span id="2fa_status" style="position: absolute;
+                        right: 13%;">Off</span></a>
+                    <p style="margin: 6px" class="user-email">An application is used to verify your identity when signing in. This prevents your data from being exposed.</p>
+                    <p style="margin: 6px" class="user-email">TRUSTED EMAILS</p>
+                    <a href="#" style="height: 50%" id="trusted_email" class="apple-button">email@example.com</a>
+                    <a href="#" style="height: 50%" class="apple-button">Account Recovery<span>Set Up</span><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"/>
+                        </svg></a>
+                    <p style="margin: 6px" class="user-email">If you forget your password, you have a few options to recover your data.</p>
+            </div>
+        </div>
+        <div id="main_popup_settings">
         <span onclick="close_popup()" class="popup-close"><svg onclick="close_popup()"
                 xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -76,17 +167,18 @@
             </svg></span>
         <!-- Content of the popup -->
         <h2 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Evox Gateway</h2>
-        <div class="user-info">
-            <div class="user-circle">
-                <img id="usr-img" src="t50-img.png" alt="User Image">
+            <div id="user-info" onclick="show_account()" class="user-info">
+                <div class="user-circle">
+                    <img id="usr-img" src="t50-img.png" alt="User Image">
+                </div>
+                <div class="user-details">
+                    <div id="usr-name" class="user-name">Error</div>
+                    <div id="usr-email" class="user-email">error@example.com</div>
+                </div>
             </div>
-            <div class="user-details">
-                <div id="usr-name" class="user-name">Error</div>
-                <div id="usr-email" class="user-email">error@example.com</div>
-            </div>
-        </div>
+        
         <h3 style="margin-bottom: 0;">App Management</h3>
-        <div class="app-manage">
+        <div style="display:none" class="app-manage">
             <img src="EvoxNotes.png" alt="Image" class="app-small">
             <p id="notes-own-ui-status">err</p>
         </div>
@@ -95,6 +187,10 @@
             <p id="images-own-ui-status">err</p>
         </div>
         <div class="app-manage">
+            <img src="../tasco/tasco-app.png" alt="Image" class="app-small">
+            <p>Owned</p>
+        </div>
+        <div style="display:none" class="app-manage">
             <img src="chatvia-img.png" alt="Image" class="app-small">
             <p id="chatvia-own-ui-status">err</p>
         </div>
@@ -118,6 +214,7 @@
                         d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8" />
                 </svg></a>
         </p>
+    </div>
     </div>
     <div id="buy-products" class="popup" style="background-color: #333; color: #dbdbdb">
         <span onclick="buy_back()" style="position: absolute;top: 10px;left: 10px;cursor: pointer;">
@@ -296,6 +393,7 @@
             </path>
         </svg>
     </div>
+    <input type="file" id="upload-box" accept="image/*" onchange="handleFileSelect()">
 </body>
 
 

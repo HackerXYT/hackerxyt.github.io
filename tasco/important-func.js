@@ -58,9 +58,12 @@ window.addEventListener('load', function () {
   $("#main").fadeIn("slow")
   //document.getElementById("main").style.display = "block"
   sort_services()
+  updateGreeting()
+  setInterval(updateGreeting, 10000);
 });
 
 function home() {
+  show_hide_stats("reload")
   sort_services()
   getnotes_num()
   $("#back").fadeIn("slow")
@@ -335,4 +338,41 @@ function shake(elemid) {
     
     // Example: Stop shaking after another delay (e.g., 5 seconds)
     setTimeout(stopShake, 700);
+}
+
+function updateGreeting() {
+  const greetingElement = document.getElementById('greeting');
+  const now = new Date();
+  const hours = now.getHours();
+  // Determine the appropriate greeting based on the current time
+  let greeting;
+  if (hours < 12) {
+      greeting = 'Good morning,';
+  } else if (hours < 18) {
+      greeting = 'Good afternoon,';
+  } else {
+      greeting = 'Good evening,';
+  }
+
+  // Update the inner HTML of the "greeting" element
+  greetingElement.innerHTML = `${greeting} ${global_username}.`;
+}
+
+function show_hide_stats(pre) {
+  if(pre) {
+    if(pre === "reload") {
+      document.getElementById("schedule_stats").innerHTML = localStorage.getItem("schedule-sort")
+      document.getElementById("notes_stats").innerHTML = localStorage.getItem("notes-sort")
+      return;
+    }
+  }
+  if(document.getElementById("stats").style.display === "none") {
+    document.getElementById("schedule_stats").innerHTML = localStorage.getItem("schedule-sort")
+    document.getElementById("notes_stats").innerHTML = localStorage.getItem("notes-sort")
+    $("#stats").fadeIn("slow")
+    $("#show_hide_stats").html("Hide Stats")
+  } else {
+    $("#stats").fadeOut("slow")
+    $("#show_hide_stats").html("Show Stats")
+  }
 }

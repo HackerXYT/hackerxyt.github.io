@@ -120,7 +120,7 @@
 			</div>
 			<div id="main-content" class="app-body-main-content">
 				<section class="service-section">
-					<h2>Services</h2>
+					<h2 id="greeting">Services</h2>
 					<div id="services" class="tiles">
 						<span id="service1">
 							<article class="tile tile-schedule">
@@ -228,7 +228,11 @@
 						</span>
 					</div>
 					<div class="service-section-footer">
-						<p>Tasco Sorts Services By The Ones Most Used.</p>
+						<p>Tasco Sorts Services By The Ones Most Used.</p><a href="#" id="show_hide_stats" onclick="show_hide_stats()">Show Stats</a>
+						<br><p id="stats" style="display: none">
+						Schedule used <span id="schedule_stats"></span> times<br>
+						Quick Notes used <span id="notes_stats"></span> times
+						</p>
 					</div>
 				</section>
 				<section id="transfers" class="transfer-section">

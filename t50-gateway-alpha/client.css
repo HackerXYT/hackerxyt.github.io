@@ -357,7 +357,8 @@ a {
 }
 
 .user-info {
-  border: none;
+  background: radial-gradient(circle, #400000, #000000);
+  border-radius: 7.5px;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -366,8 +367,11 @@ a {
 .user-circle {
   width: 60px;
   height: 60px;
-  border-radius: 50%;
+  border-radius: 180%;
   overflow: hidden;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
 }
 
 .user-circle img {
@@ -468,3 +472,39 @@ a {
   color: hsl(0, 0%, 40%);
 }
 
+.apple-button {
+  background-color: #333;
+  border: none;
+  color: #fff;
+  padding: 15px 30px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  margin: 6px;
+  width: 75%;
+}
+
+.apple-button svg {
+  position: absolute;
+  right: 10%;
+}
+
+.apple-button span {
+  position: absolute;
+  right: 17%;
+}
+
+.apple-button:hover {
+  background-color: #555;
+}
+
+#usr-img-opt {
+  cursor: pointer;
+}
+
+#upload-box {
+  display: none;
+}
