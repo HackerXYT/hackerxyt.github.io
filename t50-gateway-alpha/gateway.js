@@ -56,14 +56,14 @@ function docready() {
                                             </div>`
         if (!localStorage.getItem("t50-username")) {
           $("#loading-bar").fadeOut("slow")
-          setInterval(reconnect(), 1000)
+          setInterval(reconnect(), 4000)
           document.getElementById("text-me-two").innerHTML = `We Are Sorry.`
           document.getElementById("loading-apps-text").innerHTML = `You cannot login at the moment.<br>Since you are new to the gateway,<br>you must wait until servers are back online`
         } else {
           $("#loading-bar").fadeOut("slow")
           document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
           document.getElementById("loading-apps-text").innerHTML = `Servers are currently offline.`
-          setInterval(reconnect(), 1000)
+          setInterval(reconnect(), 4000)
         }
 
         $("#loading").fadeOut("fast")
@@ -165,12 +165,12 @@ function docready() {
                                             </div>`
                           if (!localStorage.getItem("t50-username")) {
                             $("#loading-bar").fadeOut("slow")
-                            setInterval(reconnect(), 1000)
+                            setInterval(reconnect(), 4000)
                             document.getElementById("text-me-two").innerHTML = `We Are Sorry.`
                             document.getElementById("loading-apps-text").innerHTML = `You cannot login at the moment.<br>Since you are new to the gateway,<br>you must wait until servers are back online`
                           } else {
                             $("#loading-bar").fadeOut("slow")
-                            setInterval(reconnect(), 1000)
+                            setInterval(reconnect(), 4000)
                             document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
                             document.getElementById("loading-apps-text").innerHTML = `Servers are currently offline.`
                           }
@@ -291,6 +291,8 @@ document.getElementById("password").addEventListener("keypress", function (event
 
 
 function reconnect() {
+  console.log("Reconnecting..")
+  $("#loading-bar").fadeIn("slow")
   fetch("https://evox-datacenter.onrender.com/accounts")
     .then(response => {
       if (!response.ok) {
@@ -299,7 +301,6 @@ function reconnect() {
       return response.text();
     })
     .then(data => {
-      $("#loading-bar").fadeIn("slow")
       if (data === "T50 Database Online") {
         docready()
       } else {
