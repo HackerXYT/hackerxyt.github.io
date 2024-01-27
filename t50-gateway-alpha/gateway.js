@@ -55,11 +55,15 @@ function docready() {
                                                 <div style="display: none" id="apps"></div>
                                             </div>`
         if (!localStorage.getItem("t50-username")) {
+          $("#loading-bar").fadeOut("slow")
+          setInterval(reconnect(), 1000)
           document.getElementById("text-me-two").innerHTML = `We Are Sorry.`
           document.getElementById("loading-apps-text").innerHTML = `You cannot login at the moment.<br>Since you are new to the gateway,<br>you must wait until servers are back online`
         } else {
+          $("#loading-bar").fadeOut("slow")
           document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
           document.getElementById("loading-apps-text").innerHTML = `Servers are currently offline.`
+          setInterval(reconnect(), 1000)
         }
 
         $("#loading").fadeOut("fast")
@@ -160,9 +164,13 @@ function docready() {
                                                 <div style="display: none" id="apps"></div>
                                             </div>`
                           if (!localStorage.getItem("t50-username")) {
+                            $("#loading-bar").fadeOut("slow")
+                            setInterval(reconnect(), 1000)
                             document.getElementById("text-me-two").innerHTML = `We Are Sorry.`
                             document.getElementById("loading-apps-text").innerHTML = `You cannot login at the moment.<br>Since you are new to the gateway,<br>you must wait until servers are back online`
                           } else {
+                            $("#loading-bar").fadeOut("slow")
+                            setInterval(reconnect(), 1000)
                             document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
                             document.getElementById("loading-apps-text").innerHTML = `Servers are currently offline.`
                           }
@@ -282,3 +290,22 @@ document.getElementById("password").addEventListener("keypress", function (event
 });
 
 
+function reconnect() {
+  fetch("https://evox-datacenter.onrender.com/accounts")
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      $("#loading-bar").fadeIn("slow")
+      if (data === "T50 Database Online") {
+        docready()
+      } else {
+        $("#loading-bar").fadeOut("slow")
+      }
+    }).catch(error => {
+      $("#loading-bar").fadeOut("slow")
+    })
+  }
