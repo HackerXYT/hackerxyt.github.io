@@ -137,32 +137,16 @@ function encodeImageToBase64() {
         console.log("Private DB")
         const totalSizeInMB = calculateImageSize(final);
         if(totalSizeInMB.toFixed(2) > 3.5) {
-          var userResponse = window.confirm(`File Is Large And May Fail Uploading (${totalSizeInMB.toFixed(2)}MB). Continue?`);
-
-          // Check the user's response
-          if (userResponse) {
-              console.log("User Confirmed");
-          } else {
-              console.log("Canceled!");
-              return;
-          }
+          alert(`File Is Large And May Fail Uploading (${totalSizeInMB.toFixed(2)}MB). Continue?`);
         } else {
-          var userResponse = window.confirm(`Size Is ${totalSizeInMB.toFixed(2)}MB. Continue?`);
-
-          // Check the user's response
-          if (userResponse) {
-              console.log("User Confirmed");
-          } else {
-              console.log("Canceled!");
-              return;
-          }
+          alert(`Size Is ${totalSizeInMB.toFixed(2)}MB. Continue?`);
         }
         
         const postData = {
           image: final,
           password: password
         };
-        let api = "http://192.168.1.26:4000"
+        let api = "https://evox-datacenter.onrender.com/images-database"
         fetch(api, {
         method: 'POST',
         headers: {

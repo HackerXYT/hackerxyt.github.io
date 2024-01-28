@@ -19,11 +19,12 @@ $(document).ready(function() {
             $("#usr").html(localStorage.getItem("img-app-username"))
             $("#settings_email_ph").html(localStorage.getItem("img-app-email"))
             $("#settings_username_ph").html(localStorage.getItem("img-app-username"))
-            $("#gallery-text").fadeOut("slow", function() {
-                $("#container-img").fadeOut("slow", function() {
-                    $("#gallery").fadeIn("slow")
-                });
-            });
+            //$("#gallery-text").fadeOut("slow", function() {
+                $("#gallery").fadeIn("slow")
+                //$("#container-img").fadeOut("slow", function() {
+                //    $("#gallery").fadeIn("slow")
+                //});
+            //});
             
             
             $("#header").fadeIn("slow")
