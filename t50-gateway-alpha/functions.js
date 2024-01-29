@@ -133,6 +133,7 @@ function setup() {
 							document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="../tasco/tasco-app.png" class="app"></img></a>`
 							if (localStorage.getItem("t50-username") === "papostol") {
 								log("Enabling Transports", "green")
+								document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
 								document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('transports')" href="#loadapp-transports"><img src="T50Transports.png" class="app"></img></a>`
 							}
 							$("#apps").fadeIn("slow")
@@ -170,6 +171,11 @@ function load(app) {
 		}
 	} else if (app === "images") {
 		if (images === "true") {
+			if (localStorage.getItem("t50-autologin") === "true") {
+				localStorage.setItem("img-app-username", localStorage.getItem("t50-username"))
+				localStorage.setItem("rem-email", localStorage.getItem("t50-email"))
+				localStorage.setItem("img-app-email", localStorage.getItem("t50-email"))
+			}
 			window.location.href = "./Images/"
 		} else {
 			log("App Not Owned!", "red")
@@ -180,10 +186,12 @@ function load(app) {
 		} else {
 			log("App Not Owned!", "red")
 		}
-	} else if (app === "transports") {
+	} else if (app === "transports" ) {
 		if (localStorage.getItem("t50-username") === "papostol") {
 			window.location.href = "./gmp/gmaps.html"
 		}
+	} else if(app === "emails" && localStorage.getItem("t50-username") === "papostol"){
+		window.location.href = "./mails/"
 	} else if (app === "tasco") {
 		window.location.href = `../tasco/`
 	}
@@ -616,7 +624,7 @@ function handleFileSelect() {
 								// Handle errors
 								console.error(error);
 							});
-						
+
 					}
 				})
 				.catch(error => {
