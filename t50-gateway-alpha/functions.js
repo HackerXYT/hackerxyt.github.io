@@ -54,7 +54,7 @@ function setup() {
 				$("#container").fadeOut("fast")
 				$("#loading").fadeIn("slow")
 				$("#stuck").fadeOut("slow")
-				fetch(`https://evox-datacenter.cyclic.app/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
+				fetch(`https://evox-datacenter.onrender.com/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -274,7 +274,7 @@ function continue_purch(app) {
 function check_ccode(app) {
 	$("#loading").fadeIn("slow")
 	let coupon = document.getElementById("coupon").value
-	const url = `https://evox-datacenter.cyclic.app/accounts?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
+	const url = `https://evox-datacenter.onrender.com/accounts?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
 
 	fetch(url)
 		.then(response => {
@@ -431,7 +431,7 @@ function pfp(give) {
 	return new Promise((resolve, reject) => {
 		let user = localStorage.getItem("t50-username");
 		if (user != null) {
-			const url = `https://evox-datacenter.cyclic.app/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+			const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
 			fetch(url)
 				.then(response => response.text())
 				.then(data => {
@@ -599,7 +599,7 @@ function handleFileSelect() {
 			//console.log(base64String);
 			document.getElementById("upload-box").disabled = true
 			document.getElementById("usr-img-opt").src = "./ZKZx.gif"
-			fetch('https://evox-datacenter.cyclic.app/profiles', {
+			fetch('https://evox-datacenter.onrender.com/profiles', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'

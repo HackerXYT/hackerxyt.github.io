@@ -64,8 +64,8 @@ function set(day, custom) {
   document.getElementById(`${dayOfWeek.charAt(0).toUpperCase()}${dayOfWeek.slice(1).toLowerCase()}`).disabled = true;
   document.getElementById(`${dayOfWeek.charAt(0).toUpperCase()}${dayOfWeek.slice(1).toLowerCase()}`).selected = true
   const username = global_username
-  //https://evox-datacenter.cyclic.app/tasco || httpe://192.168.1.21:4000/tasco -> added "e"
-  fetch(`https://evox-datacenter.cyclic.app/tasco?method=get&username=${username}&day=${dayOfWeek}`)
+  //https://evox-datacenter.onrender.com/tasco || httpe://192.168.1.21:4000/tasco -> added "e"
+  fetch(`https://evox-datacenter.onrender.com/tasco?method=get&username=${username}&day=${dayOfWeek}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -293,7 +293,7 @@ function custom_task_add(day) {
 
 }
 function addtask(day_val, time_val, label_val, custom) {
-  const url = 'https://evox-datacenter.cyclic.app/tasco';
+  const url = 'https://evox-datacenter.onrender.com/tasco';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -351,7 +351,7 @@ function reload() {
   document.getElementById("list").style.display = "none"
   document.getElementById("list").innerHTML = ""
   const username = global_username
-  fetch(`https://evox-datacenter.cyclic.app/tasco?method=get&username=${username}&day=${dayOfWeek}`)
+  fetch(`https://evox-datacenter.onrender.com/tasco?method=get&username=${username}&day=${dayOfWeek}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

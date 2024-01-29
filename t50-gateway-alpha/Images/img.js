@@ -55,7 +55,7 @@ $(document).ready(function() {
        document.getElementById("email").value = localStorage.getItem("t50-email")
        let user = localStorage.getItem("t50-username")
        if(user != null) {
-		    const url = `https://evox-datacenter.cyclic.app/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+		    const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
 		    fetch(url)
 		      .then(response => response.text())
 		      .then(data => {
@@ -101,7 +101,7 @@ function login() {
     let email = document.getElementById("email").value
     let password = document.getElementById("password").value
     console.log(email, password)
-    const url = `https://evox-datacenter.cyclic.app/accounts?email=${email}&password=${password}`;
+    const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}`;
 
     fetch(url)
       .then(response => {

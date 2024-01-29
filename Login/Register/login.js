@@ -105,7 +105,7 @@ BtnLog.addEventListener("click", (e) => {
     }
       return;
   }
-    fetch('https://evox-datacenter.cyclic.app/accounts', {
+    fetch('https://evox-datacenter.onrender.com/accounts', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -143,7 +143,7 @@ BtnLog.addEventListener("click", (e) => {
 })
 
 function login() {
-  const url = `https://evox-datacenter.cyclic.app/accounts?email=${email}&password=${password}`;
+  const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}`;
 
   fetch(url)
     .then(response => {

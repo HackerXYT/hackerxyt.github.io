@@ -12,7 +12,7 @@ function docready() {
   let acc = localStorage.getItem("t50pswd")
   let pswd = atob(acc)
   if (loggedin != null && autologin === "true") {
-    const url = `https://evox-datacenter.cyclic.app/accounts?email=${loggedin}&password=${pswd}&autologin=true`;
+    const url = `https://evox-datacenter.onrender.com/accounts?email=${loggedin}&password=${pswd}&autologin=true`;
 
     fetch(url)
       .then(response => {
@@ -124,7 +124,7 @@ function docready() {
                     $("#dots").html("...")
                     setTimeout(function () {
                       $("#dots").html("..")
-                      fetch("https://evox-datacenter.cyclic.app/accounts")
+                      fetch("https://evox-datacenter.onrender.com/accounts")
                         .then(response => {
                           if (!response.ok) {
                             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -229,7 +229,7 @@ function login() {
   let email = document.getElementById("email").value
   let password = document.getElementById("password").value
   console.log(email, "********")
-  const url = `https://evox-datacenter.cyclic.app/accounts?email=${email}&password=${password}`;
+  const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}`;
 
   fetch(url)
     .then(response => {
@@ -293,7 +293,7 @@ document.getElementById("password").addEventListener("keypress", function (event
 function reconnect() {
   console.log("Reconnecting..")
   $("#loading-bar").fadeIn("slow")
-  fetch("https://evox-datacenter.cyclic.app/accounts")
+  fetch("https://evox-datacenter.onrender.com/accounts")
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
