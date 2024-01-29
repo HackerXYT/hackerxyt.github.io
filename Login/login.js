@@ -107,7 +107,7 @@ localStorage.setItem("emoji", "😂")
         }
         return;
     }
-    const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}`;
+    const url = `https://evox-datacenter.cyclic.app/accounts?email=${email}&password=${password}`;
 
     fetch(url)
       .then(response => {
@@ -130,7 +130,7 @@ localStorage.setItem("emoji", "😂")
             const username = match && match[1];
             if(sessionStorage.getItem("redirect") === "datacenter") {
               console.log("requesting")
-              fetch(`https://evox-datacenter.onrender.com/access-database?username=${username}&app=login&email=${email}`)
+              fetch(`https://evox-datacenter.cyclic.app/access-database?username=${username}&app=login&email=${email}`)
               .then(response => {
                 if (!response.ok) {
                   throw new Error(`HTTP error! Status: ${response.status}`);
@@ -143,7 +143,7 @@ localStorage.setItem("emoji", "😂")
                     window.location.href = `http://192.168.1.21:4000?id=${data}&username=${username}`
                     return;
                   }
-                  window.location.href = `https://evox-datacenter.onrender.com/?id=${data}&username=${username}`
+                  window.location.href = `https://evox-datacenter.cyclic.app/?id=${data}&username=${username}`
                   return;
                 } else {
                   console.log("Task returned something unexpected..\n"+data)
@@ -195,7 +195,7 @@ localStorage.setItem("emoji", "😂")
 function register() {
     const email = document.getElementById("username").value
     const password = document.getElementById("password").value
-    fetch('https://evox-datacenter.onrender.com/accounts', {
+    fetch('https://evox-datacenter.cyclic.app/accounts', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

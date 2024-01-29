@@ -26,7 +26,7 @@ if(username == null || email == null || sessionStorage.getItem("email_sent") ===
   }
 } else {
   document.getElementById("email").value = email
-  fetch('https://evox-datacenter.onrender.com/verification', {//email server
+  fetch('https://evox-datacenter.cyclic.app/verification', {//email server
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -118,7 +118,7 @@ BtnLog.addEventListener("click", (e) => {
     console.log(email)
     console.log(code)
     console.log("Function Verify")
-    const url = `https://evox-datacenter.onrender.com/verification?email=${email}&code=${code}`;
+    const url = `https://evox-datacenter.cyclic.app/verification?email=${email}&code=${code}`;
     fetch(url)
     .then(response => {
       if (response.ok) {
