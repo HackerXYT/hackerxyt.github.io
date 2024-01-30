@@ -8,7 +8,6 @@ body {
     position: relative;
     min-height: 100vh;
     background-color: #222;
-    touch-action: manipulation;
     -webkit-user-select: none; /* Safari */
     -ms-user-select: none; /* IE 10 and IE 11 */
     user-select: none; /* Standard syntax */
