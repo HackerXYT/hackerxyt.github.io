@@ -91,13 +91,13 @@ function setup() {
 							console.log('Notes:', notes);
 							console.log('Images:', images);
 							console.log('Chatvia:', chatvia);
-							//if (notes === "owned") {//OWN NOTES
-							//	localStorage.setItem("notes-owned", true)
-							//	document.getElementById("apps").innerHTML = `<a onclick="load('notes')" href="#loadapp-notes"><img src="EvoxNotes.png" class="app"></img></a>`
-							//} else {
-							//	localStorage.setItem("notes-owned", false)
-							//	//document.getElementById("apps").innerHTML = `<a onclick="buy('notes')" href="#loadapp-notes-disabled"><img src="EvoxNotes.png" class="disabledapp"></img></a>`
-							//}
+							if (notes === "owned") {//OWN NOTES
+								localStorage.setItem("notes-owned", true)
+								//document.getElementById("apps").innerHTML = `<a onclick="load('notes')" href="#loadapp-notes"><img src="EvoxNotes.png" class="app"></img></a>`
+							} else {
+								localStorage.setItem("notes-owned", false)
+								//document.getElementById("apps").innerHTML = `<a onclick="buy('notes')" href="#loadapp-notes-disabled"><img src="EvoxNotes.png" class="disabledapp"></img></a>`
+							}
 							if (images === "owned") {//OWN IMAGES
 								localStorage.setItem("images-owned", true)
 								if (document.getElementById("apps").innerHTML != "") {
@@ -108,33 +108,32 @@ function setup() {
 							} else {
 								localStorage.setItem("images-owned", false)
 								if (document.getElementById("apps").innerHTML != "") {
-									//document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
+									document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
 								} else {
-									//document.getElementById("apps").innerHTML = `<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
+									document.getElementById("apps").innerHTML = `<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
 								}
 							}
-							//if (chatvia === "owned") { //OWN CHATVIA
-							//	return;
-							//	localStorage.setItem("chatvia-owned", true)
-							//	if (document.getElementById("apps").innerHTML != "") {
-							//		document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="app"></img></a>`
-							//	} else {
-							//		document.getElementById("apps").innerHTML = `<a onclick="load('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="app"></img></a>`
-							//	}
-							//} else {
-							//	localStorage.setItem("chatvia-owned", false)
-							//	if (document.getElementById("apps").innerHTML != "") {
-							//		document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
-							//	} else {
-							//		document.getElementById("apps").innerHTML = `<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
-							//	}
-							//}
+							if (chatvia === "owned") { //OWN CHATVIA
+								localStorage.setItem("chatvia-owned", true)
+								//if (document.getElementById("apps").innerHTML != "") {
+								//	document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="app"></img></a>`
+								//} else {
+								//	document.getElementById("apps").innerHTML = `<a onclick="load('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="app"></img></a>`
+								//}
+							} else {
+								localStorage.setItem("chatvia-owned", false)
+								//if (document.getElementById("apps").innerHTML != "") {
+								//	document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
+								//} else {
+								//	document.getElementById("apps").innerHTML = `<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
+								//}
+							}
 							log("Enabling Tasco", "green")
 							document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="../tasco/tasco-app.png" class="app"></img></a>`
 							if (localStorage.getItem("t50-username") === "papostol") {
 								log("Enabling Transports", "green")
-								document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
-								document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('transports')" href="#loadapp-transports"><img src="T50Transports.png" class="app"></img></a>`
+								//document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
+								document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('transports-disabled')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a>`
 							}
 							$("#apps").fadeIn("slow")
 							$("#loading-apps-text").fadeOut("slow", function () {
@@ -368,7 +367,7 @@ function uielements() {
 	let chatvia = localStorage.getItem("chatvia-owned")
 	console.log(notes, images, chatvia)
 	$("#settings").fadeIn("slow")
-	document.getElementById("usr-img").src = "loading.gif"
+	document.getElementById("usr-img").src = sessionStorage.getItem("pfp")
 	pfp()
 	document.getElementById("usr-name").innerHTML = localStorage.getItem("t50-username")
 	document.getElementById("usr-email").innerHTML = localStorage.getItem("t50-email")
@@ -392,6 +391,8 @@ function uielements() {
 	} else if (chatvia == "false") {
 		console.log("Chatvia Not")
 		document.getElementById("chatvia-own-ui-status").innerHTML = `Not Owned <button onclick='buy("chatvia")' style='margin-left:15pxdisplay: inline-block;padding: 10px 20px;text-decoration: none;color: #fff;background-color: #333;border: none;border-radius: 4px;transition: background-color 0.3s ease;cursor: pointer;'>Buy</button>`
+	} else {
+		console.log("ChatVia Ownership Error")
 	}
 
 	let autologin = localStorage.getItem("t50-autologin")
@@ -406,8 +407,9 @@ function uielements() {
 
 function settings() {
 	if (document.getElementById("popup").style.display == "none" || document.getElementById("popup").style.display == "") {
-		document.getElementById('gateway').style.filter = 'blur(5px)'; // Add a blur effect to the mainContent
+		document.getElementById('gateway').style.filter = 'blur(15px)'; // Add a blur effect to the mainContent
 		$("#bottom-logo").fadeIn("slow")
+		$("#settings").fadeOut("slow")
 		setTimeout(function () {
 			$("#popup").fadeIn("fast")
 			//document.body.style.overflow = 'hidden';
@@ -415,6 +417,7 @@ function settings() {
 	} else {
 		document.getElementById('gateway').style.filter = 'none'; // Add a blur effect to the mainContent
 		$("#bottom-logo").fadeOut("slow")
+		$("#settings").fadeIn("slow")
 		setTimeout(function () {
 			$("#popup").fadeOut("fast")
 			//document.body.style.overflow = 'hidden';
@@ -431,6 +434,7 @@ function pfp(give) {
 	return new Promise((resolve, reject) => {
 		let user = localStorage.getItem("t50-username");
 		if (user != null) {
+			document.getElementById("usr-img-opt").src = "reloading-pfp.gif"
 			const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
 			fetch(url)
 				.then(response => response.text())
@@ -598,7 +602,7 @@ function handleFileSelect() {
 			// Now you have the base64 representation of the selected image
 			//console.log(base64String);
 			document.getElementById("upload-box").disabled = true
-			document.getElementById("usr-img-opt").src = "./ZKZx.gif"
+			document.getElementById("usr-img-opt").src = "./reloading.gif"
 			fetch('https://evox-datacenter.onrender.com/profiles', {
 				method: 'POST',
 				headers: {
