@@ -1,4 +1,7 @@
-@font-face { font-family: "SF"; src: url('SFUIText-Medium.ttf'); } 
+@font-face {
+  font-family: "SF";
+  src: url('SFUIText-Medium.ttf');
+}
 
 
 body {
@@ -9,254 +12,277 @@ body {
   min-height: 100vh;
   background: #000000;
   touch-action: manipulation;
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
+  -webkit-user-select: none;
+  /* Safari */
+  -ms-user-select: none;
+  /* IE 10 and IE 11 */
+  user-select: none;
+  /* Standard syntax */
 }
+
 img {
-  user-drag: none; /* Disable dragging */
-  user-select: none; /* Disable selection */
-  -moz-user-select: none; /* Firefox support */
-  
+  user-drag: none;
+  /* Disable dragging */
+  user-select: none;
+  /* Disable selection */
+  -moz-user-select: none;
+  /* Firefox support */
+
 }
+
 .background {
-   position: fixed;
-   top: 0;
-   left: 0;
-   width: 100%;
-   height: 100%;
-   z-index: -1;
-   filter: blur(10px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  filter: blur(10px);
 }
+
 .container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background-color: transparent;
-    padding: 20px;
-    border-radius: 10px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: transparent;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .logo {
-    width: 185px;
-    height: 185px;
-    position: absolute;
-    top: -195px;
-    left: 50%;
-    transform: translateX(-50%);
+  width: 185px;
+  height: 185px;
+  position: absolute;
+  top: -195px;
+  left: 50%;
+  transform: translateX(-50%);
 }
+
 ::placeholder {
-    color: #c4cbd2;
+  color: #c4cbd2;
 }
 
 .input-box {
-    font-family: "SF";
-    width: 250px;
-    height: 40px;
-    border: none;
-    border-radius: 3px;
-    outline: none;
-    background-color: rgba(194, 194, 194, 0.181);
-    margin: 10px 0;
-    padding: 10px;
-    color: #fff;
-    font-size: 16px;
-    transition: background-color 1s;
+  font-family: "SF";
+  width: 250px;
+  height: 40px;
+  border: none;
+  border-radius: 3px;
+  outline: none;
+  background-color: rgba(194, 194, 194, 0.181);
+  margin: 10px 0;
+  padding: 10px;
+  color: #fff;
+  font-size: 16px;
+  transition: background-color 1s;
 }
 
 .transparent-button {
-    font-family: "SF";
-    width: 250px;
-    height: 40px;
-    border: 2px solid #662c2c;
-    border-radius: 13px;
-    background: transparent;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
+  font-family: "SF";
+  width: 250px;
+  height: 40px;
+  border: 2px solid #662c2c;
+  border-radius: 13px;
+  background: transparent;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
 }
 
-        .bottom-logo {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 320px;
-            height: 102px;
-        }
-        #check-group {
-    animation: 0.32s ease-in-out 1.03s check-group;
-    transform-origin: center;
+.bottom-logo {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  height: 102px;
+}
+
+#check-group {
+  animation: 0.32s ease-in-out 1.03s check-group;
+  transform-origin: center;
 }
 
 #check-group #check {
-    animation: 0.34s cubic-bezier(0.65, 0, 1, 1) 0.8s forwards check;
-    stroke-dasharray: 0, 75px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  animation: 0.34s cubic-bezier(0.65, 0, 1, 1) 0.8s forwards check;
+  stroke-dasharray: 0, 75px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 #check-group #outline {
-    animation: 0.38s ease-in outline;
-    transform: rotate(0deg);
-    transform-origin: center;
+  animation: 0.38s ease-in outline;
+  transform: rotate(0deg);
+  transform-origin: center;
 }
 
 #check-group #white-circle {
-    animation: 0.35s ease-in 0.35s forwards circle;
-    transform: none;
-    transform-origin: center;
+  animation: 0.35s ease-in 0.35s forwards circle;
+  transform: none;
+  transform-origin: center;
 }
 
 @keyframes outline {
   from {
     stroke-dasharray: 0, 345.576px;
   }
+
   to {
     stroke-dasharray: 345.576px, 345.576px;
   }
 }
+
 @keyframes circle {
   from {
     transform: scale(1);
   }
+
   to {
     transform: scale(0);
   }
 }
+
 @keyframes check {
   from {
     stroke-dasharray: 0, 75px;
   }
+
   to {
     stroke-dasharray: 75px, 75px;
   }
 }
+
 @keyframes check-group {
   from {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.09);
   }
+
   to {
     transform: scale(1);
   }
 }
-.centered-text {
-    display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      color: #c4cbd2;
-    }
-    .settings-button {
-            position: fixed;
-            top: 30px;
-            right: 10px;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-        }
 
-        .popup {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
-          z-index: 999;
-          padding: 20px;
-          box-sizing: border-box; /* Include padding in the element's total width and height */
-          box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
-          display: none;
-          color: white;
-      }
+.centered-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #c4cbd2;
+}
+
+.settings-button {
+  position: fixed;
+  top: 30px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent black overlay */
+  z-index: 999;
+  padding: 20px;
+  box-sizing: border-box;
+  /* Include padding in the element's total width and height */
+  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+  display: none;
+  color: white;
+}
+
 @-webkit-keyframes checkmark {
   0% {
-      stroke-dashoffset: 100px
+    stroke-dashoffset: 100px
   }
 
   100% {
-      stroke-dashoffset: 200px
+    stroke-dashoffset: 200px
   }
 }
 
 @-ms-keyframes checkmark {
   0% {
-      stroke-dashoffset: 100px
+    stroke-dashoffset: 100px
   }
 
   100% {
-      stroke-dashoffset: 200px
+    stroke-dashoffset: 200px
   }
 }
 
 @keyframes checkmark {
   0% {
-      stroke-dashoffset: 100px
+    stroke-dashoffset: 100px
   }
 
   100% {
-      stroke-dashoffset: 0px
+    stroke-dashoffset: 0px
   }
 }
 
 @-webkit-keyframes checkmark-circle {
   0% {
-      stroke-dashoffset: 480px
- 
+    stroke-dashoffset: 480px
   }
 
   100% {
-      stroke-dashoffset: 960px;
-    
+    stroke-dashoffset: 960px;
+
   }
 }
 
 @-ms-keyframes checkmark-circle {
   0% {
-      stroke-dashoffset: 240px
+    stroke-dashoffset: 240px
   }
 
   100% {
-      stroke-dashoffset: 480px
+    stroke-dashoffset: 480px
   }
 }
 
 @keyframes checkmark-circle {
   0% {
-      stroke-dashoffset: 480px 
+    stroke-dashoffset: 480px
   }
 
   100% {
-      stroke-dashoffset: 960px
+    stroke-dashoffset: 960px
   }
 }
 
-@keyframes colored-circle { 
+@keyframes colored-circle {
   0% {
-      opacity:0
+    opacity: 0
   }
 
   100% {
-      opacity:100
+    opacity: 100
   }
 }
 
@@ -272,20 +298,52 @@ img {
   justify-content: center;
   cursor: pointer;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-        }
+}
 
-        @keyframes shake {
-  0% { transform: translate(0, 0); }
-  10% { transform: translate(-10px, 0); }
-  20% { transform: translate(10px, 0); }
-  30% { transform: translate(-10px, 0); }
-  40% { transform: translate(10px, 0); }
-  50% { transform: translate(-10px, 0); }
-  60% { transform: translate(10px, 0); }
-  70% { transform: translate(-10px, 0); }
-  80% { transform: translate(10px, 0); }
-  90% { transform: translate(-10px, 0); }
-  100% { transform: translate(0, 0); }
+@keyframes shake {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(-10px, 0);
+  }
+
+  20% {
+    transform: translate(10px, 0);
+  }
+
+  30% {
+    transform: translate(-10px, 0);
+  }
+
+  40% {
+    transform: translate(10px, 0);
+  }
+
+  50% {
+    transform: translate(-10px, 0);
+  }
+
+  60% {
+    transform: translate(10px, 0);
+  }
+
+  70% {
+    transform: translate(-10px, 0);
+  }
+
+  80% {
+    transform: translate(10px, 0);
+  }
+
+  90% {
+    transform: translate(-10px, 0);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
 }
 
 .shake {
@@ -295,7 +353,7 @@ img {
 }
 
 a {
-  text-decoration:none;
+  text-decoration: none;
 }
 
 .enabled {
@@ -346,23 +404,31 @@ a {
 
 .app {
   margin: 5px;
-  width: 70px;height: 70px;
-  border: none;border-radius: 12px;
+  width: 70px;
+  height: 70px;
+  border: none;
+  border-radius: 12px;
   outline: none;
 }
+
 .app-small {
   margin: 5px;
-  width: 45px;height: 45px;
-  border: none;border-radius: 9px;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 9px;
   outline: none;
   margin-right: 10px;
 }
 
 .disabledapp {
-  opacity: 0.5; /* Adjust the opacity value as needed */
+  opacity: 0.5;
+  /* Adjust the opacity value as needed */
   margin: 5px;
-  width: 70px;height: 70px;
-  border: none;border-radius: 12px;
+  width: 70px;
+  height: 70px;
+  border: none;
+  border-radius: 12px;
   outline: none;
 }
 
@@ -377,7 +443,8 @@ a {
 .user-circle {
   width: 60px;
   height: 60px;
-  border-radius: 50%; /* Use 50% for a perfect circle */
+  border-radius: 50%;
+  /* Use 50% for a perfect circle */
   overflow: hidden;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -471,7 +538,7 @@ a {
   color: hsl(0, 0%, 60%);
   margin-left: 14px;
   letter-spacing: 3px;
-  text-transform:capitalize;
+  text-transform: capitalize;
   font-size: 18px;
   font-weight: 900;
 
@@ -497,6 +564,40 @@ a {
   width: 80%;
 }
 
+.apple-input {
+  background-color: #333;
+  /* Your desired background color */
+  border: none;
+  color: #fff;
+  padding: 15px 30px;
+  padding-left: 45px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  margin: 6px;
+  width: 77%;
+  outline: none;
+}
+
+.input-container {
+  position: relative;
+}
+
+.input-container svg {
+  position: absolute;
+  left: 25px;
+  /* Adjust the left position to place the SVG where you want */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.apple-input:hover {
+  background-color: #555;
+}
+
 .apple-button svg {
   position: absolute;
   right: 10%;
@@ -504,6 +605,7 @@ a {
 
 /* Media query for devices with a minimum width of 769px (assumed to be non-PC devices) */
 @media only screen and (min-width: 769px) {
+
   /* Hide the .apple-button svg on devices with a minimum width of 769px or more (assumed to be PCs) */
   .apple-button svg {
     display: none;
@@ -537,7 +639,12 @@ a {
   animation-timing-function: linear;
 }
 
-@keyframes gradient { 
-  0%   { background-position: 0 0; }
-  100% { background-position: -200% 0; }
+@keyframes gradient {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }

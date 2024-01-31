@@ -1,3 +1,49 @@
+window.addEventListener('beforeunload', function (event) {
+	fetch(`http://localhost:4000/setOffline?username=${localStorage.getItem("t50-username")}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(offline => {
+			if(offline === "200") {
+				console.log("Offline Set!")
+			}
+		})
+		.catch(error => {
+			console.error('Set Offline error:', error);
+		});
+});
+fetch(`http://localhost:4000/setOnline?username=${localStorage.getItem("t50-username")}`)
+	.then(response => {
+		if (!response.ok) {
+			throw new Error(`HTTP error! Status: ${response.status}`);
+		}
+		return response.text();
+	})
+	.then(data => {
+		if (data === "200") {
+			fetch(`http://localhost:4000/getOnlineUsers`)
+				.then(response => {
+					if (!response.ok) {
+						throw new Error(`HTTP error! Status: ${response.status}`);
+					}
+					return response.text();
+				})
+				.then(users => {
+					const onlineUsers = JSON.parse(users)
+					console.log(onlineUsers)
+				})
+				.catch(error => {
+					console.error('Fetch error:', error);
+				});
+		}
+
+	})
+	.catch(error => {
+		console.error('Fetch error:', error);
+	});
 function fadeError(method) {
 	var targetColor = "rgb(255, 99, 71)";
 	let element;
@@ -185,11 +231,11 @@ function load(app) {
 		} else {
 			log("App Not Owned!", "red")
 		}
-	} else if (app === "transports" ) {
+	} else if (app === "transports") {
 		if (localStorage.getItem("t50-username") === "papostol") {
 			window.location.href = "./gmp/gmaps.html"
 		}
-	} else if(app === "emails" && localStorage.getItem("t50-username") === "papostol"){
+	} else if (app === "emails" && localStorage.getItem("t50-username") === "papostol") {
 		window.location.href = "./mails/"
 	} else if (app === "tasco") {
 		window.location.href = `../tasco/`
@@ -569,6 +615,40 @@ function pswd_secure() {
 	})
 }
 
+function show_search() {
+	if (localStorage.getItem("2fa_status")) {
+		document.getElementById("2fa_status").innerHTML = localStorage.getItem("2fa_status")
+	} else {
+		document.getElementById("2fa_status").innerHTML = "Off"
+	}
+	document.getElementById("trusted_email").innerHTML = localStorage.getItem("t50-email")
+	//document.getElementById("options_section_1_username").innerHTML = localStorage.getItem("t50-username")
+	//document.getElementById("options_section_1_email").innerHTML = localStorage.getItem("t50-email")
+	//if(localStorage.getItem("t50-birthdate")) {
+	//	document.getElementById("options_section_1_birthdate").innerHTML = localStorage.getItem("t50-birthdate")
+	//} else {
+	//	document.getElementById("options_section_1_birthdate").innerHTML = "Not set"
+	//}
+	//
+	//if(localStorage.getItem("announcements-enabled")) {
+	//	document.getElementById("options_section_1_announcements").innerHTML = localStorage.getItem("announcements-enabled")
+	//} else {
+	//	document.getElementById("options_section_1_announcements").innerHTML = "Enabled"
+	//}
+	$("#main_settings").fadeOut("fast", function () {
+		$("#add_friends").fadeIn("fast")
+	})
+}
+
+function handlesearch(value) {
+	console.log("Length", value.length)
+	if(value.length === 0 || value.length === 1 || value.length === 2) {
+		return;
+	} else {
+		
+	}
+}
+
 function change_password() {
 	shake_me("change_password")
 }
@@ -581,6 +661,10 @@ function return_to_options(where) {
 			})
 		} else if (where === "usr-emails") {
 			$("#username_email_icon_show").fadeOut("fast", function () {
+				$("#main_settings").fadeIn("fast")
+			})
+		} else if (where === "add_friends") {
+			$("#add_friends").fadeOut("fast", function () {
 				$("#main_settings").fadeIn("fast")
 			})
 		}
