@@ -443,6 +443,28 @@ a {
   gap: 16px;
 }
 
+.list-user-info {
+  position:relative;
+  display:inline-block;
+  position: relative;
+  margin: 5px;
+  background: none;
+  border-radius: 7.5px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.c-avatar__status {
+  width:25px;
+  height:25px;
+  background:#99CC00;
+  border:2px solid white;
+  position:absolute;
+  bottom:2%;
+  right:2%;
+  border-radius:100%;
+}
+
 .user-circle {
   width: 60px;
   height: 60px;
@@ -566,6 +588,23 @@ a {
   margin: 6px;
   width: 80%;
 }
+.parent-list-container {
+  position: relative;
+}
+.apple-button-list {
+  position: absolute;
+  top: 6px; /* Adjust as needed */
+  right: 6px; /* Adjust as needed */
+  background-color: #3333339b;
+  border: none;
+  color: #fff;
+  padding: 10px 30px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
 
 .apple-input {
   background-color: #333;
@@ -589,9 +628,16 @@ a {
   position: relative;
 }
 
-.input-container svg {
+.input-container .search-icon {
   position: absolute;
   left: 25px;
+  /* Adjust the left position to place the SVG where you want */
+  top: 50%;
+  transform: translateY(-50%);
+}
+.input-container .go-icon {
+  position: absolute;
+  right: 25px;
   /* Adjust the left position to place the SVG where you want */
   top: 50%;
   transform: translateY(-50%);
