@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="theme-color" content="#202d33" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#202d33" media="(prefers-color-scheme: dark)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Evox SecureLine</title>
+    <link rel="stylesheet" href="client.css">
+    <link rel="stylesheet" href="secondary.css">
+</head>
+<script>
+    //sessionStorage.clear()
+</script>
+<style>
+    .gallery-container {
+        width: 100%;
+        max-width: 600px;
+        /* Set a maximum width for larger screens */
+        margin: 0;
+        /* Center the gallery on the page */
+    }
+
+    .image-wrapper {
+        width: 32.33%;
+        /* Take 1/3 of the horizontal space */
+        float: left;
+        box-sizing: border-box;
+        position: relative;
+        margin: 2px
+    }
+
+    .image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* Fill the container without stretching */
+        display: block;
+
+    }
+</style>
+
+<body>
+    <div id="loading-bar" class="animated-gradient">&nbsp;</div>
+    <!--<div class="background" style="background: repeating-radial-gradient(circle, #361e1e, #3c2828, #3e1c1c, #361d1d, #392121 20px);"></div>-->
+    <div class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>
+
+    <div id="container" class="container" style="display:none;margin-top: 105px;">
+        <a href="../notify/"><img src="evox-logo.png" alt="Logo" class="logo" id="myLogo"></a>
+        <span id="use_switch"><input autocomplete="off" id="email" type="email" class="input-box"
+                placeholder="Email"></span>
+        <input autocomplete="off" id="password" type="password" class="input-box" placeholder="Password">
+        <p id="info_text" style="color: white;display: none"></p>
+        <button id="submit" onclick="login()" class="transparent-button">Login</button><br>
+        <p style="color: #a7b3bf">Evox® registered under Evox Communications & Co.</p>
+    </div>
+    <div class="gateway" style="display: none" id="gateway">
+        <div class="centered-text">
+            <h2 style="margin:0">Welcome <span id="user-text"></span></h2>
+            <div style="display: none" id="apps"></div>
+        </div>
+    </div>
+        <img style="display: none;user-drag: none;user-select: none;" id="bottom-logo" src="footer-in.png"
+            alt="Another Logo" class="bottom-logo">
+        <img style="display: none;user-select: none;" id="bottom-logo-start" src="footer-in.png" alt="Another Logo"
+            class="bottom-logo">
+            <div style="display:block" class="popup">
+                <h3>SecureLine</h3>
+            <div id="list-container"><!--Empty-->
+                
+                <p>Click and show chat to send message</p>
+                <div class="list-user-info">
+                    <div class="user-circle"><img src="../loading.gif" id="bantou-pfp" alt="User bantou Image"></div>
+                    <div class="user-details">
+                        <div class="user-name">bantou</div>
+                        <div class="user-email" id="user-bantou-email">bantou@onionmail.com</div>
+                    </div>
+                </div>
+                <div class="list-user-info">
+                    <div class="user-circle"><img src="../loading.gif" id="papostol-pfp" alt="User papostol Image"></div>
+                    <div class="user-details">
+                        <div class="user-name">papostol</div>
+                        <div class="user-email" id="user-papostol-email">papostol@onionmail.com</div>
+                    </div>
+                </div>
+                <div class="list-user-info"></div>
+    
+            </div>
+        </div>
+        <div id="stuck" style="position: fixed;
+    top: 30px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
+            <!--onclick="fix()" id="stuck"-->
+            <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+            <!-- You can customize the icon or text inside the button -->
+            <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px"
+                viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                <path fill="#fff"
+                    d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+                    <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25"
+                        to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                </path>
+            </svg>
+        </div>
+        <div id="loading-div-text"
+            style="display: block;margin: 0;padding: 0;height: 100vh;position: relative;color: rgb(255, 255, 255)">
+            <div id="loading-text"
+                style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);text-align: center;">
+                <p>Wait</p>
+            </div>
+        </div>
+        <div style="display: block" id="loading" class="icon-container">
+            <div class="item">
+                <i class="loader --2"></i>
+            </div>
+        </div>
+
+        <div style="display: none;" class="loading loading--circle" title="Loading">
+            <svg version="1.1" id="loading-circle" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+                style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                <path
+                    d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                    <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                        to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                </path>
+            </svg>
+        </div>
+</body>
+
+
+<script>
+    function setBodyHeight() {
+        document.body.style.height = window.innerHeight + 'px';
+    }
+
+    window.addEventListener('resize', setBodyHeight);
+    window.addEventListener('orientationchange', setBodyHeight);
+
+    // Initial call to set body height
+    setBodyHeight();
+</script>
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="functions.js"></script>
+
+<!-- <script src="script.js"></script>
+<script src="new.js"></script>-->
+
+</html>

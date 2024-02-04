@@ -664,6 +664,149 @@ function acceptfriend(element) {
 			console.error(error)
 		})
 }
+let friendinterval;
+function showFriend(element) {
+	try {
+		clearInterval(friendinterval);
+	} catch (error) {
+		// Handle the error (optional)
+		console.error("Error clearing interval:", error.message);
+	}
+	console.log(element)
+	let elem = element.id
+	var nameArray = elem.split('-');
+	var friend = nameArray[1];
+
+	document.getElementById("secureline-username").id = `secureline-${friend}`
+	document.getElementById("friend-email").innerHTML = document.getElementById(`user-${friend}-email-friends`).innerHTML
+	document.getElementById("friend-pfp").src = document.getElementById(`${friend}-pfp-friends`).src
+	if (document.getElementById("friend-pfp").src.includes("searching_users.gif")) {
+		friendinterval = setInterval(function () {
+			document.getElementById("friend-pfp").src = document.getElementById(`${friend}-pfp-friends`).src
+		}, 500)
+	}
+	document.getElementById("friend-username").innerHTML = friend
+	$("#friends").fadeOut("fast", function () {
+		$("#user-friend").fadeIn("fast")
+	})
+}
+function show_friends() {
+	$("#load-users-friends").fadeIn("fast")
+	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			console.log(JSON.stringify(data))
+			if (JSON.stringify(data) === '"[]"') {
+				$("#load-users-friends").fadeOut("fast", function () {
+					let containerId = "list-friends";
+					var listContainer = document.getElementById(containerId);
+					listContainer.style.textAlign = "center";
+					listContainer.style.marginTop = "50px";
+					listContainer.innerHTML = "No Friends"
+				})
+				return;
+			} else {
+				console.log(`${JSON.stringify(data)} != "[]"`)
+			}
+			const user_requests = JSON.parse(data)
+			let containerId = "list-friends";
+			var listContainer = document.getElementById(containerId);
+			listContainer.style.textAlign = "";
+			listContainer.style.marginTop = "";
+			listContainer.innerHTML = "<!--Empty-->";
+			user_requests.forEach(username => {
+				fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+						return response.text();
+					})
+					.then(profileemail => {
+						let addButton;
+						// Check if the username already exists in the list
+						if (listContainer.querySelector(`#user-${username}-email`) === null) {
+							var userContainer = document.createElement("div");
+							userContainer.className = "list-user-info";
+							userContainer.id = `friend-${username}`;
+							userContainer.onclick = function () {
+								showFriend(this);
+							};
+							var userCircle = document.createElement("div");
+							userCircle.className = "user-circle";
+							userCircle.innerHTML = `<img src="searching_users.gif" id="${username}-pfp-friends" alt="User ${username} Image">`;
+							var userDetails = document.createElement("div");
+							userDetails.className = "user-details";
+
+							var userName = document.createElement("div");
+							userName.className = "user-name";
+							userName.textContent = username;
+
+							var userEmail = document.createElement("div");
+							userEmail.className = "user-email";
+							userEmail.id = `user-${username}-email-friends`;
+							userEmail.textContent = profileemail;
+
+
+							//addButton = document.createElement("a");
+							//addButton.href = "#";
+							//addButton.id = username;
+							//addButton.onclick = function () {
+							//	acceptfriend(this);
+							//};
+							//addButton.className = "apple-button-list";
+							//addButton.textContent = "Accept";
+
+
+							userDetails.appendChild(userName);
+							userDetails.appendChild(userEmail);
+
+							userContainer.appendChild(userCircle);
+							userContainer.appendChild(userDetails);
+							//userContainer.appendChild(addButton);
+
+							listContainer.appendChild(userContainer);
+							fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+								.then(response => {
+									if (!response.ok) {
+										throw new Error(`HTTP error! Status: ${response.status}`);
+									}
+									return response.text();
+								})
+								.then(profileimage => {
+									if (profileimage.indexOf("base64") === -1) {
+										// If it doesn't contain "base64", add the prefix
+										profileimage = "data:image/jpeg;base64," + profileimage;
+										document.getElementById(`${username}-pfp-friends`).src = profileimage
+									} else {
+										document.getElementById(`${username}-pfp-friends`).src = profileimage
+									}
+
+
+								}).catch(error => {
+									console.error("Cannot set src for", username)
+									console.error(error)
+								})
+						}
+					});
+				$("#load-users-friends").fadeOut("fast");
+			})
+				.catch(error => {
+					console.error(error);
+				});
+		}).catch(error => {
+			console.error(error);
+		});
+
+	$("#main_settings").fadeOut("fast", function () {
+		$("#friends").fadeIn("fast")
+	})
+}
 function show_requests() {
 	$("#load-users-requests").fadeIn("fast")
 	document.getElementById("list-requests").innerHTML = ""
@@ -711,7 +854,7 @@ function show_requests() {
 
 							var userCircle = document.createElement("div");
 							userCircle.className = "user-circle";
-							userCircle.innerHTML = `<img src="reloading-pfp.gif" id="${username}-pfp-requests" alt="User ${username} Image">`;
+							userCircle.innerHTML = `<img src="searching_users.gif" id="${username}-pfp-requests" alt="User ${username} Image">`;
 							var userDetails = document.createElement("div");
 							userDetails.className = "user-details";
 
@@ -829,6 +972,7 @@ function submit_search() {
 
 function loadusers() {
 	let url = `https://evox-datacenter.onrender.com/search?search=`;
+
 	fetch(url)
 		.then(response => {
 			if (!response.ok) {
@@ -840,6 +984,8 @@ function loadusers() {
 			let userlist = JSON.parse(data);
 			let containerId = "list-container";
 			var listContainer = document.getElementById(containerId);
+			listContainer.style.textAlign = "";
+			listContainer.style.marginTop = "";
 			listContainer.innerHTML = "<!--Empty-->";
 
 			// Fetch emails for each user individually
@@ -847,87 +993,138 @@ function loadusers() {
 				if (username === localStorage.getItem("t50-username")) {
 					return;
 				}
-				fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+				fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
 						}
 						return response.text();
 					})
-					.then(profileemail => {
-						let addButton;
-						// Check if the username already exists in the list
-						if (listContainer.querySelector(`#user-${username}-email`) === null) {
-							var userContainer = document.createElement("div");
-							userContainer.className = "list-user-info";
+					.then(friends => {
 
-							var userCircle = document.createElement("div");
-							userCircle.className = "user-circle";
-							userCircle.innerHTML = `<img src="searching_users.gif" id="${username}-pfp" alt="User ${username} Image">`;
-							var userDetails = document.createElement("div");
-							userDetails.className = "user-details";
+						fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+							.then(response => {
+								if (!response.ok) {
+									throw new Error(`HTTP error! Status: ${response.status}`);
+								}
+								return response.text();
+							})
+							.then(profileemail => {
+								let skipbutton;
+								let addButton;
+								// Check if the username already exists in the list
+								if (listContainer.querySelector(`#user-${username}-email`) === null) {
+									var userContainer = document.createElement("div");
+									userContainer.className = "list-user-info";
 
-							var userName = document.createElement("div");
-							userName.className = "user-name";
-							userName.textContent = username;
+									var userCircle = document.createElement("div");
+									userCircle.className = "user-circle";
+									userCircle.innerHTML = `<img src="searching_users.gif" id="${username}-pfp" alt="User ${username} Image">`;
+									var userDetails = document.createElement("div");
+									userDetails.className = "user-details";
 
-							var userEmail = document.createElement("div");
-							userEmail.className = "user-email";
-							userEmail.id = `user-${username}-email`;
-							userEmail.textContent = profileemail;
+									var userName = document.createElement("div");
+									userName.className = "user-name";
+									userName.textContent = username;
 
-							if (localStorage.getItem("sent_friend_requests") && localStorage.getItem("sent_friend_requests").includes(username)) {
-								addButton = document.createElement("a");
-								addButton.href = "#";
-								addButton.id = username;
-								addButton.onclick = function () {
-									shake_me(this.id);
-								};
-								addButton.className = "apple-button-list";
-								addButton.textContent = "Sent";
-							} else {
-								addButton = document.createElement("a");
-								addButton.href = "#";
-								addButton.id = username;
-								addButton.onclick = function () {
-									addfriend(this);
-								};
-								addButton.className = "apple-button-list";
-								addButton.textContent = "Add";
-							}
+									var userEmail = document.createElement("div");
+									userEmail.className = "user-email";
+									userEmail.id = `user-${username}-email`;
+									userEmail.textContent = profileemail;
+									if (JSON.stringify(friends).includes(username)) {
+										skipbutton = true
+										userDetails.appendChild(userName);
+										userDetails.appendChild(userEmail);
 
+										userContainer.appendChild(userCircle);
+										userContainer.appendChild(userDetails);
 
-							userDetails.appendChild(userName);
-							userDetails.appendChild(userEmail);
+										listContainer.appendChild(userContainer);
+										let localValue = localStorage.getItem("sent_friend_requests");
 
-							userContainer.appendChild(userCircle);
-							userContainer.appendChild(userDetails);
-							userContainer.appendChild(addButton);
+										// Parse the retrieved data into an array or initialize an empty array
+										let requests = localValue ? JSON.parse(localValue) : [];
 
-							listContainer.appendChild(userContainer);
-							fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-								.then(response => {
-									if (!response.ok) {
-										throw new Error(`HTTP error! Status: ${response.status}`);
-									}
-									return response.text();
-								})
-								.then(profileimage => {
-									if (profileimage.indexOf("base64") === -1) {
-										// If it doesn't contain "base64", add the prefix
-										profileimage = "data:image/jpeg;base64," + profileimage;
-										document.getElementById(`${username}-pfp`).src = profileimage
-									} else {
-										document.getElementById(`${username}-pfp`).src = profileimage
+										// Assuming 'username' is the value you want to remove
+										let indexToRemove = requests.indexOf(username);
+										if (indexToRemove !== -1) {
+											// Remove the element from the array
+											requests.splice(indexToRemove, 1);
+
+											// Save the updated array back to localStorage
+											localStorage.setItem("sent_friend_requests", JSON.stringify(requests));
+										} else {
+											console.log("Username not found in the array");
+										}
 									}
 
+									if (localStorage.getItem("sent_friend_requests") && localStorage.getItem("sent_friend_requests").includes(username) && skipbutton !== true) {
+										addButton = document.createElement("a");
+										addButton.href = "#";
+										addButton.id = username;
+										addButton.onclick = function () {
+											shake_me(this.id);
+										};
+										addButton.className = "apple-button-list";
+										addButton.textContent = "Sent";
+										userDetails.appendChild(userName);
+										userDetails.appendChild(userEmail);
 
-								}).catch(error => {
-									console.error("Cannot set src for", username)
-									console.error(error)
-								})
-						}
+										userContainer.appendChild(userCircle);
+										userContainer.appendChild(userDetails);
+										userContainer.appendChild(addButton);
+
+										listContainer.appendChild(userContainer);
+									} else if (skipbutton !== true) {
+										addButton = document.createElement("a");
+										addButton.href = "#";
+										addButton.id = username;
+										addButton.onclick = function () {
+											addfriend(this);
+										};
+										addButton.className = "apple-button-list";
+										addButton.textContent = "Add";
+
+										userDetails.appendChild(userName);
+										userDetails.appendChild(userEmail);
+
+										userContainer.appendChild(userCircle);
+										userContainer.appendChild(userDetails);
+										userContainer.appendChild(addButton);
+
+										listContainer.appendChild(userContainer);
+									}
+
+
+
+									fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+										.then(response => {
+											if (!response.ok) {
+												throw new Error(`HTTP error! Status: ${response.status}`);
+											}
+											return response.text();
+										})
+										.then(profileimage => {
+											if (profileimage.indexOf("base64") === -1) {
+												// If it doesn't contain "base64", add the prefix
+												profileimage = "data:image/jpeg;base64," + profileimage;
+												document.getElementById(`${username}-pfp`).src = profileimage
+											} else {
+												document.getElementById(`${username}-pfp`).src = profileimage
+											}
+
+
+										}).catch(error => {
+											console.error("Cannot set src for", username)
+											console.error(error)
+										})
+								}
+							});
+					}).catch(error => {
+						console.error(error);
 					});
+
+
 			})
 				.catch(error => {
 					console.error(error);
@@ -981,88 +1178,139 @@ function handlesearch(value) {
 					if (username === localStorage.getItem("t50-username")) {
 						return;
 					}
-					fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+					fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 						.then(response => {
 							if (!response.ok) {
 								throw new Error(`HTTP error! Status: ${response.status}`);
 							}
 							return response.text();
 						})
-						.then(profileemail => {
-							let addButton;
-							// Check if the username already exists in the list
-							if (listContainer.querySelector(`#user-${username}-email`) === null) {
-								var userContainer = document.createElement("div");
-								userContainer.className = "list-user-info";
+						.then(friends => {
 
-								var userCircle = document.createElement("div");
-								userCircle.className = "user-circle";
-								userCircle.innerHTML = `<img src="searching_users.gif" id="${username}-pfp" alt="User ${username} Image">`;
-								var userDetails = document.createElement("div");
-								userDetails.className = "user-details";
+							fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+								.then(response => {
+									if (!response.ok) {
+										throw new Error(`HTTP error! Status: ${response.status}`);
+									}
+									return response.text();
+								})
+								.then(profileemail => {
+									let skipbutton;
+									let addButton;
+									// Check if the username already exists in the list
+									if (listContainer.querySelector(`#user-${username}-email`) === null) {
+										var userContainer = document.createElement("div");
+										userContainer.className = "list-user-info";
 
-								var userName = document.createElement("div");
-								userName.className = "user-name";
-								userName.textContent = username;
+										var userCircle = document.createElement("div");
+										userCircle.className = "user-circle";
+										userCircle.innerHTML = `<img src="searching_users.gif" id="${username}-pfp" alt="User ${username} Image">`;
+										var userDetails = document.createElement("div");
+										userDetails.className = "user-details";
 
-								var userEmail = document.createElement("div");
-								userEmail.className = "user-email";
-								userEmail.id = `user-${username}-email`;
-								userEmail.textContent = profileemail;
+										var userName = document.createElement("div");
+										userName.className = "user-name";
+										userName.textContent = username;
 
-								if (localStorage.getItem("sent_friend_requests") && localStorage.getItem("sent_friend_requests").includes(username)) {
-									addButton = document.createElement("a");
-									addButton.href = "#";
-									addButton.id = username;
-									addButton.onclick = function () {
-										shake_me(this.id);
-									};
-									addButton.className = "apple-button-list";
-									addButton.textContent = "Sent";
-								} else {
-									addButton = document.createElement("a");
-									addButton.href = "#";
-									addButton.id = username;
-									addButton.onclick = function () {
-										addfriend(this);
-									};
-									addButton.className = "apple-button-list";
-									addButton.textContent = "Add";
-								}
+										var userEmail = document.createElement("div");
+										userEmail.className = "user-email";
+										userEmail.id = `user-${username}-email`;
+										userEmail.textContent = profileemail;
+										if (JSON.stringify(friends).includes(username)) {
+											skipbutton = true
+											userDetails.appendChild(userName);
+											userDetails.appendChild(userEmail);
 
+											userContainer.appendChild(userCircle);
+											userContainer.appendChild(userDetails);
 
-								userDetails.appendChild(userName);
-								userDetails.appendChild(userEmail);
+											listContainer.appendChild(userContainer);
+											let localValue = localStorage.getItem("sent_friend_requests");
 
-								userContainer.appendChild(userCircle);
-								userContainer.appendChild(userDetails);
-								userContainer.appendChild(addButton);
+											// Parse the retrieved data into an array or initialize an empty array
+											let requests = localValue ? JSON.parse(localValue) : [];
 
-								listContainer.appendChild(userContainer);
-								fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-									.then(response => {
-										if (!response.ok) {
-											throw new Error(`HTTP error! Status: ${response.status}`);
-										}
-										return response.text();
-									})
-									.then(profileimage => {
-										if (profileimage.indexOf("base64") === -1) {
-											// If it doesn't contain "base64", add the prefix
-											profileimage = "data:image/jpeg;base64," + profileimage;
-											document.getElementById(`${username}-pfp`).src = profileimage
-										} else {
-											document.getElementById(`${username}-pfp`).src = profileimage
+											// Assuming 'username' is the value you want to remove
+											let indexToRemove = requests.indexOf(username);
+											if (indexToRemove !== -1) {
+												// Remove the element from the array
+												requests.splice(indexToRemove, 1);
+
+												// Save the updated array back to localStorage
+												localStorage.setItem("sent_friend_requests", JSON.stringify(requests));
+											} else {
+												console.log("Username not found in the array");
+											}
 										}
 
+										if (localStorage.getItem("sent_friend_requests") && localStorage.getItem("sent_friend_requests").includes(username) && skipbutton !== true) {
+											addButton = document.createElement("a");
+											addButton.href = "#";
+											addButton.id = username;
+											addButton.onclick = function () {
+												shake_me(this.id);
+											};
+											addButton.className = "apple-button-list";
+											addButton.textContent = "Sent";
+											userDetails.appendChild(userName);
+											userDetails.appendChild(userEmail);
 
-									}).catch(error => {
-										console.error("Cannot set src for", username)
-										console.error(error)
-									})
-							}
+											userContainer.appendChild(userCircle);
+											userContainer.appendChild(userDetails);
+											userContainer.appendChild(addButton);
+
+											listContainer.appendChild(userContainer);
+										} else if (skipbutton !== true) {
+											addButton = document.createElement("a");
+											addButton.href = "#";
+											addButton.id = username;
+											addButton.onclick = function () {
+												addfriend(this);
+											};
+											addButton.className = "apple-button-list";
+											addButton.textContent = "Add";
+
+											userDetails.appendChild(userName);
+											userDetails.appendChild(userEmail);
+
+											userContainer.appendChild(userCircle);
+											userContainer.appendChild(userDetails);
+											userContainer.appendChild(addButton);
+
+											listContainer.appendChild(userContainer);
+										}
+
+
+
+										fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+											.then(response => {
+												if (!response.ok) {
+													throw new Error(`HTTP error! Status: ${response.status}`);
+												}
+												return response.text();
+											})
+											.then(profileimage => {
+												if (profileimage.indexOf("base64") === -1) {
+													// If it doesn't contain "base64", add the prefix
+													profileimage = "data:image/jpeg;base64," + profileimage;
+													document.getElementById(`${username}-pfp`).src = profileimage
+												} else {
+													document.getElementById(`${username}-pfp`).src = profileimage
+												}
+
+
+											}).catch(error => {
+												console.error("Cannot set src for", username)
+												console.error(error)
+											})
+									}
+								});
+							$("#load-users").fadeOut("fast");
+						}).catch(error => {
+							console.error(error);
 						});
-					$("#load-users").fadeOut("fast");
+
+
 				})
 					.catch(error => {
 						console.error(error);
@@ -1097,6 +1345,23 @@ function return_to_options(where) {
 		} else if (where === "requests") {
 			$("#friend_requests").fadeOut("fast", function () {
 				$("#main_settings").fadeIn("fast")
+			})
+		} else if (where === "friends") {
+			$("#friends").fadeOut("fast", function () {
+				$("#main_settings").fadeIn("fast")
+			})
+		} else if (where === "user-friend") {
+			var element = document.querySelector('[id^="secureline-"]');
+
+			// Check if the element is found
+			if (element) {
+				// Change the id attribute to "secureline-username"
+				element.id = "secureline-username";
+			} else {
+				console.error('Element with id starting with "secureline-" not found');
+			}
+			$("#user-friend").fadeOut("fast", function () {
+				$("#friends").fadeIn("fast")
 			})
 		}
 	}

@@ -37,4 +37,190 @@
   <a href="#" class="apple-button">Username, Email, Icon</a><br>
   <a href="#" class="apple-button">Apple ID Settings</a>
 </body>
+<script>
+  console.log("Length", value.length);
+	if (value.length < 0) {
+		console.log("Declined");
+		return;
+	} else {
+		// add timeout if search is started or end value exists in div
+		console.log("Accepted");
+		$("#load-users").fadeIn("fast");
+		let url = `http://192.168.1.21:4000/search?search=${value}`;
+
+		fetch(url)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.text();
+			})
+			.then(data => {
+				if (JSON.stringify(data) === '"[]"') {
+					$("#load-users").fadeOut("fast", function () {
+						let containerId = "list-container";
+						var listContainer = document.getElementById(containerId);
+						listContainer.style.textAlign = "center";
+						listContainer.style.marginTop = "50px";
+						listContainer.innerHTML = `No user found named ${value}`
+					})
+					return;
+				} else {
+					console.log(`${JSON.stringify(data)} != "[]"`)
+				}
+				let userlist = JSON.parse(data);
+				let containerId = "list-container";
+				var listContainer = document.getElementById(containerId);
+				listContainer.style.textAlign = "";
+				listContainer.style.marginTop = "";
+				listContainer.innerHTML = "<!--Empty-->";
+
+				// Fetch emails for each user individually
+				userlist.forEach(username => {
+					if (username === localStorage.getItem("t50-username")) {
+						return;
+					}
+					fetch(`http://192.168.1.21:4000/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+						.then(response => {
+							if (!response.ok) {
+								throw new Error(`HTTP error! Status: ${response.status}`);
+							}
+							return response.text();
+						})
+						.then(friends => {
+
+							fetch(`http://192.168.1.21:4000/accounts?method=getemailbyusername&username=${username}`)
+								.then(response => {
+									if (!response.ok) {
+										throw new Error(`HTTP error! Status: ${response.status}`);
+									}
+									return response.text();
+								})
+								.then(profileemail => {
+									let skipbutton;
+									let addButton;
+									// Check if the username already exists in the list
+									if (listContainer.querySelector(`#user-${username}-email`) === null) {
+										var userContainer = document.createElement("div");
+										userContainer.className = "list-user-info";
+
+										var userCircle = document.createElement("div");
+										userCircle.className = "user-circle";
+										userCircle.innerHTML = `<img src="searching_users.gif" id="${username}-pfp" alt="User ${username} Image">`;
+										var userDetails = document.createElement("div");
+										userDetails.className = "user-details";
+
+										var userName = document.createElement("div");
+										userName.className = "user-name";
+										userName.textContent = username;
+
+										var userEmail = document.createElement("div");
+										userEmail.className = "user-email";
+										userEmail.id = `user-${username}-email`;
+										userEmail.textContent = profileemail;
+										if (JSON.stringify(friends).includes(username)) {
+											skipbutton = true
+											userDetails.appendChild(userName);
+											userDetails.appendChild(userEmail);
+
+											userContainer.appendChild(userCircle);
+											userContainer.appendChild(userDetails);
+
+											listContainer.appendChild(userContainer);
+											let localValue = localStorage.getItem("sent_friend_requests");
+
+											// Parse the retrieved data into an array or initialize an empty array
+											let requests = localValue ? JSON.parse(localValue) : [];
+
+											// Assuming 'username' is the value you want to remove
+											let indexToRemove = requests.indexOf(username);
+											if (indexToRemove !== -1) {
+												// Remove the element from the array
+												requests.splice(indexToRemove, 1);
+
+												// Save the updated array back to localStorage
+												localStorage.setItem("sent_friend_requests", JSON.stringify(requests));
+											} else {
+												console.log("Username not found in the array");
+											}
+										}
+
+										if (localStorage.getItem("sent_friend_requests") && localStorage.getItem("sent_friend_requests").includes(username) && skipbutton !== true) {
+											addButton = document.createElement("a");
+											addButton.href = "#";
+											addButton.id = username;
+											addButton.onclick = function () {
+												shake_me(this.id);
+											};
+											addButton.className = "apple-button-list";
+											addButton.textContent = "Sent";
+											userDetails.appendChild(userName);
+											userDetails.appendChild(userEmail);
+
+											userContainer.appendChild(userCircle);
+											userContainer.appendChild(userDetails);
+											userContainer.appendChild(addButton);
+
+											listContainer.appendChild(userContainer);
+										} else if (skipbutton !== true) {
+											addButton = document.createElement("a");
+											addButton.href = "#";
+											addButton.id = username;
+											addButton.onclick = function () {
+												addfriend(this);
+											};
+											addButton.className = "apple-button-list";
+											addButton.textContent = "Add";
+
+											userDetails.appendChild(userName);
+											userDetails.appendChild(userEmail);
+
+											userContainer.appendChild(userCircle);
+											userContainer.appendChild(userDetails);
+											userContainer.appendChild(addButton);
+
+											listContainer.appendChild(userContainer);
+										}
+
+
+
+										fetch(`http://192.168.1.21:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+											.then(response => {
+												if (!response.ok) {
+													throw new Error(`HTTP error! Status: ${response.status}`);
+												}
+												return response.text();
+											})
+											.then(profileimage => {
+												if (profileimage.indexOf("base64") === -1) {
+													// If it doesn't contain "base64", add the prefix
+													profileimage = "data:image/jpeg;base64," + profileimage;
+													document.getElementById(`${username}-pfp`).src = profileimage
+												} else {
+													document.getElementById(`${username}-pfp`).src = profileimage
+												}
+
+
+											}).catch(error => {
+												console.error("Cannot set src for", username)
+												console.error(error)
+											})
+									}
+								});
+							$("#load-users").fadeOut("fast");
+						}).catch(error => {
+							console.error(error);
+						});
+
+
+				})
+					.catch(error => {
+						console.error(error);
+					});
+			})
+			.catch(error => {
+				console.error(error);
+			});
+	}
+</script>
 </html>
