@@ -650,7 +650,7 @@ a {
 
 .message-container {
   flex-grow: 1;
-  max-height: 86%;
+  max-height: 80%;
   overflow-y: auto;
   margin-bottom: 50px;
   display: flex;
