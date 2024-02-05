@@ -44,16 +44,16 @@
 <body>
     <div id="loading-bar" class="animated-gradient">&nbsp;</div>
     <!--<div class="background" style="background: repeating-radial-gradient(circle, #361e1e, #3c2828, #3e1c1c, #361d1d, #392121 20px);"></div>-->
-    <div class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>
+    <div class="background" style="background: radial-gradient(circle, #282830, #000000)"></div>
 
     <div id="container" class="container" style="display:none;margin-top: 105px;">
-        <a href="../notify/"><img src="evox-logo.png" alt="Logo" class="logo" id="myLogo"></a>
+        <a href="../notify/"><img src="secureline-logo.png" alt="Logo" class="logo" id="myLogo"></a>
         <span id="use_switch"><input autocomplete="off" id="email" type="email" class="input-box"
                 placeholder="Email"></span>
         <input autocomplete="off" id="password" type="password" class="input-box" placeholder="Password">
         <p id="info_text" style="color: white;display: none"></p>
         <button id="submit" onclick="login()" class="transparent-button">Login</button><br>
-        <p style="color: #a7b3bf">Evox® registered under Evox Communications & Co.</p>
+        <p style="color: #a7b3bf">SecureLine® registered under Evox Communications & Co.</p>
     </div>
     <div class="gateway" style="display: none" id="gateway">
         <div class="centered-text">
@@ -61,34 +61,43 @@
             <div style="display: none" id="apps"></div>
         </div>
     </div>
-        <img style="display: none;user-drag: none;user-select: none;" id="bottom-logo" src="footer-in.png"
-            alt="Another Logo" class="bottom-logo">
-        <img style="display: none;user-select: none;" id="bottom-logo-start" src="footer-in.png" alt="Another Logo"
-            class="bottom-logo">
-            <div style="display:block" class="popup">
-                <h3>SecureLine</h3>
-            <div id="list-container"><!--Empty-->
-                
-                <p>Click and show chat to send message</p>
-                <div class="list-user-info">
-                    <div class="user-circle"><img src="../loading.gif" id="bantou-pfp" alt="User bantou Image"></div>
-                    <div class="user-details">
-                        <div class="user-name">bantou</div>
-                        <div class="user-email" id="user-bantou-email">bantou@onionmail.com</div>
-                    </div>
+    <img style="display: none;user-drag: none;user-select: none;" id="bottom-logo" src="footer-in.png"
+        alt="Another Logo" class="bottom-logo">
+    <img style="display: none;user-select: none;" id="bottom-logo-start" src="footer-in.png" alt="Another Logo"
+        class="bottom-logo">
+
+
+    <div style="display:none" id="chats" class="popup">
+        <h3>SecureLine</h3>
+        <p>Click and show chat to send message</p>
+        <div id="list-container"><!--Empty-->
+
+            
+            <div onclick="showchat('bantou')" class="list-user-info">
+                <div class="user-circle"><img src="../loading.gif" id="bantou-pfp" alt="User bantou Image"></div>
+                <div class="user-details">
+                    <div class="user-name">bantou</div>
+                    <div class="user-email" id="user-bantou-email">bantou@onionmail.com</div>
                 </div>
-                <div class="list-user-info">
-                    <div class="user-circle"><img src="../loading.gif" id="papostol-pfp" alt="User papostol Image"></div>
-                    <div class="user-details">
-                        <div class="user-name">papostol</div>
-                        <div class="user-email" id="user-papostol-email">papostol@onionmail.com</div>
-                    </div>
-                </div>
-                <div class="list-user-info"></div>
-    
             </div>
+            <div class="list-user-info">
+                <div class="user-circle"><img src="../loading.gif" id="papostol-pfp" alt="User papostol Image"></div>
+                <div class="user-details">
+                    <div class="user-name">papostol</div>
+                    <div class="user-email" id="user-papostol-email">papostol@onionmail.com</div>
+                </div>
+            </div>
+            <div class="list-user-info"></div>
+
         </div>
-        <div id="stuck" style="position: fixed;
+    </div>
+
+    <div style="display:none" id="private_chat" class="popup">
+        <div class="user-circle">
+            <img id="usr-img-chat" src="../t50-img.png" alt="User Image">
+            <p id="chat-username">SecureLine</p>
+        </div>
+        <div id="info" style="position: fixed;
     top: 30px;
     right: 20px;
     width: 30px;
@@ -102,40 +111,127 @@
             <!--onclick="fix()" id="stuck"-->
             <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
             <!-- You can customize the icon or text inside the button -->
-            <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px"
-                viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-                <path fill="#fff"
-                    d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
-                    <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25"
-                        to="360 25 25" dur="0.6s" repeatCount="indefinite" />
-                </path>
-            </svg>
-        </div>
-        <div id="loading-div-text"
-            style="display: block;margin: 0;padding: 0;height: 100vh;position: relative;color: rgb(255, 255, 255)">
-            <div id="loading-text"
-                style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);text-align: center;">
-                <p>Wait</p>
-            </div>
-        </div>
-        <div style="display: block" id="loading" class="icon-container">
-            <div class="item">
-                <i class="loader --2"></i>
-            </div>
-        </div>
-
-        <div style="display: none;" class="loading loading--circle" title="Loading">
-            <svg version="1.1" id="loading-circle" xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
-                style="enable-background:new 0 0 50 50;" xml:space="preserve">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
                 <path
-                    d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
-                    <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
-                        to="360 25 25" dur="0.6s" repeatCount="indefinite" />
-                </path>
+                    d="M12 17.75C12.4142 17.75 12.75 17.4142 12.75 17V11C12.75 10.5858 12.4142 10.25 12 10.25C11.5858 10.25 11.25 10.5858 11.25 11V17C11.25 17.4142 11.5858 17.75 12 17.75Z"
+                    fill="#fff" />
+                <path
+                    d="M12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z"
+                    fill="#fff" />
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75Z"
+                    fill="#fff" />
             </svg>
         </div>
+        <div id="info" style="position: fixed;
+    top: 30px;
+    right: 50px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
+            <!--onclick="fix()" id="stuck"-->
+            <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+            <!-- You can customize the icon or text inside the button -->
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px"
+                height="22px" viewBox="0 0 15 15" version="1.1">
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="Dribbble-Light-Preview" transform="translate(-103.000000, -7321.000000)" fill="#fff">
+                        <g id="icons" transform="translate(56.000000, 160.000000)">
+                            <path
+                                d="M61.7302966,7173.99596 C61.2672966,7175.40296 59.4532966,7176.10496 58.1572966,7175.98796 C56.3872966,7175.82796 54.4612966,7174.88896 52.9992966,7173.85496 C50.8502966,7172.33496 48.8372966,7169.98396 47.6642966,7167.48896 C46.8352966,7165.72596 46.6492966,7163.55796 47.8822966,7161.95096 C48.3382966,7161.35696 48.8312966,7161.03996 49.5722966,7161.00296 C50.6002966,7160.95296 50.7442966,7161.54096 51.0972966,7162.45696 C51.3602966,7163.14196 51.7112966,7163.84096 51.9072966,7164.55096 C52.2742966,7165.87596 50.9912966,7165.93096 50.8292966,7167.01396 C50.7282966,7167.69696 51.5562966,7168.61296 51.9302966,7169.09996 C52.6632966,7170.05396 53.5442966,7170.87696 54.5382966,7171.50296 C55.1072966,7171.86196 56.0262966,7172.50896 56.6782966,7172.15196 C57.6822966,7171.60196 57.5872966,7169.90896 58.9912966,7170.48196 C59.7182966,7170.77796 60.4222966,7171.20496 61.1162966,7171.57896 C62.1892966,7172.15596 62.1392966,7172.75396 61.7302966,7173.99596 C61.4242966,7174.92396 62.0362966,7173.06796 61.7302966,7173.99596"
+                                id="call-[#192]">
+
+                            </path>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+        </div>
+        <div class="message-container">
+            <div class="message">What's up papostol</div>
+            <div class="message-me">What's up holder</div>
+            <div class="message-me">New Evox App Here!</div>
+        
+            <div class="message">Yeah, i see! Pretty Good!</div>
+            <div class="message-me">Yes! I Added new features for more security</div>
+
+            <div class="message">That's great, i love that encoding thing</div>
+            <div class="message-me">Me too! It's perfect!</div>
+            <div class="message-me">Are you ready?</div>
+            <div class="message">Yes! Let's see what's coming next from Evox®!</div>
+            <div class="message-me">Many new services! That's the only thing i'm going to tell you. The rest will remain for you to see.</div>
+            <div class="message">Yes! Let's see what's coming next from Evox®!</div>
+            <div class="message">Yes! Let's see what's coming next from Evox®!</div>
+            <div class="message">Yes! Let's see what's coming next from Evox®!</div>
+            <div class="message">Yes! Let's see what's coming next from Evox®!</div>
+        </div>
+        
+
+                <input placeholder="Enter your message" class="apple-input">
+                <div style="position: absolute;
+                bottom: 13px;right: 22px"><svg width="35px" height="35px" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z"
+                            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+            <div class="list-user-info"></div>
+
+    </div>
+    <div id="stuck" style="position: fixed;
+    top: 30px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
+        <!--onclick="fix()" id="stuck"-->
+        <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+        <!-- You can customize the icon or text inside the button -->
+        <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px" y="0px" width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+            xml:space="preserve">
+            <path fill="#fff"
+                d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25"
+                    to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+            </path>
+        </svg>
+    </div>
+    <div id="loading-div-text"
+        style="display: block;margin: 0;padding: 0;height: 100vh;position: relative;color: rgb(255, 255, 255)">
+        <div id="loading-text"
+            style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);text-align: center;">
+            <p>Wait</p>
+        </div>
+    </div>
+    <div style="display: block" id="loading" class="icon-container">
+        <div class="item">
+            <i class="loader --2"></i>
+        </div>
+    </div>
+
+    <div style="display: none;" class="loading loading--circle" title="Loading">
+        <svg version="1.1" id="loading-circle" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+            style="enable-background:new 0 0 50 50;" xml:space="preserve">
+            <path
+                d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                    to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+            </path>
+        </svg>
+    </div>
 </body>
 
 

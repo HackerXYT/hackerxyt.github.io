@@ -1,7 +1,66 @@
 
 sessionStorage.removeItem("skipped")
 $(document).ready(docready())
+var submit = document.getElementById("submit");
+submit.addEventListener("click", login())
 
+function login() {
+  let email = document.getElementById("email").value
+  let password = document.getElementById("password").value
+  console.log(email, "********")
+  const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}&autologin=true`;
+
+  fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+
+      console.log(data);
+      if (data.includes("Credentials Correct")) {
+        console.log("Welcome Abroad")
+        localStorage.setItem("t50pswd", `${btoa(password)}`)
+        const credentialsString = data;
+        const match = credentialsString.match(/Username:(\w+)/);
+        const username = match && match[1];
+        localStorage.setItem("t50-email", email)
+        //localStorage.setItem("t50-autologin", false)
+        localStorage.setItem("t50-username", username)
+        sessionStorage.setItem("loaded", true)
+        sessionStorage.setItem("loggedin", email)
+        sessionStorage.setItem("loggedinpswd", btoa(password))
+        if (localStorage.getItem("restart-for-florida")) {
+          console.log("Florida Override!")
+          localStorage.removeItem("restart-for-florida")
+          localStorage.setItem("t50-autologin", true)
+          localStorage.setItem("remove-autolg", true)
+          restart()
+          return;
+        }
+        setup()
+      } else if (data === "Credentials Incorrect") {
+        fadeError("2")
+        console.log("Wrong Email/Password")
+        email = ""
+        password = ""
+      } else if (data === "Account Doesn't Exist") {
+        if (email === "" || password === "") {
+
+        } else {
+          fadeError("1")
+        }
+
+        console.log("Doesn't Exist")
+        email = ""
+      }
+    })
+    .catch(error => {
+      console.error('Fetch error:', error);
+    });
+}
 function docready() {
   $("#loading").fadeOut("slow")
   log("Loading Out", "green")
@@ -43,6 +102,11 @@ function docready() {
                           $("#loading-bar").fadeOut("slow")
                           if (data === "T50 Database Online" && sessionStorage.getItem("skipped") !== "yes") {
                             log("Server Online!", "green")
+                            if(localStorage.getItem("t50-autologin") === "true"){
+                              document.getElementById("email").value = localStorage.getItem("t50-email")
+                              document.getElementById("password").value = atob(localStorage.getItem("t50pswd"))
+                              login()
+                            }
                             $("#container").fadeIn("slow", function () {
                               $("#loading").fadeOut("slow")
                               $("#loading-div-text").fadeOut("fast")
@@ -239,6 +303,14 @@ function setup() {
 				$("#container").fadeOut("fast")
 				$("#loading").fadeIn("slow")
 				$("#stuck").fadeOut("slow")
+        getFriends()
+        setTimeout(function() {
+          $("#gateway").fadeOut("fast", function() {
+            $("#chats").fadeIn("fast")
+            $("#loading").fadeOut("slow")
+            
+          })
+        }, 1000)
                 
 			}
 		});
@@ -248,66 +320,7 @@ function setup() {
 	}
 }
 
-var submit = document.getElementById("submit");
-submit.addEventListener("click", login())
 
-function login() {
-  let email = document.getElementById("email").value
-  let password = document.getElementById("password").value
-  console.log(email, "********")
-  const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}`;
-
-  fetch(url)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.text();
-    })
-    .then(data => {
-
-      console.log(data);
-      if (data.includes("Credentials Correct")) {
-        console.log("Welcome Abroad")
-        localStorage.setItem("t50pswd", `${btoa(password)}`)
-        const credentialsString = data;
-        const match = credentialsString.match(/Username:(\w+)/);
-        const username = match && match[1];
-        localStorage.setItem("t50-email", email)
-        localStorage.setItem("t50-autologin", false)
-        localStorage.setItem("t50-username", username)
-        sessionStorage.setItem("loaded", true)
-        sessionStorage.setItem("loggedin", email)
-        sessionStorage.setItem("loggedinpswd", btoa(password))
-        if (localStorage.getItem("restart-for-florida")) {
-          console.log("Florida Override!")
-          localStorage.removeItem("restart-for-florida")
-          localStorage.setItem("t50-autologin", true)
-          localStorage.setItem("remove-autolg", true)
-          restart()
-          return;
-        }
-        setup()
-      } else if (data === "Credentials Incorrect") {
-        fadeError("2")
-        console.log("Wrong Email/Password")
-        email = ""
-        password = ""
-      } else if (data === "Account Doesn't Exist") {
-        if (email === "" || password === "") {
-
-        } else {
-          fadeError("1")
-        }
-
-        console.log("Doesn't Exist")
-        email = ""
-      }
-    })
-    .catch(error => {
-      console.error('Fetch error:', error);
-    });
-}
 
 document.getElementById("password").addEventListener("keypress", function (event) {
   if (event.keyCode === 13) {
@@ -340,4 +353,130 @@ function reconnect() {
   function log(text, color) {
 	const styles = `color: ${color}; font-size: 16px; font-weight: normal;`;
 	console.log('%c' + text, styles)
+}
+
+function showchat(element) {
+  pfp = document.getElementById(`${element.id}-pfp-friends`)
+    $("#chats").fadeOut("fast", function() {
+      console.log(pfp)
+      console.log(pfp.src)
+      console.log(element.id)
+      document.getElementById("usr-img-chat").src = pfp.src
+      document.getElementById("chat-username").innerHTML = element.id
+      //get messages and then fade in
+        $("#private_chat").fadeIn("fast")
+    })
+}
+
+function getFriends() {
+  $("#load-users-friends").fadeIn("fast")
+	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			console.log(JSON.stringify(data))
+			if (JSON.stringify(data) === '"[]"') {
+				//$("#load-users-friends").fadeOut("fast", function () {
+				//	let containerId = "list-friends";
+				//	var listContainer = document.getElementById(containerId);
+				//	listContainer.style.textAlign = "center";
+				//	listContainer.style.marginTop = "50px";
+				//	listContainer.innerHTML = "No Friends"
+				//})
+				return;
+			} else {
+				console.log(`${JSON.stringify(data)} != "[]" data isnt empty`)
+			}
+			const user_requests = JSON.parse(data)
+			let containerId = "list-container";
+			var listContainer = document.getElementById(containerId);
+			listContainer.style.textAlign = "";
+			listContainer.style.marginTop = "";
+			listContainer.innerHTML = "<!--Empty-->";
+			user_requests.forEach(username => {
+				fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+						return response.text();
+					})
+					.then(profileemail => {
+						let addButton;
+						// Check if the username already exists in the list
+						if (listContainer.querySelector(`#user-${username}-email`) === null) {
+							var userContainer = document.createElement("div");
+							userContainer.className = "list-user-info";
+							userContainer.id = username;
+							userContainer.onclick = function () {
+								showchat(this);
+							};
+							var userCircle = document.createElement("div");
+							userCircle.className = "user-circle";
+							userCircle.innerHTML = `<img src="../searching_users.gif" id="${username}-pfp-friends" alt="User ${username} Image">`;
+							var userDetails = document.createElement("div");
+							userDetails.className = "user-details";
+
+							var userName = document.createElement("div");
+							userName.className = "user-name";
+							userName.textContent = username;
+
+							var userEmail = document.createElement("div");
+							userEmail.className = "user-email";
+							userEmail.id = `user-${username}-email-friends`;
+							userEmail.textContent = profileemail;
+
+
+							//addButton = document.createElement("a");
+							//addButton.href = "#";
+							//addButton.id = username;
+							//addButton.onclick = function () {
+							//	acceptfriend(this);
+							//};
+							//addButton.className = "apple-button-list";
+							//addButton.textContent = "Accept";
+
+
+							userDetails.appendChild(userName);
+							userDetails.appendChild(userEmail);
+
+							userContainer.appendChild(userCircle);
+							userContainer.appendChild(userDetails);
+							//userContainer.appendChild(addButton);
+
+							listContainer.appendChild(userContainer);
+							fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+								.then(response => {
+									if (!response.ok) {
+										throw new Error(`HTTP error! Status: ${response.status}`);
+									}
+									return response.text();
+								})
+								.then(profileimage => {
+									if (profileimage.indexOf("base64") === -1) {
+										// If it doesn't contain "base64", add the prefix
+										profileimage = "data:image/jpeg;base64," + profileimage;
+										document.getElementById(`${username}-pfp-friends`).src = profileimage
+									} else {
+										document.getElementById(`${username}-pfp-friends`).src = profileimage
+									}
+
+
+								}).catch(error => {
+									console.error("Cannot set src for", username)
+									console.error(error)
+								})
+						}
+					});
+				$("#load-users-friends").fadeOut("fast");
+			})
+		})
+
+	$("#main_settings").fadeOut("fast", function () {
+		$("#friends").fadeIn("fast")
+	})
 }

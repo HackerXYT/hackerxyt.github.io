@@ -3,6 +3,11 @@
   src: url('../SFUIText-Medium.ttf');
 }
 
+@font-face {
+  font-family: "SF-username";
+  src: url('SF-Pro-Text-Heavy.otf');
+}
+
 
 body {
   font-family: "SF";
@@ -18,8 +23,6 @@ body {
   /* IE 10 and IE 11 */
   user-select: none;
   /* Standard syntax */
-  overflow: hidden;
-  overscroll-behavior: none;
   touch-action: none;
 }
 
@@ -199,11 +202,12 @@ img {
 }
 
 .popup {
+  flex-direction: column;
+  height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -444,8 +448,8 @@ a {
 }
 
 .list-user-info {
-  position:relative;
-  display:inline-block;
+  position: relative;
+  display: inline-block;
   position: relative;
   margin: 5px;
   background: none;
@@ -454,32 +458,45 @@ a {
   align-items: center;
   gap: 16px;
 }
+
 .c-avatar__status {
-  width:25px;
-  height:25px;
-  background:#99CC00;
-  border:2px solid white;
-  position:absolute;
-  bottom:2%;
-  right:2%;
-  border-radius:100%;
+  width: 25px;
+  height: 25px;
+  background: #99CC00;
+  border: 2px solid white;
+  position: absolute;
+  bottom: 2%;
+  right: 2%;
+  border-radius: 100%;
 }
 
 .user-circle {
+  color: #fff;
+  background-color: #000;
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  /* Use 50% for a perfect circle */
-  overflow: hidden;
   margin-top: 5px;
   margin-bottom: 5px;
   margin-left: 5px;
+  display: flex;
+  align-items: center;
 }
 
 .user-circle img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
+  /* Ensure the image also has a circular border */
+}
+
+.user-circle p {
+  font-family: "SF-username";
+  color: #fff;
+  margin-left: 10px;
+  display: inline-block;
+  /* Set the display property to inline-block */
 }
 
 .user-details {
@@ -588,13 +605,17 @@ a {
   margin: 6px;
   width: 80%;
 }
+
 .parent-list-container {
   position: relative;
 }
+
 .apple-button-list {
   position: absolute;
-  top: 6px; /* Adjust as needed */
-  right: 6px; /* Adjust as needed */
+  top: 6px;
+  /* Adjust as needed */
+  right: 6px;
+  /* Adjust as needed */
   background-color: #3333339b;
   border: none;
   color: #fff;
@@ -607,22 +628,63 @@ a {
 }
 
 .apple-input {
+  position: fixed;
+  bottom: 10px;
   background-color: #333;
   /* Your desired background color */
   border: none;
   color: #fff;
   padding: 15px 30px;
-  padding-left: 45px;
+  padding-left: 20px;
+  /* Adjust this value to add space on the left */
   font-size: 16px;
-  border-radius: 8px;
+  border-radius: 52px;
   cursor: pointer;
   display: inline-block;
   text-decoration: none;
   transition: background-color 0.3s ease;
-  margin: 6px;
-  width: 77%;
+  margin: 4px;
+  width: 65%;
   outline: none;
 }
+
+.message-container {
+  flex-grow: 1;
+  max-height: 86%;
+  overflow-y: auto;
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.message, .message-me {
+  display: inline-flex; /* Change to inline-flex */
+  margin-top: 15px;
+  margin-bottom: 15px;
+  background-color: #333;
+  color: #fff;
+  padding: 15px 30px;
+  font-size: 16px;
+  border-radius: 52px;
+  outline: none;
+  word-wrap: break-word;
+}
+
+.message-me {
+  max-width: 50%;
+  margin-top: 0;
+  margin-left: auto;
+}
+
+.message {
+  margin-right: auto;
+  max-width: 50%;
+}
+
+
+
+
 
 .input-container {
   position: relative;
@@ -635,6 +697,7 @@ a {
   top: 50%;
   transform: translateY(-50%);
 }
+
 .input-container .go-icon {
   position: absolute;
   right: 25px;
@@ -679,7 +742,7 @@ a {
 }
 
 .animated-gradient {
-  background: repeating-linear-gradient(to right, #400000 0%, rgb(0, 0, 0) 50%, #400000 100%);
+  background: repeating-linear-gradient(to right, #2a2884 0%, rgb(0, 0, 0) 50%, #2a2884 100%);
   width: 100%;
   background-size: 200% auto;
   background-position: 0 100%;

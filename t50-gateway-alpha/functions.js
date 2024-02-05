@@ -1421,3 +1421,8 @@ function handleFileSelect() {
 	// Reset the input value to allow selecting the same file again
 	input.value = '';
 }
+
+function secureline(element) {
+	//remove "secureline-" from element.id
+	window.location.href = `./secureline/?goto=${element.id}`
+}
