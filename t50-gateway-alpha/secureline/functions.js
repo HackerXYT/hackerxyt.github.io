@@ -8,7 +8,7 @@ function login() {
   let email = document.getElementById("email").value
   let password = document.getElementById("password").value
   console.log(email, "********")
-  const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}&autologin=true`;
+  const url = `http://192.168.1.21:4000/accounts?email=${email}&password=${password}&autologin=true`;
 
   fetch(url)
     .then(response => {
@@ -91,7 +91,7 @@ function docready() {
                     $("#dots").html("...")
                     setTimeout(function () {
                       $("#dots").html("..")
-                      fetch("https://evox-datacenter.onrender.com/accounts")
+                      fetch("http://192.168.1.21:4000/accounts")
                         .then(response => {
                           if (!response.ok) {
                             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -102,7 +102,7 @@ function docready() {
                           $("#loading-bar").fadeOut("slow")
                           if (data === "T50 Database Online" && sessionStorage.getItem("skipped") !== "yes") {
                             log("Server Online!", "green")
-                            if(localStorage.getItem("t50-autologin") === "true"){
+                            if (localStorage.getItem("t50-autologin") === "true") {
                               document.getElementById("email").value = localStorage.getItem("t50-email")
                               document.getElementById("password").value = atob(localStorage.getItem("t50pswd"))
                               login()
@@ -192,7 +192,7 @@ function docready() {
   })
   if (loggedin != null && autologin === "true") {
     return;
-    const url = `https://evox-datacenter.onrender.com/accounts?email=${loggedin}&password=${pswd}&autologin=true`;
+    const url = `http://192.168.1.21:4000/accounts?email=${loggedin}&password=${pswd}&autologin=true`;
 
     fetch(url)
       .then(response => {
@@ -283,41 +283,41 @@ function docready() {
     }
     return;
   }
-  
+
 }
 
 function setup() {
-	log("T50 Gateway V:Delta 5", "red")
-	let lg_status = sessionStorage.getItem("loaded")
-	if (lg_status === "true") {
-		let username = localStorage.getItem("t50-username")
-		let email = localStorage.getItem("t50-email")
-		$("#user-text").html(username)
-		log("Loading Gateway", "green")
-		$("#container").fadeOut("slow", function () {
-			$("#gateway").fadeIn("slow")
-			if (username != null && email != null) {
-				sessionStorage.setItem("skipped", "yes")
-				$("#user-text").html(username)
-				log("Loading Gateway", "green")
-				$("#container").fadeOut("fast")
-				$("#loading").fadeIn("slow")
-				$("#stuck").fadeOut("slow")
+  log("T50 Gateway V:Delta 5", "red")
+  let lg_status = sessionStorage.getItem("loaded")
+  if (lg_status === "true") {
+    let username = localStorage.getItem("t50-username")
+    let email = localStorage.getItem("t50-email")
+    $("#user-text").html(username)
+    log("Loading Gateway", "green")
+    $("#container").fadeOut("slow", function () {
+      $("#gateway").fadeIn("slow")
+      if (username != null && email != null) {
+        sessionStorage.setItem("skipped", "yes")
+        $("#user-text").html(username)
+        log("Loading Gateway", "green")
+        $("#container").fadeOut("fast")
+        $("#loading").fadeIn("slow")
+        $("#stuck").fadeOut("slow")
         getFriends()
-        setTimeout(function() {
-          $("#gateway").fadeOut("fast", function() {
+        setTimeout(function () {
+          $("#gateway").fadeOut("fast", function () {
             $("#chats").fadeIn("fast")
             $("#loading").fadeOut("slow")
-            
+
           })
         }, 1000)
-                
-			}
-		});
 
-	} else {
-		log("Error! Cannot Load Page When Logged Out.", "red")
-	}
+      }
+    });
+
+  } else {
+    log("Error! Cannot Load Page When Logged Out.", "red")
+  }
 }
 
 
@@ -332,7 +332,7 @@ document.getElementById("password").addEventListener("keypress", function (event
 function reconnect() {
   console.log("Reconnecting..")
   $("#loading-bar").fadeIn("slow")
-  fetch("https://evox-datacenter.onrender.com/accounts")
+  fetch("http://192.168.1.21:4000/accounts")
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -348,135 +348,313 @@ function reconnect() {
     }).catch(error => {
       $("#loading-bar").fadeOut("slow")
     })
-  }
+}
 
-  function log(text, color) {
-	const styles = `color: ${color}; font-size: 16px; font-weight: normal;`;
-	console.log('%c' + text, styles)
+function log(text, color) {
+  const styles = `color: ${color}; font-size: 16px; font-weight: normal;`;
+  console.log('%c' + text, styles)
+}
+document.getElementById("message_input").addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    send_message()
+  }
+});
+function send_message() {
+  sender = localStorage.getItem("t50-username")
+  recipient = sessionStorage.getItem("current_sline")
+  message = document.getElementById("message_input")
+  console.log("Sending message to", recipient)
+  if(message.value != ""){
+    fetch(`http://192.168.1.21:4000/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${message.value}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      message.value = ""
+      if(data === `Message Sent To ${recipient}`){
+        console.log("Message Sent")
+        fetch(`http://192.168.1.21:4000/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.text();
+        })
+        .then(messages => {
+          console.log(messages)
+          const jsonData = JSON.parse(messages);
+
+          // Check if jsonData and jsonData.messages are defined before sorting
+          if (jsonData && jsonData.messages) {
+            const messagesContainer = document.getElementById('messages-container');
+            messagesContainer.innerHTML = "";
+
+            // Sort messages by timestamp
+            const sortedMessages = jsonData.messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+            // Iterate over each message
+            sortedMessages.forEach(message => {
+              // Create a new message element
+              const messageElement = document.createElement('div');
+              messageElement.textContent = message.content;
+
+              // Apply appropriate class based on the sender
+              if (message.sender === localStorage.getItem("t50-username")) {
+                messageElement.classList.add('message-me');
+              } else {
+                messageElement.classList.add('message');
+              }
+
+              // Append the message element to the messages container
+              messagesContainer.appendChild(messageElement);
+            });
+          } else {
+            console.error("JSON data or messages array is undefined.");
+          }
+        })
+      } else {
+        console.error("Error Sending Message -SLINE ERROR")
+      }
+    })
+  } else {
+    shake_me("message_input")
+  }
+  
+}
+function shake_me(what) {
+	document.getElementById(`${what}`).classList.add('shake');
+	setTimeout(function () {
+		document.getElementById(`${what}`).classList.remove('shake');
+	}, 500);
+}
+let reloading;
+function reload_chat(whoto) {
+  reloading = setInterval(function () {
+    sessionStorage.setItem("current_sline", whoto)
+    pfp = document.getElementById(`${whoto}-pfp-friends`)
+          fetch(`http://192.168.1.21:4000/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              return response.text();
+            })
+            .then(messages => {
+              const jsonData = JSON.parse(messages);
+  
+              // Check if jsonData and jsonData.messages are defined before sorting
+              if (jsonData && jsonData.messages) {
+                const messagesContainer = document.getElementById('messages-container');
+                messagesContainer.innerHTML = "";
+  
+                // Sort messages by timestamp
+                const sortedMessages = jsonData.messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  
+                // Iterate over each message
+                sortedMessages.forEach(message => {
+                  // Create a new message element
+                  const messageElement = document.createElement('div');
+                  messageElement.textContent = message.content;
+  
+                  // Apply appropriate class based on the sender
+                  if (message.sender === localStorage.getItem("t50-username")) {
+                    messageElement.classList.add('message-me');
+                  } else {
+                    messageElement.classList.add('message');
+                  }
+  
+                  // Append the message element to the messages container
+                  messagesContainer.appendChild(messageElement);
+                });
+              } else {
+                console.error("JSON data or messages array is undefined.");
+              }
+            })
+  }, 1000)
 }
 
 function showchat(element) {
+  sessionStorage.setItem("current_sline", element.id)
   pfp = document.getElementById(`${element.id}-pfp-friends`)
-    $("#chats").fadeOut("fast", function() {
-      console.log(pfp)
-      console.log(pfp.src)
-      console.log(element.id)
-      document.getElementById("usr-img-chat").src = pfp.src
-      document.getElementById("chat-username").innerHTML = element.id
-      //get messages and then fade in
-        $("#private_chat").fadeIn("fast")
+  fetch(`http://192.168.1.21:4000/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
     })
+    .then(data => {
+      if (data === "Chat Exists.") {
+        console.log("Getting Existing Chat")
+        fetch(`http://192.168.1.21:4000/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+          })
+          .then(messages => {
+            console.log(messages)
+            const jsonData = JSON.parse(messages);
+
+            // Check if jsonData and jsonData.messages are defined before sorting
+            if (jsonData && jsonData.messages) {
+              const messagesContainer = document.getElementById('messages-container');
+              messagesContainer.innerHTML = "";
+
+              // Sort messages by timestamp
+              const sortedMessages = jsonData.messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+              // Iterate over each message
+              sortedMessages.forEach(message => {
+                // Create a new message element
+                const messageElement = document.createElement('div');
+                messageElement.textContent = message.content;
+
+                // Apply appropriate class based on the sender
+                if (message.sender === localStorage.getItem("t50-username")) {
+                  messageElement.classList.add('message-me');
+                } else {
+                  messageElement.classList.add('message');
+                }
+
+                // Append the message element to the messages container
+                messagesContainer.appendChild(messageElement);
+              });
+            } else {
+              console.error("JSON data or messages array is undefined.");
+            }
+          })
+      } else {
+        //Make Prompt
+        console.log("Creating Chat")
+      }
+    })
+  $("#chats").fadeOut("fast", function () {
+    reload_chat(element.id)
+    console.log(pfp)
+    console.log(pfp.src)
+    console.log(element.id)
+    document.getElementById("usr-img-chat").src = pfp.src
+    document.getElementById("chat-username").innerHTML = element.id
+    //get messages and then fade in
+    $("#private_chat").fadeIn("fast")
+  })
+
 }
 
 function getFriends() {
   $("#load-users-friends").fadeIn("fast")
-	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! Status: ${response.status}`);
-			}
-			return response.text();
-		})
-		.then(data => {
-			console.log(JSON.stringify(data))
-			if (JSON.stringify(data) === '"[]"') {
-				//$("#load-users-friends").fadeOut("fast", function () {
-				//	let containerId = "list-friends";
-				//	var listContainer = document.getElementById(containerId);
-				//	listContainer.style.textAlign = "center";
-				//	listContainer.style.marginTop = "50px";
-				//	listContainer.innerHTML = "No Friends"
-				//})
-				return;
-			} else {
-				console.log(`${JSON.stringify(data)} != "[]" data isnt empty`)
-			}
-			const user_requests = JSON.parse(data)
-			let containerId = "list-container";
-			var listContainer = document.getElementById(containerId);
-			listContainer.style.textAlign = "";
-			listContainer.style.marginTop = "";
-			listContainer.innerHTML = "<!--Empty-->";
-			user_requests.forEach(username => {
-				fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
-					.then(response => {
-						if (!response.ok) {
-							throw new Error(`HTTP error! Status: ${response.status}`);
-						}
-						return response.text();
-					})
-					.then(profileemail => {
-						let addButton;
-						// Check if the username already exists in the list
-						if (listContainer.querySelector(`#user-${username}-email`) === null) {
-							var userContainer = document.createElement("div");
-							userContainer.className = "list-user-info";
-							userContainer.id = username;
-							userContainer.onclick = function () {
-								showchat(this);
-							};
-							var userCircle = document.createElement("div");
-							userCircle.className = "user-circle";
-							userCircle.innerHTML = `<img src="../searching_users.gif" id="${username}-pfp-friends" alt="User ${username} Image">`;
-							var userDetails = document.createElement("div");
-							userDetails.className = "user-details";
+  fetch(`http://192.168.1.21:4000/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log(JSON.stringify(data))
+      if (JSON.stringify(data) === '"[]"') {
+        //$("#load-users-friends").fadeOut("fast", function () {
+        //	let containerId = "list-friends";
+        //	var listContainer = document.getElementById(containerId);
+        //	listContainer.style.textAlign = "center";
+        //	listContainer.style.marginTop = "50px";
+        //	listContainer.innerHTML = "No Friends"
+        //})
+        return;
+      } else {
+        console.log(`${JSON.stringify(data)} != "[]" data isnt empty`)
+      }
+      const user_requests = JSON.parse(data)
+      let containerId = "list-container";
+      var listContainer = document.getElementById(containerId);
+      listContainer.style.textAlign = "";
+      listContainer.style.marginTop = "";
+      listContainer.innerHTML = "<!--Empty-->";
+      user_requests.forEach(username => {
+        fetch(`http://192.168.1.21:4000/accounts?method=getemailbyusername&username=${username}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+          })
+          .then(profileemail => {
+            let addButton;
+            // Check if the username already exists in the list
+            if (listContainer.querySelector(`#user-${username}-email`) === null) {
+              var userContainer = document.createElement("div");
+              userContainer.className = "list-user-info";
+              userContainer.id = username;
+              userContainer.onclick = function () {
+                showchat(this);
+              };
+              var userCircle = document.createElement("div");
+              userCircle.className = "user-circle";
+              userCircle.innerHTML = `<img src="../searching_users.gif" id="${username}-pfp-friends" alt="User ${username} Image">`;
+              var userDetails = document.createElement("div");
+              userDetails.className = "user-details";
 
-							var userName = document.createElement("div");
-							userName.className = "user-name";
-							userName.textContent = username;
+              var userName = document.createElement("div");
+              userName.className = "user-name";
+              userName.textContent = username;
 
-							var userEmail = document.createElement("div");
-							userEmail.className = "user-email";
-							userEmail.id = `user-${username}-email-friends`;
-							userEmail.textContent = profileemail;
-
-
-							//addButton = document.createElement("a");
-							//addButton.href = "#";
-							//addButton.id = username;
-							//addButton.onclick = function () {
-							//	acceptfriend(this);
-							//};
-							//addButton.className = "apple-button-list";
-							//addButton.textContent = "Accept";
+              var userEmail = document.createElement("div");
+              userEmail.className = "user-email";
+              userEmail.id = `user-${username}-email-friends`;
+              userEmail.textContent = profileemail;
 
 
-							userDetails.appendChild(userName);
-							userDetails.appendChild(userEmail);
-
-							userContainer.appendChild(userCircle);
-							userContainer.appendChild(userDetails);
-							//userContainer.appendChild(addButton);
-
-							listContainer.appendChild(userContainer);
-							fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-								.then(response => {
-									if (!response.ok) {
-										throw new Error(`HTTP error! Status: ${response.status}`);
-									}
-									return response.text();
-								})
-								.then(profileimage => {
-									if (profileimage.indexOf("base64") === -1) {
-										// If it doesn't contain "base64", add the prefix
-										profileimage = "data:image/jpeg;base64," + profileimage;
-										document.getElementById(`${username}-pfp-friends`).src = profileimage
-									} else {
-										document.getElementById(`${username}-pfp-friends`).src = profileimage
-									}
+              //addButton = document.createElement("a");
+              //addButton.href = "#";
+              //addButton.id = username;
+              //addButton.onclick = function () {
+              //	acceptfriend(this);
+              //};
+              //addButton.className = "apple-button-list";
+              //addButton.textContent = "Accept";
 
 
-								}).catch(error => {
-									console.error("Cannot set src for", username)
-									console.error(error)
-								})
-						}
-					});
-				$("#load-users-friends").fadeOut("fast");
-			})
-		})
+              userDetails.appendChild(userName);
+              userDetails.appendChild(userEmail);
 
-	$("#main_settings").fadeOut("fast", function () {
-		$("#friends").fadeIn("fast")
-	})
+              userContainer.appendChild(userCircle);
+              userContainer.appendChild(userDetails);
+              //userContainer.appendChild(addButton);
+
+              listContainer.appendChild(userContainer);
+              fetch(`http://192.168.1.21:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                  }
+                  return response.text();
+                })
+                .then(profileimage => {
+                  if (profileimage.indexOf("base64") === -1) {
+                    // If it doesn't contain "base64", add the prefix
+                    profileimage = "data:image/jpeg;base64," + profileimage;
+                    document.getElementById(`${username}-pfp-friends`).src = profileimage
+                  } else {
+                    document.getElementById(`${username}-pfp-friends`).src = profileimage
+                  }
+
+
+                }).catch(error => {
+                  console.error("Cannot set src for", username)
+                  console.error(error)
+                })
+            }
+          });
+        $("#load-users-friends").fadeOut("fast");
+      })
+    })
+
+  $("#main_settings").fadeOut("fast", function () {
+    $("#friends").fadeIn("fast")
+  })
 }
