@@ -8,8 +8,22 @@
   src: url('SF-Pro-Text-Heavy.otf');
 }
 
+/* For webkit-based browsers */
+/* Hide scrollbar */
+::-webkit-scrollbar {
+  display: none;
+}
+/* For other browsers */
+/* Hide scrollbar */
+/* You might need to prefix for other browsers as well */
+/* This is for Firefox */
+
+
 
 body {
+  touch-action: manipulation;
+  overflow: hidden;
+  scrollbar-width: none;
   font-family: "SF";
   margin: 0;
   padding: 0;
@@ -470,6 +484,11 @@ a {
   border-radius: 100%;
 }
 
+.user-container {
+  display: flex;
+  align-items: center;
+}
+
 .user-circle {
   color: #fff;
   background-color: #000;
@@ -488,7 +507,6 @@ a {
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
-  /* Ensure the image also has a circular border */
 }
 
 .user-circle p {
@@ -496,7 +514,6 @@ a {
   color: #fff;
   margin-left: 10px;
   display: inline-block;
-  /* Set the display property to inline-block */
 }
 
 .user-details {
@@ -649,13 +666,25 @@ a {
 }
 
 .message-container {
-  flex-grow: 1;
-  max-height: 80%;
+  margin-bottom: 50px; /* Adjust this value to create space for the input */
+  max-height: 83%;
   overflow-y: auto;
-  margin-bottom: 50px;
   display: flex;
   flex-direction: column;
+  position: relative; /* Make sure the container is positioned */
 }
+
+.bottom-actions {
+  background-color: #000;
+  background: black;
+  bottom: 2%;
+  position: fixed;
+  left: 0;
+  width: 100%;
+  padding: 10px; /* Add some padding to the bottom actions */
+  z-index: 1; /* Ensure the input container appears above messages */
+}
+
 
 
 .message, .message-me {

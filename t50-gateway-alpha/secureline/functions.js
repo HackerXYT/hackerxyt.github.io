@@ -3,12 +3,14 @@ sessionStorage.removeItem("skipped")
 $(document).ready(docready())
 var submit = document.getElementById("submit");
 submit.addEventListener("click", login())
-
+document.addEventListener('gesturestart', function (e) {
+  e.preventDefault();
+});
 function login() {
   let email = document.getElementById("email").value
   let password = document.getElementById("password").value
   console.log(email, "********")
-  const url = `http://192.168.1.21:4000/accounts?email=${email}&password=${password}&autologin=true`;
+  const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}&autologin=true`;
 
   fetch(url)
     .then(response => {
@@ -91,7 +93,7 @@ function docready() {
                     $("#dots").html("...")
                     setTimeout(function () {
                       $("#dots").html("..")
-                      fetch("http://192.168.1.21:4000/accounts")
+                      fetch("https://evox-datacenter.onrender.com/accounts")
                         .then(response => {
                           if (!response.ok) {
                             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -148,29 +150,7 @@ function docready() {
                           }
 
                           $("#loading").fadeOut("fast")
-                          let notes = localStorage.getItem("notes-owned")
-                          let images = localStorage.getItem("images-owned")
-                          let chatvia = localStorage.getItem("chatvia-owned")
-                          if (notes === "true") {//OWN NOTES
-                            document.getElementById("apps").innerHTML = `<a onclick="shake_me('notes-app')" href="#loadapp-notes-disabled"><img id="notes-app" src="EvoxNotes.png" class="disabledapp"></img></a>`
-                          }
-                          if (images === "true") {//OWN IMAGES
-                            if (document.getElementById("apps").innerHTML != "") {
-                              document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('images-app')" href="#loadapp-images"><img id="images-app" src="t50-img.png" class="disabledapp"></img></a>`
-                            } else {
-                              document.getElementById("apps").innerHTML = `<a onclick="shake_me('images-app')" href="#loadapp-images"><img id="images-app" src="t50-img.png" class="disabledapp"></img></a>`
-                            }
-                          }
-                          if (chatvia === "true") { //OWN CHATVIA
-                            if (document.getElementById("apps").innerHTML != "") {
-                              document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('chatvia-app')" href="#loadapp-chatvia"><img id="chatvia-app" src="chatvia-img.png" class="disabledapp"></img></a>`
-                            } else {
-                              document.getElementById("apps").innerHTML = `<a onclick="shake_me('chatvia-app')" href="#loadapp-chatvia"><img id="chatvia-app" src="chatvia-img.png" class="disabledapp"></img></a>`
-                            }
-                          }
-                          $("#gateway").fadeIn("fast", function () {
-                            $("#apps").fadeIn("slow")
-                          })
+                          $("#gateway").fadeIn("fast", function () {})
 
 
 
@@ -192,7 +172,7 @@ function docready() {
   })
   if (loggedin != null && autologin === "true") {
     return;
-    const url = `http://192.168.1.21:4000/accounts?email=${loggedin}&password=${pswd}&autologin=true`;
+    const url = `https://evox-datacenter.onrender.com/accounts?email=${loggedin}&password=${pswd}&autologin=true`;
 
     fetch(url)
       .then(response => {
@@ -332,7 +312,7 @@ document.getElementById("password").addEventListener("keypress", function (event
 function reconnect() {
   console.log("Reconnecting..")
   $("#loading-bar").fadeIn("slow")
-  fetch("http://192.168.1.21:4000/accounts")
+  fetch("https://evox-datacenter.onrender.com/accounts")
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -365,7 +345,7 @@ function send_message() {
   message = document.getElementById("message_input")
   console.log("Sending message to", recipient)
   if(message.value != ""){
-    fetch(`http://192.168.1.21:4000/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${message.value}`)
+    fetch(`https://evox-datacenter.onrender.com/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${message.value}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -376,7 +356,7 @@ function send_message() {
       message.value = ""
       if(data === `Message Sent To ${recipient}`){
         console.log("Message Sent")
-        fetch(`http://192.168.1.21:4000/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}`)
+        fetch(`https://evox-datacenter.onrender.com/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -435,7 +415,7 @@ function reload_chat(whoto) {
   reloading = setInterval(function () {
     sessionStorage.setItem("current_sline", whoto)
     pfp = document.getElementById(`${whoto}-pfp-friends`)
-          fetch(`http://192.168.1.21:4000/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}`)
+          fetch(`https://evox-datacenter.onrender.com/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -476,10 +456,32 @@ function reload_chat(whoto) {
   }, 1000)
 }
 
+function return_main_chats() {
+  sessionStorage.removeItem("current_sline")
+  try {
+    clearInterval(reloading)
+  } catch {
+    log("Error Clearing Reload Interval", "red")
+  }
+  $("#private_chat").fadeOut("fast", function () {
+    $("#chats").fadeIn("fast")
+  })
+}
 function showchat(element) {
+  document.getElementById("messages-container").innerHTML = `<p class='centered-text'>Loading Messages
+  <svg style="margin-top: 20px" width="50px" height="40px" version="1.1" id="loading-circle" xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+      style="enable-background:new 0 0 50 50;" xml:space="preserve">
+      <path fill="#fff"
+          d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+          <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+              to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+      </path>
+  </svg>
+</p>`
   sessionStorage.setItem("current_sline", element.id)
   pfp = document.getElementById(`${element.id}-pfp-friends`)
-  fetch(`http://192.168.1.21:4000/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
+  fetch(`https://evox-datacenter.onrender.com/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -489,7 +491,7 @@ function showchat(element) {
     .then(data => {
       if (data === "Chat Exists.") {
         console.log("Getting Existing Chat")
-        fetch(`http://192.168.1.21:4000/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
+        fetch(`https://evox-datacenter.onrender.com/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -541,14 +543,20 @@ function showchat(element) {
     document.getElementById("usr-img-chat").src = pfp.src
     document.getElementById("chat-username").innerHTML = element.id
     //get messages and then fade in
-    $("#private_chat").fadeIn("fast")
+    $("#private_chat").fadeIn("fast", function() {
+      var chatdiv = document.getElementById("messages-container");
+    // Scroll to the bottom of the div
+    chatdiv.scrollTop = chatdiv.scrollHeight;
+    })
   })
 
 }
-
+function go_dash() {
+  window.location.href = "../"
+}
 function getFriends() {
   $("#load-users-friends").fadeIn("fast")
-  fetch(`http://192.168.1.21:4000/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+  fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -576,7 +584,7 @@ function getFriends() {
       listContainer.style.marginTop = "";
       listContainer.innerHTML = "<!--Empty-->";
       user_requests.forEach(username => {
-        fetch(`http://192.168.1.21:4000/accounts?method=getemailbyusername&username=${username}`)
+        fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -627,7 +635,7 @@ function getFriends() {
               //userContainer.appendChild(addButton);
 
               listContainer.appendChild(userContainer);
-              fetch(`http://192.168.1.21:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+              fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
                 .then(response => {
                   if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
