@@ -686,6 +686,7 @@ a {
   flex-direction: row;
   background-color: #000;
   background: black;
+  height: 2%;
   bottom: 2%;
   position:fixed;
   left: 0;
