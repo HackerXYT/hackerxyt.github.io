@@ -1,4 +1,8 @@
-
+var screenHeight = window.innerHeight;
+//var chatsheight = document.getElementById("messages-container"); // Replace "yourElementId" with the ID of your element
+//chatsheight.style.maxHeight = screenHeight - 20 + "px";
+//var actionsheight = document.getElementById("actions"); // Replace "yourElementId" with the ID of your element
+//actionsheight.style.maxHeight = screenHeight + "px";
 sessionStorage.removeItem("skipped")
 $(document).ready(docready())
 var submit = document.getElementById("submit");
@@ -267,7 +271,7 @@ function docready() {
 }
 
 function setup() {
-  log("T50 Gateway V:Delta 5", "red")
+  log("SecureLine I:ALPHA 2", "CYAN")
   let lg_status = sessionStorage.getItem("loaded")
   if (lg_status === "true") {
     let username = localStorage.getItem("t50-username")

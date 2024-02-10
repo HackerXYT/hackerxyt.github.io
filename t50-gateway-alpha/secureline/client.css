@@ -665,6 +665,13 @@ a {
   outline: none;
 }
 
+
+.sline-actions {
+  overflow-y: auto;
+  max-height: 90%;
+  position: relative; /* Make sure the container is positioned */
+}
+
 .message-container {
   margin-bottom: 50px; /* Adjust this value to create space for the input */
   max-height: 83%;
@@ -675,10 +682,12 @@ a {
 }
 
 .bottom-actions {
+  display: flex;
+  flex-direction: row;
   background-color: #000;
   background: black;
   bottom: 2%;
-  position: fixed;
+  position:fixed;
   left: 0;
   width: 100%;
   padding: 10px; /* Add some padding to the bottom actions */
