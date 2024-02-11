@@ -177,6 +177,8 @@ function setup() {
 							}
 							log("Enabling Tasco", "green")
 							document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="../tasco/tasco-app.png" class="app"></img></a>`
+							log("Enabling SecureLine", "green")
+							document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('secureline')" href="#loadapp-secureline"><img src="./secureline/sline.png" class="app"></img></a>`
 							if (localStorage.getItem("t50-username") === "papostol") {
 								log("Enabling Transports", "green")
 								//document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
@@ -240,6 +242,8 @@ function load(app) {
 		window.location.href = "./mails/"
 	} else if (app === "tasco") {
 		window.location.href = `../tasco/`
+	} else if(app === "secureline") {
+		window.location.href = `./secureline/`
 	}
 }
 
@@ -700,8 +704,8 @@ function show_friends() {
 			return response.text();
 		})
 		.then(data => {
-			console.log(JSON.stringify(data))
-			if (JSON.stringify(data) === '"[]"') {
+			console.log(data)
+			if (data === "") {
 				$("#load-users-friends").fadeOut("fast", function () {
 					let containerId = "list-friends";
 					var listContainer = document.getElementById(containerId);
@@ -710,8 +714,6 @@ function show_friends() {
 					listContainer.innerHTML = "No Friends"
 				})
 				return;
-			} else {
-				console.log(`${JSON.stringify(data)} != "[]"`)
 			}
 			const user_requests = JSON.parse(data)
 			let containerId = "list-friends";
@@ -819,7 +821,7 @@ function show_requests() {
 		})
 		.then(data => {
 			console.log(JSON.stringify(data))
-			if (JSON.stringify(data) === '"[]"') {
+			if (data === "None") {
 				$("#load-users-requests").fadeOut("fast", function () {
 					let containerId = "list-requests";
 					var listContainer = document.getElementById(containerId);
@@ -828,8 +830,6 @@ function show_requests() {
 					listContainer.innerHTML = "No Friend Requests"
 				})
 				return;
-			} else {
-				console.log(`${JSON.stringify(data)} != "[]"`)
 			}
 			const user_requests = JSON.parse(data)
 			let containerId = "list-requests";
@@ -922,12 +922,12 @@ function show_requests() {
 	})
 }
 function addfriend(element) {
-	if (localStorage.getItem("sent_friend_requests")) {
-		if (localStorage.getItem("sent_friend_requests").includes(element.id)) {
-			shake_me(element.id)
-			return;
-		}
-	}
+	//if (localStorage.getItem("sent_friend_requests")) {
+	//	if (localStorage.getItem("sent_friend_requests").includes(element.id)) {
+	//		shake_me(element.id)
+	//		return;
+	//	}
+	//}
 	console.log(element.id)
 	document.getElementById(element.id).innerHTML = `<svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 	x="0px" y="0px" width="25px" height="20px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
@@ -956,7 +956,7 @@ function addfriend(element) {
 				requests.push(element.id);
 
 				// Save the updated array back to localStorage
-				localStorage.setItem("sent_friend_requests", JSON.stringify(requests));
+				//localStorage.setItem("sent_friend_requests", JSON.stringify(requests));
 				document.getElementById(element.id).innerHTML = `Sent`
 			}
 		}).catch(error => {
@@ -1001,6 +1001,7 @@ function loadusers() {
 						return response.text();
 					})
 					.then(friends => {
+						let sentRequests;
 
 						fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
 							.then(response => {
@@ -1058,65 +1059,72 @@ function loadusers() {
 										}
 									}
 
-									if (localStorage.getItem("sent_friend_requests") && localStorage.getItem("sent_friend_requests").includes(username) && skipbutton !== true) {
-										addButton = document.createElement("a");
-										addButton.href = "#";
-										addButton.id = username;
-										addButton.onclick = function () {
-											shake_me(this.id);
-										};
-										addButton.className = "apple-button-list";
-										addButton.textContent = "Sent";
-										userDetails.appendChild(userName);
-										userDetails.appendChild(userEmail);
-
-										userContainer.appendChild(userCircle);
-										userContainer.appendChild(userDetails);
-										userContainer.appendChild(addButton);
-
-										listContainer.appendChild(userContainer);
-									} else if (skipbutton !== true) {
-										addButton = document.createElement("a");
-										addButton.href = "#";
-										addButton.id = username;
-										addButton.onclick = function () {
-											addfriend(this);
-										};
-										addButton.className = "apple-button-list";
-										addButton.textContent = "Add";
-
-										userDetails.appendChild(userName);
-										userDetails.appendChild(userEmail);
-
-										userContainer.appendChild(userCircle);
-										userContainer.appendChild(userDetails);
-										userContainer.appendChild(addButton);
-
-										listContainer.appendChild(userContainer);
-									}
-
-
-
-									fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+									fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
 										.then(response => {
 											if (!response.ok) {
 												throw new Error(`HTTP error! Status: ${response.status}`);
 											}
 											return response.text();
 										})
-										.then(profileimage => {
-											if (profileimage.indexOf("base64") === -1) {
-												// If it doesn't contain "base64", add the prefix
-												profileimage = "data:image/jpeg;base64," + profileimage;
-												document.getElementById(`${username}-pfp`).src = profileimage
-											} else {
-												document.getElementById(`${username}-pfp`).src = profileimage
+										.then(usersSent => {
+											sentRequests = usersSent
+											if (sentRequests && sentRequests.includes(username) && skipbutton !== true) {
+												addButton = document.createElement("a");
+												addButton.href = "#";
+												addButton.id = username;
+												addButton.onclick = function () {
+													shake_me(this.id);
+												};
+												addButton.className = "apple-button-list";
+												addButton.textContent = "Sent";
+												userDetails.appendChild(userName);
+												userDetails.appendChild(userEmail);
+
+												userContainer.appendChild(userCircle);
+												userContainer.appendChild(userDetails);
+												userContainer.appendChild(addButton);
+
+												listContainer.appendChild(userContainer);
+											} else if (skipbutton !== true) {
+												addButton = document.createElement("a");
+												addButton.href = "#";
+												addButton.id = username;
+												addButton.onclick = function () {
+													addfriend(this);
+												};
+												addButton.className = "apple-button-list";
+												addButton.textContent = "Add";
+
+												userDetails.appendChild(userName);
+												userDetails.appendChild(userEmail);
+
+												userContainer.appendChild(userCircle);
+												userContainer.appendChild(userDetails);
+												userContainer.appendChild(addButton);
+
+												listContainer.appendChild(userContainer);
 											}
+											fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+												.then(response => {
+													if (!response.ok) {
+														throw new Error(`HTTP error! Status: ${response.status}`);
+													}
+													return response.text();
+												})
+												.then(profileimage => {
+													if (profileimage.indexOf("base64") === -1) {
+														// If it doesn't contain "base64", add the prefix
+														profileimage = "data:image/jpeg;base64," + profileimage;
+														document.getElementById(`${username}-pfp`).src = profileimage
+													} else {
+														document.getElementById(`${username}-pfp`).src = profileimage
+													}
 
 
-										}).catch(error => {
-											console.error("Cannot set src for", username)
-											console.error(error)
+												}).catch(error => {
+													console.error("Cannot set src for", username)
+													console.error(error)
+												})
 										})
 								}
 							});
@@ -1186,7 +1194,7 @@ function handlesearch(value) {
 							return response.text();
 						})
 						.then(friends => {
-
+							let sentRequests;
 							fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
 								.then(response => {
 									if (!response.ok) {
@@ -1243,66 +1251,78 @@ function handlesearch(value) {
 											}
 										}
 
-										if (localStorage.getItem("sent_friend_requests") && localStorage.getItem("sent_friend_requests").includes(username) && skipbutton !== true) {
-											addButton = document.createElement("a");
-											addButton.href = "#";
-											addButton.id = username;
-											addButton.onclick = function () {
-												shake_me(this.id);
-											};
-											addButton.className = "apple-button-list";
-											addButton.textContent = "Sent";
-											userDetails.appendChild(userName);
-											userDetails.appendChild(userEmail);
-
-											userContainer.appendChild(userCircle);
-											userContainer.appendChild(userDetails);
-											userContainer.appendChild(addButton);
-
-											listContainer.appendChild(userContainer);
-										} else if (skipbutton !== true) {
-											addButton = document.createElement("a");
-											addButton.href = "#";
-											addButton.id = username;
-											addButton.onclick = function () {
-												addfriend(this);
-											};
-											addButton.className = "apple-button-list";
-											addButton.textContent = "Add";
-
-											userDetails.appendChild(userName);
-											userDetails.appendChild(userEmail);
-
-											userContainer.appendChild(userCircle);
-											userContainer.appendChild(userDetails);
-											userContainer.appendChild(addButton);
-
-											listContainer.appendChild(userContainer);
-										}
-
-
-
-										fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+										fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
 											.then(response => {
 												if (!response.ok) {
 													throw new Error(`HTTP error! Status: ${response.status}`);
 												}
 												return response.text();
 											})
-											.then(profileimage => {
-												if (profileimage.indexOf("base64") === -1) {
-													// If it doesn't contain "base64", add the prefix
-													profileimage = "data:image/jpeg;base64," + profileimage;
-													document.getElementById(`${username}-pfp`).src = profileimage
-												} else {
-													document.getElementById(`${username}-pfp`).src = profileimage
+											.then(usersSent => {
+												sentRequests = usersSent
+												if (sentRequests && sentRequests.includes(username) && skipbutton !== true) {
+													addButton = document.createElement("a");
+													addButton.href = "#";
+													addButton.id = username;
+													addButton.onclick = function () {
+														shake_me(this.id);
+													};
+													addButton.className = "apple-button-list";
+													addButton.textContent = "Sent";
+													userDetails.appendChild(userName);
+													userDetails.appendChild(userEmail);
+
+													userContainer.appendChild(userCircle);
+													userContainer.appendChild(userDetails);
+													userContainer.appendChild(addButton);
+
+													listContainer.appendChild(userContainer);
+												} else if (skipbutton !== true) {
+													addButton = document.createElement("a");
+													addButton.href = "#";
+													addButton.id = username;
+													addButton.onclick = function () {
+														addfriend(this);
+													};
+													addButton.className = "apple-button-list";
+													addButton.textContent = "Add";
+
+													userDetails.appendChild(userName);
+													userDetails.appendChild(userEmail);
+
+													userContainer.appendChild(userCircle);
+													userContainer.appendChild(userDetails);
+													userContainer.appendChild(addButton);
+
+													listContainer.appendChild(userContainer);
 												}
+												fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+													.then(response => {
+														if (!response.ok) {
+															throw new Error(`HTTP error! Status: ${response.status}`);
+														}
+														return response.text();
+													})
+													.then(profileimage => {
+														if (profileimage.indexOf("base64") === -1) {
+															// If it doesn't contain "base64", add the prefix
+															profileimage = "data:image/jpeg;base64," + profileimage;
+															document.getElementById(`${username}-pfp`).src = profileimage
+														} else {
+															document.getElementById(`${username}-pfp`).src = profileimage
+														}
 
 
-											}).catch(error => {
-												console.error("Cannot set src for", username)
-												console.error(error)
+													}).catch(error => {
+														console.error("Cannot set src for", username)
+														console.error(error)
+													})
 											})
+
+
+
+
+
 									}
 								});
 							$("#load-users").fadeOut("fast");

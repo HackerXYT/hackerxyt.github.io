@@ -3,7 +3,7 @@ var screenHeight = window.innerHeight;
 //chatsheight.style.maxHeight = screenHeight - 20 + "px";
 //var actionsheight = document.getElementById("actions"); // Replace "yourElementId" with the ID of your element
 //actionsheight.style.maxHeight = screenHeight + "px";
-
+sessionStorage.removeItem("sending")
 sessionStorage.removeItem("skipped")
 $(document).ready(docready())
 var submit = document.getElementById("submit");
