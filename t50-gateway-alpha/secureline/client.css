@@ -13,6 +13,7 @@
 ::-webkit-scrollbar {
   display: none;
 }
+
 /* For other browsers */
 /* Hide scrollbar */
 /* You might need to prefix for other browsers as well */
@@ -21,7 +22,6 @@
 
 
 body {
-  touch-action: manipulation;
   overflow: hidden;
   scrollbar-width: none;
   font-family: "SF";
@@ -30,14 +30,10 @@ body {
   position: relative;
   min-height: 100vh;
   background: #000000;
-  touch-action: manipulation;
+
   -webkit-user-select: none;
-  /* Safari */
   -ms-user-select: none;
-  /* IE 10 and IE 11 */
   user-select: none;
-  /* Standard syntax */
-  touch-action: none;
 }
 
 img {
@@ -662,24 +658,39 @@ a {
   text-decoration: none;
   transition: background-color 0.3s ease;
   margin: 4px;
-  width: 65%;
+  width: 100%;
+  max-width: 86%;
   outline: none;
+}
+
+/* Media query for mobile devices */
+@media only screen and (max-width: 768px) {
+  .apple-input {
+    width: 66%;
+  }
 }
 
 
 .sline-actions {
   overflow-y: auto;
   max-height: 80%;
-  position: relative; /* Make sure the container is positioned */
+  position: relative;
+  /* Make sure the container is positioned */
 }
 
 .message-container {
-  margin-bottom: 50px; /* Adjust this value to create space for the input */
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+
+  margin-bottom: 50px;
+  /* Adjust this value to create space for the input */
   max-height: 73%;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  position: relative; /* Make sure the container is positioned */
+  position: relative;
+  /* Make sure the container is positioned */
 }
 
 .bottom-actions {
@@ -689,17 +700,26 @@ a {
   background: black;
   height: 2%;
   bottom: 2%;
-  position:fixed;
+  position: fixed;
   left: 0;
   width: 100%;
-  padding: 10px; /* Add some padding to the bottom actions */
-  z-index: 1; /* Ensure the input container appears above messages */
+  padding: 10px;
+  /* Add some padding to the bottom actions */
+  z-index: 1;
+  /* Ensure the input container appears above messages */
 }
 
+.svg-icon {
+  position: absolute;
+  left: -30px; /* Adjust this value based on your preference */
+  top: 50%;
+  transform: translateY(-50%);
+}
 
-
-.message, .message-me {
-  display: inline-flex; /* Change to inline-flex */
+.message,
+.message-me {
+  display: inline-flex;
+  /* Change to inline-flex */
   margin-top: 15px;
   margin-bottom: 15px;
   background-color: #333;
