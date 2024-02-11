@@ -12,7 +12,7 @@ function getUrlParameter(name) {
 
 let method = getUrlParameter('identifier')
 console.log(method)
-if(method === "datacenter-login") {
+if (method === "datacenter-login") {
   sessionStorage.setItem("redirect", "datacenter")
 }
 // Remove the transformation if it's not a mobile device
@@ -26,25 +26,25 @@ if (!isMobileDevice()) {
   console.log("Mobile")
 }
 localStorage.setItem("update_status", true)
-if(localStorage.getItem("account") && localStorage.getItem("user") && localStorage.getItem("user_email")) {
+if (localStorage.getItem("account") && localStorage.getItem("user") && localStorage.getItem("user_email")) {
   //window.location.href = "../t50-gateway-alpha/"
 }
 function readTextFile(file, callback) {
-    var rawFile = new XMLHttpRequest();
-    rawFile.overrideMimeType("application/json");
-    rawFile.open("GET", file, true);
-    rawFile.onreadystatechange = function () {
-        if (rawFile.readyState === 4 && rawFile.status == "200") {
-            callback(rawFile.responseText);
-        }
+  var rawFile = new XMLHttpRequest();
+  rawFile.overrideMimeType("application/json");
+  rawFile.open("GET", file, true);
+  rawFile.onreadystatechange = function () {
+    if (rawFile.readyState === 4 && rawFile.status == "200") {
+      callback(rawFile.responseText);
     }
-    rawFile.send(null);
+  }
+  rawFile.send(null);
 }
 const BtnLog = document.getElementById("submit");
 
 
 localStorage.setItem("emoji", "😂")
-  BtnLog.addEventListener("click", (e) => {
+BtnLog.addEventListener("click", (e) => {
   BtnLog.innerHTML = `
   <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 44 44" stroke="#fff">
         <g fill="none" fill-rule="evenodd" stroke-width="2">
@@ -58,144 +58,150 @@ localStorage.setItem("emoji", "😂")
             </circle>
         </g>
     </svg>`
-    e.preventDefault();
-            
+  e.preventDefault();
 
-    //document.getElementById("info").style.display = "block"
-    //document.getElementById("info").style.color = "white"
-    //document.getElementById("info").innerHTML = `Παρακαλω Περιμενετε..`
-    const email = document.getElementById("username").value
-    const password = document.getElementById("password").value
-    if(email === "") {
-      BtnLog.innerHTML = `Sign In`
-        document.getElementById("info_1").innerHTML = "Fill Out All Fields!"
-        document.getElementById("info_1").style.display = "block"
-        document.getElementById("info_1").style.color = "rgb(215, 215, 8)"//yellow
-        setTimeout(function() {
-            document.getElementById("info_1").style.display = "none"
-        }, 4000)
-        if(password === "") {
-          BtnLog.innerHTML = `Sign In`
-            document.getElementById("info_2").innerHTML = "Fill Out All Fields!"
-            document.getElementById("info_2").style.display = "block"
-            document.getElementById("info_2").style.color = "rgb(215, 215, 8)"//yellow
-            setTimeout(function() {
-                document.getElementById("info_2").style.display = "none"
-            }, 4000)
-            return;
-        }
-        return;
-    }
-    
-    if(password === "") {
-      BtnLog.innerHTML = `Sign In`
-        document.getElementById("info_2").innerHTML = "Fill Out All Fields!"
-        document.getElementById("info_2").style.display = "block"
-        document.getElementById("info_2").style.color = "rgb(215, 215, 8)"//yellow
-        setTimeout(function() {
-            document.getElementById("info_2").style.display = "none"
-        }, 4000)
-        if(email === "") {
-          BtnLog.innerHTML = `Sign In`
-            document.getElementById("info_1").innerHTML = "Fill Out All Fields!"
-            document.getElementById("info_1").style.display = "block"
-            document.getElementById("info_1").style.color = "rgb(215, 215, 8)"//yellow
-            setTimeout(function() {
-                document.getElementById("info_1").style.display = "none"
-            }, 4000)
-            return;
-        }
-        return;
-    }
-    const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}`;
 
-    fetch(url)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.text();
-      })
-      .then(data => {
-        
-        console.log(data); // Handle the response data here
-        if(data.includes("Credentials Correct")) {
-          document.getElementById("submit").innerHTML = `<svg width="30px" height="30px" viewBox="0 0 133 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="check-group" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><circle id="filled-circle" fill="#07b481" cx="66.5" cy="66.5" r="54.5"/><circle id="white-circle" fill="#FFFFFF" cx="66.5" cy="66.5" r="55.5"/><circle id="outline" stroke="#07b481" stroke-width="4" cx="66.5" cy="66.5" r="54.5"/><polyline id="check" stroke="#FFFFFF" stroke-width="5.5" points="41 70 56 85 92 49"/></g></svg>`
-            console.log("Welcome Abroad")
-            
-            const credentialsString = data;
-            // Use a regular expression to match the "Username:" followed by the value
-            const match = credentialsString.match(/Username:(\w+)/);
-            // Extract the captured value (in this case, the username)
-            const username = match && match[1];
-            if(sessionStorage.getItem("redirect") === "datacenter") {
-              console.log("requesting")
-              fetch(`https://evox-datacenter.onrender.com/access-database?username=${username}&app=login&email=${email}`)
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.text();
-              })
-              .then(data => {
-                if(data) {
-                  if(window.location.href.includes("localhost") || window.location.href.includes("21")) {
-                    window.location.href = `http://192.168.1.21:4000?id=${data}&username=${username}`
-                    return;
-                  }
-                  window.location.href = `https://evox-datacenter.onrender.com/?id=${data}&username=${username}`
+  //document.getElementById("info").style.display = "block"
+  //document.getElementById("info").style.color = "white"
+  //document.getElementById("info").innerHTML = `Παρακαλω Περιμενετε..`
+  const email = document.getElementById("username").value
+  const password = document.getElementById("password").value
+  if (email === "") {
+    BtnLog.innerHTML = `Sign In`
+    document.getElementById("info_1").innerHTML = "Fill Out All Fields!"
+    document.getElementById("info_1").style.display = "block"
+    document.getElementById("info_1").style.color = "rgb(215, 215, 8)"//yellow
+    setTimeout(function () {
+      document.getElementById("info_1").style.display = "none"
+    }, 4000)
+    if (password === "") {
+      BtnLog.innerHTML = `Sign In`
+      document.getElementById("info_2").innerHTML = "Fill Out All Fields!"
+      document.getElementById("info_2").style.display = "block"
+      document.getElementById("info_2").style.color = "rgb(215, 215, 8)"//yellow
+      setTimeout(function () {
+        document.getElementById("info_2").style.display = "none"
+      }, 4000)
+      return;
+    }
+    return;
+  }
+
+  if (password === "") {
+    BtnLog.innerHTML = `Sign In`
+    document.getElementById("info_2").innerHTML = "Fill Out All Fields!"
+    document.getElementById("info_2").style.display = "block"
+    document.getElementById("info_2").style.color = "rgb(215, 215, 8)"//yellow
+    setTimeout(function () {
+      document.getElementById("info_2").style.display = "none"
+    }, 4000)
+    if (email === "") {
+      BtnLog.innerHTML = `Sign In`
+      document.getElementById("info_1").innerHTML = "Fill Out All Fields!"
+      document.getElementById("info_1").style.display = "block"
+      document.getElementById("info_1").style.color = "rgb(215, 215, 8)"//yellow
+      setTimeout(function () {
+        document.getElementById("info_1").style.display = "none"
+      }, 4000)
+      return;
+    }
+    return;
+  }
+  const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}`;
+
+  fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+
+      console.log(data); // Handle the response data here
+      if (data.includes("Credentials Correct")) {
+        document.getElementById("submit").innerHTML = `<svg width="30px" height="30px" viewBox="0 0 133 133" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="check-group" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><circle id="filled-circle" fill="#07b481" cx="66.5" cy="66.5" r="54.5"/><circle id="white-circle" fill="#FFFFFF" cx="66.5" cy="66.5" r="55.5"/><circle id="outline" stroke="#07b481" stroke-width="4" cx="66.5" cy="66.5" r="54.5"/><polyline id="check" stroke="#FFFFFF" stroke-width="5.5" points="41 70 56 85 92 49"/></g></svg>`
+        console.log("Welcome Abroad")
+
+        const credentialsString = data;
+        // Use a regular expression to match the "Username:" followed by the value
+        const match = credentialsString.match(/Username:(\w+)/);
+        // Extract the captured value (in this case, the username)
+        const username = match && match[1];
+        if (sessionStorage.getItem("redirect") === "datacenter") {
+          console.log("requesting")
+          fetch(`https://evox-datacenter.onrender.com/access-database?username=${username}&app=login&email=${email}`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              return response.text();
+            })
+            .then(data => {
+              if (data === "Access Denied") {
+                document.getElementById("info_2").innerHTML = "Access Denied"
+                document.getElementById("info_2").style.display = "block"
+                document.getElementById("info_2").style.color = "rgb(196, 0, 0)"//rgb(215, 215, 8) yellow
+                return;
+              }
+              if (data) {
+                if (window.location.href.includes("localhost") || window.location.href.includes("21")) {
+                  window.location.href = `http://192.168.1.21:4000?id=${data}&username=${username}`
                   return;
-                } else {
-                  console.log("Task returned something unexpected..\n"+data)
                 }
-                
-              }).catch(error => {
-                console.error('Fetch error:', error);
-              });
-              
-              return;
-            }
-            localStorage.setItem("account", `{"password": "${password}"}`)
-            var base64email = btoa(email);
-            var base64username = btoa(username);
-            setTimeout(function() {
-              window.location.href = `./Register/Verification/select.html?email=${base64email}&username=${base64username}`
-            }, 2100)
-        } else if(data === "Credentials Incorrect") {
-            $("#submit").fadeOut("fast", function() {
-              BtnLog.innerHTML = `Sign In`
-            $("#submit").fadeIn("fast")
-            })
-            document.getElementById("info_2").innerHTML = "Credentials Incorrect"
-            document.getElementById("info_2").style.display = "block"
-            document.getElementById("info_2").style.color = "rgb(196, 0, 0)"//rgb(215, 215, 8) yellow
-            console.log("Email Or Password Is Wrong")
-            setTimeout(function() {
-                document.getElementById("info_2").style.display = "none"
-            }, 4000)
-        } else if(data === "Connection Blocked") {
-            $("#submit").fadeOut("fast", function() {
-              BtnLog.innerHTML = `Sign In`
-            $("#submit").fadeIn("fast")
-            })
-            document.getElementById("info_1").innerHTML = "Account Doesn't Exist"
-            document.getElementById("info_1").style.display = "block"
-            document.getElementById("info_1").style.color = "rgb(196, 0, 0)"//rgb(215, 215, 8) yellow
-            console.log("Account Doesn't Exist")
-            setTimeout(function() {
-                document.getElementById("info_1").style.display = "none"
-            }, 4000)
+                window.location.href = `https://evox-datacenter.onrender.com/?id=${data}&username=${username}`
+                return;
+              } else {
+                console.log("Task returned something unexpected..\n" + data)
+              }
+
+            }).catch(error => {
+              console.error('Fetch error:', error);
+            });
+
+          return;
         }
-      })
-      .catch(error => {
-        console.error('Fetch error:', error);
-      });
+        localStorage.setItem("account", `{"password": "${password}"}`)
+        var base64email = btoa(email);
+        var base64username = btoa(username);
+        setTimeout(function () {
+          window.location.href = `./Register/Verification/select.html?email=${base64email}&username=${base64username}`
+        }, 2100)
+      } else if (data === "Credentials Incorrect") {
+        $("#submit").fadeOut("fast", function () {
+          BtnLog.innerHTML = `Sign In`
+          $("#submit").fadeIn("fast")
+        })
+        document.getElementById("info_2").innerHTML = "Credentials Incorrect"
+        document.getElementById("info_2").style.display = "block"
+        document.getElementById("info_2").style.color = "rgb(196, 0, 0)"//rgb(215, 215, 8) yellow
+        console.log("Email Or Password Is Wrong")
+        setTimeout(function () {
+          document.getElementById("info_2").style.display = "none"
+        }, 4000)
+      } else if (data === "Connection Blocked") {
+        $("#submit").fadeOut("fast", function () {
+          BtnLog.innerHTML = `Sign In`
+          $("#submit").fadeIn("fast")
+        })
+        document.getElementById("info_1").innerHTML = "Account Doesn't Exist"
+        document.getElementById("info_1").style.display = "block"
+        document.getElementById("info_1").style.color = "rgb(196, 0, 0)"//rgb(215, 215, 8) yellow
+        console.log("Account Doesn't Exist")
+        setTimeout(function () {
+          document.getElementById("info_1").style.display = "none"
+        }, 4000)
+      }
+    })
+    .catch(error => {
+      console.error('Fetch error:', error);
+    });
 })
 
 function register() {
-    const email = document.getElementById("username").value
-    const password = document.getElementById("password").value
-    fetch('https://evox-datacenter.onrender.com/accounts', {
+  const email = document.getElementById("username").value
+  const password = document.getElementById("password").value
+  fetch('https://evox-datacenter.onrender.com/accounts', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -205,14 +211,14 @@ function register() {
       password: password
     })
   })
-  .then(response => response.text())
-  .then(data => {
-    console.log(data);
-    if(data === "Welcome Abroad") {
+    .then(response => response.text())
+    .then(data => {
+      console.log(data);
+      if (data === "Welcome Abroad") {
         console.log("Accepted!")
-    }
-  })
-  .catch(error => {
-    console.error(error);
-  });
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    });
 }
