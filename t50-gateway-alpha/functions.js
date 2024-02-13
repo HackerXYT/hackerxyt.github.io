@@ -83,7 +83,45 @@ function log(text, color) {
 	console.log('%c' + text, styles)
 }
 
+function custombg() {
+	if (localStorage.getItem("cbg")) {
+		let name = localStorage.getItem("cbg")
+		document.getElementById("st1").classList.remove("active")
+		if (name === "default_bg.png") {
+			document.getElementById("bgname").innerHTML = "Default"
+			document.getElementById("bgname").style.color = "#868686"
+			document.getElementById("st1").classList.add("active")
+			document.getElementById("background").innerHTML = `<div class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
+		} else if (name === "stock1.jpg") {
+			document.getElementById("bgname").innerHTML = "Desert"
+			document.getElementById("bgname").style.color = "#fff"
+			document.getElementById("st2").classList.add("active")
+			document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('./bgs/stock1.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+		} else if (name === "stock2.jpg") {
+			document.getElementById("bgname").innerHTML = "Ocean"
+			document.getElementById("bgname").style.color = "#fff"
+			document.getElementById("st3").classList.add("active")
+			document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+		} else if (name === "stock4.jpg") {
+			document.getElementById("bgname").innerHTML = "Building"
+			document.getElementById("bgname").style.color = "#fff"
+			document.getElementById("st4").classList.add("active")
+			document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+		} else {
+			document.getElementById("bgname").innerHTML = `${localStorage.getItem("t50-username")}'s custom`
+			document.getElementById("bgname").style.color = "#eae1a5"
+			document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('${name}');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+			document.getElementById("current").innerHTML = `<img class="active" id="st5" onclick="addbg(this)" src="${name}">`
+			document.getElementById("current").style.display = ""
+			//base64
+		}
+		
+	} else {
+		//No Custom BG
+	}
+}
 function setup() {
+	custombg()
 	log("T50 Gateway V:Delta 5", "red")
 	loadusers()
 	let lg_status = sessionStorage.getItem("loaded")
@@ -242,7 +280,7 @@ function load(app) {
 		window.location.href = "./mails/"
 	} else if (app === "tasco") {
 		window.location.href = `../tasco/`
-	} else if(app === "secureline") {
+	} else if (app === "secureline") {
 		window.location.href = `./secureline/`
 	}
 }
@@ -365,7 +403,8 @@ function check_ccode(app) {
 				} else {
 					localStorage.setItem("t50-autologin", true)
 					localStorage.setItem("remove-autolg", true)
-					document.getElementById("auto-login").innerHTML = `<a onclick="auto_login()" style="color: green" href="#autologin">Enabled</a>`
+					document.getElementById("auto-login").innerHTML = `Enabled`
+
 					$("#loading").fadeOut("slow")
 					$("#gateway").fadeOut("slow")
 					$("#buy-products").fadeOut("slow", function () {
@@ -402,7 +441,7 @@ function check_ccode(app) {
 				}, 500);
 				localStorage.setItem("t50-autologin", true)
 				localStorage.setItem("remove-autolg", true)
-				document.getElementById("auto-login").innerHTML = `<a onclick="auto_login()" style="color: green" href="#autologin">Enabled</a>`
+				document.getElementById("auto-login").innerHTML = `Enabled`
 				restart()
 			} else if (data === "Application Does Not Exist") {
 				log("Function Wasn't Used Correctly")
@@ -413,11 +452,13 @@ function check_ccode(app) {
 		});
 }
 function uielements() {
+	
 	let notes = localStorage.getItem("notes-owned")
 	let images = localStorage.getItem("images-owned")
 	let chatvia = localStorage.getItem("chatvia-owned")
 	console.log(notes, images, chatvia)
 	$("#settings").fadeIn("slow")
+	
 	document.getElementById("usr-img").src = sessionStorage.getItem("pfp")
 	pfp()
 	document.getElementById("usr-name").innerHTML = localStorage.getItem("t50-username")
@@ -448,11 +489,14 @@ function uielements() {
 
 	let autologin = localStorage.getItem("t50-autologin")
 	if (autologin === "true") {
-		document.getElementById("auto-login").innerHTML = `<a onclick="auto_login()" style="color: green" href="#autologin">Enabled</a>`
+		document.getElementById("auto-login").innerHTML = `Enabled`
+		document.getElementById("auto-login").style.color = ``
 	} else if (autologin === "false") {
-		document.getElementById("auto-login").innerHTML = `<a onclick="auto_login()" style="color: red" href="#autologin">Disabled</a>`
+		document.getElementById("auto-login").innerHTML = `Disabled`
+		document.getElementById("auto-login").style.color = `#eb2424`
 	} else {
-		document.getElementById("auto-login").innerHTML = `<a onclick="auto_login()" style="color: red" href="#autologin">Disabled</a>`
+		document.getElementById("auto-login").innerHTML = `Disabled`
+		document.getElementById("auto-login").style.color = `#eb2424`
 	}
 }
 
@@ -514,10 +558,12 @@ function auto_login() {
 	let autologin = localStorage.getItem("t50-autologin")
 	if (autologin === "true") {
 		localStorage.setItem("t50-autologin", false)
-		document.getElementById("auto-login").innerHTML = `<a onclick="auto_login()" style="color: red" href="#autologin">Disabled</a>`
+		document.getElementById("auto-login").style.color = `#eb2424`
+		document.getElementById("auto-login").innerHTML = `Disabled`
 	} else {
 		localStorage.setItem("t50-autologin", true)
-		document.getElementById("auto-login").innerHTML = `<a onclick="auto_login()" style="color: green" href="#autologin">Enabled</a>`
+		document.getElementById("auto-login").innerHTML = `Enabled`
+		document.getElementById("auto-login").style.color = ``
 	}
 }
 
@@ -1383,6 +1429,10 @@ function return_to_options(where) {
 			$("#user-friend").fadeOut("fast", function () {
 				$("#friends").fadeIn("fast")
 			})
+		} else if (where === "gateway_settings") {
+			$("#background_change").fadeOut("fast", function () {
+				$("#main_popup_settings").fadeIn("fast")
+			})
 		}
 	}
 }
@@ -1445,4 +1495,87 @@ function handleFileSelect() {
 function secureline(element) {
 	//remove "secureline-" from element.id
 	window.location.href = `./secureline/?goto=${element.id}`
+}
+
+function bgch() {
+	$("#main_popup_settings").fadeOut("fast", function () {
+		$("#popup").fadeIn("fast")
+		$("#background_change").fadeIn("fast")
+		$("#bottom-logo").fadeOut("slow")
+	})
+}
+
+function addbg(element) {
+	const which = element.src
+	if (element.classList.contains("active")) {
+		console.log("Activated");
+		return;
+	}
+	let name = which.replace(/^http:\/\/localhost:8080\/t50-gateway-alpha\/bgs\//, '');
+	if (name === "default_bg.png") {
+		document.getElementById("background").innerHTML = `<div class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
+	} else {
+		document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('${which}');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+	}
+	document.getElementById("st1").classList.remove("active")
+	document.getElementById("st2").classList.remove("active")
+	document.getElementById("st3").classList.remove("active")
+	document.getElementById("st4").classList.remove("active")
+	try{
+		document.getElementById("st5").classList.remove("active")
+	} catch{
+		console.error("Cannot find st5, normal err")
+	}
+	
+	element.classList.add("active")
+	localStorage.setItem("cbg", name)
+	custombg()
+}
+
+function showUploadBox_BG() {
+	document.getElementById('upload-box-bg').click();
+}
+
+function calculateImageSize(base64String) {
+	// Remove the data URL prefix (e.g., 'data:image/jpeg;base64,')
+	const base64WithoutPrefix = base64String.replace(/^data:image\/[a-z]+;base64,/, '');
+
+	// Convert the base64 string to binary data
+	const binaryData = atob(base64WithoutPrefix);
+
+	// Calculate the size in megabytes
+	const fileSizeInMB = binaryData.length / (1024 * 1024);
+
+	return fileSizeInMB;
+}
+
+function handleFileSelect_BG() {
+	const input = document.getElementById('upload-box-bg');
+	const file = input.files[0];
+
+	if (file) {
+		const reader = new FileReader();
+		reader.onload = function (e) {
+			const base64String = e.target.result;
+			const totalSizeInMB = calculateImageSize(base64String);
+			if (totalSizeInMB.toFixed(2) > 6.5) {
+				alert(`File Is Too Large! (${totalSizeInMB.toFixed(2)}MB)`);
+			} else {
+				document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('${base64String}');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+				document.getElementById("st1").classList.remove("active")
+				document.getElementById("st2").classList.remove("active")
+				document.getElementById("st3").classList.remove("active")
+				document.getElementById("st4").classList.remove("active")
+				document.getElementById("current").innerHTML = `<img class="active" id="st5" onclick="addbg(this)" src="${base64String}">`
+				document.getElementById("current").style.display = ""
+				localStorage.setItem("cbg", base64String)
+				custombg()
+			}
+
+		};
+		reader.readAsDataURL(file);
+	}
+
+	// Reset the input value to allow selecting the same file again
+	input.value = '';
 }
