@@ -102,7 +102,7 @@
                             <path
                                 d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                                 fill="#666" />
-                        </svg></a><br>
+                        </svg></a>
                     <a onclick="pswd_secure()" href="#" class="apple-button">Password & Security<svg
                             xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
                             fill="none">
@@ -110,21 +110,7 @@
                                 d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                                 fill="#666" />
                         </svg></a>
-                    <a onclick="show_search()" href="#" class="apple-button">Add Friends<svg
-                            xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                            fill="none">
-                            <path
-                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                                fill="#666" />
-                        </svg></a>
-                    <a onclick="show_requests()" href="#" class="apple-button">Friend Requests<svg
-                            xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                            fill="none">
-                            <path
-                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                                fill="#666" />
-                        </svg></a>
-                    <a onclick="show_friends()" href="#" class="apple-button">Your Friends<svg
+                    <a onclick="show_social()" href="#" class="apple-button">Evox Social<svg
                             xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
                             fill="none">
                             <path
@@ -217,6 +203,48 @@
                     </svg></a>
                 <p style="margin: 6px" class="user-email">If you forget your password, you have a few options to recover
                     your data.</p>
+            </div>
+            <div id="evox_social" style="display:none">
+                <span onclick="return_to_options('evox_social')" style="position: fixed;
+                left: 30px;
+                right: 30px;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+                        <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#b2b2b2" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg></span>
+                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Evox Social</h3>
+                <a onclick="show_search()" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 28px;margin-right: 10px;" src="icons/friends.png"
+                        alt="Add Friends Icon">Add Friends<svg xmlns="http://www.w3.org/2000/svg" width="20px"
+                        height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+                <a onclick="show_requests()" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 28px;margin-right: 10px;" src="icons/requests.png"
+                        alt="Add Friends Icon">Friend Requests<svg xmlns="http://www.w3.org/2000/svg" width="20px"
+                        height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+                <a onclick="show_friends()" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 28px;margin-right: 10px;" src="icons/myfriends.png"
+                        alt="Add Friends Icon">Your Friends<svg xmlns="http://www.w3.org/2000/svg" width="20px"
+                        height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
             </div>
             <div id="add_friends" style="display:none">
                 <span onclick="return_to_options('add_friends')" style="position: fixed;
@@ -478,7 +506,7 @@
                 </div>-->
                 <!--Show added friends-->
             </div>
-            
+
         </div>
         <div id="background_change" style="display:none;overflow: auto;">
             <span onclick="return_to_options('gateway_settings')" style="position: fixed;
@@ -504,15 +532,16 @@
                         d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                         fill="#666" />
                 </svg></a>
-                <div class="gallery">
-                    <div id="current" style="display:none"></div>
-                    <img id="st1" class="active" onclick="addbg(this)" src="./bgs/default_bg.png">
-                    <img id="st2" onclick="addbg(this)" src="./bgs/stock1.jpg">
-                    <img id="st3" onclick="addbg(this)" src="./bgs/stock2.jpg">
-                    <img id="st4" onclick="addbg(this)" src="./bgs/stock4.jpg">
-                    <!-- Your gallery items go here -->
-                </div>
-            <p style="margin: 6px" class="user-email">Some images may be selected by Evox® AIT. Backgrounds remain local.</p>
+            <div class="gallery">
+                <div id="current" style="display:none"></div>
+                <img id="st1" class="active" onclick="addbg(this)" src="./bgs/default_bg.png">
+                <img id="st2" onclick="addbg(this)" src="./bgs/stock1.jpg">
+                <img id="st3" onclick="addbg(this)" src="./bgs/stock2.jpg">
+                <img id="st4" onclick="addbg(this)" src="./bgs/stock4.jpg">
+                <!-- Your gallery items go here -->
+            </div>
+            <p style="margin: 6px" class="user-email">Some images may be selected by Evox® AIT. Backgrounds remain
+                local.</p>
         </div>
         <div id="main_popup_settings">
             <span onclick="close_popup()" class="popup-close"><svg onclick="close_popup()"
@@ -547,14 +576,24 @@
                 <p>Owned</p>
             </div>
             <div class="app-manage">
+                <img src="./secureline/sline.png" alt="Image" class="app-small">Secureline [BETA]:&nbsp;
+                <p>Owned</p>
+            </div>
+            <div style="display:none" id="transports-app" class="app-manage">
+                <img src="T50Transports.png" alt="Image" class="app-small">T50 Transports:&nbsp;
+                <p>Owned (disabled)</p>
+            </div>
+            <div class="app-manage">
                 <img src="chatvia-img.png" alt="Image" class="app-small">ChatVia[E]:&nbsp;
                 <p id="chatvia-own-ui-status">err</p>
             </div>
+            
             <h3 style="margin-bottom: 4px;">Preferences</h3>
-            <a href="#" onclick="bgch()" style="height: 50%;" class="apple-button">Background<span id="bgname" style="color: #868686">Default</span></a>
+            <a href="#" onclick="bgch()" style="height: 50%;" class="apple-button">Background<span id="bgname"
+                    style="color: #868686">Default</span></a>
             <a href="#" onclick="auto_login()" style="height: 50%;" class="apple-button">Auto Login<span
                     id="auto-login">Set Up</span></a>
-            
+
 
 
             <h3 style="margin-bottom: 4px;">Quick Actions</h3>
@@ -587,6 +626,49 @@
                             d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8" />
                     </svg></a>
             </p>
+        </div>
+        <div id="password_change" style="display:none;overflow: hidden;">
+            <span onclick="return_to_options('password_change')" style="position: fixed;
+            left: 30px;
+            right: 30px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+                    <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#b2b2b2" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg></span>
+            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Change Password</h3>
+            <p style="margin: 6px" class="user-details">Manage your Evox® password securely. Enter your current
+                password, followed by your
+                new one and confirm for an update.</p>
+            <div id="user-info-chpswd" class="user-info-default">
+                <div class="user-circle">
+                    <img id="usr-img-chpswd" src="t50-img.png" alt="User Image">
+                </div>
+                <div class="user-details">
+                    <div id="usr-name-chpswd" class="user-name">Error</div>
+                    <div id="usr-email-chpswd" class="user-email">error@example.com</div>
+                </div>
+            </div>
+            <p id="wrong_pswd" style="margin: 6px;display: none" class="user-email">Wrong Password!</p>
+            <input id="current_pswd" class="apple-input" type="password" placeholder="Current Password"
+                style="background-color: #282828;">
+            <p id="same_pswd" style="margin: 6px;display: none" class="user-email">Please select a new password distinct
+                from your current one.</p>
+            <p id="old_pswd" style="margin: 6px;display: none" class="user-email">Choose a new password, different from the last.</p>
+            <input id="new_pswd" class="apple-input" type="password" placeholder="New Password">
+            <input id="confirm_pswd" class="apple-input" type="password" placeholder="Confirm New Password">
+            <a href="#" onclick="complete_chpswd()" class="apple-button-submit">Complete</a>
+            <a onclick="shake_me('forgot_pswd')" href="#forgot">
+                <p id="forgot_pswd" style="margin-top: 40px" class="user-email">If you've forgotten your password click here to reset it.
+                </p>
+            </a>
         </div>
     </div>
     <div id="buy-products" class="popup" style="background-color: #333; color: #dbdbdb">
@@ -692,6 +774,7 @@
             </svg>
         </a>
     </div>
+
     <div id="stuck" style="position: fixed;
     top: 30px;
     right: 20px;
@@ -716,9 +799,7 @@
             </path>
         </svg>
     </div>
-    <div style="display: none" onclick="settings()" id="settings" class="settings-button">
-        <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
-        <!-- You can customize the icon or text inside the button -->
+    <!--<div style="display: none" onclick="settings()" id="settings" class="settings-button">
         <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48" id="Layer_2"
             data-name="Layer 2">
             <defs>
@@ -734,6 +815,27 @@
             <path class="cls-1"
                 d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z" />
         </svg>
+    </div>-->
+    <div onclick="settings()" id="settings" style="position: fixed; bottom: 20px; transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
+        <div style="background-color: #333; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48" style="margin-right: 10px;">
+                <defs>
+                    <style>
+                        .cls-1 {
+                            fill: none;
+                            stroke: #fff;
+                            stroke-linecap: round;
+                            stroke-linejoin: round;
+                        }
+                    </style>
+                </defs>
+                <path class="cls-1" d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z" />
+            </svg>
+            Settings
+        </div>
+    </div>
+    
+
     </div>
     <div id="loading-div-text"
         style="display: none;margin: 0;padding: 0;height: 100vh;position: relative;color: rgb(255, 255, 255)">

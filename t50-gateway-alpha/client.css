@@ -442,7 +442,14 @@ a {
 
 .user-info {
   background: radial-gradient(circle, #400000, #000000);
-  border-radius: 7.5px;
+  border-radius: 19.5px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-info-default {
+  border-radius: 19.5px;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -593,6 +600,46 @@ a {
   margin: 6px;
   width: 80%;
 }
+
+.apple-button-submit {
+  text-align: center;
+  background-color: none;
+  border: solid 2px #400000;
+  color: #fff;
+  padding: 15px 30px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  margin: 6px;
+  width: 80%;
+}
+
+.apple-button-withicon {
+  align-items: center;
+  background-color: #333;
+  border: none;
+  color: #fff;
+  padding: 15px 30px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  margin: 6px;
+  width: 80%;
+  height: auto; /* Set height to auto to fit content */
+}
+
+
+.apple-button-withicon svg {
+  position: absolute;
+  right: 10%;
+}
+
 .parent-list-container {
   position: relative;
 }

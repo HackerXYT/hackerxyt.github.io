@@ -84,7 +84,7 @@ function log(text, color) {
 }
 
 function custombg() {
-				document.getElementById("current").style.display = "none"
+	document.getElementById("current").style.display = "none"
 	if (localStorage.getItem("cbg")) {
 		let name = localStorage.getItem("cbg")
 		document.getElementById("st1").classList.remove("active")
@@ -116,7 +116,7 @@ function custombg() {
 			document.getElementById("current").style.display = ""
 			//base64
 		}
-		
+
 	} else {
 		//No Custom BG
 	}
@@ -220,12 +220,13 @@ function setup() {
 							document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('secureline')" href="#loadapp-secureline"><img src="./secureline/sline.png" class="app"></img></a>`
 							if (localStorage.getItem("t50-username") === "papostol") {
 								log("Enabling Transports", "green")
+								$("#transports-app").fadeIn("slow")
 								//document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
 								document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('transports-disabled')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a>`
 							}
 							$("#apps").fadeIn("slow")
 							$("#loading-apps-text").fadeOut("slow", function () {
-								document.getElementById("loading-apps-text").innerHTML = `Here are the available Evox applications`
+								document.getElementById("loading-apps-text").innerHTML = `Take a look at the Evox applications available.`
 								$("#loading-apps-text").fadeIn("slow")
 							})
 							$("#loading").fadeOut("slow")
@@ -453,13 +454,13 @@ function check_ccode(app) {
 		});
 }
 function uielements() {
-	
+
 	let notes = localStorage.getItem("notes-owned")
 	let images = localStorage.getItem("images-owned")
 	let chatvia = localStorage.getItem("chatvia-owned")
 	console.log(notes, images, chatvia)
 	$("#settings").fadeIn("slow")
-	
+
 	document.getElementById("usr-img").src = sessionStorage.getItem("pfp")
 	pfp()
 	document.getElementById("usr-name").innerHTML = localStorage.getItem("t50-username")
@@ -671,6 +672,12 @@ function pswd_secure() {
 	})
 }
 
+function show_social() {
+	$("#main_settings").fadeOut("fast", function () {
+		$("#evox_social").fadeIn("fast")
+	})
+}
+
 function show_search() {
 	//document.getElementById("options_section_1_username").innerHTML = localStorage.getItem("t50-username")
 	//document.getElementById("options_section_1_email").innerHTML = localStorage.getItem("t50-email")
@@ -685,7 +692,7 @@ function show_search() {
 	//} else {
 	//	document.getElementById("options_section_1_announcements").innerHTML = "Enabled"
 	//}
-	$("#main_settings").fadeOut("fast", function () {
+	$("#evox_social").fadeOut("fast", function () {
 		$("#add_friends").fadeIn("fast")
 	})
 }
@@ -852,7 +859,7 @@ function show_friends() {
 			console.error(error);
 		});
 
-	$("#main_settings").fadeOut("fast", function () {
+	$("#evox_social").fadeOut("fast", function () {
 		$("#friends").fadeIn("fast")
 	})
 }
@@ -964,7 +971,7 @@ function show_requests() {
 		}).catch(error => {
 			console.error(error);
 		});
-	$("#main_settings").fadeOut("fast", function () {
+	$("#evox_social").fadeOut("fast", function () {
 		$("#friend_requests").fadeIn("fast")
 	})
 }
@@ -1392,7 +1399,22 @@ function handlesearch(value) {
 
 
 function change_password() {
-	shake_me("change_password")
+	let current = document.getElementById("current_pswd")
+	let newpswd = document.getElementById("new_pswd")
+	let confirm = document.getElementById("confirm_pswd")
+	current.value = ""
+	newpswd.value = ""
+	confirm.value = ""
+	$("#same_pswd").fadeOut("fast")
+	$("#old_pswd").fadeOut("fast")
+	$("#wrong_pswd").fadeOut("fast")
+	document.getElementById('gateway').style.filter = 'blur(50px)'
+	document.getElementById("usr-img-chpswd").src = document.getElementById("usr-img-opt").src
+	document.getElementById("usr-name-chpswd").innerHTML = document.getElementById("usr-name-opt").innerHTML
+	document.getElementById("usr-email-chpswd").innerHTML = document.getElementById("usr-email-opt").innerHTML
+	$("#pswd_secure").fadeOut("fast", function () {
+		$("#password_change").fadeIn("fast")
+	})
 }
 
 function return_to_options(where) {
@@ -1407,15 +1429,15 @@ function return_to_options(where) {
 			})
 		} else if (where === "add_friends") {
 			$("#add_friends").fadeOut("fast", function () {
-				$("#main_settings").fadeIn("fast")
+				$("#evox_social").fadeIn("fast")
 			})
 		} else if (where === "requests") {
 			$("#friend_requests").fadeOut("fast", function () {
-				$("#main_settings").fadeIn("fast")
+				$("#evox_social").fadeIn("fast")
 			})
 		} else if (where === "friends") {
 			$("#friends").fadeOut("fast", function () {
-				$("#main_settings").fadeIn("fast")
+				$("#evox_social").fadeIn("fast")
 			})
 		} else if (where === "user-friend") {
 			var element = document.querySelector('[id^="secureline-"]');
@@ -1433,6 +1455,15 @@ function return_to_options(where) {
 		} else if (where === "gateway_settings") {
 			$("#background_change").fadeOut("fast", function () {
 				$("#main_popup_settings").fadeIn("fast")
+			})
+		} else if (where === "evox_social") {
+			$("#evox_social").fadeOut("fast", function () {
+				$("#main_settings").fadeIn("fast")
+			})
+		} else if (where === "password_change") {
+			document.getElementById('gateway').style.filter = 'blur(20px)'
+			$("#password_change").fadeOut("fast", function () {
+				$("#pswd_secure").fadeIn("fast")
 			})
 		}
 	}
@@ -1512,7 +1543,13 @@ function addbg(element) {
 		console.log("Activated");
 		return;
 	}
-	let name = which.replace(/^https:\/\/team50.sytes.net\/t50-gateway-alpha\/bgs\//, '');
+	let name;
+	if (which.includes("localhost")) {
+		name = which.replace(/^http:\/\/localhost:8080\/t50-gateway-alpha\/bgs\//, '');
+	} else {
+		name = which.replace(/^https:\/\/team50.sytes.net\/t50-gateway-alpha\/bgs\//, '');
+	}
+
 	if (name === "default_bg.png") {
 		document.getElementById("background").innerHTML = `<div class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
 	} else {
@@ -1522,12 +1559,12 @@ function addbg(element) {
 	document.getElementById("st2").classList.remove("active")
 	document.getElementById("st3").classList.remove("active")
 	document.getElementById("st4").classList.remove("active")
-	try{
+	try {
 		document.getElementById("st5").classList.remove("active")
-	} catch{
+	} catch {
 		console.error("Cannot find st5, normal err")
 	}
-	
+
 	element.classList.add("active")
 	localStorage.setItem("cbg", name)
 	custombg()
@@ -1580,3 +1617,107 @@ function handleFileSelect_BG() {
 	// Reset the input value to allow selecting the same file again
 	input.value = '';
 }
+
+function complete_chpswd() {
+	$("#old_pswd").fadeOut("fast")
+	$("#wrong_pswd").fadeOut("fast")
+	$("#same_pswd").fadeOut("fast")
+	let current = document.getElementById("current_pswd").value
+	let newpswd = document.getElementById("new_pswd").value
+	let confirm = document.getElementById("confirm_pswd").value
+	if (newpswd != confirm) {
+		shake_me("confirm_pswd")
+		return;
+	}
+	if (current === "") {
+		shake_me("current_pswd")
+		return;
+	}
+	if (newpswd === "") {
+		shake_me("new_pswd")
+		return;
+	}
+	if (current === newpswd) {
+		$("#same_pswd").fadeIn("fast")
+		console.log("Same Password!")
+		return;
+	}
+	//info.email && info.password && info.username && info.newpass
+	fetch('https://evox-datacenter.onrender.com/accounts', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			email: localStorage.getItem("t50-email"),
+			username: localStorage.getItem("t50-username"),
+			password: current,
+			newpass: newpswd
+		})
+	})
+		.then(response => response.text())
+		.then(data => {
+			if (data === "Wrong Credentials") {
+				shake_me("current_pswd")
+				$("#wrong_pswd").fadeIn("fast")
+			} else if (data === "Done") {
+				localStorage.setItem("t50pswd", btoa(newpswd))
+				$("#gateway").fadeOut("slow")
+				$("#popup").fadeOut("slow", function () {
+					document.getElementById("current_pswd").value = ""
+					document.getElementById("new_pswd").value = ""
+					document.getElementById("confirm_pswd").value = ""
+					const data = document.getElementById("gateway").innerHTML
+					document.getElementById("gateway").innerHTML = `<div class="animation-ctn container">
+					<div class="icon icon--order-success svg">
+						<svg xmlns="http://www.w3.org/2000/svg" width="154px" height="154px">  
+						  <g fill="none" stroke="#22AE73" stroke-width="2"> 
+							<circle cx="77" cy="77" r="72" style="stroke-dasharray:480px, 480px; stroke-dashoffset: 960px;"></circle>
+							<circle id="colored" fill="#22AE73" cx="77" cy="77" r="72" style="stroke-dasharray:480px, 480px; stroke-dashoffset: 960px;"></circle>
+							<polyline class="st0" stroke="#fff" stroke-width="10" points="43.5,77.8 63.7,97.9 112.2,49.4 " style="stroke-dasharray:100px, 100px; stroke-dashoffset: 200px;"/>   
+						  </g> 
+						</svg>
+					  </div>
+			  </div>`
+					$("#gateway").fadeIn("slow", function () {
+						setTimeout(function () {
+							$("#gateway").fadeOut("slow", function () {
+								document.getElementById("gateway").innerHTML = data
+								$("#gateway").fadeIn("slow")
+								$("#popup").fadeIn("slow")
+							})
+
+
+						}, 500)
+					})
+				})
+			} else if(data === "Cannot set previous password") {
+				$("#old_pswd").fadeIn("fast")
+				return;
+			}
+			//console.log(data);
+
+		})
+		.catch(error => {
+			console.error(error);
+		});
+}
+
+document.getElementById("current_pswd").addEventListener("keypress", function (event) {
+	if (event.keyCode === 13) {
+		event.preventDefault();
+		document.getElementById("new_pswd").focus()
+	}
+});
+document.getElementById("new_pswd").addEventListener("keypress", function (event) {
+	if (event.keyCode === 13) {
+		event.preventDefault();
+		document.getElementById("confirm_pswd").focus()
+	}
+});
+document.getElementById("confirm_pswd").addEventListener("keypress", function (event) {
+	if (event.keyCode === 13) {
+		event.preventDefault();
+		complete_chpswd()
+	}
+});
