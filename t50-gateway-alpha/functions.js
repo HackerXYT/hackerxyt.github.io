@@ -1512,7 +1512,7 @@ function addbg(element) {
 		console.log("Activated");
 		return;
 	}
-	let name = which.replace(/^http:\/\/localhost:8080\/t50-gateway-alpha\/bgs\//, '');
+	let name = which.replace(/^https:\/\/team50.sytes.net\/t50-gateway-alpha\/bgs\//, '');
 	if (name === "default_bg.png") {
 		document.getElementById("background").innerHTML = `<div class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
 	} else {
