@@ -84,6 +84,7 @@ function log(text, color) {
 }
 
 function custombg() {
+				document.getElementById("current").style.display = "none"
 	if (localStorage.getItem("cbg")) {
 		let name = localStorage.getItem("cbg")
 		document.getElementById("st1").classList.remove("active")
