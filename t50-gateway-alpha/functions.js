@@ -639,6 +639,15 @@ function show_authip() {
 			ipv4List.innerHTML = ""
 			// Loop through each IP address
 			ipAddresses.forEach(function (ip) {
+				if (ip === "1") {
+					var anchor = document.createElement("a");
+					anchor.setAttribute("href", "#");
+					anchor.setAttribute("style", "height: 50%");
+					anchor.classList.add("apple-button");
+					anchor.innerText = "This Device";
+					ipv4List.appendChild(anchor);
+					return;
+				}
 				// Create a new anchor element
 				var anchor = document.createElement("a");
 
@@ -1520,8 +1529,8 @@ function return_to_options(where) {
 			$("#password_change").fadeOut("fast", function () {
 				$("#pswd_secure").fadeIn("fast")
 			})
-		} else if(where === "authip") {
-			$("#authips").fadeOut("fast", function() {
+		} else if (where === "authip") {
+			$("#authips").fadeOut("fast", function () {
 				$("#main_settings").fadeIn("fast")
 			})
 		}
