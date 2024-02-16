@@ -222,7 +222,7 @@ function setup() {
 								log("Enabling Transports", "green")
 								$("#transports-app").fadeIn("slow")
 								//document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
-								document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('transports-disabled')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a>`
+								document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('transports-disabled')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
 							}
 							$("#apps").fadeIn("slow")
 							$("#loading-apps-text").fadeOut("slow", function () {
@@ -1721,3 +1721,8 @@ document.getElementById("confirm_pswd").addEventListener("keypress", function (e
 		complete_chpswd()
 	}
 });
+
+function moretti() {
+	alert(`This will redirect you to Moretti onion dashboard for ${localStorage.getItem("t50-username")}`)
+	shake_me('mt-disabled')
+}

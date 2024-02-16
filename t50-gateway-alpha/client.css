@@ -4,6 +4,10 @@
 }
 
 
+button, a {
+  touch-action: manipulation; /* For modern browsers */
+  -webkit-tap-highlight-color: transparent;
+}
 body {
   font-family: "SF";
   margin: 0;
