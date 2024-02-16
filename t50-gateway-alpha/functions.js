@@ -288,18 +288,23 @@ function load(app) {
 }
 
 function buy(app) {
+	$("#settings").fadeOut("fast")
+	console.log("Start Buying Process")
 	$("#loading").fadeIn("slow")
-	$("#popup").fadeOut("slow", function () {
-		$(`#buy${app}`).fadeIn("fast")
-		$("#buy-products").fadeIn("slow", function () {
-			$("#loading").fadeOut("slow")
-		})
+	$("#popup").removeClass("active");
+	$(`#buy${app}`).fadeIn("fast")
+	$("#buy-products").addClass("active");
+	document.getElementById('gateway').style.filter = 'blur(50px)'
+	$("#buy-products").fadeIn("slow", function () {
+		$("#loading").fadeOut("slow")
 	})
 	//Say that user doesnt own the app ask if he wants to buy it
 }
 
 function buy_back() {
-	$("#bottom-logo").fadeOut("slow")
+	$("#bottom-logo").fadeOut("slow", function () {
+		$("#settings").fadeIn("fast")
+	})
 	document.getElementById('gateway').style.filter = 'none'
 	let pm_cc_sb = document.getElementById("cc-pm")//Payment method credit card standby
 	let pm_pp_sb = document.getElementById("pp-pm")
@@ -307,14 +312,13 @@ function buy_back() {
 	pm_cc_sb.checked = false;
 	pm_pp_sb.checked = false;
 	pm_code_sb.checked = false;
-	$("#buy-products").fadeOut("slow", function () {
-		$(`#buychatvia`).fadeOut("fast")
-		$(`#buyimages`).fadeOut("fast")
-		$(`#buynotes`).fadeOut("fast")
-		$("#purchase").fadeOut("fast")
-		$("#choose_pm").fadeIn("slow")
-		$("#code_pm").fadeOut("slow")
-	})
+	$("#buy-products").removeClass("active");
+	$(`#buychatvia`).fadeOut("fast")
+	$(`#buyimages`).fadeOut("fast")
+	$(`#buynotes`).fadeOut("fast")
+	$("#purchase").fadeOut("fast")
+	$("#choose_pm").fadeIn("slow")
+	$("#code_pm").fadeOut("slow")
 }
 
 function purchase(app) {
@@ -503,20 +507,25 @@ function uielements() {
 }
 
 function settings() {
-	if (document.getElementById("popup").style.display == "none" || document.getElementById("popup").style.display == "") {
+	console.log(document.getElementById("popup").classList.contains("active"))
+	if (document.getElementById("popup").classList.contains("active") === false) {
 		document.getElementById('gateway').style.filter = 'blur(20px)'; // Add a blur effect to the mainContent
 		$("#bottom-logo").fadeIn("slow")
 		$("#settings").fadeOut("slow")
 		setTimeout(function () {
-			$("#popup").fadeIn("fast")
+			$("#popup").addClass("active");
+			//$("#popup").fadeIn("fast")
 			//document.body.style.overflow = 'hidden';
 		}, 100)
-	} else {
+	} else if (document.getElementById("popup").classList.contains("active")) {
 		document.getElementById('gateway').style.filter = 'none'; // Add a blur effect to the mainContent
-		$("#bottom-logo").fadeOut("slow")
-		$("#settings").fadeIn("slow")
+		$("#bottom-logo").fadeOut("slow", function () {
+			$("#settings").fadeIn("slow")
+		})
+
 		setTimeout(function () {
-			$("#popup").fadeOut("fast")
+			$("#popup").removeClass("active");
+			//$("#popup").fadeOut("fast")
 			//document.body.style.overflow = 'hidden';
 		}, 100)
 	}
@@ -524,6 +533,7 @@ function settings() {
 }
 
 function close_popup() {
+
 	settings()
 }
 
@@ -570,17 +580,15 @@ function auto_login() {
 }
 
 function restart() {
-	$("#popup").fadeOut("fast", function () {
-		$("#settings").fadeOut("fast")
-		$("#gateway").fadeOut("fast", function () {
-			$("#bottom-logo").fadeOut("fast", function () {
-				setTimeout(function () {
-					window.location.reload()
-				}, 250)
+	$("#popup").removeClass("active");
+	$("#settings").fadeOut("fast")
+	$("#gateway").fadeOut("fast", function () {
+		$("#bottom-logo").fadeOut("fast", function () {
+			setTimeout(function () {
+				window.location.reload()
+			}, 250)
 
-			})
 		})
-
 	})
 
 }
@@ -610,6 +618,52 @@ function shake_me(what) {
 	setTimeout(function () {
 		document.getElementById(`${what}`).classList.remove('shake');
 	}, 500);
+}
+
+function show_authip() {
+	//ipv4-list
+	fetch(`https://evox-datacenter.onrender.com/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			//console.log(data)
+
+			var ipAddresses = JSON.parse(data);
+
+			// Get the element with id "ipv4-list"
+			var ipv4List = document.getElementById("ipv4-list");
+			ipv4List.innerHTML = ""
+			// Loop through each IP address
+			ipAddresses.forEach(function (ip) {
+				// Create a new anchor element
+				var anchor = document.createElement("a");
+
+				// Set href attribute to "#"
+				anchor.setAttribute("href", "#");
+
+				// Set style attribute for height
+				anchor.setAttribute("style", "height: 50%");
+
+				// Add class "apple-button"
+				anchor.classList.add("apple-button");
+
+				// Set the inner text to the IP address
+				anchor.innerText = ip;
+
+				// Append the anchor element to the ipv4List
+				ipv4List.appendChild(anchor);
+			});
+
+		}).catch(error => {
+			console.error(error)
+		})
+	$("#main_settings").fadeOut("fast", function () {
+		$("#authips").fadeIn("fast")
+	})
 }
 
 function show_account() {
@@ -1179,23 +1233,24 @@ function loadusers() {
 													console.error("Cannot set src for", username)
 													console.error(error)
 												})
-										})
+										}).catch(error => {
+											console.error(error);
+										});
 								}
+							}).catch(error => {
+								console.error(error);
 							});
 					}).catch(error => {
 						console.error(error);
 					});
 
 
-			})
-				.catch(error => {
-					console.error(error);
-				});
-		})
-		.catch(error => {
+			});
+		}).catch(error => {
 			console.error(error);
 		});
 }
+
 
 function handlesearch(value) {
 	console.log("Length", value.length);
@@ -1465,6 +1520,10 @@ function return_to_options(where) {
 			$("#password_change").fadeOut("fast", function () {
 				$("#pswd_secure").fadeIn("fast")
 			})
+		} else if(where === "authip") {
+			$("#authips").fadeOut("fast", function() {
+				$("#main_settings").fadeIn("fast")
+			})
 		}
 	}
 }
@@ -1531,7 +1590,8 @@ function secureline(element) {
 
 function bgch() {
 	$("#main_popup_settings").fadeOut("fast", function () {
-		$("#popup").fadeIn("fast")
+		$("#popup").addClass("active");
+		//$("#popup").fadeIn("fast")
 		$("#background_change").fadeIn("fast")
 		$("#bottom-logo").fadeOut("slow")
 	})
@@ -1663,12 +1723,12 @@ function complete_chpswd() {
 			} else if (data === "Done") {
 				localStorage.setItem("t50pswd", btoa(newpswd))
 				$("#gateway").fadeOut("slow")
-				$("#popup").fadeOut("slow", function () {
-					document.getElementById("current_pswd").value = ""
-					document.getElementById("new_pswd").value = ""
-					document.getElementById("confirm_pswd").value = ""
-					const data = document.getElementById("gateway").innerHTML
-					document.getElementById("gateway").innerHTML = `<div class="animation-ctn container">
+				$("#popup").removeClass("active");
+				document.getElementById("current_pswd").value = ""
+				document.getElementById("new_pswd").value = ""
+				document.getElementById("confirm_pswd").value = ""
+				const data = document.getElementById("gateway").innerHTML
+				document.getElementById("gateway").innerHTML = `<div class="animation-ctn container">
 					<div class="icon icon--order-success svg">
 						<svg xmlns="http://www.w3.org/2000/svg" width="154px" height="154px">  
 						  <g fill="none" stroke="#22AE73" stroke-width="2"> 
@@ -1679,19 +1739,18 @@ function complete_chpswd() {
 						</svg>
 					  </div>
 			  </div>`
-					$("#gateway").fadeIn("slow", function () {
-						setTimeout(function () {
-							$("#gateway").fadeOut("slow", function () {
-								document.getElementById("gateway").innerHTML = data
-								$("#gateway").fadeIn("slow")
-								$("#popup").fadeIn("slow")
-							})
+				$("#gateway").fadeIn("slow", function () {
+					setTimeout(function () {
+						$("#gateway").fadeOut("slow", function () {
+							document.getElementById("gateway").innerHTML = data
+							$("#gateway").fadeIn("slow")
+							$("#popup").addClass("active");
+						})
 
 
-						}, 500)
-					})
+					}, 500)
 				})
-			} else if(data === "Cannot set previous password") {
+			} else if (data === "Cannot set previous password") {
 				$("#old_pswd").fadeIn("fast")
 				return;
 			}
@@ -1702,6 +1761,7 @@ function complete_chpswd() {
 			console.error(error);
 		});
 }
+
 
 document.getElementById("current_pswd").addEventListener("keypress", function (event) {
 	if (event.keyCode === 13) {

@@ -42,7 +42,7 @@
 </style>
 
 <body>
-    
+
     <div id="loading-bar" class="animated-gradient">&nbsp;</div>
     <!--<div class="background" style="background: repeating-radial-gradient(circle, #361e1e, #3c2828, #3e1c1c, #361d1d, #392121 20px);"></div>-->
     <div id="background">
@@ -53,13 +53,21 @@
 
 
     <div id="container" class="container" style="display:none;margin-top: 105px;">
-        <a href="../notify/"><img src="evox-logo.png" alt="Logo" class="logo" id="myLogo"></a>
+        <a><img src="evox-logo.png" alt="Logo" class="logo" id="myLogo"></a>
         <span id="use_switch"><input autocomplete="off" id="email" type="email" class="input-box"
                 placeholder="Email"></span>
         <input autocomplete="off" id="password" type="password" class="input-box" placeholder="Password">
         <p id="info_text" style="color: white;display: none"></p>
         <button id="submit" onclick="login()" class="transparent-button">Login</button><br>
         <p style="color: #a7b3bf">Evox® registered under Evox Communications & Co.</p>
+    </div>
+    <div style="display: none;" id="2fa" class="container" style="display:none;margin-top: 105px;">
+        <a><img src="evox-logo.png" alt="Logo" class="logo" id="myLogo2"></a>
+        <h3 style="color: white;">Two-Factor Authentication</h3>
+        <p style="color: #a7b3bf;">Please review your email for the Evox® Verification code.</p>
+        <input autocomplete="off" id="ver_code" type="text" class="input-box" placeholder="Verification Code">
+        <p id="info_text2" style="color: white;display: none"></p>
+        <button id="submit2" onclick="verifycode()" class="transparent-button">Continue</button><br>
     </div>
     <div class="gateway" style="display: none" id="gateway">
         <div class="centered-text">
@@ -111,6 +119,13 @@
                                 d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                                 fill="#666" />
                         </svg></a>
+                    <a onclick="show_authip()" href="#" class="apple-button">Logged In & IP Addresses<svg
+                            xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                                fill="#666" />
+                        </svg></a>
                     <a onclick="show_social()" href="#" class="apple-button">Evox Social<svg
                             xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
                             fill="none">
@@ -119,6 +134,31 @@
                                 fill="#666" />
                         </svg></a>
                 </div>
+            </div>
+            <div id="authips" style="display:none">
+                <span onclick="return_to_options('authip')" style="position: fixed;
+                left: 30px;
+                right: 30px;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+                        <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#b2b2b2" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg></span>
+                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Logged In & IP Addresses</h3>
+                <p style="margin: 6px" class="user-email">KNOWN IP ADDRESSES</p>
+                <div id="ipv4-list">
+                    <!--<a href="#" id="options_section_1_email" style="height: 50%" class="apple-button">192.1</a>-->
+                </div>
+                
+                <p style="margin: 6px" class="user-email">These IP addresses and are the devices used to sign
+                    in to your account. If you notice any suspicious activity, change your password immediately.</p>
             </div>
             <div id="username_email_icon_show" style="display:none">
                 <span onclick="return_to_options('usr-emails')" style="position: fixed;
@@ -568,7 +608,7 @@
                 <img src="EvoxNotes.png" alt="Image" class="app-small">Notes:&nbsp;
                 <p id="notes-own-ui-status">err</p>
             </div>
-            <div style="display:none" class="app-manage">
+            <div style="display: none;" class="app-manage">
                 <img src="t50-img.png" alt="Image" class="app-small">Images:&nbsp;
                 <p id="images-own-ui-status">err</p>
             </div>
@@ -588,7 +628,7 @@
                 <img src="chatvia-img.png" alt="Image" class="app-small">ChatVia[E]:&nbsp;
                 <p id="chatvia-own-ui-status">err</p>
             </div>
-            
+
             <h3 style="margin-bottom: 4px;">Preferences</h3>
             <a href="#" onclick="bgch()" style="height: 50%;" class="apple-button">Background<span id="bgname"
                     style="color: #868686">Default</span></a>
@@ -662,17 +702,19 @@
                 style="background-color: #282828;">
             <p id="same_pswd" style="margin: 6px;display: none" class="user-email">Please select a new password distinct
                 from your current one.</p>
-            <p id="old_pswd" style="margin: 6px;display: none" class="user-email">Choose a new password, different from the last.</p>
+            <p id="old_pswd" style="margin: 6px;display: none" class="user-email">Choose a new password, different from
+                the last.</p>
             <input id="new_pswd" class="apple-input" type="password" placeholder="New Password">
             <input id="confirm_pswd" class="apple-input" type="password" placeholder="Confirm New Password">
             <a href="#" onclick="complete_chpswd()" class="apple-button-submit">Complete</a>
             <a onclick="shake_me('forgot_pswd')" href="#forgot">
-                <p id="forgot_pswd" style="margin-top: 40px" class="user-email">If you've forgotten your password click here to reset it.
+                <p id="forgot_pswd" style="margin-top: 40px" class="user-email">If you've forgotten your password click
+                    here to reset it.
                 </p>
             </a>
         </div>
     </div>
-    <div id="buy-products" class="popup" style="background-color: #333; color: #dbdbdb">
+    <div id="buy-products" class="popupright" style="color: #dbdbdb">
         <span onclick="buy_back()" style="position: absolute;top: 10px;left: 10px;cursor: pointer;">
             <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
                 <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#dbdbdb" stroke-width="2" stroke-linecap="round"
@@ -682,7 +724,7 @@
         <!-- Content of the popup -->
         <h2 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Shopping Cart</h2>
         <div style="display: none;" id="buynotes">
-            <div class="user-info">
+            <div class="user-info-default">
                 <div class="app-manage">
                     <img src="EvoxNotes.png" style="width: 60px;height:60px" alt="Image" class="app-small">
                     <p id="notes-own-ui-status">Evox Notes</p>
@@ -696,7 +738,7 @@
                 Now</button><br>
         </div>
         <div style="display: none;" id="buyimages">
-            <div class="user-info">
+            <div class="user-info-default">
                 <div class="app-manage">
                     <img src="t50-img.png" style="width: 60px;height:60px" alt="Image" class="app-small">
                     <p id="notes-own-ui-status">Evox Images</p>
@@ -709,7 +751,7 @@
                 Now</button><br>
         </div>
         <div style="display: none;" id="buychatvia">
-            <div class="user-info">
+            <div class="user-info-default">
                 <div class="app-manage">
                     <img src="chatvia-img.png" style="width: 60px;height:60px" alt="Image" class="app-small">
                     <p id="notes-own-ui-status">Chatvia</p>
@@ -725,7 +767,7 @@
                 Now</button><br>
         </div>
         <div style="display: none;" id="purchase">
-            <div class="user-info">
+            <div class="user-info-default">
                 <div class="app-manage">
                     <img id="purch-app-img" src="EvoxNotes.png" style="width: 60px;height:60px" alt="Image"
                         class="app-small">
@@ -752,7 +794,7 @@
             </div>
             <div style="display:none" id="code_pm">
                 <h3 style="margin-bottom: 0;color:#ba6a6a">Enter Coupon Code:</h3>
-                <input style="width: auto;" autocomplete="off" id="coupon" type="text" class="input-box"
+                <input style="width: 95%;" autocomplete="off" id="coupon" type="text" class="input-box"
                     placeholder="Coupon Code">
             </div>
             <span id="cont-pur"><button onclick="continue_purch()" class="transparent-button"
@@ -817,9 +859,12 @@
                 d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z" />
         </svg>
     </div>-->
-    <div onclick="settings()" id="settings" style="position: fixed; bottom: 20px; transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;display: none;">
-        <div style="background-color: #333; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48" style="margin-right: 10px;">
+    <div onclick="settings()" id="settings"
+        style="position: fixed; bottom: 20px; transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;display: none;">
+        <div
+            style="background-color: #333; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48"
+                style="margin-right: 10px;">
                 <defs>
                     <style>
                         .cls-1 {
@@ -830,12 +875,13 @@
                         }
                     </style>
                 </defs>
-                <path class="cls-1" d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z" />
+                <path class="cls-1"
+                    d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z" />
             </svg>
             Settings
         </div>
     </div>
-    
+
 
     </div>
     <div id="loading-div-text"
