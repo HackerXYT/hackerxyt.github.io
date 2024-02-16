@@ -644,6 +644,7 @@ function show_authip() {
 					anchor.setAttribute("href", "#");
 					anchor.setAttribute("style", "height: 50%");
 					anchor.classList.add("apple-button");
+					anchor.style.backgroundColor = "#4a4949"
 					anchor.innerText = "This Device";
 					ipv4List.appendChild(anchor);
 					return;
