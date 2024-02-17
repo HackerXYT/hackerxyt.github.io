@@ -28,7 +28,7 @@ function setup() {
 				$("#container").fadeOut("fast")
 				$("#loading").fadeIn("slow")
 				$("#stuck").fadeOut("slow")
-				fetch(`http://localhost:4000/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
+				fetch(`https://evox-datacenter.onrender.com/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -147,7 +147,7 @@ function docready() {
   let pswd = atob(acc)
   let username = localStorage.getItem("t50-username")
   if (loggedin != null && autologin === "true") {
-    const url = `http://localhost:4000/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${ip}`;
+    const url = `https://evox-datacenter.onrender.com/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${ip}`;
 
     fetch(url)
       .then(response => {
@@ -161,7 +161,7 @@ function docready() {
           $("#loading-bar").fadeOut("slow")
           log("Existing Account Verified!", "green")
           sessionStorage.setItem("loaded", true)
-          fetch(`http://localhost:4000/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${ip}`)
+          fetch(`https://evox-datacenter.onrender.com/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${ip}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -172,7 +172,7 @@ function docready() {
               if (data === "IP is Mapped") {
                 setup()
               } else if (data === "Unknown IP") {
-                fetch(`http://localhost:4000/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${ip}`)
+                fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${ip}`)
                   .then(response => {
                     if (!response.ok) {
                       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -199,7 +199,7 @@ function docready() {
 
         } else if (data === "IP Not Verified") {
           log("Existing Account Verified! IP Not Mapped", "orange")
-          fetch(`http://localhost:4000/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${ip}`)
+          fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${ip}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -306,7 +306,7 @@ function docready() {
                 $("#dots").html(".")
                 setTimeout(function () {
                   $("#dots").html("..")
-                  fetch("http://localhost:4000/accounts")
+                  fetch("https://evox-datacenter.onrender.com/accounts")
                     .then(response => {
                       if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -413,7 +413,7 @@ function verifycode() {
   let password = account.password
   let code = document.getElementById("ver_code").value
   console.log("Just to verify:\n", email, username, password, code)
-  fetch(`http://localhost:4000/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${ip}`)
+  fetch(`https://evox-datacenter.onrender.com/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${ip}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -461,7 +461,7 @@ function login() {
   let email = document.getElementById("email").value
   let password = document.getElementById("password").value
   console.log(email, "********")
-  const url = `http://localhost:4000/accounts?email=${email}&password=${password}&ip=${ip}`;
+  const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}&ip=${ip}`;
 
   fetch(url)
     .then(response => {
@@ -546,7 +546,7 @@ document.getElementById("ver_code").addEventListener("keypress", function (event
 function reconnect() {
   console.log("Reconnecting..")
   $("#loading-bar").fadeIn("slow")
-  fetch("http://localhost:4000/accounts")
+  fetch("https://evox-datacenter.onrender.com/accounts")
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
