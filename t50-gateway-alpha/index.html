@@ -9,6 +9,41 @@
     <title>Login Page</title>
     <link rel="stylesheet" href="client.css">
     <link rel="stylesheet" href="secondary.css">
+    <script defer>
+        document.addEventListener("DOMContentLoaded", function () {
+            let ip = "error";
+            sessionStorage.removeItem("IPV4")
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(geo => {
+                    sessionStorage.setItem("IPV4", geo.ip);
+                    console.log(geo.ip);
+                    ip = geo.ip;
+
+                    // Add code dependent on the fetch request's completion here
+                    // For example, you can load other JavaScript files dynamically:
+                    loadOtherScripts();
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                });
+
+            function loadOtherScripts() {
+                // Dynamically create script tags for other JavaScript files
+                let script1 = document.createElement('script');
+                script1.src = 'functions.js';
+                script1.defer = true;
+                document.head.appendChild(script1);
+
+                let script2 = document.createElement('script');
+                script2.src = 'gateway.js';
+                script2.defer = true;
+                document.head.appendChild(script2);
+
+                // Add more script tags for other JavaScript files as needed
+            }
+        });
+    </script>
 </head>
 <script>
     //sessionStorage.clear()
@@ -66,6 +101,15 @@
         <h3 style="color: white;">Two-Factor Authentication</h3>
         <p style="color: #a7b3bf;">Please review your email for the Evox® Verification code.</p>
         <input autocomplete="off" id="ver_code" type="text" class="input-box" placeholder="Verification Code">
+        <div style="display:none">
+        <input autocomplete="off" type="text" class="tfa-input" maxlength="1" placeholder="-">
+        <input autocomplete="off" type="text" class="tfa-input" maxlength="1" placeholder="-">
+        <input autocomplete="off" type="text" class="tfa-input" maxlength="1" placeholder="-">
+        <input autocomplete="off" type="text" class="tfa-input" maxlength="1" placeholder="-">
+        <input autocomplete="off" type="text" class="tfa-input" maxlength="1" placeholder="-">
+        <input autocomplete="off" type="text" class="tfa-input" maxlength="1" placeholder="-">
+        <br>
+    </div>
         <p id="info_text2" style="color: white;display: none"></p>
         <button id="submit2" onclick="verifycode()" class="transparent-button">Continue</button><br>
     </div>
@@ -156,7 +200,7 @@
                 <div id="ipv4-list">
                     <!--<a href="#" id="options_section_1_email" style="height: 50%" class="apple-button">192.1</a>-->
                 </div>
-                
+
                 <p style="margin: 6px" class="user-email">These IP addresses and are the devices used to sign
                     in to your account. If you notice any suspicious activity, change your password immediately.</p>
             </div>
@@ -933,8 +977,7 @@
     }(document, "script"));
 </script>
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="functions.js"></script>
-<script src="gateway.js"></script>
+
 <script>
     let florida_open;
     let florida_open_check = setInterval(function () {

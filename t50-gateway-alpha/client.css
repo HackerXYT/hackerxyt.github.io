@@ -721,6 +721,25 @@ a {
   outline: none;
 }
 
+.tfa-input {
+  width:20px;
+  background-color: #0000006b;
+  /* Your desired background color */
+  border: none;
+  text-align: center;
+  color: #fff;
+  padding: 15px 9px;
+  font-size: 26px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+
+  outline: none;
+  margin-bottom: 10px;
+}
+
 .input-container {
   position: relative;
 }

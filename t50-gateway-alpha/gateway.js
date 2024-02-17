@@ -1,6 +1,140 @@
 
 sessionStorage.removeItem("skipped")
+
+const ip = sessionStorage.getItem("IPV4")
 $(document).ready(docready())
+function log(text, color) {
+	const styles = `color: ${color}; font-size: 16px; font-weight: normal;`;
+	console.log('%c' + text, styles)
+}
+
+function setup() {
+  
+	custombg()
+	log("T50 Gateway V:Delta 5", "red")
+	loadusers()
+	let lg_status = sessionStorage.getItem("loaded")
+	if (lg_status === "true") {
+		let username = localStorage.getItem("t50-username")
+		let email = localStorage.getItem("t50-email")
+		$("#user-text").html(username)
+		log("Loading Gateway", "green")
+		$("#container").fadeOut("slow", function () {
+			$("#gateway").fadeIn("slow")
+			if (username != null && email != null) {
+				sessionStorage.setItem("skipped", "yes")
+				$("#user-text").html(username)
+				log("Loading Gateway", "green")
+				$("#container").fadeOut("fast")
+				$("#loading").fadeIn("slow")
+				$("#stuck").fadeOut("slow")
+				fetch(`http://localhost:4000/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+						return response.text();
+					})
+					.then(data => {
+						//document.body.style.overflow = 'hidden';
+						if (data === "No Apps Owned") {
+							console.log("No Apps Owned! Want To Register One?")
+						}
+						try {
+							var inputString = data;
+							var parts = inputString.split(', ');
+							var notes, images, chatvia;
+							for (var i = 0; i < parts.length; i++) {
+								var keyValue = parts[i].split(':');
+								if (keyValue.length === 2) { // Ensure there is a key and a value
+									var key = keyValue[0].trim();
+									var value = keyValue[1].trim();
+									if (key === 'Notes') {
+										notes = value;
+									}
+									if (key === 'Images') {
+										images = value;
+									}
+									if (key === 'Chatvia') {
+										chatvia = value;
+									}
+								} else {
+									console.error(`Invalid format for part: ${parts[i]}`);
+								}
+							}
+							console.log('Notes:', notes);
+							console.log('Images:', images);
+							console.log('Chatvia:', chatvia);
+							if (notes === "owned") {//OWN NOTES
+								localStorage.setItem("notes-owned", true)
+								//document.getElementById("apps").innerHTML = `<a onclick="load('notes')" href="#loadapp-notes"><img src="EvoxNotes.png" class="app"></img></a>`
+							} else {
+								localStorage.setItem("notes-owned", false)
+								//document.getElementById("apps").innerHTML = `<a onclick="buy('notes')" href="#loadapp-notes-disabled"><img src="EvoxNotes.png" class="disabledapp"></img></a>`
+							}
+							if (images === "owned") {//OWN IMAGES
+								localStorage.setItem("images-owned", true)
+								if (document.getElementById("apps").innerHTML != "") {
+									document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('images')" href="#loadapp-images"><img src="t50-img.png" class="app"></img></a>`
+								} else {
+									document.getElementById("apps").innerHTML = `<a onclick="load('images')" href="#loadapp-images"><img src="t50-img.png" class="app"></img></a>`
+								}
+							} else {
+								localStorage.setItem("images-owned", false)
+								if (document.getElementById("apps").innerHTML != "") {
+									document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
+								} else {
+									document.getElementById("apps").innerHTML = `<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
+								}
+							}
+							if (chatvia === "owned") { //OWN CHATVIA
+								localStorage.setItem("chatvia-owned", true)
+								//if (document.getElementById("apps").innerHTML != "") {
+								//	document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="app"></img></a>`
+								//} else {
+								//	document.getElementById("apps").innerHTML = `<a onclick="load('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="app"></img></a>`
+								//}
+							} else {
+								localStorage.setItem("chatvia-owned", false)
+								//if (document.getElementById("apps").innerHTML != "") {
+								//	document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
+								//} else {
+								//	document.getElementById("apps").innerHTML = `<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
+								//}
+							}
+							log("Enabling Tasco", "green")
+							document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="../tasco/tasco-app.png" class="app"></img></a>`
+							log("Enabling SecureLine", "green")
+							document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('secureline')" href="#loadapp-secureline"><img src="./secureline/sline.png" class="app"></img></a>`
+							if (localStorage.getItem("t50-username") === "papostol") {
+								log("Enabling Transports", "green")
+								$("#transports-app").fadeIn("slow")
+								//document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
+								document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('transports-disabled')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
+							}
+							$("#apps").fadeIn("slow")
+							$("#loading-apps-text").fadeOut("slow", function () {
+								document.getElementById("loading-apps-text").innerHTML = `Take a look at the Evox applications available.`
+								$("#loading-apps-text").fadeIn("slow")
+							})
+							$("#loading").fadeOut("slow")
+							uielements()
+
+						} catch (error) {
+							console.error('Error parsing data:', error);
+						}
+					})
+					.catch(error => {
+						console.error('Fetch error:', error);
+					});
+			}
+		});
+
+	} else {
+		log("Error! Cannot Load Page When Logged Out.", "red")
+	}
+}
+
 
 function docready() {
   $("#loading").fadeOut("slow")
@@ -13,7 +147,7 @@ function docready() {
   let pswd = atob(acc)
   let username = localStorage.getItem("t50-username")
   if (loggedin != null && autologin === "true") {
-    const url = `https://evox-datacenter.onrender.com/accounts?email=${loggedin}&password=${pswd}&autologin=true`;
+    const url = `http://localhost:4000/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${ip}`;
 
     fetch(url)
       .then(response => {
@@ -27,7 +161,7 @@ function docready() {
           $("#loading-bar").fadeOut("slow")
           log("Existing Account Verified!", "green")
           sessionStorage.setItem("loaded", true)
-          fetch(`https://evox-datacenter.onrender.com/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}`)
+          fetch(`http://localhost:4000/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${ip}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -38,7 +172,7 @@ function docready() {
               if (data === "IP is Mapped") {
                 setup()
               } else if (data === "Unknown IP") {
-                fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}`)
+                fetch(`http://localhost:4000/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${ip}`)
                   .then(response => {
                     if (!response.ok) {
                       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -65,7 +199,7 @@ function docready() {
 
         } else if (data === "IP Not Verified") {
           log("Existing Account Verified! IP Not Mapped", "orange")
-          fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}`)
+          fetch(`http://localhost:4000/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${ip}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -141,6 +275,7 @@ function docready() {
           }
         }
         $("#gateway").fadeIn("fast", function () {
+          
           $("#apps").fadeIn("slow")
         })
 
@@ -171,7 +306,7 @@ function docready() {
                 $("#dots").html(".")
                 setTimeout(function () {
                   $("#dots").html("..")
-                  fetch("https://evox-datacenter.onrender.com/accounts")
+                  fetch("http://localhost:4000/accounts")
                     .then(response => {
                       if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -278,7 +413,7 @@ function verifycode() {
   let password = account.password
   let code = document.getElementById("ver_code").value
   console.log("Just to verify:\n", email, username, password, code)
-  fetch(`https://evox-datacenter.onrender.com/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}`)
+  fetch(`http://localhost:4000/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${ip}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -311,7 +446,7 @@ function verifycode() {
         sessionStorage.setItem("loggedin", email)
         sessionStorage.setItem("loggedinpswd", btoa(password))
         setup()
-      } else if(data === "Wrong Code") {
+      } else if (data === "Wrong Code") {
         shake_me("ver_code")
       } else {
         console.error("Client ip is strange")
@@ -326,7 +461,7 @@ function login() {
   let email = document.getElementById("email").value
   let password = document.getElementById("password").value
   console.log(email, "********")
-  const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}`;
+  const url = `http://localhost:4000/accounts?email=${email}&password=${password}&ip=${ip}`;
 
   fetch(url)
     .then(response => {
@@ -411,7 +546,7 @@ document.getElementById("ver_code").addEventListener("keypress", function (event
 function reconnect() {
   console.log("Reconnecting..")
   $("#loading-bar").fadeIn("slow")
-  fetch("https://evox-datacenter.onrender.com/accounts")
+  fetch("http://localhost:4000/accounts")
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

@@ -1,21 +1,22 @@
-window.addEventListener('beforeunload', function (event) {
-	fetch(`https://evox-datacenter.onrender.com/setOffline?username=${localStorage.getItem("t50-username")}`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! Status: ${response.status}`);
-			}
-			return response.text();
-		})
-		.then(offline => {
-			if (offline === "200") {
-				console.log("Offline Set!")
-			}
-		})
-		.catch(error => {
-			console.error('Set Offline error:', error);
-		});
-});
-fetch(`https://evox-datacenter.onrender.com/setOnline?username=${localStorage.getItem("t50-username")}`)
+//window.addEventListener('beforeunload', function (event) {
+//	fetch(`http://localhost:4000/setOffline?username=${localStorage.getItem("t50-username")}`)
+//		.then(response => {
+//			if (!response.ok) {
+//				throw new Error(`HTTP error! Status: ${response.status}`);
+//			}
+//			return response.text();
+//		})
+//		.then(offline => {
+//			if (offline === "200") {
+//				console.log("Offline Set!")
+//			}
+//		})
+//		.catch(error => {
+//			console.error('Set Offline error:', error);
+//		});
+//});
+
+fetch(`http://localhost:4000/setOnline?username=${localStorage.getItem("t50-username")}`)
 	.then(response => {
 		if (!response.ok) {
 			throw new Error(`HTTP error! Status: ${response.status}`);
@@ -24,7 +25,7 @@ fetch(`https://evox-datacenter.onrender.com/setOnline?username=${localStorage.ge
 	})
 	.then(data => {
 		if (data === "200") {
-			fetch(`https://evox-datacenter.onrender.com/getOnlineUsers`)
+			fetch(`http://localhost:4000/getOnlineUsers`)
 				.then(response => {
 					if (!response.ok) {
 						throw new Error(`HTTP error! Status: ${response.status}`);
@@ -44,6 +45,7 @@ fetch(`https://evox-datacenter.onrender.com/setOnline?username=${localStorage.ge
 	.catch(error => {
 		console.error('Fetch error:', error);
 	});
+	
 function fadeError(method) {
 	var targetColor = "rgb(255, 99, 71)";
 	let element;
@@ -76,11 +78,6 @@ function skip() {
 		$("#loading-div-text").fadeOut("fast")
 		$("#loading-text").fadeOut("slow")
 	})
-}
-
-function log(text, color) {
-	const styles = `color: ${color}; font-size: 16px; font-weight: normal;`;
-	console.log('%c' + text, styles)
 }
 
 function custombg() {
@@ -121,131 +118,7 @@ function custombg() {
 		//No Custom BG
 	}
 }
-function setup() {
-	custombg()
-	log("T50 Gateway V:Delta 5", "red")
-	loadusers()
-	let lg_status = sessionStorage.getItem("loaded")
-	if (lg_status === "true") {
-		let username = localStorage.getItem("t50-username")
-		let email = localStorage.getItem("t50-email")
-		$("#user-text").html(username)
-		log("Loading Gateway", "green")
-		$("#container").fadeOut("slow", function () {
-			$("#gateway").fadeIn("slow")
-			if (username != null && email != null) {
-				sessionStorage.setItem("skipped", "yes")
-				$("#user-text").html(username)
-				log("Loading Gateway", "green")
-				$("#container").fadeOut("fast")
-				$("#loading").fadeIn("slow")
-				$("#stuck").fadeOut("slow")
-				fetch(`https://evox-datacenter.onrender.com/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
-					.then(response => {
-						if (!response.ok) {
-							throw new Error(`HTTP error! Status: ${response.status}`);
-						}
-						return response.text();
-					})
-					.then(data => {
-						//document.body.style.overflow = 'hidden';
-						if (data === "No Apps Owned") {
-							console.log("No Apps Owned! Want To Register One?")
-						}
-						try {
-							var inputString = data;
-							var parts = inputString.split(', ');
-							var notes, images, chatvia;
-							for (var i = 0; i < parts.length; i++) {
-								var keyValue = parts[i].split(':');
-								if (keyValue.length === 2) { // Ensure there is a key and a value
-									var key = keyValue[0].trim();
-									var value = keyValue[1].trim();
-									if (key === 'Notes') {
-										notes = value;
-									}
-									if (key === 'Images') {
-										images = value;
-									}
-									if (key === 'Chatvia') {
-										chatvia = value;
-									}
-								} else {
-									console.error(`Invalid format for part: ${parts[i]}`);
-								}
-							}
-							console.log('Notes:', notes);
-							console.log('Images:', images);
-							console.log('Chatvia:', chatvia);
-							if (notes === "owned") {//OWN NOTES
-								localStorage.setItem("notes-owned", true)
-								//document.getElementById("apps").innerHTML = `<a onclick="load('notes')" href="#loadapp-notes"><img src="EvoxNotes.png" class="app"></img></a>`
-							} else {
-								localStorage.setItem("notes-owned", false)
-								//document.getElementById("apps").innerHTML = `<a onclick="buy('notes')" href="#loadapp-notes-disabled"><img src="EvoxNotes.png" class="disabledapp"></img></a>`
-							}
-							if (images === "owned") {//OWN IMAGES
-								localStorage.setItem("images-owned", true)
-								if (document.getElementById("apps").innerHTML != "") {
-									document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('images')" href="#loadapp-images"><img src="t50-img.png" class="app"></img></a>`
-								} else {
-									document.getElementById("apps").innerHTML = `<a onclick="load('images')" href="#loadapp-images"><img src="t50-img.png" class="app"></img></a>`
-								}
-							} else {
-								localStorage.setItem("images-owned", false)
-								if (document.getElementById("apps").innerHTML != "") {
-									document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
-								} else {
-									document.getElementById("apps").innerHTML = `<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
-								}
-							}
-							if (chatvia === "owned") { //OWN CHATVIA
-								localStorage.setItem("chatvia-owned", true)
-								//if (document.getElementById("apps").innerHTML != "") {
-								//	document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="app"></img></a>`
-								//} else {
-								//	document.getElementById("apps").innerHTML = `<a onclick="load('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="app"></img></a>`
-								//}
-							} else {
-								localStorage.setItem("chatvia-owned", false)
-								//if (document.getElementById("apps").innerHTML != "") {
-								//	document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
-								//} else {
-								//	document.getElementById("apps").innerHTML = `<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
-								//}
-							}
-							log("Enabling Tasco", "green")
-							document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="../tasco/tasco-app.png" class="app"></img></a>`
-							log("Enabling SecureLine", "green")
-							document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('secureline')" href="#loadapp-secureline"><img src="./secureline/sline.png" class="app"></img></a>`
-							if (localStorage.getItem("t50-username") === "papostol") {
-								log("Enabling Transports", "green")
-								$("#transports-app").fadeIn("slow")
-								//document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
-								document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('transports-disabled')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
-							}
-							$("#apps").fadeIn("slow")
-							$("#loading-apps-text").fadeOut("slow", function () {
-								document.getElementById("loading-apps-text").innerHTML = `Take a look at the Evox applications available.`
-								$("#loading-apps-text").fadeIn("slow")
-							})
-							$("#loading").fadeOut("slow")
-							uielements()
 
-						} catch (error) {
-							console.error('Error parsing data:', error);
-						}
-					})
-					.catch(error => {
-						console.error('Fetch error:', error);
-					});
-			}
-		});
-
-	} else {
-		log("Error! Cannot Load Page When Logged Out.", "red")
-	}
-}
 
 function load(app) {
 	let notes = localStorage.getItem("notes-owned")
@@ -368,7 +241,7 @@ function continue_purch(app) {
 function check_ccode(app) {
 	$("#loading").fadeIn("slow")
 	let coupon = document.getElementById("coupon").value
-	const url = `https://evox-datacenter.onrender.com/accounts?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
+	const url = `http://localhost:4000/accounts?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
 
 	fetch(url)
 		.then(response => {
@@ -504,6 +377,7 @@ function uielements() {
 		document.getElementById("auto-login").innerHTML = `Disabled`
 		document.getElementById("auto-login").style.color = `#eb2424`
 	}
+
 }
 
 function settings() {
@@ -542,7 +416,7 @@ function pfp(give) {
 		let user = localStorage.getItem("t50-username");
 		if (user != null) {
 			document.getElementById("usr-img-opt").src = "reloading-pfp.gif"
-			const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+			const url = `http://localhost:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
 			fetch(url)
 				.then(response => response.text())
 				.then(data => {
@@ -622,7 +496,7 @@ function shake_me(what) {
 
 function show_authip() {
 	//ipv4-list
-	fetch(`https://evox-datacenter.onrender.com/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+	fetch(`http://localhost:4000/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -639,14 +513,17 @@ function show_authip() {
 			ipv4List.innerHTML = ""
 			// Loop through each IP address
 			ipAddresses.forEach(function (ip) {
-				if (ip === "1") {
+				if (ip === sessionStorage.getItem("IPV4")) {
 					var anchor = document.createElement("a");
 					anchor.setAttribute("href", "#");
 					anchor.setAttribute("style", "height: 50%");
 					anchor.classList.add("apple-button");
-					anchor.style.backgroundColor = "#4a4949"
-					anchor.innerText = "This Device";
+					anchor.style.backgroundColor = "#3879e0"
+					anchor.innerText = `This Device (${ip})`;
 					ipv4List.appendChild(anchor);
+					return;
+				}
+				if (ip === "1") {
 					return;
 				}
 				// Create a new anchor element
@@ -771,7 +648,7 @@ function acceptfriend(element) {
 	</path>
 </svg>`
 	console.log("Accepting Request From", element.id)
-	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=acceptRequest&who=${element.id}`)
+	fetch(`http://localhost:4000/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=acceptRequest&who=${element.id}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -814,7 +691,7 @@ function showFriend(element) {
 }
 function show_friends() {
 	$("#load-users-friends").fadeIn("fast")
-	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+	fetch(`http://localhost:4000/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -840,7 +717,7 @@ function show_friends() {
 			listContainer.style.marginTop = "";
 			listContainer.innerHTML = "<!--Empty-->";
 			user_requests.forEach(username => {
-				fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+				fetch(`http://localhost:4000/accounts?method=getemailbyusername&username=${username}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -891,7 +768,7 @@ function show_friends() {
 							//userContainer.appendChild(addButton);
 
 							listContainer.appendChild(userContainer);
-							fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+							fetch(`http://localhost:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 								.then(response => {
 									if (!response.ok) {
 										throw new Error(`HTTP error! Status: ${response.status}`);
@@ -930,7 +807,7 @@ function show_friends() {
 function show_requests() {
 	$("#load-users-requests").fadeIn("fast")
 	document.getElementById("list-requests").innerHTML = ""
-	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
+	fetch(`http://localhost:4000/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -956,7 +833,7 @@ function show_requests() {
 			listContainer.style.marginTop = "";
 			listContainer.innerHTML = "<!--Empty-->";
 			user_requests.forEach(username => {
-				fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+				fetch(`http://localhost:4000/accounts?method=getemailbyusername&username=${username}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1004,7 +881,7 @@ function show_requests() {
 							userContainer.appendChild(addButton);
 
 							listContainer.appendChild(userContainer);
-							fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+							fetch(`http://localhost:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 								.then(response => {
 									if (!response.ok) {
 										throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1056,7 +933,7 @@ function addfriend(element) {
 			to="360 25 25" dur="0.5s" repeatCount="indefinite" />
 	</path>
 </svg>`
-	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=friendRequest&who=${element.id}`)
+	fetch(`http://localhost:4000/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=friendRequest&who=${element.id}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1089,7 +966,7 @@ function submit_search() {
 
 
 function loadusers() {
-	let url = `https://evox-datacenter.onrender.com/search?search=`;
+	let url = `http://localhost:4000/search?search=`;
 
 	fetch(url)
 		.then(response => {
@@ -1111,7 +988,7 @@ function loadusers() {
 				if (username === localStorage.getItem("t50-username")) {
 					return;
 				}
-				fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+				fetch(`http://localhost:4000/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1121,7 +998,7 @@ function loadusers() {
 					.then(friends => {
 						let sentRequests;
 
-						fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+						fetch(`http://localhost:4000/accounts?method=getemailbyusername&username=${username}`)
 							.then(response => {
 								if (!response.ok) {
 									throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1177,7 +1054,7 @@ function loadusers() {
 										}
 									}
 
-									fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
+									fetch(`http://localhost:4000/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
 										.then(response => {
 											if (!response.ok) {
 												throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1222,7 +1099,7 @@ function loadusers() {
 
 												listContainer.appendChild(userContainer);
 											}
-											fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+											fetch(`http://localhost:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 												.then(response => {
 													if (!response.ok) {
 														throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1271,7 +1148,7 @@ function handlesearch(value) {
 		// add timeout if search is started or end value exists in div
 		console.log("Accepted");
 		$("#load-users").fadeIn("fast");
-		let url = `https://evox-datacenter.onrender.com/search?search=${value}`;
+		let url = `http://localhost:4000/search?search=${value}`;
 
 		fetch(url)
 			.then(response => {
@@ -1305,7 +1182,7 @@ function handlesearch(value) {
 					if (username === localStorage.getItem("t50-username")) {
 						return;
 					}
-					fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+					fetch(`http://localhost:4000/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 						.then(response => {
 							if (!response.ok) {
 								throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1314,7 +1191,7 @@ function handlesearch(value) {
 						})
 						.then(friends => {
 							let sentRequests;
-							fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+							fetch(`http://localhost:4000/accounts?method=getemailbyusername&username=${username}`)
 								.then(response => {
 									if (!response.ok) {
 										throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1370,7 +1247,7 @@ function handlesearch(value) {
 											}
 										}
 
-										fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
+										fetch(`http://localhost:4000/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
 											.then(response => {
 												if (!response.ok) {
 													throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1415,7 +1292,7 @@ function handlesearch(value) {
 
 													listContainer.appendChild(userContainer);
 												}
-												fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+												fetch(`http://localhost:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 													.then(response => {
 														if (!response.ok) {
 															throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1554,7 +1431,7 @@ function handleFileSelect() {
 			//console.log(base64String);
 			document.getElementById("upload-box").disabled = true
 			document.getElementById("usr-img-opt").src = "./reloading.gif"
-			fetch('https://evox-datacenter.onrender.com/profiles', {
+			fetch('http://localhost:4000/profiles', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -1713,7 +1590,7 @@ function complete_chpswd() {
 		return;
 	}
 	//info.email && info.password && info.username && info.newpass
-	fetch('https://evox-datacenter.onrender.com/accounts', {
+	fetch('http://localhost:4000/accounts', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
