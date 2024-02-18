@@ -633,6 +633,7 @@ function show_search() {
 	//} else {
 	//	document.getElementById("options_section_1_announcements").innerHTML = "Enabled"
 	//}
+	$("#bottom-logo").fadeOut("fast")
 	$("#evox_social").fadeOut("fast", function () {
 		$("#add_friends").fadeIn("fast")
 	})
@@ -1370,6 +1371,7 @@ function return_to_options(where) {
 				$("#main_settings").fadeIn("fast")
 			})
 		} else if (where === "add_friends") {
+			$("#bottom-logo").fadeIn("fast")
 			$("#add_friends").fadeOut("fast", function () {
 				$("#evox_social").fadeIn("fast")
 			})
