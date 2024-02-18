@@ -1,5 +1,5 @@
 //window.addEventListener('beforeunload', function (event) {
-//	fetch(`https://evox-datacenter.onrender.com/setOffline?username=${localStorage.getItem("t50-username")}`)
+//	fetch(`http://192.168.1.21:4000/setOffline?username=${localStorage.getItem("t50-username")}`)
 //		.then(response => {
 //			if (!response.ok) {
 //				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -16,7 +16,7 @@
 //		});
 //});
 
-fetch(`https://evox-datacenter.onrender.com/setOnline?username=${localStorage.getItem("t50-username")}`)
+fetch(`http://192.168.1.21:4000/setOnline?username=${localStorage.getItem("t50-username")}`)
 	.then(response => {
 		if (!response.ok) {
 			throw new Error(`HTTP error! Status: ${response.status}`);
@@ -25,7 +25,7 @@ fetch(`https://evox-datacenter.onrender.com/setOnline?username=${localStorage.ge
 	})
 	.then(data => {
 		if (data === "200") {
-			fetch(`https://evox-datacenter.onrender.com/getOnlineUsers`)
+			fetch(`http://192.168.1.21:4000/getOnlineUsers`)
 				.then(response => {
 					if (!response.ok) {
 						throw new Error(`HTTP error! Status: ${response.status}`);
@@ -241,7 +241,7 @@ function continue_purch(app) {
 function check_ccode(app) {
 	$("#loading").fadeIn("slow")
 	let coupon = document.getElementById("coupon").value
-	const url = `https://evox-datacenter.onrender.com/accounts?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
+	const url = `http://192.168.1.21:4000/accounts?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
 
 	fetch(url)
 		.then(response => {
@@ -416,7 +416,7 @@ function pfp(give) {
 		let user = localStorage.getItem("t50-username");
 		if (user != null) {
 			document.getElementById("usr-img-opt").src = "reloading-pfp.gif"
-			const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+			const url = `http://192.168.1.21:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
 			fetch(url)
 				.then(response => response.text())
 				.then(data => {
@@ -496,7 +496,7 @@ function shake_me(what) {
 
 function show_authip() {
 	//ipv4-list
-	fetch(`https://evox-datacenter.onrender.com/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+	fetch(`http://192.168.1.21:4000/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -648,7 +648,7 @@ function acceptfriend(element) {
 	</path>
 </svg>`
 	console.log("Accepting Request From", element.id)
-	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=acceptRequest&who=${element.id}`)
+	fetch(`http://192.168.1.21:4000/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=acceptRequest&who=${element.id}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -691,7 +691,7 @@ function showFriend(element) {
 }
 function show_friends() {
 	$("#load-users-friends").fadeIn("fast")
-	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+	fetch(`http://192.168.1.21:4000/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -717,7 +717,7 @@ function show_friends() {
 			listContainer.style.marginTop = "";
 			listContainer.innerHTML = "<!--Empty-->";
 			user_requests.forEach(username => {
-				fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+				fetch(`http://192.168.1.21:4000/accounts?method=getemailbyusername&username=${username}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -768,7 +768,7 @@ function show_friends() {
 							//userContainer.appendChild(addButton);
 
 							listContainer.appendChild(userContainer);
-							fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+							fetch(`http://192.168.1.21:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 								.then(response => {
 									if (!response.ok) {
 										throw new Error(`HTTP error! Status: ${response.status}`);
@@ -807,7 +807,7 @@ function show_friends() {
 function show_requests() {
 	$("#load-users-requests").fadeIn("fast")
 	document.getElementById("list-requests").innerHTML = ""
-	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
+	fetch(`http://192.168.1.21:4000/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -833,7 +833,7 @@ function show_requests() {
 			listContainer.style.marginTop = "";
 			listContainer.innerHTML = "<!--Empty-->";
 			user_requests.forEach(username => {
-				fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+				fetch(`http://192.168.1.21:4000/accounts?method=getemailbyusername&username=${username}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -881,7 +881,7 @@ function show_requests() {
 							userContainer.appendChild(addButton);
 
 							listContainer.appendChild(userContainer);
-							fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+							fetch(`http://192.168.1.21:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 								.then(response => {
 									if (!response.ok) {
 										throw new Error(`HTTP error! Status: ${response.status}`);
@@ -933,7 +933,7 @@ function addfriend(element) {
 			to="360 25 25" dur="0.5s" repeatCount="indefinite" />
 	</path>
 </svg>`
-	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=friendRequest&who=${element.id}`)
+	fetch(`http://192.168.1.21:4000/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=friendRequest&who=${element.id}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -966,7 +966,7 @@ function submit_search() {
 
 
 function loadusers() {
-	let url = `https://evox-datacenter.onrender.com/search?search=`;
+	let url = `http://192.168.1.21:4000/search?search=`;
 
 	fetch(url)
 		.then(response => {
@@ -988,7 +988,7 @@ function loadusers() {
 				if (username === localStorage.getItem("t50-username")) {
 					return;
 				}
-				fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+				fetch(`http://192.168.1.21:4000/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -998,7 +998,7 @@ function loadusers() {
 					.then(friends => {
 						let sentRequests;
 
-						fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+						fetch(`http://192.168.1.21:4000/accounts?method=getemailbyusername&username=${username}`)
 							.then(response => {
 								if (!response.ok) {
 									throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1054,7 +1054,7 @@ function loadusers() {
 										}
 									}
 
-									fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
+									fetch(`http://192.168.1.21:4000/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
 										.then(response => {
 											if (!response.ok) {
 												throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1099,7 +1099,7 @@ function loadusers() {
 
 												listContainer.appendChild(userContainer);
 											}
-											fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+											fetch(`http://192.168.1.21:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 												.then(response => {
 													if (!response.ok) {
 														throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1148,7 +1148,7 @@ function handlesearch(value) {
 		// add timeout if search is started or end value exists in div
 		console.log("Accepted");
 		$("#load-users").fadeIn("fast");
-		let url = `https://evox-datacenter.onrender.com/search?search=${value}`;
+		let url = `http://192.168.1.21:4000/search?search=${value}`;
 
 		fetch(url)
 			.then(response => {
@@ -1182,7 +1182,7 @@ function handlesearch(value) {
 					if (username === localStorage.getItem("t50-username")) {
 						return;
 					}
-					fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+					fetch(`http://192.168.1.21:4000/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 						.then(response => {
 							if (!response.ok) {
 								throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1191,7 +1191,7 @@ function handlesearch(value) {
 						})
 						.then(friends => {
 							let sentRequests;
-							fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+							fetch(`http://192.168.1.21:4000/accounts?method=getemailbyusername&username=${username}`)
 								.then(response => {
 									if (!response.ok) {
 										throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1247,7 +1247,7 @@ function handlesearch(value) {
 											}
 										}
 
-										fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
+										fetch(`http://192.168.1.21:4000/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
 											.then(response => {
 												if (!response.ok) {
 													throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1292,7 +1292,7 @@ function handlesearch(value) {
 
 													listContainer.appendChild(userContainer);
 												}
-												fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+												fetch(`http://192.168.1.21:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 													.then(response => {
 														if (!response.ok) {
 															throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1431,7 +1431,7 @@ function handleFileSelect() {
 			//console.log(base64String);
 			document.getElementById("upload-box").disabled = true
 			document.getElementById("usr-img-opt").src = "./reloading.gif"
-			fetch('https://evox-datacenter.onrender.com/profiles', {
+			fetch('http://192.168.1.21:4000/profiles', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -1476,10 +1476,13 @@ function secureline(element) {
 }
 
 function bgch() {
+	$("#loading").fadeIn("fast")
 	$("#main_popup_settings").fadeOut("fast", function () {
 		$("#popup").addClass("active");
 		//$("#popup").fadeIn("fast")
-		$("#background_change").fadeIn("fast")
+		$("#background_change").fadeIn("fast", function() {
+			$("#loading").fadeOut("fast")
+		})
 		$("#bottom-logo").fadeOut("slow")
 	})
 }
@@ -1590,7 +1593,7 @@ function complete_chpswd() {
 		return;
 	}
 	//info.email && info.password && info.username && info.newpass
-	fetch('https://evox-datacenter.onrender.com/accounts', {
+	fetch('http://192.168.1.21:4000/accounts', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'

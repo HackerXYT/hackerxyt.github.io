@@ -405,13 +405,95 @@ function docready() {
 var submit = document.getElementById("submit");
 submit.addEventListener("click", login())
 
+document.getElementById("dig1").addEventListener("input", function() {
+  if(document.getElementById("dig1").value !== "") {
+    document.getElementById("dig2").focus()
+  } else {
+    console.log("2FA Possibly Empty")
+  }
+  
+});
+
+document.getElementById("dig2").addEventListener("input", function() {
+  if(document.getElementById("dig2").value !== "") {
+    document.getElementById("dig3").focus()
+  }
+});
+document.getElementById("dig3").addEventListener("input", function() {
+  if(document.getElementById("dig3").value !== "") {
+    document.getElementById("dig4").focus()
+  }
+});
+document.getElementById("dig4").addEventListener("input", function() {
+  if(document.getElementById("dig4").value !== "") {
+    document.getElementById("dig5").focus()
+  }
+});
+document.getElementById("dig5").addEventListener("input", function() {
+  if(document.getElementById("dig5").value !== "") {
+    document.getElementById("dig6").focus()
+  }
+});
+
+document.getElementById("dig2").addEventListener("keydown", function backspaceFunction(event) {
+  if (event.key === "Backspace") {
+      console.log("Backspace pressed");
+      if(document.getElementById("dig2").value === "") {
+        document.getElementById("dig1").focus()
+      }
+  }
+});
+
+document.getElementById("dig3").addEventListener("keydown", function backspaceFunction(event) {
+  if (event.key === "Backspace") {
+      console.log("Backspace pressed");
+      if(document.getElementById("dig3").value === "") {
+        document.getElementById("dig2").focus()
+      }
+  }
+});
+
+document.getElementById("dig4").addEventListener("keydown", function backspaceFunction(event) {
+  if (event.key === "Backspace") {
+      console.log("Backspace pressed");
+      if(document.getElementById("dig4").value === "") {
+        document.getElementById("dig3").focus()
+      }
+  }
+});
+
+document.getElementById("dig5").addEventListener("keydown", function backspaceFunction(event) {
+  if (event.key === "Backspace") {
+      console.log("Backspace pressed");
+      if(document.getElementById("dig5").value === "") {
+        document.getElementById("dig4").focus()
+      }
+  }
+});
+document.getElementById("dig6").addEventListener("keydown", function backspaceFunction(event) {
+  if (event.key === "Backspace") {
+      console.log("Backspace pressed");
+      if(document.getElementById("dig6").value === "") {
+        document.getElementById("dig5").focus()
+      }
+  }
+});
+
+
 function verifycode() {
   let info = sessionStorage.getItem("ACCOUNT_DATA")
   const account = JSON.parse(info)
   let email = account.email
   let username = account.username
   let password = account.password
-  let code = document.getElementById("ver_code").value
+  //let code = document.getElementById("ver_code").value
+  let dig1 = document.getElementById("dig1").value
+  let dig2 = document.getElementById("dig2").value
+  let dig3 = document.getElementById("dig3").value
+  let dig4 = document.getElementById("dig4").value
+  let dig5 = document.getElementById("dig5").value
+  let dig6 = document.getElementById("dig6").value
+  let code = `${dig1}${dig2}${dig3}${dig4}${dig5}${dig6}`
   console.log("Just to verify:\n", email, username, password, code)
   fetch(`https://evox-datacenter.onrender.com/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${ip}`)
     .then(response => {

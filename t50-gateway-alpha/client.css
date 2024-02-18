@@ -5,9 +5,11 @@
 
 
 * {
-  touch-action: manipulation; /* For modern browsers */
+  touch-action: manipulation;
+  /* For modern browsers */
   -webkit-tap-highlight-color: transparent;
 }
+
 body {
   font-family: "SF";
   margin: 0;
@@ -45,7 +47,7 @@ img {
   width: 100%;
   height: 100%;
   z-index: -1;
-  
+
 }
 
 .container {
@@ -209,10 +211,11 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
-  display:block;
+  display: block;
   padding: 30px;
   align-items: center;
-  overflow: auto; /* Change from 'visible' to 'auto' */
+  overflow: auto;
+  /* Change from 'visible' to 'auto' */
   scroll-behavior: smooth;
   touch-action: auto;
   justify-content: center;
@@ -223,16 +226,23 @@ img {
   /* Include padding in the element's total width and height */
   box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
   color: white;
-  opacity: 0; /* Initially hidden */
-    visibility: hidden; /* Initially hidden */
-  transform: translateX(-100%); /* Initially off-screen to the left */
-    transition: transform 0.5s ease, opacity 0.5s ease, visibility 0.5s; /* Transition for sliding effect, opacity, and visibility */
+  opacity: 0;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateX(-100%);
+  /* Initially off-screen to the left */
+  transition: transform 0.5s ease, opacity 0.5s ease, visibility 0.5s;
+  /* Transition for sliding effect, opacity, and visibility */
 }
 
 .popup.active {
-  opacity: 1; /* Show the popup */
-  visibility: visible; /* Show the popup */
-  transform: translateX(0); /* Slide the popup into view */
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateX(0);
+  /* Slide the popup into view */
 }
 
 .popupright {
@@ -241,10 +251,11 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
-  display:block;
+  display: block;
   padding: 30px;
   align-items: center;
-  overflow: auto; /* Change from 'visible' to 'auto' */
+  overflow: auto;
+  /* Change from 'visible' to 'auto' */
   scroll-behavior: smooth;
   touch-action: auto;
   justify-content: center;
@@ -255,16 +266,23 @@ img {
   /* Include padding in the element's total width and height */
   box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
   color: white;
-  opacity: 0; /* Initially hidden */
-    visibility: hidden; /* Initially hidden */
-  transform: translateX(200%); /* Initially off-screen to the left */
-    transition: transform 0.5s ease, opacity 0.5s ease, visibility 0.5s; /* Transition for sliding effect, opacity, and visibility */
+  opacity: 0;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateX(200%);
+  /* Initially off-screen to the left */
+  transition: transform 0.5s ease, opacity 0.5s ease, visibility 0.5s;
+  /* Transition for sliding effect, opacity, and visibility */
 }
 
 .popupright.active {
-  opacity: 1; /* Show the popup */
-  visibility: visible; /* Show the popup */
-  transform: translateX(0); /* Slide the popup into view */
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateX(0);
+  /* Slide the popup into view */
 }
 
 
@@ -501,8 +519,8 @@ a {
 }
 
 .list-user-info {
-  position:relative;
-  display:inline-block;
+  position: relative;
+  display: inline-block;
   position: relative;
   margin: 5px;
   background: none;
@@ -511,15 +529,16 @@ a {
   align-items: center;
   gap: 16px;
 }
+
 .c-avatar__status {
-  width:25px;
-  height:25px;
-  background:#99CC00;
-  border:2px solid white;
-  position:absolute;
-  bottom:2%;
-  right:2%;
-  border-radius:100%;
+  width: 25px;
+  height: 25px;
+  background: #99CC00;
+  border: 2px solid white;
+  position: absolute;
+  bottom: 2%;
+  right: 2%;
+  border-radius: 100%;
 }
 
 .user-circle {
@@ -632,6 +651,9 @@ a {
 }
 
 .apple-button {
+  position: relative;
+  /* Added */
+  /* Existing styles */
   background-color: #333;
   border: none;
   color: #fff;
@@ -644,6 +666,37 @@ a {
   transition: background-color 0.3s ease;
   margin: 6px;
   width: 80%;
+}
+
+
+.apple-button span {
+  position: absolute;
+  /* Added */
+  top: 50%;
+  /* Adjust as needed */
+  transform: translateY(-50%);
+  /* Added */
+  right: 20px;
+  /* Adjust as needed */
+}
+
+.apple-button span svg {
+  position: absolute;
+  /* Added */
+  transform: translateY(-50%);
+  /* Added */
+  right: 20px;
+  /* Adjust as needed */
+}
+
+
+@media only screen and (min-width: 769px) {
+
+  /* Hide the .apple-button svg on devices with a minimum width of 769px or more (assumed to be PCs) */
+  .apple-button {
+    width: 60%;
+    display: block;
+  }
 }
 
 .apple-button-submit {
@@ -676,7 +729,8 @@ a {
   transition: background-color 0.3s ease;
   margin: 6px;
   width: 80%;
-  height: auto; /* Set height to auto to fit content */
+  height: auto;
+  /* Set height to auto to fit content */
 }
 
 
@@ -688,10 +742,13 @@ a {
 .parent-list-container {
   position: relative;
 }
+
 .apple-button-list {
   position: absolute;
-  top: 6px; /* Adjust as needed */
-  right: 6px; /* Adjust as needed */
+  top: 6px;
+  /* Adjust as needed */
+  right: 6px;
+  /* Adjust as needed */
   background-color: #3333339b;
   border: none;
   color: #fff;
@@ -722,7 +779,7 @@ a {
 }
 
 .tfa-input {
-  width:20px;
+  width: 20px;
   background-color: #0000006b;
   /* Your desired background color */
   border: none;
@@ -751,6 +808,7 @@ a {
   top: 50%;
   transform: translateY(-50%);
 }
+
 .input-container .go-icon {
   position: absolute;
   right: 25px;
@@ -772,15 +830,14 @@ a {
 @media only screen and (min-width: 769px) {
 
   /* Hide the .apple-button svg on devices with a minimum width of 769px or more (assumed to be PCs) */
+  .apple-button-withicon svg {
+    display: none;
+  }
   .apple-button svg {
     display: none;
   }
 }
 
-.apple-button span {
-  position: absolute;
-  right: 17%;
-}
 
 .apple-button:hover {
   background-color: #555;
@@ -830,8 +887,10 @@ a {
   height: auto;
   height: 220px;
   object-fit: cover;
-  border-radius: 17px; /* Adjust the border-radius value as needed */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Add a box shadow for a modern look */
+  border-radius: 17px;
+  /* Adjust the border-radius value as needed */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* Optional: Add a box shadow for a modern look */
 }
 
 .gallery .active {
