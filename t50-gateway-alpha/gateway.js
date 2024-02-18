@@ -515,6 +515,7 @@ function verifycode() {
         sessionStorage.setItem("loaded", true)
         sessionStorage.setItem("loggedin", email)
         sessionStorage.setItem("loggedinpswd", btoa(password))
+        localStorage.setItem("2fa_status", "On")
         setup()
       } else if (data === "Exists") {
         console.log("IP Ready")
@@ -527,6 +528,7 @@ function verifycode() {
         sessionStorage.setItem("loaded", true)
         sessionStorage.setItem("loggedin", email)
         sessionStorage.setItem("loggedinpswd", btoa(password))
+        localStorage.setItem("2fa_status", "On")
         setup()
       } else if (data === "Wrong Code") {
         shake_me("ver_code")
