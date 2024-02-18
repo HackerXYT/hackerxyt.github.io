@@ -574,6 +574,7 @@ function login() {
       }
       if (data.includes("Credentials Correct")) {
         console.log("Welcome Abroad")
+        localStorage.setItem("2fa_status", "On")
         localStorage.setItem("t50pswd", `${btoa(password)}`)
         const credentialsString = data;
         const match = credentialsString.match(/Username:(\w+)/);
