@@ -50,6 +50,20 @@ function getnotes_num() {
     });
 }
 getnotes_num()
+function getdebtsnum() {
+  fetch(`https://evox-datacenter.onrender.com/tasco?method=debts&debts=get&username=${localStorage.getItem("t50-username")}`)
+    .then(response => response.text())
+    .then(data => {
+      console.log("Debts", data)
+      const parsed = JSON.parse(data)
+      const numberOfNames = Object.keys(parsed).length;
+      document.getElementById("debtsnum").innerHTML = `${numberOfNames} active debts.`
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+getdebtsnum()
 
 window.addEventListener('load', function () {
   document.body.style.overflow = 'auto';
@@ -107,6 +121,14 @@ function home() {
     
     //document.getElementById("notes-content").style.display = "none"
     
+  }
+  if(document.getElementById("debts-content").style.display != "none") {
+    document.getElementById("logo").src = "tasco-close.png"
+    document.getElementById("logo-icon").onclick = "";
+    //document.getElementById("main-content").style.display = ""
+    $("#debts-content").fadeOut("fast", function() {
+      $("#main-content").fadeIn("slow")
+    })
   }
   console.log("Going home")
 

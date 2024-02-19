@@ -8,7 +8,11 @@ document.getElementById("todays-date-schedule").innerHTML = formattedDate + ":"
 //schedule-content -> hidden
 document.getElementById("transfers").style.display = "none"
 document.getElementById("sidebar").style.display = "none"
-
+if (localStorage.getItem("t50-username") !== "papostol") {
+  document.getElementById("service3").style.display = "none"
+} else {
+  console.log("Is Papostol")
+}
 
 function schedule() {
   let sort_schedule = localStorage.getItem("schedule-sort")
@@ -86,16 +90,16 @@ function set(day, custom) {
       });
       let taskcount = 0
       jsonData.tasks.forEach(task => {
-        if(task.type === "school") {
+        if (task.type === "school") {
           let difficulty;
-          console.log(task.label,"Task Is School Type")
-          if(task.difficulty === "easy") {
+          console.log(task.label, "Task Is School Type")
+          if (task.difficulty === "easy") {
             difficulty = "#006400"
-          } else if(task.difficulty === "medium") {
+          } else if (task.difficulty === "medium") {
             difficulty = "#A0522D"
-          } else if(task.difficulty === "hard") {
+          } else if (task.difficulty === "hard") {
             difficulty = "#8B0000"
-          } else if(task.difficulty === "brake") {
+          } else if (task.difficulty === "brake") {
             difficulty = "#06719e"
           } else {
             console.log("School task set operation failed!")
@@ -464,7 +468,7 @@ function customday(day) {
 </svg>`
   $("#main").fadeOut("fast")
   $("#loading-screen").fadeIn("fast")
-  
+
   document.getElementById("list").innerHTML = ``
   set(day, "true")
   //21 Sun, i want Tuesday
@@ -473,7 +477,7 @@ function customday(day) {
   document.getElementById("todays-date-schedule").innerHTML = `${day} ${datenum}`
   document.getElementById("task-add-button").innerHTML = `<button onclick="custom_task_add('${day}')" style="margin-bottom: 30px" class="tasco-button">Submit</button>`
   setTimeout(function () {
-    $("#loading-screen").fadeOut("fast", function() {
+    $("#loading-screen").fadeOut("fast", function () {
       $("#main").fadeIn("fast")
     })
     //document.getElementById("loading-screen").style.display = "none"
@@ -564,4 +568,260 @@ function getFormattedDate(day) {
 
   // Return the formatted date string
   return `${dayOfMonth}, ${monthName}`;
+}
+function loaddebts() {
+  fetch(`https://evox-datacenter.onrender.com/tasco?method=debts&debts=get&username=${localStorage.getItem("t50-username")}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      const values = JSON.parse(data);
+
+      const transformedJson = transformJson(values);
+      const container = document.getElementById('user-container-debt');
+
+      const users = transformedJson
+      for (const [username, value] of Object.entries(users)) {
+        // Creating user container
+        const userContainer = document.createElement('div');
+        userContainer.classList.add('user-container');
+
+        // Creating user circle
+        const userCircle = document.createElement('div');
+        userCircle.classList.add('user-circle');
+        const userImage = document.createElement('img');
+        userImage.id = `${username}-img-opt`;
+        userImage.src = "../t50-gateway-alpha/t50-img.png";
+        userImage.alt = "User Image";
+        userCircle.appendChild(userImage);
+
+        // Creating user details
+        const userDetails = document.createElement('div');
+        userDetails.classList.add('user-details');
+        const userName = document.createElement('div');
+        userName.classList.add('user-name');
+        userName.textContent = username;
+        userName.onclick = function () {
+          debtoptions(this);
+        };
+        userName.id = `usr-{${username}}`;
+        userDetails.appendChild(userName);
+
+        // Creating modern dark box for debts
+        const debtsBox = document.createElement('div');
+        debtsBox.classList.add('modern-dark-box', 'debts-box');
+        const costParagraph = document.createElement('p');
+        costParagraph.id = `usr-{${username}}-cost`;
+        costParagraph.classList.add('time');
+        costParagraph.textContent = "€" + value;
+        debtsBox.appendChild(costParagraph);
+
+        // Appending elements to user container
+        userContainer.appendChild(userCircle);
+        userContainer.appendChild(userDetails);
+        userContainer.appendChild(debtsBox);
+
+        // Appending user container to main container
+        container.appendChild(userContainer);
+        const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`;
+        fetch(url)
+          .then(response => response.text())
+          .then(data => {
+            if (data.indexOf("base64") === -1) {
+              // If it doesn't contain "base64", add the prefix
+              data = "data:image/jpeg;base64," + data;
+            }
+            document.getElementById(`${username}-img-opt`).src = `${data}`;
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }
+      donut(transformedJson)
+    }).catch(error => {
+      console.error('Fetch error:', error);
+    });
+  //
+}
+
+function transformJson(originalJson) {
+  const transformedJson = {};
+  for (let key in originalJson) {
+    if (originalJson.hasOwnProperty(key)) {
+      transformedJson[key] = originalJson[key].cost;
+    }
+  }
+  return transformedJson;
+}
+
+document.getElementById("debt_username").addEventListener("keydown", function(event) {
+  if (event.keyCode === 13) {
+    // Key code 13 is for the Enter key
+    // Call your function here
+    document.getElementById("debt_price").focus()
+  }
+});
+
+document.getElementById("debt_price").addEventListener("keydown", function(event) {
+  if (event.keyCode === 13) {
+    // Key code 13 is for the Enter key
+    // Call your function here
+    adddebt()
+  }
+});
+
+function donut(json) {
+  let jsonData = json
+  if (JSON.stringify(jsonData) === "{}" || JSON.stringify(jsonData) === "[]") {
+    jsonData = {
+      "No Debts": "1000"
+    }
+  }
+  // Extract labels and data from JSON
+  var labels = Object.keys(jsonData);
+  var data = Object.values(jsonData);
+
+  // Get the canvas element by its ID
+  var canvas = document.getElementById('donut');
+  var ctx = canvas.getContext('2d');
+
+  // Create the donut chart
+  var myDonutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: data,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(75, 192, 192, 0.6)'
+        ]
+      }]
+    },
+    options: {
+      responsive: true, // Disable responsiveness
+      maintainAspectRatio: true, // Disable aspect ratio
+      plugins: {
+        annotation: {
+          annotations: [{
+            type: 'line',
+            mode: 'horizontal',
+            scaleID: 'y-axis-0',
+            value: 0,
+            borderColor: 'rgba(0, 0, 0, 0)',
+            borderWidth: 0,
+            borderDash: [8, 8],
+          }],
+        }
+      },
+      // Set the size of the chart
+      width: 250,
+      height: 250,
+    }
+  });
+}
+function debts() {
+  document.getElementById("donut-container").innerHTML = `<canvas id="donut" width="250" height="250"></canvas>`
+  document.getElementById("user-container-debt").innerHTML = ""
+  $("#back").fadeOut("slow")
+  setTimeout(function () {
+    $("#main-content").fadeOut("fast", function () {
+      $("#debts-content").fadeIn("fast")
+    })
+    //document.getElementById("main-content").style.display = "none"
+    //document.getElementById("notes-content").style.display = "block"
+    document.getElementById("logo").src = "home.svg"
+    document.getElementById("logo-icon").onclick = home;
+  })
+  loaddebts()
+
+  //$("#main-content").fadeOut("fast", function () {
+  //  $("#debts-content").fadeIn("fast")
+  //})
+}
+
+function adddebt() {
+  let receiver = document.getElementById("debt_username").value
+  let username = localStorage.getItem("t50-username")
+  let price = document.getElementById("debt_price").value
+  if(receiver === "" || price === "") {
+    return;
+  }
+  fetch(`https://evox-datacenter.onrender.com/tasco?method=debts&debts=set&username=${username}&debtcost=${Number(price)}&issuer=${receiver}`)
+    .then(response => response.text())
+    .then(data => {
+      console.log(data)
+      document.getElementById("donut-container").innerHTML = `<canvas id="donut" width="250" height="250"></canvas>`
+      document.getElementById("user-container-debt").innerHTML = ""
+      document.getElementById("debt_username").value = ""
+      document.getElementById("debt_price").value = ""
+      loaddebts()
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+function debtoptions(element) {
+  console.log(element.id)
+  let cost = document.getElementById(`${element.id}-cost`).innerHTML
+  console.log(cost)
+  //cost = cost.replace(/[€,\s]/g, '', '');
+  //console.log(cost)
+  document.getElementById("cost-debt").innerHTML = cost
+  let extractedString = element.id.match(/\{([^}]+)\}/)[1];
+  document.getElementById("username-debt").innerHTML = extractedString
+  sessionStorage.setItem("curr_opt", extractedString)
+  $("#debts-popup").fadeIn("fast")
+
+  return;
+  if (sessionStorage.getItem("session1") && sessionStorage.getItem("session2") && sessionStorage.getItem("session3")) {
+    document.getElementById("card1bal").innerHTML = sessionStorage.getItem("session1")
+    sessionStorage.removeItem("session1")
+    document.getElementById("card2bal").innerHTML = sessionStorage.getItem("session2")
+    sessionStorage.removeItem("session2")
+    document.getElementById("card3bal").innerHTML = sessionStorage.getItem("session3")
+    sessionStorage.removeItem("session3")
+  }
+
+
+
+  let match = element.id.match(/\{([^}]+)\}/); // This regular expression matches anything inside curly braces
+  let result = match ? match[1] : null; // Access the captured group which contains "Flixie"
+  //console.log(result); // Output: Flixie
+  document.getElementById("selectdebtuser").value = result
+  let bal1 = document.getElementById("card1bal").innerHTML
+  sessionStorage.setItem("session1", bal1)
+  let bal2 = document.getElementById("card2bal").innerHTML
+  sessionStorage.setItem("session2", bal2)
+  let bal3 = document.getElementById("card3bal").innerHTML
+  sessionStorage.setItem("session3", bal3)
+  console.log(bal1, cost)
+  bal1 = bal1.replace(/[€,\s]/g, '', '');
+  document.getElementById("card1bal").innerHTML = `${Number(bal1) - Number(cost)}`
+  bal2 = bal2.replace(/[€,\s]/g, '', '');
+  document.getElementById("card2bal").innerHTML = `${Number(bal2) - Number(cost)}`
+  bal3 = bal3.replace(/[€,\s]/g, '', '');
+  console.log(bal3, cost)
+  document.getElementById("card3bal").innerHTML = `${Number(bal3) - Number(cost)}`
+}
+
+function cleardebt() {
+  const username = localStorage.getItem("t50-username")
+  const receiver = sessionStorage.getItem("curr_opt")
+  fetch(`https://evox-datacenter.onrender.com/tasco?method=debts&debts=del&username=${username}&issuer=${receiver}`)
+    .then(response => response.text())
+    .then(data => {
+      console.log(data)
+      $('#debts-popup').fadeOut();
+      sessionStorage.removeItem('curr_opt')
+      debts()
+    })
+    .catch(error => {
+      console.error(error);
+    });
 }

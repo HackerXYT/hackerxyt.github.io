@@ -15,7 +15,6 @@
 //			console.error('Set Offline error:', error);
 //		});
 //});
-
 fetch(`https://evox-datacenter.onrender.com/setOnline?username=${localStorage.getItem("t50-username")}`)
 	.then(response => {
 		if (!response.ok) {
