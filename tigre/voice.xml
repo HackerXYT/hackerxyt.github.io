@@ -1,9 +1,15 @@
 <Response>
-  <Say>Moretti Previous Services Notice. Due to damage sustained at our base, Moretti will be temporarily inactive for 50 minutes. If you require immediate assistance please call this number. Our protection services aim to arrive at your location within 10 minutes from the time of your call. Thank you for your understanding.</Say>
-  <Pause length="5"/>
-  <Say>Executing 0.1</Say>
+  <Say>Hello, how are you doing today?</Say>
   <Pause length="2"/>
-  <Say>Moretti is currently available. Thank you</Say>
+  <Say>I'm doing well, thank you for asking.</Say>
+  <Pause length="1"/>
+  <Say>That's great to hear. Have you been up to anything interesting lately?</Say>
+  <Pause length="3"/>
+  <Say>Actually, I just started learning how to play the guitar.</Say>
   <Pause length="2"/>
-  <Hangup/>
+  <Say>Oh, that sounds exciting! How's it going so far?</Say>
+  <Pause length="2"/>
+  <Say>It's been challenging, but I'm making progress.</Say>
+  <Pause length="1"/>
+  <Say>That's fantastic! Keep up the good work.</Say>
 </Response>
