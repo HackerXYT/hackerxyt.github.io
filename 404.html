@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Check</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+    rel="stylesheet">
+  <style>
+    .notification-container {
+      position: fixed;
+      bottom: -100px;
+      /* Initially hidden below the page */
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #4c0202;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 95px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transition: opacity 0.3s ease, bottom 0.5s ease;
+      /* Add transition for bottom */
+      z-index: 9999;
+      font-family: Arial;
+    }
+
+
+    /* Animation for showing notification */
+    .notification-container.show {
+      opacity: 1;
+      bottom: 90px;
+    }
+  </style>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: radial-gradient(circle, #400000, #000000);
+      color: white;
+      font-family: "Source Code Pro", monospace;
+    }
+
+    h1 {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      /* Increase padding for larger size */
+      font-size: 16px;
+      background-color: #333333;
+      color: #fff;
+      text-decoration: none;
+      border: none;
+      border-radius: 34px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Hover effect */
+    .btn:hover {
+      background-color: #a31b1b;
+      color: #fff;
+    }
+
+    p {
+      text-align: center;
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 20px;
+      font-optical-sizing: auto;
+      font-weight: bold;
+      font-style: normal;
+    }
+
+    #logo {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+    }
+
+    #loading-logo {
+      width: 50px;
+      height: 50px;
+      margin-top: 20px;
+    }
+
+    .loading {
+      width: 50px;
+      height: 40px;
+      margin: 40px auto;
+    }
+
+    .loading--plane {
+      width: 70px;
+      stroke-dasharray: 425.59;
+      stroke-dashoffset: 425.59;
+      animation: plane-loading-animation 3s linear infinite;
+    }
+
+    @keyframes plane-loading-animation {
+      50% {
+        stroke-dashoffset: 425.59;
+      }
+
+      50% {
+        stroke-dashoffset: 0;
+      }
+
+      100% {
+        stroke-dashoffset: -425.59;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <img id="logo" src="./t50-gateway-alpha/evox-logo-dark-large.png" alt="Domain Error">
+  <p id="text">Updating your client.<br>Please Wait..</p>
+  <div id="loading-logo" class="loading loading--circle" title="Loading">
+    <svg fill="#fff" version="1.1" id="loading-circle" xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+      style="enable-background:new 0 0 50 50;" xml:space="preserve">
+      <path
+        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25"
+          dur="0.8s" repeatCount="indefinite" />
+      </path>
+    </svg>
+  </div>
+  <button onclick="window.location.href = '/t50-gateway-alpha/'" style="display: none;" id="btn" class="btn">Launch</button>
+
+  <div class="notification-container" id="notification">
+    Enabling&nbsp;Evox-Epsilon
+  </div>
+
+  <script>
+    window.onload = function () {
+      var notification = document.getElementById('notification');
+      notification.classList.add('show');
+      setTimeout(function () {
+        notification.classList.remove('show');
+
+
+      }, 2500); // 5 seconds
+
+      setTimeout(function () {
+        document.getElementById("text").innerHTML = "Success!<br>Proceed to Evox."
+        document.getElementById("loading-logo").style.display = "none"
+        document.getElementById("btn").style.display = "block"
+      }, 6000);
+    }
+
+  </script>
+</body>
+
+</html>
