@@ -103,7 +103,7 @@ function setup() {
 								//}
 							}
 							log("Enabling Tasco", "green")
-							document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="../tasco/tasco-app.png" class="app"></img></a>`
+							document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="https://team50.sytes.net/tasco/tasco-app.png" class="app"></img></a>`
 							log("Enabling SecureLine", "green")
 							document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('secureline')" href="#loadapp-secureline"><img src="./secureline/sline.png" class="app"></img></a>`
 							if (localStorage.getItem("t50-username") === "papostol") {
