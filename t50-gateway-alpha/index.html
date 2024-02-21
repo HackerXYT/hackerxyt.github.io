@@ -13,11 +13,26 @@
     <script defer>
         document.addEventListener("DOMContentLoaded", function () {
             let ip = "error";
-            sessionStorage.removeItem("IPV4")
+            //sessionStorage.removeItem("IPV4")
             fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
                 .then(geo => {
-                    sessionStorage.setItem("IPV4", geo.ip);
+                    console.log(localStorage.getItem("IPV4"), geo.ip)
+                    if(window.location.href.includes("#verify")) {
+                        document.getElementById("wait").innerHTML = "Verifying New IP"
+                    }
+                    if(localStorage.getItem("IPV4") !== geo.ip) {
+                        localStorage.setItem("IPV4", geo.ip);
+                        console.log("New IP")
+                        let stringWithoutHash = window.location.href.replace(/#/g, '');
+                        setTimeout(function() {
+                            if(!window.location.href.includes("#verify")) {
+                                window.location.href = `${stringWithoutHash}/#verify`
+                            }
+                           
+                        }, 2000)
+                    }
+                    
                     console.log(geo.ip);
                     ip = geo.ip;
 
@@ -939,10 +954,10 @@
 
     </div>
     <div id="loading-div-text"
-        style="display: none;margin: 0;padding: 0;height: 100vh;position: relative;color: rgb(255, 255, 255)">
+        style="display: block;margin: 0;padding: 0;height: 100vh;position: relative;color: rgb(255, 255, 255)">
         <div id="loading-text"
             style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);text-align: center;">
-            <p>Wait</p>
+            <p id="wait">Waiting For IP</p>
         </div>
     </div>
     <div style="display: block" id="loading" class="icon-container">
