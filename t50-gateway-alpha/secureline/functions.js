@@ -6,6 +6,7 @@ var screenHeight = window.innerHeight;
 sessionStorage.removeItem("sending")
 sessionStorage.removeItem("skipped")
 sessionStorage.removeItem("removemsg")
+sessionStorage.removeItem("current_sline")
 $(document).ready(docready())
 var submit = document.getElementById("submit");
 submit.addEventListener("click", login())
@@ -815,8 +816,7 @@ function goback_options() {
 }
 
 function deletemessage(element) {
-  let enco = btoa(element.innerHTML)
-  sessionStorage.setItem("removemsg", enco)
+  sessionStorage.setItem("removemsg", element.innerHTML)
   document.getElementById('options_box').style.filter = 'blur(20px)'
   document.getElementById("confirm_box").classList.add("active")
   document.getElementById("message-del-content").innerHTML = element.innerHTML
