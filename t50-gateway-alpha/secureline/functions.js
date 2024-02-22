@@ -27,7 +27,7 @@ function login() {
     .then(data => {
 
       console.log(data);
-      if (data.includes("Credentials Correct")) {
+      if (data.includes("Credentials Correct") || data.includes("Do 2FA")) {
         console.log("Welcome Abroad")
         localStorage.setItem("t50pswd", `${btoa(password)}`)
         const credentialsString = data;
@@ -87,7 +87,7 @@ function docready(skipauto) {
         return response.text();
       })
       .then(data => {
-        if (data.includes("Credentials Correct")) {
+        if (data.includes("Credentials Correct")|| data.includes("Do 2FA")) {
           console.log("Welcome Abroad")
           const credentialsString = data;
           const match = credentialsString.match(/Username:(\w+)/);

@@ -113,7 +113,7 @@ function login() {
       .then(data => {
         
         console.log(data); // Handle the response data here
-        if(data.includes("Credentials Correct")) {
+        if(data.includes("Credentials Correct") || data.includes("Do 2FA")) {
             console.log("Welcome Abroad")
             localStorage.setItem("account", `{"imgpassword":"${btoa(password)}"}`)
             const credentialsString = data;
