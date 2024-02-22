@@ -27,15 +27,17 @@ function login() {
     .then(data => {
 
       console.log(data);
-      if (data.includes("Credentials Correct") || data.includes("Do 2FA")) {
+      if (data.includes("Credentials Correct") || data.includes("Do 2FA") || data.includes("IP Not Verified")) {
         console.log("Welcome Abroad")
         localStorage.setItem("t50pswd", `${btoa(password)}`)
         const credentialsString = data;
-        const match = credentialsString.match(/Username:(\w+)/);
-        const username = match && match[1];
+        if (data !== "IP Not Verified") {
+          const match = credentialsString.match(/Username:(\w+)/);
+          const username = match && match[1];
+          //localStorage.setItem("t50-autologin", false)
+          localStorage.setItem("t50-username", username)
+        }
         localStorage.setItem("t50-email", email)
-        //localStorage.setItem("t50-autologin", false)
-        localStorage.setItem("t50-username", username)
         sessionStorage.setItem("loaded", true)
         sessionStorage.setItem("loggedin", email)
         sessionStorage.setItem("loggedinpswd", btoa(password))
@@ -87,20 +89,23 @@ function docready(skipauto) {
         return response.text();
       })
       .then(data => {
-        if (data.includes("Credentials Correct")|| data.includes("Do 2FA")) {
+        if (data.includes("Credentials Correct") || data.includes("Do 2FA") || data.includes("IP Not Verified")) {
           console.log("Welcome Abroad")
           const credentialsString = data;
-          const match = credentialsString.match(/Username:(\w+)/);
-          const username = match && match[1];
+          if (data !== "IP Not Verified") {
+            const match = credentialsString.match(/Username:(\w+)/);
+            const username = match && match[1];
+            //localStorage.setItem("t50-autologin", false)
+            localStorage.setItem("t50-username", username)
+          }
           localStorage.setItem("t50-email", email)
           //localStorage.setItem("t50-autologin", false)
-          localStorage.setItem("t50-username", username)
           sessionStorage.setItem("loaded", true)
           sessionStorage.setItem("loggedin", email)
           sessionStorage.setItem("loggedinpswd", btoa(password))
           setup()
           $("#loading-div-text").fadeOut("slow", function () {
-            setTimeout(function() {
+            setTimeout(function () {
               $("#loading-bar").fadeOut("slow")
             }, 1500)
           })
@@ -123,7 +128,7 @@ function docready(skipauto) {
       .catch(error => {
         console.error('Fetch error:', error);
       });
-      return;
+    return;
   }
   $("#loading").fadeOut("slow")
   log("Loading Out", "green")
@@ -492,7 +497,7 @@ function reload_chat(whoto) {
         return response.text();
       })
       .then(messages => {
-        if(messages === "No Chats Found") {
+        if (messages === "No Chats Found") {
           document.getElementById("messages-container").innerHTML = `<p class='centered-text'>Chat Hasn't Been Created.<button style="margin-top: 20px" id="submit" onclick="create_chat()" class="transparent-button">Create Chat</button></p>`
           console.log("Chat Doesn't Exist")
           return;
@@ -632,7 +637,7 @@ function showchat(element) {
 
 function create_chat() {
   document.getElementById("actions").style.overflow = ""
-  try{
+  try {
     clearInterval(reloading)
   } catch {
     console.error("Unknown Error, Cannot Clear Interval")
@@ -656,13 +661,13 @@ function create_chat() {
       return response.text();
     })
     .then(data => {
-      if(data === "Created") {
+      if (data === "Created") {
         console.log("Chat Created")
         let element = {
           "id": sessionStorage.getItem("current_sline")
         }
         console.log("Reloading")
-        setTimeout(function() {
+        setTimeout(function () {
           showchat(element)
         }, 1000)
       }

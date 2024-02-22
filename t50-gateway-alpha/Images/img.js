@@ -113,18 +113,20 @@ function login() {
       .then(data => {
         
         console.log(data); // Handle the response data here
-        if(data.includes("Credentials Correct") || data.includes("Do 2FA")) {
+        if(data.includes("Credentials Correct") || data.includes("Do 2FA") || data.includes("IP Not Verified")) {
             console.log("Welcome Abroad")
             localStorage.setItem("account", `{"imgpassword":"${btoa(password)}"}`)
             const credentialsString = data;
             // Use a regular expression to match the "Username:" followed by the value
-            const match = credentialsString.match(/Username:(\w+)/);
-            // Extract the captured value (in this case, the username)
-            const username = match && match[1];
+            if(data !== "IP Not Verified") {
+                const match = credentialsString.match(/Username:(\w+)/);
+                // Extract the captured value (in this case, the username)
+                const username = match && match[1];
+                localStorage.setItem("img-app-username", username)
+            }
             $("#container").fadeOut("slow");
             $("#gallery").fadeIn("slow");
             localStorage.setItem("img-app-email", email)
-            localStorage.setItem("img-app-username", username)
             localStorage.setItem("img-app-on", true)
             restart()
         } else if(data === "Credentials Incorrect") {
