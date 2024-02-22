@@ -102,7 +102,7 @@
                 <p id="chat-username">SecureLine</p>
             </div>
         </div>
-        <div id="info" style="position: fixed;
+        <div onclick="options()" id="info" style="position: fixed;
     top: 30px;
     right: 20px;
     width: 30px;
@@ -157,6 +157,7 @@
                 </g>
             </svg>
         </div>
+        
         <div id="actions" class="sline-actions">
             <div id="messages-container" class="message-container">
                 <div class="message">What's up papostol</div><!--message sent by other user-->
@@ -190,6 +191,29 @@
         
         
         
+
+    </div>
+    <div id="options_box" class="boxin">
+        <span onclick="goback_options()" class="popup-close"><svg xmlns="http://www.w3.org/2000/svg"
+            width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+            <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#b2b2b2" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+        </svg></span>
+        <h3>Chat Options</h3>
+        <p>Delete A Message</p>
+        <div id="delete_msg_list">
+            <p>No messages yet.</p>
+            <!--<span onclick="deletemessage(this)" class="apple-button">Hello</span>-->
+        </div>
+        
+
+    </div>
+    <div id="confirm_box" class="confirm">
+        <h3 style="color: red">Delete Message?</h3>
+        <p>Are you sure you want to delete this message?</p>
+        <span style="background-color: antiquewhite;color:#000;margin-bottom:50px" id="message-del-content"></span>
+        <a onclick="confirmdelete()" class="apple-button" style="margin-top: 40px">Yes</a>
+        <a id="cancelbtn" onclick="canceldelete()"class="apple-button">Cancel</a>
 
     </div>
     <div id="stuck" style="position: fixed;

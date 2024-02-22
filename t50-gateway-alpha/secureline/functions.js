@@ -5,6 +5,7 @@ var screenHeight = window.innerHeight;
 //actionsheight.style.maxHeight = screenHeight + "px";
 sessionStorage.removeItem("sending")
 sessionStorage.removeItem("skipped")
+sessionStorage.removeItem("removemsg")
 $(document).ready(docready())
 var submit = document.getElementById("submit");
 submit.addEventListener("click", login())
@@ -513,7 +514,12 @@ function reload_chat(whoto) {
           const sortedMessages = jsonData.messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
           // Iterate over each message
+          const removeContainer = document.getElementById('delete_msg_list');
+          removeContainer.innerHTML = "";
           sortedMessages.forEach(message => {
+
+            //<span onclick="deletemessage(this)" class="apple-button">Hello</span>
+
             // Create a new message element
             const messageElement = document.createElement('div');
             messageElement.textContent = message.content;
@@ -521,6 +527,13 @@ function reload_chat(whoto) {
             // Apply appropriate class based on the sender
             if (message.sender === localStorage.getItem("t50-username")) {
               messageElement.classList.add('message-me');
+              const msgelem = document.createElement('span');
+              msgelem.textContent = message.content;
+              msgelem.className = "apple-button";
+              msgelem.onclick = function () {
+                deletemessage(this)
+              };
+              removeContainer.appendChild(msgelem)
             } else {
               messageElement.classList.add('message');
             }
@@ -548,6 +561,7 @@ function return_main_chats() {
   })
 }
 function showchat(element) {
+  document.getElementById("delete_msg_list").innerHTML = ""
   document.getElementById("actions").style.overflow = ""
   document.getElementById("messages-container").innerHTML = `<p class='centered-text'>Loading Messages
   <svg style="margin-top: 20px" width="50px" height="40px" version="1.1" id="loading-circle" xmlns="http://www.w3.org/2000/svg"
@@ -787,4 +801,60 @@ function getFriends() {
   $("#main_settings").fadeOut("fast", function () {
     $("#friends").fadeIn("fast")
   })
+}
+
+function options() {
+  document.getElementById("options_box").classList.add("active")
+  document.getElementById('private_chat').style.filter = 'blur(10px)'
+
+}
+
+function goback_options() {
+  document.getElementById("options_box").classList.remove("active")
+  document.getElementById('private_chat').style.filter = ''
+}
+
+function deletemessage(element) {
+  let enco = btoa(element.innerHTML)
+  sessionStorage.setItem("removemsg", enco)
+  document.getElementById('options_box').style.filter = 'blur(20px)'
+  document.getElementById("confirm_box").classList.add("active")
+  document.getElementById("message-del-content").innerHTML = element.innerHTML
+}
+
+function canceldelete() {
+  sessionStorage.removeItem("removemsg")
+  document.getElementById('options_box').style.filter = ''
+  document.getElementById("confirm_box").classList.remove("active")
+  document.getElementById("message-del-content").innerHTML = ''
+}
+
+function confirmdelete() {
+  document.getElementById("cancelbtn").style.display = "none"
+  const message = sessionStorage.getItem("removemsg")
+  fetch(`https://evox-datacenter.onrender.com/secureline?method=DeleteMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&whosentit=me&message=${message}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      if (data === "Deleted Message") {
+        sessionStorage.removeItem("removemsg")
+        document.getElementById('options_box').style.filter = ''
+        document.getElementById("confirm_box").classList.remove("active")
+        document.getElementById("message-del-content").innerHTML = ''
+        document.getElementById("cancelbtn").style.display = ""
+      } else {
+        sessionStorage.removeItem("removemsg")
+        document.getElementById('options_box').style.filter = ''
+        document.getElementById("confirm_box").classList.remove("active")
+        document.getElementById("cancelbtn").style.display = ""
+      }
+
+
+    }).catch(error => {
+      console.error(error)
+    })
 }

@@ -231,6 +231,90 @@ img {
   box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
   display: none;
   color: white;
+  transition: filter 0.5s ease-in-out;
+}
+
+.boxin {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  padding: 30px;
+  align-items: center;
+  overflow: auto;
+  /* Change from 'visible' to 'auto' */
+  scroll-behavior: smooth;
+  touch-action: auto;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent black overlay */
+  z-index: 999;
+  box-sizing: border-box;
+  /* Include padding in the element's total width and height */
+  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+  color: white;
+  opacity: 0;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateX(-100%);
+  /* Initially off-screen to the left */
+  transition: transform 0.5s ease, opacity 0.5s ease, visibility 0.5s;
+  transition: filter 0.8s ease-in-out;
+  /* Transition for sliding effect, opacity, and visibility */
+}
+
+.confirm {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+  padding: 30px;
+  align-items: center;
+  overflow: auto;
+  /* Change from 'visible' to 'auto' */
+  scroll-behavior: smooth;
+  touch-action: auto;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent black overlay */
+  z-index: 999;
+  box-sizing: border-box;
+  /* Include padding in the element's total width and height */
+  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+  color: white;
+  opacity: 0;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateY(200%);
+  /* Initially off-screen to the left */
+  transition: transform 0.8s ease, opacity 0.8s ease, visibility 0.8s;
+  /* Transition for sliding effect, opacity, and visibility */
+}
+
+
+.confirm.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateX(0);
+  /* Slide the popup into view */
+}
+
+
+.boxin.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateX(0);
+  /* Slide the popup into view */
 }
 
 @-webkit-keyframes checkmark {
