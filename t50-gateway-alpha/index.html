@@ -953,6 +953,50 @@
 
 
     </div>
+    <style>
+    .notification-container {
+      position: fixed;
+      bottom: -100px;
+      /* Initially hidden below the page */
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #4c0202;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 95px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transition: opacity 0.3s ease, bottom 0.5s ease;
+      /* Add transition for bottom */
+      z-index: 9999;
+      font-family: Arial;
+    }
+
+
+    /* Animation for showing notification */
+    .notification-container.show {
+      opacity: 1;
+      bottom: 90px;
+    }
+  </style>
+
+<div class="notification-container" id="notification">
+    Servers&nbsp;under&nbsp;maintenance!
+  </div>
+<script>
+
+setTimeout(function () {
+
+var notification = document.getElementById('notification');
+      notification.classList.add('show');
+      setTimeout(function () {
+        notification.classList.remove('show');
+
+
+      }, 2500);
+
+}, 1500)
+</script>
     <div id="loading-div-text"
         style="display: block;margin: 0;padding: 0;height: 100vh;position: relative;color: rgb(255, 255, 255)">
         <div id="loading-text"
