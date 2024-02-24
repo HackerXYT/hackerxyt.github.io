@@ -8,10 +8,10 @@ document.getElementById("todays-date-schedule").innerHTML = formattedDate + ":"
 //schedule-content -> hidden
 document.getElementById("transfers").style.display = "none"
 document.getElementById("sidebar").style.display = "none"
-if (localStorage.getItem("t50-username") !== "papostol") {
+if (localStorage.getItem("t50-username") !== "papostol" && localStorage.getItem("t50-username") !== "Kyriakos") {
   document.getElementById("service3").style.display = "none"
 } else {
-  console.log("Is Papostol")
+  console.log("Is BETA TESTER")
 }
 
 function schedule() {
