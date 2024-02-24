@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="secondary.css">
     <link rel="stylesheet" href="indicator.css">
     <script defer>
+        function removeTrailingSlash(value) {
+            return value.replace(/\/$/, ''); // Replace trailing slash if it exists
+        }
         document.addEventListener("DOMContentLoaded", function () {
             let ip = "error";
             //sessionStorage.removeItem("IPV4")
@@ -18,21 +21,28 @@
                 .then(response => response.json())
                 .then(geo => {
                     console.log(localStorage.getItem("IPV4"), geo.ip)
-                    if(window.location.href.includes("#verify")) {
+                    if (window.location.href.includes("#verify")) {
                         document.getElementById("wait").innerHTML = "Verifying New IP"
                     }
-                    if(localStorage.getItem("IPV4") !== geo.ip) {
+                    if (localStorage.getItem("IPV4") !== geo.ip) {
                         localStorage.setItem("IPV4", geo.ip);
                         console.log("New IP")
                         let stringWithoutHash = window.location.href.replace(/#/g, '');
-                        setTimeout(function() {
-                            if(!window.location.href.includes("#verify")) {
-                                window.location.href = `${stringWithoutHash}/#verify`
+                        setTimeout(function () {
+                            let string;
+                            if (stringWithoutHash.endsWith("/")) {
+                                // Remove the trailing "/"
+                                string = stringWithoutHash.slice(0, -1);
+                            } else {
+                                string = stringWithoutHash
                             }
-                           
+                            if (!window.location.href.includes("#verify")) {
+                                window.location.href = `${string}/#verify`
+                            }
+
                         }, 2000)
                     }
-                    
+
                     console.log(geo.ip);
                     ip = geo.ip;
 
@@ -115,16 +125,23 @@
     <div style="display: none;" id="2fa" class="container" style="display:none;margin-top: 105px;">
         <h3 style="color: white;">Two-Factor Authentication</h3>
         <p style="color: #a7b3bf;">Please review your email for the Evox® Verification code.</p>
-        <input style="display:none" autocomplete="off" id="ver_code" type="text" class="input-box" placeholder="Verification Code">
+        <input style="display:none" autocomplete="off" id="ver_code" type="text" class="input-box"
+            placeholder="Verification Code">
         <div>
-        <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig1" maxlength="1" placeholder="-">
-        <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig2" maxlength="1" placeholder="-">
-        <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig3" maxlength="1" placeholder="-">
-        <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig4" maxlength="1" placeholder="-">
-        <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig5" maxlength="1" placeholder="-">
-        <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig6" maxlength="1" placeholder="-">
-        <br>
-    </div>
+            <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig1" maxlength="1"
+                placeholder="-">
+            <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig2" maxlength="1"
+                placeholder="-">
+            <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig3" maxlength="1"
+                placeholder="-">
+            <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig4" maxlength="1"
+                placeholder="-">
+            <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig5" maxlength="1"
+                placeholder="-">
+            <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig6" maxlength="1"
+                placeholder="-">
+            <br>
+        </div>
         <p id="info_text2" style="color: white;display: none"></p>
         <button id="submit2" onclick="verifycode()" class="transparent-button">Continue</button><br>
     </div>
@@ -288,8 +305,8 @@
                     </svg></a>
                 <p style="margin: 6px" class="user-email">Your Evox Account can be used to sign in to apps and websites.
                 </p>
-                <a href="#" style="height: 50%;" class="apple-button">Two Factor Authentication<span id="2fa_status"
-                       >On</span></a>
+                <a href="#" style="height: 50%;" class="apple-button">Two Factor Authentication<span
+                        id="2fa_status">On</span></a>
                 <p style="margin: 6px" class="user-email">An application is used to verify your identity when signing
                     in. This prevents your data from being exposed.</p>
                 <p style="margin: 6px" class="user-email">TRUSTED EMAILS</p>
@@ -398,7 +415,7 @@
                         <div class="user-email" id="user-bantou-email">bantou@onionmail.com</div>
                     </div>
                 </div>-->
-                
+
                 <div id="list-container"></div>
                 <!--<div onclick="" class="list-user-info">
                     <div class="user-circle">
@@ -707,16 +724,17 @@
 
 
             <h3 style="margin-bottom: 4px;">Quick Actions</h3>
-            <a href="#" onclick="logoff()" style="height: 50%;color:#eb2424" class="apple-button">Log Out <span><svg id="logoutsvg" style="display: block;"
-                        xmlns="http://www.w3.org/2000/svg" fill="#a2a2a2" width="24px" height="24px"
-                        viewBox="0 0 16 16">
+            <a href="#" onclick="logoff()" style="height: 50%;color:#eb2424" class="apple-button">Log Out <span><svg
+                        id="logoutsvg" style="display: block;" xmlns="http://www.w3.org/2000/svg" fill="#a2a2a2"
+                        width="24px" height="24px" viewBox="0 0 16 16">
                         <path
                             d="M1.3 3.75h5.88V2.5H1.3A1.25 1.25 0 0 0 .05 3.75v8.5A1.25 1.25 0 0 0 1.3 13.5h5.88v-1.25H1.3z" />
                         <path
                             d="m15.4 7-4-2.74-.71 1 3.08 2.1H4.71v1.26h9.07l-3.08 2.11.71 1L15.4 9a1.24 1.24 0 0 0 0-2z" />
                     </svg></span></a>
-            <a href="#" onclick="restart()" style="height: 50%;color:#25b0c0" class="apple-button">Restart <span><svg id="restartsvg" style="display: block;"
-                        xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+            <a href="#" onclick="restart()" style="height: 50%;color:#25b0c0" class="apple-button">Restart <span><svg
+                        id="restartsvg" style="display: block;" xmlns="http://www.w3.org/2000/svg" width="24px"
+                        height="24px" viewBox="0 0 24 24">
                         <path fill="none" stroke="#a2a2a2" stroke-width="2"
                             d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8" />
                     </svg></span></a>
@@ -815,9 +833,19 @@
             </div>
             <h3 style="margin-bottom: 0;color:#ba6a6a">Explore Evox Images</h3>
             <p>Securely safeguard your images using advanced hash encryption and comprehensive cryptographic processes.
-                Rest assured, your gallery remains exclusively accessible to you, ensuring utmost privacy.</p>
+                Rest assured, your gallery remains exclusively accessible to you, ensuring utmost
+                privacy.<br><br>Features:<br>
+                <li>Encrypted One-File gallery</li>
+                <li>Cryptox database with splitted gallery files</li>
+                <li>Custom UI Loading Screens</li>
+                <li>One-click download images</li>
+                <li>Full control of galleries</li>
+                <li>T50 Private Documents Access</li>
+                <li>Moretti Private Documents Access</li>
+                <li>PD34 Private Documents Access</li>
+            </p>
             <button id="submit" onclick="purchase('images')" class="transparent-button" style="width:100%">Buy
-                Now</button><br>
+                Now (Cost: $∞)</button><br>
         </div>
         <div style="display: none;" id="buychatvia">
             <div class="user-info-default">
@@ -929,9 +957,9 @@
         </svg>
     </div>-->
     <div onclick="settings()" id="settings"
-        style="position: fixed; bottom: 20px; transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;display: none;">
+        style="position: fixed; bottom: 40px;transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;display: none;">
         <div
-            style="background-color: #333; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+            style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
             <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48"
                 style="margin-right: 10px;">
                 <defs>
@@ -950,53 +978,116 @@
             Settings
         </div>
     </div>
+    <div onclick="errors()" id="errors"
+        style="position: fixed; bottom: 60px; left:35px; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;display: none;">
+        <div
+		style="background-color: #33333370; border: none; color: #fff; padding: 15px; font-size: 16px; border-radius: 100%; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                <path opacity="0.1" d="M10.2501 5.147L3.64909 17.0287C2.9085 18.3618 3.87244 20 5.39741 20H18.5994C20.1243 20 21.0883 18.3618 20.3477 17.0287L13.7467 5.147C12.9847 3.77538 11.0121 3.77538 10.2501 5.147Z" fill="#FFFF00"/>
+                <path d="M12 10V13" stroke="#FFFF00" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 16V15.9888" stroke="#FFFF00" stroke-width="2" stroke-linecap="round"/>
+                <path d="M10.2515 5.147L3.65056 17.0287C2.90997 18.3618 3.8739 20 5.39887 20H18.6008C20.1258 20 21.0897 18.3618 20.3491 17.0287L13.7482 5.147C12.9861 3.77538 11.0135 3.77538 10.2515 5.147Z" stroke="#FFFF00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+        </div>
+    </div>
+    <div onclick="profile()" id="profile"
+        style="position: fixed; bottom: 60px; right:35px; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;display: none;">
+        <div class="user-circle">
+            <img id="profile-pfp" src="t50-img.png" alt="User Image">
+        </div>
+    </div>
+    <style>
+        #animatedButton_notif {
+            display: none;
+            position: fixed;
+            bottom: 215px;
+            right: 35px;
+            background-color: #33333370;
+            border: none;
+            color: #fff;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 100%;
+            cursor: pointer;
+            align-items: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease, opacity 0.5s ease, transform 0.5s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        #animatedButton_chats {
+            display: none;
+            position: fixed;
+            bottom: 286px;
+            right: 35px;
+            background-color: #33333370;
+            border: none;
+            color: #fff;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 100%;
+            cursor: pointer;
+            align-items: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease, opacity 0.5s ease, transform 0.5s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    </style>
+    <div onclick="dots()" id="dots"
+        style="position: fixed; bottom: 145px; right:35px; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;display: none;">
+    </div>
+
+    <button id="animatedButton_chats">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+            <path d="M13.0867 21.3877L13.7321 21.7697L13.0867 21.3877ZM13.6288 20.4718L12.9833 20.0898L13.6288 20.4718ZM10.3712 20.4718L9.72579 20.8539H9.72579L10.3712 20.4718ZM10.9133 21.3877L11.5587 21.0057L10.9133 21.3877ZM2.3806 15.9134L3.07351 15.6264V15.6264L2.3806 15.9134ZM7.78958 18.9915L7.77666 19.7413L7.78958 18.9915ZM5.08658 18.6194L4.79957 19.3123H4.79957L5.08658 18.6194ZM21.6194 15.9134L22.3123 16.2004V16.2004L21.6194 15.9134ZM16.2104 18.9915L16.1975 18.2416L16.2104 18.9915ZM18.9134 18.6194L19.2004 19.3123H19.2004L18.9134 18.6194ZM19.6125 2.7368L19.2206 3.37628L19.6125 2.7368ZM21.2632 4.38751L21.9027 3.99563V3.99563L21.2632 4.38751ZM4.38751 2.7368L3.99563 2.09732V2.09732L4.38751 2.7368ZM2.7368 4.38751L2.09732 3.99563H2.09732L2.7368 4.38751ZM9.40279 19.2098L9.77986 18.5615L9.77986 18.5615L9.40279 19.2098ZM13.7321 21.7697L14.2742 20.8539L12.9833 20.0898L12.4412 21.0057L13.7321 21.7697ZM9.72579 20.8539L10.2679 21.7697L11.5587 21.0057L11.0166 20.0898L9.72579 20.8539ZM12.4412 21.0057C12.2485 21.3313 11.7515 21.3313 11.5587 21.0057L10.2679 21.7697C11.0415 23.0767 12.9585 23.0767 13.7321 21.7697L12.4412 21.0057ZM10.5 2.75H13.5V1.25H10.5V2.75ZM21.25 10.5V11.5H22.75V10.5H21.25ZM2.75 11.5V10.5H1.25V11.5H2.75ZM1.25 11.5C1.25 12.6546 1.24959 13.5581 1.29931 14.2868C1.3495 15.0223 1.45323 15.6344 1.68769 16.2004L3.07351 15.6264C2.92737 15.2736 2.84081 14.8438 2.79584 14.1847C2.75041 13.5189 2.75 12.6751 2.75 11.5H1.25ZM7.8025 18.2416C6.54706 18.2199 5.88923 18.1401 5.37359 17.9265L4.79957 19.3123C5.60454 19.6457 6.52138 19.7197 7.77666 19.7413L7.8025 18.2416ZM1.68769 16.2004C2.27128 17.6093 3.39066 18.7287 4.79957 19.3123L5.3736 17.9265C4.33223 17.4951 3.50486 16.6678 3.07351 15.6264L1.68769 16.2004ZM21.25 11.5C21.25 12.6751 21.2496 13.5189 21.2042 14.1847C21.1592 14.8438 21.0726 15.2736 20.9265 15.6264L22.3123 16.2004C22.5468 15.6344 22.6505 15.0223 22.7007 14.2868C22.7504 13.5581 22.75 12.6546 22.75 11.5H21.25ZM16.2233 19.7413C17.4786 19.7197 18.3955 19.6457 19.2004 19.3123L18.6264 17.9265C18.1108 18.1401 17.4529 18.2199 16.1975 18.2416L16.2233 19.7413ZM20.9265 15.6264C20.4951 16.6678 19.6678 17.4951 18.6264 17.9265L19.2004 19.3123C20.6093 18.7287 21.7287 17.6093 22.3123 16.2004L20.9265 15.6264ZM13.5 2.75C15.1512 2.75 16.337 2.75079 17.2619 2.83873C18.1757 2.92561 18.7571 3.09223 19.2206 3.37628L20.0044 2.09732C19.2655 1.64457 18.4274 1.44279 17.4039 1.34547C16.3915 1.24921 15.1222 1.25 13.5 1.25V2.75ZM22.75 10.5C22.75 8.87781 22.7508 7.6085 22.6545 6.59611C22.5572 5.57256 22.3554 4.73445 21.9027 3.99563L20.6237 4.77938C20.9078 5.24291 21.0744 5.82434 21.1613 6.73809C21.2492 7.663 21.25 8.84876 21.25 10.5H22.75ZM19.2206 3.37628C19.7925 3.72672 20.2733 4.20752 20.6237 4.77938L21.9027 3.99563C21.4286 3.22194 20.7781 2.57144 20.0044 2.09732L19.2206 3.37628ZM10.5 1.25C8.87781 1.25 7.6085 1.24921 6.59611 1.34547C5.57256 1.44279 4.73445 1.64457 3.99563 2.09732L4.77938 3.37628C5.24291 3.09223 5.82434 2.92561 6.73809 2.83873C7.663 2.75079 8.84876 2.75 10.5 2.75V1.25ZM2.75 10.5C2.75 8.84876 2.75079 7.663 2.83873 6.73809C2.92561 5.82434 3.09223 5.24291 3.37628 4.77938L2.09732 3.99563C1.64457 4.73445 1.44279 5.57256 1.34547 6.59611C1.24921 7.6085 1.25 8.87781 1.25 10.5H2.75ZM3.99563 2.09732C3.22194 2.57144 2.57144 3.22194 2.09732 3.99563L3.37628 4.77938C3.72672 4.20752 4.20752 3.72672 4.77938 3.37628L3.99563 2.09732ZM11.0166 20.0898C10.8136 19.7468 10.6354 19.4441 10.4621 19.2063C10.2795 18.9559 10.0702 18.7304 9.77986 18.5615L9.02572 19.8582C9.07313 19.8857 9.13772 19.936 9.24985 20.0898C9.37122 20.2564 9.50835 20.4865 9.72579 20.8539L11.0166 20.0898ZM7.77666 19.7413C8.21575 19.7489 8.49387 19.7545 8.70588 19.7779C8.90399 19.7999 8.98078 19.832 9.02572 19.8582L9.77986 18.5615C9.4871 18.3912 9.18246 18.3215 8.87097 18.287C8.57339 18.2541 8.21375 18.2487 7.8025 18.2416L7.77666 19.7413ZM14.2742 20.8539C14.4916 20.4865 14.6287 20.2564 14.7501 20.0898C14.8622 19.936 14.9268 19.8857 14.9742 19.8582L14.2201 18.5615C13.9298 18.7304 13.7204 18.9559 13.5379 19.2063C13.3646 19.4441 13.1864 19.7468 12.9833 20.0898L14.2742 20.8539ZM16.1975 18.2416C15.7862 18.2487 15.4266 18.2541 15.129 18.287C14.8175 18.3215 14.5129 18.3912 14.2201 18.5615L14.9742 19.8582C15.0192 19.832 15.096 19.7999 15.2941 19.7779C15.5061 19.7545 15.7842 19.7489 16.2233 19.7413L16.1975 18.2416Z" fill="#fff"/>
+            <path d="M8 9H16" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M8 12.5H13.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+    </button>
+
+    <button id="animatedButton_notif">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+            <path
+                d="M9.00195 17H5.60636C4.34793 17 3.71872 17 3.58633 16.9023C3.4376 16.7925 3.40126 16.7277 3.38515 16.5436C3.37082 16.3797 3.75646 15.7486 4.52776 14.4866C5.32411 13.1835 6.00031 11.2862 6.00031 8.6C6.00031 7.11479 6.63245 5.69041 7.75766 4.6402C8.88288 3.59 10.409 3 12.0003 3C13.5916 3 15.1177 3.59 16.2429 4.6402C17.3682 5.69041 18.0003 7.11479 18.0003 8.6C18.0003 11.2862 18.6765 13.1835 19.4729 14.4866C20.2441 15.7486 20.6298 16.3797 20.6155 16.5436C20.5994 16.7277 20.563 16.7925 20.4143 16.9023C20.2819 17 19.6527 17 18.3943 17H15.0003M9.00195 17L9.00031 18C9.00031 19.6569 10.3435 21 12.0003 21C13.6572 21 15.0003 19.6569 15.0003 18V17M9.00195 17H15.0003"
+                stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </button>
 
 
     </div>
     <style>
-    .notification-container {
-      position: fixed;
-      bottom: -100px;
-      /* Initially hidden below the page */
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #4c0202;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 95px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      opacity: 0;
-      transition: opacity 0.3s ease, bottom 0.5s ease;
-      /* Add transition for bottom */
-      z-index: 9999;
-      font-family: Arial;
-    }
+        .notification-container {
+            position: fixed;
+            bottom: -100px;
+            /* Initially hidden below the page */
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            background-color: #4c0202;
+            color: #fff;
+            width: auto;
+            padding: 10px 20px;
+            border-radius: 95px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease, bottom 0.5s ease;
+            /* Add transition for bottom */
+            z-index: 9999;
+            font-family: Arial;
+        }
 
 
-    /* Animation for showing notification */
-    .notification-container.show {
-      opacity: 1;
-      bottom: 150px;
-    }
-  </style>
+        /* Animation for showing notification */
+        .notification-container.show {
+            opacity: 1;
+            bottom: 150px;
+        }
+    </style>
 
-<div class="notification-container" id="notification">
-    Servers&nbsp;under&nbsp;maintenance!
-  </div>
-<script>
-
-setTimeout(function () {
-
-var notification = document.getElementById('notification');
-      notification.classList.add('show');
-      setTimeout(function () {
-        notification.classList.remove('show');
-
-
-      }, 2500);
-
-}, 1500)
-</script>
+    <div class="notification-container" id="notification">
+        Rate limits may affect your experience.
+    </div>
     <div id="loading-div-text"
         style="display: block;margin: 0;padding: 0;height: 100vh;position: relative;color: rgb(255, 255, 255)">
         <div id="loading-text"

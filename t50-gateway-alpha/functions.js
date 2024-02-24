@@ -15,6 +15,7 @@
 //			console.error('Set Offline error:', error);
 //		});
 //});
+sessionStorage.removeItem("more_options")
 fetch(`https://evox-datacenter.onrender.com/setOnline?username=${localStorage.getItem("t50-username")}`)
 	.then(response => {
 		if (!response.ok) {
@@ -44,7 +45,7 @@ fetch(`https://evox-datacenter.onrender.com/setOnline?username=${localStorage.ge
 	.catch(error => {
 		console.error('Fetch error:', error);
 	});
-	
+
 function fadeError(method) {
 	var targetColor = "rgb(255, 99, 71)";
 	let element;
@@ -338,6 +339,21 @@ function uielements() {
 	$("#settings").fadeIn("slow")
 
 	document.getElementById("usr-img").src = sessionStorage.getItem("pfp")
+	document.getElementById("profile-pfp").src = sessionStorage.getItem("pfp")
+	$("#profile").fadeIn("fast", function () {
+		if (!localStorage.getItem("error_XMGE")) {
+			$("#errors").fadeIn("slow")
+		}
+
+		document.getElementById("dots").innerHTML = `<div
+		style="background-color: #33333370; border: none; color: #fff; padding: 15px; font-size: 16px; border-radius: 100%; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+		<path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+		<path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+		<path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+		</svg></div>`
+		$("#dots").fadeIn("slow")
+	})
+
 	pfp()
 	document.getElementById("usr-name").innerHTML = localStorage.getItem("t50-username")
 	document.getElementById("usr-email").innerHTML = localStorage.getItem("t50-email")
@@ -380,8 +396,26 @@ function uielements() {
 }
 
 function settings() {
-	console.log(document.getElementById("popup").classList.contains("active"))
+	//console.log(document.getElementById("popup").classList.contains("active"))
 	if (document.getElementById("popup").classList.contains("active") === false) {
+		$("#dots").fadeOut("slow")
+		$("#profile").fadeOut("slow")
+		if (document.getElementById("animatedButton_notif").style.display === "block") {
+			var animatedButton = document.getElementById("animatedButton_notif");
+			animatedButton.style.opacity = "0";
+			animatedButton.style.transform = "translateY(20px)";
+			setTimeout(function () {
+				animatedButton.style.display = "none";
+			}, 500); // Adjust the timing as needed
+		}
+		if (document.getElementById("animatedButton_chats").style.display === "block") {
+			var animatedButton2 = document.getElementById("animatedButton_chats");
+			animatedButton2.style.opacity = "0";
+			animatedButton2.style.transform = "translateY(20px)";
+			setTimeout(function () {
+				animatedButton2.style.display = "none";
+			}, 500); // Adjust the timing as needed
+		}
 		document.getElementById('gateway').style.filter = 'blur(20px)'; // Add a blur effect to the mainContent
 		$("#bottom-logo").fadeIn("slow")
 		$("#settings").fadeOut("slow")
@@ -398,6 +432,24 @@ function settings() {
 
 		setTimeout(function () {
 			$("#popup").removeClass("active");
+			$("#dots").fadeIn("slow")
+			$("#profile").fadeIn("slow")
+			if (sessionStorage.getItem("more_options") === "active") {
+				console.log("Showing more options")
+				var animatedButton = document.getElementById("animatedButton_notif");
+				animatedButton.style.display = "block";
+				setTimeout(function () {
+					animatedButton.style.opacity = "1";
+					animatedButton.style.transform = "translateY(0)";
+				}, 100);
+				//animatedButton_chats
+				var animatedButton2 = document.getElementById("animatedButton_chats");
+				animatedButton2.style.display = "block";
+				setTimeout(function () {
+					animatedButton2.style.opacity = "1";
+					animatedButton2.style.transform = "translateY(0)";
+				}, 100);
+			}
 			//$("#popup").fadeOut("fast")
 			//document.body.style.overflow = 'hidden';
 		}, 100)
@@ -424,6 +476,7 @@ function pfp(give) {
 						data = "data:image/jpeg;base64," + data;
 					}
 					document.getElementById("usr-img").src = `${data}`;
+					document.getElementById("profile-pfp").src = `${data}`
 					sessionStorage.setItem("pfp", data);
 					if (give === "giveback") {
 						resolve(data);
@@ -1481,7 +1534,7 @@ function bgch() {
 	$("#main_popup_settings").fadeOut("fast", function () {
 		$("#popup").addClass("active");
 		//$("#popup").fadeIn("fast")
-		$("#background_change").fadeIn("fast", function() {
+		$("#background_change").fadeIn("fast", function () {
 			$("#loading").fadeOut("fast")
 		})
 		$("#bottom-logo").fadeOut("slow")
@@ -1674,6 +1727,117 @@ document.getElementById("confirm_pswd").addEventListener("keypress", function (e
 });
 
 function moretti() {
+	document.getElementById("mt-disabled").src = "ZKZx.gif"
+	setTimeout(function () {
+		const oldhtml = document.getElementById("notification").innerHTML
+		var notification = document.getElementById('notification');
+		if (notification.className.includes("show")) {
+			console.log("Notification Is Shown")
+			notification.classList.remove('show');
+			setTimeout(function () {
+				document.getElementById("notification").innerHTML = "You are not in a safe environment.<br>Moretti cannot load."
+				notification.classList.add('show');
+				setTimeout(function () {
+					notification.classList.remove('show');
+				}, 2500);
+			}, 500)
+		} else {
+			document.getElementById("notification").innerHTML = "You are not in a safe environment.<br>Moretti cannot load."
+			notification.classList.add('show');
+			setTimeout(function () {
+				notification.classList.remove('show');
+			}, 2500);
+		}
+		setTimeout(function () {
+			document.getElementById("notification").innerHTML = oldhtml
+		}, 3000)
+
+
+
+
+	}, 1500)
 	alert(`This will redirect you to Moretti onion dashboard for ${localStorage.getItem("t50-username")}`)
 	shake_me('mt-disabled')
+	document.getElementById("mt-disabled").src = "mt.jpg"
+}
+
+function notice(message) {
+	const oldhtml = document.getElementById("notification").innerHTML
+	var notification = document.getElementById('notification');
+	if (notification.className.includes("show")) {
+		console.log("Notification Is Shown")
+		notification.classList.remove('show');
+		setTimeout(function () {
+			document.getElementById("notification").innerHTML = message
+			notification.classList.add('show');
+			setTimeout(function () {
+				notification.classList.remove('show');
+			}, 2500);
+		}, 500)
+	} else {
+		document.getElementById("notification").innerHTML = message
+		notification.classList.add('show');
+		setTimeout(function () {
+			notification.classList.remove('show');
+		}, 2500);
+	}
+	setTimeout(function () {
+		document.getElementById("notification").innerHTML = oldhtml
+	}, 3000)
+}
+
+function dots() {
+	if (sessionStorage.getItem("more_options")) {
+		sessionStorage.removeItem("more_options")
+		console.log("Hiding more options")
+		var animatedButton = document.getElementById("animatedButton_notif");
+		animatedButton.style.opacity = "0";
+		animatedButton.style.transform = "translateY(20px)";
+		setTimeout(function () {
+			animatedButton.style.display = "none";
+		}, 500); // Adjust the timing as needed
+
+		var animatedButton2 = document.getElementById("animatedButton_chats");
+		animatedButton2.style.opacity = "0";
+		animatedButton2.style.transform = "translateY(20px)";
+		setTimeout(function () {
+			animatedButton2.style.display = "none";
+		}, 500); // Adjust the timing as needed
+	} else {
+		console.log("Showing more options")
+		sessionStorage.setItem("more_options", "active")
+		var animatedButton = document.getElementById("animatedButton_notif");
+		animatedButton.style.display = "block";
+		setTimeout(function () {
+			animatedButton.style.opacity = "1";
+			animatedButton.style.transform = "translateY(0)";
+		}, 100);
+		//animatedButton_chats
+		var animatedButton2 = document.getElementById("animatedButton_chats");
+		animatedButton2.style.display = "block";
+		setTimeout(function () {
+			animatedButton2.style.opacity = "1";
+			animatedButton2.style.transform = "translateY(0)";
+		}, 100);
+	}
+
+}
+
+function profile() {
+	show_account()
+	settings()
+}
+
+function errors() {
+	//id errors
+	localStorage.setItem("error_XMGE", "seen")
+	var notification = document.getElementById('notification');
+	notification.classList.add('show');
+	setTimeout(function () {
+		notification.classList.remove('show');
+		setTimeout(function () {
+			$("#errors").fadeOut("slow")
+		}, 500)
+	}, 2500);
+
 }

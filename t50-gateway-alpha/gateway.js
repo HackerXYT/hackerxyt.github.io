@@ -10,9 +10,32 @@ function log(text, color) {
 
 function setup() {
   
-	custombg()
+  try {
+    custombg()
+  } catch {
+    let inter = setInterval(function() {
+      try {
+        custombg()
+        clearInterval(inter)
+      } catch {
+        console.log("CustomBG Failed. Retrying")
+      }
+    }, 100)
+  }
+	
 	log("T50 Gateway V:Delta 5", "red")
-	loadusers()
+  try {
+    loadusers()
+  } catch {
+    let inter = setInterval(function() {
+      try {
+        loadusers()
+        clearInterval(inter)
+      } catch {
+        console.log("loadusers Failed. Retrying")
+      }
+    }, 100)
+  }
 	let lg_status = sessionStorage.getItem("loaded")
 	if (lg_status === "true") {
 		let username = localStorage.getItem("t50-username")
@@ -110,7 +133,7 @@ function setup() {
 								log("Enabling Transports", "green")
 								$("#transports-app").fadeIn("slow")
 								//document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
-								document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('transports-disabled')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
+								document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('transports-disabled');notice('T50 Transports is currently not available')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
 							}
 							$("#apps").fadeIn("slow")
 							$("#loading-apps-text").fadeOut("slow", function () {
@@ -119,6 +142,18 @@ function setup() {
 							})
 							$("#loading").fadeOut("slow")
 							uielements()
+              try {
+                uielements()
+              } catch {
+                let inter = setInterval(function() {
+                  try {
+                    uielements()
+                    clearInterval(inter)
+                  } catch {
+                    console.log("uielements Failed. Retrying")
+                  }
+                }, 100)
+              }
 
 						} catch (error) {
 							console.error('Error parsing data:', error);
@@ -258,13 +293,13 @@ function docready() {
         let images = localStorage.getItem("images-owned")
         let chatvia = localStorage.getItem("chatvia-owned")
         if (notes === "true") {//OWN NOTES
-          document.getElementById("apps").innerHTML = `<a onclick="shake_me('notes-app')" href="#loadapp-notes-disabled"><img id="notes-app" src="EvoxNotes.png" class="disabledapp"></img></a>`
+          document.getElementById("apps").innerHTML = `<a onclick="shake_me('notes-app');notice('Evox Notes is currently not available')" href="#loadapp-notes-disabled"><img id="notes-app" src="EvoxNotes.png" class="disabledapp"></img></a>`
         }
         if (images === "true") {//OWN IMAGES
           if (document.getElementById("apps").innerHTML != "") {
-            document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('images-app')" href="#loadapp-images"><img id="images-app" src="t50-img.png" class="disabledapp"></img></a>`
+            document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('images-app');notice('You do not have permission to use T50 Images')" href="#loadapp-images"><img id="images-app" src="t50-img.png" class="disabledapp"></img></a>`
           } else {
-            document.getElementById("apps").innerHTML = `<a onclick="shake_me('images-app')" href="#loadapp-images"><img id="images-app" src="t50-img.png" class="disabledapp"></img></a>`
+            document.getElementById("apps").innerHTML = `<a onclick="shake_me('images-app');notice('You do not have permission to use T50 Images')" href="#loadapp-images"><img id="images-app" src="t50-img.png" class="disabledapp"></img></a>`
           }
         }
         if (chatvia === "true") { //OWN CHATVIA
