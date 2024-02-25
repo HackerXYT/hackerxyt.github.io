@@ -139,7 +139,22 @@ function setup() {
 							}
 							$("#apps").fadeIn("slow")
 							$("#loading-apps-text").fadeOut("slow", function () {
-								document.getElementById("loading-apps-text").innerHTML = `Here are your Evox Applications`
+                const phrases = [
+                  "Your Evox Applications are available below.",
+                  "Find your Evox Applications listed below.",
+                  "Below, you'll find your Evox Applications.",
+                  "Listed below are your Evox Applications.",
+                  "Discover your Evox Applications below.",
+                  "Below, you'll see your Evox Applications.",
+                  "Your Evox Applications can be found below.",
+                  "Displayed below are your Evox Applications.",
+                  "Your Evox Applications await you below.",
+                  "Below, you'll locate your Evox Applications."
+                ];
+                
+                const randomIndex = Math.floor(Math.random() * phrases.length);
+                const randomlySelectedPhrase = phrases[randomIndex];
+								document.getElementById("loading-apps-text").innerHTML = randomlySelectedPhrase
 								$("#loading-apps-text").fadeIn("slow")
 							})
 							$("#loading").fadeOut("slow")

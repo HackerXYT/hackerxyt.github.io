@@ -82,6 +82,7 @@ function skip() {
 
 function custombg() {
 	document.getElementById("current").style.display = "none"
+	let blur = localStorage.getItem("cbg-blur")
 	if (localStorage.getItem("cbg")) {
 		let name = localStorage.getItem("cbg")
 		document.getElementById("st1").classList.remove("active")
@@ -89,28 +90,53 @@ function custombg() {
 			document.getElementById("bgname").innerHTML = "Default"
 			document.getElementById("bgname").style.color = "#868686"
 			document.getElementById("st1").classList.add("active")
-			document.getElementById("background").innerHTML = `<div class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
+			document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
 		} else if (name === "stock1.jpg") {
 			document.getElementById("bgname").innerHTML = "Desert"
 			document.getElementById("bgname").style.color = "#fff"
 			document.getElementById("st2").classList.add("active")
-			document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('./bgs/stock1.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+			if(blur) {
+				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock1.jpg');background-size: cover;background-position: center;filter: blur(${blur}px);"></div>`
+			} else {
+				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock1.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+			}
+			
 		} else if (name === "stock2.jpg") {
 			document.getElementById("bgname").innerHTML = "Ocean"
 			document.getElementById("bgname").style.color = "#fff"
 			document.getElementById("st3").classList.add("active")
-			document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+			//document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+			if(blur) {
+				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(${blur}px);"></div>`
+			} else {
+				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock1.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+			}
 		} else if (name === "stock4.jpg") {
 			document.getElementById("bgname").innerHTML = "Building"
 			document.getElementById("bgname").style.color = "#fff"
 			document.getElementById("st4").classList.add("active")
-			document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+			//document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+			if(blur) {
+				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(${blur}px);"></div>`
+			}else {
+				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+			}
+		} else if (name.includes("#")) {
+			document.getElementById("st1").classList.add("active")
+			document.getElementById("bgname").innerHTML = "Custom Color"
+			document.getElementById("bgname").style.color = "#fff"
+			document.getElementById("background").innerHTML = `<div  id="bgimaget" class="background" id="bgimaget" style="background: radial-gradient(circle, ${name}, #000000)"></div>`
 		} else {
 			document.getElementById("bgname").innerHTML = `${localStorage.getItem("t50-username")}'s custom`
 			document.getElementById("bgname").style.color = "#eae1a5"
-			document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('${name}');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+			//document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('${name}');background-size: cover;background-position: center;filter: blur(10px);"></div>`
 			document.getElementById("current").innerHTML = `<img class="active" id="st5" onclick="addbg(this)" src="${name}">`
 			document.getElementById("current").style.display = ""
+			if(blur) {
+				document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="filter: blur(${blur}px);background-image: url('${name}');background-size: cover;background-position: center;"></div>`
+			} else {
+				document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="filter: blur(10px);background-image: url('${name}');background-size: cover;background-position: center;"></div>`
+			}
 			//base64
 		}
 
@@ -418,7 +444,7 @@ function settings() {
 			}, 500); // Adjust the timing as needed
 		}
 		if (document.getElementById("animatedButton_chats").style.display === "block") {
-					document.getElementById("gateway").style.overflow = "hidden"
+			document.getElementById("gateway").style.overflow = "hidden"
 			var animatedButton2 = document.getElementById("animatedButton_chats");
 			animatedButton2.style.opacity = "0";
 			animatedButton2.style.transform = "translateY(20px)";
@@ -1478,6 +1504,10 @@ function return_to_options(where) {
 			$("#authips").fadeOut("fast", function () {
 				$("#main_settings").fadeIn("fast")
 			})
+		} else if (where === "bg_settings") {
+			$("#background_change_color").fadeOut("fast", function () {
+				$("#background_change").fadeIn("fast")
+			})
 		}
 	}
 }
@@ -1546,6 +1576,18 @@ function secureline(element) {
 }
 
 function bgch() {
+	try{
+		var blurStyle = document.getElementById('bgimaget').style.filter;
+		// Extract the blur amount from the filter style
+		var blurAmount = parseFloat(blurStyle.match(/\d+/));
+	
+		console.log("Blur amount:", blurAmount, "pixels");
+		var x = blurAmount; // Assuming x is 10 for example
+		document.getElementById("myRange").value = x
+	} catch{
+
+	}
+	
 	$("#loading").fadeIn("fast")
 	$("#main_popup_settings").fadeOut("fast", function () {
 		$("#popup").addClass("active");
@@ -1571,9 +1613,9 @@ function addbg(element) {
 	}
 
 	if (name === "default_bg.png") {
-		document.getElementById("background").innerHTML = `<div class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
+		document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
 	} else {
-		document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('${which}');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+		document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('${which}');background-size: cover;background-position: center;filter: blur(10px);"></div>`
 	}
 	document.getElementById("st1").classList.remove("active")
 	document.getElementById("st2").classList.remove("active")
@@ -1619,7 +1661,7 @@ function handleFileSelect_BG() {
 			if (totalSizeInMB.toFixed(2) > 6.5) {
 				alert(`File Is Too Large! (${totalSizeInMB.toFixed(2)}MB)`);
 			} else {
-				document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('${base64String}');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="filter: blur(10px);background-image: url('${base64String}');background-size: cover;background-position: center;"></div>`
 				document.getElementById("st1").classList.remove("active")
 				document.getElementById("st2").classList.remove("active")
 				document.getElementById("st3").classList.remove("active")
@@ -1870,7 +1912,7 @@ function greetUser() {
 	} else if (currentHour >= 18 && currentHour < 22) {
 		greeting = "Good evening";
 	} else {
-		greeting = "Welcome back";
+		greeting = "Greetings";
 	}
 
 	return greeting;
@@ -2031,13 +2073,13 @@ function close_sline() {
 	let fixxint;
 	try {
 		clearInterval(profint)
-		try{
+		try {
 			clearInterval(fixxint)
 		} catch {
 			//
 		}
 	} catch {
-		fixxint = setInterval(function() {
+		fixxint = setInterval(function () {
 			clearInterval(profint)
 		})
 	}
@@ -2063,4 +2105,52 @@ function close_sline() {
 			animatedButton2.style.transform = "translateY(0)";
 		}, 100);
 	}
+}
+
+function addbg_color(element) {
+	$("#background_change").fadeOut("fast")
+	$("#background_change_color").fadeIn("fast")
+	setInterval(function () {
+		let hex = document.getElementById("hexInput").value
+		const selectedColor = hex;
+		if (selectedColor !== "") {
+			const gradient = `radial-gradient(circle, ${selectedColor}, #000000)`;
+			image.style.background = gradient;
+		}
+
+	}, 200)
+}
+
+function submitcolorch() {
+	let hex = document.getElementById("hexInput").value
+	const selectedColor = hex;
+	document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="background: radial-gradient(circle, ${selectedColor}, #000000)"></div>`
+	localStorage.setItem("cbg", selectedColor)
+	document.getElementById("st1").classList.add("active")
+	document.getElementById("st2").classList.remove("active")
+	document.getElementById("st3").classList.remove("active")
+	document.getElementById("st4").classList.remove("active")
+	document.getElementById("bgname").innerHTML = "Custom Color"
+	document.getElementById("bgname").style.color = "#fff"
+}
+
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+//output.innerHTML = slider.value;
+
+
+
+// Get the computed style directly from the element's style object
+
+slider.oninput = function () {
+
+	//output.innerHTML = this.value;
+	let inputamount = this.value
+	var y = inputamount; // Assuming x is 10 for example
+
+	// Solve for y
+	//var y = x / 100;
+	//var x = 100*y
+	document.getElementById('bgimaget').style.filter = `blur(${y}px)`
+	localStorage.setItem("cbg-blur", y)
 }
