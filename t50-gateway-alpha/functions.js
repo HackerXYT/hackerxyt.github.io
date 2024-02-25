@@ -337,22 +337,28 @@ function uielements() {
 	let chatvia = localStorage.getItem("chatvia-owned")
 	console.log(notes, images, chatvia)
 	$("#settings").fadeIn("slow")
+	$("#vox").fadeIn("slow")
 
 	document.getElementById("usr-img").src = sessionStorage.getItem("pfp")
-	document.getElementById("profile-pfp").src = sessionStorage.getItem("pfp")
-	$("#profile").fadeIn("fast", function () {
-		if (!localStorage.getItem("error_XMGE")) {
-			$("#errors").fadeIn("slow")
-		}
 
-		document.getElementById("dots").innerHTML = `<div
-		style="background-color: #33333370; border: none; color: #fff; padding: 15px; font-size: 16px; border-radius: 100%; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-		<path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-		<path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-		<path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-		</svg></div>`
-		$("#dots").fadeIn("slow")
-	})
+	if (sessionStorage.getItem("pfp")) {
+		document.getElementById("profile-pfp").src = sessionStorage.getItem("pfp")
+	} else {
+		sessionStorage.setItem("show_profile", "waiting")
+	}
+	if (!localStorage.getItem("error_XMGE")) {
+		$("#errors").fadeIn("slow")
+	}
+
+	$("#profile").fadeIn("fast")
+
+	document.getElementById("dots").innerHTML = `<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px; font-size: 16px; border-radius: 100%; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+	<path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+	<path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+	<path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+	</svg></div>`
+	$("#dots").fadeIn("slow")
 
 	pfp()
 	document.getElementById("usr-name").innerHTML = localStorage.getItem("t50-username")
@@ -373,7 +379,7 @@ function uielements() {
 	}
 	if (chatvia == "true") {
 		console.log("Chatvia OK")
-		document.getElementById("chatvia-own-ui-status").innerHTML = "Owned"
+		document.getElementById("chatvia-own-ui-status").innerHTML = "Servers Offline"
 	} else if (chatvia == "false") {
 		console.log("Chatvia Not")
 		document.getElementById("chatvia-own-ui-status").innerHTML = `Not Owned <button onclick='buy("chatvia")' style='margin-left:15pxdisplay: inline-block;padding: 10px 20px;text-decoration: none;color: #fff;background-color: #333;border: none;border-radius: 4px;transition: background-color 0.3s ease;cursor: pointer;'>Buy</button>`
@@ -417,7 +423,7 @@ function settings() {
 			}, 500); // Adjust the timing as needed
 		}
 		document.getElementById('gateway').style.filter = 'blur(20px)'; // Add a blur effect to the mainContent
-		$("#bottom-logo").fadeIn("slow")
+		//$("#bottom-logo").fadeIn("slow")
 		$("#settings").fadeOut("slow")
 		setTimeout(function () {
 			$("#popup").addClass("active");
@@ -426,9 +432,9 @@ function settings() {
 		}, 100)
 	} else if (document.getElementById("popup").classList.contains("active")) {
 		document.getElementById('gateway').style.filter = 'none'; // Add a blur effect to the mainContent
-		$("#bottom-logo").fadeOut("slow", function () {
-			$("#settings").fadeIn("slow")
-		})
+		//$("#bottom-logo").fadeOut("slow", function () {
+		$("#settings").fadeIn("slow")
+		//})
 
 		setTimeout(function () {
 			$("#popup").removeClass("active");
@@ -477,6 +483,9 @@ function pfp(give) {
 					}
 					document.getElementById("usr-img").src = `${data}`;
 					document.getElementById("profile-pfp").src = `${data}`
+					if (sessionStorage.getItem("show_profile") === "waiting") {
+						$("#profile").fadeIn("slow")
+					}
 					sessionStorage.setItem("pfp", data);
 					if (give === "giveback") {
 						resolve(data);
@@ -509,12 +518,12 @@ function restart() {
 	$("#popup").removeClass("active");
 	$("#settings").fadeOut("fast")
 	$("#gateway").fadeOut("fast", function () {
-		$("#bottom-logo").fadeOut("fast", function () {
-			setTimeout(function () {
-				window.location.reload()
-			}, 250)
+		//$("#bottom-logo").fadeOut("fast", function () {
+		setTimeout(function () {
+			window.location.reload()
+		}, 250)
 
-		})
+		//})
 	})
 
 }
@@ -685,7 +694,7 @@ function show_search() {
 	//} else {
 	//	document.getElementById("options_section_1_announcements").innerHTML = "Enabled"
 	//}
-	$("#bottom-logo").fadeOut("fast")
+	//$("#bottom-logo").fadeOut("fast")
 	$("#evox_social").fadeOut("fast", function () {
 		$("#add_friends").fadeIn("fast")
 	})
@@ -1423,7 +1432,7 @@ function return_to_options(where) {
 				$("#main_settings").fadeIn("fast")
 			})
 		} else if (where === "add_friends") {
-			$("#bottom-logo").fadeIn("fast")
+			//$("#bottom-logo").fadeIn("fast")
 			$("#add_friends").fadeOut("fast", function () {
 				$("#evox_social").fadeIn("fast")
 			})
@@ -1537,7 +1546,7 @@ function bgch() {
 		$("#background_change").fadeIn("fast", function () {
 			$("#loading").fadeOut("fast")
 		})
-		$("#bottom-logo").fadeOut("slow")
+		//$("#bottom-logo").fadeOut("slow")
 	})
 }
 
@@ -1840,4 +1849,147 @@ function errors() {
 		}, 500)
 	}, 2500);
 
+}
+
+function greetUser() {
+	const currentTime = new Date();
+	const currentHour = currentTime.getHours();
+	let greeting;
+
+	if (currentHour >= 5 && currentHour < 12) {
+		greeting = "Good morning";
+	} else if (currentHour >= 12 && currentHour < 18) {
+		greeting = "Good afternoon";
+	} else if (currentHour >= 18 && currentHour < 22) {
+		greeting = "Good evening";
+	} else {
+		greeting = "Welcome back";
+	}
+
+	return greeting;
+}
+
+let currentIndex = 0;
+
+function prevSlide() {
+	if (currentIndex > 0) {
+		currentIndex--;
+		updateCarousel();
+	}
+}
+
+function nextSlide() {
+	if (currentIndex < document.querySelectorAll('.app').length - 1) {
+		currentIndex++;
+		updateCarousel();
+	}
+}
+
+function updateCarousel() {
+	const carousel = document.getElementById('apps');
+	const offset = currentIndex * (carousel.offsetWidth / 2);
+	carousel.style.transform = `translateX(-${offset}px)`;
+}
+
+function apparrow() {
+	const div = document.getElementById('apps');
+	const numElements = div.children.length;
+	if (numElements > 5) {
+		console.log("Showing buttons, length", numElements)
+		$("#buttons").fadeIn("slow")
+	} else {
+		console.log("Not showing buttons, length", numElements)
+	}
+}
+
+
+function vox() {
+	document.getElementById("vox_cont").classList.add("active")
+	$("#settings").fadeOut("fast")
+	$("#vox").fadeOut("fast")
+	if (document.getElementById("animatedButton_notif").style.display === "block") {
+		var animatedButton = document.getElementById("animatedButton_notif");
+		animatedButton.style.opacity = "0";
+		animatedButton.style.transform = "translateY(20px)";
+		setTimeout(function () {
+			animatedButton.style.display = "none";
+		}, 500); // Adjust the timing as needed
+	}
+	if (document.getElementById("animatedButton_chats").style.display === "block") {
+		var animatedButton2 = document.getElementById("animatedButton_chats");
+		animatedButton2.style.opacity = "0";
+		animatedButton2.style.transform = "translateY(20px)";
+		setTimeout(function () {
+			animatedButton2.style.display = "none";
+		}, 500); // Adjust the timing as needed
+	}
+}
+function closevox() {
+	document.getElementById("vox_cont").classList.remove("active")
+	$("#settings").fadeIn("fast")
+	$("#vox").fadeIn("fast")
+	if (sessionStorage.getItem("more_options") === "active") {
+		console.log("Showing more options")
+		var animatedButton = document.getElementById("animatedButton_notif");
+		animatedButton.style.display = "block";
+		setTimeout(function () {
+			animatedButton.style.opacity = "1";
+			animatedButton.style.transform = "translateY(0)";
+		}, 100);
+		//animatedButton_chats
+		var animatedButton2 = document.getElementById("animatedButton_chats");
+		animatedButton2.style.display = "block";
+		setTimeout(function () {
+			animatedButton2.style.opacity = "1";
+			animatedButton2.style.transform = "translateY(0)";
+		}, 100);
+	}
+}
+
+function show_notif() {
+	document.getElementById("notifications").classList.add("active")
+	$("#settings").fadeOut("fast")
+	$("#vox").fadeOut("fast")
+	if (document.getElementById("animatedButton_notif").style.display === "block") {
+		var animatedButton = document.getElementById("animatedButton_notif");
+		animatedButton.style.opacity = "0";
+		animatedButton.style.transform = "translateY(20px)";
+		setTimeout(function () {
+			animatedButton.style.display = "none";
+		}, 500); // Adjust the timing as needed
+	}
+	if (document.getElementById("animatedButton_chats").style.display === "block") {
+		var animatedButton2 = document.getElementById("animatedButton_chats");
+		animatedButton2.style.opacity = "0";
+		animatedButton2.style.transform = "translateY(20px)";
+		setTimeout(function () {
+			animatedButton2.style.display = "none";
+		}, 500); // Adjust the timing as needed
+	}
+}
+
+function close_notif() {
+	document.getElementById("notifications").classList.remove("active")
+	$("#settings").fadeIn("fast")
+	$("#vox").fadeIn("fast")
+	if (sessionStorage.getItem("more_options") === "active") {
+		console.log("Showing more options")
+		var animatedButton = document.getElementById("animatedButton_notif");
+		animatedButton.style.display = "block";
+		setTimeout(function () {
+			animatedButton.style.opacity = "1";
+			animatedButton.style.transform = "translateY(0)";
+		}, 100);
+		//animatedButton_chats
+		var animatedButton2 = document.getElementById("animatedButton_chats");
+		animatedButton2.style.display = "block";
+		setTimeout(function () {
+			animatedButton2.style.opacity = "1";
+			animatedButton2.style.transform = "translateY(0)";
+		}, 100);
+	}
+}
+
+function oneo() {
+	console.log("PlaceHolder")
 }

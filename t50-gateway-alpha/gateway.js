@@ -40,7 +40,9 @@ function setup() {
 	if (lg_status === "true") {
 		let username = localStorage.getItem("t50-username")
 		let email = localStorage.getItem("t50-email")
-		$("#user-text").html(username)
+		//$("#user-text").html(username)
+    const greet = greetUser()
+    document.getElementById("greet").innerHTML = `${greet}, <span style="margin-bottom: 10px;" id="user-text">${username}</span>`
 		log("Loading Gateway", "green")
 		$("#container").fadeOut("slow", function () {
 			$("#gateway").fadeIn("slow")
@@ -137,7 +139,7 @@ function setup() {
 							}
 							$("#apps").fadeIn("slow")
 							$("#loading-apps-text").fadeOut("slow", function () {
-								document.getElementById("loading-apps-text").innerHTML = `Take a look at the Evox applications available.`
+								document.getElementById("loading-apps-text").innerHTML = `Here are your Evox Applications`
 								$("#loading-apps-text").fadeIn("slow")
 							})
 							$("#loading").fadeOut("slow")
@@ -271,8 +273,9 @@ function docready() {
         }
         $("#loading-div-text").fadeOut("fast")
         $("#loading").fadeIn("fast")
+        const greet = greetUser()
         document.getElementById("gateway").innerHTML = `<div class="centered-text">
-                                                <h2 id="text-me-two" style="margin:0">Welcome, <span id="user-text"></span></h2>
+                                                <h2 id="text-me-two" style="margin:0">${greet}, <span id="user-text"></span></h2>
                                                <p id="loading-apps-text"></p>
                                                 <div style="display: none" id="apps"></div>
                                             </div>`
@@ -375,8 +378,9 @@ function docready() {
                       }
                       $("#loading-div-text").fadeOut("fast")
                       $("#loading").fadeIn("fast")
+                      const greet = greetUser()
                       document.getElementById("gateway").innerHTML = `<div class="centered-text">
-                                                <h2 id="text-me-two" style="margin:0">Welcome, <span id="user-text"></span></h2>
+                                                <h2 id="text-me-two" style="margin:0">${greet}, <span id="user-text"></span></h2>
                                                <p id="loading-apps-text"></p>
                                                 <div style="display: none" id="apps"></div>
                                             </div>`
@@ -683,3 +687,4 @@ function reconnect() {
       $("#loading-bar").fadeOut("slow")
     })
 }
+
