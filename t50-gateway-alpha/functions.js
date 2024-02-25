@@ -404,6 +404,7 @@ function uielements() {
 function settings() {
 	//console.log(document.getElementById("popup").classList.contains("active"))
 	if (document.getElementById("popup").classList.contains("active") === false) {
+		document.body.style.overflow = 'hidden';
 		document.getElementById("gateway").style.overflow = "hidden"
 		$("#dots").fadeOut("slow")
 		$("#profile").fadeOut("slow")
