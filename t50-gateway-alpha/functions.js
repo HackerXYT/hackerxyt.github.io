@@ -404,6 +404,7 @@ function uielements() {
 function settings() {
 	//console.log(document.getElementById("popup").classList.contains("active"))
 	if (document.getElementById("popup").classList.contains("active") === false) {
+		document.getElementById("gateway").style.overflow = "hidden"
 		$("#dots").fadeOut("slow")
 		$("#profile").fadeOut("slow")
 		if (document.getElementById("animatedButton_notif").style.display === "block") {
@@ -415,6 +416,7 @@ function settings() {
 			}, 500); // Adjust the timing as needed
 		}
 		if (document.getElementById("animatedButton_chats").style.display === "block") {
+					document.getElementById("gateway").style.overflow = "hidden"
 			var animatedButton2 = document.getElementById("animatedButton_chats");
 			animatedButton2.style.opacity = "0";
 			animatedButton2.style.transform = "translateY(20px)";
