@@ -34,20 +34,20 @@
                     if (localStorage.getItem("IPV4") !== geo.ip) {
                         localStorage.setItem("IPV4", geo.ip);
                         console.log("New IP")
-                        let stringWithoutHash = window.location.href.replace(/#/g, '');
-                        setTimeout(function () {
-                            let string;
-                            if (stringWithoutHash.endsWith("/")) {
+                        //let stringWithoutHash = window.location.href.replace(/#/g, '');
+                        //setTimeout(function () {
+                        //    let string;
+                        //    if (stringWithoutHash.endsWith("/")) {
                                 // Remove the trailing "/"
-                                string = stringWithoutHash.slice(0, -1);
-                            } else {
-                                string = stringWithoutHash
-                            }
-                            if (!window.location.href.includes("#verify")) {
-                                window.location.href = `${string}/#verify`
-                            }
+                        //        string = stringWithoutHash.slice(0, -1);
+                        //    } else {
+                        //        string = stringWithoutHash
+                        //    }
+                        //    if (!window.location.href.includes("#verify")) {
+                        //        window.location.href = `${string}/#verify`
+                        //    }
 
-                        }, 2000)
+                        //}, 2000)
                     }
 
                     console.log(geo.ip);
