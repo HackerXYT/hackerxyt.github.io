@@ -28,10 +28,11 @@
                 .then(response => response.json())
                 .then(geo => {
                     console.log(localStorage.getItem("IPV4"), geo.ip)
-                    if (window.location.href.includes("#verify")) {
-                        document.getElementById("wait").innerHTML = "Verifying New IP"
-                    }
+                    //if (window.location.href.includes("#verify")) {
+                    //    
+                    //}
                     if (localStorage.getItem("IPV4") !== geo.ip) {
+                        document.getElementById("wait").innerHTML = "Verifying New IP"
                         localStorage.setItem("IPV4", geo.ip);
                         console.log("New IP")
                         //let stringWithoutHash = window.location.href.replace(/#/g, '');
