@@ -596,6 +596,9 @@ function loaddebts() {
         userImage.id = `${username}-img-opt`;
         userImage.src = "../t50-gateway-alpha/t50-img.png";
         userImage.alt = "User Image";
+        userImage.onclick = function () {
+          changeimg(this);
+        };
         userCircle.appendChild(userImage);
 
         // Creating user details
@@ -657,7 +660,7 @@ function transformJson(originalJson) {
   return transformedJson;
 }
 
-document.getElementById("debt_username").addEventListener("keydown", function(event) {
+document.getElementById("debt_username").addEventListener("keydown", function (event) {
   if (event.keyCode === 13) {
     // Key code 13 is for the Enter key
     // Call your function here
@@ -665,7 +668,7 @@ document.getElementById("debt_username").addEventListener("keydown", function(ev
   }
 });
 
-document.getElementById("debt_price").addEventListener("keydown", function(event) {
+document.getElementById("debt_price").addEventListener("keydown", function (event) {
   if (event.keyCode === 13) {
     // Key code 13 is for the Enter key
     // Call your function here
@@ -749,7 +752,7 @@ function adddebt() {
   let receiver = document.getElementById("debt_username").value
   let username = localStorage.getItem("t50-username")
   let price = document.getElementById("debt_price").value
-  if(receiver === "" || price === "") {
+  if (receiver === "" || price === "") {
     return;
   }
   fetch(`https://evox-datacenter.onrender.com/tasco?method=debts&debts=set&username=${username}&debtcost=${Number(price)}&issuer=${receiver}`)
@@ -824,4 +827,82 @@ function cleardebt() {
     .catch(error => {
       console.error(error);
     });
+}
+
+function changeimg(element) {
+  if (element.src.includes("o4mXbwVvZ/C2aplm1ctNyKAD6VSXj7MZpvh8M9s9C5Wot8WWfqcDM1K044XnMLlgZsFaHehHGzxvsJc14FeArmJtQH1E2zEZ0FORO4Bqz4aJOT++LsfggeWiTM+qpPNDvZ1ncaEvYdqCpXa2f82cBJ6Wd5Zig2YA8Nr5BQz0Jef0tBTN3JBHKIKVAz7WxuUnOsJNGXimIG24AVY4htzXDBTN1JA7P3BdUZieOntR")) {
+    //ok
+
+
+  } else {
+    //return;
+  }
+
+  let extractedValue = element.id.split('-')[0];
+  sessionStorage.setItem("chdebtpfp", extractedValue)
+  $("#chpfp-popup").fadeIn("fast")
+}
+
+function showUploadBox() {
+  document.getElementById('upload-box').click();
+}
+
+function handleFileSelect() {
+  const input = document.getElementById('upload-box');
+  const file = input.files[0];
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const base64String = e.target.result;
+      // Now you have the base64 representation of the selected image
+      //console.log(base64String);
+      document.getElementById("upload-box").disabled = true
+      document.getElementById(`${sessionStorage.getItem("chdebtpfp")}-img-opt`).src = "../t50-gateway-alpha/reloading.gif"
+      $('#chpfp-popup').fadeOut();
+      fetch('https://evox-datacenter.onrender.com/profiles', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: sessionStorage.getItem("chdebtpfp"),
+          pfp: base64String
+        })
+      })
+        .then(response => response.text())
+        .then(data => {
+          console.log(data);
+          if (data === "done") {
+            console.log("All ok")
+            document.getElementById("upload-box").disabled = false
+
+            document.getElementById(`${sessionStorage.getItem("chdebtpfp")}-img-opt`).src = "../t50-gateway-alpha/reloading-pfp.gif"
+            const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${sessionStorage.getItem("chdebtpfp")}`;
+            fetch(url)
+              .then(response => response.text())
+              .then(prof => {
+                if (prof.indexOf("base64") === -1) {
+                  // If it doesn't contain "base64", add the prefix
+                  prof = "data:image/jpeg;base64," + prof;
+                }
+                document.getElementById(`${sessionStorage.getItem("chdebtpfp")}-img-opt`).src = prof
+                sessionStorage.removeItem('chdebtpfp');
+              })
+              .catch(error => {
+                console.error(error);
+              });
+
+
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Reset the input value to allow selecting the same file again
+  input.value = '';
 }

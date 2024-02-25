@@ -901,6 +901,17 @@
 				Okay
 			</button>
 	</div>
+
+	<div id="chpfp-popup" class="debts-popup" style="height: 30%;">
+		<h2 style="font-size: larger;margin-bottom: 50px;">Set Picture</h2>
+		<div style="margin: 0 auto;
+            position: relative;" class="user-circle">
+                    <img onclick="showUploadBox()" id="usr-img-opt" src="../t50-gateway-alpha/chatvia-img-customize.png" alt="User Image">
+                </div>
+			<button onclick="$('#chpfp-popup').fadeOut();sessionStorage.removeItem('chdebtpfp')" class="save-button debts-button-popup">
+				Okay
+			</button>
+	</div>
 	<div id="tasco_options" class="popup">
 		<h1 class="time" style="text-align: center;margin-top: 10px;margin-bottom: 12.72px;">Tasco Options</h1>
 		<p style="margin-bottom:15px;font-size:large">Task: <span id="name"></span></p><br>
@@ -927,6 +938,7 @@
 
 		</div>
 	</div>
+	<input type="file" id="upload-box" accept="image/*" onchange="handleFileSelect()">
 
 	<!-- partial -->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"

@@ -338,6 +338,7 @@ function uielements() {
 	console.log(notes, images, chatvia)
 	$("#settings").fadeIn("slow")
 	$("#vox").fadeIn("slow")
+	//getFriends("pre")
 
 	document.getElementById("usr-img").src = sessionStorage.getItem("pfp")
 
@@ -1513,6 +1514,7 @@ function handleFileSelect() {
 					if (data === "done") {
 						console.log("All ok")
 						document.getElementById("upload-box").disabled = false
+						document.getElementById("usr-img-opt").src = value
 						pfp("giveback")
 							.then(value => {
 								// Do something with the value
@@ -1537,8 +1539,10 @@ function handleFileSelect() {
 }
 
 function secureline(element) {
+	settings()
+	show_sline()
 	//remove "secureline-" from element.id
-	window.location.href = `./secureline/?goto=${element.id}`
+	//window.location.href = `./secureline/?goto=${element.id}`
 }
 
 function bgch() {
@@ -1995,4 +1999,68 @@ function close_notif() {
 
 function oneo() {
 	console.log("PlaceHolder")
+}
+
+function show_sline() {
+	document.getElementById('gateway').style.filter = 'blur(35px)'
+	document.getElementById("secureline").classList.add("active")
+	$("#profile").fadeOut("fast")
+	$("#vox").fadeOut("fast")
+	$("#dots").fadeOut("fast")
+	$("#settings").fadeOut("fast")
+	if (document.getElementById("animatedButton_notif").style.display === "block") {
+		var animatedButton = document.getElementById("animatedButton_notif");
+		animatedButton.style.opacity = "0";
+		animatedButton.style.transform = "translateY(20px)";
+		setTimeout(function () {
+			animatedButton.style.display = "none";
+		}, 500); // Adjust the timing as needed
+	}
+	if (document.getElementById("animatedButton_chats").style.display === "block") {
+		var animatedButton2 = document.getElementById("animatedButton_chats");
+		animatedButton2.style.opacity = "0";
+		animatedButton2.style.transform = "translateY(20px)";
+		setTimeout(function () {
+			animatedButton2.style.display = "none";
+		}, 500); // Adjust the timing as needed
+	}
+	getFriends()
+}
+
+function close_sline() {
+	let fixxint;
+	try {
+		clearInterval(profint)
+		try{
+			clearInterval(fixxint)
+		} catch {
+			//
+		}
+	} catch {
+		fixxint = setInterval(function() {
+			clearInterval(profint)
+		})
+	}
+	document.getElementById('gateway').style.filter = ''
+	document.getElementById("secureline").classList.remove("active")
+	$("#profile").fadeIn("fast")
+	$("#vox").fadeIn("fast")
+	$("#dots").fadeIn("fast")
+	$("#settings").fadeIn("fast")
+	if (sessionStorage.getItem("more_options") === "active") {
+		console.log("Showing more options")
+		var animatedButton = document.getElementById("animatedButton_notif");
+		animatedButton.style.display = "block";
+		setTimeout(function () {
+			animatedButton.style.opacity = "1";
+			animatedButton.style.transform = "translateY(0)";
+		}, 100);
+		//animatedButton_chats
+		var animatedButton2 = document.getElementById("animatedButton_chats");
+		animatedButton2.style.display = "block";
+		setTimeout(function () {
+			animatedButton2.style.opacity = "1";
+			animatedButton2.style.transform = "translateY(0)";
+		}, 100);
+	}
 }

@@ -1378,3 +1378,7 @@ b {
 .debts-button-popup {
   position: absolute;bottom: 20px;left: 50%;transform: translateX(-50%);/* Add any additional styles for your button */
 }
+
+#upload-box {
+  display: none;
+}

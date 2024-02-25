@@ -1041,7 +1041,7 @@ a {
   /* Initially hidden */
   visibility: hidden;
   /* Initially hidden */
-  transform: translateY(200%);
+  transform: translateY(100%);
   /* Initially off-screen to the left */
   transition: transform 0.8s ease, opacity 0.8s ease, visibility 0.8s;
   /* Transition for sliding effect, opacity, and visibility */
@@ -1049,6 +1049,304 @@ a {
 
 
 .vox.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateX(0);
+  /* Slide the popup into view */
+}
+
+.secureline {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  padding: 30px;
+  align-items: center;
+  overflow: auto;
+  /* Change from 'visible' to 'auto' */
+  scroll-behavior: smooth;
+  touch-action: auto;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent black overlay */
+  z-index: 999;
+  box-sizing: border-box;
+  /* Include padding in the element's total width and height */
+  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+  color: white;
+  opacity: 0;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateX(100%);
+  /* Initially off-screen to the left */
+  transition: transform 0.8s ease, opacity 0.8s ease, visibility 0.8s;
+  /* Transition for sliding effect, opacity, and visibility */
+}
+
+
+.secureline.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateX(0);
+  /* Slide the popup into view */
+}
+
+.popupsl {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  padding: 30px;
+  align-items: center;
+  overflow: auto;
+  /* Change from 'visible' to 'auto' */
+  scroll-behavior: smooth;
+  touch-action: auto;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent black overlay */
+  z-index: 999;
+  box-sizing: border-box;
+  /* Include padding in the element's total width and height */
+  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+  color: white;
+  opacity: 0;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateX(-100%);
+  /* Initially off-screen to the left */
+  transition: transform 0.8s ease, opacity 0.8s ease, visibility 0.8s;
+  /* Transition for sliding effect, opacity, and visibility */
+}
+
+.popupsl.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateX(0);
+  /* Slide the popup into view */
+}
+
+.sline-actions {
+  overflow-y: auto;
+  max-height: 80%;
+  position: relative;
+  /* Make sure the container is positioned */
+}
+
+.message-container {
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+
+  margin-bottom: 50px;
+  /* Adjust this value to create space for the input */
+  max-height: 73%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  /* Make sure the container is positioned */
+}
+
+.bottom-actions {
+  display: flex;
+  flex-direction: row;
+  background-color: #000;
+  background: black;
+  height: 2%;
+  bottom: 2%;
+  position: fixed;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  /* Add some padding to the bottom actions */
+  z-index: 1;
+  /* Ensure the input container appears above messages */
+}
+
+.svg-icon {
+  position: absolute;
+  left: -30px; /* Adjust this value based on your preference */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.message,
+.message-me {
+  display: inline-flex;
+  /* Change to inline-flex */
+  margin-top: 15px;
+  margin-bottom: 15px;
+  background-color: #333;
+  color: #fff;
+  padding: 15px 30px;
+  font-size: 16px;
+  border-radius: 52px;
+  outline: none;
+  word-wrap: break-word;
+}
+
+.message-me {
+  max-width: 50%;
+  margin-top: 0;
+  margin-left: auto;
+}
+
+.message {
+  margin-right: auto;
+  max-width: 50%;
+}
+
+
+.apple-input-sl {
+  position: fixed;
+  bottom: 10px;
+  background-color: #333;
+  /* Your desired background color */
+  border: none;
+  color: #fff;
+  padding: 15px 30px;
+  padding-left: 20px;
+  /* Adjust this value to add space on the left */
+  font-size: 16px;
+  border-radius: 52px;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  margin: 4px;
+  width: 100%;
+  max-width: 86%;
+  outline: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .apple-input-sl {
+    width: 66%;
+  }
+}
+
+.user-container-sl {
+  display: flex;
+  align-items: center;
+}
+
+.user-circle-sl {
+  color: #fff;
+  background-color: #000;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.user-circle-sl img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.user-circle-sl p {
+  font-family: "SF-username";
+  color: #fff;
+  margin-left: 10px;
+  display: inline-block;
+}
+
+@font-face {
+  font-family: "SF-username";
+  src: url('./secureline/SF-Pro-Text-Heavy.otf');
+}
+
+.boxin {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  padding: 30px;
+  align-items: center;
+  overflow: auto;
+  /* Change from 'visible' to 'auto' */
+  scroll-behavior: smooth;
+  touch-action: auto;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent black overlay */
+  z-index: 999;
+  box-sizing: border-box;
+  /* Include padding in the element's total width and height */
+  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+  color: white;
+  /* Initially hidden */
+  /* Initially hidden */
+  /* Initially off-screen to the left */
+  transition: transform 0.5s ease, opacity 0.5s ease, visibility 0.5s;
+  transition: filter 0.8s ease-in-out;
+  /* Transition for sliding effect, opacity, and visibility */
+}
+
+
+.boxin.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateX(0);
+  /* Slide the popup into view */
+}
+
+.confirm {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+  padding: 30px;
+  align-items: center;
+  overflow: auto;
+  /* Change from 'visible' to 'auto' */
+  scroll-behavior: smooth;
+  touch-action: auto;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent black overlay */
+  z-index: 999;
+  box-sizing: border-box;
+  /* Include padding in the element's total width and height */
+  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+  color: white;
+  opacity: 0;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateY(200%);
+  /* Initially off-screen to the left */
+  transition: transform 0.8s ease, opacity 0.8s ease, visibility 0.8s;
+  /* Transition for sliding effect, opacity, and visibility */
+}
+
+
+.confirm.active {
   opacity: 1;
   /* Show the popup */
   visibility: visible;
