@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Dashboard</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+	<link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+	<!-- partial:index.partial.html -->
+	<header class="header">
+		<div class="header-content responsive-wrapper">
+			<div class="header-logo">
+				<a style="text-decoration:none; color:#ffffff" href="../t50-gateway-alpha/">
+					<img style="width: 32px;height:32px" src="ui-icon.png" />
+					<p style="margin-left: 10px;"><b>Evox Datacenter</b></p>
+				</a>
+			</div>
+			<div class="header-navigation">
+				<nav class="header-navigation-links">
+					<a href="#"> Home </a>
+					<a href="#"> Dashboard </a>
+					<a href="#"> Projects </a>
+					<a href="#"> Tasks </a>
+					<a href="#"> Download </a>
+					<a href="#"> Users </a>
+				</nav>
+				<div class="header-navigation-actions">
+					<a onclick="downloadfiles()" href="#" class="button">
+						<i class="ph-download"></i>
+						<span>Download Files</span>
+					</a>
+					<a href="#" class="icon-button">
+						<i class="ph-gear-bold"></i>
+					</a>
+					<a href="#" class="icon-button">
+						<i class="ph-bell-bold"></i>
+					</a>
+					<a href="#" class="avatar">
+						<img src="https://assets.codepen.io/285131/hat-man.png" alt="" />
+					</a>
+				</div>
+			</div>
+			<a onclick="downloadfiles()" href="#" class="button">
+				<i class="ph-download"></i>
+				<span>Download Files</span>
+			</a>
+			<a onclick="login()" href="#" class="button">
+				<i class="ph-sign-in"></i>
+				<span>Re-Login</span>
+			</a>
+		</div>
+	</header>
+	<main class="main">
+		<div class="responsive-wrapper">
+			<div class="main-header">
+				<h1>Admin Panel</h1>
+				<div class="search">
+					<input id="loginfast" type="text" placeholder="Search" />
+					<button type="submit">
+						<i class="ph-magnifying-glass-bold"></i>
+					</button>
+				</div>
+			</div>
+			<div class="horizontal-tabs">
+				<a onclick='showAccounts()' href="#" id="accounts_tab" class="active">Accounts</a>
+				<a onclick='showProfiles()' href="#" id="profile_tab">Profile Pictures</a>
+				<a onclick='showIPV4()' href="#" id="ipv4_tab">IPV4s</a>
+				<a onclick='showSline()' href="#" id="sline_tab">Secureline</a>
+				<a onclick='showSocial()' href="#" id="social_tab">Social</a>
+				<a onclick='showFlorida()' href="#" id="florida_tab">Florida</a>
+				<a onclick="showTasco()" href="#" id="tasco_tab">Tasco</a>
+				<a onclick="showCryptox()" href="#" id="cryptox_tab">Cryptox</a>
+				<a onclick="showDatacenter()" href="#" id="datacenter_tab">Datacenter</a>
+				<a onclick="showVerification()" href="#" id="verfication_tab">Verification</a>
+				<a onclick="showImgGal()" href="#" id="imggl_tab">Images Gallery</a>
+				<a onclick="showImgDb()" href="#" id="imgdb_tab">Images Database</a>
+			</div>
+			<div class="content-header">
+				<div class="content-header-intro">
+					<h2 id="tab-title">Evox Accounts</h2>
+					<p id="tab-desc">Optimize your productivity with all registered Evox accounts.</p>
+				</div>
+				<div id="tab-opt" class="content-header-actions">
+					<a href="#" class="button">
+						<i class="ph-faders-bold"></i>
+						<span>Filters</span>
+					</a>
+					<a href="#" class="button">
+						<i class="ph-plus-bold"></i>
+						<span>Create Account</span>
+					</a>
+				</div>
+			</div>
+			<div class="content">
+				<div class="content-panel">
+					<div class="vertical-tabs">
+						<a href="#" class="active">View all</a>
+						<a href="#">Developer tools</a>
+						<a href="#">Communication</a>
+						<a href="#">Productivity</a>
+						<a href="#">Browser tools</a>
+						<a href="#">Marketplace</a>
+					</div>
+				</div>
+				<div id="accounts-content" class="content-main">
+					<div id="card-grid" class="card-grid">
+						
+						<article class="card">
+							<div class="card-header">
+								<div>
+									
+									<div class="user-circle"><img src="../t50-gateway-alpha/mt.jpg" /></div>
+									<h3>Moretti</h3>
+								</div>
+								<label class="toggle">
+									<input type="checkbox" checked>
+									<span></span>
+								</label>
+							</div>
+							<div class="card-body">
+								<p>Collaboration between designers and developers.</p>
+							</div>
+							<div class="card-footer">
+								<a href="#">More info</a>
+							</div>
+						</article>
+						<article class="card">
+							<div class="card-header">
+								<div>
+									<span><img src="https://assets.codepen.io/285131/github.svg" /></span>
+									<h3>GitHub</h3>
+								</div>
+								<label class="toggle">
+									<input type="checkbox" checked>
+									<span></span>
+								</label>
+							</div>
+							<div class="card-body">
+								<p>Link pull requests and automate workflows.</p>
+							</div>
+							<div class="card-footer">
+								<a href="#">View integration</a>
+							</div>
+						</article>
+						<article class="card">
+							<div class="card-header">
+								<div>
+									<span><img src="https://assets.codepen.io/285131/figma.svg" /></span>
+									<h3>Figma</h3>
+								</div>
+								<label class="toggle">
+									<input type="checkbox" checked>
+									<span></span>
+								</label>
+							</div>
+							<div class="card-body">
+								<p>Embed file previews in projects.</p>
+							</div>
+							<div class="card-footer">
+								<a href="#">View integration</a>
+							</div>
+						</article>
+						<article class="card">
+							<div class="card-header">
+								<div>
+									<span><img src="https://assets.codepen.io/285131/zapier.svg" /></span>
+									<h3>Zapier</h3>
+								</div>
+								<label class="toggle">
+									<input type="checkbox">
+									<span></span>
+								</label>
+							</div>
+							<div class="card-body">
+								<p>Build custom automations and integrations with apps.</p>
+							</div>
+							<div class="card-footer">
+								<a href="#">View integration</a>
+							</div>
+						</article>
+						<article class="card">
+							<div class="card-header">
+								<div>
+									<span><img src="https://assets.codepen.io/285131/notion.svg" /></span>
+									<h3>Notion</h3>
+								</div>
+								<label class="toggle">
+									<input type="checkbox" checked>
+									<span></span>
+								</label>
+							</div>
+							<div class="card-body">
+								<p>Embed notion pages and notes in projects.</p>
+							</div>
+							<div class="card-footer">
+								<a href="#">View integration</a>
+							</div>
+						</article>
+						<article class="card">
+							<div class="card-header">
+								<div>
+									<span><img src="https://assets.codepen.io/285131/slack.svg" /></span>
+									<h3>Slack</h3>
+								</div>
+								<label class="toggle">
+									<input type="checkbox" checked>
+									<span></span>
+								</label>
+							</div>
+							<div class="card-body">
+								<p>Send notifications to channels and create projects.</p>
+							</div>
+							<div class="card-footer">
+								<a href="#">View integration</a>
+							</div>
+						</article>
+						<article class="card">
+							<div class="card-header">
+								<div>
+									<span><img src="https://assets.codepen.io/285131/zendesk.svg" /></span>
+									<h3>Zendesk</h3>
+								</div>
+								<label class="toggle">
+									<input type="checkbox" checked>
+									<span></span>
+								</label>
+							</div>
+							<div class="card-body">
+								<p>Link and automate Zendesk tickets.</p>
+							</div>
+							<div class="card-footer">
+								<a href="#">View integration</a>
+							</div>
+						</article>
+						<article class="card">
+							<div class="card-header">
+								<div>
+									<span><img src="https://assets.codepen.io/285131/jira.svg" /></span>
+									<h3>Atlassian JIRA</h3>
+								</div>
+								<label class="toggle">
+									<input type="checkbox">
+									<span></span>
+								</label>
+							</div>
+							<div class="card-body">
+								<p>Plan, track, and release great software.</p>
+							</div>
+							<div class="card-footer">
+								<a href="#">View integration</a>
+							</div>
+						</article>
+						<article class="card">
+							<div class="card-header">
+								<div>
+									<span><img src="https://assets.codepen.io/285131/dropbox.svg" /></span>
+									<h3>Dropbox</h3>
+								</div>
+								<label class="toggle">
+									<input type="checkbox" checked>
+									<span></span>
+								</label>
+							</div>
+							<div class="card-body">
+								<p>Everything you need for work, all in one place.</p>
+							</div>
+							<div class="card-footer">
+								<a href="#">View integration</a>
+							</div>
+						</article>
+						<article class="card">
+							<div class="card-header">
+								<div>
+									<span><img src="https://assets.codepen.io/285131/google-chrome.svg" /></span>
+									<h3>Google Chrome</h3>
+								</div>
+								<label class="toggle">
+									<input type="checkbox" checked>
+									<span></span>
+								</label>
+							</div>
+							<div class="card-body">
+								<p>Link your Google account to share bookmarks across your entire team.</p>
+							</div>
+							<div class="card-footer">
+								<a href="#">View integration</a>
+							</div>
+						</article>
+						<article class="card">
+							<div class="card-header">
+								<div>
+									<span><img src="https://assets.codepen.io/285131/discord.svg" /></span>
+									<h3>Discord</h3>
+								</div>
+								<label class="toggle">
+									<input type="checkbox" checked>
+									<span></span>
+								</label>
+							</div>
+							<div class="card-body">
+								<p>Keep in touch with your customers without leaving the app.</p>
+							</div>
+							<div class="card-footer">
+								<a href="#">View integration</a>
+							</div>
+						</article>
+						<article class="card">
+							<div class="card-header">
+								<div>
+									<span><img src="https://assets.codepen.io/285131/google-drive.svg" /></span>
+									<h3>Google Drive</h3>
+								</div>
+								<label class="toggle">
+									<input type="checkbox">
+									<span></span>
+								</label>
+							</div>
+							<div class="card-body">
+								<p>Link your Google account to share files across your entire team.</p>
+							</div>
+							<div class="card-footer">
+								<a href="#">View integration</a>
+							</div>
+						</article>
+					</div>
+				</div>
+				<div id="profile-content" class="content-main" style="display: none;">
+					<div id="card-grid-profiles" class="card-grid">
+						
+					</div>
+				</div>
+				<div id="ipv4-content" class="content-main" style="display: none;">
+					<div id="card-grid-ipv4" class="card-grid">
+						
+					</div>
+				</div>
+
+				<div id="sline-content" class="content-main" style="display: none;">
+					<div id="card-grid-sline" class="card-grid">
+						
+					</div>
+				</div>
+
+				<div id="social-content" class="content-main" style="display: none;">
+					<div id="card-grid-social" class="card-grid">
+						
+					</div>
+				</div>
+				<div id="florida-content" class="content-main" style="display: none;">
+					<div id="card-grid-florida" class="card-grid">
+						
+					</div>
+				</div>
+				<div id="tasco-content" class="content-main" style="display: none;">
+					<div id="card-grid-tasco" class="card-grid">
+						
+					</div>
+				</div>
+				<div id="cryptox-content" class="content-main" style="display: none;">
+					<div id="card-grid-cryptox" class="card-grid">
+						
+					</div>
+				</div>
+				<div id="datacenter-content" class="content-main" style="display: none;">
+					<div id="card-grid-datacenter" class="card-grid">
+						
+					</div>
+				</div>
+				<div id="verfication-content" class="content-main" style="display: none;">
+					<div id="card-grid-verfication" class="card-grid">
+						
+					</div>
+				</div>
+				<div id="imggl-content" class="content-main" style="display: none;">
+					<div id="card-grid-imggl" class="card-grid">
+						
+					</div>
+				</div>
+				<div id="imgdb-content" class="content-main" style="display: none;">
+					<div id="card-grid-imgdb" class="card-grid">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<!-- partial -->
+	<script src='https://unpkg.com/phosphor-icons'></script>
+	<script src="./script.js"></script>
+
+</body>
+
+</html>
