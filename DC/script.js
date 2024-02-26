@@ -830,7 +830,7 @@ function hideAll() {
 }
 
 function downloadfiles() {
-
+    window.location.href = `https://evox-datacenter.onrender.com/?process=download&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`
 }
 //&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}
 let count = 0;
