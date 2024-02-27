@@ -2,7 +2,7 @@
 :root {
   --c-text-primary: #ffffff; /* Inverted from #282a32 */
   --c-text-secondary: #a9abb8; /* Inverted from #686b87 */
-  --c-text-action: #dfdff7; /* Inverted from #404089 */
+  --c-text-action: #fcfcfc; /* Inverted from #404089 */
   --c-accent-primary: #bcb3ff; /* Inverted from #434ce8 */
   --c-border-primary: #10101d; /* Darker border color */
   --c-background-primary: #1f1f1f; /* Darker background color */
