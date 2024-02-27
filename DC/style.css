@@ -218,6 +218,9 @@ img {
   width: 100%;
   max-width: 340px;
 }
+input:disabled {
+  background-color: #10101d;
+  }
 .search input {
   background-color: #10101d;
   font: inherit;
