@@ -39,7 +39,7 @@
                         //setTimeout(function () {
                         //    let string;
                         //    if (stringWithoutHash.endsWith("/")) {
-                                // Remove the trailing "/"
+                        // Remove the trailing "/"
                         //        string = stringWithoutHash.slice(0, -1);
                         //    } else {
                         //        string = stringWithoutHash
@@ -59,6 +59,9 @@
                     loadOtherScripts();
                 })
                 .catch(error => {
+                    ip = "offline"
+                    loadOtherScripts();
+                    console.error("YOU ARE OFFLINE")
                     console.log('Error:', error);
                 });
 
@@ -81,6 +84,37 @@
 
                 // Add more script tags for other JavaScript files as needed
             }
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            var lastTouchY = 0;
+            var preventDefault = false;
+
+            document.addEventListener('touchstart', function (e) {
+                if (e.touches.length != 1) return;
+                lastTouchY = e.touches[0].clientY;
+                preventDefault = false;
+            });
+
+            document.addEventListener('touchmove', function (e) {
+                var touchY = e.touches[0].clientY;
+                var touchYDelta = touchY - lastTouchY;
+                lastTouchY = touchY;
+
+                if (preventDefault) {
+                    e.preventDefault();
+                    return;
+                }
+
+                var scrollingDown = touchYDelta > 0;
+                var scrollingUp = touchYDelta < 0;
+                var isScrollingToTop = window.scrollY === 0 && scrollingDown;
+                var isScrollingToBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight && scrollingUp;
+
+                if (isScrollingToTop || isScrollingToBottom) {
+                    e.preventDefault();
+                    preventDefault = true;
+                }
+            });
         });
     </script>
 </head>
@@ -158,7 +192,7 @@
         <p id="info_text2" style="color: white;display: none"></p>
         <button id="submit2" onclick="verifycode()" class="transparent-button">Continue</button><br>
     </div>
-    <div class="gateway" style="display: none" id="gateway">
+    <div class="gateway" style="display: none;" id="gateway">
         <div class="centered-text">
             <h2 id="greet" style="margin-bottom:5px">Welcome Back, <span style="margin-bottom: 10px;"
                     id="user-text"></span></h2>
@@ -188,9 +222,8 @@
                 </div>
             </div>
         </div>
-
-
     </div>
+
     <div id="vox_cont" class="vox">
         <h3>Quick Actions [PREVIEW]</h3>
         <div style="right:50px;top:50px;position: absolute;">
@@ -242,6 +275,7 @@
         <a href="#" onclick="oneo()" class="apple-button" style="background-color: #375968;">New app released!
             [Secureline] <span>24/2</span></a>
         <a href="#" onclick="oneo()" class="apple-button">${user} accepted your friend request <span>15/2</span></a>
+        <a href="#" onclick="oneo()" class="apple-button">Florida Client Status: <v onclick="loadflrdinf()" id="flrdinfo">load</v></a>
         <div
             style="position: fixed; bottom: 40px;transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
             <div onclick="close_notif()"
@@ -454,6 +488,8 @@
 
 
     </div>
+    
+    
     <div id="confirm_box" class="confirm">
         <h3 style="color: red">Delete Message?</h3>
         <p>Are you sure you want to delete this message?</p>
@@ -544,7 +580,7 @@
 
                 <p style="margin: 6px" class="user-email">These IP addresses and are the devices used to sign
                     in to your account. If you notice any suspicious activity, change your password immediately.</p>
-                <div onclick="return_to_options('authip')"
+                <div id="authip_back_btn" onclick="return_to_options('authip')"
                     style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
                     <div
                         style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
@@ -567,17 +603,12 @@
 
                 <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Username & Emails</h3>
                 <a href="#" style="height: 50%" class="apple-button">Username<span
-                        id="options_section_1_username"></span><svg xmlns="http://www.w3.org/2000/svg" width="20px"
-                        height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#666" />
-                    </svg></a>
+                        id="options_section_1_username"></span></a>
                 <p style="margin: 6px" class="user-email">EMAIL & PHONE NUMBERS</p>
                 <a href="#" id="options_section_1_email" style="height: 50%" class="apple-button"></a>
                 <p style="margin: 6px" class="user-email">These email addresses and phone numbers can be used to sign
                     in. They can also be used to reach you with Chatvia, Evox® and more.</p>
-                <a href="#" style="height: 50%" class="apple-button">Date of birth<span
+                <a onclick="birth_date()" href="#" style="height: 50%" class="apple-button">Date of birth<span
                         id="options_section_1_birthdate">Unknown</span></a>
                 <p style="margin: 6px" class="user-email">SUBSCRIPTIONS</p>
                 <a href="#" style="height: 50%" class="apple-button">Announcements<span
@@ -622,18 +653,18 @@
                     </svg></a>
                 <p style="margin: 6px" class="user-email">Your Evox Account can be used to sign in to apps and websites.
                 </p>
-                <a href="#" style="height: 50%;" class="apple-button">Two Factor Authentication<span
-                        id="2fa_status">On</span></a>
+                <a id="2fa_button" href="#" style="height: 50%;" class="apple-button">Two Factor Authentication<span
+                        id="2fa_status"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20px" height="20px">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
+                              <animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="3s" repeatCount="indefinite" />
+                              <animate attributeName="stroke-dashoffset" values="0, -200;-200, -400" dur="3s" repeatCount="indefinite" />
+                            </circle>
+                          </svg></span></a>
                 <p style="margin: 6px" class="user-email">An application is used to verify your identity when signing
                     in. This prevents your data from being exposed.</p>
                 <p style="margin: 6px" class="user-email">TRUSTED EMAILS</p>
                 <a href="#" style="height: 50%" id="trusted_email" class="apple-button">email@example.com</a>
-                <a href="#" style="height: 50%" class="apple-button">Account Recovery<span>Set Up</span><svg
-                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#666" />
-                    </svg></a>
+                <a href="#" style="height: 50%" class="apple-button">Account Recovery<span>Set Up</span></a>
                 <p style="margin: 6px" class="user-email">If you forget your password, you have a few options to recover
                     your data.</p>
                 <div onclick="return_to_options('security')"
@@ -998,11 +1029,12 @@
                         d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                         fill="#666" />
                 </svg></a>
-                <div class="slidecontainer">
-                    <p>Custom Image Blur</p>
-                    <div class="apple-input"><input type="range" min="1" max="100" value="50" class="slider" id="myRange"></div>
-                    <p style="display: none;">Value: <span id="demo"></span></p>
-                  </div>
+            <div class="slidecontainer">
+                <p>Custom Image Blur</p>
+                <div class="apple-input"><input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+                </div>
+                <p style="display: none;">Value: <span id="demo"></span></p>
+            </div>
             <div class="gallery">
                 <div id="current" style="display:none"></div>
                 <img id="st1" class="active" onclick="addbg_color(this)" src="./bgs/default_bg.png">
@@ -1048,9 +1080,18 @@
             </div>
             <br>
             <br>
-                <button onclick="submitcolorch()" style="font-size:17px;position: fixed;left:50%;align-items: center;transform: translate(-50%, -50%);background-color: #33333370; border: none; color: #fff; padding: 15px 30px; border-radius: 19px; cursor: pointer; display: flex; text-decoration: none; transition: background-color 0.3s ease;">
-                    Change<svg style="margin-left: 10px" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 1024 1024" class="icon" version="1.1"><path d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z" fill="#fff"/><path d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z" fill="#fff"/></svg>
-                </button>
+            <button onclick="submitcolorch()"
+                style="font-size:17px;position: fixed;left:50%;align-items: center;transform: translate(-50%, -50%);background-color: #33333370; border: none; color: #fff; padding: 15px 30px; border-radius: 19px; cursor: pointer; display: flex; text-decoration: none; transition: background-color 0.3s ease;">
+                Change<svg style="margin-left: 10px" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                    viewBox="0 0 1024 1024" class="icon" version="1.1">
+                    <path
+                        d="M905.92 237.76a32 32 0 0 0-52.48 36.48A416 416 0 1 1 96 512a418.56 418.56 0 0 1 297.28-398.72 32 32 0 1 0-18.24-61.44A480 480 0 1 0 992 512a477.12 477.12 0 0 0-86.08-274.24z"
+                        fill="#fff" />
+                    <path
+                        d="M630.72 113.28A413.76 413.76 0 0 1 768 185.28a32 32 0 0 0 39.68-50.24 476.8 476.8 0 0 0-160-83.2 32 32 0 0 0-18.24 61.44zM489.28 86.72a36.8 36.8 0 0 0 10.56 6.72 30.08 30.08 0 0 0 24.32 0 37.12 37.12 0 0 0 10.56-6.72A32 32 0 0 0 544 64a33.6 33.6 0 0 0-9.28-22.72A32 32 0 0 0 505.6 32a20.8 20.8 0 0 0-5.76 1.92 23.68 23.68 0 0 0-5.76 2.88l-4.8 3.84a32 32 0 0 0-6.72 10.56A32 32 0 0 0 480 64a32 32 0 0 0 2.56 12.16 37.12 37.12 0 0 0 6.72 10.56zM230.08 467.84a36.48 36.48 0 0 0 0 51.84L413.12 704a36.48 36.48 0 0 0 51.84 0l328.96-330.56A36.48 36.48 0 0 0 742.08 320l-303.36 303.36-156.8-155.52a36.8 36.8 0 0 0-51.84 0z"
+                        fill="#fff" />
+                </svg>
+            </button>
             <div onclick="return_to_options('bg_settings')"
                 style="position:fixed; top: 20px; left: 20px; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
                 <div
@@ -1214,6 +1255,43 @@
                         </g>
                     </svg>
                     Password/Security
+                </div>
+            </div>
+        </div>
+        <div id="date_of_birth_change" style="display:none;overflow: hidden;">
+
+            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Set Birthdate</h3>
+            <p style="margin: 6px" class="user-details">Set your Evox® date of birth securely. Enter your
+                birthdate and confirm for an update.</p>
+            <div id="user-info-chbirth" class="user-info-default">
+                <div class="user-circle">
+                    <img id="usr-img-chbirth" src="t50-img.png" alt="User Image">
+                </div>
+                <div class="user-details">
+                    <div id="usr-name-chbirth" class="user-name">Error</div>
+                    <div id="usr-email-chbirth" class="user-email">error@example.com</div>
+                </div>
+            </div>
+            <p id="error_date" style="display: none;color: red">Invalid Date</p>
+            <input id="day_b" class="apple-input" type="text" pattern="[0-9]*" placeholder="DD" style="width:40px;" name="quantity" maxlength="2"><input id="month_b" pattern="[0-9]*" class="apple-input" type="text" style="width:40px;" placeholder="MM" name="quantity" maxlength="2"><input id="year_b" pattern="[0-9]*" class="apple-input" type="text" style="width:60px" placeholder="YYYY" name="quantity" maxlength="4">
+            
+            <a href="#" onclick="complete_birth()" class="apple-button-submit">Complete</a>
+            <div onclick="return_to_options('birth')"
+                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
+                <div
+                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+                        id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+                        <g>
+                            <g>
+                                <path xmlns="http://www.w3.org/2000/svg"
+                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+                    Username/Emails
                 </div>
             </div>
         </div>
@@ -1448,6 +1526,15 @@
 
 
     </div>
+    <div id="removeIP_box" class="confirm">
+        <h3 style="color: rgb(255, 119, 0)">Remove IP From Account</h3>
+        <p>Would you like to revoke access to your account from this IP address?<br><br>
+            <span style="background-color: antiquewhite;color:#000;margin-bottom:50px" id="ip-del-content">21432</span></p>
+        
+        <a onclick="confirm_ipremove()" class="apple-button" style="margin-top: 40px">Confirm</a>
+        <a id="cancelbtn" onclick="cancel_ipremove()" class="apple-button">Cancel</a>
+
+    </div>
 
     <div class="notification-container" id="notification">
         You are connected to Evox EPSILON PREVIEW version.
@@ -1500,7 +1587,7 @@
         s.parentNode.insertBefore(g, s);
     }(document, "script"));
 </script>
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="../scripts/jquery-3.7.0.js"></script>
 
 <script>
     let florida_open;
@@ -1511,8 +1598,10 @@
         } else {
             if (flrd_id === "") {
                 console.log("Script is loaded but notifications are not yet accepted")
+                sessionStorage.setItem("flrd_info","Script is loaded but notifications are not yet accepted")
                 if (window.location.href.includes("localhost") || window.location.href.includes("192.168.1.21")) {
                     log("Florida cannot start! Please exit local hosting!", "yellow")
+                    sessionStorage.setItem("flrd_info","Florida cannot start! Please exit local hosting!")
                     clearInterval(florida_open_check)
                 }
             } else {
@@ -1520,11 +1609,13 @@
 
                 if (localStorage.getItem("t50-username") && localStorage.getItem("t50-autologin") === "true") {
                     log("Florida Info Ready!", "green")
+                    sessionStorage.setItem("flrd_info",`Florida Info Ready! ${flrd_id}`)
                     localStorage.setItem("florida_device_id", flrd_id)
                     //can proceed sending florida id for account lc t50-username
                 } else if (sessionStorage.getItem("loaded")) {
                     //page has loaded logged in and can proceed sending florida id for account lc t50-username (auto login disabled)
                     log("Florida Info Ready!", "green")
+                    sessionStorage.setItem("flrd_info",`Florida Info Ready! ${flrd_id}`)
                     localStorage.setItem("florida_device_id", flrd_id)
                     //send fetch
                     const encoded = btoa(flrd_id)
@@ -1552,14 +1643,17 @@
                         });
                 } else if (!localStorage.getItem("t50-username")) {
                     console.log("User has recently logged out or is new")
+                    sessionStorage.setItem("flrd_info","User has recently logged out or is new")
                     //user has recently logged out or user is new to app
                     localStorage.setItem("restart-for-florida", "true")
                 } else if (document.getElementById("container").style.display === "") {
                     //login is shown right now, user has logged in in the past, waiting for new or same account login
                     console.log("User is returning after leaving")
+                    sessionStorage.setItem("flrd_info","User is returning after leaving")
                     localStorage.setItem("restart-for-florida", "true")
                 } else {
                     console.log("Error occured while running florida")
+                    sessionStorage.setItem("flrd_info","Error occured while running florida")
                     localStorage.setItem("restart-for-florida", "true")
                 }
                 clearInterval(florida_open_check)
@@ -1569,7 +1663,7 @@
     }, 1000)
 </script>
 
-<script src='https://cdn.jsdelivr.net/npm/@jaames/iro/dist/iro.min.js'></script>
+<script src='../scripts/iro.min.js'></script>
 <script src="./colors.js"></script>
 <!-- <script src="script.js"></script>
 <script src="new.js"></script>-->

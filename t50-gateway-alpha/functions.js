@@ -15,6 +15,14 @@
 //			console.error('Set Offline error:', error);
 //		});
 //});
+
+var critical = new Audio('./ui-sounds/critical.mp3');
+var ac_complete = new Audio('./ui-sounds/action_complete.mp3');
+var notice = new Audio('./ui-sounds/notice.mp3');
+var qastart = new Audio('./ui-sounds/qa_start.mp3');
+var qaexit = new Audio('./ui-sounds/qa_exit.mp3');
+var notifications = new Audio('./ui-sounds/notifications.mp3');
+
 sessionStorage.removeItem("more_options")
 fetch(`https://evox-datacenter.onrender.com/setOnline?username=${localStorage.getItem("t50-username")}`)
 	.then(response => {
@@ -95,18 +103,18 @@ function custombg() {
 			document.getElementById("bgname").innerHTML = "Desert"
 			document.getElementById("bgname").style.color = "#fff"
 			document.getElementById("st2").classList.add("active")
-			if(blur) {
+			if (blur) {
 				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock1.jpg');background-size: cover;background-position: center;filter: blur(${blur}px);"></div>`
 			} else {
 				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock1.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
 			}
-			
+
 		} else if (name === "stock2.jpg") {
 			document.getElementById("bgname").innerHTML = "Ocean"
 			document.getElementById("bgname").style.color = "#fff"
 			document.getElementById("st3").classList.add("active")
 			//document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
-			if(blur) {
+			if (blur) {
 				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(${blur}px);"></div>`
 			} else {
 				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock1.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
@@ -116,9 +124,9 @@ function custombg() {
 			document.getElementById("bgname").style.color = "#fff"
 			document.getElementById("st4").classList.add("active")
 			//document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
-			if(blur) {
+			if (blur) {
 				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(${blur}px);"></div>`
-			}else {
+			} else {
 				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
 			}
 		} else if (name.includes("#")) {
@@ -132,7 +140,7 @@ function custombg() {
 			//document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('${name}');background-size: cover;background-position: center;filter: blur(10px);"></div>`
 			document.getElementById("current").innerHTML = `<img class="active" id="st5" onclick="addbg(this)" src="${name}">`
 			document.getElementById("current").style.display = ""
-			if(blur) {
+			if (blur) {
 				document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="filter: blur(${blur}px);background-image: url('${name}');background-size: cover;background-position: center;"></div>`
 			} else {
 				document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="filter: blur(10px);background-image: url('${name}');background-size: cover;background-position: center;"></div>`
@@ -431,7 +439,7 @@ function uielements() {
 function settings() {
 	//console.log(document.getElementById("popup").classList.contains("active"))
 	if (document.getElementById("popup").classList.contains("active") === false) {
-		document.body.style.overflow = 'hidden';
+		//document.body.style.overflow = 'hidden';
 		document.getElementById("gateway").style.overflow = "hidden"
 		$("#dots").fadeOut("slow")
 		$("#profile").fadeOut("slow")
@@ -598,23 +606,60 @@ function show_authip() {
 			//console.log(data)
 
 			var ipAddresses = JSON.parse(data);
+			if (data === "[]") {
+				var ipv4List = document.getElementById("ipv4-list");
+				ipv4List.innerHTML = ""
+				var anchor = document.createElement("a");
+				anchor.setAttribute("href", "#");
+				anchor.setAttribute("style", "height: 50%");
+				anchor.classList.add("apple-button");
+				anchor.style.backgroundColor = "red"
+				anchor.innerHTML = `<img src="error.svg">
+				There are no IP adresses saved!<br>Try reloading Gateway.`;
+				ipv4List.appendChild(anchor);
+				console.log("No Values!")
+				return;
+			}
 
 			// Get the element with id "ipv4-list"
 			var ipv4List = document.getElementById("ipv4-list");
 			ipv4List.innerHTML = ""
 			// Loop through each IP address
 			ipAddresses.forEach(function (ip) {
-				if (ip === sessionStorage.getItem("IPV4")) {
+				if (ip === localStorage.getItem("IPV4")) {
 					var anchor = document.createElement("a");
 					anchor.setAttribute("href", "#");
 					anchor.setAttribute("style", "height: 50%");
 					anchor.classList.add("apple-button");
 					anchor.style.backgroundColor = "#3879e0"
 					anchor.innerText = `This Device (${ip})`;
+					anchor.onclick = function () {
+						let json = {
+							"innerHTML": ip
+						}
+						removeIP(json);
+					};
 					ipv4List.appendChild(anchor);
 					return;
 				}
 				if (ip === "1") {
+					return;
+				}
+				if (ip === "null") {
+					var anchor = document.createElement("a");
+					anchor.setAttribute("href", "#");
+					anchor.setAttribute("style", "height: 50%");
+					anchor.classList.add("apple-button");
+					anchor.style.backgroundColor = "red"
+					anchor.innerHTML = `<img src="danger.svg">
+					IP Verification is disabled!<br>Re-enable 2FA by removing this value.`;
+					anchor.onclick = function () {
+						let json = {
+							"innerHTML": "null"
+						}
+						removeIP(json);
+					};
+					ipv4List.appendChild(anchor);
 					return;
 				}
 				// Create a new anchor element
@@ -631,6 +676,9 @@ function show_authip() {
 
 				// Set the inner text to the IP address
 				anchor.innerText = ip;
+				anchor.onclick = function () {
+					removeIP(this);
+				};
 
 				// Append the anchor element to the ipv4List
 				ipv4List.appendChild(anchor);
@@ -648,7 +696,12 @@ function show_account() {
 	console.log("Changing Screens to account")
 	document.getElementById("usr-email-opt").innerHTML = localStorage.getItem("t50-email")
 	document.getElementById("usr-name-opt").innerHTML = localStorage.getItem("t50-username")
-	document.getElementById("usr-img-opt").src = sessionStorage.getItem("pfp")
+	if (sessionStorage.getItem("pfp")) {
+		document.getElementById("usr-img-opt").src = sessionStorage.getItem("pfp")
+	} else {
+		document.getElementById("usr-img-opt").src = "reloading-pfp.gif"
+	}
+
 	$("#main_popup_settings").fadeOut("fast", function () {
 		$("#account_options").fadeIn("fast")
 	})
@@ -662,11 +715,12 @@ function return_settings() {
 function username_email_icon_show() {
 	document.getElementById("options_section_1_username").innerHTML = localStorage.getItem("t50-username")
 	document.getElementById("options_section_1_email").innerHTML = localStorage.getItem("t50-email")
-	if (localStorage.getItem("t50-birthdate")) {
-		document.getElementById("options_section_1_birthdate").innerHTML = localStorage.getItem("t50-birthdate")
-	} else {
-		document.getElementById("options_section_1_birthdate").innerHTML = "Not set"
-	}
+	getBirth()
+	//if (localStorage.getItem("t50-birthdate")) {
+	//	document.getElementById("options_section_1_birthdate").innerHTML = localStorage.getItem("t50-birthdate")
+	//} else {
+	//	document.getElementById("options_section_1_birthdate").innerHTML = "Not set"
+	//}
 
 	if (localStorage.getItem("announcements-enabled")) {
 		document.getElementById("options_section_1_announcements").innerHTML = localStorage.getItem("announcements-enabled")
@@ -679,12 +733,83 @@ function username_email_icon_show() {
 
 }
 
+
+function disable2FA() {
+	//disable 2fa
+	fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${localStorage.getItem("t50-email")}&username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=null`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			console.log(data)
+			document.getElementById("2fa_status").innerHTML = "Off"
+			document.getElementById("2fa_button").onclick = function () {
+				enable2FA(this);
+			};
+			localStorage.setItem("2fa_status", "Off")
+			critical.play()
+
+		}).catch(error => {
+			console.error(error)
+		})
+}
+
+function enable2FA() {
+	fetch(`https://evox-datacenter.onrender.com/authip?method=RemoveIP&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=null`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			console.log("IP Remove Data", data)
+			document.getElementById("2fa_status").innerHTML = "On"
+			document.getElementById("2fa_button").onclick = function () {
+				disable2FA(this);
+			};
+			localStorage.setItem("2fa_status", "On")
+			ac_complete.play()
+
+		}).catch(error => {
+			console.error(error)
+		})
+}
 function pswd_secure() {
-	if (localStorage.getItem("2fa_status")) {
-		document.getElementById("2fa_status").innerHTML = localStorage.getItem("2fa_status")
-	} else {
-		document.getElementById("2fa_status").innerHTML = "Off"
-	}
+	fetch(`https://evox-datacenter.onrender.com/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			console.log(data)
+			if (data.includes("null")) {
+				document.getElementById("2fa_status").innerHTML = "Off"
+				document.getElementById("2fa_button").onclick = function () {
+					enable2FA();
+				};
+				localStorage.setItem("2fa_status", "Off")
+			} else {
+				document.getElementById("2fa_status").innerHTML = "On"
+				document.getElementById("2fa_button").onclick = function () {
+					disable2FA();
+				};
+				localStorage.setItem("2fa_status", "On")
+			}
+
+		}).catch(error => {
+			console.error(error)
+		})
+	//if (localStorage.getItem("2fa_status")) {
+	//	document.getElementById("2fa_status").innerHTML = localStorage.getItem("2fa_status")
+	//} else {
+	//	document.getElementById("2fa_status").innerHTML = "Off"
+	//}
 	document.getElementById("trusted_email").innerHTML = localStorage.getItem("t50-email")
 	//document.getElementById("options_section_1_username").innerHTML = localStorage.getItem("t50-username")
 	//document.getElementById("options_section_1_email").innerHTML = localStorage.getItem("t50-email")
@@ -750,6 +875,7 @@ function acceptfriend(element) {
 		.then(data => {
 			console.log(data)
 			element.innerHTML = "Friends"
+			ac_complete.play()
 
 		}).catch(error => {
 			console.error(error)
@@ -1045,6 +1171,7 @@ function addfriend(element) {
 				// Save the updated array back to localStorage
 				//localStorage.setItem("sent_friend_requests", JSON.stringify(requests));
 				document.getElementById(element.id).innerHTML = `Sent`
+				notice.play()
 			}
 		}).catch(error => {
 			console.error(error);
@@ -1508,6 +1635,10 @@ function return_to_options(where) {
 			$("#background_change_color").fadeOut("fast", function () {
 				$("#background_change").fadeIn("fast")
 			})
+		} else if (where === "birth") {
+			$("#date_of_birth_change").fadeOut("fast", function () {
+				$("#username_email_icon_show").fadeIn("fast")
+			})
 		}
 	}
 }
@@ -1576,18 +1707,18 @@ function secureline(element) {
 }
 
 function bgch() {
-	try{
+	try {
 		var blurStyle = document.getElementById('bgimaget').style.filter;
 		// Extract the blur amount from the filter style
 		var blurAmount = parseFloat(blurStyle.match(/\d+/));
-	
+
 		console.log("Blur amount:", blurAmount, "pixels");
 		var x = blurAmount; // Assuming x is 10 for example
 		document.getElementById("myRange").value = x
-	} catch{
+	} catch {
 
 	}
-	
+
 	$("#loading").fadeIn("fast")
 	$("#main_popup_settings").fadeOut("fast", function () {
 		$("#popup").addClass("active");
@@ -1629,6 +1760,7 @@ function addbg(element) {
 
 	element.classList.add("active")
 	localStorage.setItem("cbg", name)
+	ac_complete.play()
 	custombg()
 }
 
@@ -1747,6 +1879,7 @@ function complete_chpswd() {
 							document.getElementById("gateway").innerHTML = data
 							$("#gateway").fadeIn("slow")
 							$("#popup").addClass("active");
+							ac_complete.play()
 						})
 
 
@@ -1754,6 +1887,7 @@ function complete_chpswd() {
 				})
 			} else if (data === "Cannot set previous password") {
 				$("#old_pswd").fadeIn("fast")
+				critical.play()
 				return;
 			}
 			//console.log(data);
@@ -1900,24 +2034,6 @@ function errors() {
 
 }
 
-function greetUser() {
-	const currentTime = new Date();
-	const currentHour = currentTime.getHours();
-	let greeting;
-
-	if (currentHour >= 5 && currentHour < 12) {
-		greeting = "Good morning";
-	} else if (currentHour >= 12 && currentHour < 18) {
-		greeting = "Good afternoon";
-	} else if (currentHour >= 18 && currentHour < 22) {
-		greeting = "Good evening";
-	} else {
-		greeting = "Greetings";
-	}
-
-	return greeting;
-}
-
 let currentIndex = 0;
 
 function prevSlide() {
@@ -1956,6 +2072,7 @@ function vox() {
 	document.getElementById("vox_cont").classList.add("active")
 	$("#settings").fadeOut("fast")
 	$("#vox").fadeOut("fast")
+	qastart.play()
 	if (document.getElementById("animatedButton_notif").style.display === "block") {
 		var animatedButton = document.getElementById("animatedButton_notif");
 		animatedButton.style.opacity = "0";
@@ -1963,6 +2080,8 @@ function vox() {
 		setTimeout(function () {
 			animatedButton.style.display = "none";
 		}, 500); // Adjust the timing as needed
+		
+ 
 	}
 	if (document.getElementById("animatedButton_chats").style.display === "block") {
 		var animatedButton2 = document.getElementById("animatedButton_chats");
@@ -1977,6 +2096,8 @@ function closevox() {
 	document.getElementById("vox_cont").classList.remove("active")
 	$("#settings").fadeIn("fast")
 	$("#vox").fadeIn("fast")
+	qaexit.currentTime = 0
+	qaexit.play()
 	if (sessionStorage.getItem("more_options") === "active") {
 		console.log("Showing more options")
 		var animatedButton = document.getElementById("animatedButton_notif");
@@ -1999,6 +2120,8 @@ function show_notif() {
 	document.getElementById("notifications").classList.add("active")
 	$("#settings").fadeOut("fast")
 	$("#vox").fadeOut("fast")
+	notifications.currentTime = 0
+	notifications.play()
 	if (document.getElementById("animatedButton_notif").style.display === "block") {
 		var animatedButton = document.getElementById("animatedButton_notif");
 		animatedButton.style.opacity = "0";
@@ -2132,6 +2255,7 @@ function submitcolorch() {
 	document.getElementById("st4").classList.remove("active")
 	document.getElementById("bgname").innerHTML = "Custom Color"
 	document.getElementById("bgname").style.color = "#fff"
+	notice.play()
 }
 
 var slider = document.getElementById("myRange");
@@ -2153,4 +2277,183 @@ slider.oninput = function () {
 	//var x = 100*y
 	document.getElementById('bgimaget').style.filter = `blur(${y}px)`
 	localStorage.setItem("cbg-blur", y)
+}
+
+function removeIP(element) {
+	$("#authip_back_btn").fadeOut("fast", function () {
+		document.getElementById("authips").style.filter = "blur(10px)"
+		document.getElementById("removeIP_box").classList.add("active")
+		const ip = element.innerHTML
+		console.log("IP", ip)
+		document.getElementById("ip-del-content").innerHTML = ip
+
+	})
+
+
+}
+
+function cancel_ipremove() {
+
+	document.getElementById("authips").style.filter = ""
+	document.getElementById("removeIP_box").classList.remove("active")
+	setTimeout(function () {
+		$("#authip_back_btn").fadeIn("fast", function () {
+			document.getElementById("ip-del-content").innerHTML = ""
+		})
+	}, 500)
+}
+
+function confirm_ipremove() {
+	const ip = document.getElementById("ip-del-content").innerHTML
+	fetch(`https://evox-datacenter.onrender.com/authip?method=RemoveIP&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=${ip}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			console.log("IP Remove Data", data)
+			document.getElementById("authips").style.filter = ""
+			document.getElementById("removeIP_box").classList.remove("active")
+			setTimeout(function () {
+				$("#authip_back_btn").fadeIn("fast", function () {
+					document.getElementById("ip-del-content").innerHTML = ""
+				})
+			}, 500)
+			show_authip()
+			ac_complete.play()
+
+		}).catch(error => {
+			console.error(error)
+		})
+}
+
+//cancel_ipremove
+//confirm_ipremove
+
+function loadflrdinf() {
+	document.getElementById("flrdinfo").innerHTML = sessionStorage.getItem("flrd_info")
+}
+
+//date_of_birth_change
+function birth_date() {
+	document.getElementById("usr-name-chbirth").innerHTML = localStorage.getItem("t50-username")
+	document.getElementById("usr-email-chbirth").innerHTML = localStorage.getItem("t50-email")
+	document.getElementById("usr-img-chbirth").src = sessionStorage.getItem("pfp")
+	$("#username_email_icon_show").fadeOut("fast", function () {
+		$("#date_of_birth_change").fadeIn("fast")
+	})
+}
+
+function isNumber(value) {
+	return typeof value === 'number';
+}
+
+document.getElementById("day_b").addEventListener("keyup", function () {
+	var input = this.value; // 'this' refers to the input field
+
+	// Check if the input length is 2
+	if (input.length === 2) {
+		// Perform the action, for example, display an alert
+		document.getElementById("month_b").focus()
+
+		// You can add more actions here as needed
+	}
+});
+document.getElementById("month_b").addEventListener("keyup", function () {
+	var input = this.value; // 'this' refers to the input field
+
+	// Check if the input length is 2
+	if (input.length === 2 || input === "2" || input === "3" || input === "4" || input === "5" || input === "6" || input === "7" || input === "8" || input === "9") {
+		// Perform the action, for example, display an alert
+		document.getElementById("year_b").focus()
+
+		// You can add more actions here as needed
+	}
+});
+document.getElementById("year_b").addEventListener("keypress", function (event) {
+	// Check if the Enter key is pressed
+	if (event.keyCode === 13) {
+		// Do something when Enter is pressed
+		complete_birth()
+		// You can add your desired action here
+	}
+});
+
+
+
+function complete_birth() {
+	let currentDate = new Date();
+	let day = Number(document.getElementById("day_b").value)
+	let month = Number(document.getElementById("month_b").value)
+	let year = Number(document.getElementById("year_b").value)
+	if (isNumber(day) && isNumber(month) && isNumber(year) && !isNaN(day) && !isNaN(month) && !isNaN(year)) {
+		if (day > 0 && day <= 31 && month > 0 && month < 13 && year > 1899 && year < currentDate.getFullYear()) {
+			document.getElementById("error_date").style.display = "none"
+			let birthdate = `${day}/${month}/${year}`
+			console.log(birthdate)
+			fetch(`https://evox-datacenter.onrender.com/accounts?birth=true&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&what=${birthdate}`)
+				.then(response => {
+					if (!response.ok) {
+						throw new Error(`HTTP error! Status: ${response.status}`);
+					}
+					return response.text();
+				})
+				.then(data => {
+					if (data === "Done") {
+						return_to_options("birth")
+						document.getElementById("day_b").value = ""
+						document.getElementById("month_b").value = ""
+						document.getElementById("year_b").value = ""
+						getBirth()
+						ac_complete.play()
+					}
+
+				}).catch(error => {
+					console.error(error)
+				})
+		} else {
+			console.log("Invalid Numbers")
+			document.getElementById("error_date").style.display = ""
+		}
+
+	} else {
+		console.log("Something isnt a number")
+		document.getElementById("error_date").style.display = ""
+	}
+
+
+
+}
+
+function getBirth() {
+	fetch(`https://evox-datacenter.onrender.com/accounts?birth=get&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			console.log(data)
+			if (data === "") {
+				document.getElementById("options_section_1_birthdate").innerHTML = "Not set"
+			} else {
+				document.getElementById("options_section_1_birthdate").innerHTML = data
+				let dateParts = data.split('/');
+
+				let day = parseInt(dateParts[0]);
+				let month = parseInt(dateParts[1]);
+				let year = parseInt(dateParts[2]);
+
+				document.getElementById("day_b").value = day
+				document.getElementById("month_b").value = month
+				document.getElementById("year_b").value = year
+			}
+
+
+		}).catch(error => {
+			console.error(error)
+		})
 }

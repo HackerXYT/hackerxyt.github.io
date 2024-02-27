@@ -17,7 +17,6 @@ body {
   position: relative;
   min-height: 100vh;
   background: #000000;
-  touch-action: manipulation;
   -webkit-user-select: none;
   /* Safari */
   -ms-user-select: none;
@@ -27,6 +26,10 @@ body {
   overflow: hidden;
   overscroll-behavior: none;
   touch-action: none;
+  overscroll-behavior-y: contain;
+  /* For newer browsers */
+  overscroll-behavior: contain;
+  /* For older browsers */
 }
 
 img {
@@ -234,6 +237,9 @@ img {
   /* Initially off-screen to the left */
   transition: transform 0.5s ease, opacity 0.5s ease, visibility 0.5s;
   /* Transition for sliding effect, opacity, and visibility */
+}
+.popup div {
+  transition: filter 0.5s ease-in-out;
 }
 
 .popup.active {
@@ -579,6 +585,8 @@ a {
 }
 
 .gateway {
+  overflow: hidden;
+  touch-action: none;
   transition: filter 0.5s ease-in-out;
 }
 
@@ -694,7 +702,7 @@ a {
 
   /* Hide the .apple-button svg on devices with a minimum width of 769px or more (assumed to be PCs) */
   .apple-button {
-    width: 60%;
+    width: 90%;
     display: block;
   }
 }
@@ -833,6 +841,7 @@ a {
   .apple-button-withicon svg {
     display: none;
   }
+
   .apple-button svg {
     display: none;
   }
@@ -992,7 +1001,7 @@ a {
   border: none;
   border-radius: 17px;
   outline: none;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.364)); 
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.364));
 }
 
 .prev,
@@ -1000,7 +1009,7 @@ a {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background:transparent;
+  background: transparent;
   /* Adjust transparency */
   border: none;
   cursor: pointer;
@@ -1178,7 +1187,8 @@ a {
 
 .svg-icon {
   position: absolute;
-  left: -30px; /* Adjust this value based on your preference */
+  left: -30px;
+  /* Adjust this value based on your preference */
   top: 50%;
   transform: translateY(-50%);
 }

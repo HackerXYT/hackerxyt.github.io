@@ -4,16 +4,34 @@ sessionStorage.removeItem("skipped")
 const ip = sessionStorage.getItem("IPV4")
 $(document).ready(docready())
 function log(text, color) {
-	const styles = `color: ${color}; font-size: 16px; font-weight: normal;`;
-	console.log('%c' + text, styles)
+  const styles = `color: ${color}; font-size: 16px; font-weight: normal;`;
+  console.log('%c' + text, styles)
+}
+
+function greetUser() {
+	const currentTime = new Date();
+	const currentHour = currentTime.getHours();
+	let greeting;
+
+	if (currentHour >= 5 && currentHour < 12) {
+		greeting = "Good morning";
+	} else if (currentHour >= 12 && currentHour < 18) {
+		greeting = "Good afternoon";
+	} else if (currentHour >= 18 && currentHour < 22) {
+		greeting = "Good evening";
+	} else {
+		greeting = "Greetings";
+	}
+
+	return greeting;
 }
 
 function setup() {
-  
+
   try {
     custombg()
   } catch {
-    let inter = setInterval(function() {
+    let inter = setInterval(function () {
       try {
         custombg()
         clearInterval(inter)
@@ -22,12 +40,12 @@ function setup() {
       }
     }, 100)
   }
-	
-	log("T50 Gateway V:Delta 5", "red")
+
+  log("T50 Gateway V:Delta 5", "red")
   try {
     loadusers()
   } catch {
-    let inter = setInterval(function() {
+    let inter = setInterval(function () {
       try {
         loadusers()
         clearInterval(inter)
@@ -36,109 +54,109 @@ function setup() {
       }
     }, 100)
   }
-	let lg_status = sessionStorage.getItem("loaded")
-	if (lg_status === "true") {
-		let username = localStorage.getItem("t50-username")
-		let email = localStorage.getItem("t50-email")
-		//$("#user-text").html(username)
+  let lg_status = sessionStorage.getItem("loaded")
+  if (lg_status === "true") {
+    let username = localStorage.getItem("t50-username")
+    let email = localStorage.getItem("t50-email")
+    //$("#user-text").html(username)
     const greet = greetUser()
     document.getElementById("greet").innerHTML = `${greet}, <span style="margin-bottom: 10px;" id="user-text">${username}</span>`
-		log("Loading Gateway", "green")
-		$("#container").fadeOut("slow", function () {
-			$("#gateway").fadeIn("slow")
-			if (username != null && email != null) {
-				sessionStorage.setItem("skipped", "yes")
-				$("#user-text").html(username)
-				log("Loading Gateway", "green")
-				$("#container").fadeOut("fast")
-				$("#loading").fadeIn("slow")
-				$("#stuck").fadeOut("slow")
-				fetch(`https://evox-datacenter.onrender.com/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
-					.then(response => {
-						if (!response.ok) {
-							throw new Error(`HTTP error! Status: ${response.status}`);
-						}
-						return response.text();
-					})
-					.then(data => {
-						//document.body.style.overflow = 'hidden';
-						if (data === "No Apps Owned") {
-							console.log("No Apps Owned! Want To Register One?")
-						}
-						try {
-							var inputString = data;
-							var parts = inputString.split(', ');
-							var notes, images, chatvia;
-							for (var i = 0; i < parts.length; i++) {
-								var keyValue = parts[i].split(':');
-								if (keyValue.length === 2) { // Ensure there is a key and a value
-									var key = keyValue[0].trim();
-									var value = keyValue[1].trim();
-									if (key === 'Notes') {
-										notes = value;
-									}
-									if (key === 'Images') {
-										images = value;
-									}
-									if (key === 'Chatvia') {
-										chatvia = value;
-									}
-								} else {
-									console.error(`Invalid format for part: ${parts[i]}`);
-								}
-							}
-							console.log('Notes:', notes);
-							console.log('Images:', images);
-							console.log('Chatvia:', chatvia);
-							if (notes === "owned") {//OWN NOTES
-								localStorage.setItem("notes-owned", true)
-								//document.getElementById("apps").innerHTML = `<a onclick="load('notes')" href="#loadapp-notes"><img src="EvoxNotes.png" class="app"></img></a>`
-							} else {
-								localStorage.setItem("notes-owned", false)
-								//document.getElementById("apps").innerHTML = `<a onclick="buy('notes')" href="#loadapp-notes-disabled"><img src="EvoxNotes.png" class="disabledapp"></img></a>`
-							}
-							if (images === "owned") {//OWN IMAGES
-								localStorage.setItem("images-owned", true)
-								if (document.getElementById("apps").innerHTML != "") {
-									document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('images')" href="#loadapp-images"><img src="t50-img.png" class="app"></img></a>`
-								} else {
-									document.getElementById("apps").innerHTML = `<a onclick="load('images')" href="#loadapp-images"><img src="t50-img.png" class="app"></img></a>`
-								}
-							} else {
-								localStorage.setItem("images-owned", false)
-								if (document.getElementById("apps").innerHTML != "") {
-									document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
-								} else {
-									document.getElementById("apps").innerHTML = `<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
-								}
-							}
-							if (chatvia === "owned") { //OWN CHATVIA
-								localStorage.setItem("chatvia-owned", true)
-								//if (document.getElementById("apps").innerHTML != "") {
-								//	document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="app"></img></a>`
-								//} else {
-								//	document.getElementById("apps").innerHTML = `<a onclick="load('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="app"></img></a>`
-								//}
-							} else {
-								localStorage.setItem("chatvia-owned", false)
-								//if (document.getElementById("apps").innerHTML != "") {
-								//	document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
-								//} else {
-								//	document.getElementById("apps").innerHTML = `<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
-								//}
-							}
-							log("Enabling Tasco", "green")
-							document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="https://team50.sytes.net/tasco/tasco-app.png" class="app"></img></a>`
-							log("Enabling SecureLine", "green")
-							//document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('secureline')" href="#loadapp-secureline"><img src="./secureline/sline.png" class="app"></img></a>`
-							if (localStorage.getItem("t50-username") === "papostol") {
-								log("Enabling Transports", "green")
-								$("#transports-app").fadeIn("slow")
-								//document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
-								document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="window.location.href='../DC/'" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a><a onclick="shake_me('transports-disabled');notice('T50 Transports is currently not available')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
-							}
-							$("#apps").fadeIn("slow")
-							$("#loading-apps-text").fadeOut("slow", function () {
+    log("Loading Gateway", "green")
+    $("#container").fadeOut("slow", function () {
+      $("#gateway").fadeIn("slow")
+      if (username != null && email != null) {
+        sessionStorage.setItem("skipped", "yes")
+        $("#user-text").html(username)
+        log("Loading Gateway", "green")
+        $("#container").fadeOut("fast")
+        $("#loading").fadeIn("slow")
+        $("#stuck").fadeOut("slow")
+        fetch(`https://evox-datacenter.onrender.com/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+          })
+          .then(data => {
+            //document.body.style.overflow = 'hidden';
+            if (data === "No Apps Owned") {
+              console.log("No Apps Owned! Want To Register One?")
+            }
+            try {
+              var inputString = data;
+              var parts = inputString.split(', ');
+              var notes, images, chatvia;
+              for (var i = 0; i < parts.length; i++) {
+                var keyValue = parts[i].split(':');
+                if (keyValue.length === 2) { // Ensure there is a key and a value
+                  var key = keyValue[0].trim();
+                  var value = keyValue[1].trim();
+                  if (key === 'Notes') {
+                    notes = value;
+                  }
+                  if (key === 'Images') {
+                    images = value;
+                  }
+                  if (key === 'Chatvia') {
+                    chatvia = value;
+                  }
+                } else {
+                  console.error(`Invalid format for part: ${parts[i]}`);
+                }
+              }
+              console.log('Notes:', notes);
+              console.log('Images:', images);
+              console.log('Chatvia:', chatvia);
+              if (notes === "owned") {//OWN NOTES
+                localStorage.setItem("notes-owned", true)
+                //document.getElementById("apps").innerHTML = `<a onclick="load('notes')" href="#loadapp-notes"><img src="EvoxNotes.png" class="app"></img></a>`
+              } else {
+                localStorage.setItem("notes-owned", false)
+                //document.getElementById("apps").innerHTML = `<a onclick="buy('notes')" href="#loadapp-notes-disabled"><img src="EvoxNotes.png" class="disabledapp"></img></a>`
+              }
+              if (images === "owned") {//OWN IMAGES
+                localStorage.setItem("images-owned", true)
+                if (document.getElementById("apps").innerHTML != "") {
+                  document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('images')" href="#loadapp-images"><img src="t50-img.png" class="app"></img></a>`
+                } else {
+                  document.getElementById("apps").innerHTML = `<a onclick="load('images')" href="#loadapp-images"><img src="t50-img.png" class="app"></img></a>`
+                }
+              } else {
+                localStorage.setItem("images-owned", false)
+                if (document.getElementById("apps").innerHTML != "") {
+                  document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
+                } else {
+                  document.getElementById("apps").innerHTML = `<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
+                }
+              }
+              if (chatvia === "owned") { //OWN CHATVIA
+                localStorage.setItem("chatvia-owned", true)
+                //if (document.getElementById("apps").innerHTML != "") {
+                //	document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="app"></img></a>`
+                //} else {
+                //	document.getElementById("apps").innerHTML = `<a onclick="load('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="app"></img></a>`
+                //}
+              } else {
+                localStorage.setItem("chatvia-owned", false)
+                //if (document.getElementById("apps").innerHTML != "") {
+                //	document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
+                //} else {
+                //	document.getElementById("apps").innerHTML = `<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
+                //}
+              }
+              log("Enabling Tasco", "green")
+              document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="https://team50.sytes.net/tasco/tasco-app.png" class="app"></img></a>`
+              log("Enabling SecureLine", "green")
+              //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('secureline')" href="#loadapp-secureline"><img src="./secureline/sline.png" class="app"></img></a>`
+              if (localStorage.getItem("t50-username") === "papostol") {
+                log("Enabling Transports", "green")
+                $("#transports-app").fadeIn("slow")
+                //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
+                document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="window.location.href='../DC/'" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a><a onclick="shake_me('transports-disabled');notice('T50 Transports is currently not available')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
+              }
+              $("#apps").fadeIn("slow")
+              $("#loading-apps-text").fadeOut("slow", function () {
                 const phrases = [
                   "Your Evox Applications are available below.",
                   "Find your Evox Applications listed below.",
@@ -151,18 +169,28 @@ function setup() {
                   "Your Evox Applications await you below.",
                   "Below, you'll locate your Evox Applications."
                 ];
-                
+
                 const randomIndex = Math.floor(Math.random() * phrases.length);
                 const randomlySelectedPhrase = phrases[randomIndex];
-								document.getElementById("loading-apps-text").innerHTML = randomlySelectedPhrase
-								$("#loading-apps-text").fadeIn("slow")
-							})
-							$("#loading").fadeOut("slow")
-							uielements()
+                document.getElementById("loading-apps-text").innerHTML = randomlySelectedPhrase
+                $("#loading-apps-text").fadeIn("slow")
+              })
+              $("#loading").fadeOut("slow")
+              uielements()
+              var elementToRemove = document.getElementById("loading-div-text");
+
+              // Check if the element exists before trying to remove it
+              if (elementToRemove) {
+                // Remove the element
+                console.log("Loading Text Removed")
+                elementToRemove.remove();
+              } else {
+                console.log("Element not found!");
+              }
               try {
                 uielements()
               } catch {
-                let inter = setInterval(function() {
+                let inter = setInterval(function () {
                   try {
                     uielements()
                     clearInterval(inter)
@@ -172,19 +200,20 @@ function setup() {
                 }, 100)
               }
 
-						} catch (error) {
-							console.error('Error parsing data:', error);
-						}
-					})
-					.catch(error => {
-						console.error('Fetch error:', error);
-					});
-			}
-		});
+            } catch (error) {
+              console.error('Error parsing data:', error);
+            }
+          })
+          .catch(error => {
+            console.error('Fetch error:', error);
+          });
+      }
+    });
 
-	} else {
-		log("Error! Cannot Load Page When Logged Out.", "red")
-	}
+  } else {
+    log("Error! Cannot Load Page When Logged Out.", "red")
+  }
+
 }
 
 
@@ -192,6 +221,7 @@ function docready() {
   $("#loading").fadeOut("slow")
   log("Loading Out", "green")
   document.getElementById("loading-text").innerHTML = `Storage Loaded!`
+
   log("Text In", "cyan")
   let autologin = localStorage.getItem("t50-autologin")
   let loggedin = localStorage.getItem("t50-email")
@@ -199,7 +229,7 @@ function docready() {
   let pswd = atob(acc)
   let username = localStorage.getItem("t50-username")
   if (loggedin != null && autologin === "true") {
-    const url = `https://evox-datacenter.onrender.com/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${ip}`;
+    const url = `https://evox-datacenter.onrender.com/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${localStorage.getItem("IPV4")}`;
 
     fetch(url)
       .then(response => {
@@ -213,7 +243,7 @@ function docready() {
           $("#loading-bar").fadeOut("slow")
           log("Existing Account Verified!", "green")
           sessionStorage.setItem("loaded", true)
-          fetch(`https://evox-datacenter.onrender.com/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${ip}`)
+          fetch(`https://evox-datacenter.onrender.com/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -224,7 +254,7 @@ function docready() {
               if (data === "IP is Mapped") {
                 setup()
               } else if (data === "Unknown IP") {
-                fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${ip}`)
+                fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
                   .then(response => {
                     if (!response.ok) {
                       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -233,6 +263,16 @@ function docready() {
                   })
                   .then(data => {
                     if (data === "Complete") {
+                      var elementToRemove = document.getElementById("loading-div-text");
+
+                      // Check if the element exists before trying to remove it
+                      if (elementToRemove) {
+                        // Remove the element
+                        console.log("Loading Text Removed")
+                        elementToRemove.remove();
+                      } else {
+                        console.log("Element not found!");
+                      }
                       setup()
                       $("#loading-bar").fadeOut("slow")
                     }
@@ -251,7 +291,7 @@ function docready() {
 
         } else if (data === "IP Not Verified") {
           log("Existing Account Verified! IP Not Mapped", "orange")
-          fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${ip}`)
+          fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -303,7 +343,13 @@ function docready() {
           $("#loading-bar").fadeOut("slow")
           document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
           document.getElementById("loading-apps-text").innerHTML = `Servers are currently offline.`
-          setInterval(reconnect(), 4000)
+          try{
+            critical.play()
+          } catch {
+            console.error("Couldn't play sound. User hasn't interacted yet")
+          }
+          
+          setInterval(reconnect(), 1000)
         }
 
         $("#loading").fadeOut("fast")
@@ -328,7 +374,7 @@ function docready() {
           }
         }
         $("#gateway").fadeIn("fast", function () {
-          
+
           $("#apps").fadeIn("slow")
         })
 
@@ -459,77 +505,77 @@ function docready() {
 var submit = document.getElementById("submit");
 submit.addEventListener("click", login())
 
-document.getElementById("dig1").addEventListener("input", function() {
-  if(document.getElementById("dig1").value !== "") {
+document.getElementById("dig1").addEventListener("input", function () {
+  if (document.getElementById("dig1").value !== "") {
     document.getElementById("dig2").focus()
   } else {
     console.log("2FA Possibly Empty")
   }
-  
+
 });
 
-document.getElementById("dig2").addEventListener("input", function() {
-  if(document.getElementById("dig2").value !== "") {
+document.getElementById("dig2").addEventListener("input", function () {
+  if (document.getElementById("dig2").value !== "") {
     document.getElementById("dig3").focus()
   }
 });
-document.getElementById("dig3").addEventListener("input", function() {
-  if(document.getElementById("dig3").value !== "") {
+document.getElementById("dig3").addEventListener("input", function () {
+  if (document.getElementById("dig3").value !== "") {
     document.getElementById("dig4").focus()
   }
 });
-document.getElementById("dig4").addEventListener("input", function() {
-  if(document.getElementById("dig4").value !== "") {
+document.getElementById("dig4").addEventListener("input", function () {
+  if (document.getElementById("dig4").value !== "") {
     document.getElementById("dig5").focus()
   }
 });
-document.getElementById("dig5").addEventListener("input", function() {
-  if(document.getElementById("dig5").value !== "") {
+document.getElementById("dig5").addEventListener("input", function () {
+  if (document.getElementById("dig5").value !== "") {
     document.getElementById("dig6").focus()
   }
 });
 
 document.getElementById("dig2").addEventListener("keydown", function backspaceFunction(event) {
   if (event.key === "Backspace") {
-      console.log("Backspace pressed");
-      if(document.getElementById("dig2").value === "") {
-        document.getElementById("dig1").focus()
-      }
+    console.log("Backspace pressed");
+    if (document.getElementById("dig2").value === "") {
+      document.getElementById("dig1").focus()
+    }
   }
 });
 
 document.getElementById("dig3").addEventListener("keydown", function backspaceFunction(event) {
   if (event.key === "Backspace") {
-      console.log("Backspace pressed");
-      if(document.getElementById("dig3").value === "") {
-        document.getElementById("dig2").focus()
-      }
+    console.log("Backspace pressed");
+    if (document.getElementById("dig3").value === "") {
+      document.getElementById("dig2").focus()
+    }
   }
 });
 
 document.getElementById("dig4").addEventListener("keydown", function backspaceFunction(event) {
   if (event.key === "Backspace") {
-      console.log("Backspace pressed");
-      if(document.getElementById("dig4").value === "") {
-        document.getElementById("dig3").focus()
-      }
+    console.log("Backspace pressed");
+    if (document.getElementById("dig4").value === "") {
+      document.getElementById("dig3").focus()
+    }
   }
 });
 
 document.getElementById("dig5").addEventListener("keydown", function backspaceFunction(event) {
   if (event.key === "Backspace") {
-      console.log("Backspace pressed");
-      if(document.getElementById("dig5").value === "") {
-        document.getElementById("dig4").focus()
-      }
+    console.log("Backspace pressed");
+    if (document.getElementById("dig5").value === "") {
+      document.getElementById("dig4").focus()
+    }
   }
 });
 document.getElementById("dig6").addEventListener("keydown", function backspaceFunction(event) {
   if (event.key === "Backspace") {
-      console.log("Backspace pressed");
-      if(document.getElementById("dig6").value === "") {
-        document.getElementById("dig5").focus()
-      }
+    console.log("Backspace pressed");
+    if (document.getElementById("dig6").value === "") {
+      document.getElementById("dig5").focus()
+    }
   }
 });
 
@@ -549,7 +595,7 @@ function verifycode() {
   let dig6 = document.getElementById("dig6").value
   let code = `${dig1}${dig2}${dig3}${dig4}${dig5}${dig6}`
   console.log("Just to verify:\n", email, username, password, code)
-  fetch(`https://evox-datacenter.onrender.com/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${ip}`)
+  fetch(`https://evox-datacenter.onrender.com/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${localStorage.getItem("IPV4")}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -599,7 +645,7 @@ function login() {
   let email = document.getElementById("email").value
   let password = document.getElementById("password").value
   console.log(email, "********")
-  const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}&ip=${ip}`;
+  const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}&ip=${localStorage.getItem("IPV4")}`;
 
   fetch(url)
     .then(response => {
@@ -685,7 +731,7 @@ document.getElementById("ver_code").addEventListener("keypress", function (event
 function reconnect() {
   console.log("Reconnecting..")
   $("#loading-bar").fadeIn("slow")
-  fetch("https://evox-datacenter.onrender.com/accounts")
+  fetch("https://evox-datacenter.onrender.com/cron")
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -693,13 +739,18 @@ function reconnect() {
       return response.text();
     })
     .then(data => {
-      if (data === "T50 Database Online") {
-        docready()
+      if (data === "Online!") {
+        console.log("Back Online!")
+        //docready()
+        $("#stuck").fadeOut("slow", function() {
+          window.location.reload()
+        })
       } else {
         $("#loading-bar").fadeOut("slow")
       }
     }).catch(error => {
       $("#loading-bar").fadeOut("slow")
+      reconnect()
     })
 }
 
