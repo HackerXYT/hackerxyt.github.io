@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="client.css">
     <link rel="stylesheet" href="secondary.css">
     <link rel="stylesheet" href="indicator.css">
+    <script src="../scripts/howler.js"></script>
     <script defer>
         function removeTrailingSlash(value) {
             return value.replace(/\/$/, ''); // Replace trailing slash if it exists
@@ -258,7 +259,7 @@
 
     <div id="notifications" class="vox">
         <h3>Notifications [PREVIEW]</h3>
-        <div style="right:50px;top:50px;position: absolute;">
+        <a onclick="clearNotifications()" style="right:50px;top:50px;position: absolute;">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px"
                 height="25px" viewBox="0 0 1024 1024" t="1569683368540" class="icon" version="1.1" p-id="9723">
                 <defs>
@@ -268,14 +269,25 @@
                     d="M899.1 869.6l-53-305.6H864c14.4 0 26-11.6 26-26V346c0-14.4-11.6-26-26-26H618V138c0-14.4-11.6-26-26-26H432c-14.4 0-26 11.6-26 26v182H160c-14.4 0-26 11.6-26 26v192c0 14.4 11.6 26 26 26h17.9l-53 305.6c-0.3 1.5-0.4 3-0.4 4.4 0 14.4 11.6 26 26 26h723c1.5 0 3-0.1 4.4-0.4 14.2-2.4 23.7-15.9 21.2-30zM204 390h272V182h72v208h272v104H204V390z m468 440V674c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v156H416V674c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v156H202.8l45.1-260H776l45.1 260H672z"
                     p-id="9724" />
             </svg>
-        </div>
+        </a>
+        <div id="notif_container"></div>
+        <!--<a href="#" onclick="oneo()" class="apple-button" style="display: flex; align-items: center;">
+            <div class="user-circle" style="margin-right: 10px;width: 50px;height: 50px;">
+                <img src="" id="Kyriakos-pfp" alt="User Kyriakos Image">
+            </div>
+            <p style="margin: 0;">New request!</p>
+            <span>9:50</span>
+        </a>
+        
+        
         <a href="#" onclick="oneo()" class="apple-button">You have a new friend request! <span>9:50</span></a>
         <a href="#" onclick="oneo()" class="apple-button">Login from new device <span>3:15</span></a>
         <a href="#" onclick="oneo()" class="apple-button">Profile picture changed <span>3:13</span></a>
         <a href="#" onclick="oneo()" class="apple-button" style="background-color: #375968;">New app released!
             [Secureline] <span>24/2</span></a>
         <a href="#" onclick="oneo()" class="apple-button">${user} accepted your friend request <span>15/2</span></a>
-        <a href="#" onclick="oneo()" class="apple-button">Florida Client Status: <v onclick="loadflrdinf()" id="flrdinfo">load</v></a>
+        <a href="#" onclick="oneo()" class="apple-button">Florida Client Status: <v onclick="loadflrdinf()"
+                id="flrdinfo">load</v></a>-->
         <div
             style="position: fixed; bottom: 40px;transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
             <div onclick="close_notif()"
@@ -308,20 +320,20 @@
         <div id="sline-container"><!--Empty-->
 
 
-            <div onclick="showchat('bantou')" class="list-user-info">
-                <div class="user-circle"><img src="../loading.gif" id="bantou-pfp" alt="User bantou Image"></div>
+            <!--<div onclick="showchat('bantou')" class="list-user-info">
+                <div class="user-circle"><img src="./loading.gif" id="bantou-pfp" alt="User bantou Image"></div>
                 <div class="user-details">
                     <div class="user-name">bantou</div>
                     <div class="user-email" id="user-bantou-email">bantou@onionmail.com</div>
                 </div>
             </div>
             <div class="list-user-info">
-                <div class="user-circle"><img src="../loading.gif" id="papostol-pfp" alt="User papostol Image"></div>
+                <div class="user-circle"><img src="./loading.gif" id="papostol-pfp" alt="User papostol Image"></div>
                 <div class="user-details">
                     <div class="user-name">papostol</div>
                     <div class="user-email" id="user-papostol-email">papostol@onionmail.com</div>
                 </div>
-            </div>
+            </div>-->
             <div class="list-user-info"></div>
 
         </div>
@@ -353,7 +365,7 @@
                         stroke-linejoin="round" />
                 </svg></a>
             <div class="user-circle-sl">
-                <img id="secureline-img-chat" src="../t50-img.png" alt="User Image">
+                <img id="secureline-img-chat" src="./t50-img.png" alt="User Image">
                 <p id="chat-username">SecureLine</p>
             </div>
         </div>
@@ -488,8 +500,8 @@
 
 
     </div>
-    
-    
+
+
     <div id="confirm_box" class="confirm">
         <h3 style="color: red">Delete Message?</h3>
         <p>Are you sure you want to delete this message?</p>
@@ -654,12 +666,15 @@
                 <p style="margin: 6px" class="user-email">Your Evox Account can be used to sign in to apps and websites.
                 </p>
                 <a id="2fa_button" href="#" style="height: 50%;" class="apple-button">Two Factor Authentication<span
-                        id="2fa_status"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20px" height="20px">
+                        id="2fa_status"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20px"
+                            height="20px">
                             <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
-                              <animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="3s" repeatCount="indefinite" />
-                              <animate attributeName="stroke-dashoffset" values="0, -200;-200, -400" dur="3s" repeatCount="indefinite" />
+                                <animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="3s"
+                                    repeatCount="indefinite" />
+                                <animate attributeName="stroke-dashoffset" values="0, -200;-200, -400" dur="3s"
+                                    repeatCount="indefinite" />
                             </circle>
-                          </svg></span></a>
+                        </svg></span></a>
                 <p style="margin: 6px" class="user-email">An application is used to verify your identity when signing
                     in. This prevents your data from being exposed.</p>
                 <p style="margin: 6px" class="user-email">TRUSTED EMAILS</p>
@@ -1273,8 +1288,11 @@
                 </div>
             </div>
             <p id="error_date" style="display: none;color: red">Invalid Date</p>
-            <input id="day_b" class="apple-input" type="text" pattern="[0-9]*" placeholder="DD" style="width:40px;" name="quantity" maxlength="2"><input id="month_b" pattern="[0-9]*" class="apple-input" type="text" style="width:40px;" placeholder="MM" name="quantity" maxlength="2"><input id="year_b" pattern="[0-9]*" class="apple-input" type="text" style="width:60px" placeholder="YYYY" name="quantity" maxlength="4">
-            
+            <input id="day_b" class="apple-input" type="text" pattern="[0-9]*" placeholder="DD" style="width:40px;"
+                name="quantity" maxlength="2"><input id="month_b" pattern="[0-9]*" class="apple-input" type="text"
+                style="width:40px;" placeholder="MM" name="quantity" maxlength="2"><input id="year_b" pattern="[0-9]*"
+                class="apple-input" type="text" style="width:60px" placeholder="YYYY" name="quantity" maxlength="4">
+
             <a href="#" onclick="complete_birth()" class="apple-button-submit">Complete</a>
             <div onclick="return_to_options('birth')"
                 style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
@@ -1499,7 +1517,7 @@
     <div onclick="vox()" id="vox"
         style="position: fixed; bottom: 60px; left:35px; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;display: none;">
         <div class="user-circle">
-            <img id="vox-img" src="SVKl.gif" alt="User Image">
+            <img id="vox-img" src="./internal/giphy (12).gif" alt="User Image">
         </div>
     </div>
     <div onclick="dots()" id="dots"
@@ -1529,8 +1547,9 @@
     <div id="removeIP_box" class="confirm">
         <h3 style="color: rgb(255, 119, 0)">Remove IP From Account</h3>
         <p>Would you like to revoke access to your account from this IP address?<br><br>
-            <span style="background-color: antiquewhite;color:#000;margin-bottom:50px" id="ip-del-content">21432</span></p>
-        
+            <span style="background-color: antiquewhite;color:#000;margin-bottom:50px" id="ip-del-content">21432</span>
+        </p>
+
         <a onclick="confirm_ipremove()" class="apple-button" style="margin-top: 40px">Confirm</a>
         <a id="cancelbtn" onclick="cancel_ipremove()" class="apple-button">Cancel</a>
 
@@ -1598,10 +1617,10 @@
         } else {
             if (flrd_id === "") {
                 console.log("Script is loaded but notifications are not yet accepted")
-                sessionStorage.setItem("flrd_info","Script is loaded but notifications are not yet accepted")
+                sessionStorage.setItem("flrd_info", "Script is loaded but notifications are not yet accepted")
                 if (window.location.href.includes("localhost") || window.location.href.includes("192.168.1.21")) {
                     log("Florida cannot start! Please exit local hosting!", "yellow")
-                    sessionStorage.setItem("flrd_info","Florida cannot start! Please exit local hosting!")
+                    sessionStorage.setItem("flrd_info", "Florida cannot start! Please exit local hosting!")
                     clearInterval(florida_open_check)
                 }
             } else {
@@ -1609,13 +1628,13 @@
 
                 if (localStorage.getItem("t50-username") && localStorage.getItem("t50-autologin") === "true") {
                     log("Florida Info Ready!", "green")
-                    sessionStorage.setItem("flrd_info",`Florida Info Ready! ${flrd_id}`)
+                    sessionStorage.setItem("flrd_info", `Florida Info Ready! ${flrd_id}`)
                     localStorage.setItem("florida_device_id", flrd_id)
                     //can proceed sending florida id for account lc t50-username
                 } else if (sessionStorage.getItem("loaded")) {
                     //page has loaded logged in and can proceed sending florida id for account lc t50-username (auto login disabled)
                     log("Florida Info Ready!", "green")
-                    sessionStorage.setItem("flrd_info",`Florida Info Ready! ${flrd_id}`)
+                    sessionStorage.setItem("flrd_info", `Florida Info Ready! ${flrd_id}`)
                     localStorage.setItem("florida_device_id", flrd_id)
                     //send fetch
                     const encoded = btoa(flrd_id)
@@ -1643,17 +1662,17 @@
                         });
                 } else if (!localStorage.getItem("t50-username")) {
                     console.log("User has recently logged out or is new")
-                    sessionStorage.setItem("flrd_info","User has recently logged out or is new")
+                    sessionStorage.setItem("flrd_info", "User has recently logged out or is new")
                     //user has recently logged out or user is new to app
                     localStorage.setItem("restart-for-florida", "true")
                 } else if (document.getElementById("container").style.display === "") {
                     //login is shown right now, user has logged in in the past, waiting for new or same account login
                     console.log("User is returning after leaving")
-                    sessionStorage.setItem("flrd_info","User is returning after leaving")
+                    sessionStorage.setItem("flrd_info", "User is returning after leaving")
                     localStorage.setItem("restart-for-florida", "true")
                 } else {
                     console.log("Error occured while running florida")
-                    sessionStorage.setItem("flrd_info","Error occured while running florida")
+                    sessionStorage.setItem("flrd_info", "Error occured while running florida")
                     localStorage.setItem("restart-for-florida", "true")
                 }
                 clearInterval(florida_open_check)

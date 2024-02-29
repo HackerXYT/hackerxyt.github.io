@@ -16,13 +16,37 @@
 //		});
 //});
 
-var critical = new Audio('./ui-sounds/critical.mp3');
-var ac_complete = new Audio('./ui-sounds/action_complete.mp3');
-var notice = new Audio('./ui-sounds/notice.mp3');
-var qastart = new Audio('./ui-sounds/qa_start.mp3');
-var qaexit = new Audio('./ui-sounds/qa_exit.mp3');
-var notifications = new Audio('./ui-sounds/notifications.mp3');
+//var disabled = new Audio('./ui-sounds/qa_exit_old.mp3');
+//var ac_complete = new Audio('./ui-sounds/action_complete.mp3');
+//var qastart = new Audio('./ui-sounds/qa_start.mp3');
+//var qaexit = new Audio('./ui-sounds/qa_exit.mp3');
+//var notifications = new Audio('./ui-sounds/notifications.mp3');
+//var notice_s = new Audio("./ui-sounds/notice.mp3")
 
+var disabled = new Howl({
+	src: ['./ui-sounds/qa_exit_old.mp3'],
+	volume: 1
+});
+var ac_complete = new Howl({
+	src: ['./ui-sounds/action_complete.mp3'],
+	volume: 1
+});
+var qastart = new Howl({
+	src: ['./ui-sounds/qa_start.mp3'],
+	volume: 1
+});
+var qaexit = new Howl({
+	src: ['./ui-sounds/qa_exit.mp3'],
+	volume: 1
+});
+var notifications = new Howl({
+	src: ['./ui-sounds/notifications.mp3'],
+	volume: 1
+});
+var notice_s = new Howl({
+	src: ['./ui-sounds/notice.mp3'],
+	volume: 1
+});
 sessionStorage.removeItem("more_options")
 fetch(`https://evox-datacenter.onrender.com/setOnline?username=${localStorage.getItem("t50-username")}`)
 	.then(response => {
@@ -80,7 +104,20 @@ function fadeError(method) {
 }
 
 function skip() {
-	log("Skipped!", "red")
+	let Skipped;
+	try {
+		log("Skipped!", "red")
+		try {
+			clearInterval(Skipped)
+		} catch {
+			//
+		}
+	} catch {
+		Skipped = setInterval(function () {
+			log("Skipped!", "red")
+		}, 800)
+	}
+
 	$("#container").fadeIn("slow", function () {
 		$("#loading").fadeOut("slow")
 		$("#loading-div-text").fadeOut("fast")
@@ -750,7 +787,7 @@ function disable2FA() {
 				enable2FA(this);
 			};
 			localStorage.setItem("2fa_status", "Off")
-			critical.play()
+			disabled.play()
 
 		}).catch(error => {
 			console.error(error)
@@ -1171,7 +1208,7 @@ function addfriend(element) {
 				// Save the updated array back to localStorage
 				//localStorage.setItem("sent_friend_requests", JSON.stringify(requests));
 				document.getElementById(element.id).innerHTML = `Sent`
-				notice.play()
+				notice_s.play()
 			}
 		}).catch(error => {
 			console.error(error);
@@ -1887,7 +1924,7 @@ function complete_chpswd() {
 				})
 			} else if (data === "Cannot set previous password") {
 				$("#old_pswd").fadeIn("fast")
-				critical.play()
+				disabled.play()
 				return;
 			}
 			//console.log(data);
@@ -2080,8 +2117,8 @@ function vox() {
 		setTimeout(function () {
 			animatedButton.style.display = "none";
 		}, 500); // Adjust the timing as needed
-		
- 
+
+
 	}
 	if (document.getElementById("animatedButton_chats").style.display === "block") {
 		var animatedButton2 = document.getElementById("animatedButton_chats");
@@ -2096,7 +2133,6 @@ function closevox() {
 	document.getElementById("vox_cont").classList.remove("active")
 	$("#settings").fadeIn("fast")
 	$("#vox").fadeIn("fast")
-	qaexit.currentTime = 0
 	qaexit.play()
 	if (sessionStorage.getItem("more_options") === "active") {
 		console.log("Showing more options")
@@ -2116,29 +2152,150 @@ function closevox() {
 	}
 }
 
-function show_notif() {
-	document.getElementById("notifications").classList.add("active")
-	$("#settings").fadeOut("fast")
-	$("#vox").fadeOut("fast")
-	notifications.currentTime = 0
-	notifications.play()
-	if (document.getElementById("animatedButton_notif").style.display === "block") {
-		var animatedButton = document.getElementById("animatedButton_notif");
-		animatedButton.style.opacity = "0";
-		animatedButton.style.transform = "translateY(20px)";
-		setTimeout(function () {
-			animatedButton.style.display = "none";
-		}, 500); // Adjust the timing as needed
-	}
-	if (document.getElementById("animatedButton_chats").style.display === "block") {
-		var animatedButton2 = document.getElementById("animatedButton_chats");
-		animatedButton2.style.opacity = "0";
-		animatedButton2.style.transform = "translateY(20px)";
-		setTimeout(function () {
-			animatedButton2.style.display = "none";
-		}, 500); // Adjust the timing as needed
-	}
+function clearNotifications() {
+	$("#notif_container").fadeOut("fast")
+	fetch(`https://evox-datacenter.onrender.com/notifications?process=clear&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			console.log(data)
+			show_notif("no")
+			$("#notif_container").fadeIn("fast")
+		}).catch(error => {
+			console.error(error)
+		})
 }
+
+
+function show_notif(nosound) {
+    fetch(`https://evox-datacenter.onrender.com/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log(data);
+            var container = document.getElementById("notif_container");
+            container.innerHTML = "";
+            if (data === `{"notifications":[]}` || data === "No notifications!") {
+                var a = document.createElement("a");
+                a.href = "#";
+                a.className = "apple-button";
+                a.appendChild(document.createTextNode("There's nothing here, yet." + " "));
+                container.appendChild(a);
+                return;
+            }
+            let jsonData = JSON.parse(data);
+            var notifications = jsonData.notifications;
+            console.log(notifications);
+            notifications.reverse(); // Reverse the order of notifications
+
+            notifications.forEach(function (notification) {
+                var image;
+                const sentimage = notification.image;
+                if (!sentimage.includes("http")) {
+                    const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${notification.image}`;
+                    fetch(url)
+                        .then(response => response.text())
+                        .then(data => {
+                            if (data.indexOf("base64") === -1) {
+                                // If it doesn't contain "base64", add the prefix
+                                data = "data:image/jpeg;base64," + data;
+                            }
+                            image = data;
+                            createNotificationElement(image, notification);
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+
+                } else {
+                    image = notification.image;
+                    createNotificationElement(image, notification);
+                }
+            });
+
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+    document.getElementById("notifications").classList.add("active");
+    $("#settings").fadeOut("fast");
+    $("#vox").fadeOut("fast");
+    if (!nosound) {
+        notifications.play();
+    } else {
+        notice_s.play();
+    }
+
+    if (document.getElementById("animatedButton_notif").style.display === "block") {
+        var animatedButton = document.getElementById("animatedButton_notif");
+        animatedButton.style.opacity = "0";
+        animatedButton.style.transform = "translateY(20px)";
+        setTimeout(function () {
+            animatedButton.style.display = "none";
+        }, 500); // Adjust the timing as needed
+    }
+    if (document.getElementById("animatedButton_chats").style.display === "block") {
+        var animatedButton2 = document.getElementById("animatedButton_chats");
+        animatedButton2.style.opacity = "0";
+        animatedButton2.style.transform = "translateY(20px)";
+        setTimeout(function () {
+            animatedButton2.style.display = "none";
+        }, 500); // Adjust the timing as needed
+    }
+}
+
+function createNotificationElement(image, notification) {
+    var container = document.getElementById("notif_container");
+
+    var a = document.createElement("a");
+    a.href = "#";
+    a.className = "apple-button";
+    a.style.display = "flex";
+    a.style.alignItems = "center";
+    a.onclick = function () {
+        go_to(notification.app, this);
+    };
+
+    var div = document.createElement("div");
+    div.className = "user-circle";
+    div.style.marginRight = "10px";
+    div.style.width = "50px";
+    div.style.height = "50px";
+
+    var img = document.createElement("img");
+    img.src = image;
+    img.alt = "User Image";
+    div.appendChild(img);
+
+    var p = document.createElement("p");
+    p.textContent = notification.content;
+    p.style.margin = "0";
+
+    var span = document.createElement("span");
+    var timestamp = new Date(notification.timestamp);
+    var day = timestamp.getDate();
+    var month = timestamp.getMonth() + 1; // Months are zero-based
+
+    // Format day and month as DD/MM
+    var formattedDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month;
+    span.textContent = formattedDate;
+
+    a.appendChild(div);
+    a.appendChild(p);
+    a.appendChild(span);
+
+    container.appendChild(a);
+}
+
 
 function close_notif() {
 	document.getElementById("notifications").classList.remove("active")
@@ -2255,7 +2412,7 @@ function submitcolorch() {
 	document.getElementById("st4").classList.remove("active")
 	document.getElementById("bgname").innerHTML = "Custom Color"
 	document.getElementById("bgname").style.color = "#fff"
-	notice.play()
+	notice_s.play()
 }
 
 var slider = document.getElementById("myRange");
@@ -2456,4 +2613,33 @@ function getBirth() {
 		}).catch(error => {
 			console.error(error)
 		})
+}
+
+function go_to(where, element) {
+    // Find the <p> element inside the temporary element
+    const paragraphElement = element.querySelector('p');
+	let paragraphContent;
+    // Check if the <p> element exists
+    if (paragraphElement) {
+        // Get the text content of the <p> element
+        paragraphContent = paragraphElement.textContent.trim();
+        console.log(paragraphContent); // Output the content of <p>
+    } else {
+        console.log("No <p> element found in the provided HTML string.");
+    }
+	//where may be secureline or a url that contains an image for an evox app
+	if(where === "Secureline") {
+		close_notif()
+		show_sline()
+	} else if(paragraphContent.includes("IP")) {
+		close_notif()
+		profile()
+		show_authip()
+	} else if(paragraphContent.includes("Password")) {
+		close_notif()
+		profile()
+	} else {
+		console.log("Could not find what to do for", where)
+	}
+
 }

@@ -9,21 +9,21 @@ function log(text, color) {
 }
 
 function greetUser() {
-	const currentTime = new Date();
-	const currentHour = currentTime.getHours();
-	let greeting;
+  const currentTime = new Date();
+  const currentHour = currentTime.getHours();
+  let greeting;
 
-	if (currentHour >= 5 && currentHour < 12) {
-		greeting = "Good morning";
-	} else if (currentHour >= 12 && currentHour < 18) {
-		greeting = "Good afternoon";
-	} else if (currentHour >= 18 && currentHour < 22) {
-		greeting = "Good evening";
-	} else {
-		greeting = "Greetings";
-	}
+  if (currentHour >= 5 && currentHour < 12) {
+    greeting = "Good morning";
+  } else if (currentHour >= 12 && currentHour < 18) {
+    greeting = "Good afternoon";
+  } else if (currentHour >= 18 && currentHour < 22) {
+    greeting = "Good evening";
+  } else {
+    greeting = "Greetings";
+  }
 
-	return greeting;
+  return greeting;
 }
 
 function setup() {
@@ -41,7 +41,21 @@ function setup() {
     }, 100)
   }
 
-  log("T50 Gateway V:Delta 5", "red")
+  let version;
+  try {
+    log("Evox Gateway V:Epsilon 0.6", "cyan")
+    try {
+      clearInterval(version)
+    } catch {
+      //
+    }
+  } catch {
+    version = setInterval(function () {
+      log("Evox Gateway V:Epsilon 0.6", "cyan")
+    }, 800)
+  }
+
+
   try {
     loadusers()
   } catch {
@@ -61,13 +75,27 @@ function setup() {
     //$("#user-text").html(username)
     const greet = greetUser()
     document.getElementById("greet").innerHTML = `${greet}, <span style="margin-bottom: 10px;" id="user-text">${username}</span>`
-    log("Loading Gateway", "green")
+    try {
+      log("Loading Gateway", "green")
+    } catch {
+      setTimeout(function () {
+        log("Loading Gateway", "green")
+      }, 950)
+    }
+
     $("#container").fadeOut("slow", function () {
       $("#gateway").fadeIn("slow")
       if (username != null && email != null) {
         sessionStorage.setItem("skipped", "yes")
         $("#user-text").html(username)
-        log("Loading Gateway", "green")
+        try {
+          log("Loading Gateway", "green")
+        } catch {
+          setTimeout(function () {
+            log("Loading Gateway", "green")
+          }, 950)
+        }
+
         $("#container").fadeOut("fast")
         $("#loading").fadeIn("slow")
         $("#stuck").fadeOut("slow")
@@ -145,12 +173,13 @@ function setup() {
                 //	document.getElementById("apps").innerHTML = `<a onclick="buy('chatvia')" href="#loadapp-chatvia"><img src="chatvia-img.png" class="disabledapp"></img></a>`
                 //}
               }
-              log("Enabling Tasco", "green")
+              const styles = `color: #766ee6; font-size: 19px; font-weight: normal;`;
+              console.log('%c' + "Enabling Tasco", styles)
               document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="https://team50.sytes.net/tasco/tasco-app.png" class="app"></img></a>`
-              log("Enabling SecureLine", "green")
+              console.log("Enabling SecureLine")
               //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('secureline')" href="#loadapp-secureline"><img src="./secureline/sline.png" class="app"></img></a>`
               if (localStorage.getItem("t50-username") === "papostol") {
-                log("Enabling Transports", "green")
+                console.log('%c' + "Enabling Transports", styles)
                 $("#transports-app").fadeIn("slow")
                 //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
                 document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="window.location.href='../DC/'" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a><a onclick="shake_me('transports-disabled');notice('T50 Transports is currently not available')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
@@ -211,7 +240,7 @@ function setup() {
     });
 
   } else {
-    log("Error! Cannot Load Page When Logged Out.", "red")
+    console.log('%c' + "Error! Cannot Load Page When Logged Out.", `color: red; font-size: 16px; font-weight: bold;`)
   }
 
 }
@@ -219,10 +248,9 @@ function setup() {
 
 function docready() {
   $("#loading").fadeOut("slow")
-  log("Loading Out", "green")
+  console.log('%c' + "Loading Out", `color: green; font-size: 16px; font-weight: normal;`)
   document.getElementById("loading-text").innerHTML = `Storage Loaded!`
-
-  log("Text In", "cyan")
+  console.log('%c' + "Text In", `color: cyan; font-size: 16px; font-weight: normal;`)
   let autologin = localStorage.getItem("t50-autologin")
   let loggedin = localStorage.getItem("t50-email")
   let acc = localStorage.getItem("t50pswd")
@@ -241,7 +269,7 @@ function docready() {
       .then(data => {
         if (data.includes("Credentials Correct")) {
           $("#loading-bar").fadeOut("slow")
-          log("Existing Account Verified!", "green")
+          console.log('%c' + "Account Verified!", `color: green; font-size: 16px; font-weight: bold;`)
           sessionStorage.setItem("loaded", true)
           fetch(`https://evox-datacenter.onrender.com/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
@@ -290,7 +318,7 @@ function docready() {
             });
 
         } else if (data === "IP Not Verified") {
-          log("Existing Account Verified! IP Not Mapped", "orange")
+          console.log('%c' + "Existing Account Verified! IP Not Mapped", `color: orange; font-size: 16px; font-weight: bold;`)
           fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
               if (!response.ok) {
@@ -307,7 +335,7 @@ function docready() {
               console.error('Fetch error:', error);
             });
         } else {
-          log("Existing Account Verification Failed!", "red")
+          console.log('%c' + "Account Verification Failed!", `color: red; font-size: 20px; font-weight: bold;`)
           localStorage.removeItem("t50-email")
           localStorage.removeItem("t50pswd")
           localStorage.removeItem("t50-username")
@@ -343,12 +371,12 @@ function docready() {
           $("#loading-bar").fadeOut("slow")
           document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
           document.getElementById("loading-apps-text").innerHTML = `Servers are currently offline.`
-          try{
+          try {
             critical.play()
           } catch {
             console.error("Couldn't play sound. User hasn't interacted yet")
           }
-          
+
           setInterval(reconnect(), 1000)
         }
 
@@ -394,7 +422,7 @@ function docready() {
     $("#stuck").fadeOut("slow")
     setTimeout(function () {
       $("#loading-div-text").fadeOut("slow", function () {
-        document.getElementById("loading-text").innerHTML = `Connecting To Database<span id="dots"></span>`
+        document.getElementById("loading-text").innerHTML = `Connecting<span id="dots"></span>`
         $("#loading-div-text").fadeIn("slow", function () {
           $("#dots").html(".")
           setTimeout(function () {
@@ -415,7 +443,7 @@ function docready() {
                     .then(data => {
                       $("#loading-bar").fadeOut("slow")
                       if (data === "T50 Database Online" && sessionStorage.getItem("skipped") !== "yes") {
-                        log("Server Online!", "green")
+                        console.log('%c' + "Server Online!", `color: green; font-size: 16px; font-weight: normal;`)
                         $("#container").fadeIn("slow", function () {
                           $("#loading").fadeOut("slow")
                           $("#loading-div-text").fadeOut("fast")
@@ -742,7 +770,7 @@ function reconnect() {
       if (data === "Online!") {
         console.log("Back Online!")
         //docready()
-        $("#stuck").fadeOut("slow", function() {
+        $("#stuck").fadeOut("slow", function () {
           window.location.reload()
         })
       } else {
