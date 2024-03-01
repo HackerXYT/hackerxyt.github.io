@@ -291,9 +291,12 @@ function create_chat() {
 let profint;
 function getFriends(pre) {
     if(!pre) {
+      
         profint = setInterval(function() {
             $("#profile").fadeOut("slow")
         }, 500)
+    } else {
+      sline_refresh.play()
     }
     $("#load-users-friends").fadeIn("fast")
     fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)

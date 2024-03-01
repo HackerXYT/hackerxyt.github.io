@@ -609,6 +609,7 @@ document.getElementById("dig6").addEventListener("keydown", function backspaceFu
 
 
 function verifycode() {
+  login_ok.play()
   let info = sessionStorage.getItem("ACCOUNT_DATA")
   const account = JSON.parse(info)
   let email = account.email
@@ -634,6 +635,7 @@ function verifycode() {
       if (data === "Complete") {
         $("#2fa").fadeOut("slow")
         console.log("All Done")
+        
         localStorage.setItem("t50pswd", `${btoa(password)}`)
         sessionStorage.removeItem("ACCOUNT_DATA")
         sessionStorage.setItem("2FA_READY", "true")
@@ -670,6 +672,7 @@ function verifycode() {
 }
 
 function login() {
+  login_ok.play()
   let email = document.getElementById("email").value
   let password = document.getElementById("password").value
   console.log(email, "********")

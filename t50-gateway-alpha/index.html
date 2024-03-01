@@ -237,6 +237,15 @@
         <a href="#" onclick="oneo()" class="apple-button">Accept All Friend Requests (5)</a>
         <a href="#" onclick="oneo()" class="apple-button">Disable/Enable Auto-login</a>
         <a href="#" onclick="oneo()" class="apple-button">Change profile picture</a>
+        <a href="#" onclick="loadflrdinf()" class="apple-button">Get Florida Info<svg id="flrd_svg" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20px"
+            height="20px">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
+                <animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
+                    repeatCount="indefinite" />
+                <animate attributeName="stroke-dashoffset" values="0, -200;-200, -900" dur="2s"
+                    repeatCount="indefinite" />
+            </circle>
+        </svg></a>
         <div
             style="position: fixed; bottom: 40px;transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
             <div onclick="closevox()"
@@ -258,7 +267,7 @@
     </div>
 
     <div id="notifications" class="vox">
-        <h3>Notifications [PREVIEW]</h3>
+        <h3>Notifications [BETA]</h3>
         <a onclick="clearNotifications()" style="right:50px;top:50px;position: absolute;">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px"
                 height="25px" viewBox="0 0 1024 1024" t="1569683368540" class="icon" version="1.1" p-id="9723">
@@ -1614,10 +1623,10 @@
         } else {
             if (flrd_id === "") {
                 console.log("Script is loaded but notifications are not yet accepted")
-                sessionStorage.setItem("flrd_info", "Script is loaded but notifications are not yet accepted")
+                sessionStorage.setItem("flrd_info", "Script Loaded")
                 if (window.location.href.includes("localhost") || window.location.href.includes("192.168.1.21")) {
                     log("Florida cannot start! Please exit local hosting!", "yellow")
-                    sessionStorage.setItem("flrd_info", "Florida cannot start! Please exit local hosting!")
+                    sessionStorage.setItem("flrd_info", "Localhosting!")
                     clearInterval(florida_open_check)
                 }
             } else {
@@ -1625,13 +1634,13 @@
 
                 if (localStorage.getItem("t50-username") && localStorage.getItem("t50-autologin") === "true") {
                     log("Florida Info Ready!", "green")
-                    sessionStorage.setItem("flrd_info", `Florida Info Ready! ${flrd_id}`)
+                    sessionStorage.setItem("flrd_info", `Ready: ${flrd_id}`)
                     localStorage.setItem("florida_device_id", flrd_id)
                     //can proceed sending florida id for account lc t50-username
                 } else if (sessionStorage.getItem("loaded")) {
                     //page has loaded logged in and can proceed sending florida id for account lc t50-username (auto login disabled)
                     log("Florida Info Ready!", "green")
-                    sessionStorage.setItem("flrd_info", `Florida Info Ready! ${flrd_id}`)
+                    sessionStorage.setItem("flrd_info", `Ready: ${flrd_id}`)
                     localStorage.setItem("florida_device_id", flrd_id)
                     //send fetch
                     const encoded = btoa(flrd_id)
@@ -1659,17 +1668,17 @@
                         });
                 } else if (!localStorage.getItem("t50-username")) {
                     console.log("User has recently logged out or is new")
-                    sessionStorage.setItem("flrd_info", "User has recently logged out or is new")
+                    sessionStorage.setItem("flrd_info", "Recently Logged In Or New")
                     //user has recently logged out or user is new to app
                     localStorage.setItem("restart-for-florida", "true")
                 } else if (document.getElementById("container").style.display === "") {
                     //login is shown right now, user has logged in in the past, waiting for new or same account login
                     console.log("User is returning after leaving")
-                    sessionStorage.setItem("flrd_info", "User is returning after leaving")
+                    sessionStorage.setItem("flrd_info", "User Returned After Leaving")
                     localStorage.setItem("restart-for-florida", "true")
                 } else {
                     console.log("Error occured while running florida")
-                    sessionStorage.setItem("flrd_info", "Error occured while running florida")
+                    sessionStorage.setItem("flrd_info", "An error occured while running florida")
                     localStorage.setItem("restart-for-florida", "true")
                 }
                 clearInterval(florida_open_check)

@@ -43,8 +43,52 @@ var notifications = new Howl({
 	src: ['./ui-sounds/notifications.mp3'],
 	volume: 1
 });
+var notif_out = new Howl({
+	src: ['./ui-sounds/notif_out.mp3'],
+	volume: 1
+});
 var notice_s = new Howl({
 	src: ['./ui-sounds/notice.mp3'],
+	volume: 1
+});
+var goback = new Howl({
+	src: ['./ui-sounds/goback.mp3'],
+	volume: 1
+});
+var settings_open = new Howl({
+	src: ['./ui-sounds/settings_open.mp3'],
+	volume: 1
+});
+var sline_open = new Howl({
+	src: ['./ui-sounds/sline_in.mp3'],
+	volume: 1
+});
+var sline_close = new Howl({
+	src: ['./ui-sounds/sline_out.mp3'],
+	volume: 1
+});
+var sline_refresh = new Howl({
+	src: ['./ui-sounds/sline_refresh.mp3'],
+	volume: 1
+});
+var click = new Howl({
+	src: ['./ui-sounds/click_button.mp3'],
+	volume: 1
+});
+var click_social = new Howl({
+	src: ['./ui-sounds/click_social.mp3'],
+	volume: 1
+});
+var more_opt = new Howl({
+	src: ['./ui-sounds/more_options.mp3'],
+	volume: 1
+});
+var more_opt_c = new Howl({
+	src: ['./ui-sounds/more_options_c.mp3'],
+	volume: 1
+});
+var login_ok = new Howl({
+	src: ['./ui-sounds/login.mp3'],
 	volume: 1
 });
 sessionStorage.removeItem("more_options")
@@ -476,6 +520,7 @@ function uielements() {
 function settings() {
 	//console.log(document.getElementById("popup").classList.contains("active"))
 	if (document.getElementById("popup").classList.contains("active") === false) {
+		settings_open.play()
 		//document.body.style.overflow = 'hidden';
 		document.getElementById("gateway").style.overflow = "hidden"
 		$("#dots").fadeOut("slow")
@@ -506,6 +551,7 @@ function settings() {
 			//document.body.style.overflow = 'hidden';
 		}, 100)
 	} else if (document.getElementById("popup").classList.contains("active")) {
+		goback.play()
 		document.getElementById('gateway').style.filter = 'none'; // Add a blur effect to the mainContent
 		//$("#bottom-logo").fadeOut("slow", function () {
 		$("#settings").fadeIn("slow")
@@ -745,6 +791,7 @@ function show_account() {
 }
 
 function return_settings() {
+	goback.play()
 	$("#account_options").fadeOut("fast", function () {
 		$("#main_popup_settings").fadeIn("fast")
 	})
@@ -1616,6 +1663,7 @@ function change_password() {
 }
 
 function return_to_options(where) {
+	goback.play()
 	if (where) {
 		if (where === "security") {
 			$("#pswd_secure").fadeOut("fast", function () {
@@ -2018,7 +2066,8 @@ function notice(message) {
 function dots() {
 	if (sessionStorage.getItem("more_options")) {
 		sessionStorage.removeItem("more_options")
-		console.log("Hiding more options")
+		more_opt_c.play()
+		//console.log("Hiding more options")
 		var animatedButton = document.getElementById("animatedButton_notif");
 		animatedButton.style.opacity = "0";
 		animatedButton.style.transform = "translateY(20px)";
@@ -2033,7 +2082,8 @@ function dots() {
 			animatedButton2.style.display = "none";
 		}, 500); // Adjust the timing as needed
 	} else {
-		console.log("Showing more options")
+		more_opt.play()
+		//console.log("Showing more options")
 		sessionStorage.setItem("more_options", "active")
 		var animatedButton = document.getElementById("animatedButton_notif");
 		animatedButton.style.display = "block";
@@ -2298,6 +2348,7 @@ function createNotificationElement(image, notification) {
 
 
 function close_notif() {
+	notif_out.play()
 	document.getElementById("notifications").classList.remove("active")
 	$("#settings").fadeIn("fast")
 	$("#vox").fadeIn("fast")
@@ -2324,6 +2375,7 @@ function oneo() {
 }
 
 function show_sline() {
+	sline_open.play()
 	document.getElementById('gateway').style.filter = 'blur(35px)'
 	document.getElementById("secureline").classList.add("active")
 	$("#profile").fadeOut("fast")
@@ -2350,6 +2402,7 @@ function show_sline() {
 }
 
 function close_sline() {
+
 	let fixxint;
 	try {
 		clearInterval(profint)
@@ -2364,6 +2417,7 @@ function close_sline() {
 		})
 	}
 	document.getElementById('gateway').style.filter = ''
+	sline_close.play()
 	document.getElementById("secureline").classList.remove("active")
 	$("#profile").fadeIn("fast")
 	$("#vox").fadeIn("fast")
@@ -2490,7 +2544,37 @@ function confirm_ipremove() {
 //confirm_ipremove
 
 function loadflrdinf() {
-	document.getElementById("flrdinfo").innerHTML = sessionStorage.getItem("flrd_info")
+	$("#flrd_svg").fadeIn("fast")
+	setTimeout(function () {
+		const oldhtml = document.getElementById("notification").innerHTML
+		var notification = document.getElementById('notification');
+		if (notification.className.includes("show")) {
+			console.log("Notification Is Shown")
+			notification.classList.remove('show');
+			setTimeout(function () {
+				document.getElementById("notification").innerHTML = sessionStorage.getItem("flrd_info")
+				notification.classList.add('show');
+				$("#flrd_svg").fadeOut("fast")
+				setTimeout(function () {
+					notification.classList.remove('show');
+				}, 2500);
+			}, 500)
+		} else {
+			document.getElementById("notification").innerHTML = sessionStorage.getItem("flrd_info")
+			notification.classList.add('show');
+			$("#flrd_svg").fadeOut("fast")
+			setTimeout(function () {
+				notification.classList.remove('show');
+			}, 2500);
+		}
+		setTimeout(function () {
+			document.getElementById("notification").innerHTML = oldhtml
+		}, 3000)
+
+
+
+
+	}, 1500)
 }
 
 //date_of_birth_change
@@ -2617,6 +2701,8 @@ function getBirth() {
 
 function go_to(where, element) {
     // Find the <p> element inside the temporary element
+	click.stop()
+	notif_out.stop()
     const paragraphElement = element.querySelector('p');
 	let paragraphContent;
     // Check if the <p> element exists
@@ -2643,3 +2729,25 @@ function go_to(where, element) {
 	}
 
 }
+
+const appleButtons = document.querySelectorAll('.apple-button');
+
+// Add click event listener to each apple button
+appleButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // Do something when the button is clicked
+        console.log("Button clicked!");
+		click.play()
+    });
+});
+
+const appleButtonsWIC = document.querySelectorAll('.apple-button-withicon');
+
+// Add click event listener to each apple button
+appleButtonsWIC.forEach(button => {
+    button.addEventListener('click', () => {
+        // Do something when the button is clicked
+        //console.log("Button clicked!");
+		click_social.play()
+    });
+});
