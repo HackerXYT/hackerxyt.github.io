@@ -1172,7 +1172,7 @@ a {
 .bottom-actions {
   display: flex;
   flex-direction: row;
-  background-color: #000;
+  /*background-color: #000;*/
   background: black;
   height: 2%;
   bottom: 2%;
