@@ -1173,7 +1173,7 @@ a {
   display: flex;
   flex-direction: row;
   /*background-color: #000;*/
-  background: black;
+  /*background: black;*/
   height: 2%;
   bottom: 2%;
   position: fixed;
