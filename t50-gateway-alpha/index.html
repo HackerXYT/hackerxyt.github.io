@@ -1739,7 +1739,7 @@
         } else {
             if (flrd_id === "") {
                 console.log("Script is loaded but notifications are not yet accepted")
-                sessionStorage.setItem("flrd_info", "Script Loaded")
+                sessionStorage.setItem("flrd_info", "Not accepted")
                 if (window.location.href.includes("localhost") || window.location.href.includes("192.168.1.21")) {
                     log("Florida cannot start! Please exit local hosting!", "yellow")
                     sessionStorage.setItem("flrd_info", "Localhosting!")
