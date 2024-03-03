@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="theme-color" content="#202d33" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#202d33" media="(prefers-color-scheme: dark)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" 
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="client.css"><link rel="stylesheet" href="secondary.css">
+</head>
+<style>
+    .gallery-container {
+            width: 100%;
+            max-width: 600px; /* Set a maximum width for larger screens */
+            margin: 0; /* Center the gallery on the page */
+        }
+
+        .image-wrapper {
+            width: 32.33%; /* Take 1/3 of the horizontal space */
+            float: left;
+            box-sizing: border-box;
+            position: relative;
+            margin: 2px
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Fill the container without stretching */
+            display: block;
+            
+        }
+</style>
+<body>
+    <div class="background" style="background: repeating-radial-gradient(circle, #361e1e, #3c2828, #3e1c1c, #361d1d, #392121 20px);"></div>
+    
+    <div id="container" class="container" style="display:none">
+        <img src="evox-logo.png" alt="Logo" class="logo" id="myLogo">
+        <span id="use_switch"><input autocomplete="off" id="email" type="email" class="input-box" placeholder="Email"></span>
+        <div style="display: none" id="rem-user" class="user-info">
+            <div class="user-circle">
+                <img id="usr-img" src="loading.gif" alt="User Image">
+            </div>
+            <div class="user-details">
+                <div id="usr-name" class="user-name">err</div>
+                <div id="usr-email" class="user-email">ph@evox.com</div>
+            </div>
+        </div>
+        <input autocomplete="off" id="password" type="password" class="input-box" placeholder="Password">
+        <p id="info_text" style="color: white;display: none"></p>
+        <button id="submit" onclick="login()" class="transparent-button">Login</button><br>
+        <button id="change-acc" style="display: none;" onclick="ch_acc()" class="second-button">Change Account</button><br>
+        <p style="color: #a7b3bf">T50 Images ownership is confirmed via linked account.</p>
+    </div>
+    <div style="display: none" id="gallery"><h2 id="header" style="color: white;margin-left: 20px;margin-top: 30px">Welcome Back, <span style="color: #e77979" id="usr">test</span>.</h2><p id="gallery-text" style="color: white;margin-left: 20px">Here is your personal encrypted gallery</p>
+    <div id="container-img" class="gallery-container">
+        <!-- Add more image wrappers as needed -->
+    </div>
+</div>
+    <img style="display: none;user-drag: none;user-select: none;" id="bottom-logo" src="another_logo.png" alt="Another Logo" class="bottom-logo">
+    <img style="display: none;user-select: none;" id="bottom-logo-start" src="footer-in.png" alt="Another Logo" class="bottom-logo">
+    <div id="popup" class="popup">
+        <span onclick="close_popup()" class="popup-close"><svg onclick="close_popup()" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z" fill="#000000"/></svg></span>
+        <!-- Content of the popup -->
+        <h3 style="margin-top: 10px;margin-bottom: 18.72px;">Account Info</h3>
+        <p style="margin:0%">Email: <span id="settings_email_ph">"USER"</span><br>Username: <span id="settings_username_ph">"USER"</span></p>
+        
+        <h3 style="margin-bottom: 0;">Photo Management</h3>
+        
+        <p style="margin-top:0%;margin-bottom: 2px;">Upload New Photo: <label for="imageFileInput" class="custom-file-upload">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                <path d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2" stroke="#1C274C" stroke-width="2" stroke-linecap="round"/>
+                <path d="M2 12.5001L3.75159 10.9675C4.66286 10.1702 6.03628 10.2159 6.89249 11.0721L11.1822 15.3618C11.8694 16.0491 12.9512 16.1428 13.7464 15.5839L14.0446 15.3744C15.1888 14.5702 16.7369 14.6634 17.7765 15.599L21 18.5001" stroke="#1C274C" stroke-width="2" stroke-linecap="round"/>
+                <path d="M17 2V11M17 2L20 5M17 2L14 5" stroke="#1C274C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+          </label>
+          <input type="file" accept="image/*" id="imageFileInput" onchange="encodeImageToBase64()" style="display:none;" multiple accept="image/*"><br>
+           <div class="checkbox-container">
+            <input type="checkbox" id="dbcheck" class="checkbox-input">
+            <label for="myCheckbox" class="checkbox-label">Upload To Private DB</label>
+        </div> <br>
+        <button onclick="loadprivate()" style="height:20px;width:auto;position: absolute;background-color: #db3434; color: #fff; border: none; border-radius: 20px; cursor: pointer; transition: background-color 0.3s;">Load DB</button><br>
+        <br><button onclick="load_gallery()" style="margin-top:5px;margin-bottom:10px;height:20px;width:auto;position: absolute;background-color: #3498db; color: #fff; border: none; border-radius: 20px; cursor: pointer; transition: background-color 0.3s;">Load Gallery</button><br>
+        <br>Images Loaded: <span id="loaded-img">error</span><br>
+        Gallery Size: <span id="size-img">error</span>
+        </p>
+        <h3 style="margin-bottom: 0;">Settings</h3>
+        <p style="margin-top:0%;margin-bottom: 2px;">
+            Auto-Login: <span id="auto-login"><a href="#autologin">Enabled</a></span><br>
+            <span id="email-rem">Remember Email: <span id="rem-email"><a href="#rememail">Disabled</a></span><!--Hide if auto login enabled--><br></span>
+            Loading Screen: <span id="load-settings"><a href="#loading-settings">5</a></span>
+        </p>
+        <p style="margin-top: 2px;"><br>
+        Log Out  <a style="color: red" onclick="logoff()"><svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="24px" height="24px" viewBox="0 0 16 16"><path d="M1.3 3.75h5.88V2.5H1.3A1.25 1.25 0 0 0 .05 3.75v8.5A1.25 1.25 0 0 0 1.3 13.5h5.88v-1.25H1.3z"/><path d="m15.4 7-4-2.74-.71 1 3.08 2.1H4.71v1.26h9.07l-3.08 2.11.71 1L15.4 9a1.24 1.24 0 0 0 0-2z"/></svg></a><br>
+            Restart <a onclick="restart()"><svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+                <path fill="none" stroke="#000000" stroke-width="2" d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8"/>
+              </svg></a><br> Delete Gallery <a onclick="format()"><svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+                <path d="M13 4H8.8C7.11984 4 6.27976 4 5.63803 4.32698C5.07354 4.6146 4.6146 5.07354 4.32698 5.63803C4 6.27976 4 7.11984 4 8.8V15.2C4 16.8802 4 17.7202 4.32698 18.362C4.6146 18.9265 5.07354 19.3854 5.63803 19.673C6.27976 20 7.11984 20 8.8 20H15.2C16.8802 20 17.7202 20 18.362 19.673C18.9265 19.3854 19.3854 18.9265 19.673 18.362C20 17.7202 20 16.8802 20 15.2V11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4 16L8.29289 11.7071C8.68342 11.3166 9.31658 11.3166 9.70711 11.7071L13 15M13 15L15.7929 12.2071C16.1834 11.8166 16.8166 11.8166 17.2071 12.2071L20 15M13 15L15.25 17.25" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M17 3L19 5M21 7L19 5M19 5L21 3M19 5L17 7" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg></a><br>
+                Delete Database <a onclick="format_db()"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px" height="30px" version="1.1" id="Icons" viewBox="0 0 32 32" xml:space="preserve">
+                    <style type="text/css">
+                        .st0{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+                    </style>
+                    <g>
+                        <ellipse cx="14" cy="8" rx="11" ry="6"/>
+                        <path d="M14,24c-4.8,0-8.8-1.4-11-3.6V24c0,3.4,4.8,6,11,6c0.9,0,1.8-0.1,2.7-0.2C15.2,28.3,14.3,26.2,14,24C14,24,14,24,14,24z"/>
+                        <path d="M3,12.4V16c0,3.4,4.8,6,11,6c0,0,0,0,0.1,0c0.2-2.4,1.4-4.6,3-6.2c-1,0.1-2,0.2-3.1,0.2C9.2,16,5.2,14.6,3,12.4z"/>
+                    </g>
+                    <path d="M18.3,17.3c-3.1,3.1-3.1,8.2,0,11.3s8.2,3.1,11.3,0s3.1-8.2,0-11.3S21.5,14.2,18.3,17.3z M26.8,21.6L25.4,23l1.4,1.4  c0.4,0.4,0.4,1,0,1.4c-0.4,0.4-1,0.4-1.4,0L24,24.4l-1.4,1.4c-0.4,0.4-1,0.4-1.4,0c-0.4-0.4-0.4-1,0-1.4l1.4-1.4l-1.4-1.4  c-0.4-0.4-0.4-1,0-1.4c0.4-0.4,1-0.4,1.4,0l1.4,1.4l1.4-1.4c0.4-0.4,1-0.4,1.4,0C27.2,20.6,27.2,21.2,26.8,21.6z"/>
+                    </svg></a>
+        </p>
+    </div>
+
+    <div id="imgcontainerpopup" style="position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 730px; /* Set your desired container height */
+    width: 337.5px;
+    padding: 20px;
+    background-color: rgb(23, 23, 23);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+    z-index: 999;
+    display: none;">
+        <span onclick="close_img()" class="popup-close"><svg xmlns="http://www.w3.org/2000/svg" width="36px" height="36px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z" fill="#fff"/></svg></span>
+        <a id="hyper"><img id="showimg" style="width:100%; height: auto"></a>
+    </div>
+
+    <div id="ld-scr" style="background-color: #333;height:250px;color: white" class="popup">
+        <span onclick="close_ld_set()" class="popup-close"><svg onclick="close_ld_set()" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z" fill="#fff"/></svg></span>
+        <!-- Content of the popup -->
+        <h3 style="margin-top: 10px;margin-bottom: 18.72px;">Pick A Loading Icon</h3>
+        <div id="list-icons">
+            <div class="set-ld">
+                <a onclick="beginld('1')" style="color: white" href="#ld1" id="ld1"><div id="box1" class="box">1</div></a>
+                <a onclick="beginld('2')" style="color: white" href="#ld2" id="ld2"><div id="box2" class="box">2</div></a>
+                <a onclick="beginld('3')" style="color: white" href="#ld3" id="ld3"><div id="box3" class="box">3</div></a>
+            </div>
+            <div class="set-ld">
+                <a onclick="beginld('4')" style="color: white" href="#ld4" id="ld4"><div id="box4" class="box">4</div></a>
+                <a onclick="beginld('5')" style="color: white" href="#ld5" id="ld5"><div id="box5" class="box">5</div></a>
+                <a onclick="beginld('6')" style="color: white" href="#ld6" id="ld6"><div id="box6" class="box">6</div></a>
+            </div>
+            <div class="set-ld">
+                <a onclick="beginld('7')" style="color: white" href="#ld7" id="ld7"><div id="box7" class="box">7</div></a>
+                <a onclick="beginld('8')" style="color: white" href="#ld8" id="ld8"><div id="box8" class="box">8</div></a>
+                <a onclick="beginld('9')" style="color: white" href="#ld9" id="ld9"><div id="box9" class="box">9</div></a>
+            </div>
+        </div>
+        <div id="list-alone" style="display: none;">
+        <p>Icon <span id="number-icon">NUM</span>:</p><div id="icon-inside" style="display: block; display: flex; justify-content: space-between;" class="item">
+                <i class="loader --1" style="display: inline-block; margin-right: 5px;"></i>
+            </div>
+            <button onclick="continue_ok()" style="position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); padding: 10px 20px; background-color: #3498db; color: #fff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;">Continue?</button></div>
+    </div>
+
+    <div id="text" style="display: none" class="centered-text">
+        
+        
+      </div>
+      <div style="display: none" id="rem-email-lock" class="settings-button"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+        <!-- You can customize the icon or text inside the button --><a id="l_u" href="#lock-unlock" onclick="l_u_email()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10.0288" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </a>
+    </div>
+      <div style="display: none" id="settings" class="settings-button"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+        <!-- You can customize the icon or text inside the button -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48" id="Layer_2" data-name="Layer 2"><defs><style>.cls-1{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;}</style></defs><path class="cls-1" d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z"/></svg>
+    </div>
+    <div style="display:none;position: fixed;
+    top: 30px;
+    right: 40px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;" id="logout" onclick="logout()" class="settings-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12.9999 2C10.2385 2 7.99991 4.23858 7.99991 7C7.99991 7.55228 8.44762 8 8.99991 8C9.55219 8 9.99991 7.55228 9.99991 7C9.99991 5.34315 11.3431 4 12.9999 4H16.9999C18.6568 4 19.9999 5.34315 19.9999 7V17C19.9999 18.6569 18.6568 20 16.9999 20H12.9999C11.3431 20 9.99991 18.6569 9.99991 17C9.99991 16.4477 9.55219 16 8.99991 16C8.44762 16 7.99991 16.4477 7.99991 17C7.99991 19.7614 10.2385 22 12.9999 22H16.9999C19.7613 22 21.9999 19.7614 21.9999 17V7C21.9999 4.23858 19.7613 2 16.9999 2H12.9999Z" fill="#fff"/>
+            <path d="M13.9999 11C14.5522 11 14.9999 11.4477 14.9999 12C14.9999 12.5523 14.5522 13 13.9999 13V11Z" fill="#fff"/>
+            <path d="M5.71783 11C5.80685 10.8902 5.89214 10.7837 5.97282 10.682C6.21831 10.3723 6.42615 10.1004 6.57291 9.90549C6.64636 9.80795 6.70468 9.72946 6.74495 9.67492L6.79152 9.61162L6.804 9.59454L6.80842 9.58848C6.80846 9.58842 6.80892 9.58778 5.99991 9L6.80842 9.58848C7.13304 9.14167 7.0345 8.51561 6.58769 8.19098C6.14091 7.86637 5.51558 7.9654 5.19094 8.41215L5.18812 8.41602L5.17788 8.43002L5.13612 8.48679C5.09918 8.53682 5.04456 8.61033 4.97516 8.7025C4.83623 8.88702 4.63874 9.14542 4.40567 9.43937C3.93443 10.0337 3.33759 10.7481 2.7928 11.2929L2.08569 12L2.7928 12.7071C3.33759 13.2519 3.93443 13.9663 4.40567 14.5606C4.63874 14.8546 4.83623 15.113 4.97516 15.2975C5.04456 15.3897 5.09918 15.4632 5.13612 15.5132L5.17788 15.57L5.18812 15.584L5.19045 15.5872C5.51509 16.0339 6.14091 16.1336 6.58769 15.809C7.0345 15.4844 7.13355 14.859 6.80892 14.4122L5.99991 15C6.80892 14.4122 6.80897 14.4123 6.80892 14.4122L6.804 14.4055L6.79152 14.3884L6.74495 14.3251C6.70468 14.2705 6.64636 14.1921 6.57291 14.0945C6.42615 13.8996 6.21831 13.6277 5.97282 13.318C5.89214 13.2163 5.80685 13.1098 5.71783 13H13.9999V11H5.71783Z" fill="#fff"/>
+            </svg>
+    </div>
+    <div style="display: none;" id="gallery-set" onclick="settings()" class="settings-button"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+            <path d="M22 13.4375C22 17.2087 22 19.0944 20.8284 20.2659C19.6569 21.4375 17.7712 21.4375 14 21.4375H10C6.22876 21.4375 4.34315 21.4375 3.17157 20.2659C2 19.0944 2 17.2087 2 13.4375C2 9.66626 2 7.78065 3.17157 6.60907C4.34315 5.4375 6.22876 5.4375 10 5.4375H14C17.7712 5.4375 19.6569 5.4375 20.8284 6.60907C21.4921 7.27271 21.7798 8.16545 21.9045 9.50024" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M3.98779 6C4.10022 5.06898 4.33494 4.42559 4.82498 3.93726C5.76553 3 7.27932 3 10.3069 3H13.5181C16.5457 3 18.0595 3 19 3.93726C19.4901 4.42559 19.7248 5.06898 19.8372 6" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="17.5" cy="9.9375" r="1.5" stroke="#fff" stroke-width="1.5"/>
+            <path d="M2 13.9376L3.75159 12.405C4.66286 11.6077 6.03628 11.6534 6.89249 12.5096L11.1822 16.7993C11.8694 17.4866 12.9512 17.5803 13.7464 17.0214L14.0446 16.8119C15.1888 16.0077 16.7369 16.1009 17.7765 17.0365L21 19.9376" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+    </div>
+    <div style="display: block" id="loading" class="icon-container">
+        <div class="item">
+            <i class="loader --5"></i>
+        </div>
+      </div>
+      <div onclick="goback()" id="back" style="position: fixed;
+    top: 30px;
+    left: 25px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+        <!-- You can customize the icon or text inside the button -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+            <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#b2b2b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+    </div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="img.js"></script>
+<script src="olddb.js"></script>
+<script src="privatedb.js"></script>
+<!-- <script src="script.js"></script>
+<script src="new.js"></script>-->
+</html>

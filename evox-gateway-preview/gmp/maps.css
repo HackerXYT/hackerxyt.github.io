@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css?family=Muli:700");
+
+body,html {
+    overflow: hidden;
+    font-family: "Muli", sans-serif;
+    color:antiquewhite;
+    background-color: #333;
+}
+#map {
+  height: 850px;
+  z-index: 1;
+}
+#map-container {
+    position: relative;
+}
+.bottom-logo {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    height: 102px;
+    z-index: 2;
+}
+
+h1 {
+    font-size: large;
+}

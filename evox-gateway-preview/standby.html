@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Check</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: radial-gradient(circle, #400000, #000000);
+            color: white;
+            font-family: 'Arial', sans-serif;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        #logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+
+        #loading-logo {
+            width: 50px;
+            height: 50px;
+            margin-top: 20px;
+        }
+
+        .loading {
+  width: 50px;
+  height:40px;
+  margin: 40px auto;
+}
+
+.loading--plane {
+  width: 70px;
+  stroke-dasharray: 425.59;
+  stroke-dashoffset: 425.59;
+  animation: plane-loading-animation 3s linear infinite;
+}
+
+@keyframes plane-loading-animation {
+  50% {
+    stroke-dashoffset: 425.59;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -425.59;
+  }
+}
+    </style>
+</head>
+
+<body>
+    <img id="logo" src="offline2.png" alt="Logo">
+    <h1>Security check underway, please stand by.</h1>
+    <div id="loading-logo" class="loading loading--circle" title="Loading">
+        <svg fill="#fff" version="1.1" id="loading-circle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+        <path d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+          <animateTransform attributeType="XML"
+            attributeName="transform"
+            type="rotate"
+            from="0 25 25"
+            to="360 25 25"
+            dur="0.8s"
+            repeatCount="indefinite"/>
+          </path>
+        </svg>
+      </div>
+
+
+    <script>
+        //const loadingLogo = document.getElementById('loading-logo');
+        //loadingLogo.style.animation = 'spin 2s linear infinite';
+    </script>
+</body>
+
+</html>
