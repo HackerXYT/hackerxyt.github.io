@@ -23,6 +23,15 @@
 //var notifications = new Audio('./ui-sounds/notifications.mp3');
 //var notice_s = new Audio("./ui-sounds/notice.mp3")
 
+var account_show = new Howl({
+	src: ['./ui-sounds/qa_start_old.mp3'],
+	volume: 1
+});
+
+var error = new Howl({
+	src: ['./ui-sounds/critical.mp3'],
+	volume: 1
+});
 var disabled = new Howl({
 	src: ['./ui-sounds/qa_exit_old.mp3'],
 	volume: 1
@@ -181,7 +190,7 @@ function custombg() {
 			document.getElementById("st1").classList.add("active")
 			document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
 		} else if (name === "stock1.jpg") {
-			document.getElementById("bgname").innerHTML = "Desert"
+			document.getElementById("bgname").innerHTML = "Greek Mountain"
 			document.getElementById("bgname").style.color = "#fff"
 			document.getElementById("st2").classList.add("active")
 			if (blur) {
@@ -191,7 +200,7 @@ function custombg() {
 			}
 
 		} else if (name === "stock2.jpg") {
-			document.getElementById("bgname").innerHTML = "Ocean"
+			document.getElementById("bgname").innerHTML = "Sea"
 			document.getElementById("bgname").style.color = "#fff"
 			document.getElementById("st3").classList.add("active")
 			//document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
@@ -201,7 +210,7 @@ function custombg() {
 				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock1.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
 			}
 		} else if (name === "stock4.jpg") {
-			document.getElementById("bgname").innerHTML = "Building"
+			document.getElementById("bgname").innerHTML = "Dark Desert"
 			document.getElementById("bgname").style.color = "#fff"
 			document.getElementById("st4").classList.add("active")
 			//document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
@@ -776,6 +785,7 @@ function show_authip() {
 }
 
 function show_account() {
+	account_show.play()
 	console.log("Changing Screens to account")
 	document.getElementById("usr-email-opt").innerHTML = localStorage.getItem("t50-email")
 	document.getElementById("usr-name-opt").innerHTML = localStorage.getItem("t50-username")
@@ -811,6 +821,7 @@ function username_email_icon_show() {
 	} else {
 		document.getElementById("options_section_1_announcements").innerHTML = "Enabled"
 	}
+	loademails()
 	$("#main_settings").fadeOut("fast", function () {
 		$("#username_email_icon_show").fadeIn("fast")
 	})
@@ -988,7 +999,29 @@ function showFriend(element) {
 	}
 	document.getElementById("friend-username").innerHTML = friend
 	$("#friends").fadeOut("fast", function () {
-		$("#user-friend").fadeIn("fast")
+		fetch(`https://evox-datacenter.onrender.com/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&method=last_login`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.text();
+			})
+			.then(data => {
+				if (data !== "Unknown") {
+					const date = printTimeOrDate(data)
+					document.getElementById("last_seen").innerHTML = date
+					$("#user-friend").fadeIn("fast")
+				} else {
+					document.getElementById("last_seen").innerHTML = data
+					$("#user-friend").fadeIn("fast")
+				}
+
+			})
+			.catch(error => {
+				console.error(error);
+			});
+
+
 	})
 }
 function show_friends() {
@@ -1001,18 +1034,18 @@ function show_friends() {
 			return response.text();
 		})
 		.then(data => {
-			console.log(data)
+			console.log(data);
 			if (data === "") {
 				$("#load-users-friends").fadeOut("fast", function () {
 					let containerId = "list-friends";
 					var listContainer = document.getElementById(containerId);
 					listContainer.style.textAlign = "center";
 					listContainer.style.marginTop = "50px";
-					listContainer.innerHTML = "No Friends"
-				})
+					listContainer.innerHTML = "No Friends";
+				});
 				return;
 			}
-			const user_requests = JSON.parse(data)
+			const user_requests = JSON.parse(data);
 			let containerId = "list-friends";
 			var listContainer = document.getElementById(containerId);
 			listContainer.style.textAlign = "";
@@ -1028,7 +1061,6 @@ function show_friends() {
 					})
 					.then(profileemail => {
 						let addButton;
-						// Check if the username already exists in the list
 						if (listContainer.querySelector(`#user-${username}-email`) === null) {
 							var userContainer = document.createElement("div");
 							userContainer.className = "list-user-info";
@@ -1051,23 +1083,11 @@ function show_friends() {
 							userEmail.id = `user-${username}-email-friends`;
 							userEmail.textContent = profileemail;
 
-
-							//addButton = document.createElement("a");
-							//addButton.href = "#";
-							//addButton.id = username;
-							//addButton.onclick = function () {
-							//	acceptfriend(this);
-							//};
-							//addButton.className = "apple-button-list";
-							//addButton.textContent = "Accept";
-
-
 							userDetails.appendChild(userName);
 							userDetails.appendChild(userEmail);
 
 							userContainer.appendChild(userCircle);
 							userContainer.appendChild(userDetails);
-							//userContainer.appendChild(addButton);
 
 							listContainer.appendChild(userContainer);
 							fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
@@ -1079,28 +1099,28 @@ function show_friends() {
 								})
 								.then(profileimage => {
 									if (profileimage.indexOf("base64") === -1) {
-										// If it doesn't contain "base64", add the prefix
 										profileimage = "data:image/jpeg;base64," + profileimage;
-										document.getElementById(`${username}-pfp-friends`).src = profileimage
+										document.getElementById(`${username}-pfp-friends`).src = profileimage;
 									} else {
-										document.getElementById(`${username}-pfp-friends`).src = profileimage
+										document.getElementById(`${username}-pfp-friends`).src = profileimage;
 									}
-
-
-								}).catch(error => {
-									console.error("Cannot set src for", username)
-									console.error(error)
 								})
+								.catch(error => {
+									console.error("Cannot set src for", username);
+									console.error(error);
+								});
 						}
+					})
+					.catch(error => {
+						console.error(error);
 					});
-				$("#load-users-friends").fadeOut("fast");
-			})
-				.catch(error => {
-					console.error(error);
-				});
-		}).catch(error => {
+			});
+			$("#load-users-friends").fadeOut("fast");
+		})
+		.catch(error => {
 			console.error(error);
 		});
+
 
 	$("#evox_social").fadeOut("fast", function () {
 		$("#friends").fadeIn("fast")
@@ -1724,6 +1744,18 @@ function return_to_options(where) {
 			$("#date_of_birth_change").fadeOut("fast", function () {
 				$("#username_email_icon_show").fadeIn("fast")
 			})
+		} else if (where === "add_email") {
+			$("#add_email").fadeOut("fast", function () {
+				$("#username_email_icon_show").fadeIn("fast")
+			})
+		} else if (where === "cancel_addemail") {
+			$("#verify_email").fadeOut("fast", function () {
+				$("#username_email_icon_show").fadeIn("fast")
+			})
+		} else if (where === "app_use_info") {
+			$("#apps_using_evox").fadeOut("fast", function () {
+				$("#pswd_secure").fadeIn("fast")
+			})
 		}
 	}
 }
@@ -2222,128 +2254,128 @@ function clearNotifications() {
 
 
 function show_notif(nosound) {
-    fetch(`https://evox-datacenter.onrender.com/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.text();
-        })
-        .then(data => {
-            console.log(data);
-            var container = document.getElementById("notif_container");
-            container.innerHTML = "";
-            if (data === `{"notifications":[]}` || data === "No notifications!") {
-                var a = document.createElement("a");
-                a.href = "#";
-                a.className = "apple-button";
-                a.appendChild(document.createTextNode("There's nothing here, yet." + " "));
-                container.appendChild(a);
-                return;
-            }
-            let jsonData = JSON.parse(data);
-            var notifications = jsonData.notifications;
-            console.log(notifications);
-            notifications.reverse(); // Reverse the order of notifications
+	fetch(`https://evox-datacenter.onrender.com/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			console.log(data);
+			var container = document.getElementById("notif_container");
+			container.innerHTML = "";
+			if (data === `{"notifications":[]}` || data === "No notifications!") {
+				var a = document.createElement("a");
+				a.href = "#";
+				a.className = "apple-button";
+				a.appendChild(document.createTextNode("There's nothing here, yet." + " "));
+				container.appendChild(a);
+				return;
+			}
+			let jsonData = JSON.parse(data);
+			var notifications = jsonData.notifications;
+			console.log(notifications);
+			notifications.reverse(); // Reverse the order of notifications
 
-            notifications.forEach(function (notification) {
-                var image;
-                const sentimage = notification.image;
-                if (!sentimage.includes("http")) {
-                    const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${notification.image}`;
-                    fetch(url)
-                        .then(response => response.text())
-                        .then(data => {
-                            if (data.indexOf("base64") === -1) {
-                                // If it doesn't contain "base64", add the prefix
-                                data = "data:image/jpeg;base64," + data;
-                            }
-                            image = data;
-                            createNotificationElement(image, notification);
-                        })
-                        .catch(error => {
-                            console.error(error);
-                        });
+			notifications.forEach(function (notification) {
+				var image;
+				const sentimage = notification.image;
+				if (!sentimage.includes("http")) {
+					const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${notification.image}`;
+					fetch(url)
+						.then(response => response.text())
+						.then(data => {
+							if (data.indexOf("base64") === -1) {
+								// If it doesn't contain "base64", add the prefix
+								data = "data:image/jpeg;base64," + data;
+							}
+							image = data;
+							createNotificationElement(image, notification);
+						})
+						.catch(error => {
+							console.error(error);
+						});
 
-                } else {
-                    image = notification.image;
-                    createNotificationElement(image, notification);
-                }
-            });
+				} else {
+					image = notification.image;
+					createNotificationElement(image, notification);
+				}
+			});
 
-        })
-        .catch(error => {
-            console.error(error);
-        });
+		})
+		.catch(error => {
+			console.error(error);
+		});
 
-    document.getElementById("notifications").classList.add("active");
-    $("#settings").fadeOut("fast");
-    $("#vox").fadeOut("fast");
-    if (!nosound) {
-        notifications.play();
-    } else {
-        notice_s.play();
-    }
+	document.getElementById("notifications").classList.add("active");
+	$("#settings").fadeOut("fast");
+	$("#vox").fadeOut("fast");
+	if (!nosound) {
+		notifications.play();
+	} else {
+		notice_s.play();
+	}
 
-    if (document.getElementById("animatedButton_notif").style.display === "block") {
-        var animatedButton = document.getElementById("animatedButton_notif");
-        animatedButton.style.opacity = "0";
-        animatedButton.style.transform = "translateY(20px)";
-        setTimeout(function () {
-            animatedButton.style.display = "none";
-        }, 500); // Adjust the timing as needed
-    }
-    if (document.getElementById("animatedButton_chats").style.display === "block") {
-        var animatedButton2 = document.getElementById("animatedButton_chats");
-        animatedButton2.style.opacity = "0";
-        animatedButton2.style.transform = "translateY(20px)";
-        setTimeout(function () {
-            animatedButton2.style.display = "none";
-        }, 500); // Adjust the timing as needed
-    }
+	if (document.getElementById("animatedButton_notif").style.display === "block") {
+		var animatedButton = document.getElementById("animatedButton_notif");
+		animatedButton.style.opacity = "0";
+		animatedButton.style.transform = "translateY(20px)";
+		setTimeout(function () {
+			animatedButton.style.display = "none";
+		}, 500); // Adjust the timing as needed
+	}
+	if (document.getElementById("animatedButton_chats").style.display === "block") {
+		var animatedButton2 = document.getElementById("animatedButton_chats");
+		animatedButton2.style.opacity = "0";
+		animatedButton2.style.transform = "translateY(20px)";
+		setTimeout(function () {
+			animatedButton2.style.display = "none";
+		}, 500); // Adjust the timing as needed
+	}
 }
 
 function createNotificationElement(image, notification) {
-    var container = document.getElementById("notif_container");
+	var container = document.getElementById("notif_container");
 
-    var a = document.createElement("a");
-    a.href = "#";
-    a.className = "apple-button";
-    a.style.display = "flex";
-    a.style.alignItems = "center";
-    a.onclick = function () {
-        go_to(notification.app, this);
-    };
+	var a = document.createElement("a");
+	a.href = "#";
+	a.className = "apple-button";
+	a.style.display = "flex";
+	a.style.alignItems = "center";
+	a.onclick = function () {
+		go_to(notification.app, this);
+	};
 
-    var div = document.createElement("div");
-    div.className = "user-circle";
-    div.style.marginRight = "10px";
-    div.style.width = "50px";
-    div.style.height = "50px";
+	var div = document.createElement("div");
+	div.className = "user-circle";
+	div.style.marginRight = "10px";
+	div.style.width = "50px";
+	div.style.height = "50px";
 
-    var img = document.createElement("img");
-    img.src = image;
-    img.alt = "User Image";
-    div.appendChild(img);
+	var img = document.createElement("img");
+	img.src = image;
+	img.alt = "User Image";
+	div.appendChild(img);
 
-    var p = document.createElement("p");
-    p.textContent = notification.content;
-    p.style.margin = "0";
+	var p = document.createElement("p");
+	p.textContent = notification.content;
+	p.style.margin = "0";
 
-    var span = document.createElement("span");
-    var timestamp = new Date(notification.timestamp);
-    var day = timestamp.getDate();
-    var month = timestamp.getMonth() + 1; // Months are zero-based
+	var span = document.createElement("span");
+	var timestamp = new Date(notification.timestamp);
+	var day = timestamp.getDate();
+	var month = timestamp.getMonth() + 1; // Months are zero-based
 
-    // Format day and month as DD/MM
-    var formattedDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month;
-    span.textContent = formattedDate;
+	// Format day and month as DD/MM
+	var formattedDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month;
+	span.textContent = formattedDate;
 
-    a.appendChild(div);
-    a.appendChild(p);
-    a.appendChild(span);
+	a.appendChild(div);
+	a.appendChild(p);
+	a.appendChild(span);
 
-    container.appendChild(a);
+	container.appendChild(a);
 }
 
 
@@ -2700,28 +2732,28 @@ function getBirth() {
 }
 
 function go_to(where, element) {
-    // Find the <p> element inside the temporary element
+	// Find the <p> element inside the temporary element
 	click.stop()
 	notif_out.stop()
-    const paragraphElement = element.querySelector('p');
+	const paragraphElement = element.querySelector('p');
 	let paragraphContent;
-    // Check if the <p> element exists
-    if (paragraphElement) {
-        // Get the text content of the <p> element
-        paragraphContent = paragraphElement.textContent.trim();
-        console.log(paragraphContent); // Output the content of <p>
-    } else {
-        console.log("No <p> element found in the provided HTML string.");
-    }
+	// Check if the <p> element exists
+	if (paragraphElement) {
+		// Get the text content of the <p> element
+		paragraphContent = paragraphElement.textContent.trim();
+		console.log(paragraphContent); // Output the content of <p>
+	} else {
+		console.log("No <p> element found in the provided HTML string.");
+	}
 	//where may be secureline or a url that contains an image for an evox app
-	if(where === "Secureline") {
+	if (where === "Secureline") {
 		close_notif()
 		show_sline()
-	} else if(paragraphContent.includes("IP")) {
+	} else if (paragraphContent.includes("IP")) {
 		close_notif()
 		profile()
 		show_authip()
-	} else if(paragraphContent.includes("Password")) {
+	} else if (paragraphContent.includes("Password")) {
 		close_notif()
 		profile()
 	} else {
@@ -2734,20 +2766,265 @@ const appleButtons = document.querySelectorAll('.apple-button');
 
 // Add click event listener to each apple button
 appleButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        // Do something when the button is clicked
-        console.log("Button clicked!");
+	button.addEventListener('click', () => {
+		// Do something when the button is clicked
+		console.log("Button clicked!");
 		click.play()
-    });
+	});
 });
 
 const appleButtonsWIC = document.querySelectorAll('.apple-button-withicon');
 
 // Add click event listener to each apple button
 appleButtonsWIC.forEach(button => {
-    button.addEventListener('click', () => {
-        // Do something when the button is clicked
-        //console.log("Button clicked!");
+	button.addEventListener('click', () => {
+		// Do something when the button is clicked
+		//console.log("Button clicked!");
 		click_social.play()
-    });
+	});
 });
+
+function printTimeOrDate(inputTime) {
+	const inputDate = new Date(inputTime);
+	const currentDate = new Date();
+
+	const isToday = inputDate.getDate() === currentDate.getDate() &&
+		inputDate.getMonth() === currentDate.getMonth() &&
+		inputDate.getFullYear() === currentDate.getFullYear();
+
+	if (isToday) {
+		console.log(padWithZero(inputDate.getHours()) + ":" +
+			padWithZero(inputDate.getMinutes()));
+		return padWithZero(inputDate.getHours()) + ":" +
+			padWithZero(inputDate.getMinutes());
+	} else {
+		const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		const day = inputDate.getDate();
+		const month = months[inputDate.getMonth()];
+		const year = inputDate.getFullYear();
+		console.log(month + " " + day + " " + year);
+		return month + " " + day + " " + year
+	}
+}
+
+function padWithZero(number) {
+	return number < 10 ? '0' + number : number;
+}
+
+function addemail() {
+	document.getElementById("usr-img-addemail").src = document.getElementById("usr-img-opt").src
+	document.getElementById("usr-name-addemail").innerHTML = document.getElementById("usr-name-opt").innerHTML
+	document.getElementById("usr-email-addemail").innerHTML = document.getElementById("usr-email-opt").innerHTML
+	$("#username_email_icon_show").fadeOut("fast", function () {
+		$("#add_email").fadeIn("fast")
+	})
+}
+
+function complete_addemail() {
+
+	let email = document.getElementById("new_email").value
+	if (email === "") {
+		error.play()
+		shake_me("new_email")
+		return;
+	} else {
+		login_ok.play()
+	}
+	fetch(`https://evox-datacenter.onrender.com/accounts?method=addemail&newemail=${email}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			console.log(data)
+			document.getElementById("new_email").value = ""
+			if (data === "Waiting For Verification") {
+				document.getElementById("usr-img-vermail").src = document.getElementById("usr-img-opt").src
+				document.getElementById("usr-name-vermail").innerHTML = document.getElementById("usr-name-opt").innerHTML
+				document.getElementById("usr-email-vermail").innerHTML = `${document.getElementById("usr-email-opt").innerHTML} && ${email}`
+				document.getElementById("textfinalstep").innerHTML = `Final step! Please enter the code that was sent to ${email}.`
+				sessionStorage.setItem("ver_code_email", email)
+				$("#add_email").fadeOut("fast", function () {
+					$("#verify_email").fadeIn("fast")
+				})
+
+			} else if (data === "Email in use") {
+				shake_me("new_email")
+				error.play()
+			} else {
+				error.play()
+			}
+
+
+		}).catch(error => {
+			console.error(error)
+		})
+}
+
+function verify_addemail() {
+	let code = document.getElementById("email_new_ver_code").value
+	let email = sessionStorage.getItem("ver_code_email")
+	if (code === "") {
+		error.play()
+		shake_me("email_new_ver_code")
+		return;
+	}
+	fetch(`https://evox-datacenter.onrender.com/accounts?method=ver_new_email&email=${email}&what=${code}&mainemail=${localStorage.getItem("t50-email")}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			console.log(data)
+			document.getElementById("email_new_ver_code").value = ""
+			if (data === "Complete") {
+				ac_complete.play()
+				sessionStorage.removeItem("ver_code_email")
+				console.log("Complete!")
+				return_to_options('cancel_addemail')
+				loademails()
+			} else if (data === "Incorrect Code") {
+				error.play()
+				shake_me("email_new_ver_code")
+			} else if (data === "Email set already") {
+				error.play()
+				return_to_options('cancel_addemail')
+				loademails()
+			} else {
+				console.error("Unknown response:", data)
+				error.play()
+			}
+
+
+		}).catch(error => {
+			console.error(error)
+		})
+}
+
+function loademails() {
+	fetch(`https://evox-datacenter.onrender.com/accounts?method=getemails&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			if (data === "None") {
+				return;
+			}
+			let thisJson = JSON.parse(data)
+			const container = document.getElementById("more_emails");
+			container.innerHTML = ""
+
+			thisJson.forEach(email => {
+				const link = document.createElement("a");
+				link.href = "#";
+				link.classList.add("apple-button");
+				link.innerHTML = email;
+				link.onclick = function () {
+					removeEmail(this)
+				};
+				container.appendChild(link);
+				container.appendChild(document.createElement("br")); // Adding line breaks for separation
+			});
+
+
+		}).catch(error => {
+			console.error(error)
+		})
+
+}
+
+function sign_in_wevox() {
+	let container = document.getElementById("more_apps")
+	let appshtml = document.getElementById("apps").innerHTML
+	if (appshtml.includes("load('images')")) {
+		//console.log("Images Available")
+		container.innerHTML = `<a onclick="app_use_info('images')" href="#" class="apple-button-withicon"><img style="width: auto; height: 40px; margin-right: 10px; border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);" src="t50-img.png">
+		T50 Images
+		<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+		<path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"></path>
+	</svg></a>`
+	} else if (localStorage.getItem("images-owned") === "true") {
+		container.innerHTML = `<a onclick="app_use_info('images')" href="#" class="apple-button-withicon"><img style="width: auto; height: 40px; margin-right: 10px; border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);" src="t50-img.png">
+		T50 Images
+		<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+		<path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"></path>
+	</svg></a>`
+	}
+
+	if (localStorage.getItem("notes-owned") === "true") {
+		container.innerHTML = `${container.innerHTML}<a onclick="app_use_info('evox_notes')" href="#" class="apple-button-withicon"><img style="width: auto; height: 40px; margin-right: 10px; border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);" src="EvoxNotes.png">
+		Evox Notes
+		<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+		<path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"></path>
+	</svg></a>`
+	}
+	if (localStorage.getItem("chatvia-owned") === "true") {
+		container.innerHTML = `${container.innerHTML}<a onclick="app_use_info('chatvia')" href="#" class="apple-button-withicon"><img style="width: auto; height: 40px; margin-right: 10px; border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);" src="chatvia-img.png">
+		Chatvia
+		<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+		<path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"></path>
+	</svg></a>`
+	}
+
+	$("#pswd_secure").fadeOut("fast", function () {
+		$("#apps_using_evox").fadeIn("fast")
+	})
+	console.log("Evox Apps Info Show clicked")
+}
+
+function removeEmail(element) {
+	document.getElementById("hide_for_rememail").style.display = "none"
+	document.getElementById("username_email_icon_show").style.filter = "blur(10px)"
+	document.getElementById("confirm_email_remove").classList.add("active")
+	document.getElementById("email-del-content").innerHTML = element.innerHTML
+}
+
+function cancelRemoveEmail() {
+	document.getElementById("username_email_icon_show").style.filter = ""
+	document.getElementById("confirm_email_remove").classList.remove("active")
+	setTimeout(function () {
+		document.getElementById("hide_for_rememail").style.display = ""
+	}, 550)
+
+	document.getElementById("email-del-content").innerHTML = ""
+}
+
+function confirmRemoveEmail() {
+	let emailtorem = document.getElementById("email-del-content").innerHTML
+	fetch(`https://evox-datacenter.onrender.com/accounts?method=removeemail&email=${emailtorem}&password=${atob(localStorage.getItem("t50pswd"))}&mainemail=${localStorage.getItem("t50-email")}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			console.log(data)
+			document.getElementById("email_new_ver_code").value = ""
+			if (data === "Complete") {
+				ac_complete.play()
+				document.getElementById("username_email_icon_show").style.filter = ""
+				document.getElementById("confirm_email_remove").classList.remove("active")
+				setTimeout(function () {
+					document.getElementById("hide_for_rememail").style.display = ""
+				}, 550)
+
+				document.getElementById("email-del-content").innerHTML = ""
+				loademails()
+			} else {
+				console.error("Unknown response:", data)
+				error.play()
+			}
+
+
+		}).catch(error => {
+			console.error(error)
+		})
+}

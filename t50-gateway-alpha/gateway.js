@@ -43,7 +43,7 @@ function setup() {
 
   let version;
   try {
-    log("Evox Gateway V:Epsilon 0.6", "cyan")
+    log("Evox Gateway V:Epsilon 0.7", "cyan")
     try {
       clearInterval(version)
     } catch {
@@ -51,7 +51,7 @@ function setup() {
     }
   } catch {
     version = setInterval(function () {
-      log("Evox Gateway V:Epsilon 0.6", "cyan")
+      log("Evox Gateway V:Epsilon 0.7", "cyan")
     }, 800)
   }
 
@@ -615,14 +615,14 @@ function verifycode() {
   let email = account.email
   let username = account.username
   let password = account.password
-  //let code = document.getElementById("ver_code").value
-  let dig1 = document.getElementById("dig1").value
-  let dig2 = document.getElementById("dig2").value
-  let dig3 = document.getElementById("dig3").value
-  let dig4 = document.getElementById("dig4").value
-  let dig5 = document.getElementById("dig5").value
-  let dig6 = document.getElementById("dig6").value
-  let code = `${dig1}${dig2}${dig3}${dig4}${dig5}${dig6}`
+  let code = document.getElementById("ver_code").value
+  //let dig1 = document.getElementById("dig1").value
+  //let dig2 = document.getElementById("dig2").value
+  //let dig3 = document.getElementById("dig3").value
+  //let dig4 = document.getElementById("dig4").value
+  //let dig5 = document.getElementById("dig5").value
+  //let dig6 = document.getElementById("dig6").value
+  //let code = `${dig1}${dig2}${dig3}${dig4}${dig5}${dig6}`
   console.log("Just to verify:\n", email, username, password, code)
   fetch(`https://evox-datacenter.onrender.com/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${localStorage.getItem("IPV4")}`)
     .then(response => {
