@@ -195,7 +195,7 @@
     </div>
     <div class="gateway" style="display: none;" id="gateway">
         <div class="centered-text">
-            <h2 id="greet" style="margin-bottom:5px">Welcome Back, <span style="margin-bottom: 10px;"
+            <h2 id="greet" style="margin-bottom:5px;">Welcome Back, <span style="margin-bottom: 10px;"
                     id="user-text"></span></h2>
 
             <span style="margin-bottom: 10px;" id="loading-apps-text">Loading your Evox applications..</span>
@@ -226,7 +226,7 @@
     </div>
 
     <div id="vox_cont" class="vox">
-        <h3>Quick Actions [PREVIEW]</h3>
+        <h3>Vox Center</h3>
         <div style="right:50px;top:50px;position: absolute;">
             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -234,9 +234,19 @@
                     fill="#fff" />
             </svg>
         </div>
-        <a href="#" onclick="oneo()" class="apple-button">Accept All Friend Requests (5)</a>
-        <a href="#" onclick="oneo()" class="apple-button">Disable/Enable Auto-login</a>
-        <a href="#" onclick="oneo()" class="apple-button">Change profile picture</a>
+
+        <div id="weather-info" style="padding: 2px;width: 80%;" class="user-info-default">
+            <div class="user-circle">
+                <img id="weather-icon" src="./icons/temperature-low.svg" alt="User Image">
+            </div>
+            <div class="user-details">
+                <div id="weather-c" class="user-name">Please Wait</div>
+                <div id="weather-vis" class="user-email">loading..</div>
+            </div>
+        </div>
+        <a id="friend_req_fastacc" style="display: none;" href="#" onclick="oneo(this)" class="apple-button">Accept All
+            Friend Requests<span>(5)</span></a>
+        <a href="#" onclick="qa_pfp()" class="apple-button">Change profile picture</a>
         <a href="#" onclick="loadflrdinf()" class="apple-button">Get Florida Info<svg id="flrd_svg" style="display:none"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20px" height="20px">
                 <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
@@ -246,6 +256,10 @@
                         repeatCount="indefinite" />
                 </circle>
             </svg></a>
+        <a href="#" onclick="bgch()" class="apple-button">Background<span id="bgname"
+                style="color: #868686">Default</span></a>
+        <a href="#" onclick="auto_login()" class="apple-button">Auto Login<span id="auto-login">Set Up</span></a>
+        
         <div
             style="position: fixed; bottom: 40px;transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
             <div onclick="closevox()"
@@ -318,7 +332,7 @@
     </div>
 
     <div id="secureline" class="secureline">
-        <h3>SecureLine</h3>
+        <h3>SecureLine Chats</h3>
         <div onclick="getFriends('disablep')" style="right:50px;top:50px;position: absolute;">
             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -509,9 +523,9 @@
 
 
     </div>
-    
 
-    
+
+
     <div id="confirm_box" class="confirm">
         <h3 style="color: red">Delete Message?</h3>
         <p>Are you sure you want to delete this message?</p>
@@ -565,13 +579,13 @@
                                 d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                                 fill="#666" />
                         </svg></a>
-                    <a onclick="show_social()" href="#" class="apple-button">Evox Social<svg
+                    <!--<a onclick="show_social()" href="#" class="apple-button">Evox Social<svg
                             xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
                             fill="none">
                             <path
                                 d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                                 fill="#666" />
-                        </svg></a>
+                        </svg></a>-->
                 </div>
                 <div onclick="return_settings()"
                     style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
@@ -719,332 +733,7 @@
                     </div>
                 </div>
             </div>
-            <div id="evox_social" style="display:none">
-
-                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Evox Social</h3>
-                <a onclick="show_search()" href="#" class="apple-button-withicon"><img
-                        style="width: auto; height: 28px;margin-right: 10px;" src="icons/friends.png"
-                        alt="Add Friends Icon">Add Friends<svg xmlns="http://www.w3.org/2000/svg" width="20px"
-                        height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#666" />
-                    </svg></a>
-                <a onclick="show_requests()" href="#" class="apple-button-withicon"><img
-                        style="width: auto; height: 28px;margin-right: 10px;" src="icons/requests.png"
-                        alt="Add Friends Icon">Friend Requests<svg xmlns="http://www.w3.org/2000/svg" width="20px"
-                        height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#666" />
-                    </svg></a>
-                <a onclick="show_friends()" href="#" class="apple-button-withicon"><img
-                        style="width: auto; height: 28px;margin-right: 10px;" src="icons/myfriends.png"
-                        alt="Add Friends Icon">Your Friends<svg xmlns="http://www.w3.org/2000/svg" width="20px"
-                        height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#666" />
-                    </svg></a>
-                <div onclick="return_to_options('evox_social')"
-                    style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                    <div
-                        style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                        <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
-                            version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                            <g>
-                                <g>
-                                    <path xmlns="http://www.w3.org/2000/svg"
-                                        d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                    </path>
-                                </g>
-                            </g>
-                        </svg>
-                        Account Options
-                    </div>
-                </div>
-            </div>
-            <div id="add_friends" style="display:none">
-                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Add Friends</h3>
-                <div class="input-container">
-                    <input oninput="handlesearch(this.value)" class="apple-input" type="text"
-                        placeholder="Search For Users">
-                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
-                        viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-                            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <a style="display:none" href="#search" onclick="submit_search()"><svg class="go-icon"
-                            xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
-                            <path fill="none" stroke="#fff" stroke-width="1"
-                                d="M6,12.4 L18,12.4 M12.6,7 L18,12.4 L12.6,17.8" />
-                        </svg></a>
-                </div>
-                <div style="display: none;" class="loading loading--circle" id="load-users" title="Loading">
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                        x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
-                        xml:space="preserve">
-                        <path fill="#fff"
-                            d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
-                            <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
-                                to="360 25 25" dur="0.6s" repeatCount="indefinite" />
-                        </path>
-                    </svg>
-                </div>
-                <!--<div class="list-user-info">
-                    <div class="chat-user-img online align-self-center me-3 ms-0">
-                        <img id="smart-icon-t50-pfp" src="" class="rounded-circle avatar-xs" alt="">
-                        <span class="user-status"></span>
-                    </div>
-                    <div class="user-details">
-                        <div class="user-name">bantou</div>
-                        <div class="user-email" id="user-bantou-email">bantou@onionmail.com</div>
-                    </div>
-                </div>-->
-
-                <div id="list-container"></div>
-                <!--<div onclick="" class="list-user-info">
-                    <div class="user-circle">
-                        <img src="t50-img.png" alt="User Image">
-                    </div>
-                    <div class="user-details">
-                        <div class="user-name">Error</div>
-                        <div class="user-email">error@example.com</div>
-                    </div>
-                        <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
-                </div>-->
-                <!--Show added friends-->
-                <div onclick="return_to_options('add_friends')"
-                    style="position: fixed; bottom: 10px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                    <div
-                        style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                        <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
-                            version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                            <g>
-                                <g>
-                                    <path xmlns="http://www.w3.org/2000/svg"
-                                        d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                    </path>
-                                </g>
-                            </g>
-                        </svg>
-                        Evox Social
-                    </div>
-                </div>
-            </div>
-            <div id="friend_requests" style="display:none">
-                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Friend Requests</h3>
-                <div style="display:none" class="input-container">
-                    <input oninput="handlesearch(this.value)" class="apple-input" type="text"
-                        placeholder="Search For Users">
-                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
-                        viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-                            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <a style="display:none" href="#search" onclick="submit_search()"><svg class="go-icon"
-                            xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
-                            <path fill="none" stroke="#fff" stroke-width="1"
-                                d="M6,12.4 L18,12.4 M12.6,7 L18,12.4 L12.6,17.8" />
-                        </svg></a>
-                </div>
-                <div style="display: none;" class="loading loading--circle" id="load-users-requests" title="Loading">
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                        x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
-                        xml:space="preserve">
-                        <path fill="#fff"
-                            d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
-                            <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
-                                to="360 25 25" dur="0.6s" repeatCount="indefinite" />
-                        </path>
-                    </svg>
-                </div>
-                <div id="list-requests"></div>
-                <!--<div onclick="" class="list-user-info">
-                    <div class="user-circle">
-                        <img src="t50-img.png" alt="User Image">
-                    </div>
-                    <div class="user-details">
-                        <div class="user-name">Error</div>
-                        <div class="user-email">error@example.com</div>
-                    </div>
-                        <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
-                </div>-->
-                <!--Show added friends-->
-                <div onclick="return_to_options('requests')"
-                    style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                    <div
-                        style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                        <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
-                            version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                            <g>
-                                <g>
-                                    <path xmlns="http://www.w3.org/2000/svg"
-                                        d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                    </path>
-                                </g>
-                            </g>
-                        </svg>
-                        Evox Social
-                    </div>
-                </div>
-            </div>
-            <div id="friends" style="display:none">
-
-                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Your Friends</h3>
-                <div style="display:none" class="input-container">
-                    <input oninput="handlesearch(this.value)" class="apple-input" type="text"
-                        placeholder="Search For Users">
-                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
-                        viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-                            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <a style="display:none" href="#search" onclick="submit_search()"><svg class="go-icon"
-                            xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
-                            <path fill="none" stroke="#fff" stroke-width="1"
-                                d="M6,12.4 L18,12.4 M12.6,7 L18,12.4 L12.6,17.8" />
-                        </svg></a>
-                </div>
-                <div style="display: none;" class="loading loading--circle" id="load-users-friends" title="Loading">
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                        x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
-                        xml:space="preserve">
-                        <path fill="#fff"
-                            d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
-                            <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
-                                to="360 25 25" dur="0.6s" repeatCount="indefinite" />
-                        </path>
-                    </svg>
-                </div>
-                <div id="list-friends"></div>
-                <!--<div onclick="" class="list-user-info">
-                    <div class="user-circle">
-                        <img src="t50-img.png" alt="User Image">
-                    </div>
-                    <div class="user-details">
-                        <div class="user-name">Error</div>
-                        <div class="user-email">error@example.com</div>
-                    </div>
-                        <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
-                </div>-->
-                <!--Show added friends-->
-                <div onclick="return_to_options('friends')"
-                    style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                    <div
-                        style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                        <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
-                            version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                            <g>
-                                <g>
-                                    <path xmlns="http://www.w3.org/2000/svg"
-                                        d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                    </path>
-                                </g>
-                            </g>
-                        </svg>
-                        Evox Social
-                    </div>
-                </div>
-            </div>
-            <div id="user-friend" style="display:none">
-
-                <h3 style="display:none;text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Your Friends</h3>
-                <div style="display:none" class="input-container">
-                    <input oninput="handlesearch(this.value)" class="apple-input" type="text"
-                        placeholder="Search For Users">
-                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
-                        viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-                            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <a style="display:none" href="#search" onclick="submit_search()"><svg class="go-icon"
-                            xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
-                            <path fill="none" stroke="#fff" stroke-width="1"
-                                d="M6,12.4 L18,12.4 M12.6,7 L18,12.4 L12.6,17.8" />
-                        </svg></a>
-                </div>
-                <div style="display: none;" class="loading loading--circle" id="load-users-friends" title="Loading">
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                        x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
-                        xml:space="preserve">
-                        <path fill="#fff"
-                            d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
-                            <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
-                                to="360 25 25" dur="0.6s" repeatCount="indefinite" />
-                        </path>
-                    </svg>
-                </div>
-                <div style="margin: 0 auto;margin-top: 50px;
-            position: relative;" class="user-circle">
-                    <img id="friend-pfp" src="t50-img.png" alt="User Image">
-                </div>
-                <div style="height: auto;
-            margin: 0 auto;
-            padding: 10px;
-            position: relative;text-align: center;">
-                    <div class="user-details">
-                        <div id="friend-username" class="user-name">Error</div>
-                    </div>
-                </div>
-                <a href="#" style="height: 50%" class="apple-button">Last Seen<span id="last_seen">Unknown</span></a>
-                <a href="#" onclick="secureline(this)" id="secureline-username" style="height: 50%;color: #cb450f"
-                    class="apple-button">Start SecureLine<svg xmlns="http://www.w3.org/2000/svg" width="20px"
-                        height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#666" />
-                    </svg></a>
-                <p style="margin: 6px" class="user-email">EMAIL & PHONE NUMBERS</p>
-                <a href="#" id="friend-email" style="height: 50%" class="apple-button"></a>
-                <p style="margin: 6px" class="user-email">These email addresses and phone numbers can be used to reach
-                    the user.</p>
-
-                <p style="margin: 6px; margin-top: 20px;" class="user-email">DANGER ZONE</p>
-                <a href="#" style="height: 50%;color: rgb(255, 0, 0)" class="apple-button">Block User<svg
-                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#666" />
-                    </svg></a>
-                <!--<div onclick="" class="list-user-info">
-                    <div class="user-circle">
-                        <img src="t50-img.png" alt="User Image">
-                    </div>
-                    <div class="user-details">
-                        <div class="user-name">Error</div>
-                        <div class="user-email">error@example.com</div>
-                    </div>
-                        <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
-                </div>-->
-                <!--Show added friends-->
-                <div onclick="return_to_options('user-friend')"
-                    style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                    <div
-                        style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                        <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
-                            version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                            <g>
-                                <g>
-                                    <path xmlns="http://www.w3.org/2000/svg"
-                                        d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                    </path>
-                                </g>
-                            </g>
-                        </svg>
-                        Go back
-                    </div>
-                </div>
-            </div>
+            
 
         </div>
         <div id="background_change" style="display:none;overflow: auto;">
@@ -1138,12 +827,340 @@
                 </div>
             </div>
         </div>
+        <div id="evox_social" style="display:none">
+
+            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Evox Social</h3>
+            <a onclick="show_search()" href="#" class="apple-button-withicon"><img style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;"
+                     src="icons/friend-search.svg"
+                    alt="Add Friends Icon">Add Friends<svg xmlns="http://www.w3.org/2000/svg" width="20px"
+                    height="20px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                        fill="#666" />
+                </svg></a>
+            <a onclick="show_requests()" href="#" class="apple-button-withicon"><img
+                style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;"
+                src="icons/add-friend.svg"
+                    alt="Add Friends Icon">Friend Requests<svg xmlns="http://www.w3.org/2000/svg" width="20px"
+                    height="20px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                        fill="#666" />
+                </svg></a>
+            <a onclick="show_friends()" href="#" class="apple-button-withicon"><img
+                style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;"
+                src="icons/people-circle.svg"
+                    alt="Add Friends Icon">Your Friends<svg xmlns="http://www.w3.org/2000/svg" width="20px"
+                    height="20px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                        fill="#666" />
+                </svg></a>
+            <div onclick="return_to_options('evox_social')"
+                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
+                <div
+                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+                        version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+                        <g>
+                            <g>
+                                <path xmlns="http://www.w3.org/2000/svg"
+                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+                    Settings
+                </div>
+            </div>
+        </div>
+        <div id="add_friends" style="display:none">
+            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Add Friends</h3>
+            <div class="input-container">
+                <input oninput="handlesearch(this.value)" class="apple-input" type="text"
+                    placeholder="Search For Users">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                    viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                        stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <a style="display:none" href="#search" onclick="submit_search()"><svg class="go-icon"
+                        xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
+                        <path fill="none" stroke="#fff" stroke-width="1"
+                            d="M6,12.4 L18,12.4 M12.6,7 L18,12.4 L12.6,17.8" />
+                    </svg></a>
+            </div>
+            <div style="display: none;" class="loading loading--circle" id="load-users" title="Loading">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+                    xml:space="preserve">
+                    <path fill="#fff"
+                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                    </path>
+                </svg>
+            </div>
+            <!--<div class="list-user-info">
+                <div class="chat-user-img online align-self-center me-3 ms-0">
+                    <img id="smart-icon-t50-pfp" src="" class="rounded-circle avatar-xs" alt="">
+                    <span class="user-status"></span>
+                </div>
+                <div class="user-details">
+                    <div class="user-name">bantou</div>
+                    <div class="user-email" id="user-bantou-email">bantou@onionmail.com</div>
+                </div>
+            </div>-->
+
+            <div id="list-container"></div>
+            <!--<div onclick="" class="list-user-info">
+                <div class="user-circle">
+                    <img src="t50-img.png" alt="User Image">
+                </div>
+                <div class="user-details">
+                    <div class="user-name">Error</div>
+                    <div class="user-email">error@example.com</div>
+                </div>
+                    <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
+            </div>-->
+            <!--Show added friends-->
+            <div onclick="return_to_options('add_friends')"
+                style="position: fixed; bottom: 10px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
+                <div
+                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+                        version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+                        <g>
+                            <g>
+                                <path xmlns="http://www.w3.org/2000/svg"
+                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+                    Evox Social
+                </div>
+            </div>
+        </div>
+        <div id="friend_requests" style="display:none">
+            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Friend Requests</h3>
+            <div style="display:none" class="input-container">
+                <input oninput="handlesearch(this.value)" class="apple-input" type="text"
+                    placeholder="Search For Users">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                    viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                        stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <a style="display:none" href="#search" onclick="submit_search()"><svg class="go-icon"
+                        xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
+                        <path fill="none" stroke="#fff" stroke-width="1"
+                            d="M6,12.4 L18,12.4 M12.6,7 L18,12.4 L12.6,17.8" />
+                    </svg></a>
+            </div>
+            <div style="display: none;" class="loading loading--circle" id="load-users-requests" title="Loading">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+                    xml:space="preserve">
+                    <path fill="#fff"
+                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                    </path>
+                </svg>
+            </div>
+            <div id="list-requests"></div>
+            <!--<div onclick="" class="list-user-info">
+                <div class="user-circle">
+                    <img src="t50-img.png" alt="User Image">
+                </div>
+                <div class="user-details">
+                    <div class="user-name">Error</div>
+                    <div class="user-email">error@example.com</div>
+                </div>
+                    <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
+            </div>-->
+            <!--Show added friends-->
+            <div onclick="return_to_options('requests')"
+                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
+                <div
+                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+                        version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+                        <g>
+                            <g>
+                                <path xmlns="http://www.w3.org/2000/svg"
+                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+                    Evox Social
+                </div>
+            </div>
+        </div>
+        <div id="friends" style="display:none">
+
+            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Your Friends</h3>
+            <div style="display:none" class="input-container">
+                <input oninput="handlesearch(this.value)" class="apple-input" type="text"
+                    placeholder="Search For Users">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                    viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                        stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <a style="display:none" href="#search" onclick="submit_search()"><svg class="go-icon"
+                        xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
+                        <path fill="none" stroke="#fff" stroke-width="1"
+                            d="M6,12.4 L18,12.4 M12.6,7 L18,12.4 L12.6,17.8" />
+                    </svg></a>
+            </div>
+            <div style="display: none;" class="loading loading--circle" id="load-users-friends" title="Loading">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+                    xml:space="preserve">
+                    <path fill="#fff"
+                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                    </path>
+                </svg>
+            </div>
+            <div id="list-friends"></div>
+            <!--<div onclick="" class="list-user-info">
+                <div class="user-circle">
+                    <img src="t50-img.png" alt="User Image">
+                </div>
+                <div class="user-details">
+                    <div class="user-name">Error</div>
+                    <div class="user-email">error@example.com</div>
+                </div>
+                    <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
+            </div>-->
+            <!--Show added friends-->
+            <div onclick="return_to_options('friends')"
+                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
+                <div
+                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+                        version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+                        <g>
+                            <g>
+                                <path xmlns="http://www.w3.org/2000/svg"
+                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+                    Evox Social
+                </div>
+            </div>
+        </div>
+        <div id="user-friend" style="display:none">
+
+            <h3 style="display:none;text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Your Friends</h3>
+            <div style="display:none" class="input-container">
+                <input oninput="handlesearch(this.value)" class="apple-input" type="text"
+                    placeholder="Search For Users">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                    viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                        stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <a style="display:none" href="#search" onclick="submit_search()"><svg class="go-icon"
+                        xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24">
+                        <path fill="none" stroke="#fff" stroke-width="1"
+                            d="M6,12.4 L18,12.4 M12.6,7 L18,12.4 L12.6,17.8" />
+                    </svg></a>
+            </div>
+            <div style="display: none;" class="loading loading--circle" id="load-users-friends" title="Loading">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+                    xml:space="preserve">
+                    <path fill="#fff"
+                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                    </path>
+                </svg>
+            </div>
+            <div style="margin: 0 auto;margin-top: 50px;
+        position: relative;" class="user-circle">
+                <img id="friend-pfp" src="t50-img.png" alt="User Image">
+            </div>
+            <div style="height: auto;
+        margin: 0 auto;
+        padding: 10px;
+        position: relative;text-align: center;">
+                <div class="user-details">
+                    <div id="friend-username" class="user-name">Error</div>
+                </div>
+            </div>
+            <a href="#" style="height: 50%" class="apple-button">Last Seen<span id="last_seen">Unknown</span></a>
+            <a href="#" onclick="secureline(this)" id="secureline-username" style="height: 50%;color: #cb450f"
+                class="apple-button">Start SecureLine<svg xmlns="http://www.w3.org/2000/svg" width="20px"
+                    height="20px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                        fill="#666" />
+                </svg></a>
+            <p style="margin: 6px" class="user-email">EMAIL & PHONE NUMBERS</p>
+            <a href="#" id="friend-email" style="height: 50%" class="apple-button"></a>
+            <p style="margin: 6px" class="user-email">These email addresses and phone numbers can be used to reach
+                the user.</p>
+
+            <p style="margin: 6px; margin-top: 20px;" class="user-email">DANGER ZONE</p>
+            <a href="#" style="height: 50%;color: rgb(255, 0, 0)" class="apple-button">Block User<svg
+                    xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                        fill="#666" />
+                </svg></a>
+            <!--<div onclick="" class="list-user-info">
+                <div class="user-circle">
+                    <img src="t50-img.png" alt="User Image">
+                </div>
+                <div class="user-details">
+                    <div class="user-name">Error</div>
+                    <div class="user-email">error@example.com</div>
+                </div>
+                    <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
+            </div>-->
+            <!--Show added friends-->
+            <div onclick="return_to_options('user-friend')"
+                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
+                <div
+                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+                        version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+                        <g>
+                            <g>
+                                <path xmlns="http://www.w3.org/2000/svg"
+                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+                    Go back
+                </div>
+            </div>
+        </div>
         <div style="overflow: auto" id="main_popup_settings">
 
 
             <!-- Content of the popup -->
             <h2 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Evox Gateway</h2>
-            <div id="user-info" onclick="show_account()" class="user-info">
+            <div onclick="show_account()" id="user-info" class="user-info">
                 <div class="user-circle">
                     <img id="usr-img" src="t50-img.png" alt="User Image">
                 </div>
@@ -1153,7 +1170,7 @@
                 </div>
             </div>
 
-            <h3 style="margin-bottom: 7px;">App Management</h3>
+            <h3 style="margin-bottom: 7px;">App Overview</h3>
             <div style="display:none" class="app-manage">
                 <img src="EvoxNotes.png" alt="Image" class="app-small">Notes:&nbsp;
                 <p id="notes-own-ui-status">err</p>
@@ -1174,34 +1191,46 @@
                 <img src="T50Transports.png" alt="Image" class="app-small">Transports:&nbsp;
                 <p>Disabled</p>
             </div>
-            <div class="app-manage">
+            <div style="display:none" class="app-manage">
                 <img src="chatvia-img.png" alt="Image" class="app-small">ChatVia:&nbsp;
                 <p id="chatvia-own-ui-status">err</p>
             </div>
 
-            <h3 style="margin-bottom: 4px;">Preferences</h3>
-            <a href="#" onclick="bgch()" style="height: 50%;" class="apple-button">Background<span id="bgname"
-                    style="color: #868686">Default</span></a>
-            <a href="#" onclick="auto_login()" style="height: 50%;" class="apple-button">Auto Login<span
-                    id="auto-login">Set Up</span></a>
 
 
+            <h3 style="margin-bottom: 4px;">Evox Nexus</h3>
+            <a onclick="show_account()" href="#" class="apple-button-withicon"><img style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;" src="./icons/account-svgrepo-com.svg">Account Options<svg
+                    xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                        fill="#666"></path>
+                </svg></a>
+                <a onclick="show_social()" href="#" class="apple-button-withicon"><img style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;" src="./icons/share-circle.svg">Evox Social<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"></path>
+                </svg></a>
+                <a id="evox_store" onclick="store()" href="#" class="apple-button-withicon"><img style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;" src="./icons/apps.svg">Application Store<svg
+                    xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                        fill="#666"></path>
+                </svg></a>
 
-            <h3 style="margin-bottom: 4px;">Quick Actions</h3>
-            <a href="#" onclick="logoff()" style="height: 50%;color:#eb2424" class="apple-button">Log Out <span><svg
-                        id="logoutsvg" style="display: block;" xmlns="http://www.w3.org/2000/svg" fill="#a2a2a2"
-                        width="24px" height="24px" viewBox="0 0 16 16">
-                        <path
-                            d="M1.3 3.75h5.88V2.5H1.3A1.25 1.25 0 0 0 .05 3.75v8.5A1.25 1.25 0 0 0 1.3 13.5h5.88v-1.25H1.3z" />
-                        <path
-                            d="m15.4 7-4-2.74-.71 1 3.08 2.1H4.71v1.26h9.07l-3.08 2.11.71 1L15.4 9a1.24 1.24 0 0 0 0-2z" />
-                    </svg></span></a>
-            <a href="#" onclick="restart()" style="height: 50%;color:#25b0c0" class="apple-button">Restart <span><svg
-                        id="restartsvg" style="display: block;" xmlns="http://www.w3.org/2000/svg" width="24px"
-                        height="24px" viewBox="0 0 24 24">
-                        <path fill="none" stroke="#a2a2a2" stroke-width="2"
-                            d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8" />
-                    </svg></span></a>
+                <h3 style="margin-bottom: 4px;">Client</h3>
+                <a href="#" onclick="logoff()" style="color:#eb2424" class="apple-button">Log Out <span><svg id="logoutsvg"
+                    style="display: block;" xmlns="http://www.w3.org/2000/svg" fill="#a2a2a2" width="24px" height="24px"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M1.3 3.75h5.88V2.5H1.3A1.25 1.25 0 0 0 .05 3.75v8.5A1.25 1.25 0 0 0 1.3 13.5h5.88v-1.25H1.3z" />
+                    <path
+                        d="m15.4 7-4-2.74-.71 1 3.08 2.1H4.71v1.26h9.07l-3.08 2.11.71 1L15.4 9a1.24 1.24 0 0 0 0-2z" />
+                </svg></span></a>
+        <a href="#" onclick="restart()" style="color:#25b0c0" class="apple-button">Restart <span><svg id="restartsvg"
+                    style="display: block;" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                    viewBox="0 0 24 24">
+                    <path fill="none" stroke="#a2a2a2" stroke-width="2"
+                        d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8" />
+                </svg></span></a>
+
 
 
             <!--<p style="margin-top: 2px;display: none;"><br>
@@ -1324,7 +1353,8 @@
         <div id="verify_email" style="display:none;overflow: hidden;">
 
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Verification</h3>
-            <p id="textfinalstep" style="margin: 6px" class="user-details">Final step! Please enter the code that was sent to err.</p>
+            <p id="textfinalstep" style="margin: 6px" class="user-details">Final step! Please enter the code that was
+                sent to err.</p>
             <div id="user-info-vermail" class="user-info-default">
                 <div class="user-circle">
                     <img id="usr-img-vermail" src="t50-img.png" alt="User Image">
@@ -1398,14 +1428,22 @@
         <div id="apps_using_evox" style="display:none;overflow: hidden;">
 
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Apps Using Evox®</h3>
-            <a onclick="app_use_info('tasco')" href="#" class="apple-button-withicon"><img style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);" src="../tasco/tasco-app.png">Tasco
+            <a onclick="app_use_info('tasco')" href="#" class="apple-button-withicon"><img
+                    style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                    src="../tasco/tasco-app.png">Tasco
                 <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"></path>
-            </svg></a>
-            <a onclick="app_use_info('gateway')" href="#" class="apple-button-withicon"><img style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);" src="evox-logo-apple.png">Evox Gateway
+                    <path
+                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                        fill="#666"></path>
+                </svg></a>
+            <a onclick="app_use_info('gateway')" href="#" class="apple-button-withicon"><img
+                    style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                    src="evox-logo-apple.png">Evox Gateway
                 <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"></path>
-            </svg></a>
+                    <path
+                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                        fill="#666"></path>
+                </svg></a>
             <div id="more_apps">
             </div>
             <div onclick="return_to_options('app_use_info')"
@@ -1631,7 +1669,7 @@
     <div onclick="vox()" id="vox"
         style="position: fixed; bottom: 60px; left:35px; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;display: none;">
         <div class="user-circle">
-            <img id="vox-img" src="./internal/giphy (12).gif" alt="User Image">
+            <img id="vox-img" src="SVKl.gif" alt="User Image">
         </div>
     </div>
     <div onclick="dots()" id="dots"

@@ -207,7 +207,7 @@ function custombg() {
 			if (blur) {
 				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(${blur}px);"></div>`
 			} else {
-				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock1.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+				document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
 			}
 		} else if (name === "stock4.jpg") {
 			document.getElementById("bgname").innerHTML = "Dark Desert"
@@ -785,7 +785,7 @@ function show_authip() {
 }
 
 function show_account() {
-	account_show.play()
+	//account_show.play()
 	console.log("Changing Screens to account")
 	document.getElementById("usr-email-opt").innerHTML = localStorage.getItem("t50-email")
 	document.getElementById("usr-name-opt").innerHTML = localStorage.getItem("t50-username")
@@ -925,7 +925,7 @@ function pswd_secure() {
 }
 
 function show_social() {
-	$("#main_settings").fadeOut("fast", function () {
+	$("#main_popup_settings").fadeOut("fast", function () {
 		$("#evox_social").fadeIn("fast")
 	})
 }
@@ -1720,12 +1720,14 @@ function return_to_options(where) {
 				$("#friends").fadeIn("fast")
 			})
 		} else if (where === "gateway_settings") {
+			settings()
+			vox()
 			$("#background_change").fadeOut("fast", function () {
 				$("#main_popup_settings").fadeIn("fast")
 			})
 		} else if (where === "evox_social") {
 			$("#evox_social").fadeOut("fast", function () {
-				$("#main_settings").fadeIn("fast")
+				$("#main_popup_settings").fadeIn("fast")
 			})
 		} else if (where === "password_change") {
 			document.getElementById('gateway').style.filter = 'blur(20px)'
@@ -1824,6 +1826,8 @@ function secureline(element) {
 }
 
 function bgch() {
+	closevox()
+	settings()
 	try {
 		var blurStyle = document.getElementById('bgimaget').style.filter;
 		// Extract the blur amount from the filter style
@@ -2188,6 +2192,8 @@ function apparrow() {
 
 
 function vox() {
+	qactions()
+	document.getElementById("gateway").style.filter = "blur(25px)"
 	document.getElementById("vox_cont").classList.add("active")
 	$("#settings").fadeOut("fast")
 	$("#vox").fadeOut("fast")
@@ -2212,6 +2218,7 @@ function vox() {
 	}
 }
 function closevox() {
+	document.getElementById("gateway").style.filter = ""
 	document.getElementById("vox_cont").classList.remove("active")
 	$("#settings").fadeIn("fast")
 	$("#vox").fadeIn("fast")
@@ -2402,7 +2409,8 @@ function close_notif() {
 	}
 }
 
-function oneo() {
+function oneo(element) {
+	shake_me(element.id)
 	console.log("PlaceHolder")
 }
 
@@ -3027,4 +3035,76 @@ function confirmRemoveEmail() {
 		}).catch(error => {
 			console.error(error)
 		})
+}
+
+function qactions() {
+	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			if(data === "None") {
+				//Noting
+				
+			} else {
+				let requests = JSON.parse(data)
+				const reqcount = requests.length;
+				if (reqcount >= 1) {
+					//show req
+					$("#friend_req_fastacc").fadeIn("fast")
+					document.getElementById("friend_req_fastacc").innerHTML = `Accept All Friend Requests <span>(${reqcount})</span>`
+				}
+			}
+			
+		}).catch(error => {
+			console.error(error);
+		});
+
+	//get weather
+	fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Athens,GR?key=QE9ZKFMB84GFA95Z7EJCR5ASG`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(weather => {
+			var responseData = JSON.parse(weather)
+			var celsiusValue = fahrenheitToCelsius(responseData.currentConditions.temp);
+			var temperature = celsiusValue;
+			var windSpeed = responseData.currentConditions.visibility;
+			if(temperature < 20) {
+				document.getElementById("weather-icon").src = "./icons/temperature-low.svg"
+			} else {
+				document.getElementById("weather-icon").src = "./icons/temperature-sun.svg"
+			}
+			if(temperature < 5) {
+				document.getElementById("weather-icon").src = "./icons/temperature-snow.svg"
+			}
+
+			// Creating HTML elements to display weather information
+			document.getElementById("weather-c").innerHTML = "Temperature: " + temperature + "°C"
+			document.getElementById("weather-vis").innerHTML = "Visibility: " + windSpeed + " km"
+		}).catch(error => {
+			console.error(error);
+		});
+
+}
+
+function fahrenheitToCelsius(fahrenheit) {
+    var celsius = (fahrenheit - 32) * (5/9);
+    return Math.round(celsius);
+}
+
+
+function qa_pfp() {
+	showUploadBox()
+}
+
+function store() {
+	shake_me("evox_store")
+	//error.play()
 }

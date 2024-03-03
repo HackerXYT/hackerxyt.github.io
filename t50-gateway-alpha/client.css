@@ -238,6 +238,7 @@ img {
   transition: transform 0.5s ease, opacity 0.5s ease, visibility 0.5s;
   /* Transition for sliding effect, opacity, and visibility */
 }
+
 .popup div {
   transition: filter 0.5s ease-in-out;
 }
@@ -510,12 +511,40 @@ a {
 }
 
 .user-info {
-  background: radial-gradient(circle, #004033, #000000);
-  border-radius: 19.5px;
+  padding: 5px;
+  background: linear-gradient(135deg, #1e1e1e, #113109, #1e1e1e, #113109, #1e1e1e);
+  border-radius: 19px;
   display: flex;
   align-items: center;
   gap: 16px;
+  background-size: 500% 500%;
+  animation: changeColor 10s infinite linear;
 }
+
+@keyframes changeColor {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+#greet {
+  margin-bottom: 5px;
+  background: #fff;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* This makes text transparent */
+}
+
+
+
 
 .user-info-default {
   border-radius: 19.5px;
@@ -1267,8 +1296,8 @@ a {
 }
 
 .user-circle-sl img {
-  width: 100%;
-  height: 100%;
+  width: 60px;
+  height: 60px;
   object-fit: cover;
   border-radius: 50%;
 }
