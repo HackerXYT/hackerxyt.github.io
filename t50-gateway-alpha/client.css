@@ -512,7 +512,7 @@ a {
 
 .user-info {
   padding: 5px;
-  background: linear-gradient(135deg, #1e1e1e, #32a852, #bf3737, #2f2c9c, #1e1e1e);
+  background: linear-gradient(135deg, #1e1e1e, #333, #b3737, #333, #1e1e1e);
   border-radius: 19px;
   display: flex;
   align-items: center;
