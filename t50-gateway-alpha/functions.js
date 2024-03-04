@@ -1758,6 +1758,10 @@ function return_to_options(where) {
 			$("#apps_using_evox").fadeOut("fast", function () {
 				$("#pswd_secure").fadeIn("fast")
 			})
+		} else if (where === "evox_store") {
+			$("#store").fadeOut("fast", function () {
+				$("#main_popup_settings").fadeIn("fast")
+			})
 		}
 	}
 }
@@ -3046,9 +3050,9 @@ function qactions() {
 			return response.text();
 		})
 		.then(data => {
-			if(data === "None") {
+			if (data === "None") {
 				//Noting
-				
+
 			} else {
 				let requests = JSON.parse(data)
 				const reqcount = requests.length;
@@ -3058,7 +3062,7 @@ function qactions() {
 					document.getElementById("friend_req_fastacc").innerHTML = `Accept All Friend Requests <span>(${reqcount})</span>`
 				}
 			}
-			
+
 		}).catch(error => {
 			console.error(error);
 		});
@@ -3076,12 +3080,12 @@ function qactions() {
 			var celsiusValue = fahrenheitToCelsius(responseData.currentConditions.temp);
 			var temperature = celsiusValue;
 			var windSpeed = responseData.currentConditions.visibility;
-			if(temperature < 20) {
+			if (temperature < 20) {
 				document.getElementById("weather-icon").src = "./icons/temperature-low.svg"
 			} else {
 				document.getElementById("weather-icon").src = "./icons/temperature-sun.svg"
 			}
-			if(temperature < 5) {
+			if (temperature < 5) {
 				document.getElementById("weather-icon").src = "./icons/temperature-snow.svg"
 			}
 
@@ -3095,8 +3099,8 @@ function qactions() {
 }
 
 function fahrenheitToCelsius(fahrenheit) {
-    var celsius = (fahrenheit - 32) * (5/9);
-    return Math.round(celsius);
+	var celsius = (fahrenheit - 32) * (5 / 9);
+	return Math.round(celsius);
 }
 
 
@@ -3105,6 +3109,59 @@ function qa_pfp() {
 }
 
 function store() {
-	shake_me("evox_store")
+	let appshtml = document.getElementById("apps").innerHTML
+	
+	let chatvia = document.getElementById("chatvia-get")
+	let tasco = document.getElementById("tasco-get")
+	let gateway = document.getElementById("gateway-get")
+	let images = document.getElementById("images-get")
+	let notes = document.getElementById("notes-get")
+
+	let owned_json = []
+	if (appshtml.includes("load('images')")) {
+		//console.log("Images Available")
+		owned_json.push("images")
+	} else if (localStorage.getItem("images-owned") === "true") {
+		owned_json.push("images")
+	}
+
+	if (localStorage.getItem("notes-owned") === "true") {
+		owned_json.push("notes")
+	}
+	if (localStorage.getItem("chatvia-owned") === "true") {
+		owned_json.push("chatvia")
+	}
+
+	if(owned_json.includes("images")) {
+		images.innerHTML = "OPEN"
+	}
+	if(owned_json.includes("notes")) {
+		notes.innerHTML = "OPEN"
+	}
+	if(owned_json.includes("chatvia")) {
+		chatvia.innerHTML = "OPEN"
+	}
+	//shake_me("evox_store")
+	$("#main_popup_settings").fadeOut("fast", function () {
+		$("#store").fadeIn("fast")
+	})
+
 	//error.play()
+}
+
+function getNOpen(element) {
+	var getButton = element.querySelector('.get-button');
+
+	// Change the inner HTML of the <span> element
+	getButton.style.height = "17px"
+	getButton.style.width = "30px"
+	//height: 17px; width: 30px
+	getButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="70%" height="70%">
+	<circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
+		<animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
+			repeatCount="indefinite" />
+		<animate attributeName="stroke-dashoffset" values="0, -200;-200, -900" dur="2s"
+			repeatCount="indefinite" />
+	</circle>
+</svg>`;
 }

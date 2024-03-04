@@ -512,7 +512,7 @@ a {
 
 .user-info {
   padding: 5px;
-  background: linear-gradient(135deg, #1e1e1e, #333, #000, #333, #1e1e1e);
+  background: linear-gradient(145deg, #1e1e1e, #333, #571d1d, #333, #1e1e1e);
   border-radius: 19px;
   display: flex;
   align-items: center;
@@ -523,15 +523,15 @@ a {
 
 @keyframes changeColor {
   0% {
-    background-position: 0% 50%;
+    background-position: 0% 65%;
   }
 
   50% {
-    background-position: 100% 50%;
+    background-position: 100% 65%;
   }
 
   100% {
-    background-position: 0% 50%;
+    background-position: 0% 65%;
   }
 }
 
@@ -753,6 +753,7 @@ a {
 }
 
 .apple-button-withicon {
+  position: relative; /* Add relative positioning */
   align-items: center;
   background-color: #333;
   border: none;
@@ -770,6 +771,11 @@ a {
   /* Set height to auto to fit content */
 }
 
+.apple-button-withicon span {
+  position: absolute;
+  right: 20px;
+  /* Adjust as needed */
+}
 
 .apple-button-withicon svg {
   position: absolute;
@@ -1430,4 +1436,31 @@ a {
   border-radius: 50%;
   background: #04AA6D;
   cursor: pointer;
+}
+
+.get-button {
+  background-color: #007aff;
+  border: none;
+  border-radius: 18px;
+  color: #fff;
+  font-size: 15px;
+  padding: 10px 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 122, 255, 0.2);
+  transition: background-color 0.3s;
+  position: relative; /* Add relative positioning */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.get-button svg {
+  position: absolute; /* Set SVG as absolute */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Center the SVG precisely */
+}
+
+.get-button:hover {
+  background-color: #0062cb74;
 }
