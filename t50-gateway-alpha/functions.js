@@ -3156,7 +3156,7 @@ function getNOpen(element) {
 	getButton.style.height = "17px"
 	getButton.style.width = "30px"
 	//height: 17px; width: 30px
-	getButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="70%" height="70%">
+	getButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="55%" height="55%">
 	<circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
 		<animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
 			repeatCount="indefinite" />
