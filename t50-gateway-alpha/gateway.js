@@ -1,6 +1,7 @@
 
 sessionStorage.removeItem("skipped")
-
+sessionStorage.removeItem("sending")
+sessionStorage.removeItem("current_sline")
 const ip = sessionStorage.getItem("IPV4")
 $(document).ready(docready())
 function log(text, color) {

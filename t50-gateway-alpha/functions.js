@@ -1762,6 +1762,10 @@ function return_to_options(where) {
 			$("#store").fadeOut("fast", function () {
 				$("#main_popup_settings").fadeIn("fast")
 			})
+		} else if (where === "cryptox") {
+			$("#cryptox_info").fadeOut("fast", function () {
+				$("#main_settings").fadeIn("fast")
+			})
 		}
 	}
 }
@@ -2419,30 +2423,87 @@ function oneo(element) {
 }
 
 function show_sline() {
-	sline_open.play()
-	document.getElementById('gateway').style.filter = 'blur(35px)'
-	document.getElementById("secureline").classList.add("active")
-	$("#profile").fadeOut("fast")
-	$("#vox").fadeOut("fast")
-	$("#dots").fadeOut("fast")
-	$("#settings").fadeOut("fast")
-	if (document.getElementById("animatedButton_notif").style.display === "block") {
-		var animatedButton = document.getElementById("animatedButton_notif");
-		animatedButton.style.opacity = "0";
-		animatedButton.style.transform = "translateY(20px)";
-		setTimeout(function () {
-			animatedButton.style.display = "none";
-		}, 500); // Adjust the timing as needed
-	}
-	if (document.getElementById("animatedButton_chats").style.display === "block") {
-		var animatedButton2 = document.getElementById("animatedButton_chats");
-		animatedButton2.style.opacity = "0";
-		animatedButton2.style.transform = "translateY(20px)";
-		setTimeout(function () {
-			animatedButton2.style.display = "none";
-		}, 500); // Adjust the timing as needed
-	}
-	getFriends()
+	fetch(`https://evox-datacenter.onrender.com/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(status => {
+			if (status.includes("Enabled")) {
+				sline_open.play()
+				document.getElementById('gateway').style.filter = 'blur(35px)'
+				document.getElementById("secureline").classList.add("active")
+				$("#profile").fadeOut("fast")
+				$("#vox").fadeOut("fast")
+				$("#dots").fadeOut("fast")
+				$("#settings").fadeOut("fast")
+				if (document.getElementById("animatedButton_notif").style.display === "block") {
+					var animatedButton = document.getElementById("animatedButton_notif");
+					animatedButton.style.opacity = "0";
+					animatedButton.style.transform = "translateY(20px)";
+					setTimeout(function () {
+						animatedButton.style.display = "none";
+					}, 500); // Adjust the timing as needed
+				}
+				if (document.getElementById("animatedButton_chats").style.display === "block") {
+					var animatedButton2 = document.getElementById("animatedButton_chats");
+					animatedButton2.style.opacity = "0";
+					animatedButton2.style.transform = "translateY(20px)";
+					setTimeout(function () {
+						animatedButton2.style.display = "none";
+					}, 500); // Adjust the timing as needed
+				}
+				getFriends()
+			} else if (status === "Disabled") {
+				//Prompt to reenable
+			} else if (status === "Ready To Setup") {
+				click.play()
+				var disabledDiv = document.body;
+				disabledDiv.classList.toggle('disabled');
+				document.getElementById("sline_cryptox").classList.add("active")
+
+
+			} else {
+				console.error("I dont know what i got from cryptox:", status)
+			}
+
+		}).catch(error => {
+			console.error(error);
+		});
+
+}
+
+function enableCryptox() {
+	login_ok.play()
+	fetch(`https://evox-datacenter.onrender.com/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(cryptoxcheck => {
+			if (cryptoxcheck === "Cryptox Already Enabled" || cryptoxcheck === "Cryptox Enabled") {
+				console.log("I can proceed!")
+				var disabledDiv = document.body;
+				disabledDiv.classList.toggle('disabled');
+				document.getElementById("sline_cryptox").classList.remove("active")
+				show_sline()
+			} else {
+				console.error(cryptoxcheck)
+			}
+		}).catch(error => {
+			console.error(error);
+		});
+}
+
+function cancelCryptox() {
+	disabled.play()
+	var disabledDiv = document.body;
+	disabledDiv.classList.toggle('disabled');
+	document.getElementById("sline_cryptox").classList.remove("active")
 }
 
 function close_sline() {
@@ -3080,12 +3141,12 @@ function qactions() {
 			var celsiusValue = fahrenheitToCelsius(responseData.currentConditions.temp);
 			var temperature = celsiusValue;
 			var windSpeed = responseData.currentConditions.visibility;
-			if (temperature < 20) {
+			if (temperature < 21) {
 				document.getElementById("weather-icon").src = "./icons/temperature-low.svg"
 			} else {
 				document.getElementById("weather-icon").src = "./icons/temperature-sun.svg"
 			}
-			if (temperature < 5) {
+			if (temperature < 14) {
 				document.getElementById("weather-icon").src = "./icons/temperature-snow.svg"
 			}
 
@@ -3110,7 +3171,7 @@ function qa_pfp() {
 
 function store() {
 	let appshtml = document.getElementById("apps").innerHTML
-	
+
 	let chatvia = document.getElementById("chatvia-get")
 	let tasco = document.getElementById("tasco-get")
 	let gateway = document.getElementById("gateway-get")
@@ -3132,13 +3193,13 @@ function store() {
 		owned_json.push("chatvia")
 	}
 
-	if(owned_json.includes("images")) {
+	if (owned_json.includes("images")) {
 		images.innerHTML = "OPEN"
 	}
-	if(owned_json.includes("notes")) {
+	if (owned_json.includes("notes")) {
 		notes.innerHTML = "OPEN"
 	}
-	if(owned_json.includes("chatvia")) {
+	if (owned_json.includes("chatvia")) {
 		chatvia.innerHTML = "OPEN"
 	}
 	//shake_me("evox_store")
@@ -3164,4 +3225,84 @@ function getNOpen(element) {
 			repeatCount="indefinite" />
 	</circle>
 </svg>`;
+}
+
+
+function cryptox() {
+	fetch(`https://evox-datacenter.onrender.com/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(status => {
+			if (status.includes("Enabled")) {
+				console.log(status)
+				var parts = status.split(":");
+				var iv = parts[1].trim();
+				document.getElementById("cryptox-status").checked = true
+				document.getElementById("cryptox-iv").style.display = "block"
+				document.getElementById("cryptox-iv").value = `IV: ${iv}`
+			} else if (status === "Disabled") {
+				document.getElementById("cryptox-status").checked = false
+				document.getElementById("cryptox-iv").style.display = "none"
+			} else if (status === "Ready To Setup") {
+				//hide toggle show button to create
+				document.getElementById("cryptox-status").checked = false
+				document.getElementById("cryptox-iv").style.display = "none"
+			}
+
+			$("#main_settings").fadeOut("fast", function () {
+				$("#cryptox_info").fadeIn("fast")
+			})
+
+		}).catch(error => {
+			console.error(error);
+		});
+
+}
+
+function changeCryptox() {
+	let toggle = document.getElementById("cryptox-status").checked
+	if (toggle === false) {
+		console.log("Disable")
+		fetch(`https://evox-datacenter.onrender.com/cryptox?method=disable&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(check => {
+			if (check === "Done") {
+				console.log("Cryptox Disabled")
+				cryptox()
+			} else {
+				console.error(check)
+			}
+		}).catch(error => {
+			console.error(error);
+		});
+	} else {
+		console.log("Enable")
+		login_ok.play()
+	fetch(`https://evox-datacenter.onrender.com/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(cryptoxcheck => {
+			if (cryptoxcheck === "Cryptox Already Enabled" || cryptoxcheck === "Cryptox Enabled") {
+				console.log("I can proceed!")
+				cryptox()
+			} else {
+				console.error(cryptoxcheck)
+			}
+		}).catch(error => {
+			console.error(error);
+		});
+	}
 }

@@ -10,6 +10,18 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+:root {
+  --c-text-primary: #ffffff; /* Inverted from #282a32 */
+  --c-text-secondary: #a9abb8; /* Inverted from #686b87 */
+  --c-text-action: #fcfcfc; /* Inverted from #404089 */
+  --c-accent-primary: #bcb3ff; /* Inverted from #434ce8 */
+  --c-border-primary: #10101d; /* Darker border color */
+  --c-background-primary: #1f1f1f; /* Darker background color */
+  --c-background-secondary: #292935; /* Darker background color */
+  --c-background-tertiary: #353543; /* Darker background color */
+  --c-background-quaternary: #3d3d49; /* Darker background color */
+}
+
 body {
   font-family: "SF";
   margin: 0;
@@ -30,6 +42,11 @@ body {
   /* For newer browsers */
   overscroll-behavior: contain;
   /* For older browsers */
+}
+
+body.disabled {
+  pointer-events: none; /* Disable pointer events */
+  opacity: 1; /* Optional: add visual indication of disabled state */
 }
 
 img {
@@ -619,6 +636,8 @@ a {
   transition: filter 0.5s ease-in-out;
 }
 
+
+
 .rad-label {
   display: flex;
   align-items: center;
@@ -753,7 +772,8 @@ a {
 }
 
 .apple-button-withicon {
-  position: relative; /* Add relative positioning */
+  position: relative;
+  /* Add relative positioning */
   align-items: center;
   background-color: #333;
   border: none;
@@ -1448,19 +1468,173 @@ a {
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 122, 255, 0.2);
   transition: background-color 0.3s;
-  position: relative; /* Add relative positioning */
+  position: relative;
+  /* Add relative positioning */
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .get-button svg {
-  position: absolute; /* Set SVG as absolute */
-  top: 50%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Center the SVG precisely */
+  position: absolute;
+  /* Set SVG as absolute */
+  top: 50%;
+  /* Center vertically */
+  left: 50%;
+  /* Center horizontally */
+  transform: translate(-50%, -50%);
+  /* Center the SVG precisely */
 }
 
 .get-button:hover {
   background-color: #0062cb74;
+}
+
+.popup_cryptox {
+
+  color: #fff;
+  line-height: 1.5;
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+
+  background: #0f172a;
+  padding-top: 50px;
+}
+
+.cookie {
+  pointer-events:all; /* Disable pointer events */
+  opacity: 1;
+  display: block;
+  position: fixed;
+  bottom: 15%;
+  left: 0;
+  right: 0;
+  font-family: "SF", sans-serif;
+  width: calc(100% - 30px);
+  max-width: 360px;
+  text-align: center;
+  margin: 0 auto;
+  /* Center horizontally */
+  padding: 20px 15px;
+  border: 1px solid #222f43;
+  border-radius: 20px;
+  background-color: #131c31;
+  color: #b9e0f2;
+  box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateY(200%);
+  /* Initially off-screen to the left */
+  transition: transform 1s ease, opacity 1s ease, visibility 1s;
+}
+
+.cookie.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateX(0);
+  /* Slide the popup into view */
+}
+
+.cookie .fa-cookie-bite {
+  font-size: 50px;
+  color: #fac176;
+}
+
+.cookie__heading {
+  font-size: 27px;
+  font-weight: 700;
+  margin: 10px 0 5px;
+}
+
+.cookie__desc {
+  text-align: center;
+  font-size: 17px;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+  flex-direction: row;
+  justify-content: center;
+  margin: 20px 0 0;
+}
+
+.buttons button {
+  width: 110px;
+  height: 25px;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 6px;
+  border: 0;
+  cursor: pointer;
+  transition-duration: 0.2s;
+}
+
+.buttons__allow {
+  background-color: #ffc73a;
+  color: #0f172a;
+}
+
+.buttons__allow:hover {
+  background-color: #eda900;
+  transition-duration: 0.2s;
+}
+
+.buttons__decline {
+  background-color: transparent;
+  color: #ffc73a;
+}
+
+.buttons__decline:hover {
+  text-decoration: underline;
+}
+
+.toggle span {
+  display: block;
+  width: 40px;
+  height: 24px;
+  border-radius: 99em;
+  background-color: var(--c-background-quaternary);
+  box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.05);
+  position: relative;
+  transition: 0.15s ease;
+}
+.toggle span:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  height: 18px;
+  width: 18px;
+  background-color: var(--c-background-primary);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+  transition: 0.15s ease;
+}
+.toggle input {
+  clip: rect(0 0 0 0);
+  -webkit-clip-path: inset(50%);
+          clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+.toggle input:checked + span {
+  background-color: var(--c-accent-primary);
+}
+.toggle input:checked + span:before {
+  transform: translateX(calc(100% - 2px));
+}
+.toggle input:focus + span {
+  box-shadow: 0 0 0 4px var(--c-background-tertiary);
 }
