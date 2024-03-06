@@ -10,18 +10,8 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.bottom-left {
-  position: fixed;
-  top: 30px;
-  right: 20px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+#onesignal-bell-container {
+  display: none
 }
 
 :root {
