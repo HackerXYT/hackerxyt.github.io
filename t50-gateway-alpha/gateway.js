@@ -34,7 +34,7 @@ function FloridaRun() {
       if (cursor) {
         // Access each object in the object store and do something with it
         console.log(cursor.value);
-        sessionStorage.setItem("flrd_info", cursor.value)
+        sessionStorage.setItem("flrd_info", JSON.stringify(cursor.value))
 
         // Move to the next object in the object store
         cursor.continue();
