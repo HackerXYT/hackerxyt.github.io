@@ -119,6 +119,19 @@
             });
         });
     </script>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(function (OneSignal) {
+            OneSignal.init({
+                appId: "60647dcd-b776-4527-93fa-dbfcb86494af",
+                safari_web_id: "web.onesignal.auto.27d2eba6-7621-43e8-b8d4-d2a9de3b8fea",
+                notifyButton: {
+                    enable: true,
+                },
+            });
+        });
+    </script>
 </head>
 <script>
     //sessionStorage.clear()
@@ -507,7 +520,11 @@
             <!--onclick="fix()" id="stuck"-->
             <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
             <!-- You can customize the icon or text inside the button -->
-            <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="30px" height="30px" viewBox="0 0 14 14" role="img" focusable="false" aria-hidden="true"><path d="m 9,9 0.444445,0 0,3.11111 -0.444445,0 z m -0.888889,0 0.444445,0 0,4 -0.444445,0 z m 1.777778,0 0.444444,0 0,3.55556 -0.444444,0 z m -2.666667,0 0.444445,0 0,3.55556 -0.444445,0 z m 4.444445,-1.77778 0,0.88889 -9.333334,0 0,-0.88889 -0.444444,0 0,2.22222 0.444444,0 0,-0.88888 9.333334,0 0,0.88888 0.444444,0 0,-2.22222 z M 10.777778,9 l 0.444444,0 0,4 -0.444444,0 z m -4.444445,0 0.444445,0 0,4 -0.444445,0 z M 11.222222,4.55556 9,4.55556 c -0.488877,0 -0.888889,-0.39999 -0.888889,-0.88889 L 8.111111,1 3.666667,1 C 3.177766,1 2.777778,1.39999 2.777778,1.88889 l 0,5.77778 8.444444,0 0,-3.11111 z M 2.777778,9 l 0.444444,0 0,4 -0.444444,0 z M 9,4.11111 l 2.222222,0 L 8.555556,1 l 0,2.66667 C 8.555556,3.93333 8.77779,4.11111 9,4.11111 Z M 4.555556,9 5,9 5,13 4.555556,13 Z m -0.888889,0 0.444444,0 0,3.55556 -0.444444,0 z m 1.777778,0 0.444444,0 0,3.11111 -0.444444,0 z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="30px" height="30px" viewBox="0 0 14 14"
+                role="img" focusable="false" aria-hidden="true">
+                <path
+                    d="m 9,9 0.444445,0 0,3.11111 -0.444445,0 z m -0.888889,0 0.444445,0 0,4 -0.444445,0 z m 1.777778,0 0.444444,0 0,3.55556 -0.444444,0 z m -2.666667,0 0.444445,0 0,3.55556 -0.444445,0 z m 4.444445,-1.77778 0,0.88889 -9.333334,0 0,-0.88889 -0.444444,0 0,2.22222 0.444444,0 0,-0.88888 9.333334,0 0,0.88888 0.444444,0 0,-2.22222 z M 10.777778,9 l 0.444444,0 0,4 -0.444444,0 z m -4.444445,0 0.444445,0 0,4 -0.444445,0 z M 11.222222,4.55556 9,4.55556 c -0.488877,0 -0.888889,-0.39999 -0.888889,-0.88889 L 8.111111,1 3.666667,1 C 3.177766,1 2.777778,1.39999 2.777778,1.88889 l 0,5.77778 8.444444,0 0,-3.11111 z M 2.777778,9 l 0.444444,0 0,4 -0.444444,0 z M 9,4.11111 l 2.222222,0 L 8.555556,1 l 0,2.66667 C 8.555556,3.93333 8.77779,4.11111 9,4.11111 Z M 4.555556,9 5,9 5,13 4.555556,13 Z m -0.888889,0 0.444444,0 0,3.55556 -0.444444,0 z m 1.777778,0 0.444444,0 0,3.11111 -0.444444,0 z" />
+            </svg>
         </div>
         <p>Delete A Message</p>
         <div id="delete_msg_list">
@@ -668,14 +685,18 @@
                     top: 50%;
                     /* Added */
                     right: 20px;" class="toggle">
-                    <input onclick="changeCryptox()" id="cryptox-status" type="checkbox" checked="false">
-                    <span></span>
-                </label></a>
+                        <input onclick="changeCryptox()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label></a>
                 <input id="cryptox-iv" class="apple-input" value="Error Retrieving IV" disabled></input>
-                <p style="margin: 6px" class="user-email">Your Cryptox credentials consist of a <b>key</b> and an <b>iv</b>.<br>To enhance security, only the iv is transferred over the internet, minimizing the risk of data breaches.<br>To update your Cryptox credentials, toggle Cryptox off and then back on.<br><br><br><b>⚠️WARNING: RESETING YOUR CRYPTOX CREDENTIALS WILL REVOKE ACCESS TO SECURELINE MESSAGES FOR YOU AND ALL PARTICIPANTS!</b></p>
-                    
+                <p style="margin: 6px" class="user-email">Your Cryptox credentials consist of a <b>key</b> and an
+                    <b>iv</b>.<br>To enhance security, only the iv is transferred over the internet, minimizing the risk
+                    of data breaches.<br>To update your Cryptox credentials, toggle Cryptox off and then back
+                    on.<br><br><br><b>⚠️WARNING: RESETING YOUR CRYPTOX CREDENTIALS WILL REVOKE ACCESS TO SECURELINE
+                        MESSAGES FOR YOU AND ALL PARTICIPANTS!</b></p>
 
-                
+
+
                 <div id="authip_back_btn" onclick="return_to_options('cryptox')"
                     style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
                     <div
@@ -1893,7 +1914,8 @@
         </svg>
 
         <p class="cookie__heading">Your Privacy Is Our Priority</p>
-        <p class="cookie__desc">Secureline now requires you to enable Cryptox for enhanced security. Cryptox ensures your data is
+        <p class="cookie__desc">Secureline now requires you to enable Cryptox for enhanced security. Cryptox ensures
+            your data is
             encrypted using advanced techniques, providing an extra layer of privacy protection.</p>
 
 
@@ -1919,87 +1941,87 @@
     setBodyHeight();
 </script>
 <script type="text/javascript">
-    (function (d, t) {
-        var g = d.createElement(t),
-            s = d.getElementsByTagName(t)[0];
-        g.src = "https://cdn.pushalert.co/integrate_39bb4d416521e2257c115e376e0c052b.js";
-        s.parentNode.insertBefore(g, s);
-    }(document, "script"));
+    //(function (d, t) {
+    //    var g = d.createElement(t),
+    //        s = d.getElementsByTagName(t)[0];
+    //    g.src = "https://cdn.pushalert.co/integrate_39bb4d416521e2257c115e376e0c052b.js";
+    //    s.parentNode.insertBefore(g, s);
+    //}(document, "script"));
 </script>
 <script src="../scripts/jquery-3.7.0.js"></script>
 
 <script>
-    let florida_open;
-    let florida_open_check = setInterval(function () {
-        let flrd_id = PushAlertCo.subs_id
-        if (flrd_id === null) {
-            console.log("Not yet loaded")
-        } else {
-            if (flrd_id === "") {
-                console.log("Script is loaded but notifications are not yet accepted")
-                sessionStorage.setItem("flrd_info", "Not accepted")
-                if (window.location.href.includes("localhost") || window.location.href.includes("192.168.1.21")) {
-                    log("Florida cannot start! Please exit local hosting!", "yellow")
-                    sessionStorage.setItem("flrd_info", "Localhosting!")
-                    clearInterval(florida_open_check)
-                }
-            } else {
-                console.log(`Loaded: "${flrd_id}"`)
-
-                if (localStorage.getItem("t50-username") && localStorage.getItem("t50-autologin") === "true") {
-                    log("Florida Info Ready!", "green")
-                    sessionStorage.setItem("flrd_info", `Ready: ${flrd_id}`)
-                    localStorage.setItem("florida_device_id", flrd_id)
-                    //can proceed sending florida id for account lc t50-username
-                } else if (sessionStorage.getItem("loaded")) {
-                    //page has loaded logged in and can proceed sending florida id for account lc t50-username (auto login disabled)
-                    log("Florida Info Ready!", "green")
-                    sessionStorage.setItem("flrd_info", `Ready: ${flrd_id}`)
-                    localStorage.setItem("florida_device_id", flrd_id)
-                    //send fetch
-                    const encoded = btoa(flrd_id)
-                    var url = `https://evox-datacenter.onrender.com/florida?username=${localStorage.getItem("t50-username")}&id=${encoded}`;
-
-                    fetch(url)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.text();
-                        })
-                        .then(data => {
-                            // Handle the data
-                            if (data.includes("Florida updated")) {
-                                log("Florida Success!", "green")
-                            } else {
-                                log("Id exists!", "yellow")
-                            }
-                            console.log(data);
-                        })
-                        .catch(error => {
-                            // Handle errors
-                            console.error('Fetch error:', error);
-                        });
-                } else if (!localStorage.getItem("t50-username")) {
-                    console.log("User has recently logged out or is new")
-                    sessionStorage.setItem("flrd_info", "Recently Logged In Or New")
-                    //user has recently logged out or user is new to app
-                    localStorage.setItem("restart-for-florida", "true")
-                } else if (document.getElementById("container").style.display === "") {
-                    //login is shown right now, user has logged in in the past, waiting for new or same account login
-                    console.log("User is returning after leaving")
-                    sessionStorage.setItem("flrd_info", "User Returned After Leaving")
-                    localStorage.setItem("restart-for-florida", "true")
-                } else {
-                    console.log("Error occured while running florida")
-                    sessionStorage.setItem("flrd_info", "An error occured while running florida")
-                    localStorage.setItem("restart-for-florida", "true")
-                }
-                clearInterval(florida_open_check)
-            }
-
-        }
-    }, 1000)
+    //    let florida_open;
+    //    let florida_open_check = setInterval(function () {
+    //        let flrd_id = PushAlertCo.subs_id
+    //        if (flrd_id === null) {
+    //            console.log("Not yet loaded")
+    //        } else {
+    //            if (flrd_id === "") {
+    //                console.log("Script is loaded but notifications are not yet accepted")
+    //                sessionStorage.setItem("flrd_info", "Not accepted")
+    //                if (window.location.href.includes("localhost") || window.location.href.includes("192.168.1.21")) {
+    //                    log("Florida cannot start! Please exit local hosting!", "yellow")
+    //                    sessionStorage.setItem("flrd_info", "Localhosting!")
+    //                    clearInterval(florida_open_check)
+    //                }
+    //            } else {
+    //                console.log(`Loaded: "${flrd_id}"`)
+    //
+    //                if (localStorage.getItem("t50-username") && localStorage.getItem("t50-autologin") === "true") {
+    //                    log("Florida Info Ready!", "green")
+    //                    sessionStorage.setItem("flrd_info", `Ready: ${flrd_id}`)
+    //                    localStorage.setItem("florida_device_id", flrd_id)
+    //                    //can proceed sending florida id for account lc t50-username
+    //                } else if (sessionStorage.getItem("loaded")) {
+    //                    //page has loaded logged in and can proceed sending florida id for account lc t50-username (auto login disabled)
+    //                    log("Florida Info Ready!", "green")
+    //                    sessionStorage.setItem("flrd_info", `Ready: ${flrd_id}`)
+    //                    localStorage.setItem("florida_device_id", flrd_id)
+    //                    //send fetch
+    //                    const encoded = btoa(flrd_id)
+    //                    var url = `https://evox-datacenter.onrender.com/florida?username=${localStorage.getItem("t50-username")}&id=${encoded}`;
+    //
+    //                    fetch(url)
+    //                        .then(response => {
+    //                            if (!response.ok) {
+    //                                throw new Error('Network response was not ok');
+    //                            }
+    //                            return response.text();
+    //                        })
+    //                        .then(data => {
+    //                            // Handle the data
+    //                            if (data.includes("Florida updated")) {
+    //                                log("Florida Success!", "green")
+    //                            } else {
+    //                                log("Id exists!", "yellow")
+    //                            }
+    //                            console.log(data);
+    //                        })
+    //                        .catch(error => {
+    //                            // Handle errors
+    //                            console.error('Fetch error:', error);
+    //                        });
+    //                } else if (!localStorage.getItem("t50-username")) {
+    //                    console.log("User has recently logged out or is new")
+    //                    sessionStorage.setItem("flrd_info", "Recently Logged In Or New")
+    //                    //user has recently logged out or user is new to app
+    //                    localStorage.setItem("restart-for-florida", "true")
+    //                } else if (document.getElementById("container").style.display === "") {
+    //                    //login is shown right now, user has logged in in the past, waiting for new or same account login
+    //                    console.log("User is returning after leaving")
+    //                    sessionStorage.setItem("flrd_info", "User Returned After Leaving")
+    //                    localStorage.setItem("restart-for-florida", "true")
+    //                } else {
+    //                    console.log("Error occured while running florida")
+    //                    sessionStorage.setItem("flrd_info", "An error occured while running florida")
+    //                    localStorage.setItem("restart-for-florida", "true")
+    //                }
+    //                clearInterval(florida_open_check)
+    //            }
+    //
+    //        }
+    //    }, 1000)
 </script>
 
 <script src='../scripts/iro.min.js'></script>

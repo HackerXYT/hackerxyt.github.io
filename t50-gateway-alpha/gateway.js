@@ -100,7 +100,7 @@ function setup() {
         $("#container").fadeOut("fast")
         $("#loading").fadeIn("slow")
         $("#stuck").fadeOut("slow")
-        fetch(`https://evox-datacenter.onrender.com/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
+        fetch(`http://192.168.1.21:4000/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -258,7 +258,7 @@ function docready() {
   let pswd = atob(acc)
   let username = localStorage.getItem("t50-username")
   if (loggedin != null && autologin === "true") {
-    const url = `https://evox-datacenter.onrender.com/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${localStorage.getItem("IPV4")}`;
+    const url = `http://192.168.1.21:4000/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${localStorage.getItem("IPV4")}`;
 
     fetch(url)
       .then(response => {
@@ -272,7 +272,7 @@ function docready() {
           $("#loading-bar").fadeOut("slow")
           console.log('%c' + "Account Verified!", `color: green; font-size: 16px; font-weight: bold;`)
           sessionStorage.setItem("loaded", true)
-          fetch(`https://evox-datacenter.onrender.com/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+          fetch(`http://192.168.1.21:4000/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -283,7 +283,7 @@ function docready() {
               if (data === "IP is Mapped") {
                 setup()
               } else if (data === "Unknown IP") {
-                fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+                fetch(`http://192.168.1.21:4000/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
                   .then(response => {
                     if (!response.ok) {
                       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -320,7 +320,7 @@ function docready() {
 
         } else if (data === "IP Not Verified") {
           console.log('%c' + "Existing Account Verified! IP Not Mapped", `color: orange; font-size: 16px; font-weight: bold;`)
-          fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+          fetch(`http://192.168.1.21:4000/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -434,7 +434,7 @@ function docready() {
                 $("#dots").html(".")
                 setTimeout(function () {
                   $("#dots").html("..")
-                  fetch("https://evox-datacenter.onrender.com/accounts")
+                  fetch("http://192.168.1.21:4000/accounts")
                     .then(response => {
                       if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -625,7 +625,7 @@ function verifycode() {
   //let dig6 = document.getElementById("dig6").value
   //let code = `${dig1}${dig2}${dig3}${dig4}${dig5}${dig6}`
   console.log("Just to verify:\n", email, username, password, code)
-  fetch(`https://evox-datacenter.onrender.com/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${localStorage.getItem("IPV4")}`)
+  fetch(`http://192.168.1.21:4000/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${localStorage.getItem("IPV4")}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -677,7 +677,7 @@ function login() {
   let email = document.getElementById("email").value
   let password = document.getElementById("password").value
   console.log(email, "********")
-  const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}&ip=${localStorage.getItem("IPV4")}`;
+  const url = `http://192.168.1.21:4000/accounts?email=${email}&password=${password}&ip=${localStorage.getItem("IPV4")}`;
 
   fetch(url)
     .then(response => {
@@ -763,7 +763,7 @@ document.getElementById("ver_code").addEventListener("keypress", function (event
 function reconnect() {
   console.log("Reconnecting..")
   $("#loading-bar").fadeIn("slow")
-  fetch("https://evox-datacenter.onrender.com/cron")
+  fetch("http://192.168.1.21:4000/cron")
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

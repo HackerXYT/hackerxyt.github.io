@@ -16,7 +16,7 @@ function send_message() {
     //}
     //message.disabled = true
     //sessionStorage.setItem("sending", "true")
-    fetch(`https://evox-datacenter.onrender.com/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${message.value}`)
+    fetch(`http://192.168.1.21:4000/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${message.value}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -27,7 +27,7 @@ function send_message() {
         message.value = ""
         if (data === `Message Sent To ${recipient}`) {
           console.log("Message Sent")
-          fetch(`https://evox-datacenter.onrender.com/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}`)
+          fetch(`http://192.168.1.21:4000/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -88,7 +88,7 @@ function reload_chat(whoto) {
   reloading = setInterval(function () {
     sessionStorage.setItem("current_sline", whoto)
     pfp = document.getElementById(`${whoto}-pfp-secureline`)
-    fetch(`https://evox-datacenter.onrender.com/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}`)
+    fetch(`http://192.168.1.21:4000/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -180,7 +180,7 @@ function showchat(element) {
 </p>`
   sessionStorage.setItem("current_sline", element.id)
   pfp = document.getElementById(`${element.id}-pfp-secureline`)
-  fetch(`https://evox-datacenter.onrender.com/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
+  fetch(`http://192.168.1.21:4000/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -190,7 +190,7 @@ function showchat(element) {
     .then(data => {
       if (data === "Chat Exists.") {
         console.log("Getting Existing Chat")
-        fetch(`https://evox-datacenter.onrender.com/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
+        fetch(`http://192.168.1.21:4000/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -268,7 +268,7 @@ function create_chat() {
       </path>
   </svg>
 </p>`
-  fetch(`https://evox-datacenter.onrender.com/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&createnew=true`)
+  fetch(`http://192.168.1.21:4000/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&createnew=true`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -299,7 +299,7 @@ function getFriends(pre) {
     sline_refresh.play()
   }
   $("#load-users-friends").fadeIn("fast")
-  fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+  fetch(`http://192.168.1.21:4000/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -327,7 +327,7 @@ function getFriends(pre) {
       listContainer.style.marginTop = "";
       listContainer.innerHTML = "<!--Empty-->";
       user_requests.forEach(username => {
-        fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+        fetch(`http://192.168.1.21:4000/accounts?method=getemailbyusername&username=${username}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -378,7 +378,7 @@ function getFriends(pre) {
               //userContainer.appendChild(addButton);
 
               listContainer.appendChild(userContainer);
-              fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+              fetch(`http://192.168.1.21:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
                 .then(response => {
                   if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -447,7 +447,7 @@ function canceldelete() {
 function confirmdelete() {
   document.getElementById("cancelbtn").style.display = "none"
   const message = sessionStorage.getItem("removemsg")
-  fetch(`https://evox-datacenter.onrender.com/secureline?method=DeleteMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&whosentit=me&message=${message}`)
+  fetch(`http://192.168.1.21:4000/secureline?method=DeleteMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&whosentit=me&message=${message}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
