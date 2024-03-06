@@ -2649,11 +2649,13 @@ function confirm_ipremove() {
 //confirm_ipremove
 
 function loadflrdinf() {
-	$("#flrd_svg").fadeIn("fast")
+	$("#onesignal-bell-container").fadeIn("fast")
+	
 	setTimeout(function () {
 		const oldhtml = document.getElementById("notification").innerHTML
 		var notification = document.getElementById('notification');
 		if (notification.className.includes("show")) {
+			$("#flrd_svg").fadeOut("fast")
 			console.log("Notification Is Shown")
 			notification.classList.remove('show');
 			setTimeout(function () {
@@ -2665,6 +2667,7 @@ function loadflrdinf() {
 				}, 2500);
 			}, 500)
 		} else {
+			$("#flrd_svg").fadeIn("fast")
 			document.getElementById("notification").innerHTML = sessionStorage.getItem("flrd_info")
 			notification.classList.add('show');
 			$("#flrd_svg").fadeOut("fast")
