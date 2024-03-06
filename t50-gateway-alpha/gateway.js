@@ -9,6 +9,52 @@ function log(text, color) {
   console.log('%c' + text, styles)
 }
 
+function FloridaRun() {
+  // Open the IndexedDB database
+  var request = window.indexedDB.open('ONE_SIGNAL_SDK_DB');
+
+  request.onerror = function (event) {
+    console.error("IndexedDB error:", event.target.errorCode);
+  };
+
+  request.onsuccess = function (event) {
+    var db = event.target.result;
+
+    // Start a transaction to access the database
+    var transaction = db.transaction(['pushSubscriptions'], 'readonly');
+
+    // Retrieve the object store
+    var objectStore = transaction.objectStore('pushSubscriptions');
+
+    // Open a cursor to iterate over the data
+    var cursorRequest = objectStore.openCursor();
+
+    cursorRequest.onsuccess = function (event) {
+      var cursor = event.target.result;
+      if (cursor) {
+        // Access each object in the object store and do something with it
+        console.log(cursor.value);
+        sessionStorage.setItem("flrd_info", cursor.value)
+
+        // Move to the next object in the object store
+        cursor.continue();
+      } else {
+        console.log('No more entries');
+      }
+    };
+
+    cursorRequest.onerror = function (event) {
+      console.error("Cursor error:", event.target.errorCode);
+    };
+  };
+
+  request.onupgradeneeded = function (event) {
+    var db = event.target.result;
+    db.createObjectStore('pushSubscriptions');
+  };
+
+}
+
 function greetUser() {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
@@ -317,7 +363,7 @@ function docready() {
             }).catch(error => {
               console.error('Fetch error:', error);
             });
-
+          FloridaRun()
         } else if (data === "IP Not Verified") {
           console.log('%c' + "Existing Account Verified! IP Not Mapped", `color: orange; font-size: 16px; font-weight: bold;`)
           fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
@@ -335,6 +381,7 @@ function docready() {
             }).catch(error => {
               console.error('Fetch error:', error);
             });
+          FloridaRun()
         } else {
           console.log('%c' + "Account Verification Failed!", `color: red; font-size: 20px; font-weight: bold;`)
           localStorage.removeItem("t50-email")
@@ -636,7 +683,7 @@ function verifycode() {
       if (data === "Complete") {
         $("#2fa").fadeOut("slow")
         console.log("All Done")
-        
+
         localStorage.setItem("t50pswd", `${btoa(password)}`)
         sessionStorage.removeItem("ACCOUNT_DATA")
         sessionStorage.setItem("2FA_READY", "true")
@@ -726,6 +773,7 @@ function login() {
           return;
         }
         setup()
+        FloridaRun()
       } else if (data === "Credentials Incorrect") {
         fadeError("2")
         console.log("Wrong Email/Password")
