@@ -117,11 +117,38 @@ function setup() {
     }, 100)
   }
   let lg_status = sessionStorage.getItem("loaded")
-  OneSignalDeferred.push(function() {
-    OneSignal.login(localStorage.getItem("t50-username"));
-  });
+  try {
+    OneSignalDeferred.push(function() {
+      OneSignal.logout();
+    });
+  } catch {
+    console.error("Error Logging Out Of Florida. Safe")
+  }
+  fetch(`https://evox-datacenter.onrender.com/florida?method=largest&username=${localStorage.getItem("t50-username")}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      if(data !== "Error") {
+        OneSignalDeferred.push(function () {
+          const tologin = `${localStorage.getItem("t50-username")}${data}`
+          OneSignal.login(tologin);
+        });
+      } else {
+        console.error("Got an error response for florida")
+      }
+      
+    })
+    .catch(error => {
+      console.error('Fetch error:', error);
+    });
 
   
+
+
 
   if (lg_status === "true") {
     let username = localStorage.getItem("t50-username")
