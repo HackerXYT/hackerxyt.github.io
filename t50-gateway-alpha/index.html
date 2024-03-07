@@ -120,43 +120,27 @@
         });
     </script>
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
     <script>
-        OneSignal.push(function () {
-            OneSignal.getUserId().then(function (userId) {
-                console.log("OneSignal User ID:", userId);
-                // If the user is not subscribed, set their external user ID
-                if (!userId) {
-                    var externalUserId = localStorage.getItem("t50-username");
-                    OneSignal.setExternalUserId(externalUserId).then(function (results) {
-                        console.log("External user ID set:", results);
-                        // Initialize OneSignal
-                        OneSignal.init({
-                            appId: "60647dcd-b776-4527-93fa-dbfcb86494af",
-                            safari_web_id: "web.onesignal.auto.27d2eba6-7621-43e8-b8d4-d2a9de3b8fea",
-                            notifyButton: {
-                                enable: true,
-                                position: "bottom-left",
-                            },
-                        });
-                    }).catch(function (error) {
-                        console.error("Error setting external user ID:", error);
-                    });
-                } else {
-                    console.log("User is already subscribed with ID:", userId);
-                    // Initialize OneSignal
-                    OneSignal.init({
-                        appId: "60647dcd-b776-4527-93fa-dbfcb86494af",
-                        safari_web_id: "web.onesignal.auto.27d2eba6-7621-43e8-b8d4-d2a9de3b8fea",
-                        notifyButton: {
-                            enable: true,
-                            position: "bottom-left",
-                        },
-                    });
-                }
-            }).catch(function (error) {
-                console.error("Error getting OneSignal User ID:", error);
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(function (OneSignal) {
+            // Check if the OneSignal object and the setExternalUserId function are available
+            
+
+            // Initialize OneSignal
+            OneSignal.init({
+                appId: "60647dcd-b776-4527-93fa-dbfcb86494af",
+                safari_web_id: "web.onesignal.auto.27d2eba6-7621-43e8-b8d4-d2a9de3b8fea",
+                notifyButton: {
+                    enable: true,
+                    position: "bottom-left",
+                },
             });
+            if (OneSignal && typeof OneSignal.setExternalUserId === 'function') {
+                // Set external user ID
+                OneSignal.setExternalUserId(localStorage.getItem("t50-username"));
+            } else {
+                console.error("OneSignal or setExternalUserId function is not available.");
+            }
         });
     </script>
     <script>
