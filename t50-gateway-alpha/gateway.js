@@ -117,7 +117,9 @@ function setup() {
     }, 100)
   }
   let lg_status = sessionStorage.getItem("loaded")
-  
+  OneSignalDeferred.push(function() {
+    OneSignal.login(localStorage.getItem("t50-username"));
+  });
 
   
 
