@@ -74,6 +74,7 @@ function greetUser() {
 }
 
 function setup() {
+  //console.log("RUNNING SETUP!")
 
   try {
     custombg()
@@ -116,6 +117,21 @@ function setup() {
     }, 100)
   }
   let lg_status = sessionStorage.getItem("loaded")
+  //window.OneSignalDeferred = window.OneSignalDeferred || [];
+  //OneSignalDeferred.push(function (OneSignal) {
+  //  OneSignal.setExternalUserId(localStorage.getItem("t50-username"));
+  //  OneSignal.init({
+  //    appId: "60647dcd-b776-4527-93fa-dbfcb86494af",
+  //    safari_web_id: "web.onesignal.auto.27d2eba6-7621-43e8-b8d4-d2a9de3b8fea",
+  //    notifyButton: {
+  //      enable: true,
+  //      position: "bottom-left",
+  //    },
+  //  });
+  //});
+
+  
+
   if (lg_status === "true") {
     let username = localStorage.getItem("t50-username")
     let email = localStorage.getItem("t50-email")

@@ -667,6 +667,7 @@ function logoff() {
 	keysToRem.forEach(function (key) {
 		sessionStorage.removeItem(key);
 	});
+	sessionStorage.clear()
 	localStorage.clear()
 	restart()
 }
@@ -2650,7 +2651,7 @@ function confirm_ipremove() {
 
 function loadflrdinf() {
 	$("#onesignal-bell-container").fadeIn("fast")
-	
+
 	setTimeout(function () {
 		const oldhtml = document.getElementById("notification").innerHTML
 		var notification = document.getElementById('notification');
@@ -3271,41 +3272,41 @@ function changeCryptox() {
 	if (toggle === false) {
 		console.log("Disable")
 		fetch(`https://evox-datacenter.onrender.com/cryptox?method=disable&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! Status: ${response.status}`);
-			}
-			return response.text();
-		})
-		.then(check => {
-			if (check === "Done") {
-				console.log("Cryptox Disabled")
-				cryptox()
-			} else {
-				console.error(check)
-			}
-		}).catch(error => {
-			console.error(error);
-		});
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.text();
+			})
+			.then(check => {
+				if (check === "Done") {
+					console.log("Cryptox Disabled")
+					cryptox()
+				} else {
+					console.error(check)
+				}
+			}).catch(error => {
+				console.error(error);
+			});
 	} else {
 		console.log("Enable")
 		login_ok.play()
-	fetch(`https://evox-datacenter.onrender.com/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! Status: ${response.status}`);
-			}
-			return response.text();
-		})
-		.then(cryptoxcheck => {
-			if (cryptoxcheck === "Cryptox Already Enabled" || cryptoxcheck === "Cryptox Enabled") {
-				console.log("I can proceed!")
-				cryptox()
-			} else {
-				console.error(cryptoxcheck)
-			}
-		}).catch(error => {
-			console.error(error);
-		});
+		fetch(`https://evox-datacenter.onrender.com/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.text();
+			})
+			.then(cryptoxcheck => {
+				if (cryptoxcheck === "Cryptox Already Enabled" || cryptoxcheck === "Cryptox Enabled") {
+					console.log("I can proceed!")
+					cryptox()
+				} else {
+					console.error(cryptoxcheck)
+				}
+			}).catch(error => {
+				console.error(error);
+			});
 	}
 }

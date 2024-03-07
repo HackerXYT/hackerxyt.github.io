@@ -120,18 +120,47 @@
         });
     </script>
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
     <script>
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(function (OneSignal) {
-            OneSignal.init({
-                appId: "60647dcd-b776-4527-93fa-dbfcb86494af",
-                safari_web_id: "web.onesignal.auto.27d2eba6-7621-43e8-b8d4-d2a9de3b8fea",
-                notifyButton: {
-                    enable: true,
-                    position: "bottom-left",
-                },
+        OneSignal.push(function () {
+            OneSignal.getUserId().then(function (userId) {
+                console.log("OneSignal User ID:", userId);
+                // If the user is not subscribed, set their external user ID
+                if (!userId) {
+                    var externalUserId = localStorage.getItem("t50-username");
+                    OneSignal.setExternalUserId(externalUserId).then(function (results) {
+                        console.log("External user ID set:", results);
+                        // Initialize OneSignal
+                        OneSignal.init({
+                            appId: "60647dcd-b776-4527-93fa-dbfcb86494af",
+                            safari_web_id: "web.onesignal.auto.27d2eba6-7621-43e8-b8d4-d2a9de3b8fea",
+                            notifyButton: {
+                                enable: true,
+                                position: "bottom-left",
+                            },
+                        });
+                    }).catch(function (error) {
+                        console.error("Error setting external user ID:", error);
+                    });
+                } else {
+                    console.log("User is already subscribed with ID:", userId);
+                    // Initialize OneSignal
+                    OneSignal.init({
+                        appId: "60647dcd-b776-4527-93fa-dbfcb86494af",
+                        safari_web_id: "web.onesignal.auto.27d2eba6-7621-43e8-b8d4-d2a9de3b8fea",
+                        notifyButton: {
+                            enable: true,
+                            position: "bottom-left",
+                        },
+                    });
+                }
+            }).catch(function (error) {
+                console.error("Error getting OneSignal User ID:", error);
             });
         });
+    </script>
+    <script>
+        //onesignal was here
     </script>
 </head>
 <script>
@@ -694,7 +723,8 @@
                     <b>iv</b>.<br>To enhance security, only the iv is transferred over the internet, minimizing the risk
                     of data breaches.<br>To update your Cryptox credentials, toggle Cryptox off and then back
                     on.<br><br><br><b>⚠️WARNING: RESETTING YOUR CRYPTOX CREDENTIALS WILL REVOKE ACCESS TO SECURELINE
-                        MESSAGES FOR YOU AND ALL PARTICIPANTS!</b></p>
+                        MESSAGES FOR YOU AND ALL PARTICIPANTS!</b>
+                </p>
 
 
                 <div id="authip_back_btn" onclick="return_to_options('cryptox')"
@@ -1289,7 +1319,7 @@
 
             <!-- Content of the popup -->
             <h2 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Evox Gateway</h2>
-            <div onclick="show_account()" id="user-info" class="user-info">
+            <div id="user-info" class="user-info">
                 <div class="user-circle">
                     <img id="usr-img" src="t50-img.png" alt="User Image">
                 </div>
@@ -1297,6 +1327,32 @@
                     <div id="usr-name" class="user-name">Error</div>
                     <div id="usr-email" class="user-email">error@example.com</div>
                 </div>
+                <div id="logout_icon" onclick="logoff()" style="position: fixed; right: 55px;">
+                    <div class="user-circle" id="logoff_circle"
+                        style="background-color: #d700004f; box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);width: 50px; height: 50px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                        <svg style="width: 40%; height: 40%; display: block;" xmlns="http://www.w3.org/2000/svg"
+                            id="logoutsvg" fill="#fff" width="24px" height="24px" viewBox="0 0 16 16">
+                            <path
+                                d="M1.3 3.75h5.88V2.5H1.3A1.25 1.25 0 0 0 .05 3.75v8.5A1.25 1.25 0 0 0 1.3 13.5h5.88v-1.25H1.3z" />
+                            <path
+                                d="m15.4 7-4-2.74-.71 1 3.08 2.1H4.71v1.26h9.07l-3.08 2.11.71 1L15.4 9a1.24 1.24 0 0 0 0-2z" />
+                        </svg>
+                    </div>
+                </div>
+                <div id="restart_icon" onclick="restart()" style="position: fixed; right: 115px;">
+                    <div class="user-circle"
+                        style="background-color: #009ea75b; box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);width: 50px; height: 50px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                        <svg id="restartsvg" style="width: 40%; height: 40%; display: block;"
+                            xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+                            <path fill="none" stroke="#fff" stroke-width="2"
+                                d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8" />
+                        </svg>
+                    </div>
+                </div>
+
+
+
+
             </div>
 
             <h3 style="margin-bottom: 7px;">App Overview</h3>
@@ -1353,7 +1409,7 @@
                         fill="#666"></path>
                 </svg></a>
 
-            <h3 style="margin-bottom: 4px;">Client</h3>
+            <!--<h3 style="margin-bottom: 4px;">Client</h3>
             <a href="#" onclick="logoff()" style="color:#eb2424" class="apple-button">Log Out <span><svg id="logoutsvg"
                         style="display: block;" xmlns="http://www.w3.org/2000/svg" fill="#a2a2a2" width="24px"
                         height="24px" viewBox="0 0 16 16">
@@ -1367,7 +1423,7 @@
                         height="24px" viewBox="0 0 24 24">
                         <path fill="none" stroke="#a2a2a2" stroke-width="2"
                             d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8" />
-                    </svg></span></a>
+                    </svg></span></a>-->
 
 
 

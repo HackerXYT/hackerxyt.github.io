@@ -1659,3 +1659,8 @@ a {
 .toggle input:focus+span {
   box-shadow: 0 0 0 4px var(--c-background-tertiary);
 }
+
+#logoff_circle:hover {
+  background-color: #04AA6D;
+
+}
