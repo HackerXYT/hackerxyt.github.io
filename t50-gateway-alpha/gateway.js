@@ -117,14 +117,15 @@ function setup() {
     }, 100)
   }
   let lg_status = sessionStorage.getItem("loaded")
-  try {
-    OneSignalDeferred.push(function() {
-      OneSignal.logout();
-    });
-  } catch {
-    console.error("Error Logging Out Of Florida. Safe")
-  }
-  fetch(`https://evox-datacenter.onrender.com/florida?method=largest&username=${localStorage.getItem("t50-username")}`)
+  //try {
+  //  OneSignalDeferred.push(function() {
+  //    OneSignal.logout();
+  //  });
+  //} catch {
+  //  console.error("Error Logging Out Of Florida. Safe")
+  //}
+  if(!localStorage.getItem("florida_init")) {
+    fetch(`https://evox-datacenter.onrender.com/florida?method=largest&username=${localStorage.getItem("t50-username")}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -137,6 +138,7 @@ function setup() {
           const tologin = `${localStorage.getItem("t50-username")}${data}`
           OneSignal.login(tologin);
         });
+        localStorage.setItem("florida_init", true)
       } else {
         console.error("Got an error response for florida")
       }
@@ -145,6 +147,8 @@ function setup() {
     .catch(error => {
       console.error('Fetch error:', error);
     });
+  }
+  
 
   
 
