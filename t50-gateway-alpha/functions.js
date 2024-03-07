@@ -527,6 +527,7 @@ function uielements() {
 }
 
 function settings() {
+	$("#onesignal-bell-container").fadeIn("fast")
 	//console.log(document.getElementById("popup").classList.contains("active"))
 	if (document.getElementById("popup").classList.contains("active") === false) {
 		settings_open.play()
