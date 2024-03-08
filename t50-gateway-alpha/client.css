@@ -1664,3 +1664,7 @@ a {
   background-color: #04AA6D;
 
 }
+.notifdate {
+  position: relative;
+  text-align: center;
+}
