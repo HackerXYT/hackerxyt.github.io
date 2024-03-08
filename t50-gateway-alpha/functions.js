@@ -804,6 +804,7 @@ function show_account() {
 
 function return_settings() {
 	$("#onesignal-bell-container").fadeOut("fast")
+	document.getElementById("onesignal-bell-container").style.display = "none"
 	goback.play()
 	$("#account_options").fadeOut("fast", function () {
 		$("#main_popup_settings").fadeIn("fast")
