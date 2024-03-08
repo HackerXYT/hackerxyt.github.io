@@ -2652,7 +2652,7 @@ function confirm_ipremove() {
 //confirm_ipremove
 
 function loadflrdinf() {
-	$("#onesignal-bell-container").fadeIn("fast")
+	//$("#onesignal-bell-container").fadeIn("fast")
 
 	setTimeout(function () {
 		const oldhtml = document.getElementById("notification").innerHTML
