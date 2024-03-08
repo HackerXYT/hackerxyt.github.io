@@ -561,6 +561,8 @@ function settings() {
 			//document.body.style.overflow = 'hidden';
 		}, 100)
 	} else if (document.getElementById("popup").classList.contains("active")) {
+		$("#onesignal-bell-container").fadeOut("fast")
+	document.getElementById("onesignal-bell-container").style.display = "none"
 		goback.play()
 		document.getElementById('gateway').style.filter = 'none'; // Add a blur effect to the mainContent
 		//$("#bottom-logo").fadeOut("slow", function () {
@@ -803,8 +805,7 @@ function show_account() {
 }
 
 function return_settings() {
-	$("#onesignal-bell-container").fadeOut("fast")
-	document.getElementById("onesignal-bell-container").style.display = "none"
+	
 	goback.play()
 	$("#account_options").fadeOut("fast", function () {
 		$("#main_popup_settings").fadeIn("fast")
