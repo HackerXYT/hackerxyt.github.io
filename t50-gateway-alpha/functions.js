@@ -2653,7 +2653,7 @@ function confirm_ipremove() {
 
 function loadflrdinf() {
 	//$("#onesignal-bell-container").fadeIn("fast")
-
+ FloridaRun()
 	setTimeout(function () {
 		const oldhtml = document.getElementById("notification").innerHTML
 		var notification = document.getElementById('notification');
@@ -2685,7 +2685,7 @@ function loadflrdinf() {
 
 
 
-	}, 1500)
+	}, 1900)
 }
 
 //date_of_birth_change
