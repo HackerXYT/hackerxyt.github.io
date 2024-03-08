@@ -2355,6 +2355,22 @@ function show_notif(nosound) {
 
 function createNotificationElement(image, notification) {
 	var container = document.getElementById("notif_container");
+	var currentDate = null;
+
+	var timestamp = new Date(notification.timestamp);
+	var day = timestamp.getDate();
+	var month = timestamp.getMonth() + 1; // Months are zero-based
+	var formattedDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month;
+
+	// Check if the date separator already exists
+	var existingDateSeparator = document.querySelector('.notifdate[data-date="' + formattedDate + '"]');
+	if (!existingDateSeparator) {
+		var dateSeparator = document.createElement("p");
+		dateSeparator.className = "notifdate";
+		dateSeparator.textContent = timestamp.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+		dateSeparator.setAttribute('data-date', formattedDate);
+		container.appendChild(dateSeparator);
+	}
 
 	var a = document.createElement("a");
 	a.href = "#";
@@ -2378,20 +2394,13 @@ function createNotificationElement(image, notification) {
 
 	var p = document.createElement("p");
 	p.textContent = notification.content;
-	p.style.margin = "0";
+	p.style.margin = "10px";
 
 	var span = document.createElement("span");
-	var timestamp = new Date(notification.timestamp);
-	var day = timestamp.getDate();
-	var month = timestamp.getMonth() + 1; // Months are zero-based
-
-	// Format day and month as DD/MM
-	var formattedDate = (day < 10 ? '0' : '') + day + '/' + (month < 10 ? '0' : '') + month;
 	span.textContent = formattedDate;
 
 	a.appendChild(div);
 	a.appendChild(p);
-	a.appendChild(span);
 
 	container.appendChild(a);
 }
