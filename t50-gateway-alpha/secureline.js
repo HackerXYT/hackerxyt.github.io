@@ -147,6 +147,7 @@ function reload_chat(whoto) {
 }
 
 function return_main_chats() {
+  $("#navigator").fadeIn("fast")
   sessionStorage.removeItem("current_sline")
   try {
     clearInterval(reloading)
@@ -159,6 +160,7 @@ function return_main_chats() {
   $("#secureline").fadeIn("fast")
 }
 function showchat(element) {
+  $("#navigator").fadeOut("fast")
   $("#profile").fadeOut("slow")
   console.log("Got element:", element)
   //document.getElementById("secureline_chat").classList.add("active")
@@ -403,6 +405,14 @@ function getFriends(pre) {
           });
         $("#load-users-friends").fadeOut("fast");
       })
+      Promise.resolve().then(() => {
+				// Add the transparent placeholder after the loop that adds user information
+				var transparentPlaceholder = document.createElement("div");
+				transparentPlaceholder.className = "transparent-placeholder";
+				listContainer.parentNode.appendChild(transparentPlaceholder);
+			}).catch(error => {
+				console.error(error);
+			});
     })
 
   //$("#main_settings").fadeOut("fast", function () {

@@ -34,7 +34,8 @@ function FloridaRun() {
       if (cursor) {
         // Access each object in the object store and do something with it
         console.log(cursor.value);
-        sessionStorage.setItem("flrd_info", JSON.stringify(cursor.value))
+        const onesignalid = cursor.value
+        sessionStorage.setItem("flrd_info", JSON.stringify(onesignalid.onesignalId))
 
         // Move to the next object in the object store
         cursor.continue();
@@ -74,8 +75,12 @@ function greetUser() {
 }
 
 function setup() {
+  if(localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
+    window.location.href = "./update/"
+    return;
+  }
   //console.log("RUNNING SETUP!")
-
+  $("#navigator").fadeIn("fast")
   try {
     custombg()
   } catch {
@@ -332,6 +337,10 @@ function setup() {
 
 
 function docready() {
+  if(localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
+    window.location.href = "./update/"
+    return;
+  }
   $("#loading").fadeOut("slow")
   console.log('%c' + "Loading Out", `color: green; font-size: 16px; font-weight: normal;`)
   document.getElementById("loading-text").innerHTML = `Storage Loaded!`
@@ -452,7 +461,8 @@ function docready() {
           $("#loading-bar").fadeOut("slow")
           setInterval(reconnect(), 4000)
           document.getElementById("text-me-two").innerHTML = `We Are Sorry.`
-          document.getElementById("loading-apps-text").innerHTML = `You cannot login at the moment.<br>Since you are new to the gateway,<br>you must wait until servers are back online`
+          document.getElementById("loading-apps-text").innerHTML = `You cannot login at the moment.
+          <br>Since you haven't logged in yet, please wait until the servers are back online.`
         } else {
           $("#loading-bar").fadeOut("slow")
           document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
@@ -563,7 +573,7 @@ function docready() {
                         $("#loading-bar").fadeOut("slow")
                         setInterval(reconnect(), 4000)
                         document.getElementById("text-me-two").innerHTML = `We Are Sorry.`
-                        document.getElementById("loading-apps-text").innerHTML = `You cannot login at the moment.<br>Since you are new to the gateway,<br>you must wait until servers are back online`
+                        document.getElementById("loading-apps-text").innerHTML = `You cannot login at the moment.<br>Since you haven't logged in yet, please wait until the servers are back online.`
                       } else {
                         $("#loading-bar").fadeOut("slow")
                         setInterval(reconnect(), 4000)

@@ -285,7 +285,7 @@ function load(app) {
 }
 
 function buy(app) {
-	$("#settings").fadeOut("fast")
+	//$("#settings").fadeOut("fast")
 	console.log("Start Buying Process")
 	$("#loading").fadeIn("slow")
 	$("#popup").removeClass("active");
@@ -472,7 +472,7 @@ function uielements() {
 		sessionStorage.setItem("show_profile", "waiting")
 	}
 	if (!localStorage.getItem("error_XMGE")) {
-		$("#errors").fadeIn("slow")
+		//$("#errors").fadeIn("slow") DONT FADE IN, NO ERRORS
 	}
 
 	$("#profile").fadeIn("fast")
@@ -527,9 +527,12 @@ function uielements() {
 }
 
 function settings() {
-	$("#onesignal-bell-container").fadeIn("fast")
+	navigator("settings_tonexus")
+
 	//console.log(document.getElementById("popup").classList.contains("active"))
 	if (document.getElementById("popup").classList.contains("active") === false) {
+		return_to_options("reset")
+		$("#onesignal-bell-container").fadeIn("fast")
 		settings_open.play()
 		//document.body.style.overflow = 'hidden';
 		document.getElementById("gateway").style.overflow = "hidden"
@@ -554,7 +557,7 @@ function settings() {
 		}
 		document.getElementById('gateway').style.filter = 'blur(20px)'; // Add a blur effect to the mainContent
 		//$("#bottom-logo").fadeIn("slow")
-		$("#settings").fadeOut("slow")
+		//$("#settings").fadeOut("slow")
 		setTimeout(function () {
 			$("#popup").addClass("active");
 			//$("#popup").fadeIn("fast")
@@ -562,7 +565,7 @@ function settings() {
 		}, 100)
 	} else if (document.getElementById("popup").classList.contains("active")) {
 		$("#onesignal-bell-container").fadeOut("fast")
-	document.getElementById("onesignal-bell-container").style.display = "none"
+		navigator("sett_def")
 		goback.play()
 		document.getElementById('gateway').style.filter = 'none'; // Add a blur effect to the mainContent
 		//$("#bottom-logo").fadeOut("slow", function () {
@@ -783,6 +786,7 @@ function show_authip() {
 		}).catch(error => {
 			console.error(error)
 		})
+	navigator("authip")
 	$("#main_settings").fadeOut("fast", function () {
 		$("#authips").fadeIn("fast")
 	})
@@ -790,6 +794,7 @@ function show_authip() {
 
 function show_account() {
 	//account_show.play()
+	navigator("show_account")
 	console.log("Changing Screens to account")
 	document.getElementById("usr-email-opt").innerHTML = localStorage.getItem("t50-email")
 	document.getElementById("usr-name-opt").innerHTML = localStorage.getItem("t50-username")
@@ -805,13 +810,15 @@ function show_account() {
 }
 
 function return_settings() {
-	
+	navigator("settings_tonexus")
+	//$("#onesignal-bell-container").fadeOut("fast")
 	goback.play()
 	$("#account_options").fadeOut("fast", function () {
 		$("#main_popup_settings").fadeIn("fast")
 	})
 }
 function username_email_icon_show() {
+	navigator("username_email_icon_show")
 	document.getElementById("options_section_1_username").innerHTML = localStorage.getItem("t50-username")
 	document.getElementById("options_section_1_email").innerHTML = localStorage.getItem("t50-email")
 	getBirth()
@@ -879,6 +886,7 @@ function enable2FA() {
 		})
 }
 function pswd_secure() {
+	navigator("password_secure")
 	fetch(`https://evox-datacenter.onrender.com/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => {
 			if (!response.ok) {
@@ -932,6 +940,7 @@ function pswd_secure() {
 function show_social() {
 	$("#main_popup_settings").fadeOut("fast", function () {
 		$("#evox_social").fadeIn("fast")
+		navigator("evox_social")
 	})
 }
 
@@ -950,6 +959,7 @@ function show_search() {
 	//	document.getElementById("options_section_1_announcements").innerHTML = "Enabled"
 	//}
 	//$("#bottom-logo").fadeOut("fast")
+	navigator("show_search")
 	$("#evox_social").fadeOut("fast", function () {
 		$("#add_friends").fadeIn("fast")
 	})
@@ -983,6 +993,7 @@ function acceptfriend(element) {
 }
 let friendinterval;
 function showFriend(element) {
+	navigator("showFriend")
 	try {
 		clearInterval(friendinterval);
 	} catch (error) {
@@ -1030,6 +1041,7 @@ function showFriend(element) {
 	})
 }
 function show_friends() {
+	navigator("show_friends")
 	$("#load-users-friends").fadeIn("fast")
 	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 		.then(response => {
@@ -1109,6 +1121,7 @@ function show_friends() {
 									} else {
 										document.getElementById(`${username}-pfp-friends`).src = profileimage;
 									}
+									
 								})
 								.catch(error => {
 									console.error("Cannot set src for", username);
@@ -1120,6 +1133,16 @@ function show_friends() {
 						console.error(error);
 					});
 			});
+
+			Promise.resolve().then(() => {
+				// Add the transparent placeholder after the loop that adds user information
+				var transparentPlaceholder = document.createElement("div");
+				transparentPlaceholder.className = "transparent-placeholder";
+				listContainer.parentNode.appendChild(transparentPlaceholder);
+			}).catch(error => {
+				console.error(error);
+			});
+
 			$("#load-users-friends").fadeOut("fast");
 		})
 		.catch(error => {
@@ -1131,7 +1154,9 @@ function show_friends() {
 		$("#friends").fadeIn("fast")
 	})
 }
+
 function show_requests() {
+	navigator("show_requests")
 	$("#load-users-requests").fadeIn("fast")
 	document.getElementById("list-requests").innerHTML = ""
 	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
@@ -1310,6 +1335,7 @@ function loadusers() {
 			listContainer.style.textAlign = "";
 			listContainer.style.marginTop = "";
 			listContainer.innerHTML = "<!--Empty-->";
+			
 
 			// Fetch emails for each user individually
 			userlist.forEach(username => {
@@ -1460,10 +1486,19 @@ function loadusers() {
 					});
 
 
-			});
+				})
+				Promise.resolve().then(() => {
+					// Add the transparent placeholder after the loop that adds user information
+					var transparentPlaceholder = document.createElement("div");
+					transparentPlaceholder.className = "transparent-placeholder";
+					listContainer.parentNode.appendChild(transparentPlaceholder);
+				}).catch(error => {
+					console.error(error);
+				});
 		}).catch(error => {
 			console.error(error);
 		});
+			
 }
 
 
@@ -1650,25 +1685,31 @@ function handlesearch(value) {
 									}
 								});
 							$("#load-users").fadeOut("fast");
+							
 						}).catch(error => {
 							console.error(error);
 						});
+						
 
 
 				})
 					.catch(error => {
 						console.error(error);
 					});
+					
 			})
 			.catch(error => {
 				console.error(error);
 			});
+			// Add transparent-placeholder div at the end of the listContainer
+		
 	}
 }
 
 
 
 function change_password() {
+	navigator("change_password")
 	let current = document.getElementById("current_pswd")
 	let newpswd = document.getElementById("new_pswd")
 	let confirm = document.getElementById("confirm_pswd")
@@ -1693,10 +1734,12 @@ function return_to_options(where) {
 		if (where === "security") {
 			$("#pswd_secure").fadeOut("fast", function () {
 				$("#main_settings").fadeIn("fast")
+				navigator("return_settings")
 			})
 		} else if (where === "usr-emails") {
 			$("#username_email_icon_show").fadeOut("fast", function () {
 				$("#main_settings").fadeIn("fast")
+				navigator("return_settings")
 			})
 		} else if (where === "add_friends") {
 			//$("#bottom-logo").fadeIn("fast")
@@ -1742,6 +1785,7 @@ function return_to_options(where) {
 		} else if (where === "authip") {
 			$("#authips").fadeOut("fast", function () {
 				$("#main_settings").fadeIn("fast")
+				navigator("return_settings")
 			})
 		} else if (where === "bg_settings") {
 			$("#background_change_color").fadeOut("fast", function () {
@@ -1770,7 +1814,52 @@ function return_to_options(where) {
 		} else if (where === "cryptox") {
 			$("#cryptox_info").fadeOut("fast", function () {
 				$("#main_settings").fadeIn("fast")
+				navigator("return_settings")
 			})
+		} else if (where === "reset") {
+			return;
+			const elementsToHide = [
+				"pswd_secure",
+				"main_settings",
+				"username_email_icon_show",
+				"main_settings",
+				"add_friends",
+				"evox_social",
+				"friend_requests",
+				"evox_social",
+				"friends",
+				"evox_social",
+				"user-friend",
+				"friends",
+				"background_change",
+				"evox_social",
+				"password_change",
+				"pswd_secure",
+				"authips",
+				"main_settings",
+				"background_change_color",
+				"background_change",
+				"date_of_birth_change",
+				"username_email_icon_show",
+				"add_email",
+				"username_email_icon_show",
+				"verify_email",
+				"username_email_icon_show",
+				"apps_using_evox",
+				"pswd_secure",
+				"store",
+				"cryptox_info",
+				"main_settings"
+			];
+
+			elementsToHide.forEach(id => {
+				const element = document.getElementById(id);
+				if (element) {
+					element.style.display = "none";
+				} else {
+					console.error(`Element with id "${id}" not found`);
+				}
+			});
 		}
 	}
 }
@@ -1807,7 +1896,6 @@ function handleFileSelect() {
 					if (data === "done") {
 						console.log("All ok")
 						document.getElementById("upload-box").disabled = false
-						document.getElementById("usr-img-opt").src = value
 						pfp("giveback")
 							.then(value => {
 								// Do something with the value
@@ -1833,12 +1921,24 @@ function handleFileSelect() {
 
 function secureline(element) {
 	settings()
+	$("#user-friend").fadeOut("fast", function () {
+		$("#main_popup_settings").fadeIn("fast")
+	})
+	//return_to_options('user-friend');
+	//navigator('show_friends')
+	//return_to_options('friends');
+	//navigator('evox_social')
+	//return_to_options('evox_social');
+	navigator('settings_tonexus')
+	//close_popup()
 	show_sline()
+
 	//remove "secureline-" from element.id
 	//window.location.href = `./secureline/?goto=${element.id}`
 }
 
 function bgch() {
+
 	closevox()
 	settings()
 	try {
@@ -1854,6 +1954,7 @@ function bgch() {
 	}
 
 	$("#loading").fadeIn("fast")
+	navigator("bg")
 	$("#main_popup_settings").fadeOut("fast", function () {
 		$("#popup").addClass("active");
 		//$("#popup").fadeIn("fast")
@@ -2152,8 +2253,10 @@ function dots() {
 }
 
 function profile() {
+
 	show_account()
 	settings()
+	navigator("return_settings")
 }
 
 function errors() {
@@ -2205,10 +2308,11 @@ function apparrow() {
 
 
 function vox() {
+	navigator("closevox")
 	qactions()
 	document.getElementById("gateway").style.filter = "blur(25px)"
 	document.getElementById("vox_cont").classList.add("active")
-	$("#settings").fadeOut("fast")
+	//$("#settings").fadeOut("fast")
 	$("#vox").fadeOut("fast")
 	qastart.play()
 	if (document.getElementById("animatedButton_notif").style.display === "block") {
@@ -2274,6 +2378,8 @@ function clearNotifications() {
 
 
 function show_notif(nosound) {
+	navigator("notifications")
+	document.getElementById('gateway').style.filter = 'blur(25px)'
 	fetch(`https://evox-datacenter.onrender.com/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
@@ -2322,6 +2428,15 @@ function show_notif(nosound) {
 					createNotificationElement(image, notification);
 				}
 			});
+			Promise.resolve().then(() => {
+				// Add the transparent placeholder after the loop that adds user information
+				var transparentPlaceholder = document.createElement("div");
+				transparentPlaceholder.className = "transparent-placeholder";
+				container.parentNode.appendChild(transparentPlaceholder);
+			}).catch(error => {
+				console.error(error);
+			});
+			
 
 		})
 		.catch(error => {
@@ -2329,7 +2444,7 @@ function show_notif(nosound) {
 		});
 
 	document.getElementById("notifications").classList.add("active");
-	$("#settings").fadeOut("fast");
+	//$("#settings").fadeOut("fast");
 	$("#vox").fadeOut("fast");
 	if (!nosound) {
 		notifications.play();
@@ -2409,6 +2524,7 @@ function createNotificationElement(image, notification) {
 
 
 function close_notif() {
+	document.getElementById('gateway').style.filter = ''
 	notif_out.play()
 	document.getElementById("notifications").classList.remove("active")
 	$("#settings").fadeIn("fast")
@@ -2437,6 +2553,7 @@ function oneo(element) {
 }
 
 function show_sline() {
+	navigator("show_sline")
 	fetch(`https://evox-datacenter.onrender.com/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
@@ -2452,7 +2569,7 @@ function show_sline() {
 				$("#profile").fadeOut("fast")
 				$("#vox").fadeOut("fast")
 				$("#dots").fadeOut("fast")
-				$("#settings").fadeOut("fast")
+				//$("#settings").fadeOut("fast")
 				if (document.getElementById("animatedButton_notif").style.display === "block") {
 					var animatedButton = document.getElementById("animatedButton_notif");
 					animatedButton.style.opacity = "0";
@@ -2663,8 +2780,8 @@ function confirm_ipremove() {
 //confirm_ipremove
 
 function loadflrdinf() {
-	//$("#onesignal-bell-container").fadeIn("fast")
- FloridaRun()
+	$("#onesignal-bell-container").fadeIn("fast")
+
 	setTimeout(function () {
 		const oldhtml = document.getElementById("notification").innerHTML
 		var notification = document.getElementById('notification');
@@ -2673,7 +2790,12 @@ function loadflrdinf() {
 			console.log("Notification Is Shown")
 			notification.classList.remove('show');
 			setTimeout(function () {
-				document.getElementById("notification").innerHTML = sessionStorage.getItem("flrd_info")
+				if(sessionStorage.getItem("flrd_info")) {
+					document.getElementById("notification").innerHTML = sessionStorage.getItem("flrd_info")
+				} else {
+					document.getElementById("notification").innerHTML = "Florida not ready!"
+				}
+				
 				notification.classList.add('show');
 				$("#flrd_svg").fadeOut("fast")
 				setTimeout(function () {
@@ -2682,7 +2804,11 @@ function loadflrdinf() {
 			}, 500)
 		} else {
 			$("#flrd_svg").fadeIn("fast")
-			document.getElementById("notification").innerHTML = sessionStorage.getItem("flrd_info")
+			if(sessionStorage.getItem("flrd_info")) {
+				document.getElementById("notification").innerHTML = sessionStorage.getItem("flrd_info")
+			} else {
+				document.getElementById("notification").innerHTML = "Florida not ready!"
+			}
 			notification.classList.add('show');
 			$("#flrd_svg").fadeOut("fast")
 			setTimeout(function () {
@@ -2696,7 +2822,7 @@ function loadflrdinf() {
 
 
 
-	}, 1900)
+	}, 1500)
 }
 
 //date_of_birth_change
@@ -2705,6 +2831,7 @@ function birth_date() {
 	document.getElementById("usr-email-chbirth").innerHTML = localStorage.getItem("t50-email")
 	document.getElementById("usr-img-chbirth").src = sessionStorage.getItem("pfp")
 	$("#username_email_icon_show").fadeOut("fast", function () {
+		navigator("birth")
 		$("#date_of_birth_change").fadeIn("fast")
 	})
 }
@@ -2902,6 +3029,7 @@ function padWithZero(number) {
 }
 
 function addemail() {
+	navigator('addemail')
 	document.getElementById("usr-img-addemail").src = document.getElementById("usr-img-opt").src
 	document.getElementById("usr-name-addemail").innerHTML = document.getElementById("usr-name-opt").innerHTML
 	document.getElementById("usr-email-addemail").innerHTML = document.getElementById("usr-email-opt").innerHTML
@@ -2975,6 +3103,7 @@ function verify_addemail() {
 				ac_complete.play()
 				sessionStorage.removeItem("ver_code_email")
 				console.log("Complete!")
+				navigator("username_email_icon_show")
 				return_to_options('cancel_addemail')
 				loademails()
 			} else if (data === "Incorrect Code") {
@@ -2982,6 +3111,7 @@ function verify_addemail() {
 				shake_me("email_new_ver_code")
 			} else if (data === "Email set already") {
 				error.play()
+				navigator("username_email_icon_show")
 				return_to_options('cancel_addemail')
 				loademails()
 			} else {
@@ -3031,6 +3161,7 @@ function loademails() {
 }
 
 function sign_in_wevox() {
+	navigator("sign_in_wevox")
 	let container = document.getElementById("more_apps")
 	let appshtml = document.getElementById("apps").innerHTML
 	if (appshtml.includes("load('images')")) {
@@ -3187,6 +3318,7 @@ function qa_pfp() {
 }
 
 function store() {
+	navigator("store")
 	let appshtml = document.getElementById("apps").innerHTML
 
 	let chatvia = document.getElementById("chatvia-get")
@@ -3246,6 +3378,7 @@ function getNOpen(element) {
 
 
 function cryptox() {
+	navigator("cryptox")
 	fetch(`https://evox-datacenter.onrender.com/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
@@ -3322,4 +3455,455 @@ function changeCryptox() {
 				console.error(error);
 			});
 	}
+}
+
+function navigator(w) {
+	const sett_def = `<div onclick="settings()" id="settings">
+	<div
+		style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+		<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48"
+			style="margin-right: 10px;">
+			<defs>
+				<style>
+					.cls-1 {
+						fill: none;
+						stroke: #fff;
+						stroke-linecap: round;
+						stroke-linejoin: round;
+					}
+				</style>
+			</defs>
+			<path class="cls-1"
+				d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z" />
+		</svg>
+		Settings
+	</div>
+</div>`, authip = `<div id="authip_back_btn" onclick="return_to_options('authip')">
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+		version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Account Options
+</div>
+</div>`, return_settings = `<div onclick="return_settings()"><div
+style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+	version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+	<g>
+		<g>
+			<path xmlns="http://www.w3.org/2000/svg"
+				d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+			</path>
+		</g>
+	</g>
+</svg>
+Settings
+</div>
+</div>`, settings_tonexus = ` <div onclick="close_popup()"
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Gateway
+</div>
+</div>`, show_account = `<div onclick="return_settings()"><div
+style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+	version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+	<g>
+		<g>
+			<path xmlns="http://www.w3.org/2000/svg"
+				d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+			</path>
+		</g>
+	</g>
+</svg>
+Settings
+</div>
+</div>`, evox_social = `<div onclick="return_to_options('evox_social');navigator('settings_tonexus')">
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Settings
+</div>
+</div>`, store = `<div onclick="return_to_options('evox_store');navigator('settings_tonexus')">
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Settings
+</div>
+</div>`, username_email_icon_show = `<div id="hide_for_rememail" onclick="return_to_options('usr-emails')"
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+		version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Account Options
+</div>
+</div>`, addemail = `<div onclick="return_to_options('add_email');navigator('username_email_icon_show')"
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Username/Emails
+</div>
+</div>`, birth = `<div onclick="return_to_options('birth');navigator('username_email_icon_show')">
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Username/Emails
+</div>
+</div>`, password_secure = `<div onclick="return_to_options('security');navigator('username_email_icon_show')"
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+		version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Account Options
+</div>
+</div>`, change_password = `<div onclick="return_to_options('password_change');navigator('password_secure')"
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Password/Security
+</div>
+</div>`, sign_in_wevox = `<div onclick="return_to_options('app_use_info');navigator('password_secure')"
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Password/Security
+</div>
+</div>`, cryptox = `<div id="authip_back_btn" onclick="return_to_options('cryptox');navigator('username_email_icon_show')"
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+		version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Account Options
+</div>
+</div>`, closevox = `<div>
+<div onclick="closevox();navigator('sett_def')"
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z" />
+			</g>
+		</g>
+	</svg>
+	Go back
+</div>
+</div>`, bg = `<div onclick="return_to_options('gateway_settings')"
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Vox Center
+</div>
+</div>`, show_search = `<div onclick="return_to_options('add_friends');navigator('evox_social')">
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Evox Social
+</div>
+</div>`, show_requests = `<div onclick="return_to_options('requests');navigator('evox_social')"
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Evox Social
+</div>
+</div>`, show_friends = `<div onclick="return_to_options('friends');navigator('evox_social')"
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Evox Social
+</div>
+</div>`, showFriend = `<div onclick="return_to_options('user-friend');navigator('show_friends')"
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Go back
+</div>
+</div>`, show_sline = `<div onclick="close_sline();navigator('sett_def')"
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Gateway
+</div>
+</div>`;
+	const notifications = `<div onclick="close_notif();navigator('sett_def')"
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Gateway
+</div>
+</div>`
+	$("#navigator").fadeOut("fast", function () {
+		if (w === "sett_def") {
+			document.getElementById("navigator").innerHTML = sett_def
+		}
+		if (w === "authip") {
+			document.getElementById("navigator").innerHTML = authip
+		}
+		if (w === "return_settings") {
+			document.getElementById("navigator").innerHTML = return_settings
+		}
+
+		if (w === "settings_tonexus") {
+			document.getElementById("navigator").innerHTML = settings_tonexus
+		}
+
+		if (w === "show_account") {
+			document.getElementById("navigator").innerHTML = show_account
+		}
+		if (w === "evox_social") {
+			document.getElementById("navigator").innerHTML = evox_social
+		}
+		if (w === "store") {
+			document.getElementById("navigator").innerHTML = store
+		}
+		if (w === "username_email_icon_show") {
+			document.getElementById("navigator").innerHTML = username_email_icon_show
+		}
+		if (w === "addemail") {
+			document.getElementById("navigator").innerHTML = addemail
+		}
+		if (w === "birth") {
+			document.getElementById("navigator").innerHTML = birth
+		}
+		if (w === "password_secure") {
+			document.getElementById("navigator").innerHTML = password_secure
+		}
+		if (w === "change_password") {
+			document.getElementById("navigator").innerHTML = change_password
+		}
+		if (w === "sign_in_wevox") {
+			document.getElementById("navigator").innerHTML = sign_in_wevox
+		}
+		if (w === "cryptox") {
+			document.getElementById("navigator").innerHTML = cryptox
+		}
+		if (w === "closevox") {
+			document.getElementById("navigator").innerHTML = closevox
+		}
+		if (w === "bg") {
+			document.getElementById("navigator").innerHTML = bg
+		}
+		if (w === "show_search") {
+			document.getElementById("navigator").innerHTML = show_search
+		}
+		if (w === "show_requests") {
+			document.getElementById("navigator").innerHTML = show_requests
+		}
+
+		if (w === "show_friends") {
+			document.getElementById("navigator").innerHTML = show_friends
+		}
+		if (w === "showFriend") {
+			document.getElementById("navigator").innerHTML = showFriend
+		}
+		if (w === "show_sline") {
+			document.getElementById("navigator").innerHTML = show_sline
+		}
+		if (w === "notifications") {
+			document.getElementById("navigator").innerHTML = notifications
+		}
+
+
+
+
+
+		$("#navigator").fadeIn("fast")
+	})
+
+
+
 }

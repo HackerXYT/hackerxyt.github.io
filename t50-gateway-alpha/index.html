@@ -20,10 +20,6 @@
     <script src="../scripts/howler.js"></script>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <script defer>
-	    if(localStorage.getItem("t50-username") !== "papostol" ) {
-		window.location.href = "/errors.html"
-	    }
-	   
         function removeTrailingSlash(value) {
             return value.replace(/\/$/, ''); // Replace trailing slash if it exists
         }
@@ -284,23 +280,7 @@
                 style="color: #868686">Default</span></a>
         <a href="#" onclick="auto_login()" class="apple-button">Auto Login<span id="auto-login">Set Up</span></a>
 
-        <div
-            style="position: fixed; bottom: 40px;transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
-            <div onclick="closevox()"
-                style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                    id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                    <g>
-                        <g>
-                            <path xmlns="http://www.w3.org/2000/svg"
-                                d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z" />
-                        </g>
-                    </g>
-                </svg>
-                Go back
-            </div>
-        </div>
+       
 
     </div>
 
@@ -335,23 +315,7 @@
         <a href="#" onclick="oneo()" class="apple-button">${user} accepted your friend request <span>15/2</span></a>
         <a href="#" onclick="oneo()" class="apple-button">Florida Client Status: <v onclick="loadflrdinf()"
                 id="flrdinfo">load</v></a>-->
-        <div
-            style="z-index: 999;position: absolute; bottom: 40px;transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
-            <div onclick="close_notif()"
-                style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                    id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                    <g>
-                        <g>
-                            <path xmlns="http://www.w3.org/2000/svg"
-                                d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z" />
-                        </g>
-                    </g>
-                </svg>
-                Go back
-            </div>
-        </div>
+        
 
     </div>
 
@@ -384,23 +348,7 @@
             <div class="list-user-info"></div>
 
         </div>
-        <div
-            style="position: fixed; bottom: 40px;transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
-            <div onclick="close_sline()"
-                style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                    id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                    <g>
-                        <g>
-                            <path xmlns="http://www.w3.org/2000/svg"
-                                d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z" />
-                        </g>
-                    </g>
-                </svg>
-                Gateway
-            </div>
-        </div>
+        
     </div>
 
     </div>
@@ -541,24 +489,7 @@
             <!--<span onclick="deletemessage(this)" class="apple-button">Hello</span>-->
         </div>
 
-        <div
-            style="position: fixed; bottom: 40px;transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
-            <div onclick="goback_options()"
-                style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                    id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                    <g>
-                        <g>
-                            <path xmlns="http://www.w3.org/2000/svg"
-                                d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                            </path>
-                        </g>
-                    </g>
-                </svg>
-                Chat
-            </div>
-        </div>
+        
         <!--<span onclick="goback_options()" class="popup-close"><svg xmlns="http://www.w3.org/2000/svg"
                 width="29px" height="29px" viewBox="0 0 24 24" fill="none">
                 <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#b2b2b2" stroke-width="2" stroke-linecap="round"
@@ -637,7 +568,7 @@
                                 fill="#666" />
                         </svg></a>-->
                 </div>
-                <div onclick="return_settings()"
+                <!--<div onclick="return_settings()"
                     style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
                     <div
                         style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
@@ -654,7 +585,7 @@
                         </svg>
                         Settings
                     </div>
-                </div>
+                </div> -->
             </div>
             <div id="authips" style="display:none">
 
@@ -666,7 +597,7 @@
 
                 <p style="margin: 6px" class="user-email">These IP addresses and are the devices used to sign
                     in to your account. If you notice any suspicious activity, change your password immediately.</p>
-                <div id="authip_back_btn" onclick="return_to_options('authip')"
+                <!--<div id="authip_back_btn" onclick="return_to_options('authip')"
                     style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
                     <div
                         style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
@@ -683,7 +614,7 @@
                         </svg>
                         Account Options
                     </div>
-                </div>
+                </div>-->
             </div>
             <div id="cryptox_info" style="display:none">
 
@@ -706,24 +637,7 @@
                 </p>
 
 
-                <div id="authip_back_btn" onclick="return_to_options('cryptox')"
-                    style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                    <div
-                        style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                        <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
-                            version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                            <g>
-                                <g>
-                                    <path xmlns="http://www.w3.org/2000/svg"
-                                        d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                    </path>
-                                </g>
-                            </g>
-                        </svg>
-                        Account Options
-                    </div>
-                </div>
+                
             </div>
             <div id="username_email_icon_show" style="display:none">
 
@@ -750,24 +664,7 @@
                 <p style="margin: 6px" class="user-email">Receive Evox® emails and communications including
                     announcements, marketing, recommendations and updates about Evox products, services and software.
                 </p>
-                <div id="hide_for_rememail" onclick="return_to_options('usr-emails')"
-                    style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                    <div
-                        style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                        <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
-                            version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                            <g>
-                                <g>
-                                    <path xmlns="http://www.w3.org/2000/svg"
-                                        d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                    </path>
-                                </g>
-                            </g>
-                        </svg>
-                        Account Options
-                    </div>
-                </div>
+                
             </div>
             <div id="pswd_secure" style="display:none">
 
@@ -804,24 +701,7 @@
                 <a href="#" style="height: 50%" class="apple-button">Account Recovery<span>Set Up</span></a>
                 <p style="margin: 6px" class="user-email">If you forget your password, you have a few options to recover
                     your data.</p>
-                <div onclick="return_to_options('security')"
-                    style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                    <div
-                        style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                        <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
-                            version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                            <g>
-                                <g>
-                                    <path xmlns="http://www.w3.org/2000/svg"
-                                        d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                    </path>
-                                </g>
-                            </g>
-                        </svg>
-                        Account Options
-                    </div>
-                </div>
+                
             </div>
 
 
@@ -838,7 +718,7 @@
                 </svg></a>
             <div class="slidecontainer">
                 <p>Custom Image Blur</p>
-                <div class="apple-input"><input type="range" min="1" max="100" value="10" class="slider" id="myRange">
+                <div class="apple-input"><input type="range" min="1" max="100" value="50" class="slider" id="myRange">
                 </div>
                 <p style="display: none;">Value: <span id="demo"></span></p>
             </div>
@@ -852,7 +732,7 @@
             </div>
             <p style="margin: 6px" class="user-email">Some images may be selected by Evox® AIT. Backgrounds remain
                 local.</p>
-            <div onclick="return_to_options('gateway_settings')"
+            <!--<div onclick="return_to_options('gateway_settings')"
                 style="position:fixed; top: 20px; left: 20px; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
                 <div
                     style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; border-radius: 19px; cursor: pointer; display: flex; text-decoration: none; transition: background-color 0.3s ease;">
@@ -868,7 +748,7 @@
                         </g>
                     </svg>
                 </div>
-            </div>
+            </div>-->
         </div>
 
         <div id="background_change_color" style="display:none;overflow: auto;">
@@ -952,24 +832,7 @@
 
 
 
-            <div onclick="return_to_options('evox_store')"
-                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                <div
-                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                        id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                        <g>
-                            <g>
-                                <path xmlns="http://www.w3.org/2000/svg"
-                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                </path>
-                            </g>
-                        </g>
-                    </svg>
-                    Settings
-                </div>
-            </div>
+            
         </div>
         <div id="evox_social" style="display:none">
 
@@ -998,24 +861,7 @@
                         d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                         fill="#666" />
                 </svg></a>
-            <div onclick="return_to_options('evox_social')"
-                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                <div
-                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                        id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                        <g>
-                            <g>
-                                <path xmlns="http://www.w3.org/2000/svg"
-                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                </path>
-                            </g>
-                        </g>
-                    </svg>
-                    Settings
-                </div>
-            </div>
+            
         </div>
         <div id="add_friends" style="display:none">
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Add Friends</h3>
@@ -1067,24 +913,7 @@
                     <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
             </div>-->
             <!--Show added friends-->
-            <div onclick="return_to_options('add_friends')"
-                style="position: fixed; bottom: 10px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                <div
-                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                        id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                        <g>
-                            <g>
-                                <path xmlns="http://www.w3.org/2000/svg"
-                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                </path>
-                            </g>
-                        </g>
-                    </svg>
-                    Evox Social
-                </div>
-            </div>
+            
         </div>
         <div id="friend_requests" style="display:none">
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Friend Requests</h3>
@@ -1125,24 +954,7 @@
                     <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
             </div>-->
             <!--Show added friends-->
-            <div onclick="return_to_options('requests')"
-                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                <div
-                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                        id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                        <g>
-                            <g>
-                                <path xmlns="http://www.w3.org/2000/svg"
-                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                </path>
-                            </g>
-                        </g>
-                    </svg>
-                    Evox Social
-                </div>
-            </div>
+            
         </div>
         <div id="friends" style="display:none">
 
@@ -1184,24 +996,7 @@
                     <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
             </div>-->
             <!--Show added friends-->
-            <div onclick="return_to_options('friends')"
-                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                <div
-                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                        id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                        <g>
-                            <g>
-                                <path xmlns="http://www.w3.org/2000/svg"
-                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                </path>
-                            </g>
-                        </g>
-                    </svg>
-                    Evox Social
-                </div>
-            </div>
+            
         </div>
         <div id="user-friend" style="display:none">
 
@@ -1274,24 +1069,7 @@
                     <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
             </div>-->
             <!--Show added friends-->
-            <div onclick="return_to_options('user-friend')"
-                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                <div
-                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                        id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                        <g>
-                            <g>
-                                <path xmlns="http://www.w3.org/2000/svg"
-                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                </path>
-                            </g>
-                        </g>
-                    </svg>
-                    Go back
-                </div>
-            </div>
+            
         </div>
         <div style="overflow: auto" id="main_popup_settings">
 
@@ -1420,24 +1198,7 @@
                             d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8" />
                     </svg></a>-->
             </p>
-            <div onclick="close_popup()"
-                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                <div
-                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                        id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                        <g>
-                            <g>
-                                <path xmlns="http://www.w3.org/2000/svg"
-                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                </path>
-                            </g>
-                        </g>
-                    </svg>
-                    Gateway
-                </div>
-            </div>
+            
         </div>
         <div id="password_change" style="display:none;overflow: hidden;">
 
@@ -1469,24 +1230,7 @@
                     here to reset it.
                 </p>
             </a>
-            <div onclick="return_to_options('password_change')"
-                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                <div
-                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                        id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                        <g>
-                            <g>
-                                <path xmlns="http://www.w3.org/2000/svg"
-                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                </path>
-                            </g>
-                        </g>
-                    </svg>
-                    Password/Security
-                </div>
-            </div>
+            
         </div>
         <div id="add_email" style="display:none;overflow: hidden;">
 
@@ -1504,24 +1248,7 @@
             </div>
             <input id="new_email" class="apple-input" type="email" placeholder="Email Address">
             <a href="#" onclick="complete_addemail()" class="apple-button-submit">Verify</a>
-            <div onclick="return_to_options('add_email')"
-                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                <div
-                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                        id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                        <g>
-                            <g>
-                                <path xmlns="http://www.w3.org/2000/svg"
-                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                </path>
-                            </g>
-                        </g>
-                    </svg>
-                    Username/Emails
-                </div>
-            </div>
+            
         </div>
         <div id="verify_email" style="display:none;overflow: hidden;">
 
@@ -1539,24 +1266,7 @@
             </div>
             <input id="email_new_ver_code" class="apple-input" type="number" placeholder="Verification Code">
             <a href="#" onclick="verify_addemail()" class="apple-button-submit">Complete</a>
-            <div onclick="return_to_options('cancel_addemail')"
-                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                <div
-                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                        id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                        <g>
-                            <g>
-                                <path xmlns="http://www.w3.org/2000/svg"
-                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                </path>
-                            </g>
-                        </g>
-                    </svg>
-                    Cancel
-                </div>
-            </div>
+            
         </div>
         <div id="date_of_birth_change" style="display:none;overflow: hidden;">
 
@@ -1579,24 +1289,7 @@
                 class="apple-input" type="text" style="width:50px" placeholder="YYYY" name="quantity" maxlength="4">
 
             <a href="#" onclick="complete_birth()" class="apple-button-submit">Complete</a>
-            <div onclick="return_to_options('birth')"
-                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                <div
-                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                        id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                        <g>
-                            <g>
-                                <path xmlns="http://www.w3.org/2000/svg"
-                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                </path>
-                            </g>
-                        </g>
-                    </svg>
-                    Username/Emails
-                </div>
-            </div>
+            
         </div>
         <div id="apps_using_evox" style="display:none;overflow: hidden;">
 
@@ -1619,24 +1312,7 @@
                 </svg></a>
             <div id="more_apps">
             </div>
-            <div onclick="return_to_options('app_use_info')"
-                style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
-                <div
-                    style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
-                        id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
-                        <g>
-                            <g>
-                                <path xmlns="http://www.w3.org/2000/svg"
-                                    d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
-                                </path>
-                            </g>
-                        </g>
-                    </svg>
-                    Password/Security
-                </div>
-            </div>
+            
         </div>
     </div>
     <div id="buy-products" class="popupright" style="color: #dbdbdb">
@@ -1794,7 +1470,8 @@
                 d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z" />
         </svg>
     </div>-->
-    <div onclick="settings()" id="settings"
+
+    <!--<div onclick="settings()" id="settings"
         style="position: fixed; bottom: 40px;transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;display: none;">
         <div
             style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
@@ -1815,7 +1492,7 @@
             </svg>
             Settings
         </div>
-    </div>
+    </div>-->
     <div onclick="errors()" id="errors"
         style="position: fixed; bottom: 141px; left:45px; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;display: none;">
         <div
@@ -1842,7 +1519,7 @@
     <div onclick="vox()" id="vox"
         style="position: fixed; bottom: 60px; left:35px; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;display: none;">
         <div class="user-circle">
-            <img id="vox-img" src="SVKl.gif" alt="User Image">
+            <img id="vox-img" src="https://cdn.dribbble.com/users/1585453/screenshots/7353401/media/bbb3d3bf2fe7cf3532cbb0619dd42d5a.gif" alt="User Image">
         </div>
     </div>
     <div onclick="dots()" id="dots"
@@ -1961,6 +1638,30 @@
         </div>
 
     </div>
+    <div id="navigator"
+            style="z-index: 999;position: absolute; bottom: 4.5%;transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;display:none">
+            <div onclick="settings()" id="settings">
+        <div
+            style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48"
+                style="margin-right: 10px;">
+                <defs>
+                    <style>
+                        .cls-1 {
+                            fill: none;
+                            stroke: #fff;
+                            stroke-linecap: round;
+                            stroke-linejoin: round;
+                        }
+                    </style>
+                </defs>
+                <path class="cls-1"
+                    d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z" />
+            </svg>
+            Settings
+        </div>
+    </div>
+        </div>
 </body>
 
 

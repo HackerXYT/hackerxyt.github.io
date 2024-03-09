@@ -14,6 +14,10 @@
   display: none
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 :root {
   --c-text-primary: #ffffff;
   /* Inverted from #282a32 */
@@ -222,6 +226,7 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center; /* Added to ensure text alignment */
   height: 100vh;
   color: #c4cbd2;
 }
@@ -241,6 +246,9 @@ img {
 }
 
 .popup {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* for Internet Explorer, Edge */
   position: fixed;
   top: 0;
   left: 0;
@@ -249,7 +257,7 @@ img {
   display: block;
   padding: 30px;
   align-items: center;
-  overflow: auto;
+  overflow-y: auto;
   /* Change from 'visible' to 'auto' */
   scroll-behavior: smooth;
   touch-action: auto;
@@ -617,6 +625,8 @@ a {
   margin-top: 5px;
   margin-bottom: 5px;
   margin-left: 5px;
+  flex-shrink: 0;
+  /* Prevent shrinking */
 }
 
 .user-circle img {
@@ -737,18 +747,16 @@ a {
   transition: background-color 0.3s ease;
   margin: 6px;
   width: 80%;
+  text-wrap: wrap;
 }
 
-
 .apple-button span {
+  margin-left: 15px;
+  margin-bottom: 5px;
   position: absolute;
-  /* Added */
   top: 50%;
-  /* Adjust as needed */
   transform: translateY(-50%);
-  /* Added */
   right: 20px;
-  /* Adjust as needed */
 }
 
 .apple-button span svg {
@@ -1337,6 +1345,7 @@ a {
 }
 
 .user-circle-sl img {
+  flex-shrink: 0; /* Prevent image from stretching */
   width: 60px;
   height: 60px;
   object-fit: cover;
@@ -1664,7 +1673,14 @@ a {
   background-color: #04AA6D;
 
 }
+
 .notifdate {
   position: relative;
   text-align: center;
+}
+
+.transparent-placeholder {
+  opacity: 0; /* Make it transparent */
+  height: 120px; /* Adjust height as needed */
+  /* You can add additional styles such as margin, padding, etc. */
 }
