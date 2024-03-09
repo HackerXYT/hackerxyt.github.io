@@ -43,7 +43,6 @@ body {
   font-family: "SF";
   margin: 0;
   padding: 0;
-  position: relative;
   min-height: 100vh;
   background: #000000;
   -webkit-user-select: none;
@@ -59,6 +58,9 @@ body {
   /* For newer browsers */
   overscroll-behavior: contain;
   /* For older browsers */
+  position: fixed;
+  width: 100%;
+
 }
 
 body.disabled {
@@ -226,7 +228,8 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center; /* Added to ensure text alignment */
+  text-align: center;
+  /* Added to ensure text alignment */
   height: 100vh;
   color: #c4cbd2;
 }
@@ -1345,7 +1348,8 @@ a {
 }
 
 .user-circle-sl img {
-  flex-shrink: 0; /* Prevent image from stretching */
+  flex-shrink: 0;
+  /* Prevent image from stretching */
   width: 60px;
   height: 60px;
   object-fit: cover;
@@ -1680,7 +1684,9 @@ a {
 }
 
 .transparent-placeholder {
-  opacity: 0; /* Make it transparent */
-  height: 120px; /* Adjust height as needed */
+  opacity: 0;
+  /* Make it transparent */
+  height: 120px;
+  /* Adjust height as needed */
   /* You can add additional styles such as margin, padding, etc. */
 }
