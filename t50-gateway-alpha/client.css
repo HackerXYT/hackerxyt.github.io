@@ -54,7 +54,7 @@ body {
   /* Standard syntax */
   overflow: hidden;
   overscroll-behavior: none;
-  touch-action: none;
+  touch-action: manipulation;
   overscroll-behavior-y: contain;
   /* For newer browsers */
   overscroll-behavior: contain;
