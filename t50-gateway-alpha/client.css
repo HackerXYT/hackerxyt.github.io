@@ -822,6 +822,13 @@ a {
   right: 20px;
   /* Adjust as needed */
 }
+@media only screen and (min-width: 769px) {
+
+  /* Hide the .apple-button svg on devices with a minimum width of 769px or more (assumed to be PCs) */
+  .apple-button-withicon {
+    width: 90%;
+  }
+}
 
 .apple-button-withicon svg {
   position: absolute;
@@ -913,6 +920,11 @@ a {
 .apple-button svg {
   position: absolute;
   right: 10%;
+}
+
+.apple-input svg {
+  position: absolute;
+  right: 20%;
 }
 
 /* Media query for devices with a minimum width of 769px (assumed to be non-PC devices) */
@@ -1010,20 +1022,33 @@ a {
   background-color: #5e5e5e70;
 }
 
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0px rgba(255, 255, 255, 0);
+  }
+}
+
 #animatedButton_chats {
-  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: fixed;
   bottom: 286px;
   right: 35px;
+  width: 50px; /* Set width and height to make it a circle */
+  height: 50px; /* Set width and height to make it a circle */
   background-color: #33333370;
   border: none;
   color: #fff;
-  padding: 15px;
   font-size: 16px;
-  border-radius: 100%;
+  border-radius: 50%; /* Ensure border-radius is set to 50% to make it a circle */
   cursor: pointer;
-  align-items: center;
-  text-decoration: none;
   transition: background-color 0.3s ease, opacity 0.5s ease, transform 0.5s ease;
   opacity: 0;
   transform: translateY(20px);
@@ -1032,6 +1057,12 @@ a {
 #animatedButton_chats:hover {
   background-color: #2f2a7d70;
 }
+
+.glow {
+  animation: glow 1s infinite alternate;
+}
+
+
 
 .notification-container {
   position: fixed;
@@ -1689,4 +1720,57 @@ a {
   height: 120px;
   /* Adjust height as needed */
   /* You can add additional styles such as margin, padding, etc. */
+}
+
+.user-circle-rem {
+  margin-right: 5px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+.user-circle-rem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.user-info-rem {
+  overflow: hidden;
+  position: relative;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px;
+  width: fit-content;
+  background: linear-gradient(circle, #400000, #000000);
+  text-align: center;
+}
+
+.user-details-rem {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 100%; /* Position the details to the right of the image */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Center vertically */
+}
+
+.user-name-rem {
+  color: #fff;
+  font-size: 18px;
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+.user-email-rem {
+  font-size: 14px;
+  color: #666;
+  white-space: nowrap;
 }

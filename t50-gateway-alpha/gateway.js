@@ -9,6 +9,92 @@ function log(text, color) {
   console.log('%c' + text, styles)
 }
 
+function login_to_storage() {
+  $("#stuck").fadeIn("fast")
+  custombg()
+  let email = localStorage.getItem("t50-email")
+  let username = localStorage.getItem("t50-username")
+  document.getElementById("email").value = email
+  document.getElementById("email").disabled = true
+  $("#add_button").fadeOut("fast", function () {
+    $("#rem_text").fadeOut("fast", function () {
+      $("#password").fadeIn("fast")
+      $("#submit").fadeIn("fast")
+      $("#use_switch").fadeIn("fast", function () {
+        setTimeout(function () {
+          $("#def_text").fadeIn("slow")
+          $("#stuck").fadeOut("fast")
+        }, 700)
+
+      })
+
+      setTimeout(function () {
+        document.getElementById("goback_login").style.border = "2px solid #38662c";
+        $("#goback_login").fadeIn("slow")
+      }, 2300)
+
+    })
+  })
+
+
+}
+
+function goback() {
+  
+  $("#rem-user-ic").fadeIn("fast")
+  document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
+  $("#goback_login").fadeOut("fast", function () {
+    $("#stuck").fadeIn("fast")
+    $("#add_button").fadeIn("fast", function () {
+      $("#rem_text").fadeIn("fast", function () {
+        $("#password").fadeOut("fast")
+        $("#submit").fadeOut("fast")
+        $("#use_switch").fadeOut("fast")
+        $("#def_text").fadeOut("slow")
+        $("#stuck").fadeOut("fast")
+        sessionStorage.removeItem("clearafter")
+      })
+    })
+  })
+
+  
+  //try {
+  //  
+  //} catch {
+  //  //ok
+  //}
+
+}
+
+function change_acc() {
+  sessionStorage.setItem("clearafter", true)
+  document.getElementById("email").value = ""
+  document.getElementById("email").disabled = false
+  $("#rem-user-ic").fadeOut("fast")
+  $("#add_button").fadeOut("fast", function () {
+    $("#rem_text").fadeOut("fast", function () {
+      $("#password").fadeIn("fast")
+      $("#submit").fadeIn("fast")
+      $("#use_switch").fadeIn("fast", function () {
+        setTimeout(function () {
+          $("#def_text").fadeIn("slow")
+        }, 700)
+
+      })
+
+      setTimeout(function () {
+        document.getElementById("goback_login").style.border = "2px solid #38662c";
+        $("#goback_login").fadeIn("slow")
+      }, 2300)
+
+    })
+  })
+}
+
+if(sessionStorage.getItem("clearafter")) {
+  sessionStorage.removeItem("clearafter")
+}
+
 function FloridaRun() {
   // Open the IndexedDB database
   var request = window.indexedDB.open('ONE_SIGNAL_SDK_DB');
@@ -75,7 +161,7 @@ function greetUser() {
 }
 
 function setup() {
-  if(localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
+  if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
     window.location.href = "./update/"
     return;
   }
@@ -129,33 +215,33 @@ function setup() {
   //} catch {
   //  console.error("Error Logging Out Of Florida. Safe")
   //}
-  if(!localStorage.getItem("florida_init")) {
+  if (!localStorage.getItem("florida_init")) {
     fetch(`https://evox-datacenter.onrender.com/florida?method=largest&username=${localStorage.getItem("t50-username")}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.text();
-    })
-    .then(data => {
-      if(data !== "Error") {
-        OneSignalDeferred.push(function () {
-          const tologin = `${localStorage.getItem("t50-username")}${data}`
-          OneSignal.login(tologin);
-        });
-        localStorage.setItem("florida_init", true)
-      } else {
-        console.error("Got an error response for florida")
-      }
-      
-    })
-    .catch(error => {
-      console.error('Fetch error:', error);
-    });
-  }
-  
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.text();
+      })
+      .then(data => {
+        if (data !== "Error") {
+          OneSignalDeferred.push(function () {
+            const tologin = `${localStorage.getItem("t50-username")}${data}`
+            OneSignal.login(tologin);
+          });
+          localStorage.setItem("florida_init", true)
+        } else {
+          console.error("Got an error response for florida")
+        }
 
-  
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+      });
+  }
+
+
+
 
 
 
@@ -295,7 +381,18 @@ function setup() {
                 $("#loading-apps-text").fadeIn("slow")
               })
               $("#loading").fadeOut("slow")
-              uielements()
+              try {
+                uielements()
+              } catch {
+                let inter = setInterval(function () {
+                  try {
+                    uielements()
+                    clearInterval(inter)
+                  } catch {
+                    console.log("uielements Failed. Retrying")
+                  }
+                }, 100)
+              }
               var elementToRemove = document.getElementById("loading-div-text");
 
               // Check if the element exists before trying to remove it
@@ -337,7 +434,7 @@ function setup() {
 
 
 function docready() {
-  if(localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
+  if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
     window.location.href = "./update/"
     return;
   }
@@ -512,6 +609,38 @@ function docready() {
       localStorage.removeItem("remove-autolg")
       localStorage.removeItem("t50-autologin")
     }
+    return;
+  } else if (autologin === "false") {
+    $("#stuck").fadeOut("fast")
+    document.getElementById("use_switch").style.display = "none"
+    document.getElementById("password").style.display = "none"
+    document.getElementById("submit").style.display = "none"
+    document.getElementById("def_text").style.display = "none"
+    document.getElementById("rem_text").style.display = "block"
+    document.getElementById("rem-user").style.display = "block"
+    document.getElementById("usr-img-autolg").src = "reloading-pfp.gif"
+    const user = localStorage.getItem("t50-username")
+    const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+    fetch(url)
+      .then(response => response.text())
+      .then(data => {
+        if (data.indexOf("base64") === -1) {
+          // If it doesn't contain "base64", add the prefix
+          data = "data:image/jpeg;base64," + data;
+        }
+        document.getElementById("usr-img-autolg").src = `${data}`;
+        sessionStorage.setItem("pfp", data);
+      })
+      .catch(error => {
+        console.error(error);
+        reject(error);
+      });
+    $("#loading-bar").fadeOut("slow")
+    $("#container").fadeIn("slow", function () {
+      $("#loading").fadeOut("slow")
+      $("#loading-div-text").fadeOut("fast")
+      $("#loading-text").fadeOut("slow")
+    })
     return;
   }
   $("#loading-div-text").fadeIn("slow", function () {
@@ -731,6 +860,9 @@ function verifycode() {
       if (data === "Complete") {
         $("#2fa").fadeOut("slow")
         console.log("All Done")
+        if(sessionStorage.getItem("clearafter")) {
+          localStorage.clear()
+        }
 
         localStorage.setItem("t50pswd", `${btoa(password)}`)
         sessionStorage.removeItem("ACCOUNT_DATA")
@@ -768,7 +900,12 @@ function verifycode() {
 }
 
 function login() {
-  login_ok.play()
+  try {
+    login_ok.play()
+  } catch {
+    //no problem
+  }
+  
   let email = document.getElementById("email").value
   let password = document.getElementById("password").value
   console.log(email, "********")
@@ -785,9 +922,17 @@ function login() {
 
       console.log(data);
       if (data.includes("Do 2FA")) {
+        if (data.includes("Email")) {
+          var emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
+
+          // Extract email using match() method
+          email = data.match(emailRegex);
+          console.log("Ext Email:", email)
+        }
         localStorage.getItem("2FA_READY", "false")
         const credentialsString = data;
         const match = credentialsString.match(/Username:(\w+)/);
+
         const username = match && match[1];
         const jsondata = {
           "username": username,
@@ -800,6 +945,16 @@ function login() {
         return;
       }
       if (data.includes("Credentials Correct")) {
+        if (data.includes("Email")) {
+          var emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
+
+          // Extract email using match() method
+          email = data.match(emailRegex);
+          console.log("Ext Email:", email)
+        }
+        if(sessionStorage.getItem("clearafter")) {
+          localStorage.clear()
+        }
         console.log("Welcome Abroad")
         localStorage.setItem("2fa_status", "On")
         localStorage.setItem("t50pswd", `${btoa(password)}`)

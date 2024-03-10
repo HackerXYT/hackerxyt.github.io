@@ -165,6 +165,7 @@ function showchat(element) {
   console.log("Got element:", element)
   //document.getElementById("secureline_chat").classList.add("active")
   //$("#private_chat").fadeIn("fast")
+  
   document.getElementById("private_chat").classList.add("active")
   document.getElementById("secureline").classList.remove("active")
   document.getElementById("delete_msg_list").innerHTML = ""
@@ -421,6 +422,8 @@ function getFriends(pre) {
 }
 
 function options() {
+  navigator("sline_options")
+  $("#navigator").fadeIn("fast")
   $("#options_box").fadeIn("fast")
   //document.getElementById("options_box").classList.add("active")
   document.getElementById('private_chat').style.filter = 'blur(10px)'

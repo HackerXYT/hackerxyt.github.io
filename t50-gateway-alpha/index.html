@@ -20,6 +20,17 @@
     <script src="../scripts/howler.js"></script>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <script defer>
+        function handleGoBack() {
+        try {
+            goback();
+        } catch (error) {
+            console.error("An error occurred while executing goback():", error);
+            // Reload the page if the function is not defined
+            if (error instanceof TypeError) {
+                window.location.reload();
+            }
+        }
+    }
         function removeTrailingSlash(value) {
             return value.replace(/\/$/, ''); // Replace trailing slash if it exists
         }
@@ -86,6 +97,7 @@
 
                 // Add more script tags for other JavaScript files as needed
             }
+            
         });
         document.addEventListener('DOMContentLoaded', function () {
             var lastTouchY = 0;
@@ -182,12 +194,22 @@
 
     <div id="container" class="container" style="display:none;margin-top: 105px;">
         <a><img src="evox-logo.png" alt="Logo" class="logo" id="myLogo"></a>
+            <div id="rem-user" class="user-info-rem" style="display: none;" >
+            <div id="rem-user-ic" onclick="login_to_storage()" style=" float: left;margin-right: 10px;" class="user-circle-rem">
+                <img id="usr-img-autolg" src="evox-logo-apple.png" alt="User Image">
+            </div>
+            <div id="add_button" onclick="change_acc()" class="user-circle-rem">
+                <img src="add.svg" alt="User Image">
+            </div>
+        </div>
         <span id="use_switch"><input autocomplete="off" id="email" type="email" class="input-box"
                 placeholder="Email"></span>
         <input autocomplete="off" id="password" type="password" class="input-box" placeholder="Password">
         <p id="info_text" style="color: white;display: none"></p>
         <button id="submit" onclick="login()" class="transparent-button">Login</button><br>
-        <p style="color: #a7b3bf">Evox® registered under Evox Communications & Co.</p>
+        <button style="display: none;" id="goback_login" onclick="handleGoBack()" class="transparent-button" >Go back</button><br>
+        <p id="rem_text" style="color: #a7b3bf;display:none">Pick an account to login.</p>
+        <p id="def_text" style="color: #a7b3bf">Evox® registered under Evox Communications & Co.</p>
     </div>
     <div style="display: none;" id="2fa" class="container" style="display:none;margin-top: 105px;">
         <h3 style="color: white;">Two-Factor Authentication</h3>
@@ -359,7 +381,7 @@
                     <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#fff" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
                 </svg></a>
-            <div class="user-circle-sl">
+            <div id="sline_prive" class="user-circle-sl">
                 <img id="secureline-img-chat" src="./t50-img.png" alt="User Image">
                 <p id="chat-username">SecureLine</p>
             </div>
@@ -520,7 +542,7 @@
 
                 <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Account Options</h3>
                 <div style="margin: 0 auto;
-            position: relative;" class="user-circle">
+            position: relative;width: 90px;height:90px" class="user-circle">
                     <img onclick="showUploadBox()" id="usr-img-opt" src="t50-img.png" alt="User Image">
                 </div>
                 <div style="height: auto;
@@ -554,7 +576,8 @@
                                 d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                                 fill="#666" />
                         </svg></a>
-                    <a onclick="cryptox()" href="#" class="apple-button">Cryptox<svg xmlns="http://www.w3.org/2000/svg"
+                    <a onclick="cryptox()" href="#" class="apple-button">Cryptox
+                    <svg id="arrow_cryptox" xmlns="http://www.w3.org/2000/svg"
                             width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                             <path
                                 d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
@@ -628,7 +651,7 @@
                         <input onclick="changeCryptox()" id="cryptox-status" type="checkbox" checked="false">
                         <span></span>
                     </label></a>
-                <input id="cryptox-iv" class="apple-input" value="Error Retrieving IV" disabled></input>
+                <p id="cryptox-iv" class="apple-input" value="Error Retrieving IV">Error Retrieving IV</p>
                 <p style="margin: 6px" class="user-email">Your Cryptox credentials consist of a <b>key</b> and an
                     <b>iv</b>.<br>To enhance security, only the iv is transferred over the internet, minimizing the risk
                     of data breaches.<br>To update your Cryptox credentials, toggle Cryptox off and then back
@@ -1625,8 +1648,8 @@
             </g>
         </svg>
 
-        <p class="cookie__heading">Your Privacy Is Our Priority</p>
-        <p class="cookie__desc">Secureline now requires you to enable Cryptox for enhanced security. Cryptox ensures
+        <p id="cookie__heading" class="cookie__heading">Your Privacy Is Our Priority</p>
+        <p id="cookie__desc" class="cookie__desc">Secureline now requires you to enable Cryptox for enhanced security. Cryptox ensures
             your data is
             encrypted using advanced techniques, providing an extra layer of privacy protection.</p>
 
