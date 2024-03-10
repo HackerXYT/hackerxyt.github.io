@@ -908,6 +908,9 @@ function login() {
   
   let email = document.getElementById("email").value
   let password = document.getElementById("password").value
+  if(email === "" || password === "") {
+    return;
+  }
   console.log(email, "********")
   const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}&ip=${localStorage.getItem("IPV4")}`;
 
