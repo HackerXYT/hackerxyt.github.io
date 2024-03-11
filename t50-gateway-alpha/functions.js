@@ -817,7 +817,12 @@ function show_account() {
 function return_settings() {
 	navigator("settings_tonexus")
 	//$("#onesignal-bell-container").fadeOut("fast")
-	goback.play()
+	try{
+		goback.play()
+	} catch {
+		console.error("Audio couldn't be played. Restart")
+	}
+	
 	$("#account_options").fadeOut("fast", function () {
 		$("#main_popup_settings").fadeIn("fast")
 	})
