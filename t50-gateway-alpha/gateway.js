@@ -2,6 +2,7 @@
 sessionStorage.removeItem("skipped")
 sessionStorage.removeItem("sending")
 sessionStorage.removeItem("current_sline")
+sessionStorage.removeItem("block_interactions")
 const ip = sessionStorage.getItem("IPV4")
 $(document).ready(docready())
 function log(text, color) {
@@ -40,7 +41,7 @@ function login_to_storage() {
 }
 
 function goback() {
-  
+
   $("#rem-user-ic").fadeIn("fast")
   document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
   $("#goback_login").fadeOut("fast", function () {
@@ -57,7 +58,7 @@ function goback() {
     })
   })
 
-  
+
   //try {
   //  
   //} catch {
@@ -91,7 +92,7 @@ function change_acc() {
   })
 }
 
-if(sessionStorage.getItem("clearafter")) {
+if (sessionStorage.getItem("clearafter")) {
   sessionStorage.removeItem("clearafter")
 }
 
@@ -595,8 +596,19 @@ function docready() {
           }
         }
         $("#gateway").fadeIn("fast", function () {
+          document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a id="tasco-a" onclick="shake_me('tasco-a');notice('Tasco is currently not available')" href="#blocked-tasco"><img src="https://team50.sytes.net/tasco/tasco-app.png" class="disabledapp"></img></a>`
+          document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a id="dc-a" onclick="shake_me('dc-a');notice('Client is trying to connect. Please stand by.')" href="#blocked-dc"><img src="https://team50.sytes.net/t50-gateway-alpha/srv-offline.gif" class="app"></img></a>`
 
           $("#apps").fadeIn("slow")
+          $("#navigator").fadeIn("slow")
+          $("#settings").fadeIn("slow")
+          document.getElementById("usr-name").innerHTML = localStorage.getItem("t50-username")
+          document.getElementById("usr-email").innerHTML = localStorage.getItem("t50-email")
+          document.getElementById("usr-img").src = "https://team50.sytes.net/t50-gateway-alpha/srv-offline.gif"
+          sessionStorage.setItem("block_interactions", true)
+          $("#logout_icon").fadeOut("fast")
+          document.getElementById("restart_icon").style.right = "55px"
+
         })
 
 
@@ -860,7 +872,7 @@ function verifycode() {
       if (data === "Complete") {
         $("#2fa").fadeOut("slow")
         console.log("All Done")
-        if(sessionStorage.getItem("clearafter")) {
+        if (sessionStorage.getItem("clearafter")) {
           localStorage.clear()
         }
 
@@ -905,10 +917,10 @@ function login() {
   } catch {
     //no problem
   }
-  
+
   let email = document.getElementById("email").value
   let password = document.getElementById("password").value
-  if(email === "" || password === "") {
+  if (email === "" || password === "") {
     return;
   }
   console.log(email, "********")
@@ -955,7 +967,7 @@ function login() {
           email = data.match(emailRegex);
           console.log("Ext Email:", email)
         }
-        if(sessionStorage.getItem("clearafter")) {
+        if (sessionStorage.getItem("clearafter")) {
           localStorage.clear()
         }
         console.log("Welcome Abroad")

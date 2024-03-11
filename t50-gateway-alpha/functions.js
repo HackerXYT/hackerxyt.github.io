@@ -579,6 +579,10 @@ function settings() {
 
 		setTimeout(function () {
 			$("#popup").removeClass("active");
+			if(sessionStorage.getItem("block_interactions") === "true") {
+				//notice("Sorry. Servers Are Offline")
+					return;
+			}
 			$("#dots").fadeIn("slow")
 			$("#profile").fadeIn("slow")
 			if (sessionStorage.getItem("more_options") === "active") {
@@ -798,6 +802,10 @@ function show_authip() {
 }
 
 function show_account() {
+	if(sessionStorage.getItem("block_interactions") === "true") {
+		notice("Sorry. Servers Are Offline")
+            return;
+	}
 	//account_show.play()
 	navigator("show_account")
 	console.log("Changing Screens to account")
@@ -948,6 +956,10 @@ function pswd_secure() {
 }
 
 function show_social() {
+	if(sessionStorage.getItem("block_interactions") === "true") {
+		notice("Sorry. Servers Are Offline")
+		return;
+	}
 	$("#main_popup_settings").fadeOut("fast", function () {
 		$("#evox_social").fadeIn("fast")
 		navigator("evox_social")
@@ -3385,6 +3397,10 @@ function store() {
 }
 
 function getNOpen(element) {
+	if(sessionStorage.getItem("block_interactions") === "true") {
+		notice("Sorry. Servers Are Offline")
+            return;
+	}
 	var getButton = element.querySelector('.get-button');
 
 	// Change the inner HTML of the <span> element
