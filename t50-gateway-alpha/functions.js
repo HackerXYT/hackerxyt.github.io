@@ -3458,6 +3458,7 @@ function changeCryptox() {
 	let toggle = document.getElementById("cryptox-status").checked
 	if (toggle === false) {
 		console.log("Disable")
+		document.getElementById("cryptox-status").checked = true
 		notice("You cannot disable cryptox operations at the moment.")
 		return;
 		cryptox()
