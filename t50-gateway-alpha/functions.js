@@ -471,8 +471,8 @@ function uielements() {
 	} else {
 		sessionStorage.setItem("show_profile", "waiting")
 	}
-	if (!localStorage.getItem("error_XMGE")) {
-		//$("#errors").fadeIn("slow") DONT FADE IN, NO ERRORS
+	if (!localStorage.getItem("error_DC")) {
+		$("#errors").fadeIn("slow") //DONT FADE IN, NO ERRORS
 	}
 
 	$("#profile").fadeIn("fast")
@@ -2288,15 +2288,13 @@ function profile() {
 
 function errors() {
 	//id errors
-	localStorage.setItem("error_XMGE", "seen")
+	localStorage.setItem("error_DC", "seen")
 	var notification = document.getElementById('notification');
 	notification.classList.add('show');
+	$("#errors").fadeOut("slow")
 	setTimeout(function () {
 		notification.classList.remove('show');
-		setTimeout(function () {
-			$("#errors").fadeOut("slow")
-		}, 500)
-	}, 2500);
+	}, 4500);
 
 }
 
@@ -3460,6 +3458,9 @@ function changeCryptox() {
 	let toggle = document.getElementById("cryptox-status").checked
 	if (toggle === false) {
 		console.log("Disable")
+		notice("You cannot disable cryptox operations at the moment.")
+		return;
+		cryptox()
 		fetch(`https://evox-datacenter.onrender.com/cryptox?method=disable&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 			.then(response => {
 				if (!response.ok) {
