@@ -550,7 +550,7 @@ function showTasco() {
 
                 const input = document.createElement("input");
                 input.value = value;
-                //input.disabled = true
+                input.disabled = true
 
                 div.appendChild(input);
                 cardGridProfiles.appendChild(div);
