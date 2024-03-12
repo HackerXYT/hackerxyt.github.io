@@ -219,6 +219,7 @@ img {
   max-width: 340px;
 }
 input:disabled {
+  opacity: 1;
   background-color: #10101d;
   }
 .search input {
