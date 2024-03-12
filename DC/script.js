@@ -169,7 +169,7 @@ function showProfiles() {
 
                 const input = document.createElement("input");
                 input.value = value;
-                input.disabled = true
+                //input.disabled = true
 
                 div.appendChild(input);
                 cardGridProfiles.appendChild(div);
@@ -550,7 +550,7 @@ function showTasco() {
 
                 const input = document.createElement("input");
                 input.value = value;
-                input.disabled = true
+                //input.disabled = true
 
                 div.appendChild(input);
                 cardGridProfiles.appendChild(div);
@@ -679,7 +679,7 @@ function showDatacenter() {
 
                 const input = document.createElement("input");
                 input.value = value;
-                input.disabled = true
+                //input.disabled = true
 
                 div.appendChild(input);
                 cardGridProfiles.appendChild(div);
@@ -716,7 +716,7 @@ function showVerification() {
 
                 const input = document.createElement("input");
                 input.value = value;
-                input.disabled = true
+                //input.disabled = true
 
                 div.appendChild(input);
                 cardGridProfiles.appendChild(div);
@@ -751,7 +751,7 @@ function showImgGal() {
 
             const input = document.createElement("input");
             input.value = `${value} images uploaded`;
-            input.disabled = true
+            //input.disabled = true
 
             div.appendChild(input);
             cardGridProfiles.appendChild(div);
@@ -787,7 +787,7 @@ function showImgDb() {
 
                 const input = document.createElement("input");
                 input.value = value;
-                input.disabled = true
+                //input.disabled = true
 
                 div.appendChild(input);
                 cardGridProfiles.appendChild(div);
