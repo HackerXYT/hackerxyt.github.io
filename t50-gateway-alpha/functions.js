@@ -4156,3 +4156,7 @@ function scrollToTop(divId) {
         console.error("Element with ID '" + divId + "' not found.");
     }
 }
+
+function optimizeNotifications() {
+	return;
+}
