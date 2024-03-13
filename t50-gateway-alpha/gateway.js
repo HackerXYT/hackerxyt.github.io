@@ -166,8 +166,21 @@ function setup() {
     window.location.href = "./update/"
     return;
   }
+  
   //console.log("RUNNING SETUP!")
   $("#navigator").fadeIn("fast")
+  if (localStorage.getItem("New_ID0.81") !== "SEEN") {
+    document.getElementById("loading-text").innerHTML = "Waiting for user to read news."
+    $("#loading-text").fadeOut("fast")
+    $("#stuck").fadeOut("fast")
+    document.getElementById('gateway').style.filter = 'blur(25px)'
+    document.getElementById("whats_new").classList.add("active");
+    document.getElementById("navigator").style.display = "none"
+    return;
+  } else {
+    $("#loading-text").fadeIn("fast")
+    $("#stuck").fadeIn("fast")
+  }
   try {
     custombg()
   } catch {
@@ -462,6 +475,7 @@ function docready() {
         if (data.includes("Credentials Correct")) {
           $("#loading-bar").fadeOut("slow")
           console.log('%c' + "Account Verified!", `color: green; font-size: 16px; font-weight: bold;`)
+
           sessionStorage.setItem("loaded", true)
           fetch(`https://evox-datacenter.onrender.com/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
@@ -493,6 +507,7 @@ function docready() {
                       } else {
                         console.log("Element not found!");
                       }
+
                       setup()
                       $("#loading-bar").fadeOut("slow")
                     }

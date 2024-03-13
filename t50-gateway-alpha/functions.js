@@ -566,12 +566,12 @@ function settings() {
 	} else if (document.getElementById("popup").classList.contains("active")) {
 		$("#onesignal-bell-container").fadeOut("fast")
 		navigator("sett_def")
-		try{
+		try {
 			goback.play()
-		}catch {
+		} catch {
 			console.error("error playing audio")
 		}
-		
+
 		document.getElementById('gateway').style.filter = 'none'; // Add a blur effect to the mainContent
 		//$("#bottom-logo").fadeOut("slow", function () {
 		$("#settings").fadeIn("slow")
@@ -579,9 +579,9 @@ function settings() {
 
 		setTimeout(function () {
 			$("#popup").removeClass("active");
-			if(sessionStorage.getItem("block_interactions") === "true") {
+			if (sessionStorage.getItem("block_interactions") === "true") {
 				//notice("Sorry. Servers Are Offline")
-					return;
+				return;
 			}
 			$("#dots").fadeIn("slow")
 			$("#profile").fadeIn("slow")
@@ -802,9 +802,9 @@ function show_authip() {
 }
 
 function show_account() {
-	if(sessionStorage.getItem("block_interactions") === "true") {
+	if (sessionStorage.getItem("block_interactions") === "true") {
 		notice("Sorry. Servers Are Offline")
-            return;
+		return;
 	}
 	//account_show.play()
 	navigator("show_account")
@@ -825,12 +825,12 @@ function show_account() {
 function return_settings() {
 	navigator("settings_tonexus")
 	//$("#onesignal-bell-container").fadeOut("fast")
-	try{
+	try {
 		goback.play()
 	} catch {
 		console.error("Audio couldn't be played. Restart")
 	}
-	
+
 	$("#account_options").fadeOut("fast", function () {
 		$("#main_popup_settings").fadeIn("fast")
 	})
@@ -956,7 +956,7 @@ function pswd_secure() {
 }
 
 function show_social() {
-	if(sessionStorage.getItem("block_interactions") === "true") {
+	if (sessionStorage.getItem("block_interactions") === "true") {
 		notice("Sorry. Servers Are Offline")
 		return;
 	}
@@ -1143,7 +1143,7 @@ function show_friends() {
 									} else {
 										document.getElementById(`${username}-pfp-friends`).src = profileimage;
 									}
-									
+
 								})
 								.catch(error => {
 									console.error("Cannot set src for", username);
@@ -1357,7 +1357,7 @@ function loadusers() {
 			listContainer.style.textAlign = "";
 			listContainer.style.marginTop = "";
 			listContainer.innerHTML = "<!--Empty-->";
-			
+
 
 			// Fetch emails for each user individually
 			userlist.forEach(username => {
@@ -1508,19 +1508,19 @@ function loadusers() {
 					});
 
 
-				})
-				Promise.resolve().then(() => {
-					// Add the transparent placeholder after the loop that adds user information
-					var transparentPlaceholder = document.createElement("div");
-					transparentPlaceholder.className = "transparent-placeholder";
-					listContainer.parentNode.appendChild(transparentPlaceholder);
-				}).catch(error => {
-					console.error(error);
-				});
+			})
+			Promise.resolve().then(() => {
+				// Add the transparent placeholder after the loop that adds user information
+				var transparentPlaceholder = document.createElement("div");
+				transparentPlaceholder.className = "transparent-placeholder";
+				listContainer.parentNode.appendChild(transparentPlaceholder);
+			}).catch(error => {
+				console.error(error);
+			});
 		}).catch(error => {
 			console.error(error);
 		});
-			
+
 }
 
 
@@ -1707,24 +1707,24 @@ function handlesearch(value) {
 									}
 								});
 							$("#load-users").fadeOut("fast");
-							
+
 						}).catch(error => {
 							console.error(error);
 						});
-						
+
 
 
 				})
 					.catch(error => {
 						console.error(error);
 					});
-					
+
 			})
 			.catch(error => {
 				console.error(error);
 			});
-			// Add transparent-placeholder div at the end of the listContainer
-		
+		// Add transparent-placeholder div at the end of the listContainer
+
 	}
 }
 
@@ -1756,7 +1756,7 @@ function return_to_options(where) {
 	} catch {
 		console.error("Couldn't play audio")
 	}
-	
+
 	if (where) {
 		if (where === "security") {
 			$("#pswd_secure").fadeOut("fast", function () {
@@ -2461,7 +2461,7 @@ function show_notif(nosound) {
 			}).catch(error => {
 				console.error(error);
 			});
-			
+
 
 		})
 		.catch(error => {
@@ -2579,7 +2579,7 @@ function oneo(element) {
 
 function show_sline() {
 	toggleGlowAnimation()
-	
+
 	fetch(`https://evox-datacenter.onrender.com/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
@@ -2629,7 +2629,7 @@ function show_sline() {
 				var disabledDiv = document.body;
 				disabledDiv.classList.toggle('disabled');
 				document.getElementById("sline_cryptox").classList.add("active")
-				
+
 
 			} else {
 				console.error("I dont know what i got from cryptox:", status)
@@ -2825,12 +2825,12 @@ function loadflrdinf() {
 			console.log("Notification Is Shown")
 			notification.classList.remove('show');
 			setTimeout(function () {
-				if(sessionStorage.getItem("flrd_info")) {
+				if (sessionStorage.getItem("flrd_info")) {
 					document.getElementById("notification").innerHTML = sessionStorage.getItem("flrd_info")
 				} else {
 					document.getElementById("notification").innerHTML = "Florida not ready!"
 				}
-				
+
 				notification.classList.add('show');
 				$("#flrd_svg").fadeOut("fast")
 				setTimeout(function () {
@@ -2839,7 +2839,7 @@ function loadflrdinf() {
 			}, 500)
 		} else {
 			$("#flrd_svg").fadeIn("fast")
-			if(sessionStorage.getItem("flrd_info")) {
+			if (sessionStorage.getItem("flrd_info")) {
 				document.getElementById("notification").innerHTML = sessionStorage.getItem("flrd_info")
 			} else {
 				document.getElementById("notification").innerHTML = "Florida not ready!"
@@ -3394,17 +3394,29 @@ function store() {
 	//error.play()
 }
 
-function getNOpen(element) {
-	if(sessionStorage.getItem("block_interactions") === "true") {
+function getNOpen(app) {
+	if (sessionStorage.getItem("block_interactions") === "true") {
 		notice("Sorry. Servers Are Offline")
-            return;
+		return;
 	}
-	var getButton = element.querySelector('.get-button');
+	var getButton = document.getElementById(`${app}-get`);
+	var oldInner = getButton.innerHTML;
+	if (oldInner === "CURRENT") {
+		getButton.style.backgroundColor = "#cb180074";
+		shake_me(`${app}-get`);
+		setTimeout(function () {
+			getButton.style.backgroundColor = "#007aff";
+		}, 1200);
+		return;
+	}
+	//var getButton = element.querySelector('.get-button');
 
 	// Change the inner HTML of the <span> element
 	getButton.style.height = "17px"
 	getButton.style.width = "30px"
 	//height: 17px; width: 30px
+
+
 	getButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="55%" height="55%">
 	<circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
 		<animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
@@ -3413,11 +3425,21 @@ function getNOpen(element) {
 			repeatCount="indefinite" />
 	</circle>
 </svg>`;
+	setTimeout(function () {
+		getButton.style.height = "auto"
+		getButton.style.width = "auto"
+		//height: 17px; width: 30px
+		getButton.innerHTML = oldInner;
+		shake_me(`${app}-get`)
+		notice("Accessing apps from this location is currently unavailable.")
+	}, 1500)
+
 }
 
 
+
 function cryptox() {
-	
+	$("#stuck").fadeIn("fast")
 	fetch(`https://evox-datacenter.onrender.com/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
@@ -3426,8 +3448,9 @@ function cryptox() {
 			return response.text();
 		})
 		.then(status => {
+			$("#stuck").fadeOut("fast")
 			navigator("cryptox")
-			
+
 			if (status.includes("Enabled")) {
 				console.log(status)
 				var parts = status.split(":");
@@ -3452,6 +3475,47 @@ function cryptox() {
 			console.error(error);
 		});
 
+}
+
+function notifications_options() {
+	navigator("notifications_main")
+	console.log("Clicked!")
+	$("#main_settings").fadeOut("fast", function () {
+		$("#notifications_options").fadeIn("fast")
+	})
+}
+
+function notif_goback() {
+	$("#notifications_options").fadeOut("fast", function () {
+		$("#main_settings").fadeIn("fast")
+	})
+}
+function getNShow(element) {
+	const app = element.innerHTML
+	if (app.includes("Gateway")) {
+		console.log("Showing Gateway Florida Notifications")
+		$("#notifications_options").fadeOut("fast", function () {
+			$("#gateway-florida").fadeIn("fast")
+		})
+		navigator("notif_gateway")
+	}
+	if (app.includes("Tasco")) {
+		console.log("Showing Tasco Florida Notifications")
+		$("#notifications_options").fadeOut("fast", function () {
+			$("#tasco-florida").fadeIn("fast")
+		})
+		navigator("notif_tasco")
+	}
+}
+
+function getNShowNexus(element) {
+	//const app = element.innerHTML
+	//if (app.includes("Gateway")) {
+	//	console.log("Showing Gateway Florida Notifications")
+	//	$("#notifications_options").fadeOut("fast", function () {
+	//		$("#gateway-florida").fadeIn("fast")
+	//	})
+	//}
 }
 
 function changeCryptox() {
@@ -3871,7 +3935,7 @@ Settings
 	Gateway
 </div>
 </div>`
-const sline_options = `<div onclick="goback_options();navigator('show_sline', 'y')" id="settings">
+	const sline_options = `<div onclick="goback_options();navigator('show_sline', 'y')" id="settings">
 <div
 	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
 	<svg style='margin-right: 10px' xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
@@ -3880,6 +3944,61 @@ const sline_options = `<div onclick="goback_options();navigator('show_sline', 'y
             <path d="M8 12.5H13.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path>
         </svg>
 	${sessionStorage.getItem("current_sline")}
+</div>
+</div>`
+const notifications_main = `<div onclick="notif_goback();navigator('show_account')"
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Account Options
+</div>
+</div>`
+
+const notif_gateway = `<div onclick='$("#gateway-florida").fadeOut("fast", function () {$("#notifications_options").fadeIn("fast")});navigator("notifications_main")'
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Notifications
+</div>
+</div>`
+const notif_tasco = `<div onclick='$("#tasco-florida").fadeOut("fast", function () {$("#notifications_options").fadeIn("fast")});navigator("notifications_main")'
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Notifications
 </div>
 </div>`
 	$("#navigator").fadeOut("fast", function () {
@@ -3948,7 +4067,7 @@ const sline_options = `<div onclick="goback_options();navigator('show_sline', 'y
 		}
 		if (w === "show_sline") {
 			document.getElementById("navigator").innerHTML = show_sline
-			if(f) {
+			if (f) {
 				return;
 			}
 		}
@@ -3958,6 +4077,18 @@ const sline_options = `<div onclick="goback_options();navigator('show_sline', 'y
 		if (w === "sline_options") {
 			document.getElementById("navigator").innerHTML = sline_options
 			return;
+		}
+
+		if (w === "notifications_main") {
+			document.getElementById("navigator").innerHTML = notifications_main
+		}
+
+		if(w === "notif_gateway") {
+			document.getElementById("navigator").innerHTML = notif_gateway
+		}
+
+		if(w === "notif_tasco") {
+			document.getElementById("navigator").innerHTML = notif_tasco
 		}
 
 
@@ -3974,8 +4105,54 @@ const sline_options = `<div onclick="goback_options();navigator('show_sline', 'y
 function toggleGlowAnimation() {
 	var button = document.getElementById("animatedButton_chats");
 	if (button.classList.contains("glow")) {
-	  button.classList.remove("glow");
+		button.classList.remove("glow");
 	} else {
-	  button.classList.add("glow");
+		button.classList.add("glow");
 	}
-  }
+}
+
+function hide_new() {
+	document.getElementById('gateway').style.filter = ''
+	document.getElementById("whats_new").classList.remove("active");
+	$("#navigator").fadeIn("fast")
+	localStorage.setItem("New_ID0.81", "SEEN")
+	setup()
+}
+function hide_new_set() {
+	document.getElementById('gateway').style.filter = ''
+	document.getElementById("whats_new").classList.remove("active");
+	$("#navigator").fadeIn("fast")
+	vox()
+	localStorage.setItem("New_ID0.81", "SEEN")
+}
+
+function show_news() {
+	
+	closevox()
+		document.getElementById('gateway').style.filter = 'blur(25px)'
+		document.getElementById("whats_new").classList.add("active");
+		document.getElementById("navigator").style.display = "none"
+		document.getElementById("onclicks_news").innerHTML =  `<div onclick="hide_new_set()">
+		<div
+			style="left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+			
+			Proceed<svg style="margin-left: 10px" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+				<path d="M11 21H12C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3H11M11 16L15 12M15 12L11 8M15 12H3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg>
+		</div>
+	</div>`
+	setTimeout(function() {
+		scrollToTop("whats_new")
+	}, 300)
+	
+}
+
+
+function scrollToTop(divId) {
+    var div = document.getElementById(divId);
+    if (div) {
+        div.scrollTop = 0;
+    } else {
+        console.error("Element with ID '" + divId + "' not found.");
+    }
+}

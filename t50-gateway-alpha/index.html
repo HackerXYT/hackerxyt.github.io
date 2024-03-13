@@ -21,16 +21,16 @@
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <script defer>
         function handleGoBack() {
-        try {
-            goback();
-        } catch (error) {
-            console.error("An error occurred while executing goback():", error);
-            // Reload the page if the function is not defined
-            if (error instanceof TypeError) {
-                window.location.reload();
+            try {
+                goback();
+            } catch (error) {
+                console.error("An error occurred while executing goback():", error);
+                // Reload the page if the function is not defined
+                if (error instanceof TypeError) {
+                    window.location.reload();
+                }
             }
         }
-    }
         function removeTrailingSlash(value) {
             return value.replace(/\/$/, ''); // Replace trailing slash if it exists
         }
@@ -97,7 +97,7 @@
 
                 // Add more script tags for other JavaScript files as needed
             }
-            
+
         });
         document.addEventListener('DOMContentLoaded', function () {
             var lastTouchY = 0;
@@ -194,8 +194,9 @@
 
     <div id="container" class="container" style="display:none;margin-top: 105px;">
         <a><img src="evox-logo.png" alt="Logo" class="logo" id="myLogo"></a>
-            <div id="rem-user" class="user-info-rem" style="display: none;" >
-            <div id="rem-user-ic" onclick="login_to_storage()" style=" float: left;margin-right: 10px;" class="user-circle-rem">
+        <div id="rem-user" class="user-info-rem" style="display: none;">
+            <div id="rem-user-ic" onclick="login_to_storage()" style=" float: left;margin-right: 10px;"
+                class="user-circle-rem">
                 <img id="usr-img-autolg" src="evox-logo-apple.png" alt="User Image">
             </div>
             <div id="add_button" onclick="change_acc()" class="user-circle-rem">
@@ -207,9 +208,11 @@
         <input autocomplete="off" id="password" type="password" class="input-box" placeholder="Password">
         <p id="info_text" style="color: white;display: none"></p>
         <button id="submit" onclick="login()" class="transparent-button">Login</button><br>
-        <button style="display: none;" id="goback_login" onclick="handleGoBack()" class="transparent-button" >Go back</button><br>
+        <button style="display: none;" id="goback_login" onclick="handleGoBack()" class="transparent-button">Go
+            back</button><br>
         <p id="rem_text" style="color: #a7b3bf;display:none">Pick an account to login.</p>
-        <p id="def_text" style="color: #a7b3bf">Evox® Epsilon registered under Evox Communications & Co.<br><br><i style="color: #0173d6e2">Public Beta Preview Version E0.87</i></p>
+        <p id="def_text" style="color: #a7b3bf">Evox® Epsilon registered under Evox Communications & Co.<br><br><i
+                style="color: #0173d6e2">Public Beta Preview Version E0.87</i></p>
     </div>
     <div style="display: none;" id="2fa" class="container" style="display:none;margin-top: 105px;">
         <h3 style="color: white;">Two-Factor Authentication</h3>
@@ -301,8 +304,81 @@
         <a href="#" onclick="bgch()" class="apple-button">Background<span id="bgname"
                 style="color: #868686">Default</span></a>
         <a href="#" onclick="auto_login()" class="apple-button">Auto Login<span id="auto-login">Set Up</span></a>
+        <a href="#" onclick="show_news()" class="apple-button">What's new in Evox<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+            <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"></path>
+        </svg></a>
 
-       
+
+
+    </div>
+
+
+    <div id="whats_new" class="vox">
+        <div style="text-align: center; margin-top: 20px;">
+            <h3 style="margin-bottom: 5px;">What's New</h3>
+            <h5 style="margin: 0; font-weight: lighter; font-size: 12px;">March 13, 2024</h5>
+        </div>
+        
+        <img src="V0.81.png" style="display: block; margin: 20px auto; max-width: 100%; border-radius: 20px;">
+        
+        <div style="margin: 20px;">
+            <h3>Security Updates</h3>
+            <ul style="padding-left: 20px;">
+                <li>Introducing Cryptox in Evox Gateway, enabling users to securely encrypt all sent information using cryptographic operations, retrievable only with identical keys and IVs, thus preventing data breaches.</li>
+                <li>Secureline now employs Cryptox for chatting, ensuring that messages are only accessible to chat participants.</li>
+            </ul>
+            <p style="text-align: center; margin-top: 10px; font-weight: lighter; font-size: 14px;">You can manage your Cryptox IV under account options in gateway settings.</p>
+        </div>
+        
+        <div style="margin: 20px;">
+            <h3>Account Updates</h3>
+            <ul style="padding-left: 20px;">
+                <li>Multiple email addresses can now be added to your account, allowing login with various emails and ensuring access to your Evox account even when your primary email is unavailable.</li>
+                <li>You can remove any IP addresses accessing your account and block their connection until passing the 2FA process.</li>
+            </ul>
+        </div>
+        
+        <div style="margin: 20px;">
+            <h3>In-App Notifications</h3>
+            <ul style="padding-left: 20px;">
+                <li>All Evox app notifications are now centralized within the Evox Gateway. Access your notifications under more options to track your account activity.</li>
+            </ul>
+        </div>
+        
+        <div style="margin: 20px;">
+            <h3>UI Updates</h3>
+            <ul style="padding-left: 20px;">
+                <li>Easily switch between accounts by disabling auto-login in Vox Center, allowing you to choose which accounts to log in without logging out.</li>
+                <li>View weather updates in your area, change your profile picture more quickly, and access other quick actions by opening Vox Center.</li>
+                <li>Date of Birth is now available for all users! You can now see your friends' birthdates in the future under account options.</li>
+            </ul>
+        </div>
+        
+        <div style="margin: 20px;">
+            <h3>Evox Previews</h3>
+            <ul style="padding-left: 20px;">
+                <li>App Store Preview:<br><br>An application store is coming soon to Evox! Soon, you'll be able to easily acquire and remove new Evox applications for your Gateway. Check out the store's UI in your gateway settings.</li>
+                <br>
+                <li>Notifications Preview:<br><br>Evox Gateway will allow you to customize which notifications you receive from specific Evox apps and on-topic notifications. Check the preview under account options in Gateway settings.</li>
+            </ul>
+        </div>
+        <div id="onclicks_news">
+        <div onclick="hide_new()">
+            <div
+                style="left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+                
+                Proceed<svg style="margin-left: 10px" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                    <path d="M11 21H12C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3H11M11 16L15 12M15 12L11 8M15 12H3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+            </div>
+        </div>
+    </div>
+
+        <div class="transparent-placeholder" style="height: 60px;"></div>
+        
+
+
+
 
     </div>
 
@@ -337,7 +413,7 @@
         <a href="#" onclick="oneo()" class="apple-button">${user} accepted your friend request <span>15/2</span></a>
         <a href="#" onclick="oneo()" class="apple-button">Florida Client Status: <v onclick="loadflrdinf()"
                 id="flrdinfo">load</v></a>-->
-        
+
 
     </div>
 
@@ -370,7 +446,7 @@
             <div class="list-user-info"></div>
 
         </div>
-        
+
     </div>
 
     </div>
@@ -511,7 +587,7 @@
             <!--<span onclick="deletemessage(this)" class="apple-button">Hello</span>-->
         </div>
 
-        
+
         <!--<span onclick="goback_options()" class="popup-close"><svg xmlns="http://www.w3.org/2000/svg"
                 width="29px" height="29px" viewBox="0 0 24 24" fill="none">
                 <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#b2b2b2" stroke-width="2" stroke-linecap="round"
@@ -577,8 +653,15 @@
                                 fill="#666" />
                         </svg></a>
                     <a onclick="cryptox()" href="#" class="apple-button">Cryptox
-                    <svg id="arrow_cryptox" xmlns="http://www.w3.org/2000/svg"
-                            width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <svg id="arrow_cryptox" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                                fill="#666" />
+                        </svg></a>
+                    <a onclick="notifications_options()" href="#" class="apple-button">Manage Notifications [PREVIEW]<svg
+                            xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                            fill="none">
                             <path
                                 d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                                 fill="#666" />
@@ -639,6 +722,261 @@
                     </div>
                 </div>-->
             </div>
+            <div id="notifications_options" style="display:none">
+
+                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Notifications</h3>
+                <h5
+                    style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
+                    Florida & Gateway</h5>
+                <p style="margin: 6px" class="user-email">FLORIDA (Push Notifications)</p>
+                <a onclick="getNShow(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="evox-logo-apple.png">
+                    Gateway<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                        fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg>
+                </a>
+                <a onclick="getNShow(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="../tasco/tasco-app.png">
+                    Tasco
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+                <a onclick="getNShow(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="./secureline/sline.png">
+                    Secureline
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+                <a onclick="getNShow(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="../notifications_assets/Cryptox.png">
+                    Cryptox
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+                <p style="margin: 6px" class="user-email"><b>Florida</b> notifications allow you to get notified about
+                    Evox Updates even when you are not using the Gateway.
+                </p>
+
+
+                <!--Gateway notifications-->
+                <p style="margin: 6px;margin-top: 12px" class="user-email">GATEWAY</p>
+                <a onclick="getNShowNexus(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="evox-logo-apple.png">
+                    Gateway<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                        fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg>
+                </a>
+                <a onclick="getNShowNexus(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="../tasco/tasco-app.png">
+                    Tasco
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+                <a onclick="getNShowNexus(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="./secureline/sline.png">
+                    Secureline
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+                <a onclick="getNShowNexus(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="../notifications_assets/Cryptox.png">
+                    Cryptox
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+
+                <div class="transparent-placeholder"></div>
+
+
+
+            </div>
+            <div id="tasco-florida" style="display:none;overflow: auto;">
+
+                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Tasco Notifications</h3>
+                <h5
+                    style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
+                    Florida</h5>
+                <p style="margin: 6px" class="user-email">TASKS</p>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Personalized task completion
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Scheduled Tasks Reminder<label
+                        style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label></div>
+                <p style="margin: 6px" class="user-email">QUICK NOTES</p>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Quick note creation
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Quick note deletion
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <p style="margin: 6px" class="user-email">DEBTS</p>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Inactive Debt Reminder
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Debt Deadline Reminder
+                    modifications
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+
+                <p style="margin: 6px" class="user-email">Customize your <b>Tasco notifications</b> for when you're
+                    offline, tailoring exactly what updates you want to receive.
+                </p>
+                <div class="transparent-placeholder"></div>
+
+
+
+            </div>
+            <div id="gateway-florida" style="display:none;overflow: auto;">
+
+                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Gateway Notifications</h3>
+                <h5
+                    style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
+                    Florida</h5>
+                <p style="margin: 6px" class="user-email">ACCOUNT CHANGES</p>
+                <div href="#" id="login_notifs" style="height: 50%" class="apple-button notif">Login to account
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="username_change_notifs" style="height: 50%" class="apple-button notif">Username
+                    modifications<label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label></div>
+                <div href="#" id="email_change_notifs" style="height: 50%" class="apple-button notif">Email
+                    modifications<label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label></div>
+                <div href="#" id="2FA_change_notifs" style="height: 50%" class="apple-button notif">2FA modifications
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="IP_change_notifs" style="height: 50%" class="apple-button notif">IP modifications
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">Password
+                    modifications
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="pfp_notifs" style="height: 50%" class="apple-button notif">Profile picture
+                    modifications
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <p style="margin: 6px" class="user-email">SOCIAL</p>
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New friend
+                    requests
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New friends
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">Friend's online
+                    status
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New Evox user
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <p style="margin: 6px" class="user-email">EVOX</p>
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New app
+                    purchase
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">Weather in your
+                    area
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New app release
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" id="cryptox-status" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+
+                <p style="margin: 6px" class="user-email">Customize your <b>Gateway notifications</b> for when you're
+                    offline, tailoring exactly what updates you want to receive.
+                </p>
+                <div class="transparent-placeholder"></div>
+
+
+
+            </div>
             <div id="cryptox_info" style="display:none">
 
                 <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Cryptox</h3>
@@ -660,7 +998,7 @@
                 </p>
 
 
-                
+
             </div>
             <div id="username_email_icon_show" style="display:none">
 
@@ -687,7 +1025,7 @@
                 <p style="margin: 6px" class="user-email">Receive Evox® emails and communications including
                     announcements, marketing, recommendations and updates about Evox products, services and software.
                 </p>
-                
+
             </div>
             <div id="pswd_secure" style="display:none">
 
@@ -724,7 +1062,7 @@
                 <a href="#" style="height: 50%" class="apple-button">Account Recovery<span>Set Up</span></a>
                 <p style="margin: 6px" class="user-email">If you forget your password, you have a few options to recover
                     your data.</p>
-                
+
             </div>
 
 
@@ -823,39 +1161,44 @@
         <div id="store" style="display:none">
 
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">App Store [PREVIEW]</h3>
-            <a onclick="getNOpen(this)" href="#" class="apple-button-withicon"><img
+            <div href="#" class="apple-button-withicon"><img
                     style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
                     src="../tasco/tasco-app.png">Tasco
-                <span id="tasco-get" class="get-button">OPEN</span></a>
+                <span onclick="getNOpen('tasco')" id="tasco-get" class="get-button">OPEN</span>
+            </div>
 
-            <a onclick="getNOpen(this)" href="#" class="apple-button-withicon"><img
+            <div href="#" class="apple-button-withicon"><img
                     style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
                     src="evox-logo-apple.png">
                 Evox Gateway
-                <span id="gateway-get" class="get-button">CURRENT</span></a>
+                <span onclick="getNOpen('gateway')" id="gateway-get" class="get-button">CURRENT</span>
+            </div>
 
-            <a onclick="getNOpen(this)" href="#" class="apple-button-withicon"><img
+            <div href="#" class="apple-button-withicon"><img
                     style="width: auto; height: 40px; margin-right: 10px; border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
                     src="t50-img.png">
                 T50 Images
-                <span id="images-get" class="get-button">GET</span></a>
+                <span onclick="getNOpen('images')" id="images-get" class="get-button">GET</span>
+            </div>
 
-            <a onclick="getNOpen(this)" href="#" class="apple-button-withicon"><img
+            <div href="#" class="apple-button-withicon"><img
                     style="width: auto; height: 40px; margin-right: 10px; border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
                     src="EvoxNotes.png">
                 Evox Notes
-                <span id="notes-get" class="get-button">GET</span></a>
+                <span onclick="getNOpen('notes')" id="notes-get" class="get-button">GET</span>
+            </div>
 
-            <a onclick="getNOpen(this)" href="#" class="apple-button-withicon"><img
+            <div href="#" class="apple-button-withicon"><img
                     style="width: auto; height: 40px; margin-right: 10px; border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
                     src="chatvia-img.png">
                 Chatvia
-                <span id="chatvia-get" class="get-button">GET</span></a>
+                <span onclick="getNOpen('chatvia')" id="chatvia-get" class="get-button">GET</span>
+            </div>
 
 
 
 
-            
+
         </div>
         <div id="evox_social" style="display:none">
 
@@ -884,7 +1227,7 @@
                         d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                         fill="#666" />
                 </svg></a>
-            
+
         </div>
         <div id="add_friends" style="display:none">
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Add Friends</h3>
@@ -936,7 +1279,7 @@
                     <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
             </div>-->
             <!--Show added friends-->
-            
+
         </div>
         <div id="friend_requests" style="display:none">
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Friend Requests</h3>
@@ -977,7 +1320,7 @@
                     <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
             </div>-->
             <!--Show added friends-->
-            
+
         </div>
         <div id="friends" style="display:none">
 
@@ -1019,7 +1362,7 @@
                     <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
             </div>-->
             <!--Show added friends-->
-            
+
         </div>
         <div id="user-friend" style="display:none">
 
@@ -1092,7 +1435,7 @@
                     <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
             </div>-->
             <!--Show added friends-->
-            
+
         </div>
         <div id="main_popup_settings">
 
@@ -1221,7 +1564,7 @@
                             d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8" />
                     </svg></a>-->
             </p>
-            
+
         </div>
         <div id="password_change" style="display:none;overflow: hidden;">
 
@@ -1253,7 +1596,7 @@
                     here to reset it.
                 </p>
             </a>
-            
+
         </div>
         <div id="add_email" style="display:none;overflow: hidden;">
 
@@ -1271,7 +1614,7 @@
             </div>
             <input id="new_email" class="apple-input" type="email" placeholder="Email Address">
             <a href="#" onclick="complete_addemail()" class="apple-button-submit">Verify</a>
-            
+
         </div>
         <div id="verify_email" style="display:none;overflow: hidden;">
 
@@ -1289,7 +1632,7 @@
             </div>
             <input id="email_new_ver_code" class="apple-input" type="number" placeholder="Verification Code">
             <a href="#" onclick="verify_addemail()" class="apple-button-submit">Complete</a>
-            
+
         </div>
         <div id="date_of_birth_change" style="display:none;overflow: hidden;">
 
@@ -1312,7 +1655,7 @@
                 class="apple-input" type="text" style="width:50px" placeholder="YYYY" name="quantity" maxlength="4">
 
             <a href="#" onclick="complete_birth()" class="apple-button-submit">Complete</a>
-            
+
         </div>
         <div id="apps_using_evox" style="display:none;overflow: hidden;">
 
@@ -1335,7 +1678,7 @@
                 </svg></a>
             <div id="more_apps">
             </div>
-            
+
         </div>
     </div>
     <div id="buy-products" class="popupright" style="color: #dbdbdb">
@@ -1520,25 +1863,28 @@
         style="position: fixed; bottom: 141px; left:45px; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;display: none;">
         <div
             style="background-color: #33333370; border: none; color: #fff; padding: 15px; font-size: 16px; border-radius: 100%; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-            <svg width="25px" height="25px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="25px" height="25px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink">
+                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round"
+                    stroke-linejoin="round">
                     <g transform="translate(-303.000000, -748.000000)" id="Group" stroke="#fff" stroke-width="2">
                         <g transform="translate(301.000000, 746.000000)" id="Shape">
                             <circle cx="15.5" cy="15.5" r="5.5">
-            
-            </circle>
+
+                            </circle>
                             <polyline points="15.5 13.3440934 15.5 15.5 17 17">
-            
-            </polyline>
+
+                            </polyline>
                             <line x1="17" y1="3" x2="17" y2="5">
-            
-            </line>
+
+                            </line>
                             <line x1="7" y1="3" x2="7" y2="5">
-            
-            </line>
-                            <path d="M8.03064542,21 C7.42550126,21 6.51778501,21 5.30749668,21 C4.50512981,21 4.2141722,20.9218311 3.92083887,20.7750461 C3.62750553,20.6282612 3.39729582,20.4128603 3.24041943,20.1383964 C3.08354305,19.8639324 3,19.5916914 3,18.8409388 L3,7.15906122 C3,6.4083086 3.08354305,6.13606756 3.24041943,5.86160362 C3.39729582,5.58713968 3.62750553,5.37173878 3.92083887,5.22495386 C4.2141722,5.07816894 4.50512981,5 5.30749668,5 L18.6925033,5 C19.4948702,5 19.7858278,5.07816894 20.0791611,5.22495386 C20.3724945,5.37173878 20.6027042,5.58713968 20.7595806,5.86160362 C20.9164569,6.13606756 21,7.24671889 21,7.99747152">
-            
-            </path>
+
+                            </line>
+                            <path
+                                d="M8.03064542,21 C7.42550126,21 6.51778501,21 5.30749668,21 C4.50512981,21 4.2141722,20.9218311 3.92083887,20.7750461 C3.62750553,20.6282612 3.39729582,20.4128603 3.24041943,20.1383964 C3.08354305,19.8639324 3,19.5916914 3,18.8409388 L3,7.15906122 C3,6.4083086 3.08354305,6.13606756 3.24041943,5.86160362 C3.39729582,5.58713968 3.62750553,5.37173878 3.92083887,5.22495386 C4.2141722,5.07816894 4.50512981,5 5.30749668,5 L18.6925033,5 C19.4948702,5 19.7858278,5.07816894 20.0791611,5.22495386 C20.3724945,5.37173878 20.6027042,5.58713968 20.7595806,5.86160362 C20.9164569,6.13606756 21,7.24671889 21,7.99747152">
+
+                            </path>
                         </g>
                     </g>
                 </g>
@@ -1662,7 +2008,8 @@
         </svg>
 
         <p id="cookie__heading" class="cookie__heading">Your Privacy Is Our Priority</p>
-        <p id="cookie__desc" class="cookie__desc">Secureline now requires you to enable Cryptox for enhanced security. Cryptox ensures
+        <p id="cookie__desc" class="cookie__desc">Secureline now requires you to enable Cryptox for enhanced security.
+            Cryptox ensures
             your data is
             encrypted using advanced techniques, providing an extra layer of privacy protection.</p>
 
@@ -1675,29 +2022,29 @@
 
     </div>
     <div id="navigator"
-            style="overflow: hidden;z-index: 999;position: fixed; bottom: 42.5px; transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;display:none">
-            <div onclick="settings()" id="settings">
-        <div
-            style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48"
-                style="margin-right: 10px;">
-                <defs>
-                    <style>
-                        .cls-1 {
-                            fill: none;
-                            stroke: #fff;
-                            stroke-linecap: round;
-                            stroke-linejoin: round;
-                        }
-                    </style>
-                </defs>
-                <path class="cls-1"
-                    d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z" />
-            </svg>
-            Settings
+        style="overflow: hidden;z-index: 999;position: fixed; bottom: 42.5px; transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;display:none">
+        <div onclick="settings()" id="settings">
+            <div
+                style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48"
+                    style="margin-right: 10px;">
+                    <defs>
+                        <style>
+                            .cls-1 {
+                                fill: none;
+                                stroke: #fff;
+                                stroke-linecap: round;
+                                stroke-linejoin: round;
+                            }
+                        </style>
+                    </defs>
+                    <path class="cls-1"
+                        d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z" />
+                </svg>
+                Settings
+            </div>
         </div>
     </div>
-        </div>
 </body>
 
 

@@ -736,7 +736,6 @@ a {
 
 .apple-button {
   position: relative;
-  /* Added */
   /* Existing styles */
   background-color: #333;
   border: none;
@@ -747,7 +746,7 @@ a {
   cursor: pointer;
   display: inline-block;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.7s ease;
   margin: 6px;
   width: 80%;
   text-wrap: wrap;
@@ -816,6 +815,7 @@ a {
   height: auto;
   /* Set height to auto to fit content */
 }
+
 
 .apple-button-withicon span {
   position: absolute;
@@ -941,8 +941,16 @@ a {
 }
 
 
+.apple-button-withicon:hover {
+  background-color: #555 !important;
+}
+
 .apple-button:hover {
-  background-color: #555;
+  background-color: #555 !important;
+}
+
+.apple-button:hover.notif {
+  background-color: #333 !important;
 }
 
 #usr-img-opt {
@@ -1680,7 +1688,7 @@ a {
   width: 40px;
   height: 24px;
   border-radius: 99em;
-  background-color: var(--c-background-quaternary);
+  background-color: #6d3434;
   box-shadow: inset 1px 1px 1px 0 rgba(0, 0, 0, 0.05);
   position: relative;
   transition: 0.15s ease;
@@ -1694,7 +1702,7 @@ a {
   top: 3px;
   height: 18px;
   width: 18px;
-  background-color: var(--c-background-primary);
+  background-color: #b2b2b2;
   border-radius: 50%;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
   transition: 0.15s ease;
@@ -1712,7 +1720,7 @@ a {
 }
 
 .toggle input:checked+span {
-  background-color: var(--c-accent-primary);
+  background-color: #545454;
 }
 
 .toggle input:checked+span:before {
@@ -1720,7 +1728,7 @@ a {
 }
 
 .toggle input:focus+span {
-  box-shadow: 0 0 0 4px var(--c-background-tertiary);
+  box-shadow: 0 0 0 4px #353543;
 }
 
 #logoff_circle:hover {
