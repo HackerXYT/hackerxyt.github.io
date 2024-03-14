@@ -1038,7 +1038,7 @@ function showFriend(element) {
 	document.getElementById("secureline-username").id = `secureline-${friend}`
 	document.getElementById("friend-email").innerHTML = document.getElementById(`user-${friend}-email-friends`).innerHTML
 	document.getElementById("friend-pfp").src = document.getElementById(`${friend}-pfp-friends`).src
-	if (document.getElementById("friend-pfp").src.includes("databaseLoad.gif")) {
+	if (document.getElementById("friend-pfp").src.includes("loading-circle.gif")) {
 		friendinterval = setInterval(function () {
 			document.getElementById("friend-pfp").src = document.getElementById(`${friend}-pfp-friends`).src
 		}, 500)
@@ -1117,7 +1117,7 @@ function show_friends() {
 							};
 							var userCircle = document.createElement("div");
 							userCircle.className = "user-circle";
-							userCircle.innerHTML = `<img src="databaseLoad.gif" id="${username}-pfp-friends" alt="User ${username} Image">`;
+							userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp-friends" alt="User ${username} Image">`;
 							var userDetails = document.createElement("div");
 							userDetails.className = "user-details";
 
@@ -1231,7 +1231,7 @@ function show_requests() {
 
 							var userCircle = document.createElement("div");
 							userCircle.className = "user-circle";
-							userCircle.innerHTML = `<img src="databaseLoad.gif" id="${username}-pfp-requests" alt="User ${username} Image">`;
+							userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp-requests" alt="User ${username} Image">`;
 							var userDetails = document.createElement("div");
 							userDetails.className = "user-details";
 
@@ -1400,7 +1400,7 @@ function loadusers() {
 
 									var userCircle = document.createElement("div");
 									userCircle.className = "user-circle";
-									userCircle.innerHTML = `<img src="databaseLoad.gif" id="${username}-pfp" alt="User ${username} Image">`;
+									userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp" alt="User ${username} Image">`;
 									var userDetails = document.createElement("div");
 									userDetails.className = "user-details";
 
@@ -1586,7 +1586,7 @@ function handlesearch(value) {
 
 										var userCircle = document.createElement("div");
 										userCircle.className = "user-circle";
-										userCircle.innerHTML = `<img src="databaseLoad.gif" id="${username}-pfp" alt="User ${username} Image">`;
+										userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp" alt="User ${username} Image">`;
 										var userDetails = document.createElement("div");
 										userDetails.className = "user-details";
 

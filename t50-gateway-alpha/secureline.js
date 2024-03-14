@@ -345,7 +345,7 @@ function preloadSFriends() {
             };
             var userCircle = document.createElement("div");
             userCircle.className = "user-circle-sl";
-            userCircle.innerHTML = `<img src="databaseLoad.gif" id="${username}-pfp-secureline" alt="User ${username} Image">`;
+            userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp-secureline" alt="User ${username} Image">`;
             var userDetails = document.createElement("div");
             userDetails.className = "user-details";
 
@@ -463,7 +463,7 @@ function preloadSFriends() {
               };
               var userCircle = document.createElement("div");
               userCircle.className = "user-circle-sl";
-              userCircle.innerHTML = `<img src="databaseLoad.gif" id="${username}-pfp-secureline" alt="User ${username} Image">`;
+              userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp-secureline" alt="User ${username} Image">`;
               var userDetails = document.createElement("div");
               userDetails.className = "user-details";
 
