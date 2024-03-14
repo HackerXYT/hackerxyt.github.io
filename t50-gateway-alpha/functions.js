@@ -674,17 +674,29 @@ function restart() {
 }
 
 function logoff() {
-	var keysToRemove = ['t50pswd', 't50-email', 't50-autologin', 't50-username', 'notes-owned', 'images-owned', 'chatvia-owned'];
-	keysToRemove.forEach(function (key) {
-		localStorage.removeItem(key);
+	console.log("Will run");
+	$("#stuck").fadeIn("fast");
+	FloridaDelete()
+	$("#popup").removeClass("active");
+	$("#navigator").fadeOut("fast", function () {
+		sessionStorage.clear();
+		$("#gateway").fadeOut("fast", function () {
+			localStorage.clear();
+			setTimeout(function () {
+				window.location.reload();
+			}, 250);
+		});
 	});
-	var keysToRem = ['skipped', 'loaded', 'loggedinpswd', 'loggedin'];
-	keysToRem.forEach(function (key) {
-		sessionStorage.removeItem(key);
-	});
-	sessionStorage.clear()
-	localStorage.clear()
-	restart()
+
+	//var keysToRemove = ['t50pswd', 't50-email', 't50-autologin', 't50-username', 'notes-owned', 'images-owned', 'chatvia-owned'];
+	//keysToRemove.forEach(function (key) {
+	//	localStorage.removeItem(key);
+	//});
+	//var keysToRem = ['skipped', 'loaded', 'loggedinpswd', 'loggedin'];
+	//keysToRem.forEach(function (key) {
+	//	sessionStorage.removeItem(key);
+	//});
+
 }
 
 function fix() {
@@ -3946,7 +3958,7 @@ Settings
 	${sessionStorage.getItem("current_sline")}
 </div>
 </div>`
-const notifications_main = `<div onclick="notif_goback();navigator('show_account')"
+	const notifications_main = `<div onclick="notif_goback();navigator('show_account')"
 >
 <div
 	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
@@ -3965,7 +3977,7 @@ const notifications_main = `<div onclick="notif_goback();navigator('show_account
 </div>
 </div>`
 
-const notif_gateway = `<div onclick='$("#gateway-florida").fadeOut("fast", function () {$("#notifications_options").fadeIn("fast")});navigator("notifications_main")'
+	const notif_gateway = `<div onclick='$("#gateway-florida").fadeOut("fast", function () {$("#notifications_options").fadeIn("fast")});navigator("notifications_main")'
 >
 <div
 	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
@@ -3983,7 +3995,7 @@ const notif_gateway = `<div onclick='$("#gateway-florida").fadeOut("fast", funct
 	Notifications
 </div>
 </div>`
-const notif_tasco = `<div onclick='$("#tasco-florida").fadeOut("fast", function () {$("#notifications_options").fadeIn("fast")});navigator("notifications_main")'
+	const notif_tasco = `<div onclick='$("#tasco-florida").fadeOut("fast", function () {$("#notifications_options").fadeIn("fast")});navigator("notifications_main")'
 >
 <div
 	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
@@ -4083,11 +4095,11 @@ const notif_tasco = `<div onclick='$("#tasco-florida").fadeOut("fast", function 
 			document.getElementById("navigator").innerHTML = notifications_main
 		}
 
-		if(w === "notif_gateway") {
+		if (w === "notif_gateway") {
 			document.getElementById("navigator").innerHTML = notif_gateway
 		}
 
-		if(w === "notif_tasco") {
+		if (w === "notif_tasco") {
 			document.getElementById("navigator").innerHTML = notif_tasco
 		}
 
@@ -4127,12 +4139,12 @@ function hide_new_set() {
 }
 
 function show_news() {
-	
+
 	closevox()
-		document.getElementById('gateway').style.filter = 'blur(25px)'
-		document.getElementById("whats_new").classList.add("active");
-		document.getElementById("navigator").style.display = "none"
-		document.getElementById("onclicks_news").innerHTML =  `<div onclick="hide_new_set()">
+	document.getElementById('gateway').style.filter = 'blur(25px)'
+	document.getElementById("whats_new").classList.add("active");
+	document.getElementById("navigator").style.display = "none"
+	document.getElementById("onclicks_news").innerHTML = `<div onclick="hide_new_set()">
 		<div
 			style="left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
 			
@@ -4141,20 +4153,20 @@ function show_news() {
 				</svg>
 		</div>
 	</div>`
-	setTimeout(function() {
+	setTimeout(function () {
 		scrollToTop("whats_new")
 	}, 300)
-	
+
 }
 
 
 function scrollToTop(divId) {
-    var div = document.getElementById(divId);
-    if (div) {
-        div.scrollTop = 0;
-    } else {
-        console.error("Element with ID '" + divId + "' not found.");
-    }
+	var div = document.getElementById(divId);
+	if (div) {
+		div.scrollTop = 0;
+	} else {
+		console.error("Element with ID '" + divId + "' not found.");
+	}
 }
 
 function optimizeNotifications() {

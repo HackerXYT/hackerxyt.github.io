@@ -96,6 +96,25 @@ if (sessionStorage.getItem("clearafter")) {
   sessionStorage.removeItem("clearafter")
 }
 
+function FloridaDelete() {
+  var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+  var request = indexedDB.open('ONE_SIGNAL_SDK_DB');
+  request.onsuccess = function (event) {
+    var db = event.target.result;
+    db.close();
+    var deleteRequest = indexedDB.deleteDatabase('ONE_SIGNAL_SDK_DB');
+    deleteRequest.onsuccess = function () {
+      console.log("Database deleted successfully");
+    };
+    deleteRequest.onerror = function () {
+      console.error("Error deleting database");
+    };
+  };
+
+  request.onerror = function (event) {
+    console.error("Error opening database:", event.target.errorCode);
+  };
+}
 function FloridaRun() {
   // Open the IndexedDB database
   var request = window.indexedDB.open('ONE_SIGNAL_SDK_DB');
@@ -166,7 +185,7 @@ function setup() {
     window.location.href = "./update/"
     return;
   }
-  
+
   //console.log("RUNNING SETUP!")
   $("#navigator").fadeIn("fast")
   if (localStorage.getItem("New_ID0.81") !== "SEEN") {
@@ -243,6 +262,7 @@ function setup() {
             const tologin = `${localStorage.getItem("t50-username")}${data}`
             OneSignal.login(tologin);
           });
+          localStorage.setItem("florida_init_registered", `${localStorage.getItem("t50-username")}${data}`)
           localStorage.setItem("florida_init", true)
         } else {
           console.error("Got an error response for florida")
@@ -501,11 +521,11 @@ function docready() {
 
                       // Check if the element exists before trying to remove it
                       //if (elementToRemove) {
-                        // Remove the element
-                        //console.log("Loading Text Removed")
-                        //elementToRemove.remove();
+                      // Remove the element
+                      //console.log("Loading Text Removed")
+                      //elementToRemove.remove();
                       //} else {
-                        //console.log("Element not found!");
+                      //console.log("Element not found!");
                       //}
 
                       setup()
