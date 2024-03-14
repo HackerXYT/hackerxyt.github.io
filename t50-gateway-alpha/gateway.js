@@ -515,7 +515,7 @@ function docready() {
                     console.error('Fetch error:', error);
                   });
                 //docready()
-                return;
+                //return;
               } else {
                 console.error("Unknown Error IPAUTH")
               }
