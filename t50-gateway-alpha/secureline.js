@@ -292,16 +292,9 @@ function create_chat() {
     })
 }
 let profint;
-function getFriends(pre) {
-  if (!pre) {
 
-    profint = setInterval(function () {
-      $("#profile").fadeOut("slow")
-    }, 500)
-  } else {
-    sline_refresh.play()
-  }
-  $("#load-users-friends").fadeIn("fast")
+function preloadSFriends() {
+  $("#sline-container").fadeOut("fast");
   fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
     .then(response => {
       if (!response.ok) {
@@ -310,7 +303,121 @@ function getFriends(pre) {
       return response.text();
     })
     .then(data => {
-      console.log(JSON.stringify(data))
+      console.log(JSON.stringify(data)); //["Kyriakos","bantou","twentysix","Moretti","fando","Clxpzie","Kravaritis","DarkAngel","AIT","Oykas"]
+      if (JSON.stringify(data) === '"[]"') {
+        //$("#load-users-friends").fadeOut("fast", function () {
+      //	let containerId = "list-friends";
+      //	var listContainer = document.getElementById(containerId);
+      //	listContainer.style.textAlign = "center";
+      //	listContainer.style.marginTop = "50px";
+      //	listContainer.innerHTML = "No Friends"
+      //})
+        return;
+      } else {
+        console.log(`${JSON.stringify(data)} != "[]" data isnt empty`);
+      }
+      const user_requests = JSON.parse(data);
+      console.log(user_requests)
+      user_requests.sort(); // Sort the usernames alphabetically
+      console.log(user_requests)
+      let containerId = "sline-container";
+      var listContainer = document.getElementById(containerId);
+      listContainer.style.textAlign = "";
+      listContainer.style.marginTop = "";
+      listContainer.innerHTML = "<!--Empty-->";
+      user_requests.forEach(username => {
+        fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+          })
+          .then(profileemail => {
+            let addButton;
+          // Check if the username already exists in the list
+          if (listContainer.querySelector(`#user-${username}-email`) === null) {
+            var userContainer = document.createElement("div");
+            userContainer.className = "list-user-info";
+            userContainer.id = username;
+            userContainer.onclick = function () {
+              showchat(this);
+            };
+            var userCircle = document.createElement("div");
+            userCircle.className = "user-circle-sl";
+            userCircle.innerHTML = `<img src="databaseLoad.gif" id="${username}-pfp-secureline" alt="User ${username} Image">`;
+            var userDetails = document.createElement("div");
+            userDetails.className = "user-details";
+
+            var userName = document.createElement("div");
+            userName.className = "user-name";
+            userName.textContent = username;
+
+            var userEmail = document.createElement("div");
+            userEmail.className = "user-email";
+            userEmail.id = `user-${username}-email-secureline`;
+            userEmail.textContent = profileemail;
+
+
+            //addButton = document.createElement("a");
+            //addButton.href = "#";
+            //addButton.id = username;
+            //addButton.onclick = function () {
+            //	acceptfriend(this);
+            //};
+            //addButton.className = "apple-button-list";
+            //addButton.textContent = "Accept";
+
+
+            userDetails.appendChild(userName);
+            userDetails.appendChild(userEmail);
+
+            userContainer.appendChild(userCircle);
+            userContainer.appendChild(userDetails);
+            //userContainer.appendChild(addButton);
+
+            listContainer.appendChild(userContainer);
+            loadPFP(username, '-pfp-secureline')
+            //fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+            //  .then(response => {
+            //    if (!response.ok) {
+            //      throw new Error(`HTTP error! Status: ${response.status}`);
+            //    }
+            //    return response.text();
+            //  })
+            //  .then(profileimage => {
+            //    if (profileimage.indexOf("base64") === -1) {
+            //      // If it doesn't contain "base64", add the prefix
+            //      profileimage = "data:image/jpeg;base64," + profileimage;
+            //      document.getElementById(`${username}-pfp-secureline`).src = profileimage
+            //    } else {
+            //      document.getElementById(`${username}-pfp-secureline`).src = profileimage
+            //    }
+//
+//
+            //  }).catch(error => {
+            //    console.error("Cannot set src for", username)
+            //    console.error(error)
+            //  })
+          }
+          });
+        $("#load-users-friends").fadeOut("fast");
+        $("#sline-container").fadeIn("slow");
+      });
+    });
+}
+
+function preloadSFriends() {
+  $("#sline-container").fadeOut("fast");
+  fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log(JSON.stringify(data)); //["Kyriakos","bantou","twentysix","Moretti","fando","Clxpzie","Kravaritis","DarkAngel","AIT","Oykas"]
       if (JSON.stringify(data) === '"[]"') {
         //$("#load-users-friends").fadeOut("fast", function () {
         //	let containerId = "list-friends";
@@ -321,16 +428,23 @@ function getFriends(pre) {
         //})
         return;
       } else {
-        console.log(`${JSON.stringify(data)} != "[]" data isnt empty`)
+        console.log(`${JSON.stringify(data)} != "[]" data isnt empty`);
       }
-      const user_requests = JSON.parse(data)
+      const user_requests = JSON.parse(data);
+      console.log(user_requests)
+      user_requests.sort(); // Sort the usernames alphabetically
+      console.log(user_requests)
       let containerId = "sline-container";
       var listContainer = document.getElementById(containerId);
       listContainer.style.textAlign = "";
       listContainer.style.marginTop = "";
       listContainer.innerHTML = "<!--Empty-->";
+      
+      // Array to store promises of fetch requests
+      const fetchPromises = [];
+
       user_requests.forEach(username => {
-        fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+        const promise = fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -349,7 +463,7 @@ function getFriends(pre) {
               };
               var userCircle = document.createElement("div");
               userCircle.className = "user-circle-sl";
-              userCircle.innerHTML = `<img src="searching_users.gif" id="${username}-pfp-secureline" alt="User ${username} Image">`;
+              userCircle.innerHTML = `<img src="databaseLoad.gif" id="${username}-pfp-secureline" alt="User ${username} Image">`;
               var userDetails = document.createElement("div");
               userDetails.className = "user-details";
 
@@ -379,42 +493,59 @@ function getFriends(pre) {
               userContainer.appendChild(userCircle);
               userContainer.appendChild(userDetails);
               //userContainer.appendChild(addButton);
+              
 
-              listContainer.appendChild(userContainer);
-              fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-                .then(response => {
-                  if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                  }
-                  return response.text();
-                })
-                .then(profileimage => {
-                  if (profileimage.indexOf("base64") === -1) {
-                    // If it doesn't contain "base64", add the prefix
-                    profileimage = "data:image/jpeg;base64," + profileimage;
-                    document.getElementById(`${username}-pfp-secureline`).src = profileimage
-                  } else {
-                    document.getElementById(`${username}-pfp-secureline`).src = profileimage
-                  }
-
-
-                }).catch(error => {
-                  console.error("Cannot set src for", username)
-                  console.error(error)
-                })
+              return userContainer;
             }
           });
-        $("#load-users-friends").fadeOut("fast");
-      })
-      Promise.resolve().then(() => {
-				// Add the transparent placeholder after the loop that adds user information
-				var transparentPlaceholder = document.createElement("div");
-				transparentPlaceholder.className = "transparent-placeholder";
-				listContainer.parentNode.appendChild(transparentPlaceholder);
-			}).catch(error => {
-				console.error(error);
-			});
-    })
+          setTimeout(function() {
+            loadPFP(username, '-pfp-secureline')
+          }, 850)
+          
+
+        fetchPromises.push(promise);
+      });
+
+      Promise.all(fetchPromises)
+        .then(userContainers => {
+          
+          // Sort userContainers alphabetically by username
+          userContainers.sort((a, b) => {
+            const usernameA = a.querySelector('.user-name').textContent;
+            const usernameB = b.querySelector('.user-name').textContent;
+            return usernameA.localeCompare(usernameB);
+          });
+
+          // Append sorted userContainers to listContainer
+          userContainers.forEach(userContainer => {
+            listContainer.appendChild(userContainer);
+            
+          });
+
+          $("#load-users-friends").fadeOut("fast");
+          $("#sline-container").fadeIn("slow");
+        })
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+        });
+    });
+}
+
+
+preloadSFriends()
+function getFriends(pre) {
+  if (!pre) {
+
+    profint = setInterval(function () {
+      $("#profile").fadeOut("slow")
+    }, 500)
+  } else {
+    preloadSFriends()
+
+    sline_refresh.play()
+  }
+  $("#load-users-friends").fadeIn("fast")
+  
 
   //$("#main_settings").fadeOut("fast", function () {
   //  $("#friends").fadeIn("fast")

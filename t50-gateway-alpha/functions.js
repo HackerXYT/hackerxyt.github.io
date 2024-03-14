@@ -60,10 +60,6 @@ var notice_s = new Howl({
 	src: ['./ui-sounds/notice.mp3'],
 	volume: 1
 });
-var goback = new Howl({
-	src: ['./ui-sounds/goback.mp3'],
-	volume: 1
-});
 var settings_open = new Howl({
 	src: ['./ui-sounds/settings_open.mp3'],
 	volume: 1
@@ -1042,7 +1038,7 @@ function showFriend(element) {
 	document.getElementById("secureline-username").id = `secureline-${friend}`
 	document.getElementById("friend-email").innerHTML = document.getElementById(`user-${friend}-email-friends`).innerHTML
 	document.getElementById("friend-pfp").src = document.getElementById(`${friend}-pfp-friends`).src
-	if (document.getElementById("friend-pfp").src.includes("searching_users.gif")) {
+	if (document.getElementById("friend-pfp").src.includes("databaseLoad.gif")) {
 		friendinterval = setInterval(function () {
 			document.getElementById("friend-pfp").src = document.getElementById(`${friend}-pfp-friends`).src
 		}, 500)
@@ -1121,7 +1117,7 @@ function show_friends() {
 							};
 							var userCircle = document.createElement("div");
 							userCircle.className = "user-circle";
-							userCircle.innerHTML = `<img src="searching_users.gif" id="${username}-pfp-friends" alt="User ${username} Image">`;
+							userCircle.innerHTML = `<img src="databaseLoad.gif" id="${username}-pfp-friends" alt="User ${username} Image">`;
 							var userDetails = document.createElement("div");
 							userDetails.className = "user-details";
 
@@ -1141,26 +1137,26 @@ function show_friends() {
 							userContainer.appendChild(userDetails);
 
 							listContainer.appendChild(userContainer);
-							fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-								.then(response => {
-									if (!response.ok) {
-										throw new Error(`HTTP error! Status: ${response.status}`);
-									}
-									return response.text();
-								})
-								.then(profileimage => {
-									if (profileimage.indexOf("base64") === -1) {
-										profileimage = "data:image/jpeg;base64," + profileimage;
-										document.getElementById(`${username}-pfp-friends`).src = profileimage;
-									} else {
-										document.getElementById(`${username}-pfp-friends`).src = profileimage;
-									}
-
-								})
-								.catch(error => {
-									console.error("Cannot set src for", username);
-									console.error(error);
-								});
+							loadPFP(username, '-pfp-friends')
+							//fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+							//	.then(response => {
+							//		if (!response.ok) {
+							//			throw new Error(`HTTP error! Status: ${response.status}`);
+							//		}
+							//		return response.text();
+							//	})
+							//	.then(profileimage => {
+							//		if (profileimage.indexOf("base64") === -1) {
+							//			profileimage = "data:image/jpeg;base64," + profileimage;
+							//			document.getElementById(`${username}-pfp-friends`).src = profileimage;
+							//		} else {
+							//			document.getElementById(`${username}-pfp-friends`).src = profileimage;
+							//		}
+							//	})
+							//	.catch(error => {
+							//		console.error("Cannot set src for", username);
+							//		console.error(error);
+							//	});
 						}
 					})
 					.catch(error => {
@@ -1235,7 +1231,7 @@ function show_requests() {
 
 							var userCircle = document.createElement("div");
 							userCircle.className = "user-circle";
-							userCircle.innerHTML = `<img src="searching_users.gif" id="${username}-pfp-requests" alt="User ${username} Image">`;
+							userCircle.innerHTML = `<img src="databaseLoad.gif" id="${username}-pfp-requests" alt="User ${username} Image">`;
 							var userDetails = document.createElement("div");
 							userDetails.className = "user-details";
 
@@ -1267,27 +1263,28 @@ function show_requests() {
 							userContainer.appendChild(addButton);
 
 							listContainer.appendChild(userContainer);
-							fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-								.then(response => {
-									if (!response.ok) {
-										throw new Error(`HTTP error! Status: ${response.status}`);
-									}
-									return response.text();
-								})
-								.then(profileimage => {
-									if (profileimage.indexOf("base64") === -1) {
-										// If it doesn't contain "base64", add the prefix
-										profileimage = "data:image/jpeg;base64," + profileimage;
-										document.getElementById(`${username}-pfp-requests`).src = profileimage
-									} else {
-										document.getElementById(`${username}-pfp-requests`).src = profileimage
-									}
-
-
-								}).catch(error => {
-									console.error("Cannot set src for", username)
-									console.error(error)
-								})
+							loadPFP(username, '-pfp-requests')
+							//fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+							//	.then(response => {
+							//		if (!response.ok) {
+							//			throw new Error(`HTTP error! Status: ${response.status}`);
+							//		}
+							//		return response.text();
+							//	})
+							//	.then(profileimage => {
+							//		if (profileimage.indexOf("base64") === -1) {
+							//			// If it doesn't contain "base64", add the prefix
+							//			profileimage = "data:image/jpeg;base64," + profileimage;
+							//			document.getElementById(`${username}-pfp-requests`).src = profileimage
+							//		} else {
+							//			document.getElementById(`${username}-pfp-requests`).src = profileimage
+							//		}
+							//
+							//
+							//	}).catch(error => {
+							//		console.error("Cannot set src for", username)
+							//		console.error(error)
+							//	})
 						}
 					});
 				$("#load-users-requests").fadeOut("fast");
@@ -1403,7 +1400,7 @@ function loadusers() {
 
 									var userCircle = document.createElement("div");
 									userCircle.className = "user-circle";
-									userCircle.innerHTML = `<img src="searching_users.gif" id="${username}-pfp" alt="User ${username} Image">`;
+									userCircle.innerHTML = `<img src="databaseLoad.gif" id="${username}-pfp" alt="User ${username} Image">`;
 									var userDetails = document.createElement("div");
 									userDetails.className = "user-details";
 
@@ -1431,6 +1428,7 @@ function loadusers() {
 
 										// Assuming 'username' is the value you want to remove
 										let indexToRemove = requests.indexOf(username);
+										console.log(indexToRemove)
 										if (indexToRemove !== -1) {
 											// Remove the element from the array
 											requests.splice(indexToRemove, 1);
@@ -1487,27 +1485,10 @@ function loadusers() {
 
 												listContainer.appendChild(userContainer);
 											}
-											fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-												.then(response => {
-													if (!response.ok) {
-														throw new Error(`HTTP error! Status: ${response.status}`);
-													}
-													return response.text();
-												})
-												.then(profileimage => {
-													if (profileimage.indexOf("base64") === -1) {
-														// If it doesn't contain "base64", add the prefix
-														profileimage = "data:image/jpeg;base64," + profileimage;
-														document.getElementById(`${username}-pfp`).src = profileimage
-													} else {
-														document.getElementById(`${username}-pfp`).src = profileimage
-													}
+											//INDEXDB
+											console.log(username)
+											loadPFP(username, "-pfp")
 
-
-												}).catch(error => {
-													console.error("Cannot set src for", username)
-													console.error(error)
-												})
 										}).catch(error => {
 											console.error(error);
 										});
@@ -1605,7 +1586,7 @@ function handlesearch(value) {
 
 										var userCircle = document.createElement("div");
 										userCircle.className = "user-circle";
-										userCircle.innerHTML = `<img src="searching_users.gif" id="${username}-pfp" alt="User ${username} Image">`;
+										userCircle.innerHTML = `<img src="databaseLoad.gif" id="${username}-pfp" alt="User ${username} Image">`;
 										var userDetails = document.createElement("div");
 										userDetails.className = "user-details";
 
@@ -1689,27 +1670,28 @@ function handlesearch(value) {
 
 													listContainer.appendChild(userContainer);
 												}
-												fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-													.then(response => {
-														if (!response.ok) {
-															throw new Error(`HTTP error! Status: ${response.status}`);
-														}
-														return response.text();
-													})
-													.then(profileimage => {
-														if (profileimage.indexOf("base64") === -1) {
-															// If it doesn't contain "base64", add the prefix
-															profileimage = "data:image/jpeg;base64," + profileimage;
-															document.getElementById(`${username}-pfp`).src = profileimage
-														} else {
-															document.getElementById(`${username}-pfp`).src = profileimage
-														}
-
-
-													}).catch(error => {
-														console.error("Cannot set src for", username)
-														console.error(error)
-													})
+												loadPFP(username, '-pfp')
+												//fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+												//	.then(response => {
+												//		if (!response.ok) {
+												//			throw new Error(`HTTP error! Status: ${response.status}`);
+												//		}
+												//		return response.text();
+												//	})
+												//	.then(profileimage => {
+												//		if (profileimage.indexOf("base64") === -1) {
+												//			// If it doesn't contain "base64", add the prefix
+												//			profileimage = "data:image/jpeg;base64," + profileimage;
+												//			document.getElementById(`${username}-pfp`).src = profileimage
+												//		} else {
+												//			document.getElementById(`${username}-pfp`).src = profileimage
+												//		}
+												//
+												//
+												//	}).catch(error => {
+												//		console.error("Cannot set src for", username)
+												//		console.error(error)
+												//	})
 											})
 
 
@@ -2417,6 +2399,16 @@ function clearNotifications() {
 function show_notif(nosound) {
 	navigator("notifications")
 	document.getElementById('gateway').style.filter = 'blur(25px)'
+	document.getElementById("notif_container").innerHTML = `<div class="loading loading--circle" id="load-notifications" title="Loading">
+	<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+		y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+		<path fill="#fff"
+			d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+			<animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+				to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+		</path>
+	</svg>
+</div>`
 	fetch(`https://evox-datacenter.onrender.com/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
@@ -2445,20 +2437,32 @@ function show_notif(nosound) {
 				var image;
 				const sentimage = notification.image;
 				if (!sentimage.includes("http")) {
-					const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${notification.image}`;
-					fetch(url)
-						.then(response => response.text())
-						.then(data => {
-							if (data.indexOf("base64") === -1) {
-								// If it doesn't contain "base64", add the prefix
-								data = "data:image/jpeg;base64," + data;
-							}
-							image = data;
+					//indexdb
+					const image = loadPFPget()
+					// Usage
+					loadPFPget(notification.image)
+						.then(image => {
 							createNotificationElement(image, notification);
+							// You can use the image here
 						})
 						.catch(error => {
-							console.error(error);
+							console.error("Error loading image:", error);
 						});
+
+					//const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${notification.image}`;
+					//fetch(url)
+					//	.then(response => response.text())
+					//	.then(data => {
+					//		if (data.indexOf("base64") === -1) {
+					//			// If it doesn't contain "base64", add the prefix
+					//			data = "data:image/jpeg;base64," + data;
+					//		}
+					//		image = data;
+					//		
+					//	})
+					//	.catch(error => {
+					//		console.error(error);
+					//	});
 
 				} else {
 					image = notification.image;
@@ -2827,7 +2831,8 @@ function confirm_ipremove() {
 //confirm_ipremove
 
 function loadflrdinf() {
-	$("#onesignal-bell-container").fadeIn("fast")
+	$("#flrd_svg").fadeIn("fast")
+	//$("#onesignal-bell-container").fadeIn("fast")
 
 	setTimeout(function () {
 		const oldhtml = document.getElementById("notification").innerHTML
@@ -3448,9 +3453,13 @@ function getNOpen(app) {
 
 }
 
+function cryptoxToggleUI() {
+	var checkbox = document.getElementById('cryptox-status');
+	checkbox.checked = !checkbox.checked;
+}
 
 
-function cryptox() {
+function cryptox(no) {
 	$("#stuck").fadeIn("fast")
 	fetch(`https://evox-datacenter.onrender.com/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
@@ -3461,20 +3470,34 @@ function cryptox() {
 		})
 		.then(status => {
 			$("#stuck").fadeOut("fast")
-			navigator("cryptox")
+			if (!no) {
+				navigator("cryptox")
+			}
+
 
 			if (status.includes("Enabled")) {
-				console.log(status)
+				console.log("Enabling input")
 				var parts = status.split(":");
 				var iv = parts[1].trim();
-				document.getElementById("cryptox-status").checked = true
+				document.getElementById("cryptox_stats").innerHTML = `Operations<label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+				<input onclick="changeCryptox()" id="cryptox-status" type="checkbox" checked>
+				<span></span>
+			</label>`
+				//cryptoxToggleUI()//default html is disabled, so enable it
 				document.getElementById("cryptox-iv").style.display = "block"
-				document.getElementById("cryptox-iv").innerHTML = `IV: ${iv}`
+				document.getElementById("cryptox-iv").innerHTML = iv
 			} else if (status === "Disabled") {
-				document.getElementById("cryptox-status").checked = false
+				document.getElementById("cryptox_stats").innerHTML = `Operations<label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+				<input onclick="changeCryptox()" id="cryptox-status" type="checkbox">
+				<span></span>
+			</label>`
 				document.getElementById("cryptox-iv").style.display = "none"
 			} else if (status === "Ready To Setup") {
 				//hide toggle show button to create
+				document.getElementById("cryptox_stats").innerHTML = `Operations<label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+				<input onclick="changeCryptox()" id="cryptox-status" type="checkbox">
+				<span></span>
+			</label>`
 				document.getElementById("cryptox-status").checked = false
 				document.getElementById("cryptox-iv").style.display = "none"
 			}
@@ -3532,10 +3555,15 @@ function getNShowNexus(element) {
 
 function changeCryptox() {
 	let toggle = document.getElementById("cryptox-status").checked
-	if (toggle === false) {
+	console.log(toggle)
+	if (toggle === true) {
 		console.log("Disable")
-		document.getElementById("cryptox-status").checked = true
 		notice("You cannot disable cryptox operations at the moment.")
+		cryptox("no")
+		document.getElementById("warn-cryptox").style.backgroundColor = "#7d121296"
+		setTimeout(function () {
+			document.getElementById("warn-cryptox").style.backgroundColor = "transparent"
+		}, 3500)
 		return;
 		cryptox()
 		fetch(`https://evox-datacenter.onrender.com/cryptox?method=disable&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
@@ -3567,8 +3595,8 @@ function changeCryptox() {
 			})
 			.then(cryptoxcheck => {
 				if (cryptoxcheck === "Cryptox Already Enabled" || cryptoxcheck === "Cryptox Enabled") {
-					console.log("I can proceed!")
-					cryptox()
+					console.log("I can proceed! Cryptox Enabled")
+					cryptox("no")
 				} else {
 					console.error(cryptoxcheck)
 				}
@@ -4171,4 +4199,244 @@ function scrollToTop(divId) {
 
 function optimizeNotifications() {
 	return;
+}
+
+function profilesLocal(username, img) {
+	let request = window.indexedDB.open('EvoxSocial'); // Change the version number to 2
+
+	request.onerror = function (event) {
+		console.log("Database error:", event.target.error);
+	};
+
+	request.onsuccess = function (event) {
+		// Database has been opened successfully
+		let db = event.target.result;
+
+		// Proceed with adding the user
+		let transaction = db.transaction(['Profiles'], 'readwrite');
+		let objectStore = transaction.objectStore('Profiles');
+
+		let newUser = { data: img, username: username };
+		let addRequest = objectStore.add(newUser);
+
+		addRequest.onsuccess = function (event) {
+			console.log("User added successfully.");
+		};
+
+		addRequest.onerror = function (event) {
+			console.log("Error adding user:", event.target.error);
+		};
+	};
+
+	request.onupgradeneeded = function (event) {
+		// If the database does not exist or needs to be updated
+		let db = event.target.result;
+		let objectStore = db.createObjectStore('Profiles', { keyPath: 'username' });
+		objectStore.createIndex('usernameIndex', 'username', { unique: true });
+	};
+}
+
+
+
+
+//profilesLocal(username, img)
+
+
+function checkUsernameAndGetData(username, getDataCallback) {
+	let request = window.indexedDB.open('EvoxSocial'); // Change version number to 2
+
+	request.onerror = function (event) {
+		console.log("Database error:", event.target.error);
+	};
+
+	request.onsuccess = function (event) {
+		// Database has been opened successfully
+		let db = event.target.result;
+
+		if (!db.objectStoreNames.contains('Profiles')) {
+			// If the 'Profiles' object store doesn't exist, create it
+			let version = db.version + 1;
+			db.close(); // Close the database to perform the upgrade
+
+			let upgradeRequest = window.indexedDB.open('EvoxSocial', version);
+
+			upgradeRequest.onerror = function (event) {
+				console.log("Database upgrade error:", event.target.error);
+			};
+
+			upgradeRequest.onupgradeneeded = function (event) {
+				// Create the 'Profiles' object store
+				let db = event.target.result;
+				db.createObjectStore('Profiles', { keyPath: 'username' });
+			};
+
+			upgradeRequest.onsuccess = function (event) {
+				console.log("Object store 'Profiles' created.");
+				// After creating the object store, retry retrieving data
+				checkUsernameAndGetData(username, getDataCallback);
+			};
+		} else {
+			// If the 'Profiles' object store exists, proceed with retrieving data
+			let transaction = db.transaction(['Profiles'], 'readonly');
+			let objectStore = transaction.objectStore('Profiles');
+			let getRequest = objectStore.get(username);
+
+			getRequest.onsuccess = function (event) {
+				let result = event.target.result;
+				if (result) {
+					// Username exists, run the getDataCallback function to retrieve the data
+					getDataCallback(null, result);
+				} else {
+					getDataCallback(null, "None");
+					console.log("Username not found: " + username);
+				}
+			};
+
+			getRequest.onerror = function (event) {
+				console.log("Error checking username:", event.target.error);
+			};
+		}
+	};
+}
+
+
+
+function loadPFP(username, idsuffix) {
+	checkUsernameAndGetData(username, function (error, data) {
+		if (error) {
+			console.error(error);
+		} else {
+			console.log("Retrieved data:", data);
+			if (data !== "None") {
+				console.log("Loading from localDB")
+				document.getElementById(`${username}${idsuffix}`).src = data.data
+				//Check if update is needed
+				fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+						return response.text();
+					})
+					.then(profileimage => {
+						if (profileimage.indexOf("base64") === -1) {
+							// If it doesn't contain "base64", add the prefix
+							console.log("Fixing Base64")
+							profileimage = "data:image/jpeg;base64," + profileimage;
+						}
+						if (profileimage === data.data) {
+							console.log("Profile Picture Appears to be the same as Db")
+						} else {
+							profilesLocal(username, profileimage)
+							document.getElementById(`${username}${idsuffix}`).src = profileimage
+							console.log("Updating!")
+						}
+
+
+
+					}).catch(error => {
+						console.error("Cannot set src for", username)
+						console.error(error)
+					})
+			} else {
+				console.log("Loading from server")
+				fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+						return response.text();
+					})
+					.then(profileimage => {
+						if (profileimage.indexOf("base64") === -1) {
+							// If it doesn't contain "base64", add the prefix
+							console.log("Fixing Base64")
+							profileimage = "data:image/jpeg;base64," + profileimage;
+						}
+						document.getElementById(`${username}${idsuffix}`).src = profileimage
+						profilesLocal(username, profileimage)
+
+
+					}).catch(error => {
+						console.error("Cannot set src for", username)
+						console.error(error)
+					})
+			}
+
+		}
+	});
+}
+
+function loadPFPget(username) {
+	return new Promise((resolve, reject) => {
+		checkUsernameAndGetData(username, function (error, data) {
+			if (error) {
+				console.error(error);
+				reject(error);
+			} else {
+				console.log("Retrieved data:", data);
+				if (data !== "None") {
+					console.log("Loading from localDB");
+					// Resolve with data if available
+					resolve(data.data);
+				} else {
+					console.log("Loading from server");
+					fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+						.then(response => {
+							if (!response.ok) {
+								throw new Error(`HTTP error! Status: ${response.status}`);
+							}
+							return response.text();
+						})
+						.then(profileimage => {
+							if (profileimage.indexOf("base64") === -1) {
+								console.log("Fixing Base64");
+								profileimage = "data:image/jpeg;base64," + profileimage;
+							}
+							// Resolve with profile image
+							resolve(profileimage);
+							profilesLocal(username, profileimage);
+						})
+						.catch(error => {
+							console.error("Cannot set src for", username);
+							console.error(error);
+							reject(error);
+						});
+				}
+			}
+		});
+	});
+}
+
+function clearflrd() {
+	$("#flrdclear_svg").fadeIn("fast")
+	localStorage.removeItem("florida_init")
+	localStorage.removeItem("florida_init_registered")
+	localStorage.removeItem("operationCache")
+	localStorage.removeItem("os_pageViews")
+	sessionStorage.removeItem("onesignal-pageview-count")
+	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+
+	var request = indexedDB.deleteDatabase("ONE_SIGNAL_SDK_DB");
+
+	request.onsuccess = function () {
+		console.log("Database deleted successfully");
+		$("#flrdclear_svg").fadeOut("fast")
+		notice("Database deleted successfully. Reload to prevent errors.")
+		$("#hide_after_clear").fadeOut("fast", function() {
+			$("#restart_after_flrdclear").fadeIn("fast")
+		})
+		
+		
+		
+	};
+
+	request.onerror = function (event) {
+		console.error("Error deleting database:", event.target.errorCode);
+		$("#flrdclear_svg").fadeOut("fast")
+		notice("Error deleting database:", event.target.errorCode)
+		$("#hide_after_clear").fadeOut("fast", function() {
+			$("#restart_after_flrdclear").fadeIn("fast")
+		})
+	};
 }

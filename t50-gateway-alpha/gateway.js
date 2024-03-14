@@ -9,7 +9,10 @@ function log(text, color) {
   const styles = `color: ${color}; font-size: 16px; font-weight: normal;`;
   console.log('%c' + text, styles)
 }
-
+var goback = new Howl({
+	src: ['./ui-sounds/goback.mp3'],
+	volume: 1
+});
 function login_to_storage() {
   $("#stuck").fadeIn("fast")
   custombg()
@@ -248,7 +251,7 @@ function setup() {
   //} catch {
   //  console.error("Error Logging Out Of Florida. Safe")
   //}
-  if (!localStorage.getItem("florida_init")) {
+  if (!localStorage.getItem("florida_init") && !window.location.href.includes("localhost")) {
     fetch(`https://evox-datacenter.onrender.com/florida?method=largest&username=${localStorage.getItem("t50-username")}`)
       .then(response => {
         if (!response.ok) {
