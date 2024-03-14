@@ -146,8 +146,14 @@
             });
         });
     </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JEBKFVFJT"></script>
     <script>
-        //onesignal was here
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-3JEBKFVFJT');
     </script>
 </head>
 <script>
@@ -304,9 +310,12 @@
         <a href="#" onclick="bgch()" class="apple-button">Background<span id="bgname"
                 style="color: #868686">Default</span></a>
         <a href="#" onclick="auto_login()" class="apple-button">Auto Login<span id="auto-login">Set Up</span></a>
-        <a href="#" onclick="show_news()" class="apple-button">What's new in Evox<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-            <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#666"></path>
-        </svg></a>
+        <a href="#" onclick="show_news()" class="apple-button">What's new in Evox<svg xmlns="http://www.w3.org/2000/svg"
+                width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                    fill="#666"></path>
+            </svg></a>
 
 
 
@@ -318,64 +327,81 @@
             <h3 style="margin-bottom: 5px;">What's New</h3>
             <h5 style="margin: 0; font-weight: lighter; font-size: 12px;">March 13, 2024</h5>
         </div>
-        
+
         <img src="V0.81.png" style="display: block; margin: 20px auto; max-width: 100%; border-radius: 20px;">
-        
+
         <div style="margin: 20px;">
             <h3>Security Updates</h3>
             <ul style="padding-left: 20px;">
-                <li>Introducing Cryptox in Evox Gateway, enabling users to securely encrypt all sent information using cryptographic operations, retrievable only with identical keys and IVs, thus preventing data breaches.</li>
-                <li>Secureline now employs Cryptox for chatting, ensuring that messages are only accessible to chat participants.</li>
+                <li>Introducing Cryptox in Evox Gateway, enabling users to securely encrypt all sent information using
+                    cryptographic operations, retrievable only with identical keys and IVs, thus preventing data
+                    breaches.</li>
+                <li>Secureline now employs Cryptox for chatting, ensuring that messages are only accessible to chat
+                    participants.</li>
             </ul>
-            <p style="text-align: center; margin-top: 10px; font-weight: lighter; font-size: 14px;">You can manage your Cryptox IV under account options in gateway settings.</p>
+            <p style="text-align: center; margin-top: 10px; font-weight: lighter; font-size: 14px;">You can manage your
+                Cryptox IV under account options in gateway settings.</p>
         </div>
-        
+
         <div style="margin: 20px;">
             <h3>Account Updates</h3>
             <ul style="padding-left: 20px;">
-                <li>Multiple email addresses can now be added to your account, allowing login with various emails and ensuring access to your Evox account even when your primary email is unavailable.</li>
-                <li>You can remove any IP addresses accessing your account and block their connection until passing the 2FA process.</li>
+                <li>Multiple email addresses can now be added to your account, allowing login with various emails and
+                    ensuring access to your Evox account even when your primary email is unavailable.</li>
+                <li>You can remove any IP addresses accessing your account and block their connection until passing the
+                    2FA process.</li>
             </ul>
         </div>
-        
+
         <div style="margin: 20px;">
             <h3>In-App Notifications</h3>
             <ul style="padding-left: 20px;">
-                <li>All Evox Apps notifications are now centralized within the Evox Gateway. Access your notifications under more options to track your account activity.</li>
+                <li>All Evox Apps notifications are now centralized within the Evox Gateway. Access your notifications
+                    under more options to track your account activity.</li>
             </ul>
         </div>
-        
+
         <div style="margin: 20px;">
             <h3>UI Updates</h3>
             <ul style="padding-left: 20px;">
-                <li>Easily switch between accounts by disabling auto-login in Vox Center, allowing you to choose which accounts to log in without logging out.</li>
-                <li>View weather updates in your area, change your profile picture more quickly, and access other quick actions by opening Vox Center.</li>
-                <li>Date of Birth is now available for all users! In the future you will be able to see your friends' birthdates. Set your birthdate under account options.</li>
+                <li>Easily switch between accounts by disabling auto-login in Vox Center, allowing you to choose which
+                    accounts to log in without logging out.</li>
+                <li>View weather updates in your area, change your profile picture more quickly, and access other quick
+                    actions by opening Vox Center.</li>
+                <li>Date of Birth is now available for all users! In the future you will be able to see your friends'
+                    birthdates. Set your birthdate under account options.</li>
             </ul>
         </div>
-        
+
         <div style="margin: 20px;">
             <h3>Evox Previews</h3>
             <ul style="padding-left: 20px;">
-                <li>App Store Preview:<br><br>An application store is coming to Evox! Soon, you'll be able to easily acquire and remove new Evox applications for your Gateway. Check out the store's UI in your gateway settings.</li>
+                <li>App Store Preview:<br><br>An application store is coming to Evox! Soon, you'll be able to easily
+                    acquire and remove new Evox applications for your Gateway. Check out the store's UI in your gateway
+                    settings.</li>
                 <br>
-                <li>Notifications Preview:<br><br>Evox Gateway will allow you to customize which notifications you receive from specific Evox apps and pick your topics. Check the preview under account options in Gateway settings.</li>
+                <li>Notifications Preview:<br><br>Evox Gateway will allow you to customize which notifications you
+                    receive from specific Evox apps and pick your topics. Check the preview under account options in
+                    Gateway settings.</li>
             </ul>
         </div>
         <div id="onclicks_news">
-        <div onclick="hide_new()">
-            <div
-                style="left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                
-                Proceed<svg style="margin-left: 10px" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
-                    <path d="M11 21H12C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3H11M11 16L15 12M15 12L11 8M15 12H3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <div onclick="hide_new()">
+                <div
+                    style="left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+
+                    Proceed<svg style="margin-left: 10px" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                        viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M11 21H12C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3H11M11 16L15 12M15 12L11 8M15 12H3"
+                            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
+                </div>
             </div>
         </div>
-    </div>
 
         <div class="transparent-placeholder" style="height: 60px;"></div>
-        
+
 
 
 
