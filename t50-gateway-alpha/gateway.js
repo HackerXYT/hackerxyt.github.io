@@ -500,13 +500,13 @@ function docready() {
                       var elementToRemove = document.getElementById("loading-div-text");
 
                       // Check if the element exists before trying to remove it
-                      if (elementToRemove) {
+                      //if (elementToRemove) {
                         // Remove the element
-                        console.log("Loading Text Removed")
-                        elementToRemove.remove();
-                      } else {
-                        console.log("Element not found!");
-                      }
+                        //console.log("Loading Text Removed")
+                        //elementToRemove.remove();
+                      //} else {
+                        //console.log("Element not found!");
+                      //}
 
                       setup()
                       $("#loading-bar").fadeOut("slow")
