@@ -4440,3 +4440,15 @@ function clearflrd() {
 		})
 	};
 }
+
+function app_use_info(app) {
+	if(localStorage.getItem("t50-username") === "papostol") {
+		document.getElementById('gateway').style.filter = 'blur(50px)'
+		if(app === "gateway") {
+			$("#apps_using_evox").fadeOut("fast", function() {
+				$("#evox_gateway_info").fadeIn("fast")
+			})
+		}
+	}
+	
+}
