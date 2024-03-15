@@ -9,8 +9,8 @@ Evox Gateway is a versatile application designed to provide users with access to
 1. **Evox Tasco**
    - A scheduling application for daily tasks with quick notes and a debts manager.
 
-2. **Evox Images**
-   - Safely stored gallery for users to manage their images.
+2. **T50 Images**
+   - Safely stored gallery for admins to manage their images.
 
 ### Gateway Functions
 
@@ -34,8 +34,8 @@ Evox Gateway is a versatile application designed to provide users with access to
 
 To use Evox Gateway, follow these steps:
 
-1. Install the application on your device.
-2. Create or sign in to your account.
+1. [Access https:/team50.sytes.net](https://team50.sytes.net)
+2. Sign in to your account.
 3. Explore the various functionalities offered by Evox Gateway, including Evox apps and gateway functions.
 
 ## Support
