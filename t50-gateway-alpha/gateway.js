@@ -3,6 +3,7 @@ sessionStorage.removeItem("skipped")
 sessionStorage.removeItem("sending")
 sessionStorage.removeItem("current_sline")
 sessionStorage.removeItem("block_interactions")
+sessionStorage.setItem("loaded", true)
 const ip = sessionStorage.getItem("IPV4")
 $(document).ready(docready())
 function log(text, color) {
@@ -191,7 +192,7 @@ function setup() {
 
   //console.log("RUNNING SETUP!")
   $("#navigator").fadeIn("fast")
-  if (localStorage.getItem("New_ID0.81") !== "SEEN") {
+  if (localStorage.getItem("New_ID0.90") !== "SEEN") {
     document.getElementById("loading-text").innerHTML = "Waiting for user to read news."
     $("#loading-text").fadeOut("fast")
     $("#stuck").fadeOut("fast")
@@ -243,6 +244,19 @@ function setup() {
       }
     }, 100)
   }
+  try {
+    loadPrefs()
+    console.log("Loaded Prefs")
+  } catch {
+    let interv = setInterval(function () {
+      try {
+        loadPrefs()
+        clearInterval(interv)
+      } catch {
+        console.log("loadPrefs Failed. Retrying")
+      }
+    }, 100)
+  }
   let lg_status = sessionStorage.getItem("loaded")
   //try {
   //  OneSignalDeferred.push(function() {
@@ -275,6 +289,7 @@ function setup() {
       .catch(error => {
         console.error('Fetch error:', error);
       });
+      
   }
 
 
@@ -475,9 +490,9 @@ function docready() {
     window.location.href = "./update/"
     return;
   }
-  $("#loading").fadeOut("slow")
+  
   console.log('%c' + "Loading Out", `color: green; font-size: 16px; font-weight: normal;`)
-  document.getElementById("loading-text").innerHTML = `Storage Loaded!`
+  document.getElementById("loading-text").innerHTML = `Storage initialized!<br>Now verifying account...`
   console.log('%c' + "Text In", `color: cyan; font-size: 16px; font-weight: normal;`)
   let autologin = localStorage.getItem("t50-autologin")
   let loggedin = localStorage.getItem("t50-email")
@@ -496,6 +511,7 @@ function docready() {
       })
       .then(data => {
         if (data.includes("Credentials Correct")) {
+          document.getElementById("loading-text").innerHTML = `Account Verified!`
           $("#loading-bar").fadeOut("slow")
           console.log('%c' + "Account Verified!", `color: green; font-size: 16px; font-weight: bold;`)
 
@@ -508,7 +524,9 @@ function docready() {
               return response.text();
             })
             .then(data => {
+              $("#loading").fadeOut("slow")
               if (data === "IP is Mapped") {
+                console.log("IP Mapped")
                 setup()
               } else if (data === "Unknown IP") {
                 fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
@@ -519,6 +537,7 @@ function docready() {
                     return response.text();
                   })
                   .then(data => {
+                    console.log("IP Unknown")
                     if (data === "Complete") {
                       var elementToRemove = document.getElementById("loading-div-text");
 
@@ -531,7 +550,7 @@ function docready() {
                       //console.log("Element not found!");
                       //}
 
-                      setup()
+                      //setup()
                       $("#loading-bar").fadeOut("slow")
                     }
                   }).catch(error => {

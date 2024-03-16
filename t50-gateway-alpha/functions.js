@@ -1366,6 +1366,7 @@ function loadusers() {
 			listContainer.style.textAlign = "";
 			listContainer.style.marginTop = "";
 			listContainer.innerHTML = "<!--Empty-->";
+			let usersInfo = [];
 
 
 			// Fetch emails for each user individually
@@ -1485,9 +1486,25 @@ function loadusers() {
 
 												listContainer.appendChild(userContainer);
 											}
+											let reqStatus = false
+
 											//INDEXDB
 											console.log(username)
 											loadPFP(username, "-pfp")
+											if (sentRequests.includes(username)) {
+												reqStatus = true
+											}
+											let userObj = {
+												"username": username,
+												"email": profileemail,
+												"friends": JSON.stringify(friends).includes(username),
+												"requested": reqStatus
+											};
+
+											usersInfo.push(userObj); // Push user object to the array
+
+											// Store JSON array in session storage
+											sessionStorage.setItem("usersInfo", JSON.stringify(usersInfo));
 
 										}).catch(error => {
 											console.error(error);
@@ -1516,211 +1533,429 @@ function loadusers() {
 
 }
 
-
+//old
+//function handlesearch(value) {
+//	console.log("Length", value.length);
+//	if (value.length < 0) {
+//		console.log("Declined");
+//		return;
+//	} else {
+//		let result;
+//		const usernamesJSON = sessionStorage.getItem("usersInfo");
+//		if (usernamesJSON) {
+//			const usernames = JSON.parse(usernamesJSON);
+//			console.log(usernames);
+//			const data = JSON.parse(usernamesJSON)
+//
+//			result = data.filter(entry =>
+//				entry.username.toLowerCase().includes(value) ||
+//				entry.email.toLowerCase().includes(value)
+//			);
+//		} else {
+//			console.log("No user information found in sessionStorage.");
+//		}
+//		// add timeout if search is started or end value exists in div
+//		console.log("Accepted");
+//		$("#load-users").fadeIn("fast");
+//		let url = `https://evox-datacenter.onrender.com/search?search=${value}`;
+//		const data = result
+//				if (JSON.stringify(data) === '"[]"') {
+//					$("#load-users").fadeOut("fast", function () {
+//						let containerId = "list-container";
+//						var listContainer = document.getElementById(containerId);
+//						listContainer.style.textAlign = "center";
+//						listContainer.style.marginTop = "50px";
+//						listContainer.innerHTML = `No user found named ${value}`
+//					})
+//					return;
+//				} else {
+//					console.log(`${JSON.stringify(data)} != "[]"`)
+//				}
+//				let userlist = data;
+//				let containerId = "list-container";
+//				var listContainer = document.getElementById(containerId);
+//				listContainer.style.textAlign = "";
+//				listContainer.style.marginTop = "";
+//				listContainer.innerHTML = "<!--Empty-->";
+//
+//				// Fetch emails for each user individually
+//				userlist.forEach(val => {
+//					if (val.username === localStorage.getItem("t50-username")) {
+//						return;
+//					}
+//					fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+//						.then(response => {
+//							if (!response.ok) {
+//								throw new Error(`HTTP error! Status: ${response.status}`);
+//							}
+//							return response.text();
+//						})
+//						.then(friends => {
+//							let sentRequests;
+//									let skipbutton;
+//									let addButton;
+//									// Check if the username already exists in the list
+//									if (listContainer.querySelector(`#user-${val.username}-email`) === null) {
+//										var userContainer = document.createElement("div");
+//										userContainer.className = "list-user-info";
+//
+//										var userCircle = document.createElement("div");
+//										userCircle.className = "user-circle";
+//										userCircle.innerHTML = `<img src="loading-circle.gif" id="${val.username}-pfp" alt="User ${val.username} Image">`;
+//										var userDetails = document.createElement("div");
+//										userDetails.className = "user-details";
+//
+//										var userName = document.createElement("div");
+//										userName.className = "user-name";
+//										userName.textContent = val.username;
+//
+//										var userEmail = document.createElement("div");
+//										userEmail.className = "user-email";
+//										userEmail.id = `user-${val.username}-email`;
+//										userEmail.textContent = val.email;
+//										if (JSON.stringify(friends).includes(val.username)) {
+//											skipbutton = true
+//											userDetails.appendChild(userName);
+//											userDetails.appendChild(userEmail);
+//
+//											userContainer.appendChild(userCircle);
+//											userContainer.appendChild(userDetails);
+//
+//											listContainer.appendChild(userContainer);
+//											let localValue = localStorage.getItem("sent_friend_requests");
+//
+//											// Parse the retrieved data into an array or initialize an empty array
+//											let requests = localValue ? JSON.parse(localValue) : [];
+//
+//											// Assuming 'username' is the value you want to remove
+//											let indexToRemove = requests.indexOf(val.username);
+//											if (indexToRemove !== -1) {
+//												// Remove the element from the array
+//												requests.splice(indexToRemove, 1);
+//
+//												// Save the updated array back to localStorage
+//												localStorage.setItem("sent_friend_requests", JSON.stringify(requests));
+//											} else {
+//												console.log("Username not found in the array");
+//											}
+//										}
+//
+//										fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
+//											.then(response => {
+//												if (!response.ok) {
+//													throw new Error(`HTTP error! Status: ${response.status}`);
+//												}
+//												return response.text();
+//											})
+//											.then(usersSent => {
+//												sentRequests = usersSent
+//												if (sentRequests && sentRequests.includes(val.username) && skipbutton !== true) {
+//													addButton = document.createElement("a");
+//													addButton.href = "#";
+//													addButton.id = val.username;
+//													addButton.onclick = function () {
+//														shake_me(this.id);
+//													};
+//													addButton.className = "apple-button-list";
+//													addButton.textContent = "Sent";
+//													userDetails.appendChild(userName);
+//													userDetails.appendChild(userEmail);
+//
+//													userContainer.appendChild(userCircle);
+//													userContainer.appendChild(userDetails);
+//													userContainer.appendChild(addButton);
+//
+//													listContainer.appendChild(userContainer);
+//												} else if (skipbutton !== true) {
+//													addButton = document.createElement("a");
+//													addButton.href = "#";
+//													addButton.id = val.username;
+//													addButton.onclick = function () {
+//														addfriend(this);
+//													};
+//													addButton.className = "apple-button-list";
+//													addButton.textContent = "Add";
+//
+//													userDetails.appendChild(userName);
+//													userDetails.appendChild(userEmail);
+//
+//													userContainer.appendChild(userCircle);
+//													userContainer.appendChild(userDetails);
+//													userContainer.appendChild(addButton);
+//
+//													listContainer.appendChild(userContainer);
+//												}
+//												loadPFP(val.username, '-pfp')
+//												//fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+//												//	.then(response => {
+//												//		if (!response.ok) {
+//												//			throw new Error(`HTTP error! Status: ${response.status}`);
+//												//		}
+//												//		return response.text();
+//												//	})
+//												//	.then(profileimage => {
+//												//		if (profileimage.indexOf("base64") === -1) {
+//												//			// If it doesn't contain "base64", add the prefix
+//												//			profileimage = "data:image/jpeg;base64," + profileimage;
+//												//			document.getElementById(`${username}-pfp`).src = profileimage
+//												//		} else {
+//												//			document.getElementById(`${username}-pfp`).src = profileimage
+//												//		}
+//												//
+//												//
+//												//	}).catch(error => {
+//												//		console.error("Cannot set src for", username)
+//												//		console.error(error)
+//												//	})
+//											})
+//
+//
+//
+//
+//
+//									}
+//								});
+//							$("#load-users").fadeOut("fast");
+//
+//
+//
+//
+//				})
+//				
+//
+//		// Add transparent-placeholder div at the end of the listContainer
+//
+//	}
+//}
 function handlesearch(value) {
+
 	console.log("Length", value.length);
-	if (value.length < 0) {
+	if (value.length === 0) {
 		console.log("Declined");
+		const usernamesJSON = sessionStorage.getItem("usersInfo");
+		let userlist = JSON.parse(usernamesJSON);
+		let containerId = "list-container";
+		var listContainer = document.getElementById(containerId);
+		listContainer.style.textAlign = "";
+		listContainer.style.marginTop = "";
+		listContainer.innerHTML = "<!--Empty-->";
+
+		// Fetch emails for each user individually
+		userlist.forEach(val => {
+			if (val.username === localStorage.getItem("t50-username")) {
+				return;
+			}
+			let sentRequests;
+			let skipbutton;
+			let addButton;
+			if (listContainer.querySelector(`#user-${val.username}-email`) === null) {
+				var userContainer = document.createElement("div");
+				userContainer.className = "list-user-info";
+
+				var userCircle = document.createElement("div");
+				userCircle.className = "user-circle";
+				userCircle.innerHTML = `<img src="loading-circle.gif" id="${val.username}-pfp" alt="User ${val.username} Image">`;
+				var userDetails = document.createElement("div");
+				userDetails.className = "user-details";
+
+				var userName = document.createElement("div");
+				userName.className = "user-name";
+				userName.textContent = val.username;
+
+				var userEmail = document.createElement("div");
+				userEmail.className = "user-email";
+				userEmail.id = `user-${val.username}-email`;
+				userEmail.textContent = val.email;
+				if (val.friends === true) {
+					skipbutton = true;
+					userDetails.appendChild(userName);
+					userDetails.appendChild(userEmail);
+
+					userContainer.appendChild(userCircle);
+					userContainer.appendChild(userDetails);
+
+					listContainer.appendChild(userContainer);
+					let localValue = localStorage.getItem("sent_friend_requests");
+					let requests = localValue ? JSON.parse(localValue) : [];
+					let indexToRemove = requests.indexOf(val.username);
+					if (indexToRemove !== -1) {
+						requests.splice(indexToRemove, 1);
+						localStorage.setItem("sent_friend_requests", JSON.stringify(requests));
+					} else {
+						console.log("Username not found in the array");
+					}
+				}
+
+				//sentRequests = usersSent;
+				if (skipbutton !== true && val.requested === true) {
+					addButton = document.createElement("a");
+					addButton.href = "#";
+					addButton.id = val.username;
+					addButton.onclick = function () {
+						shake_me(this.id);
+					};
+					addButton.className = "apple-button-list";
+					addButton.textContent = "Sent";
+					userDetails.appendChild(userName);
+					userDetails.appendChild(userEmail);
+
+					userContainer.appendChild(userCircle);
+					userContainer.appendChild(userDetails);
+					userContainer.appendChild(addButton);
+
+					listContainer.appendChild(userContainer);
+				} else if (skipbutton !== true) {
+					addButton = document.createElement("a");
+					addButton.href = "#";
+					addButton.id = val.username;
+					addButton.onclick = function () {
+						addfriend(this);
+					};
+					addButton.className = "apple-button-list";
+					addButton.textContent = "Add";
+
+					userDetails.appendChild(userName);
+					userDetails.appendChild(userEmail);
+
+					userContainer.appendChild(userCircle);
+					userContainer.appendChild(userDetails);
+					userContainer.appendChild(addButton);
+
+					listContainer.appendChild(userContainer);
+				}
+				loadPFP(val.username, '-pfp');
+			}
+		});
 		return;
 	} else {
-		// add timeout if search is started or end value exists in div
-		console.log("Accepted");
-		$("#load-users").fadeIn("fast");
-		let url = `https://evox-datacenter.onrender.com/search?search=${value}`;
+		let result;
+		const usernamesJSON = sessionStorage.getItem("usersInfo");
+		if (usernamesJSON) {
+			const usernames = JSON.parse(usernamesJSON);
+			console.log(usernames);
 
-		fetch(url)
-			.then(response => {
-				if (!response.ok) {
-					throw new Error(`HTTP error! Status: ${response.status}`);
-				}
-				return response.text();
-			})
-			.then(data => {
-				if (JSON.stringify(data) === '"[]"') {
-					$("#load-users").fadeOut("fast", function () {
-						let containerId = "list-container";
-						var listContainer = document.getElementById(containerId);
-						listContainer.style.textAlign = "center";
-						listContainer.style.marginTop = "50px";
-						listContainer.innerHTML = `No user found named ${value}`
-					})
-					return;
-				} else {
-					console.log(`${JSON.stringify(data)} != "[]"`)
-				}
-				let userlist = JSON.parse(data);
+			result = usernames.filter(entry =>
+				entry.username.toLowerCase().includes(value.toLowerCase()) ||
+				entry.email.toLowerCase().includes(value.toLowerCase())
+			);
+			console.log(result)
+		} else {
+			console.log("No user information found in sessionStorage.");
+		}
+		console.log("Accepted");
+		//$("#load-users").fadeIn("fast");
+
+		let url = `https://evox-datacenter.onrender.com/search?search=${value}`;
+		const data = result;
+		if (JSON.stringify(data) === '[]') {
+			$("#load-users").fadeOut("fast", function () {
 				let containerId = "list-container";
 				var listContainer = document.getElementById(containerId);
-				listContainer.style.textAlign = "";
-				listContainer.style.marginTop = "";
-				listContainer.innerHTML = "<!--Empty-->";
-
-				// Fetch emails for each user individually
-				userlist.forEach(username => {
-					if (username === localStorage.getItem("t50-username")) {
-						return;
-					}
-					fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
-						.then(response => {
-							if (!response.ok) {
-								throw new Error(`HTTP error! Status: ${response.status}`);
-							}
-							return response.text();
-						})
-						.then(friends => {
-							let sentRequests;
-							fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
-								.then(response => {
-									if (!response.ok) {
-										throw new Error(`HTTP error! Status: ${response.status}`);
-									}
-									return response.text();
-								})
-								.then(profileemail => {
-									let skipbutton;
-									let addButton;
-									// Check if the username already exists in the list
-									if (listContainer.querySelector(`#user-${username}-email`) === null) {
-										var userContainer = document.createElement("div");
-										userContainer.className = "list-user-info";
-
-										var userCircle = document.createElement("div");
-										userCircle.className = "user-circle";
-										userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp" alt="User ${username} Image">`;
-										var userDetails = document.createElement("div");
-										userDetails.className = "user-details";
-
-										var userName = document.createElement("div");
-										userName.className = "user-name";
-										userName.textContent = username;
-
-										var userEmail = document.createElement("div");
-										userEmail.className = "user-email";
-										userEmail.id = `user-${username}-email`;
-										userEmail.textContent = profileemail;
-										if (JSON.stringify(friends).includes(username)) {
-											skipbutton = true
-											userDetails.appendChild(userName);
-											userDetails.appendChild(userEmail);
-
-											userContainer.appendChild(userCircle);
-											userContainer.appendChild(userDetails);
-
-											listContainer.appendChild(userContainer);
-											let localValue = localStorage.getItem("sent_friend_requests");
-
-											// Parse the retrieved data into an array or initialize an empty array
-											let requests = localValue ? JSON.parse(localValue) : [];
-
-											// Assuming 'username' is the value you want to remove
-											let indexToRemove = requests.indexOf(username);
-											if (indexToRemove !== -1) {
-												// Remove the element from the array
-												requests.splice(indexToRemove, 1);
-
-												// Save the updated array back to localStorage
-												localStorage.setItem("sent_friend_requests", JSON.stringify(requests));
-											} else {
-												console.log("Username not found in the array");
-											}
-										}
-
-										fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
-											.then(response => {
-												if (!response.ok) {
-													throw new Error(`HTTP error! Status: ${response.status}`);
-												}
-												return response.text();
-											})
-											.then(usersSent => {
-												sentRequests = usersSent
-												if (sentRequests && sentRequests.includes(username) && skipbutton !== true) {
-													addButton = document.createElement("a");
-													addButton.href = "#";
-													addButton.id = username;
-													addButton.onclick = function () {
-														shake_me(this.id);
-													};
-													addButton.className = "apple-button-list";
-													addButton.textContent = "Sent";
-													userDetails.appendChild(userName);
-													userDetails.appendChild(userEmail);
-
-													userContainer.appendChild(userCircle);
-													userContainer.appendChild(userDetails);
-													userContainer.appendChild(addButton);
-
-													listContainer.appendChild(userContainer);
-												} else if (skipbutton !== true) {
-													addButton = document.createElement("a");
-													addButton.href = "#";
-													addButton.id = username;
-													addButton.onclick = function () {
-														addfriend(this);
-													};
-													addButton.className = "apple-button-list";
-													addButton.textContent = "Add";
-
-													userDetails.appendChild(userName);
-													userDetails.appendChild(userEmail);
-
-													userContainer.appendChild(userCircle);
-													userContainer.appendChild(userDetails);
-													userContainer.appendChild(addButton);
-
-													listContainer.appendChild(userContainer);
-												}
-												loadPFP(username, '-pfp')
-												//fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-												//	.then(response => {
-												//		if (!response.ok) {
-												//			throw new Error(`HTTP error! Status: ${response.status}`);
-												//		}
-												//		return response.text();
-												//	})
-												//	.then(profileimage => {
-												//		if (profileimage.indexOf("base64") === -1) {
-												//			// If it doesn't contain "base64", add the prefix
-												//			profileimage = "data:image/jpeg;base64," + profileimage;
-												//			document.getElementById(`${username}-pfp`).src = profileimage
-												//		} else {
-												//			document.getElementById(`${username}-pfp`).src = profileimage
-												//		}
-												//
-												//
-												//	}).catch(error => {
-												//		console.error("Cannot set src for", username)
-												//		console.error(error)
-												//	})
-											})
-
-
-
-
-
-									}
-								});
-							$("#load-users").fadeOut("fast");
-
-						}).catch(error => {
-							console.error(error);
-						});
-
-
-
-				})
-					.catch(error => {
-						console.error(error);
-					});
-
-			})
-			.catch(error => {
-				console.error(error);
+				listContainer.style.textAlign = "center";
+				listContainer.style.marginTop = "50px";
+				listContainer.innerHTML = `No user found named ${value}`;
 			});
-		// Add transparent-placeholder div at the end of the listContainer
+			return;
+		} else {
+			console.log(`${JSON.stringify(data)} != "[]"`);
+		}
+		let userlist = data;
+		let containerId = "list-container";
+		var listContainer = document.getElementById(containerId);
+		listContainer.style.textAlign = "";
+		listContainer.style.marginTop = "";
+		listContainer.innerHTML = "<!--Empty-->";
 
+		// Fetch emails for each user individually
+		userlist.forEach(val => {
+			if (val.username === localStorage.getItem("t50-username")) {
+				return;
+			}
+			let sentRequests;
+			let skipbutton;
+			let addButton;
+			if (listContainer.querySelector(`#user-${val.username}-email`) === null) {
+				var userContainer = document.createElement("div");
+				userContainer.className = "list-user-info";
+
+				var userCircle = document.createElement("div");
+				userCircle.className = "user-circle";
+				userCircle.innerHTML = `<img src="loading-circle.gif" id="${val.username}-pfp" alt="User ${val.username} Image">`;
+				var userDetails = document.createElement("div");
+				userDetails.className = "user-details";
+
+				var userName = document.createElement("div");
+				userName.className = "user-name";
+				userName.textContent = val.username;
+
+				var userEmail = document.createElement("div");
+				userEmail.className = "user-email";
+				userEmail.id = `user-${val.username}-email`;
+				userEmail.textContent = val.email;
+				if (val.friends === true) {
+					skipbutton = true;
+					userDetails.appendChild(userName);
+					userDetails.appendChild(userEmail);
+
+					userContainer.appendChild(userCircle);
+					userContainer.appendChild(userDetails);
+
+					listContainer.appendChild(userContainer);
+					let localValue = localStorage.getItem("sent_friend_requests");
+					let requests = localValue ? JSON.parse(localValue) : [];
+					let indexToRemove = requests.indexOf(val.username);
+					if (indexToRemove !== -1) {
+						requests.splice(indexToRemove, 1);
+						localStorage.setItem("sent_friend_requests", JSON.stringify(requests));
+					} else {
+						console.log("Username not found in the array");
+					}
+				}
+
+				//sentRequests = usersSent;
+				console.log(val.username, "-->", val.requested)
+				if (skipbutton !== true && val.requested === true) {
+					addButton = document.createElement("a");
+					addButton.href = "#";
+					addButton.id = val.username;
+					addButton.onclick = function () {
+						shake_me(this.id);
+					};
+					addButton.className = "apple-button-list";
+					addButton.textContent = "Sent";
+					userDetails.appendChild(userName);
+					userDetails.appendChild(userEmail);
+
+					userContainer.appendChild(userCircle);
+					userContainer.appendChild(userDetails);
+					userContainer.appendChild(addButton);
+
+					listContainer.appendChild(userContainer);
+				} else if (skipbutton !== true) {
+					addButton = document.createElement("a");
+					addButton.href = "#";
+					addButton.id = val.username;
+					addButton.onclick = function () {
+						addfriend(this);
+					};
+					addButton.className = "apple-button-list";
+					addButton.textContent = "Add";
+
+					userDetails.appendChild(userName);
+					userDetails.appendChild(userEmail);
+
+					userContainer.appendChild(userCircle);
+					userContainer.appendChild(userDetails);
+					userContainer.appendChild(addButton);
+
+					listContainer.appendChild(userContainer);
+				}
+				loadPFP(val.username, '-pfp');
+			}
+		});
 	}
 }
+
 
 
 
@@ -4155,7 +4390,7 @@ function hide_new() {
 	document.getElementById('gateway').style.filter = ''
 	document.getElementById("whats_new").classList.remove("active");
 	$("#navigator").fadeIn("fast")
-	localStorage.setItem("New_ID0.81", "SEEN")
+	localStorage.setItem("New_ID0.90", "SEEN")
 	setup()
 }
 function hide_new_set() {
@@ -4163,7 +4398,7 @@ function hide_new_set() {
 	document.getElementById("whats_new").classList.remove("active");
 	$("#navigator").fadeIn("fast")
 	vox()
-	localStorage.setItem("New_ID0.81", "SEEN")
+	localStorage.setItem("New_ID0.90", "SEEN")
 }
 
 function show_news() {
@@ -4174,7 +4409,7 @@ function show_news() {
 	document.getElementById("navigator").style.display = "none"
 	document.getElementById("onclicks_news").innerHTML = `<div onclick="hide_new_set()">
 		<div
-			style="left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+			style="left:50%; bottom: 40px; position: absolute;  display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
 			
 			Proceed<svg style="margin-left: 10px" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
 				<path d="M11 21H12C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3H11M11 16L15 12M15 12L11 8M15 12H3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -4197,8 +4432,85 @@ function scrollToTop(divId) {
 	}
 }
 
-function optimizeNotifications() {
+function optimizeNotifications(id, element) {
+	console.log("Optimizing")
+	let change;
+	if (element.checked) {
+		// Checkbox is checked, perform actions for when it's checked
+		console.log("Checkbox is checked");
+		change = 1
+	} else {
+		// Checkbox is unchecked, perform actions for when it's unchecked
+		console.log("Checkbox is unchecked");
+		change = 2
+	}
+	fetch(`https://evox-datacenter.onrender.com/florida?username=${localStorage.getItem("t50-username")}&method=prefs_Set&id=${id}&change=${change}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(result => {
+			if(result === "Done") {
+				console.log("All ok")
+			}
+
+
+
+		}).catch(error => {
+			console.error("Cannot set src for", username)
+			console.error(error)
+		})
 	return;
+}
+
+function loadPrefs() {
+	fetch(`https://evox-datacenter.onrender.com/florida?username=${localStorage.getItem("t50-username")}&method=prefs_Get`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(prefs => {
+			if(!prefs) {
+				console.log("Canceling")
+				return;
+			}
+			const data = JSON.parse(prefs)
+			const checkboxes = {
+				'p1': 'login_to_acc',
+				'p2': 'usr_mod',
+				'p3': 'email_mod',
+				'p4': '2fa_mod',
+				'p5': 'ip_mod',
+				'p6': 'pswd_mod',
+				'p7': 'new_friend_req',
+				'p8': 'new_friend',
+				'p9': 'friend_online',
+				'p10': 'new_evox_usr',
+				'p11': 'new_app_purch',
+				'p12': 'weather',
+				'p13': 'app_release',
+				'p14': 'pfp_change'
+			};
+			
+			for (const checkboxId in checkboxes) {
+				if (data[checkboxes[checkboxId]] === 1) {
+					document.getElementById(checkboxId).checked = true;
+				} else {
+					document.getElementById(checkboxId).checked = false;
+				}
+			}
+			
+
+
+
+		}).catch(error => {
+			console.error("Cannot set src for", username)
+			console.error(error)
+		})
 }
 
 function profilesLocal(username, img) {
@@ -4423,32 +4735,67 @@ function clearflrd() {
 		console.log("Database deleted successfully");
 		$("#flrdclear_svg").fadeOut("fast")
 		notice("Database deleted successfully. Reload to prevent errors.")
-		$("#hide_after_clear").fadeOut("fast", function() {
+		$("#hide_after_clear").fadeOut("fast", function () {
 			$("#restart_after_flrdclear").fadeIn("fast")
 		})
-		
-		
-		
+
+
+
 	};
 
 	request.onerror = function (event) {
 		console.error("Error deleting database:", event.target.errorCode);
 		$("#flrdclear_svg").fadeOut("fast")
 		notice("Error deleting database:", event.target.errorCode)
-		$("#hide_after_clear").fadeOut("fast", function() {
+		$("#hide_after_clear").fadeOut("fast", function () {
 			$("#restart_after_flrdclear").fadeIn("fast")
 		})
 	};
 }
 
 function app_use_info(app) {
-	if(localStorage.getItem("t50-username") === "papostol") {
+	if (localStorage.getItem("t50-username") === "papostol") {
 		document.getElementById('gateway').style.filter = 'blur(50px)'
-		if(app === "gateway") {
-			$("#apps_using_evox").fadeOut("fast", function() {
+		if (app === "gateway") {
+			const repoOwner = 'HackerXYT'; // Replace 'owner' with the GitHub username or organization name
+			const repoName = 'hackerxyt.github.io'; // Replace 'repository' with the name of the GitHub repository
+
+			fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/commits`)
+				.then(response => response.json())
+				.then(data => {
+					if (data.length > 0) {
+						const latestCommit = data[1];
+						const commitTitle = latestCommit.commit.message;
+						const commitDescription = latestCommit.commit.description;
+
+						console.log("Latest Commit Title:", commitTitle);
+						if (commitTitle.includes("Merge")) {
+							document.getElementById("gt-update-title").innerHTML = "Branches Merge"
+							document.getElementById("gt-update-desc").style.display = "none"
+						} else {
+							document.getElementById("gt-update-title").innerHTML = commitTitle
+
+							if (commitDescription == null || typeof account == 'undefined') {
+								document.getElementById("gt-update-desc").style.display = "none"
+							} else {
+								document.getElementById("gt-update-desc").innerHTML = commitDescription
+							}
+						}
+
+
+						console.log("Latest Commit Description:", commitDescription);
+
+					} else {
+						console.log("No commits found in the repository.");
+					}
+				})
+				.catch(error => {
+					console.error("Error fetching commits:", error);
+				});
+			$("#apps_using_evox").fadeOut("fast", function () {
 				$("#evox_gateway_info").fadeIn("fast")
 			})
 		}
 	}
-	
+
 }

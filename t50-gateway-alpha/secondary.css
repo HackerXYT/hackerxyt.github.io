@@ -1,6 +1,6 @@
 .icon-container {
 	position: fixed;
-	top: 50%;
+	top: 45%;
 	bottom: 50%;
 	/* Adjust the distance from the bottom as needed */
 	left: 50%;
@@ -266,7 +266,7 @@
 .loader.--7::after {
 	width: var(--size-square);
 	height: var(--size-square);
-	background: repeating-radial-gradient(circle, #6cc774, #9dbfc5, #8aadb1 20px);
+	background: repeating-radial-gradient(circle, #ffffff, #9dbfc5, #8aadb1 20px);
 }
 
 .loader.--7::before {
