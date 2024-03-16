@@ -4276,6 +4276,24 @@ Settings
 	Notifications
 </div>
 </div>`
+	const sign_in_wevox_e = `<div onclick='$("#evox_gateway_info").fadeOut("fast", function () {$("#apps_using_evox").fadeIn("fast")});navigator("sign_in_wevox")'
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Apps&nbsp;Using&nbsp;Evox®
+</div>
+</div>`
 	$("#navigator").fadeOut("fast", function () {
 		if (w === "sett_def") {
 			document.getElementById("navigator").innerHTML = sett_def
@@ -4366,6 +4384,10 @@ Settings
 			document.getElementById("navigator").innerHTML = notif_tasco
 		}
 
+		if (w === "sign_in_wevox_e") {
+			document.getElementById("navigator").innerHTML = sign_in_wevox_e
+		}
+
 
 
 
@@ -4452,7 +4474,7 @@ function optimizeNotifications(id, element) {
 			return response.text();
 		})
 		.then(result => {
-			if(result === "Done") {
+			if (result === "Done") {
 				console.log("All ok")
 			}
 
@@ -4474,7 +4496,7 @@ function loadPrefs() {
 			return response.text();
 		})
 		.then(prefs => {
-			if(!prefs) {
+			if (!prefs) {
 				console.log("Canceling")
 				return;
 			}
@@ -4495,7 +4517,7 @@ function loadPrefs() {
 				'p13': 'app_release',
 				'p14': 'pfp_change'
 			};
-			
+
 			for (const checkboxId in checkboxes) {
 				if (data[checkboxes[checkboxId]] === 1) {
 					document.getElementById(checkboxId).checked = true;
@@ -4503,7 +4525,7 @@ function loadPrefs() {
 					document.getElementById(checkboxId).checked = false;
 				}
 			}
-			
+
 
 
 
@@ -4754,9 +4776,9 @@ function clearflrd() {
 }
 
 function app_use_info(app) {
-	if (localStorage.getItem("t50-username") === "papostol") {
 		document.getElementById('gateway').style.filter = 'blur(50px)'
 		if (app === "gateway") {
+			navigator('sign_in_wevox_e')
 			const repoOwner = 'HackerXYT'; // Replace 'owner' with the GitHub username or organization name
 			const repoName = 'hackerxyt.github.io'; // Replace 'repository' with the name of the GitHub repository
 
@@ -4796,6 +4818,5 @@ function app_use_info(app) {
 				$("#evox_gateway_info").fadeIn("fast")
 			})
 		}
-	}
 
 }
