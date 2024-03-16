@@ -4786,7 +4786,7 @@ function app_use_info(app) {
 				.then(response => response.json())
 				.then(data => {
 					if (data.length > 0) {
-						const latestCommit = data[1];
+						const latestCommit = data[0];
 						const commitTitle = latestCommit.commit.message;
 						const commitDescription = latestCommit.commit.description;
 
