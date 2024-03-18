@@ -460,7 +460,13 @@ function uielements() {
 	$("#vox").fadeIn("slow")
 	//getFriends("pre")
 
-	document.getElementById("usr-img").src = sessionStorage.getItem("pfp")
+	if (sessionStorage.getItem("pfp")) {
+		document.getElementById("usr-img").src = sessionStorage.getItem("pfp")
+	} else {
+		document.getElementById("usr-img").src = "reloading-pfp.gif"
+	}
+
+	
 
 	if (sessionStorage.getItem("pfp")) {
 		document.getElementById("profile-pfp").src = sessionStorage.getItem("pfp")
@@ -629,6 +635,7 @@ function pfp(give) {
 					}
 					sessionStorage.setItem("pfp", data);
 					if (give === "giveback") {
+						//profilesLocal("self", data)
 						resolve(data);
 					}
 				})

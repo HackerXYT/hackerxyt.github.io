@@ -784,3 +784,24 @@ section {
   margin: 0 auto;
   width: 100%;
 }
+
+.remote_div {
+  position: relative;
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999; /* Ensure the image is behind the video */
+  object-fit: cover;
+}
+
+#remoteVideo {
+  position: relative; /* Ensure video stays above the background image */
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Optional: Ensure video fills the container */
+}

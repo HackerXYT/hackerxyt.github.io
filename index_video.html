@@ -22,7 +22,11 @@
 	<section class="section-container">
   <div class="fullscreen-media-container video overlay">
     <div class="remote_div" id="div2">
+      
       <video id="remoteVideo" class="" autoplay playsinline></video>
+      <div class="background-image">
+        <img src="4.jpg" alt="Background Image">
+    </div>
     </div>
     <div class="overlay-content-container">
       <div class="partner-text-container">
@@ -48,7 +52,7 @@
             </span>
           </button>
           <button class="button-cam-element switch">
-            <span onclick="stopcam()" class="icon icon-cam-active">
+            <span onclick="toggleCam()" class="icon icon-cam-active">
               <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path class="active" fill-rule="evenodd" clip-rule="evenodd" d="M10 8.6732V8.70915C10 9.95203 8.99288 10.9591 7.75 10.9591H2.5C1.25712 10.9591 0.25 9.95203 0.25 8.70915V4.04248C0.25 2.7996 1.25712 1.79248 2.5 1.79248H7.75C8.99288 1.79248 10 2.7996 10 4.04248V4.07807L11.3098 3.02401C12.2916 2.23343 13.75 2.93294 13.75 4.1923V8.55897C13.75 9.81849 12.2912 10.518 11.3095 9.72699L10 8.6732ZM1.75 4.04248C1.75 3.62803 2.08555 3.29248 2.5 3.29248H7.75C8.16445 3.29248 8.5 3.62803 8.5 4.04248V5.64432C8.5 5.64462 8.5 5.64402 8.5 5.64432V7.1062C8.5 7.1064 8.5 7.106 8.5 7.1062V8.70915C8.5 9.1236 8.16445 9.45915 7.75 9.45915H2.5C2.08555 9.45915 1.75 9.1236 1.75 8.70915V4.04248ZM10 6.74781L12.25 8.5585V4.19277L10 6.00346V6.74781Z" fill="white" />
                 <path class="inactive" fill-rule="evenodd" clip-rule="evenodd" d="M1.58294 0.528126C1.32232 0.206181 0.850056 0.156469 0.528111 0.417091C0.206166 0.677714 0.156454 1.14998 0.417076 1.47192L1.08291 2.29442C0.574711 2.70691 0.250007 3.33662 0.250007 4.04234V8.70901C0.250007 9.95188 1.25713 10.959 2.50001 10.959H7.75001C7.86138 10.959 7.97087 10.9509 8.0779 10.9353L8.91708 11.9719C9.1777 12.2939 9.64996 12.3436 9.97191 12.083C10.2939 11.8223 10.3436 11.3501 10.0829 11.0281L9.42336 10.2133C9.78187 9.8148 10 9.28743 10 8.70901V8.67306L11.3095 9.72685C12.2913 10.5179 13.75 9.81834 13.75 8.55883V4.19216C13.75 2.93279 12.2916 2.23329 11.3098 3.02387L10 4.07794V4.04234C10 2.79946 8.99289 1.79234 7.75001 1.79234H2.60635L1.58294 0.528126ZM2.02674 3.46033C1.85783 3.59781 1.75001 3.8074 1.75001 4.04234V8.70901C1.75001 9.12346 2.08555 9.459 2.50001 9.459H6.88281L2.02674 3.46033ZM8.4414 9.00034L3.82064 3.29234H7.75001C8.16446 3.29234 8.50001 3.62789 8.50001 4.04234V8.70901C8.50001 8.81235 8.47914 8.91078 8.4414 9.00034ZM12.25 4.19263L10 6.0033V6.74769L12.25 8.55836V4.19263Z" fill="white" />
@@ -101,7 +105,7 @@
   <!-- Import script containing WebRTC related functions -->
   <script src="scripts/webrtc.js"></script>
 
-  <script src="scripts/videocall.js"></script>
+  <!--<script src="scripts/videocall.js"></script>-->
   
   <script>
     navigator.mediaDevices.enumerateDevices()

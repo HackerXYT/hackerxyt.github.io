@@ -213,11 +213,11 @@ if(srv.includes("04")) {
 if(localStorage.getItem("bypass") == "offline") {
   return
 }
-localStorage.setItem("srv", srv)
+localStorage.setItem("srv", "https://3a9a0d14-1e2f-4e0d-8c62-e7dafeaadfdf-00-2wzhar9hvxybq.janeway.replit.dev")
 window.location.reload()
 }
 })
-var socket = io(localStorage.getItem("srv"));
+var socket = io("https://3a9a0d14-1e2f-4e0d-8c62-e7dafeaadfdf-00-2wzhar9hvxybq.janeway.replit.dev");
 socket.on('connect', () => {
   setInterval(status_post, 5000)//5 sec
   loadserver()
