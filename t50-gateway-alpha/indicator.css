@@ -23,8 +23,8 @@
 }
 
 .avatar-xs {
-    height: 3.75rem;
-    width: 3.75rem;
+    height: 18.75rem;
+    width: 18.75rem;
     margin-bottom: -5px; /* Adjust margin to overlap with the indicator */
     z-index: 1; /* Ensure image is behind the indicator */
     position: relative; /* Needed for z-index to work */

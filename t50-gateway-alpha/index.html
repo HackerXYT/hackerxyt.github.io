@@ -218,7 +218,7 @@
             back</button><br>
         <p id="rem_text" style="color: #a7b3bf;display:none">Pick an account to login.</p>
         <p id="def_text" style="color: #a7b3bf">Evox® Epsilon registered under Evox Communications & Co.<br><br><i
-                style="color: #0173d6e2">Public Beta Preview Version E0.81</i></p>
+                style="color: #0173d6e2">Public Beta Preview Version E0.90</i></p>
     </div>
     <div style="display: none;" id="2fa" class="container" style="display:none;margin-top: 105px;">
         <h3 style="color: white;">Two-Factor Authentication</h3>
@@ -298,7 +298,7 @@
         <a id="friend_req_fastacc" style="display: none;" href="#" onclick="oneo(this)" class="apple-button">Accept All
             Friend Requests<span>(5)</span></a>
         <a href="#" onclick="qa_pfp()" class="apple-button">Change profile picture</a>
-        
+
         <a href="#" onclick="bgch()" class="apple-button">Background<span id="bgname"
                 style="color: #868686">Default</span></a>
         <a href="#" onclick="auto_login()" class="apple-button">Auto Login<span id="auto-login">Set Up</span></a>
@@ -308,7 +308,7 @@
                     d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                     fill="#666"></path>
             </svg></a>
-
+        <p style="margin: 6px" class="user-email"><b>Vox Center</b> is currently under development. Actual Vox features will be available after Vox Center exits beta.
 
 
     </div>
@@ -317,24 +317,31 @@
     <div id="whats_new" class="vox">
         <div style="text-align: center; margin-top: 20px;">
             <h3 style="margin-bottom: 5px;">What's New</h3>
-            <h5 style="margin: 0; font-weight: lighter; font-size: 12px;">March 17, 2024</h5>
+            <h5 style="margin: 0; font-weight: lighter; font-size: 12px;">March 19, 2024</h5>
         </div>
 
-        <img src="V0.90.png" style="display: block; margin: 20px auto; max-width: 500px; border-radius: 20px;width:100%">
+        <img src="V0.91.png"
+            style="display: block; margin: 20px auto; max-width: 500px; border-radius: 20px;width:100%">
 
         <div style="margin: 20px;">
-            <h3>Florida Updates</h3>
+            <h3>Enhanced Notification System</h3>
             <ul style="padding-left: 20px;">
-                <li>Exciting news! Now, with Evox, you're in control of your notifications. Tailor your experience by choosing exactly what you want to receive. Simply head to your account options in settings and click on 'Manage Notifications'.</li>
-                <br>
-                <li>Tasco preferences are coming soon!</li>
+                <li>With the introduction of V0.91, the main gateway page will now feature a prominent indicator, with the notification icon blinking, to alert you of any new notifications. This enhancement ensures that you're promptly informed of unread notifications without the necessity of manually checking the notification panel.</li>
+            </ul>
+            <h3>Stay Ahead with Evox Timeline!</h3>
+            <ul style="padding-left: 20px;">
+                <li>Starting today, Evox users will gain exclusive access to the Evox Timeline and upcoming plans, providing them with a comprehensive overview of forthcoming gateway features well in advance of their release dates. This exciting development empowers users with timely insights, ensuring they stay informed and prepared for the latest advancements within the platform. Stay ahead of the curve and anticipate future enhancements with Evox's enhanced transparency and foresight.</li>
+            </ul>
+            <h3>Bug Squashed!</h3>
+            <ul style="padding-left: 20px;">
+                <li>Previously, Evox users may have encountered unexpected logoffs from their accounts. This issue has been addressed and users can now seamlessly utilize the Evox Gateway without any disruptions.</li>
             </ul>
 
         </div>
-        <div id="onclicks_news">
+        <div style="z-index:1;" id="onclicks_news">
             <div onclick="hide_new()">
                 <div
-                    style="left:50%; bottom: 40px; position: absolute; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+                    style="left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
 
                     Proceed<svg style="margin-left: 10px" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
                         viewBox="0 0 24 24" fill="none">
@@ -346,7 +353,7 @@
             </div>
         </div>
 
-        <div class="transparent-placeholder" style="height: 60px;"></div>
+        <div class="transparent-placeholder" style="height: 90px;z-index:-999;"></div>
 
 
 
@@ -355,8 +362,9 @@
     </div>
 
     <div id="notifications" class="vox">
-        <h3>Notifications [BETA]</h3>
-        <div onclick="notif_options()" id="more_options_notif" style="right:50px;top:50px;position: absolute;display: none;"
+        <h3>Notifications</h3>
+        <div onclick="notif_options()" id="more_options_notif"
+            style="right:50px;top:50px;position: absolute;display: none;"
             style="position: fixed; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
             <div
                 style="background-color: #33333370; border: none; color: #fff; padding: 15px; font-size: 16px; border-radius: 100%; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
@@ -370,7 +378,8 @@
                     <path
                         d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z"
                         stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg></div>
+                </svg>
+            </div>
         </div>
         <a onclick="clearNotifications()" style="right:50px;top:50px;position: absolute;">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px"
@@ -392,7 +401,15 @@
         </a>-->
 
 
-
+        <!--BETA<div class="slide-container">
+            <div class="apple-button apple-button-notif" style="display: flex; align-items: center;">
+                <div class="user-circle" style="margin-right: 10px; width: 50px; height: 50px;">
+                    <img src="https://team50.sytes.net/notifications_assets/Gateway.png" alt="User Image">
+                </div>
+                <p style="margin: 10px;">2FA Enabled!</p>
+            </div>
+            <div class="delete-option">Delete</div>
+        </div>-->
         <div id="notif_container"></div>
         <!--<a href="#" onclick="oneo()" class="apple-button" style="display: flex; align-items: center;">
             <div class="user-circle" style="margin-right: 10px;width: 50px;height: 50px;">
@@ -702,7 +719,7 @@
 
                 <p style="margin: 6px" class="user-email">These IP addresses and are the devices used to sign
                     in to your account. If you notice any suspicious activity, change your password immediately.</p>
-                    <div class="transparent-placeholder"></div>
+                <div class="transparent-placeholder"></div>
                 <!--<div id="authip_back_btn" onclick="return_to_options('authip')"
                     style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
                     <div
@@ -810,10 +827,11 @@
                             d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                             fill="#666" />
                     </svg></a>
-                    <div class="transparent-placeholder" style="height: 200px"></div>
-                    <p style="margin: 6px;margin-top: 12px" class="user-email">FLORIDA OPTIONS</p>
-                    <a href="#" onclick="loadflrdinf()" class="apple-button">Get Florida Info<svg id="flrd_svg" style="display:none"
-                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20px" height="20px">
+                <div class="transparent-placeholder" style="height: 200px"></div>
+                <p style="margin: 6px;margin-top: 12px" class="user-email">FLORIDA OPTIONS</p>
+                <a href="#" onclick="loadflrdinf()" class="apple-button">Get Florida Info<svg id="flrd_svg"
+                        style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20px"
+                        height="20px">
                         <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
                             <animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
                                 repeatCount="indefinite" />
@@ -821,9 +839,10 @@
                                 repeatCount="indefinite" />
                         </circle>
                     </svg></a>
-                    
-                    <a href="#" id="hide_after_clear" onclick="clearflrd()" class="apple-button">Clear Florida Database ⚠️<svg id="flrdclear_svg" style="display:none"
-                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20px" height="20px">
+
+                <a href="#" id="hide_after_clear" onclick="clearflrd()" class="apple-button">Clear Florida Database
+                    ⚠️<svg id="flrdclear_svg" style="display:none" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 100 100" width="20px" height="20px">
                         <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
                             <animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
                                 repeatCount="indefinite" />
@@ -831,9 +850,13 @@
                                 repeatCount="indefinite" />
                         </circle>
                     </svg></a>
-                    <a href="#" style="display: none;" id="restart_after_flrdclear" onclick="restart()" class="apple-button">Restart<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                        <path d="M4.39502 12.0014C4.39544 12.4156 4.73156 12.751 5.14577 12.7506C5.55998 12.7502 5.89544 12.4141 5.89502 11.9999L4.39502 12.0014ZM6.28902 8.1116L6.91916 8.51834L6.91952 8.51777L6.28902 8.1116ZM9.33502 5.5336L9.0396 4.84424L9.03866 4.84464L9.33502 5.5336ZM13.256 5.1336L13.4085 4.39927L13.4062 4.39878L13.256 5.1336ZM16.73 7.0506L16.1901 7.57114L16.1907 7.57175L16.73 7.0506ZM17.7142 10.2078C17.8286 10.6059 18.2441 10.8358 18.6422 10.7214C19.0403 10.607 19.2703 10.1915 19.1558 9.79342L17.7142 10.2078ZM17.7091 9.81196C17.6049 10.2129 17.8455 10.6223 18.2464 10.7265C18.6473 10.8307 19.0567 10.5901 19.1609 10.1892L17.7091 9.81196ZM19.8709 7.45725C19.9751 7.05635 19.7346 6.6469 19.3337 6.54272C18.9328 6.43853 18.5233 6.67906 18.4191 7.07996L19.8709 7.45725ZM18.2353 10.7235C18.6345 10.8338 19.0476 10.5996 19.1579 10.2004C19.2683 9.80111 19.034 9.38802 18.6348 9.2777L18.2353 10.7235ZM15.9858 8.5457C15.5865 8.43537 15.1734 8.66959 15.0631 9.06884C14.9528 9.46809 15.187 9.88119 15.5863 9.99151L15.9858 8.5457ZM19.895 11.9999C19.8946 11.5856 19.5585 11.2502 19.1443 11.2506C18.7301 11.251 18.3946 11.5871 18.395 12.0014L19.895 11.9999ZM18.001 15.8896L17.3709 15.4829L17.3705 15.4834L18.001 15.8896ZM14.955 18.4676L15.2505 19.157L15.2514 19.1566L14.955 18.4676ZM11.034 18.8676L10.8815 19.6019L10.8839 19.6024L11.034 18.8676ZM7.56002 16.9506L8.09997 16.4301L8.09938 16.4295L7.56002 16.9506ZM6.57584 13.7934C6.46141 13.3953 6.04593 13.1654 5.64784 13.2798C5.24974 13.3942 5.01978 13.8097 5.13421 14.2078L6.57584 13.7934ZM6.58091 14.1892C6.6851 13.7884 6.44457 13.3789 6.04367 13.2747C5.64277 13.1705 5.23332 13.4111 5.12914 13.812L6.58091 14.1892ZM4.41914 16.544C4.31495 16.9449 4.55548 17.3543 4.95638 17.4585C5.35727 17.5627 5.76672 17.3221 5.87091 16.9212L4.41914 16.544ZM6.05478 13.2777C5.65553 13.1674 5.24244 13.4016 5.13212 13.8008C5.02179 14.2001 5.25601 14.6132 5.65526 14.7235L6.05478 13.2777ZM8.30426 15.4555C8.70351 15.5658 9.11661 15.3316 9.22693 14.9324C9.33726 14.5331 9.10304 14.12 8.70378 14.0097L8.30426 15.4555ZM5.89502 11.9999C5.89379 10.7649 6.24943 9.55591 6.91916 8.51834L5.65889 7.70487C4.83239 8.98532 4.3935 10.4773 4.39502 12.0014L5.89502 11.9999ZM6.91952 8.51777C7.57513 7.50005 8.51931 6.70094 9.63139 6.22256L9.03866 4.84464C7.65253 5.4409 6.47568 6.43693 5.65852 7.70544L6.91952 8.51777ZM9.63045 6.22297C10.7258 5.75356 11.9383 5.62986 13.1059 5.86842L13.4062 4.39878C11.9392 4.09906 10.4158 4.25448 9.0396 4.84424L9.63045 6.22297ZM13.1035 5.86793C14.2803 6.11232 15.3559 6.7059 16.1901 7.57114L17.27 6.53006C16.2264 5.44761 14.8807 4.70502 13.4085 4.39927L13.1035 5.86793ZM16.1907 7.57175C16.9065 8.31258 17.4296 9.21772 17.7142 10.2078L19.1558 9.79342C18.8035 8.5675 18.1557 7.44675 17.2694 6.52945L16.1907 7.57175ZM19.1609 10.1892L19.8709 7.45725L18.4191 7.07996L17.7091 9.81196L19.1609 10.1892ZM18.6348 9.2777L15.9858 8.5457L15.5863 9.99151L18.2353 10.7235L18.6348 9.2777ZM18.395 12.0014C18.3963 13.2363 18.0406 14.4453 17.3709 15.4829L18.6312 16.2963C19.4577 15.0159 19.8965 13.5239 19.895 11.9999L18.395 12.0014ZM17.3705 15.4834C16.7149 16.5012 15.7707 17.3003 14.6587 17.7786L15.2514 19.1566C16.6375 18.5603 17.8144 17.5643 18.6315 16.2958L17.3705 15.4834ZM14.6596 17.7782C13.5643 18.2476 12.3517 18.3713 11.1842 18.1328L10.8839 19.6024C12.3508 19.9021 13.8743 19.7467 15.2505 19.157L14.6596 17.7782ZM11.1865 18.1333C10.0098 17.8889 8.93411 17.2953 8.09997 16.4301L7.02008 17.4711C8.06363 18.5536 9.40936 19.2962 10.8815 19.6019L11.1865 18.1333ZM8.09938 16.4295C7.38355 15.6886 6.86042 14.7835 6.57584 13.7934L5.13421 14.2078C5.48658 15.4337 6.13433 16.5545 7.02067 17.4718L8.09938 16.4295ZM5.12914 13.812L4.41914 16.544L5.87091 16.9212L6.58091 14.1892L5.12914 13.812ZM5.65526 14.7235L8.30426 15.4555L8.70378 14.0097L6.05478 13.2777L5.65526 14.7235Z" fill="#fff"/>
-                        </svg></a>
+                <a href="#" style="display: none;" id="restart_after_flrdclear" onclick="restart()"
+                    class="apple-button">Restart<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                        viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M4.39502 12.0014C4.39544 12.4156 4.73156 12.751 5.14577 12.7506C5.55998 12.7502 5.89544 12.4141 5.89502 11.9999L4.39502 12.0014ZM6.28902 8.1116L6.91916 8.51834L6.91952 8.51777L6.28902 8.1116ZM9.33502 5.5336L9.0396 4.84424L9.03866 4.84464L9.33502 5.5336ZM13.256 5.1336L13.4085 4.39927L13.4062 4.39878L13.256 5.1336ZM16.73 7.0506L16.1901 7.57114L16.1907 7.57175L16.73 7.0506ZM17.7142 10.2078C17.8286 10.6059 18.2441 10.8358 18.6422 10.7214C19.0403 10.607 19.2703 10.1915 19.1558 9.79342L17.7142 10.2078ZM17.7091 9.81196C17.6049 10.2129 17.8455 10.6223 18.2464 10.7265C18.6473 10.8307 19.0567 10.5901 19.1609 10.1892L17.7091 9.81196ZM19.8709 7.45725C19.9751 7.05635 19.7346 6.6469 19.3337 6.54272C18.9328 6.43853 18.5233 6.67906 18.4191 7.07996L19.8709 7.45725ZM18.2353 10.7235C18.6345 10.8338 19.0476 10.5996 19.1579 10.2004C19.2683 9.80111 19.034 9.38802 18.6348 9.2777L18.2353 10.7235ZM15.9858 8.5457C15.5865 8.43537 15.1734 8.66959 15.0631 9.06884C14.9528 9.46809 15.187 9.88119 15.5863 9.99151L15.9858 8.5457ZM19.895 11.9999C19.8946 11.5856 19.5585 11.2502 19.1443 11.2506C18.7301 11.251 18.3946 11.5871 18.395 12.0014L19.895 11.9999ZM18.001 15.8896L17.3709 15.4829L17.3705 15.4834L18.001 15.8896ZM14.955 18.4676L15.2505 19.157L15.2514 19.1566L14.955 18.4676ZM11.034 18.8676L10.8815 19.6019L10.8839 19.6024L11.034 18.8676ZM7.56002 16.9506L8.09997 16.4301L8.09938 16.4295L7.56002 16.9506ZM6.57584 13.7934C6.46141 13.3953 6.04593 13.1654 5.64784 13.2798C5.24974 13.3942 5.01978 13.8097 5.13421 14.2078L6.57584 13.7934ZM6.58091 14.1892C6.6851 13.7884 6.44457 13.3789 6.04367 13.2747C5.64277 13.1705 5.23332 13.4111 5.12914 13.812L6.58091 14.1892ZM4.41914 16.544C4.31495 16.9449 4.55548 17.3543 4.95638 17.4585C5.35727 17.5627 5.76672 17.3221 5.87091 16.9212L4.41914 16.544ZM6.05478 13.2777C5.65553 13.1674 5.24244 13.4016 5.13212 13.8008C5.02179 14.2001 5.25601 14.6132 5.65526 14.7235L6.05478 13.2777ZM8.30426 15.4555C8.70351 15.5658 9.11661 15.3316 9.22693 14.9324C9.33726 14.5331 9.10304 14.12 8.70378 14.0097L8.30426 15.4555ZM5.89502 11.9999C5.89379 10.7649 6.24943 9.55591 6.91916 8.51834L5.65889 7.70487C4.83239 8.98532 4.3935 10.4773 4.39502 12.0014L5.89502 11.9999ZM6.91952 8.51777C7.57513 7.50005 8.51931 6.70094 9.63139 6.22256L9.03866 4.84464C7.65253 5.4409 6.47568 6.43693 5.65852 7.70544L6.91952 8.51777ZM9.63045 6.22297C10.7258 5.75356 11.9383 5.62986 13.1059 5.86842L13.4062 4.39878C11.9392 4.09906 10.4158 4.25448 9.0396 4.84424L9.63045 6.22297ZM13.1035 5.86793C14.2803 6.11232 15.3559 6.7059 16.1901 7.57114L17.27 6.53006C16.2264 5.44761 14.8807 4.70502 13.4085 4.39927L13.1035 5.86793ZM16.1907 7.57175C16.9065 8.31258 17.4296 9.21772 17.7142 10.2078L19.1558 9.79342C18.8035 8.5675 18.1557 7.44675 17.2694 6.52945L16.1907 7.57175ZM19.1609 10.1892L19.8709 7.45725L18.4191 7.07996L17.7091 9.81196L19.1609 10.1892ZM18.6348 9.2777L15.9858 8.5457L15.5863 9.99151L18.2353 10.7235L18.6348 9.2777ZM18.395 12.0014C18.3963 13.2363 18.0406 14.4453 17.3709 15.4829L18.6312 16.2963C19.4577 15.0159 19.8965 13.5239 19.895 11.9999L18.395 12.0014ZM17.3705 15.4834C16.7149 16.5012 15.7707 17.3003 14.6587 17.7786L15.2514 19.1566C16.6375 18.5603 17.8144 17.5643 18.6315 16.2958L17.3705 15.4834ZM14.6596 17.7782C13.5643 18.2476 12.3517 18.3713 11.1842 18.1328L10.8839 19.6024C12.3508 19.9021 13.8743 19.7467 15.2505 19.157L14.6596 17.7782ZM11.1865 18.1333C10.0098 17.8889 8.93411 17.2953 8.09997 16.4301L7.02008 17.4711C8.06363 18.5536 9.40936 19.2962 10.8815 19.6019L11.1865 18.1333ZM8.09938 16.4295C7.38355 15.6886 6.86042 14.7835 6.57584 13.7934L5.13421 14.2078C5.48658 15.4337 6.13433 16.5545 7.02067 17.4718L8.09938 16.4295ZM5.12914 13.812L4.41914 16.544L5.87091 16.9212L6.58091 14.1892L5.12914 13.812ZM5.65526 14.7235L8.30426 15.4555L8.70378 14.0097L6.05478 13.2777L5.65526 14.7235Z"
+                            fill="#fff" />
+                    </svg></a>
 
                 <div class="transparent-placeholder"></div>
 
@@ -902,29 +925,29 @@
                 <p style="margin: 6px" class="user-email">ACCOUNT CHANGES</p>
                 <div href="#" id="login_notifs" style="height: 50%" class="apple-button notif">Login to account
                     <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                        <input onclick="optimizeNotifications('1', this)" id="p1"  type="checkbox" checked>
+                        <input onclick="optimizeNotifications('1', this)" id="p1" type="checkbox" checked>
                         <span></span>
                     </label>
                 </div>
                 <div href="#" id="username_change_notifs" style="height: 50%" class="apple-button notif">Username
                     modifications<label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                        <input onclick="optimizeNotifications('2', this)" id="p2"  type="checkbox" checked>
+                        <input onclick="optimizeNotifications('2', this)" id="p2" type="checkbox" checked>
                         <span></span>
                     </label></div>
                 <div href="#" id="email_change_notifs" style="height: 50%" class="apple-button notif">Email
                     modifications<label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                        <input onclick="optimizeNotifications('3', this)" id="p3"  type="checkbox" checked>
+                        <input onclick="optimizeNotifications('3', this)" id="p3" type="checkbox" checked>
                         <span></span>
                     </label></div>
                 <div href="#" id="2FA_change_notifs" style="height: 50%" class="apple-button notif">2FA modifications
                     <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                        <input onclick="optimizeNotifications('4', this)" id="p4"  type="checkbox" checked>
+                        <input onclick="optimizeNotifications('4', this)" id="p4" type="checkbox" checked>
                         <span></span>
                     </label>
                 </div>
                 <div href="#" id="IP_change_notifs" style="height: 50%" class="apple-button notif">IP modifications
                     <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                        <input onclick="optimizeNotifications('5', this)" id="p5"  type="checkbox" checked>
+                        <input onclick="optimizeNotifications('5', this)" id="p5" type="checkbox" checked>
                         <span></span>
                     </label>
                 </div>
@@ -938,7 +961,7 @@
                 <div href="#" id="pfp_notifs" style="height: 50%" class="apple-button notif">Profile picture
                     modifications
                     <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                        <input onclick="optimizeNotifications('14', this)" id="p14"  type="checkbox" checked>
+                        <input onclick="optimizeNotifications('14', this)" id="p14" type="checkbox" checked>
                         <span></span>
                     </label>
                 </div>
@@ -946,13 +969,13 @@
                 <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New friend
                     requests
                     <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                        <input onclick="optimizeNotifications('7', this)" id="p7"  type="checkbox" checked>
+                        <input onclick="optimizeNotifications('7', this)" id="p7" type="checkbox" checked>
                         <span></span>
                     </label>
                 </div>
                 <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New friends
                     <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                        <input onclick="optimizeNotifications('8', this)"  id="p8"  type="checkbox" checked>
+                        <input onclick="optimizeNotifications('8', this)" id="p8" type="checkbox" checked>
                         <span></span>
                     </label>
                 </div>
@@ -960,13 +983,13 @@
                 <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">Friend's online
                     status
                     <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                        <input onclick="optimizeNotifications('9', this)" id="p9"  type="checkbox" checked>
+                        <input onclick="optimizeNotifications('9', this)" id="p9" type="checkbox" checked>
                         <span></span>
                     </label>
                 </div>
                 <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New Evox user
                     <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                        <input onclick="optimizeNotifications('10', this)" id="p10"  type="checkbox" checked>
+                        <input onclick="optimizeNotifications('10', this)" id="p10" type="checkbox" checked>
                         <span></span>
                     </label>
                 </div>
@@ -974,20 +997,20 @@
                 <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New app
                     purchase
                     <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                        <input onclick="optimizeNotifications('11', this)" id="p11"  type="checkbox" checked>
+                        <input onclick="optimizeNotifications('11', this)" id="p11" type="checkbox" checked>
                         <span></span>
                     </label>
                 </div>
                 <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">Weather in your
                     area
                     <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                        <input onclick="optimizeNotifications('12', this)" id="p12"  type="checkbox">
+                        <input onclick="optimizeNotifications('12', this)" id="p12" type="checkbox">
                         <span></span>
                     </label>
                 </div>
                 <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New app release
                     <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                        <input onclick="optimizeNotifications('13', this)" id="p13"  type="checkbox" checked>
+                        <input onclick="optimizeNotifications('13', this)" id="p13" type="checkbox" checked>
                         <span></span>
                     </label>
                 </div>
@@ -1004,11 +1027,12 @@
 
                 <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Cryptox</h3>
                 <p style="margin: 6px" class="user-email">CRYPTOX INFORMATION</p>
-                <a href="#" id="cryptox_stats" style="height: 50%" class="apple-button notif">Operations<label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                <a href="#" id="cryptox_stats" style="height: 50%" class="apple-button notif">Operations<label
+                        style="position: absolute;top: 50%;right: 20px;" class="toggle">
                         <input onclick="changeCryptox()" id="cryptox-status" type="checkbox">
                         <span></span>
                     </label></a>
-                    <p style="text-align: center;margin-top: 10px;margin-bottom: 10px;">Encryption IV</p>
+                <p style="text-align: center;margin-top: 10px;margin-bottom: 10px;">Encryption IV</p>
                 <p id="cryptox-iv" class="apple-input" value="Error Retrieving IV">Error Retrieving IV</p>
                 <p style="text-align: center;margin-top: 10px;margin-bottom: 10px;">Encryption Key</p>
                 <p class="apple-input">**********************************</p>
@@ -1018,8 +1042,12 @@
                     on.-->
                 </p><!--<br><br><br><b>⚠️WARNING: RESETTING YOUR CRYPTOX CREDENTIALS WILL REVOKE ACCESS TO SECURELINE
                     MESSAGES FOR YOU AND ALL PARTICIPANTS!</b>-->
-                <br><p id="warn-cryptox" style="margin: 6px;transition: background-color 0.3s ease, opacity 0.5s ease, transform 0.5s ease;border-radius: 12px;padding: 10px" class="user-email">
-                    ⚠️WARNING: By disabling Cryptox you might lose access to your account. Because of that, you cannot disable Cryptox at the moment.</p>
+                <br>
+                <p id="warn-cryptox"
+                    style="margin: 6px;transition: background-color 0.3s ease, opacity 0.5s ease, transform 0.5s ease;border-radius: 12px;padding: 10px"
+                    class="user-email">
+                    ⚠️WARNING: By disabling Cryptox you might lose access to your account. Because of that, you cannot
+                    disable Cryptox at the moment.</p>
 
 
 
@@ -1181,6 +1209,98 @@
                     </svg>
                 </div>
             </div>
+        </div>
+        <div id="coming" style="display:none;overflow:auto">
+
+            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Evox® Plans</h3>
+            <div class="timeline">
+                <div class="event complete">
+                    <div class="event-content">
+                        <div class="event-date">February 2024</div>
+                        <div class="event-description">Cryptox Integration with Evox Gateway.</div>
+                    </div>
+                </div>
+                <div class="event complete">
+                    <div class="event-content">
+                        <div class="event-date">February 2024</div>
+                        <div class="event-description">Secureline Integration with Evox Gateway.</div>
+                    </div>
+                </div>
+                <div class="event complete">
+                    <div class="event-content">
+                        <div class="event-date">February 2024</div>
+                        <div class="event-description">Integration of Two-Factor Authentication into Evox accounts.</div>
+                    </div>
+                </div>
+                <div class="event complete">
+                    <div class="event-content">
+                        <div class="event-date">February 2024</div>
+                        <div class="event-description">Date of Birth and Last Seen Features.</div>
+                    </div>
+                </div>
+                <div class="event complete">
+                    <div class="event-content">
+                        <div class="event-date">February 2024</div>
+                        <div class="event-description">Expanded Email Options for Evox Accounts.</div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="event-content fadeInOut-timeline">
+                        <div class="event-date">ETA: March 2024</div>
+                        <div class="event-description">Efficient Account Recovery and Password Reset for Evox Users.</div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="event-content fadeInOut-timeline">
+                        <div class="event-date">ETA: March 2024</div>
+                        <div class="event-description">Introduction of User-Controlled Friend Request Decline Feature.</div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="event-content fadeInOut-timeline">
+                        <div class="event-date">ETA: March 2024</div>
+                        <div class="event-description">Implementation of User-Driven Evox User Blocking Functionality.</div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="event-content fadeInOut-timeline">
+                        <div class="event-date">ETA: March 2024</div>
+                        <div class="event-description">Introduction of Username Change Capability for Users.</div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="event-content fadeInOut-timeline">
+                        <div class="event-date">ETA: March 2024</div>
+                        <div class="event-description">Integration of External Email Login Option for Users.</div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="event-content fadeInOut-timeline">
+                        <div class="event-date">ETA: April 2024</div>
+                        <div class="event-description">Introduction of Profile Picture Rollback Option for 7 Days Post-Change.</div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="event-content fadeInOut-timeline">
+                        <div class="event-date">ETA: Unknown</div>
+                        <div class="event-description">Migration to New Datacenter: Enhanced Speed and Security.</div>
+                    </div>
+                </div>
+                <div class="event">
+                    <div class="event-content fadeInOut-timeline">
+                        <div class="event-date">ETA: Unknown</div>
+                        <div class="event-description">Global Activation of Cryptox Operations for All Evox Users.</div>
+                    </div>
+                </div>
+                <!-- Add more events as needed -->
+            </div>
+
+            <div class="transparent-placeholder"></div>
+
+
+
+
+
         </div>
         <div id="store" style="display:none">
 
@@ -1555,6 +1675,14 @@
                         d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                         fill="#666"></path>
                 </svg></a>
+                <a id="coming_soon" onclick="coming()" href="#" class="apple-button-withicon" style="background-color: #1c4437;"><img
+                    style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;"
+                    src="EvoxEPSILON.png">What's Coming To Evox<svg xmlns="http://www.w3.org/2000/svg" width="20px"
+                    height="20px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                        fill="#666"></path>
+                </svg></a>
 
             <!--<h3 style="margin-bottom: 4px;">Client</h3>
             <a href="#" onclick="logoff()" style="color:#eb2424" class="apple-button">Log Out <span><svg id="logoutsvg"
@@ -1586,8 +1714,9 @@
                         viewBox="0 0 24 24">
                         <path fill="none" stroke="#a2a2a2" stroke-width="2"
                             d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8" />
-                    </svg></a>-->
-            </p>
+                    </svg></a>
+            </p>-->
+            <div class="transparent-placeholder"></div>
 
         </div>
         <div id="password_change" style="display:none;overflow: hidden;">
@@ -1707,34 +1836,39 @@
         <div id="evox_gateway_info" style="display:none;overflow: hidden;">
 
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Evox® Gateway</h3>
-            <img src="V0.90.png" style="display: block; margin: 20px auto; max-width: 500px; border-radius: 20px;width:100%">
+            <img src="V0.91_bugs.png"
+                style="display: block; margin: 20px auto; max-width: 500px; border-radius: 20px;width:100%">
             <div href="#" class="apple-button">
                 Current Version
-                <span>0.90</span></div>
-                <a href="#" onclick="restart()" class="apple-button">Restart<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                    <path d="M4.39502 12.0014C4.39544 12.4156 4.73156 12.751 5.14577 12.7506C5.55998 12.7502 5.89544 12.4141 5.89502 11.9999L4.39502 12.0014ZM6.28902 8.1116L6.91916 8.51834L6.91952 8.51777L6.28902 8.1116ZM9.33502 5.5336L9.0396 4.84424L9.03866 4.84464L9.33502 5.5336ZM13.256 5.1336L13.4085 4.39927L13.4062 4.39878L13.256 5.1336ZM16.73 7.0506L16.1901 7.57114L16.1907 7.57175L16.73 7.0506ZM17.7142 10.2078C17.8286 10.6059 18.2441 10.8358 18.6422 10.7214C19.0403 10.607 19.2703 10.1915 19.1558 9.79342L17.7142 10.2078ZM17.7091 9.81196C17.6049 10.2129 17.8455 10.6223 18.2464 10.7265C18.6473 10.8307 19.0567 10.5901 19.1609 10.1892L17.7091 9.81196ZM19.8709 7.45725C19.9751 7.05635 19.7346 6.6469 19.3337 6.54272C18.9328 6.43853 18.5233 6.67906 18.4191 7.07996L19.8709 7.45725ZM18.2353 10.7235C18.6345 10.8338 19.0476 10.5996 19.1579 10.2004C19.2683 9.80111 19.034 9.38802 18.6348 9.2777L18.2353 10.7235ZM15.9858 8.5457C15.5865 8.43537 15.1734 8.66959 15.0631 9.06884C14.9528 9.46809 15.187 9.88119 15.5863 9.99151L15.9858 8.5457ZM19.895 11.9999C19.8946 11.5856 19.5585 11.2502 19.1443 11.2506C18.7301 11.251 18.3946 11.5871 18.395 12.0014L19.895 11.9999ZM18.001 15.8896L17.3709 15.4829L17.3705 15.4834L18.001 15.8896ZM14.955 18.4676L15.2505 19.157L15.2514 19.1566L14.955 18.4676ZM11.034 18.8676L10.8815 19.6019L10.8839 19.6024L11.034 18.8676ZM7.56002 16.9506L8.09997 16.4301L8.09938 16.4295L7.56002 16.9506ZM6.57584 13.7934C6.46141 13.3953 6.04593 13.1654 5.64784 13.2798C5.24974 13.3942 5.01978 13.8097 5.13421 14.2078L6.57584 13.7934ZM6.58091 14.1892C6.6851 13.7884 6.44457 13.3789 6.04367 13.2747C5.64277 13.1705 5.23332 13.4111 5.12914 13.812L6.58091 14.1892ZM4.41914 16.544C4.31495 16.9449 4.55548 17.3543 4.95638 17.4585C5.35727 17.5627 5.76672 17.3221 5.87091 16.9212L4.41914 16.544ZM6.05478 13.2777C5.65553 13.1674 5.24244 13.4016 5.13212 13.8008C5.02179 14.2001 5.25601 14.6132 5.65526 14.7235L6.05478 13.2777ZM8.30426 15.4555C8.70351 15.5658 9.11661 15.3316 9.22693 14.9324C9.33726 14.5331 9.10304 14.12 8.70378 14.0097L8.30426 15.4555ZM5.89502 11.9999C5.89379 10.7649 6.24943 9.55591 6.91916 8.51834L5.65889 7.70487C4.83239 8.98532 4.3935 10.4773 4.39502 12.0014L5.89502 11.9999ZM6.91952 8.51777C7.57513 7.50005 8.51931 6.70094 9.63139 6.22256L9.03866 4.84464C7.65253 5.4409 6.47568 6.43693 5.65852 7.70544L6.91952 8.51777ZM9.63045 6.22297C10.7258 5.75356 11.9383 5.62986 13.1059 5.86842L13.4062 4.39878C11.9392 4.09906 10.4158 4.25448 9.0396 4.84424L9.63045 6.22297ZM13.1035 5.86793C14.2803 6.11232 15.3559 6.7059 16.1901 7.57114L17.27 6.53006C16.2264 5.44761 14.8807 4.70502 13.4085 4.39927L13.1035 5.86793ZM16.1907 7.57175C16.9065 8.31258 17.4296 9.21772 17.7142 10.2078L19.1558 9.79342C18.8035 8.5675 18.1557 7.44675 17.2694 6.52945L16.1907 7.57175ZM19.1609 10.1892L19.8709 7.45725L18.4191 7.07996L17.7091 9.81196L19.1609 10.1892ZM18.6348 9.2777L15.9858 8.5457L15.5863 9.99151L18.2353 10.7235L18.6348 9.2777ZM18.395 12.0014C18.3963 13.2363 18.0406 14.4453 17.3709 15.4829L18.6312 16.2963C19.4577 15.0159 19.8965 13.5239 19.895 11.9999L18.395 12.0014ZM17.3705 15.4834C16.7149 16.5012 15.7707 17.3003 14.6587 17.7786L15.2514 19.1566C16.6375 18.5603 17.8144 17.5643 18.6315 16.2958L17.3705 15.4834ZM14.6596 17.7782C13.5643 18.2476 12.3517 18.3713 11.1842 18.1328L10.8839 19.6024C12.3508 19.9021 13.8743 19.7467 15.2505 19.157L14.6596 17.7782ZM11.1865 18.1333C10.0098 17.8889 8.93411 17.2953 8.09997 16.4301L7.02008 17.4711C8.06363 18.5536 9.40936 19.2962 10.8815 19.6019L11.1865 18.1333ZM8.09938 16.4295C7.38355 15.6886 6.86042 14.7835 6.57584 13.7934L5.13421 14.2078C5.48658 15.4337 6.13433 16.5545 7.02067 17.4718L8.09938 16.4295ZM5.12914 13.812L4.41914 16.544L5.87091 16.9212L6.58091 14.1892L5.12914 13.812ZM5.65526 14.7235L8.30426 15.4555L8.70378 14.0097L6.05478 13.2777L5.65526 14.7235Z" fill="#fff"/>
-                    </svg></a>
-                <p style="padding-left: 10px" class="">Latest Gateway Update:</p>
-                <div class="user-info-default">
-                    <div class="user-circle">
-                        <img src="evox-logo-apple.png" alt="User Image">
-                    </div>
-                    <div class="user-details">
-                        <div id="gt-update-title" class="user-email">Fix bugs in account settings</div>
-                        <div id="gt-update-desc" class="user-email">removed {} from all operations</div>
-                    </div>
+                <span>0.91</span>
+            </div>
+            <a href="#" onclick="restart()" class="apple-button">Restart<svg xmlns="http://www.w3.org/2000/svg"
+                    width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M4.39502 12.0014C4.39544 12.4156 4.73156 12.751 5.14577 12.7506C5.55998 12.7502 5.89544 12.4141 5.89502 11.9999L4.39502 12.0014ZM6.28902 8.1116L6.91916 8.51834L6.91952 8.51777L6.28902 8.1116ZM9.33502 5.5336L9.0396 4.84424L9.03866 4.84464L9.33502 5.5336ZM13.256 5.1336L13.4085 4.39927L13.4062 4.39878L13.256 5.1336ZM16.73 7.0506L16.1901 7.57114L16.1907 7.57175L16.73 7.0506ZM17.7142 10.2078C17.8286 10.6059 18.2441 10.8358 18.6422 10.7214C19.0403 10.607 19.2703 10.1915 19.1558 9.79342L17.7142 10.2078ZM17.7091 9.81196C17.6049 10.2129 17.8455 10.6223 18.2464 10.7265C18.6473 10.8307 19.0567 10.5901 19.1609 10.1892L17.7091 9.81196ZM19.8709 7.45725C19.9751 7.05635 19.7346 6.6469 19.3337 6.54272C18.9328 6.43853 18.5233 6.67906 18.4191 7.07996L19.8709 7.45725ZM18.2353 10.7235C18.6345 10.8338 19.0476 10.5996 19.1579 10.2004C19.2683 9.80111 19.034 9.38802 18.6348 9.2777L18.2353 10.7235ZM15.9858 8.5457C15.5865 8.43537 15.1734 8.66959 15.0631 9.06884C14.9528 9.46809 15.187 9.88119 15.5863 9.99151L15.9858 8.5457ZM19.895 11.9999C19.8946 11.5856 19.5585 11.2502 19.1443 11.2506C18.7301 11.251 18.3946 11.5871 18.395 12.0014L19.895 11.9999ZM18.001 15.8896L17.3709 15.4829L17.3705 15.4834L18.001 15.8896ZM14.955 18.4676L15.2505 19.157L15.2514 19.1566L14.955 18.4676ZM11.034 18.8676L10.8815 19.6019L10.8839 19.6024L11.034 18.8676ZM7.56002 16.9506L8.09997 16.4301L8.09938 16.4295L7.56002 16.9506ZM6.57584 13.7934C6.46141 13.3953 6.04593 13.1654 5.64784 13.2798C5.24974 13.3942 5.01978 13.8097 5.13421 14.2078L6.57584 13.7934ZM6.58091 14.1892C6.6851 13.7884 6.44457 13.3789 6.04367 13.2747C5.64277 13.1705 5.23332 13.4111 5.12914 13.812L6.58091 14.1892ZM4.41914 16.544C4.31495 16.9449 4.55548 17.3543 4.95638 17.4585C5.35727 17.5627 5.76672 17.3221 5.87091 16.9212L4.41914 16.544ZM6.05478 13.2777C5.65553 13.1674 5.24244 13.4016 5.13212 13.8008C5.02179 14.2001 5.25601 14.6132 5.65526 14.7235L6.05478 13.2777ZM8.30426 15.4555C8.70351 15.5658 9.11661 15.3316 9.22693 14.9324C9.33726 14.5331 9.10304 14.12 8.70378 14.0097L8.30426 15.4555ZM5.89502 11.9999C5.89379 10.7649 6.24943 9.55591 6.91916 8.51834L5.65889 7.70487C4.83239 8.98532 4.3935 10.4773 4.39502 12.0014L5.89502 11.9999ZM6.91952 8.51777C7.57513 7.50005 8.51931 6.70094 9.63139 6.22256L9.03866 4.84464C7.65253 5.4409 6.47568 6.43693 5.65852 7.70544L6.91952 8.51777ZM9.63045 6.22297C10.7258 5.75356 11.9383 5.62986 13.1059 5.86842L13.4062 4.39878C11.9392 4.09906 10.4158 4.25448 9.0396 4.84424L9.63045 6.22297ZM13.1035 5.86793C14.2803 6.11232 15.3559 6.7059 16.1901 7.57114L17.27 6.53006C16.2264 5.44761 14.8807 4.70502 13.4085 4.39927L13.1035 5.86793ZM16.1907 7.57175C16.9065 8.31258 17.4296 9.21772 17.7142 10.2078L19.1558 9.79342C18.8035 8.5675 18.1557 7.44675 17.2694 6.52945L16.1907 7.57175ZM19.1609 10.1892L19.8709 7.45725L18.4191 7.07996L17.7091 9.81196L19.1609 10.1892ZM18.6348 9.2777L15.9858 8.5457L15.5863 9.99151L18.2353 10.7235L18.6348 9.2777ZM18.395 12.0014C18.3963 13.2363 18.0406 14.4453 17.3709 15.4829L18.6312 16.2963C19.4577 15.0159 19.8965 13.5239 19.895 11.9999L18.395 12.0014ZM17.3705 15.4834C16.7149 16.5012 15.7707 17.3003 14.6587 17.7786L15.2514 19.1566C16.6375 18.5603 17.8144 17.5643 18.6315 16.2958L17.3705 15.4834ZM14.6596 17.7782C13.5643 18.2476 12.3517 18.3713 11.1842 18.1328L10.8839 19.6024C12.3508 19.9021 13.8743 19.7467 15.2505 19.157L14.6596 17.7782ZM11.1865 18.1333C10.0098 17.8889 8.93411 17.2953 8.09997 16.4301L7.02008 17.4711C8.06363 18.5536 9.40936 19.2962 10.8815 19.6019L11.1865 18.1333ZM8.09938 16.4295C7.38355 15.6886 6.86042 14.7835 6.57584 13.7934L5.13421 14.2078C5.48658 15.4337 6.13433 16.5545 7.02067 17.4718L8.09938 16.4295ZM5.12914 13.812L4.41914 16.544L5.87091 16.9212L6.58091 14.1892L5.12914 13.812ZM5.65526 14.7235L8.30426 15.4555L8.70378 14.0097L6.05478 13.2777L5.65526 14.7235Z"
+                        fill="#fff" />
+                </svg></a>
+            <p style="padding-left: 10px" class="">Latest Gateway Update:</p>
+            <div class="user-info-default">
+                <div class="user-circle">
+                    <img src="evox-logo-apple.png" alt="User Image">
                 </div>
-                <p style="padding-left: 10px" class="">Latest Datacenter Update:</p>
-                <div class="user-info-default">
-                    <div class="user-circle">
-                        <img src="datacenter_icon.gif" alt="User Image">
-                    </div>
-                    <div class="user-details">
-                        <div id="dc-update-title" class="user-name">V0.90</div>
-                        <div id="dc-update-title" class="user-email">Florida Notifications Preferences</div>
-                    </div>
+                <div class="user-details">
+                    <div id="gt-update-title" class="user-email">Fix bugs in account settings</div>
+                    <div id="gt-update-desc" class="user-email">removed {} from all operations</div>
                 </div>
-
+            </div>
+            <p style="padding-left: 10px" class="">Latest Datacenter Update:</p>
+            <div class="user-info-default">
+                <div class="user-circle">
+                    <img src="datacenter_icon.gif" alt="User Image">
+                </div>
+                <div class="user-details">
+                    <div id="dc-update-title" class="user-name">V0.90</div>
+                    <div id="dc-update-title" class="user-email">Florida Notifications Preferences</div>
+                </div>
+            </div>
+            <div class="transparent-placeholder"></div>
         </div>
     </div>
     <div id="buy-products" class="popupright" style="color: #dbdbdb">
@@ -1975,11 +2109,16 @@
     </button>
 
     <button onclick="show_notif()" id="animatedButton_notif">
-        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-            <path
-                d="M9.00195 17H5.60636C4.34793 17 3.71872 17 3.58633 16.9023C3.4376 16.7925 3.40126 16.7277 3.38515 16.5436C3.37082 16.3797 3.75646 15.7486 4.52776 14.4866C5.32411 13.1835 6.00031 11.2862 6.00031 8.6C6.00031 7.11479 6.63245 5.69041 7.75766 4.6402C8.88288 3.59 10.409 3 12.0003 3C13.5916 3 15.1177 3.59 16.2429 4.6402C17.3682 5.69041 18.0003 7.11479 18.0003 8.6C18.0003 11.2862 18.6765 13.1835 19.4729 14.4866C20.2441 15.7486 20.6298 16.3797 20.6155 16.5436C20.5994 16.7277 20.563 16.7925 20.4143 16.9023C20.2819 17 19.6527 17 18.3943 17H15.0003M9.00195 17L9.00031 18C9.00031 19.6569 10.3435 21 12.0003 21C13.6572 21 15.0003 19.6569 15.0003 18V17M9.00195 17H15.0003"
-                stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+
+        <svg id="notif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff"
+            width="25px" height="25px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
+            <path stroke="#fff" stroke-width="1" class="clr-i-outline clr-i-outline-path-1"
+                d="M32.51,27.83A14.4,14.4,0,0,1,30,24.9a12.63,12.63,0,0,1-1.35-4.81V15.15A10.81,10.81,0,0,0,19.21,4.4V3.11a1.33,1.33,0,1,0-2.67,0V4.42A10.81,10.81,0,0,0,7.21,15.15v4.94A12.63,12.63,0,0,1,5.86,24.9a14.4,14.4,0,0,1-2.47,2.93,1,1,0,0,0-.34.75v1.36a1,1,0,0,0,1,1h27.8a1,1,0,0,0,1-1V28.58A1,1,0,0,0,32.51,27.83ZM5.13,28.94a16.17,16.17,0,0,0,2.44-3,14.24,14.24,0,0,0,1.65-5.85V15.15a8.74,8.74,0,1,1,17.47,0v4.94a14.24,14.24,0,0,0,1.65,5.85,16.17,16.17,0,0,0,2.44,3Z" />
+            <path class="clr-i-outline clr-i-outline-path-2"
+                d="M18,34.28A2.67,2.67,0,0,0,20.58,32H15.32A2.67,2.67,0,0,0,18,34.28Z" />
+            <rect x="0" y="0" width="36" height="36" fill-opacity="0" />
         </svg>
+
     </button>
 
 
@@ -2077,6 +2216,17 @@
         </div>
 
     </div>
+    <div id="fullimage" class="popup">
+        <div style="text-align: center; margin-top: 20px;">
+            <div class="chat-user-img online align-self-center me-3 ms-0" style="position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);">
+                <img id="fullimage-src" src="" class="rounded-circle avatar-xs" alt="">
+                <!--<span class="user-status"></span>-->
+            </div>
+        </div>
+    </div>
     <div id="navigator"
         style="overflow: hidden;z-index: 999;position: fixed; bottom: 42.5px; transform: translate(-50%, -50%); left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;display:none">
         <div onclick="settings()" id="settings">
@@ -2101,6 +2251,7 @@
             </div>
         </div>
     </div>
+
 </body>
 
 

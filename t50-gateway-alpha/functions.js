@@ -466,16 +466,16 @@ function uielements() {
 		document.getElementById("usr-img").src = "reloading-pfp.gif"
 	}
 
-	
+
 
 	if (sessionStorage.getItem("pfp")) {
 		document.getElementById("profile-pfp").src = sessionStorage.getItem("pfp")
 	} else {
 		sessionStorage.setItem("show_profile", "waiting")
 	}
-	if (!localStorage.getItem("error_DC")) {
-		$("#errors").fadeIn("slow") //DONT FADE IN, NO ERRORS
-	}
+	//if (!localStorage.getItem("error_DC")) {
+	//	$("#errors").fadeIn("slow") //DONT FADE IN, NO ERRORS
+	//}
 
 	$("#profile").fadeIn("fast")
 
@@ -611,7 +611,49 @@ function settings() {
 }
 
 function close_popup() {
+	fetch(`https://evox-datacenter.onrender.com/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log("Fetching Notifications")
+      if (data === `{"notifications":[]}` || data === "No notifications!") {
+        console.log("No Notifications")
+        //Do nothing
+      } else {
+        const notifications = JSON.parse(data)
+        const numNotifications = notifications.notifications.length;
+        const localNotif = localStorage.getItem("notifications_seen")
+        if (localNotif) {
+          const notifNum = Number(localNotif)
+          if (notifNum < numNotifications) {
+            var animatedButton = document.getElementById("animatedButton_notif");
+            animatedButton.classList.add("fadeInOut")
+            animatedButton.style.display = "block";
+            animatedButton.innerHTML = `<svg id="notif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px" height="25px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
+            <path stroke="#fff" stroke-width="2" class="clr-i-outline--badged clr-i-outline-path-1--badged" d="M18,34.28A2.67,2.67,0,0,0,20.58,32H15.32A2.67,2.67,0,0,0,18,34.28Z"/><path class="clr-i-outline--badged clr-i-outline-path-2--badged" d="M32.51,27.83A14.4,14.4,0,0,1,30,24.9a12.63,12.63,0,0,1-1.35-4.81V15.15a10.92,10.92,0,0,0-.16-1.79,7.44,7.44,0,0,1-2.24-.84,8.89,8.89,0,0,1,.4,2.64v4.94a14.24,14.24,0,0,0,1.65,5.85,16.17,16.17,0,0,0,2.44,3H5.13a16.17,16.17,0,0,0,2.44-3,14.24,14.24,0,0,0,1.65-5.85V15.15A8.8,8.8,0,0,1,18,6.31a8.61,8.61,0,0,1,4.76,1.44A7.49,7.49,0,0,1,22.5,6c0-.21,0-.42,0-.63a10.58,10.58,0,0,0-3.32-1V3.11a1.33,1.33,0,1,0-2.67,0V4.42A10.81,10.81,0,0,0,7.21,15.15v4.94A12.63,12.63,0,0,1,5.86,24.9a14.4,14.4,0,0,1-2.47,2.93,1,1,0,0,0-.34.75v1.36a1,1,0,0,0,1,1h27.8a1,1,0,0,0,1-1V28.58A1,1,0,0,0,32.51,27.83Z"/><circle class="clr-i-outline--badged clr-i-outline-path-1--badged clr-i-badge" cx="30" cy="6" r="5"/>
+            <rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
+        </svg>`
+            setTimeout(function () {
+              animatedButton.style.opacity = "1";
+              animatedButton.style.transform = "translateY(0)";
+            }, 100);
+          } else {
+            console.log("No new notifications")
+          }
+        } else {
+          console.log("No Local Value")
+        }
+      }
 
+
+    })
+    .catch(error => {
+      console.error('Fetch error:', error);
+    });
 	settings()
 }
 
@@ -1408,7 +1450,7 @@ function loadusers() {
 
 									var userCircle = document.createElement("div");
 									userCircle.className = "user-circle";
-									userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp" alt="User ${username} Image">`;
+									userCircle.innerHTML = `<img onclick="fullimage(this)" src="loading-circle.gif" id="${username}-pfp" alt="User ${username} Image">`;
 									var userDetails = document.createElement("div");
 									userDetails.className = "user-details";
 
@@ -2079,6 +2121,11 @@ function return_to_options(where) {
 				$("#main_settings").fadeIn("fast")
 				navigator("return_settings")
 			})
+		} else if (where === "coming") {
+			$("#vox").fadeIn("fast")
+			$("#coming").fadeOut("fast", function () {
+				$("#main_popup_settings").fadeIn("fast")
+			})
 		} else if (where === "reset") {
 			return;
 			const elementsToHide = [
@@ -2662,15 +2709,24 @@ function show_notif(nosound) {
 			console.log(data);
 			var container = document.getElementById("notif_container");
 			container.innerHTML = "";
+			animatedButton.classList.remove("fadeInOut")
+            animatedButton.innerHTML = `<svg id="notif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px" height="25px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
+            <path stroke="#fff" stroke-width="1" class="clr-i-outline clr-i-outline-path-1" d="M32.51,27.83A14.4,14.4,0,0,1,30,24.9a12.63,12.63,0,0,1-1.35-4.81V15.15A10.81,10.81,0,0,0,19.21,4.4V3.11a1.33,1.33,0,1,0-2.67,0V4.42A10.81,10.81,0,0,0,7.21,15.15v4.94A12.63,12.63,0,0,1,5.86,24.9a14.4,14.4,0,0,1-2.47,2.93,1,1,0,0,0-.34.75v1.36a1,1,0,0,0,1,1h27.8a1,1,0,0,0,1-1V28.58A1,1,0,0,0,32.51,27.83ZM5.13,28.94a16.17,16.17,0,0,0,2.44-3,14.24,14.24,0,0,0,1.65-5.85V15.15a8.74,8.74,0,1,1,17.47,0v4.94a14.24,14.24,0,0,0,1.65,5.85,16.17,16.17,0,0,0,2.44,3Z"/><path class="clr-i-outline clr-i-outline-path-2" d="M18,34.28A2.67,2.67,0,0,0,20.58,32H15.32A2.67,2.67,0,0,0,18,34.28Z"/>
+            <rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
+        </svg>`
 			if (data === `{"notifications":[]}` || data === "No notifications!") {
 				var a = document.createElement("a");
 				a.href = "#";
 				a.className = "apple-button";
+				localStorage.setItem("notifications_seen", "0")
 				a.appendChild(document.createTextNode("There's nothing here, yet." + " "));
 				container.appendChild(a);
 				return;
 			}
 			let jsonData = JSON.parse(data);
+			var numNotifications = jsonData.notifications.length;
+			console.log(numNotifications)
+			localStorage.setItem("notifications_seen", numNotifications)
 			var notifications = jsonData.notifications;
 			console.log(notifications);
 			notifications.reverse(); // Reverse the order of notifications
@@ -3611,6 +3667,17 @@ function qa_pfp() {
 	showUploadBox()
 }
 
+function coming() {
+	$("#vox").fadeOut("fast")
+	navigator("coming")
+	$("#main_popup_settings").fadeOut("fast", function () {
+		$("#coming").fadeIn("fast")
+	})
+
+	//error.play()
+}
+
+
 function store() {
 	navigator("store")
 	let appshtml = document.getElementById("apps").innerHTML
@@ -4198,6 +4265,22 @@ Settings
 	</svg>
 	Gateway
 </div>
+</div>`, coming = `<div onclick="return_to_options('coming');navigator('settings_tonexus')">
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Settings
+</div>
 </div>`;
 	const notifications = `<div onclick="close_notif();navigator('sett_def')"
 >
@@ -4301,6 +4384,24 @@ Settings
 	Apps&nbsp;Using&nbsp;Evox®
 </div>
 </div>`
+	const fullimage = `<div onclick='close_fullimage()'
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Add Friends
+</div>
+</div>`
 	$("#navigator").fadeOut("fast", function () {
 		if (w === "sett_def") {
 			document.getElementById("navigator").innerHTML = sett_def
@@ -4394,7 +4495,13 @@ Settings
 		if (w === "sign_in_wevox_e") {
 			document.getElementById("navigator").innerHTML = sign_in_wevox_e
 		}
+		if (w === "fullimage") {
+			document.getElementById("navigator").innerHTML = fullimage
+		}
 
+		if (w === "coming") {
+			document.getElementById("navigator").innerHTML = coming
+		}
 
 
 
@@ -4419,7 +4526,7 @@ function hide_new() {
 	document.getElementById('gateway').style.filter = ''
 	document.getElementById("whats_new").classList.remove("active");
 	$("#navigator").fadeIn("fast")
-	localStorage.setItem("New_ID0.90", "SEEN")
+	localStorage.setItem("New_ID0.91", "SEEN")
 	setup()
 }
 function hide_new_set() {
@@ -4427,7 +4534,7 @@ function hide_new_set() {
 	document.getElementById("whats_new").classList.remove("active");
 	$("#navigator").fadeIn("fast")
 	vox()
-	localStorage.setItem("New_ID0.90", "SEEN")
+	localStorage.setItem("New_ID0.91", "SEEN")
 }
 
 function show_news() {
@@ -4783,47 +4890,112 @@ function clearflrd() {
 }
 
 function app_use_info(app) {
-		document.getElementById('gateway').style.filter = 'blur(50px)'
-		if (app === "gateway") {
-			navigator('sign_in_wevox_e')
-			const repoOwner = 'HackerXYT'; // Replace 'owner' with the GitHub username or organization name
-			const repoName = 'hackerxyt.github.io'; // Replace 'repository' with the name of the GitHub repository
+	document.getElementById('gateway').style.filter = 'blur(50px)'
+	if (app === "gateway") {
+		navigator('sign_in_wevox_e')
+		const repoOwner = 'HackerXYT'; // Replace 'owner' with the GitHub username or organization name
+		const repoName = 'hackerxyt.github.io'; // Replace 'repository' with the name of the GitHub repository
 
-			fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/commits`)
-				.then(response => response.json())
-				.then(data => {
-					if (data.length > 0) {
-						const latestCommit = data[0];
-						const commitTitle = latestCommit.commit.message;
-						const commitDescription = latestCommit.commit.description;
+		fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/commits`)
+			.then(response => response.json())
+			.then(data => {
+				if (data.length > 0) {
+					const latestCommit = data[0];
+					const commitTitle = latestCommit.commit.message;
+					const commitDescription = latestCommit.commit.description;
 
-						console.log("Latest Commit Title:", commitTitle);
-						if (commitTitle.includes("Merge")) {
-							document.getElementById("gt-update-title").innerHTML = "Branches Merge"
+					console.log("Latest Commit Title:", commitTitle);
+					if (commitTitle.includes("Merge")) {
+						document.getElementById("gt-update-title").innerHTML = "Branches Merge"
+						document.getElementById("gt-update-desc").style.display = "none"
+					} else {
+						document.getElementById("gt-update-title").innerHTML = commitTitle
+
+						if (commitDescription == null || typeof account == 'undefined') {
 							document.getElementById("gt-update-desc").style.display = "none"
 						} else {
-							document.getElementById("gt-update-title").innerHTML = commitTitle
-
-							if (commitDescription == null || typeof account == 'undefined') {
-								document.getElementById("gt-update-desc").style.display = "none"
-							} else {
-								document.getElementById("gt-update-desc").innerHTML = commitDescription
-							}
+							document.getElementById("gt-update-desc").innerHTML = commitDescription
 						}
-
-
-						console.log("Latest Commit Description:", commitDescription);
-
-					} else {
-						console.log("No commits found in the repository.");
 					}
-				})
-				.catch(error => {
-					console.error("Error fetching commits:", error);
-				});
-			$("#apps_using_evox").fadeOut("fast", function () {
-				$("#evox_gateway_info").fadeIn("fast")
+
+
+					console.log("Latest Commit Description:", commitDescription);
+
+				} else {
+					console.log("No commits found in the repository.");
+				}
 			})
-		}
+			.catch(error => {
+				console.error("Error fetching commits:", error);
+			});
+		$("#apps_using_evox").fadeOut("fast", function () {
+			$("#evox_gateway_info").fadeIn("fast")
+		})
+	}
 
 }
+
+function fullimage(element) {
+	$("#popup").fadeOut("fast")
+	$("#gateway").fadeOut("fast")
+	$("#vox").fadeOut("fast")
+	$("#profile").fadeOut("fast")
+	$("#errors").fadeOut("fast")
+	$("#dots").fadeOut("fast")
+	document.getElementById("fullimage").classList.add("active")
+	document.getElementById("fullimage-src").src = element.src
+	navigator("fullimage")
+}
+
+function close_fullimage() {
+	$("#popup").fadeIn("fast")
+	$("#gateway").fadeIn("fast")
+	$("#vox").fadeIn("fast")
+	document.getElementById("fullimage").classList.remove("active")
+	//document.getElementById("fullimage-src").src = "element.src"
+	navigator("show_search")
+}
+
+document.querySelectorAll('.slide-container').forEach(container => {
+    const appleButton = container.querySelector('.apple-button');
+    const deleteOption = container.querySelector('.delete-option');
+
+    let startX, startY, isDeleting = false;
+
+    appleButton.addEventListener('touchstart', handleTouchStart, false);
+    appleButton.addEventListener('touchmove', handleTouchMove, false);
+    appleButton.addEventListener('touchend', handleTouchEnd, false);
+
+    function handleTouchStart(event) {
+        if (!isDeleting) {
+            container.classList.remove('active');
+        }
+        startX = event.touches[0].clientX;
+        startY = event.touches[0].clientY;
+    }
+
+    function handleTouchMove(event) {
+        if (!startX || !startY) return;
+
+        let currentX = event.touches[0].clientX;
+        let currentY = event.touches[0].clientY;
+        let diffX = startX - currentX;
+        let diffY = startY - currentY;
+
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            event.preventDefault();
+            if (diffX > 0 && !isDeleting) {
+                container.classList.add('active');
+                isDeleting = true;
+            } else if (diffX < 0 && isDeleting) {
+                container.classList.remove('active');
+                isDeleting = false;
+            }
+        }
+    }
+
+    function handleTouchEnd(event) {
+        startX = null;
+        startY = null;
+    }
+});

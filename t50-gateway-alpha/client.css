@@ -1030,6 +1030,38 @@ a {
   background-color: #5e5e5e70;
 }
 
+@keyframes shake {
+  0% { transform: translateY(0); }
+  25% { transform: translateY(0.1vw); }
+  50% { transform: translateY(-0.1vw); }
+  75% { transform: translateY(0.1vw); }
+  100% { transform: translateY(0); }
+}
+
+.notif_shake {
+  animation: shake 3.5s infinite;
+}
+
+@keyframes fadeBackground {
+  0% { background-color: rgb(35, 85, 68); }
+  50% { background-color: #33333370; }
+  100% { background-color: rgb(35, 85, 68); }
+}
+
+.fadeInOut {
+  animation: fadeBackground 4s infinite;
+}
+
+@keyframes fadeBackground-tl {
+  0% { background-color: #434343; }
+  50% { background-color: #333333; }
+  100% { background-color: #434343; }
+}
+
+.fadeInOut-timeline {
+  animation: fadeBackground-tl 4s infinite;
+}
+
 @keyframes glow {
   0% {
     box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.7);
@@ -1800,4 +1832,111 @@ a {
   font-size: 14px;
   color: #666;
   white-space: nowrap;
+}
+
+.slide-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.apple-button-notif {
+  width: 80%;
+  padding-right: 100px; /* Width of delete option */
+  transition: transform 0.3s ease;
+}
+
+
+.delete-option {
+  position: absolute;
+  top: 0;
+  right: -100px; /* Hide delete option initially */
+  width: 100px; /* Width of delete option */
+  height: 100%;
+  background-color: red; /* Adjust styling as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: right 0.3s ease; /* Change transform to right */
+  height: 80%
+}
+
+.slide-container.active .apple-button {
+  transform: translateX(-100px); /* Width of delete option */
+}
+
+.slide-container.active .delete-option {
+  right: 0; /* Display delete option */
+}
+
+.timeline {
+  position: relative;
+  margin: 50px auto;
+  padding: 0 20px;
+  max-width: 600px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background: #555555;
+}
+
+.event {
+  position: relative;
+  margin-bottom: 40px;
+  padding-left: 40px;
+}
+
+.event::after {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' width='25px' height='25px' viewBox='0 0 24 24'%3E%3Cpath d='M23,12A11,11,0,0,1,4.963,20.451l-.256.256A1,1,0,0,1,4,21a.987.987,0,0,1-.383-.076A1,1,0,0,1,3,20V18a1,1,0,0,1,1-1H6a1,1,0,0,1,.707,1.707l-.322.322A9,9,0,1,0,3,12a9.107,9.107,0,0,0,.18,1.8,1,1,0,0,1-1.96.4A11,11,0,1,1,23,12ZM12,5a1,1,0,0,0-1,1v6a1,1,0,0,0,1,1h5a1,1,0,0,0,0-2H13V6A1,1,0,0,0,12,5Z'/%3E%3C/svg%3E");
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+}
+
+.event.complete::after {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M16.0303 10.0303C16.3232 9.73744 16.3232 9.26256 16.0303 8.96967C15.7374 8.67678 15.2626 8.67678 14.9697 8.96967L10.5 13.4393L9.03033 11.9697C8.73744 11.6768 8.26256 11.6768 7.96967 11.9697C7.67678 12.2626 7.67678 12.7374 7.96967 13.0303L9.96967 15.0303C10.2626 15.3232 10.7374 15.3232 11.0303 15.0303L16.0303 10.0303Z' fill='%23fff'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M12 1.25C6.06294 1.25 1.25 6.06294 1.25 12C1.25 17.9371 6.06294 22.75 12 22.75C17.9371 22.75 22.75 17.9371 22.75 12C22.75 6.06294 17.9371 1.25 12 1.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12Z' fill='%23fff'/%3E%3C/svg%3E");
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+}
+
+.event-content {
+  padding: 20px;
+  background: #333333;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.event-content:not(.fadeInOut-timeline) {
+  background: #1b4726;
+}
+
+.event-date {
+  font-size: 14px;
+  color: #999999;
+  margin-bottom: 10px;
+}
+
+.event-description {
+  font-size: 16px;
+  color: #ffffff;
+  line-height: 1.6;
 }
