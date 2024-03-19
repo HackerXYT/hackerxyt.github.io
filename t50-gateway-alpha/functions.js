@@ -4543,15 +4543,20 @@ function show_news() {
 	document.getElementById('gateway').style.filter = 'blur(25px)'
 	document.getElementById("whats_new").classList.add("active");
 	document.getElementById("navigator").style.display = "none"
-	document.getElementById("onclicks_news").innerHTML = `<div onclick="hide_new_set()">
+	document.getElementById("onclicks_news").innerHTML = `<div style="z-index:1;" id="onclicks_news">
+	<div onclick="hide_new_set()">
 		<div
-			style="left:50%; bottom: 40px; position: absolute;  display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-			
-			Proceed<svg style="margin-left: 10px" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
-				<path d="M11 21H12C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3H11M11 16L15 12M15 12L11 8M15 12H3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-				</svg>
+			style="left:50%; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+
+			Proceed<svg style="margin-left: 10px" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+				viewBox="0 0 24 24" fill="none">
+				<path
+					d="M11 21H12C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3H11M11 16L15 12M15 12L11 8M15 12H3"
+					stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+			</svg>
 		</div>
-	</div>`
+	</div>
+</div>`
 	setTimeout(function () {
 		scrollToTop("whats_new")
 	}, 300)
