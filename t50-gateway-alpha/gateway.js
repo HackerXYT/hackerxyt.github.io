@@ -196,6 +196,7 @@ function setup() {
     document.getElementById("loading-text").innerHTML = "Waiting for user to read news."
     $("#loading-text").fadeOut("fast")
     $("#stuck").fadeOut("fast")
+    $("#container").fadeOut("fast")
     document.getElementById('gateway').style.filter = 'blur(25px)'
     document.getElementById("whats_new").classList.add("active");
     document.getElementById("navigator").style.display = "none"
@@ -211,8 +212,8 @@ function setup() {
       try {
         custombg()
         clearInterval(inter)
-      } catch {
-        console.log("CustomBG Failed. Retrying")
+      } catch (error) {
+        console.log("CustomBG Failed. Retrying", error)
       }
     }, 100)
   }
@@ -527,10 +528,10 @@ function setup() {
 
 
 function docready() {
-  if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
-    window.location.href = "./update/"
-    return;
-  }
+  //if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
+  //  window.location.href = "./update/"
+  //  return;
+  //}
 
   console.log('%c' + "Loading Out", `color: green; font-size: 16px; font-weight: normal;`)
   document.getElementById("loading-text").innerHTML = `Storage initialized!<br>Now verifying account...`

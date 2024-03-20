@@ -1940,3 +1940,7 @@ a {
   color: #ffffff;
   line-height: 1.6;
 }
+
+#message_input {
+  margin-right: 10px; /* Adjust as needed */
+}

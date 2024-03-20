@@ -175,6 +175,10 @@ function skip() {
 }
 
 function custombg() {
+	document.getElementById("st1").style.display = ""
+	document.getElementById("st2").style.display = ""
+	document.getElementById("st3").style.display = ""
+	document.getElementById("st4").style.display = ""
 	document.getElementById("current").style.display = "none"
 	let blur = localStorage.getItem("cbg-blur")
 	if (localStorage.getItem("cbg")) {
@@ -186,7 +190,7 @@ function custombg() {
 			document.getElementById("st1").classList.add("active")
 			document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
 		} else if (name === "stock1.jpg") {
-			document.getElementById("bgname").innerHTML = "Greek Mountain"
+			document.getElementById("bgname").innerHTML = "Evox Epsilon"
 			document.getElementById("bgname").style.color = "#fff"
 			document.getElementById("st2").classList.add("active")
 			if (blur) {
@@ -237,6 +241,21 @@ function custombg() {
 	} else {
 		//No Custom BG
 	}
+
+	try {
+		if(document.getElementById("st5").classList.contains("active") && document.getElementById("st1").classList.contains("active")) {
+			document.getElementById("st1").style.display = "none"
+		} else if(document.getElementById("st5").classList.contains("active") && document.getElementById("st2").classList.contains("active")) {
+			document.getElementById("st2").style.display = "none"
+		} else if(document.getElementById("st5").classList.contains("active") && document.getElementById("st3").classList.contains("active")) {
+			document.getElementById("st3").style.display = "none"
+		} else if(document.getElementById("st5").classList.contains("active") && document.getElementById("st4").classList.contains("active")) {
+			document.getElementById("st4").style.display = "none"
+		}
+	} catch {
+		console.log("Couldn't Customize Custom BG Displays. Ignoring")
+	}
+	
 }
 
 
@@ -2465,6 +2484,8 @@ document.getElementById("confirm_pswd").addEventListener("keypress", function (e
 
 function moretti() {
 	document.getElementById("mt-disabled").src = "ZKZx.gif"
+	document.getElementById("mt-disabled").style.width = "45px"
+	document.getElementById("mt-disabled").style.height = "45px"
 	setTimeout(function () {
 		const oldhtml = document.getElementById("notification").innerHTML
 		var notification = document.getElementById('notification');
@@ -2493,9 +2514,15 @@ function moretti() {
 
 
 	}, 1500)
-	alert(`This will redirect you to Moretti onion dashboard for ${localStorage.getItem("t50-username")}`)
-	shake_me('mt-disabled')
-	document.getElementById("mt-disabled").src = "mt.jpg"
+	//alert(`This will redirect you to Moretti onion dashboard for ${localStorage.getItem("t50-username")}`)
+	
+	setTimeout(function() {
+		document.getElementById("mt-disabled").src = "mt.jpg"
+		document.getElementById("mt-disabled").style.width = "70px"
+	document.getElementById("mt-disabled").style.height = "70px"
+		shake_me('mt-disabled')
+	}, 1500)
+	
 }
 
 function notice(message) {
