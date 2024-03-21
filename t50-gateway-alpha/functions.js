@@ -895,7 +895,7 @@ function show_account() {
 	if (sessionStorage.getItem("pfp")) {
 		document.getElementById("usr-img-opt").src = sessionStorage.getItem("pfp")
 	} else {
-		document.getElementById("usr-img-opt").src = "reloading-pfp.gif"
+		document.getElementById("usr-img-opt").src = document.getElementById("usr-img").src
 	}
 
 	$("#main_popup_settings").fadeOut("fast", function () {
