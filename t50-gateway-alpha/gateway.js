@@ -4,6 +4,7 @@ sessionStorage.removeItem("sending")
 sessionStorage.removeItem("current_sline")
 sessionStorage.removeItem("block_interactions")
 sessionStorage.setItem("loaded", true)
+sessionStorage.removeItem("autolg_off")
 const ip = sessionStorage.getItem("IPV4")
 $(document).ready(docready())
 function log(text, color) {
@@ -23,6 +24,7 @@ function login_to_storage() {
   document.getElementById("email").disabled = true
   $("#add_button").fadeOut("fast", function () {
     $("#rem_text").fadeOut("fast", function () {
+      $("#remMeLB").fadeIn("fast")
       $("#password").fadeIn("fast")
       $("#submit").fadeIn("fast")
       $("#use_switch").fadeIn("fast", function () {
@@ -53,6 +55,7 @@ function goback() {
     $("#add_button").fadeIn("fast", function () {
       $("#rem_text").fadeIn("fast", function () {
         $("#password").fadeOut("fast")
+        $("#remMeLB").fadeOut("fast")
         $("#submit").fadeOut("fast")
         $("#use_switch").fadeOut("fast")
         $("#def_text").fadeOut("slow")
@@ -78,6 +81,7 @@ function change_acc() {
   $("#rem-user-ic").fadeOut("fast")
   $("#add_button").fadeOut("fast", function () {
     $("#rem_text").fadeOut("fast", function () {
+      $("#remMeLB").fadeIn("fast")
       $("#password").fadeIn("fast")
       $("#submit").fadeIn("fast")
       $("#use_switch").fadeIn("fast", function () {
@@ -727,6 +731,7 @@ function docready() {
     document.getElementById("password").style.display = "none"
     document.getElementById("submit").style.display = "none"
     document.getElementById("def_text").style.display = "none"
+    $("#remMeLB").fadeOut("fast")
     document.getElementById("rem_text").style.display = "block"
     document.getElementById("rem-user").style.display = "block"
     document.getElementById("usr-img-autolg").src = "reloading-pfp.gif"
@@ -979,7 +984,11 @@ function verifycode() {
         sessionStorage.removeItem("ACCOUNT_DATA")
         sessionStorage.setItem("2FA_READY", "true")
         localStorage.setItem("t50-email", email)
-        localStorage.setItem("t50-autologin", true)
+        if(!sessionStorage.getItem("autolg_off")){
+          localStorage.setItem("t50-autologin", true)
+        } else {
+          localStorage.setItem("t50-autologin", false)
+        }
         localStorage.setItem("t50-username", username)
         sessionStorage.setItem("loaded", true)
         sessionStorage.setItem("loggedin", email)
@@ -992,7 +1001,11 @@ function verifycode() {
         sessionStorage.removeItem("ACCOUNT_DATA")
         sessionStorage.setItem("2FA_READY", "true")
         localStorage.setItem("t50-email", email)
-        localStorage.setItem("t50-autologin", true)
+        if(!sessionStorage.getItem("autolg_off")){
+          localStorage.setItem("t50-autologin", true)
+        } else {
+          localStorage.setItem("t50-autologin", false)
+        }
         localStorage.setItem("t50-username", username)
         sessionStorage.setItem("loaded", true)
         sessionStorage.setItem("loggedin", email)
@@ -1076,7 +1089,11 @@ function login() {
         const match = credentialsString.match(/Username:(\w+)/);
         const username = match && match[1];
         localStorage.setItem("t50-email", email)
-        localStorage.setItem("t50-autologin", true)
+        if(!sessionStorage.getItem("autolg_off")){
+          localStorage.setItem("t50-autologin", true)
+        } else {
+          localStorage.setItem("t50-autologin", false)
+        }
         localStorage.setItem("t50-username", username)
         sessionStorage.setItem("loaded", true)
         sessionStorage.setItem("loggedin", email)

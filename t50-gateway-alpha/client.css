@@ -1062,6 +1062,16 @@ a {
   animation: fadeBackground-tl 4s infinite;
 }
 
+@keyframes fadeBackground-tl-new {
+  0% { background-color: #198c38; }
+  50% { background-color: #333333; }
+  100% { background-color: #198c38; }
+}
+
+.fadeInOut-timeline-new {
+  animation: fadeBackground-tl-new 3.5s infinite;
+}
+
 @keyframes glow {
   0% {
     box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.7);
