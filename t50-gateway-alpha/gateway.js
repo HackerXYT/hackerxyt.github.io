@@ -5,6 +5,7 @@ sessionStorage.removeItem("current_sline")
 sessionStorage.removeItem("block_interactions")
 sessionStorage.setItem("loaded", true)
 sessionStorage.removeItem("autolg_off")
+sessionStorage.removeItem("pfp")
 const ip = sessionStorage.getItem("IPV4")
 $(document).ready(docready())
 function log(text, color) {
@@ -745,7 +746,12 @@ function docready() {
           data = "data:image/jpeg;base64," + data;
         }
         document.getElementById("usr-img-autolg").src = `${data}`;
-        sessionStorage.setItem("pfp", data);
+        try {
+          sessionStorage.setItem("pfp", data);
+        } catch {
+          console.error("Couldn't add PFP to sessionStorage")
+        }
+        
       })
       .catch(error => {
         console.error(error);

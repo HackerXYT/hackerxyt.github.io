@@ -694,7 +694,11 @@ function pfp(give) {
 					if (sessionStorage.getItem("show_profile") === "waiting") {
 						$("#profile").fadeIn("slow")
 					}
-					sessionStorage.setItem("pfp", data);
+					try {
+						sessionStorage.setItem("pfp", data);
+					  } catch {
+						console.error("Couldn't add PFP to sessionStorage")
+					  }
 					if (give === "giveback") {
 						//profilesLocal("self", data)
 						resolve(data);
@@ -3206,7 +3210,7 @@ function loadflrdinf() {
 function birth_date() {
 	document.getElementById("usr-name-chbirth").innerHTML = localStorage.getItem("t50-username")
 	document.getElementById("usr-email-chbirth").innerHTML = localStorage.getItem("t50-email")
-	document.getElementById("usr-img-chbirth").src = sessionStorage.getItem("pfp")
+	document.getElementById("usr-img-chbirth").src = document.getElementById("usr-img").src
 	$("#username_email_icon_show").fadeOut("fast", function () {
 		navigator("birth")
 		$("#date_of_birth_change").fadeIn("fast")
