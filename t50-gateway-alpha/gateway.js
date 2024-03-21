@@ -5,7 +5,7 @@ sessionStorage.removeItem("current_sline")
 sessionStorage.removeItem("block_interactions")
 sessionStorage.setItem("loaded", true)
 sessionStorage.removeItem("autolg_off")
-sessionStorage.removeItem("pfp")
+//sessionStorage.removeItem("pfp")
 const ip = sessionStorage.getItem("IPV4")
 $(document).ready(docready())
 function log(text, color) {

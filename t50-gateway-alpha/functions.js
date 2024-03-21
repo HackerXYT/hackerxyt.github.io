@@ -694,15 +694,16 @@ function pfp(give) {
 					if (sessionStorage.getItem("show_profile") === "waiting") {
 						$("#profile").fadeIn("slow")
 					}
+					if (give === "giveback") {
+						//profilesLocal("self", data)
+						resolve(data);
+					}
 					try {
 						sessionStorage.setItem("pfp", data);
 					  } catch {
 						console.error("Couldn't add PFP to sessionStorage")
 					  }
-					if (give === "giveback") {
-						//profilesLocal("self", data)
-						resolve(data);
-					}
+					
 				})
 				.catch(error => {
 					console.error(error);
