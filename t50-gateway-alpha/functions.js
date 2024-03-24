@@ -1109,7 +1109,9 @@ function showFriend(element) {
 	var nameArray = elem.split('-');
 	var friend = nameArray[1];
 
-	document.getElementById("secureline-username").id = `secureline-${friend}`
+	sessionStorage.setItem("showing_friend", `secureline-${friend}`)
+	try {
+	//document.getElementById("secureline-username").id = `secureline-${friend}`
 	document.getElementById("friend-email").innerHTML = document.getElementById(`user-${friend}-email-friends`).innerHTML
 	document.getElementById("friend-pfp").src = document.getElementById(`${friend}-pfp-friends`).src
 	if (document.getElementById("friend-pfp").src.includes("loading-circle.gif")) {
@@ -1135,7 +1137,7 @@ function showFriend(element) {
 						return response.text();
 					})
 					.then(bd => {
-						if(bd !== "") {
+						if (bd !== "") {
 							document.getElementById("Friendbirth").style.display = ""
 							document.getElementById("FriendbirthTXT").innerHTML = bd
 						} else {
@@ -1150,13 +1152,13 @@ function showFriend(element) {
 							$("#user-friend").fadeIn("fast")
 						}
 						$("#stuck").fadeOut("fast")
-						
+
 
 					})
 					.catch(error => {
 						console.error(error);
 					})
-				
+
 
 			})
 			.catch(error => {
@@ -1166,6 +1168,13 @@ function showFriend(element) {
 
 
 	})
+} catch (error) {
+	console.log("Error Detected! Fixing..\n", error)
+	return_to_options('user-friend');navigator('show_friends')
+	showFriend(element)
+
+}
+	
 }
 function show_friends() {
 	navigator("show_friends")
@@ -2290,6 +2299,17 @@ function secureline(element) {
 	navigator('settings_tonexus')
 	//close_popup()
 	show_sline()
+	
+	setTimeout(function() {
+		const usernameSl = sessionStorage.getItem("showing_friend")
+		var parts = usernameSl.split("-");
+		var result = parts[1];
+		const theElem = {
+			'id': result
+		}
+		showchat(theElem)
+	}, 400)
+	
 
 	//remove "secureline-" from element.id
 	//window.location.href = `./secureline/?goto=${element.id}`

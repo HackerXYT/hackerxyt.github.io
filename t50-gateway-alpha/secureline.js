@@ -159,7 +159,7 @@ function return_main_chats() {
   document.getElementById("private_chat").classList.remove("active")
   $("#secureline").fadeIn("fast")
 }
-function showchat(element) {
+function showchat(element) {//json id=Username
   $("#navigator").fadeOut("fast")
   $("#profile").fadeOut("slow")
   console.log("Got element:", element)
