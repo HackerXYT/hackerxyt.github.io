@@ -1419,13 +1419,13 @@ a {
   transition: background-color 0.3s ease;
   margin: 4px;
   width: 100%;
-  max-width: 86%;
+  max-width: 76%;
   outline: none;
 }
 
 @media only screen and (max-width: 768px) {
   .apple-input-sl {
-    width: 66%;
+    width: 62%;
   }
 }
 
@@ -1951,6 +1951,3 @@ a {
   line-height: 1.6;
 }
 
-#message_input {
-  margin-right: 10px; /* Adjust as needed */
-}

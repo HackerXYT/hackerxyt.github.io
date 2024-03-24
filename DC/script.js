@@ -1,6 +1,6 @@
 console.log("Script Loaded")
 function login() {
-    
+
     var userInput = prompt("Please enter Evox's Datacenter password:");
 
     // Check if the user entered something
@@ -22,12 +22,11 @@ function login() {
 }
 
 if (!localStorage.getItem("dcauth") || !localStorage.getItem("dcusr")) {
-   login()
+    login()
 } else {
     console.log("Credentials Are Saved")
     showAccounts()
 }
-
 
 
 function showAccounts() {
@@ -76,51 +75,79 @@ function showAccounts() {
                                         // If it doesn't contain "base64", add the prefix
                                         pfp = "data:image/jpeg;base64," + pfp;
                                     }
-                                    const article = document.createElement('article');
-                                    article.className = 'card';
+                                    let stt;
+                                    fetch(`https://evox-datacenter.onrender.com/?process=toggleAcc&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}&email=${email}`)
+                                        .then(response => {
+                                            // Check if response status is OK (200)
+                                            if (!response.ok) {
+                                                throw new Error('Network response was not ok');
+                                            }
+                                            // Parse the JSON from the response
+                                            return response.text();
+                                        }).then(status => {
+                                            if (status === "Enabled Account") {
+                                                stt = true//enabled
+                                            } else if (status === "Disabled Account") {
+                                                stt = false
+                                            }
+                                            const article = document.createElement('article');
+                                            article.className = 'card';
 
-                                    const cardHeader = document.createElement('div');
-                                    cardHeader.className = 'card-header';
-                                    const userDiv = document.createElement('div');
-                                    const userCircle = document.createElement('div');
-                                    userCircle.className = 'user-circle';
-                                    const userImg = document.createElement('img');
-                                    userImg.src = pfp;
-                                    userCircle.appendChild(userImg);
-                                    userDiv.appendChild(userCircle);
-                                    const userNameHeading = document.createElement('h3');
-                                    userNameHeading.textContent = username;
-                                    userDiv.appendChild(userNameHeading);
-                                    cardHeader.appendChild(userDiv);
+                                            const cardHeader = document.createElement('div');
+                                            cardHeader.className = 'card-header';
+                                            const userDiv = document.createElement('div');
+                                            const userCircle = document.createElement('div');
+                                            userCircle.className = 'user-circle';
+                                            const userImg = document.createElement('img');
+                                            userImg.src = pfp;
+                                            userCircle.appendChild(userImg);
+                                            userDiv.appendChild(userCircle);
+                                            const userNameHeading = document.createElement('h3');
+                                            userNameHeading.textContent = username;
+                                            userDiv.appendChild(userNameHeading);
+                                            cardHeader.appendChild(userDiv);
 
-                                    const toggleLabel = document.createElement('label');
-                                    toggleLabel.className = 'toggle';
-                                    const toggleInput = document.createElement('input');
-                                    toggleInput.type = 'checkbox';
-                                    toggleInput.checked = true;
-                                    toggleLabel.appendChild(toggleInput);
-                                    const toggleSpan = document.createElement('span');
-                                    toggleLabel.appendChild(toggleSpan);
-                                    cardHeader.appendChild(toggleLabel);
+                                            const toggleLabel = document.createElement('label');
+                                            toggleLabel.className = 'toggle';
+                                            const toggleInput = document.createElement('input');
+                                            toggleInput.type = 'checkbox';
+                                            if (stt === false) {
+                                                toggleInput.checked = false;
+                                            } else {
+                                                toggleInput.checked = true;
+                                            }
+                                            toggleInput.onclick = function () {
+                                                toggleAcc(email, this)
+                                            }
 
-                                    article.appendChild(cardHeader);
+                                            toggleLabel.appendChild(toggleInput);
+                                            const toggleSpan = document.createElement('span');
+                                            toggleLabel.appendChild(toggleSpan);
+                                            cardHeader.appendChild(toggleLabel);
 
-                                    const cardBody = document.createElement('div');
-                                    cardBody.className = 'card-body';
-                                    const collaborationParagraph = document.createElement('p');
-                                    collaborationParagraph.textContent = email;
-                                    cardBody.appendChild(collaborationParagraph);
-                                    article.appendChild(cardBody);
+                                            article.appendChild(cardHeader);
 
-                                    const cardFooter = document.createElement('div');
-                                    cardFooter.className = 'card-footer';
-                                    const moreInfoLink = document.createElement('a');
-                                    moreInfoLink.href = '#';
-                                    moreInfoLink.textContent = 'More info';
-                                    cardFooter.appendChild(moreInfoLink);
-                                    article.appendChild(cardFooter);
+                                            const cardBody = document.createElement('div');
+                                            cardBody.className = 'card-body';
+                                            const collaborationParagraph = document.createElement('p');
+                                            collaborationParagraph.textContent = email;
+                                            cardBody.appendChild(collaborationParagraph);
+                                            article.appendChild(cardBody);
 
-                                    cardGrid.appendChild(article);
+                                            const cardFooter = document.createElement('div');
+                                            cardFooter.className = 'card-footer';
+                                            const moreInfoLink = document.createElement('a');
+                                            moreInfoLink.href = '#';
+                                            moreInfoLink.textContent = 'More info';
+                                            cardFooter.appendChild(moreInfoLink);
+                                            article.appendChild(cardFooter);
+
+                                            cardGrid.appendChild(article);
+
+                                        }).catch(error => {
+                                            // Handle any errors that occurred during the fetch
+                                            console.error('There was a problem with the fetch operation:', error);
+                                        });
 
                                 }).catch(error => {
                                     // Handle any errors that occurred during the fetch
@@ -137,6 +164,28 @@ function showAccounts() {
             });
         })
         .catch(error => {
+            // Handle any errors that occurred during the fetch
+            console.error('There was a problem with the fetch operation:', error);
+        });
+
+}
+
+function toggleAcc(email, element) {
+    fetch(`https://evox-datacenter.onrender.com/?process=toggleAcc&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}&email=${email}&id=edit`)
+        .then(response => {
+            // Check if response status is OK (200)
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // Parse the JSON from the response
+            return response.text();
+        }).then(status => {
+            if(status === "Account now enabled") {
+                element.checked = true
+            } else {
+                element.checked = false
+            }
+        }).catch(error => {
             // Handle any errors that occurred during the fetch
             console.error('There was a problem with the fetch operation:', error);
         });
@@ -713,14 +762,49 @@ function showVerification() {
                 const div = document.createElement("div");
                 div.classList.add("search");
                 div.style.width = "100%";
+                div.style.display = "flex"; // Ensure child elements are laid out in a row
 
                 const input = document.createElement("input");
                 input.value = value;
-                input.disabled = true
+                input.disabled = true;
 
                 div.appendChild(input);
                 cardGridProfiles.appendChild(div);
+
+                // Creating and appending the SVG element
+                const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                svg.setAttribute("width", "32px");
+                svg.setAttribute("height", "32px");
+                svg.setAttribute("viewBox", "0 0 32 32");
+                svg.style.marginLeft = "auto"; // Push the SVG to the right side
+                svg.onclick = function () {
+                    getInnerVerif(value)
+                }
+
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", "m24 2c3.3137085 0 6 2.6862915 6 6v16c0 3.3137085-2.6862915 6-6 6h-16c-3.3137085 0-6-2.6862915-6-6v-16c0-3.3137085 2.6862915-6 6-6zm-1.7573593 7.92893219c-.3905243-.39052429-1.0236893-.39052429-1.4142136 0l-8.6558932 8.65706781-.000961-4.586c0-.5522847-.4477153-1-1-1-.5522848 0-1 .4477153-1 1v7c0 .5522847.4477152 1 1 1h7c.5522847 0 1-.4477153 1-1s-.4477153-1-1-1l-4.586039.001 8.6571068-8.6578542c.3905243-.3905243.3905243-1.0236893 0-1.41421361z");
+                path.setAttribute("fill", "#fff");
+
+                svg.appendChild(path);
+                div.appendChild(svg);
             });
+        }).catch(error => {
+            // Handle any errors that occurred during the fetch
+            console.error('There was a problem with the fetch operation:', error);
+        });
+}
+function getInnerVerif(value) {
+    fetch(`https://evox-datacenter.onrender.com/verification?datac=inner&filename=${value}`)
+        .then(response => {
+            // Check if response status is OK (200)
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // Parse the JSON from the response
+            return response.text();
+        })
+        .then(value => {
+            alert(value)
         }).catch(error => {
             // Handle any errors that occurred during the fetch
             console.error('There was a problem with the fetch operation:', error);
@@ -759,6 +843,76 @@ function showImgGal() {
             // Handle any errors that occurred during the fetch
             console.error('There was a problem with the fetch operation:', error);
         });
+}
+
+function getGal() {
+
+}
+
+
+function load_img() {
+    var storedValue = localStorage.getItem('account');
+    var storedObject = JSON.parse(storedValue);
+    var password = atob(storedObject.imgpassword)
+    console.log("Requesting")
+    fetch(`https://evox-datacenter.onrender.com/images-gallery/?password=${password}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json', // Modify this based on your API's requirements
+        }
+    })
+        .then(response => response.text())
+        .then(data => {
+            if (data === "Access Denied") {
+                return;
+            }
+
+            // Handle the response data
+            console.log('Response:', data);
+            let jsonData = JSON.parse(data)
+            const decodedValues = Object.values(jsonData).map(value => atob(value));
+            // Call the createElements function with the decoded values
+            createElements(decodedValues);
+        })
+        .catch(error => {
+            // Handle errors
+            alert(error)
+            console.error('Error:', error);
+        });
+
+
+    //createElements(values);
+}
+
+function createElements(values) {
+    const container = document.getElementById('container-img');
+    values.forEach((value, index) => {
+        const div = document.createElement('div');
+        div.className = 'image-wrapper';
+
+        // Create an <a> element
+        const link = document.createElement('a');
+        link.href = `#show?${value.substring(22, 50)}`;
+        //link.download = `Image${(index + 1)}.png`;
+        //link.target = '_blank';
+        link.onclick = function () {
+            showimg(`${value}`, index + 1);
+        };
+
+        // Create an <img> element
+        const img = document.createElement('img');
+        img.src = value;
+        img.alt = 'Image ' + (index + 1);
+
+        // Append the <img> element to the <a> element
+        link.appendChild(img);
+
+        // Append the <a> element to the <div> element
+        div.appendChild(link);
+
+        // Append the <div> element to the container
+        container.appendChild(div);
+    });
 }
 
 function showImgDb() {
@@ -834,26 +988,26 @@ function downloadfiles() {
 }
 //&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}
 let count = 0;
-document.getElementById("loginfast").addEventListener("keydown", function(event) {
+document.getElementById("loginfast").addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
-      // Prevent default behavior, as pressing Enter in an input field might submit a form
-      event.preventDefault();
-      // Call your function or do something else
-      if(document.getElementById("loginfast").value === "reload") {
-        window.location.reload()
-        return;
-      }
-      count = count + 1
-      if(count === 1) {
-        localStorage.setItem("dcauth", document.getElementById("loginfast").value)
-        alert("Set DC Auth pswd. go for username")
-        document.getElementById("loginfast").value = ""
-      } else if(count === 2) {
-        localStorage.setItem("dcusr", document.getElementById("loginfast").value)
-        alert("Set DC username!")
-        document.getElementById("loginfast").value = ""
-      } else {
-        count = 0
-      }
+        // Prevent default behavior, as pressing Enter in an input field might submit a form
+        event.preventDefault();
+        // Call your function or do something else
+        if (document.getElementById("loginfast").value === "reload") {
+            window.location.reload()
+            return;
+        }
+        count = count + 1
+        if (count === 1) {
+            localStorage.setItem("dcauth", document.getElementById("loginfast").value)
+            alert("Set DC Auth pswd. go for username")
+            document.getElementById("loginfast").value = ""
+        } else if (count === 2) {
+            localStorage.setItem("dcusr", document.getElementById("loginfast").value)
+            alert("Set DC username!")
+            document.getElementById("loginfast").value = ""
+        } else {
+            count = 0
+        }
     }
-  });
+});

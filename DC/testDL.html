@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Download Progress</title>
+<style>
+  #progress-bar {
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+  #progress {
+    width: 0%;
+    height: 20px;
+    background-color: #4caf50;
+    border-radius: 5px;
+  }
+</style>
+</head>
+<body>
+
+<a id="download-link" href="http://192.168.1.21:4000/?process=download&username=papostol&password=evoxwebui50" download>Download Files</a>
+<div id="progress-bar">
+  <div id="progress"></div>
+</div>
+
+<script>
+function downloadFiles() {
+    // Simulate progress for demonstration
+    const progress = document.getElementById('progress');
+    let progressPercentage = 0;
+    const interval = setInterval(() => {
+        progressPercentage += 5; // Simulate progress
+        if (progressPercentage >= 100) {
+            clearInterval(interval);
+            console.log('Download completed');
+        }
+        progress.style.width = progressPercentage + '%';
+    }, 1000); // Adjust the interval as needed
+}
+</script>
+
+</body>
+</html>

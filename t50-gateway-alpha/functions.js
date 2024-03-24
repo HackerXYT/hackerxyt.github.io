@@ -243,19 +243,19 @@ function custombg() {
 	}
 
 	try {
-		if(document.getElementById("st5").classList.contains("active") && document.getElementById("st1").classList.contains("active")) {
+		if (document.getElementById("st5").classList.contains("active") && document.getElementById("st1").classList.contains("active")) {
 			document.getElementById("st1").style.display = "none"
-		} else if(document.getElementById("st5").classList.contains("active") && document.getElementById("st2").classList.contains("active")) {
+		} else if (document.getElementById("st5").classList.contains("active") && document.getElementById("st2").classList.contains("active")) {
 			document.getElementById("st2").style.display = "none"
-		} else if(document.getElementById("st5").classList.contains("active") && document.getElementById("st3").classList.contains("active")) {
+		} else if (document.getElementById("st5").classList.contains("active") && document.getElementById("st3").classList.contains("active")) {
 			document.getElementById("st3").style.display = "none"
-		} else if(document.getElementById("st5").classList.contains("active") && document.getElementById("st4").classList.contains("active")) {
+		} else if (document.getElementById("st5").classList.contains("active") && document.getElementById("st4").classList.contains("active")) {
 			document.getElementById("st4").style.display = "none"
 		}
 	} catch {
 		console.log("Couldn't Customize Custom BG Displays. Ignoring")
 	}
-	
+
 }
 
 
@@ -631,48 +631,48 @@ function settings() {
 
 function close_popup() {
 	fetch(`https://evox-datacenter.onrender.com/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.text();
-    })
-    .then(data => {
-      console.log("Fetching Notifications")
-      if (data === `{"notifications":[]}` || data === "No notifications!") {
-        console.log("No Notifications")
-        //Do nothing
-      } else {
-        const notifications = JSON.parse(data)
-        const numNotifications = notifications.notifications.length;
-        const localNotif = localStorage.getItem("notifications_seen")
-        if (localNotif) {
-          const notifNum = Number(localNotif)
-          if (notifNum < numNotifications) {
-            var animatedButton = document.getElementById("animatedButton_notif");
-            animatedButton.classList.add("fadeInOut")
-            animatedButton.style.display = "block";
-            animatedButton.innerHTML = `<svg id="notif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px" height="25px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			console.log("Fetching Notifications")
+			if (data === `{"notifications":[]}` || data === "No notifications!") {
+				console.log("No Notifications")
+				//Do nothing
+			} else {
+				const notifications = JSON.parse(data)
+				const numNotifications = notifications.notifications.length;
+				const localNotif = localStorage.getItem("notifications_seen")
+				if (localNotif) {
+					const notifNum = Number(localNotif)
+					if (notifNum < numNotifications) {
+						var animatedButton = document.getElementById("animatedButton_notif");
+						animatedButton.classList.add("fadeInOut")
+						animatedButton.style.display = "block";
+						animatedButton.innerHTML = `<svg id="notif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px" height="25px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
             <path stroke="#fff" stroke-width="2" class="clr-i-outline--badged clr-i-outline-path-1--badged" d="M18,34.28A2.67,2.67,0,0,0,20.58,32H15.32A2.67,2.67,0,0,0,18,34.28Z"/><path class="clr-i-outline--badged clr-i-outline-path-2--badged" d="M32.51,27.83A14.4,14.4,0,0,1,30,24.9a12.63,12.63,0,0,1-1.35-4.81V15.15a10.92,10.92,0,0,0-.16-1.79,7.44,7.44,0,0,1-2.24-.84,8.89,8.89,0,0,1,.4,2.64v4.94a14.24,14.24,0,0,0,1.65,5.85,16.17,16.17,0,0,0,2.44,3H5.13a16.17,16.17,0,0,0,2.44-3,14.24,14.24,0,0,0,1.65-5.85V15.15A8.8,8.8,0,0,1,18,6.31a8.61,8.61,0,0,1,4.76,1.44A7.49,7.49,0,0,1,22.5,6c0-.21,0-.42,0-.63a10.58,10.58,0,0,0-3.32-1V3.11a1.33,1.33,0,1,0-2.67,0V4.42A10.81,10.81,0,0,0,7.21,15.15v4.94A12.63,12.63,0,0,1,5.86,24.9a14.4,14.4,0,0,1-2.47,2.93,1,1,0,0,0-.34.75v1.36a1,1,0,0,0,1,1h27.8a1,1,0,0,0,1-1V28.58A1,1,0,0,0,32.51,27.83Z"/><circle class="clr-i-outline--badged clr-i-outline-path-1--badged clr-i-badge" cx="30" cy="6" r="5"/>
             <rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
         </svg>`
-            setTimeout(function () {
-              animatedButton.style.opacity = "1";
-              animatedButton.style.transform = "translateY(0)";
-            }, 100);
-          } else {
-            console.log("No new notifications")
-          }
-        } else {
-          console.log("No Local Value")
-        }
-      }
+						setTimeout(function () {
+							animatedButton.style.opacity = "1";
+							animatedButton.style.transform = "translateY(0)";
+						}, 100);
+					} else {
+						console.log("No new notifications")
+					}
+				} else {
+					console.log("No Local Value")
+				}
+			}
 
 
-    })
-    .catch(error => {
-      console.error('Fetch error:', error);
-    });
+		})
+		.catch(error => {
+			console.error('Fetch error:', error);
+		});
 	settings()
 }
 
@@ -700,10 +700,10 @@ function pfp(give) {
 					}
 					try {
 						sessionStorage.setItem("pfp", data);
-					  } catch {
+					} catch {
 						console.error("Couldn't add PFP to sessionStorage")
-					  }
-					
+					}
+
 				})
 				.catch(error => {
 					console.error(error);
@@ -1096,6 +1096,7 @@ function acceptfriend(element) {
 }
 let friendinterval;
 function showFriend(element) {
+	$("#stuck").fadeIn("fast")
 	navigator("showFriend")
 	try {
 		clearInterval(friendinterval);
@@ -1126,19 +1127,42 @@ function showFriend(element) {
 				return response.text();
 			})
 			.then(data => {
-				if (data !== "Unknown") {
-					const date = printTimeOrDate(data)
-					document.getElementById("last_seen").innerHTML = date
-					$("#user-friend").fadeIn("fast")
-				} else {
-					document.getElementById("last_seen").innerHTML = data
-					$("#user-friend").fadeIn("fast")
-				}
+				fetch(`https://evox-datacenter.onrender.com/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&birth=get`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+						return response.text();
+					})
+					.then(bd => {
+						if(bd !== "") {
+							document.getElementById("Friendbirth").style.display = ""
+							document.getElementById("FriendbirthTXT").innerHTML = bd
+						} else {
+							document.getElementById("Friendbirth").style.display = "none"
+						}
+						if (data !== "Unknown") {
+							const date = printTimeOrDate(data)
+							document.getElementById("last_seen").innerHTML = date
+							$("#user-friend").fadeIn("fast")
+						} else {
+							document.getElementById("last_seen").innerHTML = data
+							$("#user-friend").fadeIn("fast")
+						}
+						$("#stuck").fadeOut("fast")
+						
+
+					})
+					.catch(error => {
+						console.error(error);
+					})
+				
 
 			})
 			.catch(error => {
 				console.error(error);
 			});
+
 
 
 	})
@@ -2520,14 +2544,14 @@ function moretti() {
 
 	}, 1500)
 	//alert(`This will redirect you to Moretti onion dashboard for ${localStorage.getItem("t50-username")}`)
-	
-	setTimeout(function() {
+
+	setTimeout(function () {
 		document.getElementById("mt-disabled").src = "mt.jpg"
 		document.getElementById("mt-disabled").style.width = "70px"
-	document.getElementById("mt-disabled").style.height = "70px"
+		document.getElementById("mt-disabled").style.height = "70px"
 		shake_me('mt-disabled')
 	}, 1500)
-	
+
 }
 
 function notice(message) {
@@ -2742,7 +2766,7 @@ function show_notif(nosound) {
 			var container = document.getElementById("notif_container");
 			container.innerHTML = "";
 			animatedButton.classList.remove("fadeInOut")
-            animatedButton.innerHTML = `<svg id="notif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px" height="25px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
+			animatedButton.innerHTML = `<svg id="notif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px" height="25px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
             <path stroke="#fff" stroke-width="1" class="clr-i-outline clr-i-outline-path-1" d="M32.51,27.83A14.4,14.4,0,0,1,30,24.9a12.63,12.63,0,0,1-1.35-4.81V15.15A10.81,10.81,0,0,0,19.21,4.4V3.11a1.33,1.33,0,1,0-2.67,0V4.42A10.81,10.81,0,0,0,7.21,15.15v4.94A12.63,12.63,0,0,1,5.86,24.9a14.4,14.4,0,0,1-2.47,2.93,1,1,0,0,0-.34.75v1.36a1,1,0,0,0,1,1h27.8a1,1,0,0,0,1-1V28.58A1,1,0,0,0,32.51,27.83ZM5.13,28.94a16.17,16.17,0,0,0,2.44-3,14.24,14.24,0,0,0,1.65-5.85V15.15a8.74,8.74,0,1,1,17.47,0v4.94a14.24,14.24,0,0,0,1.65,5.85,16.17,16.17,0,0,0,2.44,3Z"/><path class="clr-i-outline clr-i-outline-path-2" d="M18,34.28A2.67,2.67,0,0,0,20.58,32H15.32A2.67,2.67,0,0,0,18,34.28Z"/>
             <rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
         </svg>`
@@ -4994,45 +5018,99 @@ function close_fullimage() {
 }
 
 document.querySelectorAll('.slide-container').forEach(container => {
-    const appleButton = container.querySelector('.apple-button');
-    const deleteOption = container.querySelector('.delete-option');
+	const appleButton = container.querySelector('.apple-button');
+	const deleteOption = container.querySelector('.delete-option');
 
-    let startX, startY, isDeleting = false;
+	let startX, startY, isDeleting = false;
 
-    appleButton.addEventListener('touchstart', handleTouchStart, false);
-    appleButton.addEventListener('touchmove', handleTouchMove, false);
-    appleButton.addEventListener('touchend', handleTouchEnd, false);
+	appleButton.addEventListener('touchstart', handleTouchStart, false);
+	appleButton.addEventListener('touchmove', handleTouchMove, false);
+	appleButton.addEventListener('touchend', handleTouchEnd, false);
 
-    function handleTouchStart(event) {
-        if (!isDeleting) {
-            container.classList.remove('active');
-        }
-        startX = event.touches[0].clientX;
-        startY = event.touches[0].clientY;
-    }
+	function handleTouchStart(event) {
+		if (!isDeleting) {
+			container.classList.remove('active');
+		}
+		startX = event.touches[0].clientX;
+		startY = event.touches[0].clientY;
+	}
 
-    function handleTouchMove(event) {
-        if (!startX || !startY) return;
+	function handleTouchMove(event) {
+		if (!startX || !startY) return;
 
-        let currentX = event.touches[0].clientX;
-        let currentY = event.touches[0].clientY;
-        let diffX = startX - currentX;
-        let diffY = startY - currentY;
+		let currentX = event.touches[0].clientX;
+		let currentY = event.touches[0].clientY;
+		let diffX = startX - currentX;
+		let diffY = startY - currentY;
 
-        if (Math.abs(diffX) > Math.abs(diffY)) {
-            event.preventDefault();
-            if (diffX > 0 && !isDeleting) {
-                container.classList.add('active');
-                isDeleting = true;
-            } else if (diffX < 0 && isDeleting) {
-                container.classList.remove('active');
-                isDeleting = false;
-            }
-        }
-    }
+		if (Math.abs(diffX) > Math.abs(diffY)) {
+			event.preventDefault();
+			if (diffX > 0 && !isDeleting) {
+				container.classList.add('active');
+				isDeleting = true;
+			} else if (diffX < 0 && isDeleting) {
+				container.classList.remove('active');
+				isDeleting = false;
+			}
+		}
+	}
 
-    function handleTouchEnd(event) {
-        startX = null;
-        startY = null;
-    }
+	function handleTouchEnd(event) {
+		startX = null;
+		startY = null;
+	}
 });
+
+function attach_file_click() {
+	document.getElementById("upload-box-sline").click()
+}
+
+function attach_file() {
+	shake_me("attFile")
+	return;
+	if (sessionStorage.getItem("att_active")) {
+		document.getElementById("att1").setAttribute("stroke", "#fff");
+		document.getElementById("att2").setAttribute("stroke", "#fff");
+		sessionStorage.removeItem("att_active")
+	} else {
+		document.getElementById("att1").setAttribute("stroke", "#04AA6D");
+		document.getElementById("att2").setAttribute("stroke", "#04AA6D");
+		sessionStorage.setItem("att_active", "true")
+		const input = document.getElementById('upload-box-sline');
+		const file = input.files[0];
+		const recipient = sessionStorage.getItem("current_sline")
+
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = function (e) {
+				const base64String = e.target.result;
+				// Now you have the base64 representation of the selected image
+				//console.log(base64String);
+				//document.getElementById("upload-box-sline").disabled = true
+				//document.getElementById("usr-img-opt").src = "./reloading.gif"
+				fetch(`https://evox-datacenter.onrender.com/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${base64String}`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+						return response.text();
+					})
+					.then(data => {
+						message.value = ""
+						if (data === `Message Sent To ${recipient}`) {
+							console.log("Message Sent")
+
+
+						} else {
+							console.error("Error Sending Message -SLINE ERROR")
+						}
+					})
+			};
+			reader.readAsDataURL(file);
+		}
+
+		// Reset the input value to allow selecting the same file again
+		input.value = '';
+	}
+
+}

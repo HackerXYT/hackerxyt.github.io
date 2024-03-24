@@ -1128,6 +1128,13 @@ function login() {
 
         console.log("Doesn't Exist")
         email = ""
+      } else if (data === "Disabled") {
+        
+        alert("Your account has been disabled by Evox. Please contact admins.")
+        shake_me("email")
+        fadeError("1")
+        document.getElementById("email").value = ""
+        document.getElementById("password").value = ""
       }
     })
     .catch(error => {
