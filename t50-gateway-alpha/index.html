@@ -38,7 +38,7 @@
             let ip = "error";
             //sessionStorage.removeItem("IPV4")
             fetch('https://evox-datacenter.onrender.com/ip')
-                .then(response => response.json())
+                .then(response => response.text())
                 .then(geo => {
                     console.log(localStorage.getItem("IPV4"), geo)
                     //if (window.location.href.includes("#verify")) {
