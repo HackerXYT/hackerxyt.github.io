@@ -37,16 +37,16 @@
         document.addEventListener("DOMContentLoaded", function () {
             let ip = "error";
             //sessionStorage.removeItem("IPV4")
-            fetch('https://evox-datacenter.onrender.com/ip')
-                .then(response => response.text())
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
                 .then(geo => {
-                    console.log(localStorage.getItem("IPV4"), geo)
+                    console.log(localStorage.getItem("IPV4"), geo.ip)
                     //if (window.location.href.includes("#verify")) {
                     //    
                     //}
-                    if (localStorage.getItem("IPV4") !== geo) {
+                    if (localStorage.getItem("IPV4") !== geo.ip) {
                         document.getElementById("wait").innerHTML = "Verifying New IP"
-                        localStorage.setItem("IPV4", geo);
+                        localStorage.setItem("IPV4", geo.ip);
                         console.log("New IP")
                         //let stringWithoutHash = window.location.href.replace(/#/g, '');
                         //setTimeout(function () {
@@ -64,8 +64,8 @@
                         //}, 2000)
                     }
 
-                    console.log(geo);
-                    ip = geo;
+                    console.log(geo.ip);
+                    ip = geo.ip;
 
                     // Add code dependent on the fetch request's completion here
                     // For example, you can load other JavaScript files dynamically:
