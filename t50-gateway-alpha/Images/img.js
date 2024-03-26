@@ -21,6 +21,7 @@ $(document).ready(function() {
             $("#settings_username_ph").html(localStorage.getItem("img-app-username"))
             //$("#gallery-text").fadeOut("slow", function() {
                 $("#gallery").fadeIn("slow")
+                $("#navigator").fadeIn("fast")
                 //$("#container-img").fadeOut("slow", function() {
                 //    $("#gallery").fadeIn("slow")
                 //});
@@ -128,6 +129,7 @@ function login() {
             $("#gallery").fadeIn("slow");
             localStorage.setItem("img-app-email", email)
             localStorage.setItem("img-app-on", true)
+            $("#navigator").fadeIn("fast")
             restart()
         } else if(data === "Credentials Incorrect") {
             fadeError("2")
@@ -166,19 +168,59 @@ function settings() {
         }, 500);
         return;
     }
-    $("#bottom-logo").fadeIn("slow")
-    setTimeout(function() {
-        $("#popup").fadeIn("slow")
+    //$("#bottom-logo").fadeIn("slow")
+        $("#popup").fadeIn("fast")
         document.body.style.overflow = 'hidden';
-    }, 500)
+        document.getElementById("navigator").innerHTML = `<div onclick="close_popup()" id="settings">
+        <div
+            style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48"
+                style="margin-right: 10px;">
+                <defs>
+                    <style>
+                        .cls-1 {
+                            fill: none;
+                            stroke: #fff;
+                            stroke-linecap: round;
+                            stroke-linejoin: round;
+                        }
+                    </style>
+                </defs>
+                <path class="cls-1"
+                    d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z" />
+            </svg>
+            Go back
+        </div>
+    </div>`
+    
 }
 
 function close_popup() {
-    $("#bottom-logo").fadeOut("slow")
-    setTimeout(function() {
-        $("#popup").fadeOut("slow")
+    //$("#bottom-logo").fadeOut("slow")
+        $("#popup").fadeOut("fast")
         document.body.style.overflow = 'visible';
-    }, 500)
+        document.getElementById("navigator").innerHTML = `<div onclick="settings()" id="settings">
+        <div
+            style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 48 48"
+                style="margin-right: 10px;">
+                <defs>
+                    <style>
+                        .cls-1 {
+                            fill: none;
+                            stroke: #fff;
+                            stroke-linecap: round;
+                            stroke-linejoin: round;
+                        }
+                    </style>
+                </defs>
+                <path class="cls-1"
+                    d="M39.23,26a16.52,16.52,0,0,0,.14-2,16.52,16.52,0,0,0-.14-2l4.33-3.39a1,1,0,0,0,.25-1.31l-4.1-7.11a1,1,0,0,0-1.25-.44l-5.11,2.06a15.68,15.68,0,0,0-3.46-2l-.77-5.43a1,1,0,0,0-1-.86H19.9a1,1,0,0,0-1,.86l-.77,5.43a15.36,15.36,0,0,0-3.46,2L9.54,9.75a1,1,0,0,0-1.25.44L4.19,17.3a1,1,0,0,0,.25,1.31L8.76,22a16.66,16.66,0,0,0-.14,2,16.52,16.52,0,0,0,.14,2L4.44,29.39a1,1,0,0,0-.25,1.31l4.1,7.11a1,1,0,0,0,1.25.44l5.11-2.06a15.68,15.68,0,0,0,3.46,2l.77,5.43a1,1,0,0,0,1,.86h8.2a1,1,0,0,0,1-.86l.77-5.43a15.36,15.36,0,0,0,3.46-2l5.11,2.06a1,1,0,0,0,1.25-.44l4.1-7.11a1,1,0,0,0-.25-1.31ZM24,31.18A7.18,7.18,0,1,1,31.17,24,7.17,7.17,0,0,1,24,31.18Z" />
+            </svg>
+            Settings
+        </div>
+    </div>`
+        
 }
 
 //email, password, submit
@@ -303,10 +345,10 @@ function load_ld_ch(what) {
       }
     })
     $("#popup").fadeOut("slow")
-    $("#bottom-logo").fadeOut("slow")//bottom-logo-start
+    //$("#bottom-logo").fadeOut("slow")//bottom-logo-start
     
     setTimeout(function() {
-        $("#bottom-logo-start").fadeIn("slow")
+        //$("#bottom-logo-start").fadeIn("slow")
         document.body.style.overflow = 'hidden';
         $("#list-icons").fadeIn("slow")
         $("#list-alone").fadeOut("slow")
@@ -326,9 +368,9 @@ function close_ld_set() {
             <i class="loader --${sessionStorage.getItem("old")}"></i>
             </div>`;
         settings_reload()
-        $("#bottom-logo-start").fadeOut("slow", function() {
-            $("#bottom-logo").fadeIn("slow")
-        })
+        //$("#bottom-logo-start").fadeOut("slow", function() {
+        //    $("#bottom-logo").fadeIn("slow")
+        //})
         
         
         setTimeout(function() {
@@ -337,9 +379,9 @@ function close_ld_set() {
         }, 500)
     } else {
         settings_reload()
-        $("#bottom-logo-start").fadeOut("slow", function() {
-            $("#bottom-logo").fadeIn("slow")
-        })
+        //$("#bottom-logo-start").fadeOut("slow", function() {
+        //    $("#bottom-logo").fadeIn("slow")
+        //})
         
         
         setTimeout(function() {
@@ -506,4 +548,50 @@ function ch_acc() {
         $("#use_switch").fadeIn("slow")
         document.getElementById("change-acc").innerHTML = `Login: ${localStorage.getItem("t50-username")}`
     })
+}
+
+function saveImagesToIndexedDB(jsonArray) {
+    return new Promise((resolve, reject) => {
+        // Open or create the IndexedDB database
+        const request = indexedDB.open('T50Images', 1);
+
+        // Define the IndexedDB database schema
+        request.onupgradeneeded = function(event) {
+            const db = event.target.result;
+            const objectStore = db.createObjectStore('images', { keyPath: 'id', autoIncrement: true });
+            objectStore.createIndex('base64', 'base64', { unique: false });
+        };
+
+        // Handling errors
+        request.onerror = function(event) {
+            reject("IndexedDB error: " + event.target.errorCode);
+        };
+
+        // Handling success
+        request.onsuccess = function(event) {
+            const db = event.target.result;
+
+            // Start a new transaction
+            const transaction = db.transaction(['images'], 'readwrite');
+            const objectStore = transaction.objectStore('images');
+
+            // Iterate through the JSON array and save each base64 value
+            jsonArray.forEach((base64, index) => {
+                const imageData = { base64 };
+                const request = objectStore.add(imageData);
+                request.onerror = function(event) {
+                    reject("Error adding image " + (index + 1) + ": " + event.target.error);
+                };
+            });
+
+            // Transaction completion handling
+            transaction.oncomplete = function() {
+                resolve("Images saved to IndexedDB successfully.");
+            };
+
+            transaction.onerror = function(event) {
+                reject("Transaction error: " + event.target.errorCode);
+            };
+        };
+    });
 }

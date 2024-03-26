@@ -1,32 +1,69 @@
 # Security Policy
 
-## Supported Versions
+## Reporting Security Vulnerabilities
 
-This section informs users about which versions of Evox ChatVia [T50] are currently supported with security updates.
+At Evox, we take security seriously. If you discover any security vulnerabilities within the Evox application, please report them immediately to our security team at security@evox.com. We appreciate your help in keeping our platform safe and secure.
 
-| Version         | Supported          |
-| --------------- | ------------------ |
-| 2.0.x           | :white_check_mark: |
-| 1.5.x           | :x:                |
-| 1.0.x           | :white_check_mark: |
-| Below 0.8       | :x:                |
+## Security Measures
 
-## Data Collection Statement
+### Encryption
 
-Evox ChatVia [T50] prioritizes user privacy and does not collect any personal data from users. We are committed to providing a secure and anonymous communication platform.
+Evox Gateway employs strong encryption methods provided by Cryptox to ensure the confidentiality and integrity of user data. Cryptographic operations such as Initialization Vectors (IV) and keys are utilized to secure sensitive information.
 
-## Reporting a Vulnerability
+### Authentication and Access Control
 
-If you believe you have discovered a security vulnerability in Evox ChatVia [T50], we encourage you to report it to us promptly.
+Authentication mechanisms are implemented to verify the identity of users accessing the gateway. This includes username and password authentication along with additional security measures such as IP address logging and device tracking. Access control mechanisms are in place to restrict unauthorized access to sensitive functionalities and data.
 
-**Reporting Process:**
+### Secure Communication
 
-1. Submit a detailed report of the vulnerability to our [security team](mailto:hackerxbusiness@gmail.com).
-2. Include a clear and concise explanation of the vulnerability, steps to reproduce it, and any relevant supporting material.
-3. Our security team will acknowledge the receipt of your report and investigate the issue.
-4. We will strive to provide regular updates on the status of the investigation.
-5. Once the vulnerability is confirmed and mitigated, we will release security updates as necessary.
+Encrypted chats are facilitated within the Evox application to ensure secure communication between users. This prevents eavesdropping and unauthorized access to chat contents.
 
-**Note:** Please understand that we take security reports seriously and appreciate the efforts of the security community in helping us maintain the integrity of Evox ChatVia [T50]. We request that security researchers adhere to responsible disclosure practices and refrain from publicly disclosing the details of any potential vulnerabilities until they have been addressed by our team.
+### Regular Security Audits
 
-Thank you for your commitment to keeping Evox ChatVia [T50] secure!
+We conduct regular security audits and assessments of the Evox application to identify and address any potential security vulnerabilities or weaknesses. This proactive approach helps in maintaining the overall security posture of our platform.
+
+## Timetable for Security Maintenance
+
+### Ongoing Monitoring and Patch Management
+
+- **Daily:** 
+  - Automated monitoring of system logs and security alerts.
+  - Continuous assessment of login attempts, access patterns, and potential anomalies.
+- **Weekly:** 
+  - Review of security patches and updates released by third-party libraries and dependencies.
+  - Internal vulnerability scanning and penetration testing.
+- **Monthly:** 
+  - Detailed review of access controls and user permissions.
+  - Review of encryption algorithms and key management procedures.
+- **Quarterly:** 
+  - Comprehensive security review involving code reviews, threat modeling, and risk assessments.
+  - Update of security policies and procedures based on emerging threats and industry best practices.
+- **Annually:** 
+  - Full-scale security audit conducted by external security experts.
+  - Review and update of disaster recovery and incident response plans.
+
+### Incident Response
+
+In the event of a security incident or breach, the following steps will be taken:
+
+1. **Identification:** Promptly identify and confirm the security incident.
+2. **Containment:** Isolate affected systems or components to prevent further damage.
+3. **Mitigation:** Implement immediate measures to mitigate the impact of the incident.
+4. **Investigation:** Conduct a thorough investigation to determine the root cause and extent of the incident.
+5. **Remediation:** Take appropriate actions to remediate vulnerabilities and strengthen security controls.
+6. **Notification:** Notify affected users and stakeholders about the incident as required by applicable laws and regulations.
+7. **Review:** Conduct a post-incident review to identify lessons learned and improve future incident response procedures.
+
+By adhering to these security measures and maintaining a proactive approach to security maintenance, we strive to provide a safe and secure environment for our users within the Evox ecosystem.
+
+## Versions and Security Status
+
+| Version | Security Status |
+| ------- | --------------- |
+| A1.00   | Vulnerable      |
+| A1.70   | Vulnerable      |
+| D0.30   | Illegal         |
+| D0.65   | Illegal         |
+| D1.00   | Vulnerable      |
+| E0.90   | Secure/Stable   |
+| E0.92   | Utmost Security |
