@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Evox Gateway Maintenance</title>
+  <link rel="stylesheet" href="https://assets.ggops.com/stable/theme-darkblue.css">
+  <link rel="stylesheet" href="./style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+  .gds-layout__container {
+    min-height: 100vh;
+  }
+
+  @-webkit-keyframes rotating
+
+  /* Safari and Chrome */
+    {
+    from {
+      -webkit-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    to {
+      -webkit-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes rotating {
+    from {
+      -ms-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -webkit-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    to {
+      -ms-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -webkit-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  .rotating {
+    -webkit-animation: rotating 12s linear infinite;
+    -moz-animation: rotating 12s linear infinite;
+    -ms-animation: rotating 12s linear infinite;
+    -o-animation: rotating 12s linear infinite;
+    animation: rotating 12s linear infinite;
+  }
+
+  /* Dark Mode */
+  .dark-mode {
+    background-color: #360303;
+    color: #ffffff;
+  }
+
+  .dark-mode .-color-tx-lt-5 {
+    color: #ffffff !important;
+  }
+
+  /* Increase element sizes */
+  .-text-center {
+    font-size: 19px;
+    /* Adjust the font size as needed */
+  }
+
+  .gds-text--body-sm {
+    font-size: 16px;
+    /* Adjust the font size as needed */
+  }
+
+  .background {
+    background-color: hsla(0, 0%, 0%, 0.938) !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+
+  }
+
+  .apple-button-withicon {
+    position: absolute;
+    /* Add relative positioning */
+    align-items: center;
+    background-color: #333;
+    border: none;
+    color: #fff;
+    padding: 15px 30px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    margin: 6px;
+    width: 80%;
+    height: auto;
+    transform: translateX(11%);
+    /* Set height to auto to fit content */
+  }
+
+  .apple-button-withicon svg {
+    position: absolute;
+    right: 5%;
+  }
+
+  .top-button {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  }
+  .bottom-logo {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 132px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.364));
+}
+</style>
+
+<body class="dark-mode">
+  <div id="background">
+    <div id="bgimaget" class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>
+  </div>
+
+  <!--<div class="background" style="background-image: url('./evox-bg.jpg');background-size: cover;background-position: center;filter: blur(5px);"></div>-->
+  <div
+    class="gds-layout__container gds-layout__container--full-width gds-flex gds-flex--justify-center gds-flex--content-center">
+    <div class="-text-center -color-tx-lt-5">
+      <!--<i class="fal fa-2x fa-cog rotating"></i>-->
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="35px" height="35px" viewBox="0 0 512 512" version="1.1">
+        <title>success</title>
+        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="add-copy" fill="#fff" transform="translate(42.666667, 42.666667)">
+                <path d="M213.333333,3.55271368e-14 C95.51296,3.55271368e-14 3.55271368e-14,95.51296 3.55271368e-14,213.333333 C3.55271368e-14,331.153707 95.51296,426.666667 213.333333,426.666667 C331.153707,426.666667 426.666667,331.153707 426.666667,213.333333 C426.666667,95.51296 331.153707,3.55271368e-14 213.333333,3.55271368e-14 Z M213.333333,384 C119.227947,384 42.6666667,307.43872 42.6666667,213.333333 C42.6666667,119.227947 119.227947,42.6666667 213.333333,42.6666667 C307.43872,42.6666667 384,119.227947 384,213.333333 C384,307.43872 307.438933,384 213.333333,384 Z M293.669333,137.114453 L323.835947,167.281067 L192,299.66912 L112.916693,220.585813 L143.083307,190.4192 L192,239.335893 L293.669333,137.114453 Z" id="Shape">
+    
+    </path>
+            </g>
+        </g>
+    </svg>
+      <p class="gds-text--body-sm">You have successfully logged in.
+      </p>
+      <p class="gds-text--body-sm">You can close this window and return to the Evox App.</p>
+      <p class="gds-text--body-sm">Closing window in <span id="count">10</span></p>
+      
+      
+    </div>
+  </div>
+  <img style="user-drag: none;user-select: none;" id="bottom-logo" src="evox-logo-t.png"
+        alt="Another Logo" class="bottom-logo">
+</body>
+<script>
+
+  function custombg() {
+    let blur = localStorage.getItem("cbg-blur")
+    if (localStorage.getItem("cbg")) {
+      let name = localStorage.getItem("cbg")
+      if (name === "default_bg.png") {
+        document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
+      } else if (name === "stock1.jpg") {
+        if (blur) {
+          document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock1.jpg');background-size: cover;background-position: center;filter: blur(${blur}px);"></div>`
+        } else {
+          document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock1.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+        }
+
+      } else if (name === "stock2.jpg") {
+        //document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+        if (blur) {
+          document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(${blur}px);"></div>`
+        } else {
+          document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+        }
+      } else if (name === "stock4.jpg") {
+        //document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+        if (blur) {
+          document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(${blur}px);"></div>`
+        } else {
+          document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+        }
+      } else if (name.includes("#")) {
+        document.getElementById("background").innerHTML = `<div  id="bgimaget" class="background" id="bgimaget" style="background: radial-gradient(circle, ${name}, #000000)"></div>`
+      } else {
+        //document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('${name}');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+        if (blur) {
+          document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="filter: blur(${blur}px);background-image: url('${name}');background-size: cover;background-position: center;"></div>`
+        } else {
+          document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="filter: blur(10px);background-image: url('${name}');background-size: cover;background-position: center;"></div>`
+        }
+        //base64
+      }
+
+    } else {
+      //No Custom BG
+    }
+
+  }
+
+  setInterval(function() {
+    if(Number(document.getElementById("count").innerHTML) == 0) {
+      window.close()
+      return;
+    }
+    document.getElementById("count").innerHTML = Number(document.getElementById("count").innerHTML) - 1
+  }, 1000)
+  custombg()
+</script>
+
+</html>

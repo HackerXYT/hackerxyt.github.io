@@ -5,6 +5,12 @@ sessionStorage.removeItem("current_sline")
 sessionStorage.removeItem("block_interactions")
 sessionStorage.setItem("loaded", true)
 sessionStorage.removeItem("autolg_off")
+
+var windowE = new URL(window.location.href);
+var externalID = windowE.searchParams.get("id");
+if (externalID) {
+  document.getElementById("def_text").innerHTML = "Please log in to proceed with the Evox Desktop App."
+}
 //sessionStorage.removeItem("pfp")
 const ip = sessionStorage.getItem("IPV4")
 $(document).ready(docready())
@@ -547,6 +553,14 @@ function docready() {
   let pswd = atob(acc)
   let username = localStorage.getItem("t50-username")
   if (loggedin != null && autologin === "true") {
+    var wind = new URL(window.location.href);
+    var ext = wind.searchParams.get("id");
+    var rel = wind.searchParams.get("switch");
+    if(rel) {
+      ext_relogin()
+      return;
+    }
+
     const url = `https://evox-datacenter.onrender.com/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${localStorage.getItem("IPV4")}`;
 
     fetch(url)
@@ -562,6 +576,27 @@ function docready() {
           $("#loading-bar").fadeOut("slow")
           console.log('%c' + "Account Verified!", `color: green; font-size: 16px; font-weight: bold;`)
 
+          if (ext) {
+            fetch(`https://evox-datacenter.onrender.com/evoxApp?method=assignAccount&id=${ext}&email=${loggedin}&password=${pswd}`)
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+              })
+              .then(data => {
+                if (data === "Complete") {
+                  //window.close()
+                  window.location.href = "ext-ready.html"
+                }
+                return;
+
+              }).catch(error => {
+                console.error('Fetch error:', error);
+              });
+            //send to dc that id matches to acc email
+          }
+
           sessionStorage.setItem("loaded", true)
           fetch(`https://evox-datacenter.onrender.com/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
@@ -572,6 +607,26 @@ function docready() {
             })
             .then(data => {
               $("#loading").fadeOut("slow")
+              if (ext) {
+                fetch(`https://evox-datacenter.onrender.com/evoxApp?method=assignAccount&id=${ext}&email=${loggedin}&password=${pswd}`)
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                  })
+                  .then(data => {
+                    if (data === "Complete") {
+                      //window.close()
+                      window.location.href = "ext-ready.html"
+                    }
+                    return;
+
+                  }).catch(error => {
+                    console.error('Fetch error:', error);
+                  });
+                //send to dc that id matches to acc email
+              }
               if (data === "IP is Mapped") {
                 console.log("IP Mapped")
                 setup()
@@ -751,7 +806,7 @@ function docready() {
         } catch {
           console.error("Couldn't add PFP to sessionStorage")
         }
-        
+
       })
       .catch(error => {
         console.error(error);
@@ -853,6 +908,7 @@ function docready() {
                           document.getElementById("apps").innerHTML = `<a onclick="shake_me('chatvia-app')" href="#loadapp-chatvia"><img id="chatvia-app" src="chatvia-img.png" class="disabledapp"></img></a>`
                         }
                       }
+
                       $("#gateway").fadeIn("fast", function () {
                         $("#apps").fadeIn("slow")
                       })
@@ -980,6 +1036,28 @@ function verifycode() {
     })
     .then(data => {
       if (data === "Complete") {
+        var wind = new URL(window.location.href);
+        var ext = wind.searchParams.get("id");
+        if (ext) {
+          fetch(`https://evox-datacenter.onrender.com/evoxApp?method=assignAccount&id=${ext}&email=${email}&password=${password}`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              return response.text();
+            })
+            .then(data => {
+              if (data === "Complete") {
+                //window.close()
+                window.location.href = "ext-ready.html"
+              }
+              return;
+
+            }).catch(error => {
+              console.error('Fetch error:', error);
+            });
+          //send to dc that id matches to acc email
+        }
         $("#2fa").fadeOut("slow")
         console.log("All Done")
         if (sessionStorage.getItem("clearafter")) {
@@ -990,7 +1068,7 @@ function verifycode() {
         sessionStorage.removeItem("ACCOUNT_DATA")
         sessionStorage.setItem("2FA_READY", "true")
         localStorage.setItem("t50-email", email)
-        if(!sessionStorage.getItem("autolg_off")){
+        if (!sessionStorage.getItem("autolg_off")) {
           localStorage.setItem("t50-autologin", true)
         } else {
           localStorage.setItem("t50-autologin", false)
@@ -1007,7 +1085,7 @@ function verifycode() {
         sessionStorage.removeItem("ACCOUNT_DATA")
         sessionStorage.setItem("2FA_READY", "true")
         localStorage.setItem("t50-email", email)
-        if(!sessionStorage.getItem("autolg_off")){
+        if (!sessionStorage.getItem("autolg_off")) {
           localStorage.setItem("t50-autologin", true)
         } else {
           localStorage.setItem("t50-autologin", false)
@@ -1053,6 +1131,8 @@ function login() {
     })
     .then(data => {
 
+      var wind = new URL(window.location.href);
+      var ext = wind.searchParams.get("id");
       console.log(data);
       if (data.includes("Do 2FA")) {
         if (data.includes("Email")) {
@@ -1088,6 +1168,27 @@ function login() {
         if (sessionStorage.getItem("clearafter")) {
           localStorage.clear()
         }
+
+        if (ext) {
+          fetch(`https://evox-datacenter.onrender.com/evoxApp?method=assignAccount&id=${ext}&email=${email}&password=${password}`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              return response.text();
+            })
+            .then(data => {
+              if (data === "Complete") {
+                //window.close()
+                window.location.href = "ext-ready.html"
+              }
+              return;
+
+            }).catch(error => {
+              console.error('Fetch error:', error);
+            });
+          //send to dc that id matches to acc email
+        }
         console.log("Welcome Abroad")
         localStorage.setItem("2fa_status", "On")
         localStorage.setItem("t50pswd", `${btoa(password)}`)
@@ -1095,7 +1196,7 @@ function login() {
         const match = credentialsString.match(/Username:(\w+)/);
         const username = match && match[1];
         localStorage.setItem("t50-email", email)
-        if(!sessionStorage.getItem("autolg_off")){
+        if (!sessionStorage.getItem("autolg_off")) {
           localStorage.setItem("t50-autologin", true)
         } else {
           localStorage.setItem("t50-autologin", false)
@@ -1129,7 +1230,7 @@ function login() {
         console.log("Doesn't Exist")
         email = ""
       } else if (data === "Disabled") {
-        
+
         alert("Your account has been disabled by Evox. Please contact admins.")
         shake_me("email")
         fadeError("1")
@@ -1181,3 +1282,114 @@ function reconnect() {
     })
 }
 
+function ext_relogin() {
+  $("#loading-div-text").fadeIn("slow", function () {
+    $("#stuck").fadeOut("slow")
+    setTimeout(function () {
+      $("#loading-div-text").fadeOut("slow", function () {
+        document.getElementById("loading-text").innerHTML = `Connecting<span id="dots"></span>`
+        $("#loading-div-text").fadeIn("slow", function () {
+          $("#dots").html(".")
+          setTimeout(function () {
+            $("#dots").html("..")
+            setTimeout(function () {
+              $("#dots").html("...")
+              setTimeout(function () {
+                $("#dots").html(".")
+                setTimeout(function () {
+                  $("#dots").html("..")
+                  fetch("https://evox-datacenter.onrender.com/accounts")
+                    .then(response => {
+                      if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                      }
+                      return response.text();
+                    })
+                    .then(data => {
+                      $("#loading-bar").fadeOut("slow")
+                      if (data === "T50 Database Online" && sessionStorage.getItem("skipped") !== "yes") {
+                        console.log('%c' + "Server Online!", `color: green; font-size: 16px; font-weight: normal;`)
+                        $("#container").fadeIn("slow", function () {
+                          $("#loading").fadeOut("slow")
+                          $("#loading-div-text").fadeOut("fast")
+                          $("#loading-text").fadeOut("slow")
+                        })
+                      } else {
+                        $("#loading").fadeOut("fast")
+                      }
+                    })
+                    .catch(error => {
+                      const errorString = error.toString();
+                      if (errorString.includes("Failed to fetch")) {
+                        //alert("Servers Are Currently Not Responding, Update Your Application And Wait.")
+                        //window.location.href = "offline.html"
+                      } else if (errorString.includes("Load Failed")) {
+                        // alert("Servers Are Currently Not Responding. Please Check Back Later.")
+                        //window.location.href = "offline.html"
+                      } else {
+                        //alert(error)
+                        //window.location.href = "offline.html"
+                      }
+                      $("#loading-div-text").fadeOut("fast")
+                      $("#loading").fadeIn("fast")
+                      const greet = greetUser()
+                      document.getElementById("gateway").innerHTML = `<div class="centered-text">
+                                                <h2 id="text-me-two" style="margin:0">${greet}, <span id="user-text"></span></h2>
+                                               <p id="loading-apps-text"></p>
+                                                <div style="display: none" id="apps"></div>
+                                            </div>`
+                      if (!localStorage.getItem("t50-username")) {
+                        $("#loading-bar").fadeOut("slow")
+                        setInterval(reconnect(), 4000)
+                        document.getElementById("text-me-two").innerHTML = `We Are Sorry.`
+                        document.getElementById("loading-apps-text").innerHTML = `You cannot login at the moment.<br>Since you haven't logged in yet, please wait until the servers are back online.`
+                      } else {
+                        $("#loading-bar").fadeOut("slow")
+                        setInterval(reconnect(), 4000)
+                        document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
+                        document.getElementById("loading-apps-text").innerHTML = `Servers are currently offline.`
+                      }
+
+                      $("#loading").fadeOut("fast")
+                      let notes = localStorage.getItem("notes-owned")
+                      let images = localStorage.getItem("images-owned")
+                      let chatvia = localStorage.getItem("chatvia-owned")
+                      if (notes === "true") {//OWN NOTES
+                        document.getElementById("apps").innerHTML = `<a onclick="shake_me('notes-app')" href="#loadapp-notes-disabled"><img id="notes-app" src="EvoxNotes.png" class="disabledapp"></img></a>`
+                      }
+                      if (images === "true") {//OWN IMAGES
+                        if (document.getElementById("apps").innerHTML != "") {
+                          document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('images-app')" href="#loadapp-images"><img id="images-app" src="t50-img.png" class="disabledapp"></img></a>`
+                        } else {
+                          document.getElementById("apps").innerHTML = `<a onclick="shake_me('images-app')" href="#loadapp-images"><img id="images-app" src="t50-img.png" class="disabledapp"></img></a>`
+                        }
+                      }
+                      if (chatvia === "true") { //OWN CHATVIA
+                        if (document.getElementById("apps").innerHTML != "") {
+                          document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('chatvia-app')" href="#loadapp-chatvia"><img id="chatvia-app" src="chatvia-img.png" class="disabledapp"></img></a>`
+                        } else {
+                          document.getElementById("apps").innerHTML = `<a onclick="shake_me('chatvia-app')" href="#loadapp-chatvia"><img id="chatvia-app" src="chatvia-img.png" class="disabledapp"></img></a>`
+                        }
+                      }
+
+                      $("#gateway").fadeIn("fast", function () {
+                        $("#apps").fadeIn("slow")
+                      })
+
+
+
+
+
+                      console.error('Fetch error:', error);
+                    });
+                }, 150)
+
+              }, 90)
+            }, 90)
+          }, 90)
+        })
+      })
+    }, 0)
+
+  })
+}
