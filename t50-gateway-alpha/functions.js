@@ -477,6 +477,11 @@ function uielements() {
 	console.log(notes, images, chatvia)
 	$("#settings").fadeIn("slow")
 	$("#vox").fadeIn("slow")
+	var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+	if(width > 768) {
+		$("#pc").fadeIn("slow")
+	}
+	
 	//getFriends("pre")
 
 	if (sessionStorage.getItem("pfp")) {
@@ -4602,7 +4607,7 @@ function hide_new() {
 	document.getElementById('gateway').style.filter = ''
 	document.getElementById("whats_new").classList.remove("active");
 	$("#navigator").fadeIn("fast")
-	localStorage.setItem("New_ID0.91", "SEEN")
+	localStorage.setItem("New_ID0.92", "SEEN")
 	setup()
 }
 function hide_new_set() {
@@ -4610,7 +4615,7 @@ function hide_new_set() {
 	document.getElementById("whats_new").classList.remove("active");
 	$("#navigator").fadeIn("fast")
 	vox()
-	localStorage.setItem("New_ID0.91", "SEEN")
+	localStorage.setItem("New_ID0.92", "SEEN")
 }
 
 function show_news() {
@@ -5133,4 +5138,36 @@ function attach_file() {
 		input.value = '';
 	}
 
+}
+
+function pc() {
+	document.getElementById("pc_cont").classList.add("active")
+	$("#navigator").fadeOut("fast")
+	document.getElementById('gateway').style.filter = 'blur(20px)'; // Add a blur effect to the mainContent
+}
+
+function cancelPC() {
+	document.getElementById('gateway').style.filter = ''
+	document.getElementById("pc_cont").classList.remove("active")
+	$("#navigator").fadeIn("fast")
+}
+
+function downloadPC() {
+	fetch(`https://team50.sytes.net/version.app`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(info => {
+			const data = JSON.parse(info)
+			const fileUrl = `https://github.com/HackerXYT/hackerxyt.github.io/releases/download/${data.framework}${data.version}/Evox.Setup.${data.version}.exe`;
+			window.location.href = fileUrl
+		})
+		.catch(error => {
+			console.error("Cannot set src for", username);
+			console.error(error);
+			reject(error);
+		});
 }

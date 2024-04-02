@@ -752,6 +752,8 @@ a {
   text-wrap: wrap;
 }
 
+
+
 .apple-button span {
   margin-left: 15px;
   margin-bottom: 5px;
@@ -1101,6 +1103,25 @@ a {
   cursor: pointer;
   transition: background-color 0.3s ease, opacity 0.5s ease, transform 0.5s ease;
   opacity: 0;
+  transform: translateY(20px);
+}
+
+.front-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 286px;
+  right: 35px;
+  width: 50px; /* Set width and height to make it a circle */
+  height: 50px; /* Set width and height to make it a circle */
+  background-color: #33333370;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 50%; /* Ensure border-radius is set to 50% to make it a circle */
+  cursor: pointer;
+  transition: background-color 0.3s ease, opacity 0.5s ease, transform 0.5s ease;
   transform: translateY(20px);
 }
 
