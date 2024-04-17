@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Evox Gateway Maintenance</title>
+  <link rel="stylesheet" href="https://assets.ggops.com/stable/theme-darkblue.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+</head>
+<style>
+  button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    appearance: none;
+    border: 0;
+    background: 0;
+    position: relative;
+    color: white;
+    font-weight: 400;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    font-family: inherit;
+    font-weight: 500;
+  }
+
+  button:after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 1);
+    border-radius: inherit;
+    mix-blend-mode: overlay;
+  }
+
+  button iframe {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1.2) rotate(15deg);
+    opacity: 0.25;
+    filter: blur(5px);
+    transition: all 0.5s ease-in-out;
+  }
+
+  button span {
+    position: relative;
+    z-index: 1;
+    opacity: 0.75;
+    color: white;
+    transition: all 0.5s ease-in-out;
+  }
+
+  button:hover iframe {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  button:hover span {
+    opacity: 1;
+  }
+
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+    color: antiquewhite;
+    font-size: 24px;
+    font-family: system-ui, sans-serif;
+
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-direction: column;
+    text-align: center;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+  }
+
+  .background {
+    background-color: hsla(0, 0%, 0%, 0.938) !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+
+  }
+
+  @font-face {
+    font-family: "SF";
+    src: url('SFUIText-Medium.ttf');
+  }
+
+  .transparent-button {
+
+    font-family: "SF";
+    width: auto;
+    height: auto;
+    border: 1px solid #367129;
+    border-radius: 13px;
+    background: transparent;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+  }
+
+  html {
+    font-family: "SF";
+  }
+
+  .gds-layout__container {
+    min-height: 100vh;
+  }
+
+  @-webkit-keyframes rotating
+
+  /* Safari and Chrome */
+    {
+    from {
+      -webkit-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    to {
+      -webkit-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes rotating {
+    from {
+      -ms-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -webkit-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    to {
+      -ms-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -webkit-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  .rotating {
+    -webkit-animation: rotating 12s linear infinite;
+    -moz-animation: rotating 12s linear infinite;
+    -ms-animation: rotating 12s linear infinite;
+    -o-animation: rotating 12s linear infinite;
+    animation: rotating 12s linear infinite;
+  }
+
+  /* Dark Mode */
+  .dark-mode {
+    background-color: #360303;
+    color: #ffffff;
+  }
+
+  .dark-mode .-color-tx-lt-5 {
+    color: #ffffff !important;
+  }
+
+  /* Increase element sizes */
+  .-text-center {
+    font-size: 19px;
+    /* Adjust the font size as needed */
+  }
+
+  .gds-text--body-sm {
+    font-size: 16px;
+    /* Adjust the font size as needed */
+  }
+
+  .background {
+    background-color: hsla(0, 0%, 0%, 0.938) !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+
+  }
+
+  .apple-button-withicon {
+    position: absolute;
+    /* Add relative positioning */
+    align-items: center;
+    background-color: #333;
+    border: none;
+    color: #fff;
+    padding: 15px 30px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    margin: 6px;
+    width: 80%;
+    height: auto;
+    transform: translateX(11%);
+    /* Set height to auto to fit content */
+  }
+
+  .apple-button-withicon svg {
+    position: absolute;
+    right: 5%;
+  }
+
+  .top-button {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  }
+
+  .bottom-logo {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 132px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.364));
+  }
+
+  .user-info {
+    padding: 5px;
+    border-radius: 19px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-size: 500% 500%;
+    animation: changeColor 10s infinite linear;
+  }
+
+  .user-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    /* Use 50% for a perfect circle */
+    overflow: hidden;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    flex-shrink: 0;
+    /* Prevent shrinking */
+  }
+
+  .user-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .user-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-name {
+    font-family: "SF";
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .user-email {
+    font-family: "SF";
+    font-size: 14px;
+    font-weight: normal;
+    color: #666;
+  }
+</style>
+
+<body class="dark-mode">
+  <div id="background">
+    <div id="bgimaget" class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>
+  </div>
+
+  <!--<div class="background" style="background-image: url('./evox-bg.jpg');background-size: cover;background-position: center;filter: blur(5px);"></div>-->
+  <div
+    class="gds-layout__container gds-layout__container--full-width gds-flex gds-flex--justify-center gds-flex--content-center">
+    <div class="-text-center -color-tx-lt-5">
+      <!--<i class="fal fa-2x fa-cog rotating"></i>-->
+      <svg xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M4 21V19.5C4 16.4624 6.46243 14 9.5 14H12.5C15.5376 14 18 16.4624 18 19.5V21M7 21V18M15 21V18M16.5 6L16.8367 5.49493C17.1969 4.95461 17.9371 4.82782 18.4566 5.21745C19.0073 5.63047 19.0645 6.43549 18.5778 6.92224L17.8536 7.64645C17.6272 7.87282 17.5 8.17986 17.5 8.5M17.5 10V10.2M13.8281 4.89801C14.6435 3.74945 15.9842 3 17.5 3C19.9853 3 22 5.01472 22 7.5C22 9.98528 19.9853 12 17.5 12C16.2549 12 15.1279 11.4943 14.3131 10.6771M15 8.00001C15 5.79086 13.2091 4 11 4C8.79086 4 7 5.79086 7 8.00001C7 10.2092 8.79086 12 11 12C11.8312 12 12.6032 11.7465 13.2429 11.3125C14.3033 10.5931 15 9.37794 15 8.00001Z"
+          stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4" />
+      </svg>
+      <p class="gds-text--body-sm" style="font-family: 'SF';">We believe you want to login as:
+      </p>
+      <div style="z-index: 2;display: flex;
+      justify-content: center; /* Horizontally center */
+      align-items: center; /* Vertically center */" class="user-info">
+        <div class="user-circle">
+          <img id="usr-img" src="reloading-pfp.gif" alt="User Image">
+        </div>
+        <div class="user-details">
+          <div id="usr-name" class="user-name">None</div>
+          <div id="usr-email" class="user-email">error@example.com</div>
+        </div>
+      </div>
+      <p id="noti1" class="gds-text--body-sm" style="font-family: 'SF';display: none;">You can simply login by clicking
+        the button below.</p>
+      <p id="noti2" class="gds-text--body-sm" style="font-family: 'SF';display: none;">You can login by re-entering your
+        password.</p>
+      <button id="proceedBTN" onclick="continue_normally()" style="margin: 10px;"
+        class="transparent-button">Continue with <span id="usr"></span></button>
+      <br><button onclick="window.location.href = 'register.html'" style="margin: 10px"
+        class="transparent-button">Cancel</button>
+
+
+    </div>
+  </div>
+  <img style="user-drag: none;user-select: none;" id="bottom-logo" src="evox-logo-t.png" alt="Another Logo"
+    class="bottom-logo">
+</body>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+
+  // Get specific parameter values
+  const email = urlParams.get('email');
+  const phPS = atob(urlParams.get('phPS'));
+  const phUs = atob(urlParams.get('phUS'));
+  const uri = `http://192.168.1.21:4000/accounts?method=getUserbyEmail&email=${atob(email)}`;
+  fetch(uri)
+    .then(response => response.text())
+    .then(username => {
+
+      console.log(username)
+      document.getElementById("usr").innerHTML = username
+      document.getElementById("usr-name").innerHTML = username
+      document.getElementById("usr-email").innerHTML = atob(email)
+      const url = `http://192.168.1.21:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`;
+      fetch(url)
+        .then(response => response.text())
+        .then(data => {
+          if (data.indexOf("base64") === -1) {
+            // If it doesn't contain "base64", add the prefix
+            data = "data:image/jpeg;base64," + data;
+          }
+          document.getElementById("usr-img").src = `${data}`;
+
+          const url = `http://192.168.1.21:4000/accounts?email=${atob(email)}&password=${phPS}&ip=${localStorage.getItem("IPV4")}`;
+
+          fetch(url)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              return response.text();
+            })
+            .then(status => {
+              console.log(status)
+              sessionStorage.setItem("PHEMAIL", atob(email))
+              sessionStorage.setItem("PHUSER", username)
+              sessionStorage.setItem("PHPSWD", phPS)
+              if (status.includes("Credentials Correct") || status.includes("Do 2FA")) {
+                console.log("Credentials Are Correct")
+                document.getElementById("noti1").style.display = "block"
+                document.getElementById("proceedBTN").innerHTML = `Continue with ${username}`
+              } else {
+                document.getElementById("noti2").style.display = "block"
+                document.getElementById("proceedBTN").innerHTML = `Relogin in Gateway`
+              }
+            }).catch(error => {
+              console.error(error);
+            });
+
+        })
+        .catch(error => {
+          console.error(error);
+        });
+
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
+
+  //PHEMAIL
+  //PHUSER
+  //PHPSWD
+  function continue_normally() {
+    localStorage.setItem("t50-username", sessionStorage.getItem("PHUSER"))
+    localStorage.setItem("t50-email", sessionStorage.getItem("PHEMAIL"))
+    localStorage.setItem("t50pswd", btoa(sessionStorage.getItem("PHPSWD")))
+    window.location.href = "index.html"
+  }
+  //const username = localStorage.getItem("t50-username")
+  //const email = localStorage.getItem("t50-email")
+
+
+
+</script>
+
+</html>

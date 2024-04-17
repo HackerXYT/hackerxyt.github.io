@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="theme-color" content="#202d33" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#202d33" media="(prefers-color-scheme: dark)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.9, user-scalable=no">
+    <title>Evox Gateway</title>
+    <link rel="icon" type="image/png" href="evox-logo-dark-large.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="evox-logo-apple.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="evox-logo-apple.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="evox-logo-apple.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="evox-logo-apple.png">
+    <link rel="apple-touch-icon-precomposed" href="evox-logo-apple.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="client.css">
+    <link rel="stylesheet" href="secondary.css">
+    <link rel="stylesheet" href="indicator.css">
+    <script src="../scripts/howler.js"></script>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Noto+Sans:400,700'>
+    <link rel='stylesheet' href='https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'>
+    <link rel='stylesheet' href='./register/style.css'>
+</head>
+
+<body>
+    <div style="display: none;">
+        <div id="progress"></div>
+
+        <div class="center">
+            <div id="register">
+
+                <i id="previousButton" class="ion-android-arrow-back"></i>
+                <i id="forwardButton" class="ion-android-arrow-forward"></i>
+
+                <div id="inputContainer">
+                    <input id="inputField" required multiple />
+                    <label id="inputLabel"></label>
+                    <div id="inputProgress"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div onclick="window.location.href = 'index.html'" style="position: fixed;
+    top: 30px;
+    left: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24" fill="none">
+        <path
+            d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2ZM13.92 16.13H9C8.59 16.13 8.25 15.79 8.25 15.38C8.25 14.97 8.59 14.63 9 14.63H13.92C15.2 14.63 16.25 13.59 16.25 12.3C16.25 11.01 15.21 9.97 13.92 9.97H8.85L9.11 10.23C9.4 10.53 9.4 11 9.1 11.3C8.95 11.45 8.76 11.52 8.57 11.52C8.38 11.52 8.19 11.45 8.04 11.3L6.47 9.72C6.18 9.43 6.18 8.95 6.47 8.66L8.04 7.09C8.33 6.8 8.81 6.8 9.1 7.09C9.39 7.38 9.39 7.86 9.1 8.15L8.77 8.48H13.92C16.03 8.48 17.75 10.2 17.75 12.31C17.75 14.42 16.03 16.13 13.92 16.13Z"
+            fill="#D6D2CD" />
+    </svg>
+</div>
+    <div id="loading-bar" class="animated-gradient">&nbsp;</div>
+    <!--<div class="background" style="background: repeating-radial-gradient(circle, #361e1e, #3c2828, #3e1c1c, #361d1d, #392121 20px);"></div>-->
+    <div id="background">
+
+        <!--<div class="background" id="bgimaget" style="background-image: url('evox-bg.jpg');background-size: cover;background-position: center;filter: blur(5px);"></div>-->
+        <div id="bgimaget" class="background" style="background: radial-gradient(circle, #282828, #000000)"></div>
+        <!--<div class="background"></div>-->
+    </div>
+
+
+
+    <div id="container" class="container" style="display:none;margin-top: 105px;">
+        <a><img src="evox-logo-t.png" alt="Logo" class="logo" id="myLogo"></a>
+
+        <span id="use_switch"><input autocomplete="off" id="email" type="email" class="input-box"
+                placeholder="Email"></span>
+        <input autocomplete="off" type="username" class="input-box" placeholder="Username" id="username">
+        <input autocomplete="off" id="password" type="password" class="input-box" placeholder="Password">
+        <p id="info_text" style="color: white;display: none"></p>
+        <button id="submit" onclick="prepare()" style="border: 2px solid #3a6d30;"
+            class="transparent-button">Register</button><br>
+        <p id="autolg_text" style="color: #a7b3bf;display: none;"></i></p>
+        <script>
+            function remMe(elem) {
+                if (elem.checked) {
+                    //$("#autolg_text").fadeOut("fast")
+                    elem.checked = true
+                    console.log("Checked!");
+                    sessionStorage.removeItem("autolg_off")
+                } else {
+                    elem.checked = false
+                    notice("You will need to re-enter your password for each new session")
+                    //$("#autolg_text").fadeIn("fast")
+                    sessionStorage.setItem("autolg_off", "true")
+                    console.log("Unchecked!");
+                }
+            }
+        </script>
+        <!--<div class="checkbox-container">
+            <label class="checkbox-label">
+                <input type="checkbox" class="checkbox-input">
+                <span></span>
+            </label>
+        </div>-->
+        <p id="def_text" style="color: #a7b3bf">Evox® Epsilon registered under Evox Communications & Co.</p>
+    </div>
+    <div style="display: none;" id="2fa" class="container" style="display:none;margin-top: 105px;">
+        <h3 style="color: white;">Two-Factor Authentication</h3>
+        <p style="color: #a7b3bf;">Please review your email for the Evox® Verification code.</p>
+        <input style="display: none;" autocomplete="off" id="ver_code" type="number" name="quantity" class="input-box" maxlength="6"
+            placeholder="Verification Code">
+        <div>
+            <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig1" maxlength="1"
+                placeholder="-">
+            <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig2" maxlength="1"
+                placeholder="-">
+            <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig3" maxlength="1"
+                placeholder="-">
+            <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig4" maxlength="1"
+                placeholder="-">
+            <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig5" maxlength="1"
+                placeholder="-">
+            <input autocomplete="off" type="number" name="quantity" class="tfa-input" id="dig6" maxlength="1"
+                placeholder="-">
+            <br>
+        </div>
+        <p id="info_text2" style="color: white;display: none"></p>
+        <button id="submit2" onclick="verifycode()" class="transparent-button">Continue</button><br>
+    </div>
+
+
+</body>
+<script src="../scripts/jquery-3.7.0.js"></script>
+<script src="./register/script.js"></script>
+<script src="register.js"></script>
+<!-- <script src="script.js"></script>
+<script src="new.js"></script>-->
+
+</html>
