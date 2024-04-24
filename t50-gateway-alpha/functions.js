@@ -288,7 +288,8 @@ function load(app) {
 		}
 	} else if (app === "transports") {
 		if (localStorage.getItem("t50-username") === "papostol") {
-			window.location.href = "./gmp/gmaps.html"
+			//window.location.href = "./gmp/gmaps.html"
+			window.location.href = "/secondConcept/"
 		}
 	} else if (app === "emails" && localStorage.getItem("t50-username") === "papostol") {
 		window.location.href = "./mails/"
