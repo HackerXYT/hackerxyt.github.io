@@ -463,7 +463,7 @@ function setup() {
                 console.log('%c' + "Enabling Transports", styles)
                 $("#transports-app").fadeIn("slow")
                 //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
-                document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="window.location.href='../DC/'" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a><a onclick="shake_me('transports-disabled');notice('T50 Transports is currently not available')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
+                document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="window.location.href='../DC/'" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a><a onclick="shake_me('transports-disabled');notice('T50 Transports is currently not available');load('transports')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
               }
               $("#apps").fadeIn("slow")
               $("#loading-apps-text").fadeOut("slow", function () {
