@@ -196,6 +196,27 @@ function greetUser() {
 }
 
 function setup() {
+    fetch(`https://afraid-fish-58.telebit.io/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(status => {
+			if (status.includes("Enabled")) {
+				localStorage.setItem("cryptox-accepted", "true")
+			} else if (status === "Disabled") {
+				localStorage.setItem("cryptox-accepted", "false")
+			} else if (status === "Ready To Setup") {
+				localStorage.setItem("cryptox-accepted", "empty")
+			} else {
+				console.error("I dont know what i got from cryptox:", status)
+			}
+
+		}).catch(error => {
+			console.error(error);
+		});
   //if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
   //  window.location.href = "./update/"
   //  return;

@@ -294,7 +294,8 @@ function create_chat() {
 let profint;
 
 function preloadSFriends() {
-  $("#sline-container").fadeOut("fast");
+  $("#sline-container").fadeIn("slow");
+  //$("#sline-container").fadeOut("fast");
   fetch(`https://afraid-fish-58.telebit.io/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
     .then(response => {
       if (!response.ok) {
@@ -408,7 +409,8 @@ function preloadSFriends() {
 }
 
 function preloadSFriends() {
-  $("#sline-container").fadeOut("fast");
+  sessionStorage.setItem("preloaded-sline", "true")
+  //$("#sline-container").fadeOut("fast");
   fetch(`https://afraid-fish-58.telebit.io/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
     .then(response => {
       if (!response.ok) {
@@ -535,7 +537,9 @@ function preloadSFriends() {
 preloadSFriends()
 function getFriends(pre) {
   if (!pre) {
-
+    if(sessionStorage.getItem("preloaded-sline")) {
+      
+    }
     profint = setInterval(function () {
       $("#profile").fadeOut("slow")
     }, 500)

@@ -1,5 +1,5 @@
 //window.addEventListener('beforeunload', function (event) {
-//	fetch(`https://afraid-fish-58.telebit.io/setOffline?username=${localStorage.getItem("t50-username")}`)
+//	fetch(`http://afraid-fish-58.telebit.io/setOffline?username=${localStorage.getItem("t50-username")}`)
 //		.then(response => {
 //			if (!response.ok) {
 //				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -98,7 +98,7 @@ var login_ok = new Howl({
 	volume: 1
 });
 sessionStorage.removeItem("more_options")
-fetch(`https://afraid-fish-58.telebit.io/setOnline?username=${localStorage.getItem("t50-username")}`)
+fetch(`http://afraid-fish-58.telebit.io/setOnline?username=${localStorage.getItem("t50-username")}`)
 	.then(response => {
 		if (!response.ok) {
 			throw new Error(`HTTP error! Status: ${response.status}`);
@@ -480,10 +480,10 @@ function uielements() {
 	$("#settings").fadeIn("slow")
 	$("#vox").fadeIn("slow")
 	var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-	if(width > 768) {
+	if (width > 768) {
 		$("#pc").fadeIn("slow")
 	}
-	
+
 	//getFriends("pre")
 
 	if (sessionStorage.getItem("pfp")) {
@@ -1118,70 +1118,70 @@ function showFriend(element) {
 
 	sessionStorage.setItem("showing_friend", `secureline-${friend}`)
 	try {
-	//document.getElementById("secureline-username").id = `secureline-${friend}`
-	document.getElementById("friend-email").innerHTML = document.getElementById(`user-${friend}-email-friends`).innerHTML
-	document.getElementById("friend-pfp").src = document.getElementById(`${friend}-pfp-friends`).src
-	if (document.getElementById("friend-pfp").src.includes("loading-circle.gif")) {
-		friendinterval = setInterval(function () {
-			document.getElementById("friend-pfp").src = document.getElementById(`${friend}-pfp-friends`).src
-		}, 500)
+		//document.getElementById("secureline-username").id = `secureline-${friend}`
+		document.getElementById("friend-email").innerHTML = document.getElementById(`user-${friend}-email-friends`).innerHTML
+		document.getElementById("friend-pfp").src = document.getElementById(`${friend}-pfp-friends`).src
+		if (document.getElementById("friend-pfp").src.includes("loading-circle.gif")) {
+			friendinterval = setInterval(function () {
+				document.getElementById("friend-pfp").src = document.getElementById(`${friend}-pfp-friends`).src
+			}, 500)
+		}
+		document.getElementById("friend-username").innerHTML = friend
+		$("#friends").fadeOut("fast", function () {
+			fetch(`https://afraid-fish-58.telebit.io/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&method=last_login`)
+				.then(response => {
+					if (!response.ok) {
+						throw new Error(`HTTP error! Status: ${response.status}`);
+					}
+					return response.text();
+				})
+				.then(data => {
+					fetch(`https://afraid-fish-58.telebit.io/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&birth=get`)
+						.then(response => {
+							if (!response.ok) {
+								throw new Error(`HTTP error! Status: ${response.status}`);
+							}
+							return response.text();
+						})
+						.then(bd => {
+							if (bd !== "") {
+								document.getElementById("Friendbirth").style.display = ""
+								document.getElementById("FriendbirthTXT").innerHTML = bd
+							} else {
+								document.getElementById("Friendbirth").style.display = "none"
+							}
+							if (data !== "Unknown") {
+								const date = printTimeOrDate(data)
+								document.getElementById("last_seen").innerHTML = date
+								$("#user-friend").fadeIn("fast")
+							} else {
+								document.getElementById("last_seen").innerHTML = data
+								$("#user-friend").fadeIn("fast")
+							}
+							$("#stuck").fadeOut("fast")
+
+
+						})
+						.catch(error => {
+							console.error(error);
+						})
+
+
+				})
+				.catch(error => {
+					console.error(error);
+				});
+
+
+
+		})
+	} catch (error) {
+		console.log("Error Detected! Fixing..\n", error)
+		return_to_options('user-friend'); navigator('show_friends')
+		showFriend(element)
+
 	}
-	document.getElementById("friend-username").innerHTML = friend
-	$("#friends").fadeOut("fast", function () {
-		fetch(`https://afraid-fish-58.telebit.io/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&method=last_login`)
-			.then(response => {
-				if (!response.ok) {
-					throw new Error(`HTTP error! Status: ${response.status}`);
-				}
-				return response.text();
-			})
-			.then(data => {
-				fetch(`https://afraid-fish-58.telebit.io/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&birth=get`)
-					.then(response => {
-						if (!response.ok) {
-							throw new Error(`HTTP error! Status: ${response.status}`);
-						}
-						return response.text();
-					})
-					.then(bd => {
-						if (bd !== "") {
-							document.getElementById("Friendbirth").style.display = ""
-							document.getElementById("FriendbirthTXT").innerHTML = bd
-						} else {
-							document.getElementById("Friendbirth").style.display = "none"
-						}
-						if (data !== "Unknown") {
-							const date = printTimeOrDate(data)
-							document.getElementById("last_seen").innerHTML = date
-							$("#user-friend").fadeIn("fast")
-						} else {
-							document.getElementById("last_seen").innerHTML = data
-							$("#user-friend").fadeIn("fast")
-						}
-						$("#stuck").fadeOut("fast")
 
-
-					})
-					.catch(error => {
-						console.error(error);
-					})
-
-
-			})
-			.catch(error => {
-				console.error(error);
-			});
-
-
-
-	})
-} catch (error) {
-	console.log("Error Detected! Fixing..\n", error)
-	return_to_options('user-friend');navigator('show_friends')
-	showFriend(element)
-
-}
-	
 }
 function show_friends() {
 	navigator("show_friends")
@@ -2306,8 +2306,8 @@ function secureline(element) {
 	navigator('settings_tonexus')
 	//close_popup()
 	show_sline()
-	
-	setTimeout(function() {
+
+	setTimeout(function () {
 		const usernameSl = sessionStorage.getItem("showing_friend")
 		var parts = usernameSl.split("-");
 		var result = parts[1];
@@ -2316,7 +2316,7 @@ function secureline(element) {
 		}
 		showchat(theElem)
 	}, 400)
-	
+
 
 	//remove "secureline-" from element.id
 	//window.location.href = `./secureline/?goto=${element.id}`
@@ -2977,64 +2977,60 @@ function oneo(element) {
 function show_sline() {
 	toggleGlowAnimation()
 
-	fetch(`https://afraid-fish-58.telebit.io/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! Status: ${response.status}`);
-			}
-			return response.text();
-		})
-		.then(status => {
-			navigator("show_sline")
-			toggleGlowAnimation()
-			if (status.includes("Enabled")) {
-				sline_open.play()
-				document.getElementById('gateway').style.filter = 'blur(35px)'
-				document.getElementById("secureline").classList.add("active")
-				$("#profile").fadeOut("fast")
-				$("#vox").fadeOut("fast")
-				$("#dots").fadeOut("fast")
-				//$("#settings").fadeOut("fast")
-				if (document.getElementById("animatedButton_notif").style.display === "block") {
-					var animatedButton = document.getElementById("animatedButton_notif");
-					animatedButton.style.opacity = "0";
-					animatedButton.style.transform = "translateY(20px)";
-					setTimeout(function () {
-						animatedButton.style.display = "none";
-					}, 500); // Adjust the timing as needed
-				}
-				if (document.getElementById("animatedButton_chats").style.display === "block") {
-					var animatedButton2 = document.getElementById("animatedButton_chats");
-					animatedButton2.style.opacity = "0";
-					animatedButton2.style.transform = "translateY(20px)";
-					setTimeout(function () {
-						animatedButton2.style.display = "none";
-					}, 500); // Adjust the timing as needed
-				}
-				getFriends()
-			} else if (status === "Disabled") {
-				click.play()
-				var disabledDiv = document.body;
-				disabledDiv.classList.toggle('disabled');
-				document.getElementById("sline_cryptox").classList.add("active")
-				document.getElementById("cookie__desc").innerHTML = `You recently disabled Cryptox. Secureline now requires you to enable Cryptox for enhanced security. Cryptox ensures
-				your data is
-				encrypted using advanced techniques, providing an extra layer of privacy protection.`
-				//Prompt to reenable
-			} else if (status === "Ready To Setup") {
-				click.play()
-				var disabledDiv = document.body;
-				disabledDiv.classList.toggle('disabled');
-				document.getElementById("sline_cryptox").classList.add("active")
-
-
+	if (localStorage.getItem("cryptox-accepted") === "true") {
+		navigator("show_sline")
+		toggleGlowAnimation()
+		sline_open.play()
+		document.getElementById('gateway').style.filter = 'blur(35px)'
+		document.getElementById("secureline").classList.add("active")
+		$("#profile").fadeOut("fast")
+		$("#vox").fadeOut("fast")
+		$("#dots").fadeOut("fast")
+		//$("#settings").fadeOut("fast")
+		if (document.getElementById("animatedButton_notif").style.display === "block") {
+			var animatedButton = document.getElementById("animatedButton_notif");
+			animatedButton.style.opacity = "0";
+			animatedButton.style.transform = "translateY(20px)";
+			setTimeout(function () {
+				animatedButton.style.display = "none";
+			}, 500); // Adjust the timing as needed
+		}
+		if (document.getElementById("animatedButton_chats").style.display === "block") {
+			var animatedButton2 = document.getElementById("animatedButton_chats");
+			animatedButton2.style.opacity = "0";
+			animatedButton2.style.transform = "translateY(20px)";
+			setTimeout(function () {
+				animatedButton2.style.display = "none";
+			}, 500); // Adjust the timing as needed
+		}
+		getFriends()
+		//getFriends('disablep')
+	} else if (localStorage.getItem("cryptox-accepted") === "false") {
+		click.play()
+		var disabledDiv = document.body;
+		disabledDiv.classList.toggle('disabled');
+		document.getElementById("sline_cryptox").classList.add("active")
+		document.getElementById("cookie__desc").innerHTML = `You recently disabled Cryptox. Secureline now requires you to enable Cryptox for enhanced security. Cryptox ensures
+		your data is
+		encrypted using advanced techniques, providing an extra layer of privacy protection.`
+		//Prompt to reenable
+	} else if(localStorage.getItem("cryptox-accepted") === "empty") {
+		click.play()
+		var disabledDiv = document.body;
+		disabledDiv.classList.toggle('disabled');
+		document.getElementById("sline_cryptox").classList.add("active")
+	} else {
+		notice("Please Wait..")
+		const crypInt = setInterval(function() {
+			if(localStorage.getItem("cryptox-accepted")) {
+				toggleGlowAnimation()
+				show_sline()
+				clearInterval(crypInt)
 			} else {
-				console.error("I dont know what i got from cryptox:", status)
+				return;
 			}
-
-		}).catch(error => {
-			console.error(error);
-		});
+		}, 500)
+	}
 
 }
 
@@ -4847,6 +4843,8 @@ function loadPFP(username, idsuffix) {
 				console.log("Loading from localDB")
 				document.getElementById(`${username}${idsuffix}`).src = data.data
 				//Check if update is needed
+				//disabled due to datacenter overload
+				return;
 				fetch(`https://afraid-fish-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 					.then(response => {
 						if (!response.ok) {
@@ -4870,10 +4868,10 @@ function loadPFP(username, idsuffix) {
 
 
 
-					}).catch(error => {
-						console.error("Cannot set src for", username)
-						console.error(error)
-					})
+				}).catch(error => {
+					console.error("Cannot set src for", username)
+					console.error(error)
+				})
 			} else {
 				console.log("Loading from server")
 				fetch(`https://afraid-fish-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
@@ -5115,7 +5113,7 @@ function attach_file() {
 				//console.log(base64String);
 				//document.getElementById("upload-box-sline").disabled = true
 				//document.getElementById("usr-img-opt").src = "./reloading.gif"
-				fetch(`https://afraid-fish-58.telebit.io/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${base64String}`)
+				fetch(`http://afraid-fish-58.telebit.io/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${base64String}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
