@@ -1,5 +1,5 @@
 //window.addEventListener('beforeunload', function (event) {
-//	fetch(`https://evox-datacenter.onrender.com/setOffline?username=${localStorage.getItem("t50-username")}`)
+//	fetch(`https://afraid-fish-58.telebit.io/setOffline?username=${localStorage.getItem("t50-username")}`)
 //		.then(response => {
 //			if (!response.ok) {
 //				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -36,6 +36,7 @@ var disabled = new Howl({
 	src: ['./ui-sounds/qa_exit_old.mp3'],
 	volume: 1
 });
+
 var ac_complete = new Howl({
 	src: ['./ui-sounds/action_complete.mp3'],
 	volume: 1
@@ -97,7 +98,7 @@ var login_ok = new Howl({
 	volume: 1
 });
 sessionStorage.removeItem("more_options")
-fetch(`https://evox-datacenter.onrender.com/setOnline?username=${localStorage.getItem("t50-username")}`)
+fetch(`https://afraid-fish-58.telebit.io/setOnline?username=${localStorage.getItem("t50-username")}`)
 	.then(response => {
 		if (!response.ok) {
 			throw new Error(`HTTP error! Status: ${response.status}`);
@@ -106,7 +107,7 @@ fetch(`https://evox-datacenter.onrender.com/setOnline?username=${localStorage.ge
 	})
 	.then(data => {
 		if (data === "200") {
-			fetch(`https://evox-datacenter.onrender.com/getOnlineUsers`)
+			fetch(`https://afraid-fish-58.telebit.io/getOnlineUsers`)
 				.then(response => {
 					if (!response.ok) {
 						throw new Error(`HTTP error! Status: ${response.status}`);
@@ -380,7 +381,7 @@ function continue_purch(app) {
 function check_ccode(app) {
 	$("#loading").fadeIn("slow")
 	let coupon = document.getElementById("coupon").value
-	const url = `https://evox-datacenter.onrender.com/accounts?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
+	const url = `https://afraid-fish-58.telebit.io/accounts?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
 
 	fetch(url)
 		.then(response => {
@@ -635,7 +636,7 @@ function settings() {
 }
 
 function close_popup() {
-	fetch(`https://evox-datacenter.onrender.com/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+	fetch(`https://afraid-fish-58.telebit.io/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -686,7 +687,7 @@ function pfp(give) {
 		let user = localStorage.getItem("t50-username");
 		if (user != null) {
 			document.getElementById("usr-img-opt").src = "reloading-pfp.gif"
-			const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+			const url = `https://afraid-fish-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
 			fetch(url)
 				.then(response => response.text())
 				.then(data => {
@@ -789,7 +790,7 @@ function shake_me(what) {
 
 function show_authip() {
 	//ipv4-list
-	fetch(`https://evox-datacenter.onrender.com/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+	fetch(`https://afraid-fish-58.telebit.io/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -947,7 +948,7 @@ function username_email_icon_show() {
 
 function disable2FA() {
 	//disable 2fa
-	fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${localStorage.getItem("t50-email")}&username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=null`)
+	fetch(`https://afraid-fish-58.telebit.io/authip?method=forceadd&email=${localStorage.getItem("t50-email")}&username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=null`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -969,7 +970,7 @@ function disable2FA() {
 }
 
 function enable2FA() {
-	fetch(`https://evox-datacenter.onrender.com/authip?method=RemoveIP&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=null`)
+	fetch(`https://afraid-fish-58.telebit.io/authip?method=RemoveIP&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=null`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -991,7 +992,7 @@ function enable2FA() {
 }
 function pswd_secure() {
 	navigator("password_secure")
-	fetch(`https://evox-datacenter.onrender.com/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+	fetch(`https://afraid-fish-58.telebit.io/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1083,7 +1084,7 @@ function acceptfriend(element) {
 	</path>
 </svg>`
 	console.log("Accepting Request From", element.id)
-	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=acceptRequest&who=${element.id}`)
+	fetch(`https://afraid-fish-58.telebit.io/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=acceptRequest&who=${element.id}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1126,7 +1127,7 @@ function showFriend(element) {
 	}
 	document.getElementById("friend-username").innerHTML = friend
 	$("#friends").fadeOut("fast", function () {
-		fetch(`https://evox-datacenter.onrender.com/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&method=last_login`)
+		fetch(`https://afraid-fish-58.telebit.io/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&method=last_login`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1134,7 +1135,7 @@ function showFriend(element) {
 				return response.text();
 			})
 			.then(data => {
-				fetch(`https://evox-datacenter.onrender.com/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&birth=get`)
+				fetch(`https://afraid-fish-58.telebit.io/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&birth=get`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1184,7 +1185,7 @@ function showFriend(element) {
 function show_friends() {
 	navigator("show_friends")
 	$("#load-users-friends").fadeIn("fast")
-	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+	fetch(`https://afraid-fish-58.telebit.io/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1210,7 +1211,7 @@ function show_friends() {
 			listContainer.style.marginTop = "";
 			listContainer.innerHTML = "<!--Empty-->";
 			user_requests.forEach(username => {
-				fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+				fetch(`https://afraid-fish-58.telebit.io/accounts?method=getemailbyusername&username=${username}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1249,7 +1250,7 @@ function show_friends() {
 
 							listContainer.appendChild(userContainer);
 							loadPFP(username, '-pfp-friends')
-							//fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+							//fetch(`https://afraid-fish-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 							//	.then(response => {
 							//		if (!response.ok) {
 							//			throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1300,7 +1301,7 @@ function show_requests() {
 	navigator("show_requests")
 	$("#load-users-requests").fadeIn("fast")
 	document.getElementById("list-requests").innerHTML = ""
-	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
+	fetch(`https://afraid-fish-58.telebit.io/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1326,7 +1327,7 @@ function show_requests() {
 			listContainer.style.marginTop = "";
 			listContainer.innerHTML = "<!--Empty-->";
 			user_requests.forEach(username => {
-				fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+				fetch(`https://afraid-fish-58.telebit.io/accounts?method=getemailbyusername&username=${username}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1375,7 +1376,7 @@ function show_requests() {
 
 							listContainer.appendChild(userContainer);
 							loadPFP(username, '-pfp-requests')
-							//fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+							//fetch(`https://afraid-fish-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 							//	.then(response => {
 							//		if (!response.ok) {
 							//			throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1427,7 +1428,7 @@ function addfriend(element) {
 			to="360 25 25" dur="0.5s" repeatCount="indefinite" />
 	</path>
 </svg>`
-	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=friendRequest&who=${element.id}`)
+	fetch(`https://afraid-fish-58.telebit.io/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=friendRequest&who=${element.id}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1461,7 +1462,7 @@ function submit_search() {
 
 
 function loadusers() {
-	let url = `https://evox-datacenter.onrender.com/search?search=`;
+	let url = `https://afraid-fish-58.telebit.io/search?search=`;
 
 	fetch(url)
 		.then(response => {
@@ -1485,7 +1486,7 @@ function loadusers() {
 				if (username === localStorage.getItem("t50-username")) {
 					return;
 				}
-				fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+				fetch(`https://afraid-fish-58.telebit.io/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1495,7 +1496,7 @@ function loadusers() {
 					.then(friends => {
 						let sentRequests;
 
-						fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+						fetch(`https://afraid-fish-58.telebit.io/accounts?method=getemailbyusername&username=${username}`)
 							.then(response => {
 								if (!response.ok) {
 									throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1552,7 +1553,7 @@ function loadusers() {
 										}
 									}
 
-									fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
+									fetch(`https://afraid-fish-58.telebit.io/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
 										.then(response => {
 											if (!response.ok) {
 												throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1668,7 +1669,7 @@ function loadusers() {
 //		// add timeout if search is started or end value exists in div
 //		console.log("Accepted");
 //		$("#load-users").fadeIn("fast");
-//		let url = `https://evox-datacenter.onrender.com/search?search=${value}`;
+//		let url = `https://afraid-fish-58.telebit.io/search?search=${value}`;
 //		const data = result
 //				if (JSON.stringify(data) === '"[]"') {
 //					$("#load-users").fadeOut("fast", function () {
@@ -1694,7 +1695,7 @@ function loadusers() {
 //					if (val.username === localStorage.getItem("t50-username")) {
 //						return;
 //					}
-//					fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+//					fetch(`https://afraid-fish-58.telebit.io/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 //						.then(response => {
 //							if (!response.ok) {
 //								throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1751,7 +1752,7 @@ function loadusers() {
 //											}
 //										}
 //
-//										fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
+//										fetch(`https://afraid-fish-58.telebit.io/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
 //											.then(response => {
 //												if (!response.ok) {
 //													throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1797,7 +1798,7 @@ function loadusers() {
 //													listContainer.appendChild(userContainer);
 //												}
 //												loadPFP(val.username, '-pfp')
-//												//fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+//												//fetch(`https://afraid-fish-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 //												//	.then(response => {
 //												//		if (!response.ok) {
 //												//			throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1956,7 +1957,7 @@ function handlesearch(value) {
 		console.log("Accepted");
 		//$("#load-users").fadeIn("fast");
 
-		let url = `https://evox-datacenter.onrender.com/search?search=${value}`;
+		let url = `https://afraid-fish-58.telebit.io/search?search=${value}`;
 		const data = result;
 		if (JSON.stringify(data) === '[]') {
 			$("#load-users").fadeOut("fast", function () {
@@ -2252,7 +2253,7 @@ function handleFileSelect() {
 			//console.log(base64String);
 			document.getElementById("upload-box").disabled = true
 			document.getElementById("usr-img-opt").src = "./reloading.gif"
-			fetch('https://evox-datacenter.onrender.com/profiles', {
+			fetch('https://afraid-fish-58.telebit.io/profiles', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -2455,7 +2456,7 @@ function complete_chpswd() {
 		return;
 	}
 	//info.email && info.password && info.username && info.newpass
-	fetch('https://evox-datacenter.onrender.com/accounts', {
+	fetch('https://afraid-fish-58.telebit.io/accounts', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -2749,7 +2750,7 @@ function closevox() {
 
 function clearNotifications() {
 	$("#notif_container").fadeOut("fast")
-	fetch(`https://evox-datacenter.onrender.com/notifications?process=clear&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+	fetch(`https://afraid-fish-58.telebit.io/notifications?process=clear&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2779,7 +2780,7 @@ function show_notif(nosound) {
 		</path>
 	</svg>
 </div>`
-	fetch(`https://evox-datacenter.onrender.com/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+	fetch(`https://afraid-fish-58.telebit.io/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2828,7 +2829,7 @@ function show_notif(nosound) {
 							console.error("Error loading image:", error);
 						});
 
-					//const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${notification.image}`;
+					//const url = `https://afraid-fish-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${notification.image}`;
 					//fetch(url)
 					//	.then(response => response.text())
 					//	.then(data => {
@@ -2975,7 +2976,7 @@ function oneo(element) {
 function show_sline() {
 	toggleGlowAnimation()
 
-	fetch(`https://evox-datacenter.onrender.com/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+	fetch(`https://afraid-fish-58.telebit.io/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -3038,7 +3039,7 @@ function show_sline() {
 
 function enableCryptox() {
 	login_ok.play()
-	fetch(`https://evox-datacenter.onrender.com/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+	fetch(`https://afraid-fish-58.telebit.io/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -3182,7 +3183,7 @@ function cancel_ipremove() {
 
 function confirm_ipremove() {
 	const ip = document.getElementById("ip-del-content").innerHTML
-	fetch(`https://evox-datacenter.onrender.com/authip?method=RemoveIP&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=${ip}`)
+	fetch(`https://afraid-fish-58.telebit.io/authip?method=RemoveIP&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=${ip}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -3314,7 +3315,7 @@ function complete_birth() {
 			document.getElementById("error_date").style.display = "none"
 			let birthdate = `${day}/${month}/${year}`
 			console.log(birthdate)
-			fetch(`https://evox-datacenter.onrender.com/accounts?birth=true&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&what=${birthdate}`)
+			fetch(`https://afraid-fish-58.telebit.io/accounts?birth=true&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&what=${birthdate}`)
 				.then(response => {
 					if (!response.ok) {
 						throw new Error(`HTTP error! Status: ${response.status}`);
@@ -3349,7 +3350,7 @@ function complete_birth() {
 }
 
 function getBirth() {
-	fetch(`https://evox-datacenter.onrender.com/accounts?birth=get&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+	fetch(`https://afraid-fish-58.telebit.io/accounts?birth=get&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -3479,7 +3480,7 @@ function complete_addemail() {
 	} else {
 		login_ok.play()
 	}
-	fetch(`https://evox-datacenter.onrender.com/accounts?method=addemail&newemail=${email}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+	fetch(`https://afraid-fish-58.telebit.io/accounts?method=addemail&newemail=${email}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -3520,7 +3521,7 @@ function verify_addemail() {
 		shake_me("email_new_ver_code")
 		return;
 	}
-	fetch(`https://evox-datacenter.onrender.com/accounts?method=ver_new_email&email=${email}&what=${code}&mainemail=${localStorage.getItem("t50-email")}`)
+	fetch(`https://afraid-fish-58.telebit.io/accounts?method=ver_new_email&email=${email}&what=${code}&mainemail=${localStorage.getItem("t50-email")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -3557,7 +3558,7 @@ function verify_addemail() {
 }
 
 function loademails() {
-	fetch(`https://evox-datacenter.onrender.com/accounts?method=getemails&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+	fetch(`https://afraid-fish-58.telebit.io/accounts?method=getemails&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -3650,7 +3651,7 @@ function cancelRemoveEmail() {
 
 function confirmRemoveEmail() {
 	let emailtorem = document.getElementById("email-del-content").innerHTML
-	fetch(`https://evox-datacenter.onrender.com/accounts?method=removeemail&email=${emailtorem}&password=${atob(localStorage.getItem("t50pswd"))}&mainemail=${localStorage.getItem("t50-email")}`)
+	fetch(`https://afraid-fish-58.telebit.io/accounts?method=removeemail&email=${emailtorem}&password=${atob(localStorage.getItem("t50pswd"))}&mainemail=${localStorage.getItem("t50-email")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -3682,7 +3683,7 @@ function confirmRemoveEmail() {
 }
 
 function qactions() {
-	fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
+	fetch(`https://afraid-fish-58.telebit.io/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -3851,7 +3852,7 @@ function cryptoxToggleUI() {
 
 function cryptox(no) {
 	$("#stuck").fadeIn("fast")
-	fetch(`https://evox-datacenter.onrender.com/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+	fetch(`https://afraid-fish-58.telebit.io/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -3956,7 +3957,7 @@ function changeCryptox() {
 		}, 3500)
 		return;
 		cryptox()
-		fetch(`https://evox-datacenter.onrender.com/cryptox?method=disable&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+		fetch(`https://afraid-fish-58.telebit.io/cryptox?method=disable&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! Status: ${response.status}`);
@@ -3976,7 +3977,7 @@ function changeCryptox() {
 	} else {
 		console.log("Enable")
 		login_ok.play()
-		fetch(`https://evox-datacenter.onrender.com/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+		fetch(`https://afraid-fish-58.telebit.io/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4666,7 +4667,7 @@ function optimizeNotifications(id, element) {
 		console.log("Checkbox is unchecked");
 		change = 2
 	}
-	fetch(`https://evox-datacenter.onrender.com/florida?username=${localStorage.getItem("t50-username")}&method=prefs_Set&id=${id}&change=${change}`)
+	fetch(`https://afraid-fish-58.telebit.io/florida?username=${localStorage.getItem("t50-username")}&method=prefs_Set&id=${id}&change=${change}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4688,7 +4689,7 @@ function optimizeNotifications(id, element) {
 }
 
 function loadPrefs() {
-	fetch(`https://evox-datacenter.onrender.com/florida?username=${localStorage.getItem("t50-username")}&method=prefs_Get`)
+	fetch(`https://afraid-fish-58.telebit.io/florida?username=${localStorage.getItem("t50-username")}&method=prefs_Get`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4845,7 +4846,7 @@ function loadPFP(username, idsuffix) {
 				console.log("Loading from localDB")
 				document.getElementById(`${username}${idsuffix}`).src = data.data
 				//Check if update is needed
-				fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+				fetch(`https://afraid-fish-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4874,7 +4875,7 @@ function loadPFP(username, idsuffix) {
 					})
 			} else {
 				console.log("Loading from server")
-				fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+				fetch(`https://afraid-fish-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4915,7 +4916,7 @@ function loadPFPget(username) {
 					resolve(data.data);
 				} else {
 					console.log("Loading from server");
-					fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+					fetch(`https://afraid-fish-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 						.then(response => {
 							if (!response.ok) {
 								throw new Error(`HTTP error! Status: ${response.status}`);
@@ -5113,7 +5114,7 @@ function attach_file() {
 				//console.log(base64String);
 				//document.getElementById("upload-box-sline").disabled = true
 				//document.getElementById("usr-img-opt").src = "./reloading.gif"
-				fetch(`https://evox-datacenter.onrender.com/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${base64String}`)
+				fetch(`https://afraid-fish-58.telebit.io/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${base64String}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);

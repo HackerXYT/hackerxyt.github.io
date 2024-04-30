@@ -16,6 +16,7 @@ var onComplete = function() {
       register.parentElement.appendChild(h1)
       setTimeout(function() { h1.style.opacity = 1 }, 50)
     }, 1000)
+    
 
 }
 

@@ -16,7 +16,7 @@ function send_message() {
     //}
     //message.disabled = true
     //sessionStorage.setItem("sending", "true")
-    fetch(`https://evox-datacenter.onrender.com/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${message.value}`)
+    fetch(`https://afraid-fish-58.telebit.io/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${message.value}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -27,7 +27,7 @@ function send_message() {
         message.value = ""
         if (data === `Message Sent To ${recipient}`) {
           console.log("Message Sent")
-          fetch(`https://evox-datacenter.onrender.com/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}`)
+          fetch(`https://afraid-fish-58.telebit.io/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -88,7 +88,7 @@ function reload_chat(whoto) {
   reloading = setInterval(function () {
     sessionStorage.setItem("current_sline", whoto)
     pfp = document.getElementById(`${whoto}-pfp-secureline`)
-    fetch(`https://evox-datacenter.onrender.com/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}`)
+    fetch(`https://afraid-fish-58.telebit.io/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -183,7 +183,7 @@ function showchat(element) {//json id=Username
 </p>`
   sessionStorage.setItem("current_sline", element.id)
   pfp = document.getElementById(`${element.id}-pfp-secureline`)
-  fetch(`https://evox-datacenter.onrender.com/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
+  fetch(`https://afraid-fish-58.telebit.io/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -193,7 +193,7 @@ function showchat(element) {//json id=Username
     .then(data => {
       if (data === "Chat Exists.") {
         console.log("Getting Existing Chat")
-        fetch(`https://evox-datacenter.onrender.com/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
+        fetch(`https://afraid-fish-58.telebit.io/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -271,7 +271,7 @@ function create_chat() {
       </path>
   </svg>
 </p>`
-  fetch(`https://evox-datacenter.onrender.com/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&createnew=true`)
+  fetch(`https://afraid-fish-58.telebit.io/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&createnew=true`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -295,7 +295,7 @@ let profint;
 
 function preloadSFriends() {
   $("#sline-container").fadeOut("fast");
-  fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+  fetch(`https://afraid-fish-58.telebit.io/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -326,7 +326,7 @@ function preloadSFriends() {
       listContainer.style.marginTop = "";
       listContainer.innerHTML = "<!--Empty-->";
       user_requests.forEach(username => {
-        fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+        fetch(`https://afraid-fish-58.telebit.io/accounts?method=getemailbyusername&username=${username}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -378,7 +378,7 @@ function preloadSFriends() {
 
             listContainer.appendChild(userContainer);
             loadPFP(username, '-pfp-secureline')
-            //fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+            //fetch(`https://afraid-fish-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
             //  .then(response => {
             //    if (!response.ok) {
             //      throw new Error(`HTTP error! Status: ${response.status}`);
@@ -409,7 +409,7 @@ function preloadSFriends() {
 
 function preloadSFriends() {
   $("#sline-container").fadeOut("fast");
-  fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+  fetch(`https://afraid-fish-58.telebit.io/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -444,7 +444,7 @@ function preloadSFriends() {
       const fetchPromises = [];
 
       user_requests.forEach(username => {
-        const promise = fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+        const promise = fetch(`https://afraid-fish-58.telebit.io/accounts?method=getemailbyusername&username=${username}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -591,7 +591,7 @@ function canceldelete() {
 function confirmdelete() {
   document.getElementById("cancelbtn").style.display = "none"
   const message = sessionStorage.getItem("removemsg")
-  fetch(`https://evox-datacenter.onrender.com/secureline?method=DeleteMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&whosentit=me&message=${message}`)
+  fetch(`https://afraid-fish-58.telebit.io/secureline?method=DeleteMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&whosentit=me&message=${message}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

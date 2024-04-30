@@ -13,8 +13,8 @@ function set(day) {
     document.getElementById(`${dayOfWeek.charAt(0).toUpperCase()}${dayOfWeek.slice(1).toLowerCase()}`).disabled = true;
     document.getElementById(`${dayOfWeek.charAt(0).toUpperCase()}${dayOfWeek.slice(1).toLowerCase()}`).selected = true
     const username = global_username
-    //https://evox-datacenter.onrender.com/tasco
-    fetch(`https://evox-datacenter.onrender.com/tasco?method=get&username=${username}&day=${dayOfWeek}`)
+    //https://afraid-fish-58.telebit.io/tasco
+    fetch(`https://afraid-fish-58.telebit.io/tasco?method=get&username=${username}&day=${dayOfWeek}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

@@ -277,7 +277,7 @@ function setup() {
   //} catch {
   //  console.error("Error Logging Out Of Florida. Safe")
   //}
-  fetch(`https://evox-datacenter.onrender.com/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+  fetch(`https://afraid-fish-58.telebit.io/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -319,7 +319,7 @@ function setup() {
       console.error('Fetch error:', error);
     });
   if (!localStorage.getItem("florida_init") && !window.location.href.includes("localhost")) {
-    fetch(`https://evox-datacenter.onrender.com/florida?method=largest&username=${localStorage.getItem("t50-username")}`)
+    fetch(`https://afraid-fish-58.telebit.io/florida?method=largest&username=${localStorage.getItem("t50-username")}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -380,7 +380,7 @@ function setup() {
         $("#container").fadeOut("fast")
         $("#loading").fadeIn("slow")
         $("#stuck").fadeOut("slow")
-        fetch(`https://evox-datacenter.onrender.com/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
+        fetch(`https://afraid-fish-58.telebit.io/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -561,7 +561,7 @@ function docready() {
       return;
     }
 
-    const url = `https://evox-datacenter.onrender.com/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${localStorage.getItem("IPV4")}`;
+    const url = `https://afraid-fish-58.telebit.io/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${localStorage.getItem("IPV4")}`;
 
     fetch(url)
       .then(response => {
@@ -577,7 +577,7 @@ function docready() {
           console.log('%c' + "Account Verified!", `color: green; font-size: 16px; font-weight: bold;`)
 
           if (ext) {
-            fetch(`https://evox-datacenter.onrender.com/evoxApp?method=assignAccount&id=${ext}&email=${loggedin}&password=${pswd}`)
+            fetch(`https://afraid-fish-58.telebit.io/evoxApp?method=assignAccount&id=${ext}&email=${loggedin}&password=${pswd}`)
               .then(response => {
                 if (!response.ok) {
                   throw new Error(`HTTP error! Status: ${response.status}`);
@@ -598,7 +598,7 @@ function docready() {
           }
 
           sessionStorage.setItem("loaded", true)
-          fetch(`https://evox-datacenter.onrender.com/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+          fetch(`https://afraid-fish-58.telebit.io/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -608,7 +608,7 @@ function docready() {
             .then(data => {
               $("#loading").fadeOut("slow")
               if (ext) {
-                fetch(`https://evox-datacenter.onrender.com/evoxApp?method=assignAccount&id=${ext}&email=${loggedin}&password=${pswd}`)
+                fetch(`https://afraid-fish-58.telebit.io/evoxApp?method=assignAccount&id=${ext}&email=${loggedin}&password=${pswd}`)
                   .then(response => {
                     if (!response.ok) {
                       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -631,7 +631,7 @@ function docready() {
                 console.log("IP Mapped")
                 setup()
               } else if (data === "Unknown IP") {
-                fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+                fetch(`https://afraid-fish-58.telebit.io/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
                   .then(response => {
                     if (!response.ok) {
                       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -670,7 +670,7 @@ function docready() {
           FloridaRun()
         } else if (data.includes("IP Not Verified")) {
           console.log('%c' + "Existing Account Verified! IP Not Mapped", `color: orange; font-size: 16px; font-weight: bold;`)
-          fetch(`https://evox-datacenter.onrender.com/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+          fetch(`https://afraid-fish-58.telebit.io/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -792,7 +792,7 @@ function docready() {
     document.getElementById("rem-user").style.display = "block"
     document.getElementById("usr-img-autolg").src = "reloading-pfp.gif"
     const user = localStorage.getItem("t50-username")
-    const url = `https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+    const url = `https://afraid-fish-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
     fetch(url)
       .then(response => response.text())
       .then(data => {
@@ -835,7 +835,7 @@ function docready() {
                 $("#dots").html(".")
                 setTimeout(function () {
                   $("#dots").html("..")
-                  fetch("https://evox-datacenter.onrender.com/accounts")
+                  fetch("https://afraid-fish-58.telebit.io/accounts")
                     .then(response => {
                       if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1027,7 +1027,7 @@ function verifycode() {
   //let dig6 = document.getElementById("dig6").value
   //let code = `${dig1}${dig2}${dig3}${dig4}${dig5}${dig6}`
   console.log("Just to verify:\n", email, username, password, code)
-  fetch(`https://evox-datacenter.onrender.com/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${localStorage.getItem("IPV4")}`)
+  fetch(`https://afraid-fish-58.telebit.io/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${localStorage.getItem("IPV4")}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1039,7 +1039,7 @@ function verifycode() {
         var wind = new URL(window.location.href);
         var ext = wind.searchParams.get("id");
         if (ext) {
-          fetch(`https://evox-datacenter.onrender.com/evoxApp?method=assignAccount&id=${ext}&email=${email}&password=${password}`)
+          fetch(`https://afraid-fish-58.telebit.io/evoxApp?method=assignAccount&id=${ext}&email=${email}&password=${password}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1120,7 +1120,7 @@ function login() {
     return;
   }
   console.log(email, "********")
-  const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}&ip=${localStorage.getItem("IPV4")}`;
+  const url = `https://afraid-fish-58.telebit.io/accounts?email=${email}&password=${password}&ip=${localStorage.getItem("IPV4")}`;
 
   fetch(url)
     .then(response => {
@@ -1170,7 +1170,7 @@ function login() {
         }
 
         if (ext) {
-          fetch(`https://evox-datacenter.onrender.com/evoxApp?method=assignAccount&id=${ext}&email=${email}&password=${password}`)
+          fetch(`https://afraid-fish-58.telebit.io/evoxApp?method=assignAccount&id=${ext}&email=${email}&password=${password}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1259,7 +1259,7 @@ document.getElementById("ver_code").addEventListener("keypress", function (event
 function reconnect() {
   console.log("Reconnecting..")
   $("#loading-bar").fadeIn("slow")
-  fetch("https://evox-datacenter.onrender.com/cron")
+  fetch("https://afraid-fish-58.telebit.io/cron")
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1298,7 +1298,7 @@ function ext_relogin() {
                 $("#dots").html(".")
                 setTimeout(function () {
                   $("#dots").html("..")
-                  fetch("https://evox-datacenter.onrender.com/accounts")
+                  fetch("https://afraid-fish-58.telebit.io/accounts")
                     .then(response => {
                       if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);

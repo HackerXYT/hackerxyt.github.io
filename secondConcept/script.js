@@ -301,310 +301,39 @@ const Weather = () => {
     };
     return (React.createElement(MenuSection, { icon: "fa-solid fa-sun", id: "weather-section", scrollable: true, title: "How does it look like?" }, getDays()));
 };
-const notifications = {
-    "notifications": [
-      {
-        "id": "1",
-        "app": "Gateway",
-        "timestamp": "2024-03-14 18:56:54",
-        "content": "2FA Disabled!",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "2",
-        "app": "Gateway",
-        "timestamp": "2024-03-14 18:56:55",
-        "content": "2FA Enabled!",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "3",
-        "app": "Secureline",
-        "timestamp": "2024-03-14 20:44:56",
-        "content": "New message from bantou",
-        "image": "bantou"
-      },
-      {
-        "id": "4",
-        "app": "Gateway",
-        "timestamp": "2024-03-15 08:16:03",
-        "content": "IP [91.140.28.29] added",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "5",
-        "app": "Gateway",
-        "timestamp": "2024-03-15 15:15:26",
-        "content": "IP [109.178.150.42] added",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "6",
-        "app": "Secureline",
-        "timestamp": "2024-03-15 15:16:09",
-        "content": "New message from Kyriakos",
-        "image": "Kyriakos"
-      },
-      {
-        "id": "7",
-        "app": "Gateway",
-        "timestamp": "2024-03-15 19:15:41",
-        "content": "IP [46.177.157.212] added",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "8",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:24:23",
-        "content": "IP [89.39.107.205] added",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "9",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:03",
-        "content": "IP [79.131.254.135] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "10",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:10",
-        "content": "IP [109.178.191.80] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "11",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:13",
-        "content": "IP [109.178.197.247] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "12",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:16",
-        "content": "IP [109.178.220.111] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "13",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:18",
-        "content": "IP [109.178.253.124] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "14",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:22",
-        "content": "IP [54.37.70.70] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "15",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:24",
-        "content": "IP [149.210.60.177] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "16",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:27",
-        "content": "IP [109.178.197.116] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "17",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:32",
-        "content": "IP [109.178.196.120] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "18",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:34",
-        "content": "IP [149.7.35.218] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "19",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:37",
-        "content": "IP [109.178.220.244] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "20",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:39",
-        "content": "IP [69.50.94.77] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "21",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:44",
-        "content": "IP [89.39.107.203] added",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "22",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:54",
-        "content": "IP [109.178.201.71] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "23",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:25:59",
-        "content": "IP [89.39.107.205] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "24",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:26:01",
-        "content": "IP [89.39.107.203] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "25",
-        "app": "Gateway",
-        "timestamp": "2024-03-16 12:59:21",
-        "content": "IP [79.131.254.135] added",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "26",
-        "app": "Gateway",
-        "timestamp": "2024-03-18 10:17:14",
-        "content": "Profile Picture Changed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "27",
-        "app": "Gateway",
-        "timestamp": "2024-03-18 10:18:00",
-        "content": "Profile Picture Changed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "28",
-        "app": "Gateway",
-        "timestamp": "2024-03-19 07:38:16",
-        "content": "2FA Disabled!",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "29",
-        "app": "Gateway",
-        "timestamp": "2024-03-19 07:38:18",
-        "content": "2FA Enabled!",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "30",
-        "app": "Secureline",
-        "timestamp": "2024-03-19 08:00:33",
-        "content": "New message from AIT",
-        "image": "AIT"
-      },
-      {
-        "id": "31",
-        "app": "Gateway",
-        "timestamp": "2024-03-21 09:05:40",
-        "content": "IP [109.178.203.193] added",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "32",
-        "app": "Gateway",
-        "timestamp": "2024-03-21 21:41:26",
-        "content": "IP [79.131.254.135] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "33",
-        "app": "Gateway",
-        "timestamp": "2024-03-23 14:00:29",
-        "content": "IP [185.177.124.88] added",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "34",
-        "app": "Gateway",
-        "timestamp": "2024-03-27 07:40:35",
-        "content": "IP [109.178.159.25] added",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "35",
-        "app": "Gateway",
-        "timestamp": "2024-03-28 09:22:07",
-        "content": "IP [109.178.162.213] added",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "36",
-        "app": "Gateway",
-        "timestamp": "2024-03-29 09:41:50",
-        "content": "IP [91.140.31.70] added",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "37",
-        "app": "Gateway",
-        "timestamp": "2024-03-29 09:52:12",
-        "content": "IP [91.140.28.29] removed",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      },
-      {
-        "id": "38",
-        "app": "Gateway",
-        "timestamp": "2024-03-29 19:32:46",
-        "content": "IP [46.190.71.217] added",
-        "image": "https://team50.sytes.net/notifications_assets/Gateway.png"
-      }
-    ]
-  }
 const Tools = () => {
-
     const getTools = () => {
         return [{
             id: 1,
-            image: `https://team50.sytes.net/notifications_assets/${notifications.notifications[notifications.notifications.length - 1].app}.png`,
-            label: notifications.notifications[notifications.notifications.length - 1].app,
-            name: notifications.notifications[notifications.notifications.length - 1].content
+            image: "https://team50.sytes.net/notifications_assets/Gateway.png",
+            label: "EVOX",
+            name: "IP [109.178.244.221] added"
         }, {
             id: 3,
-            image: `https://team50.sytes.net/notifications_assets/${notifications.notifications[notifications.notifications.length - 2].app}.png`,
-            label: notifications.notifications[notifications.notifications.length - 2].app,
-            name: notifications.notifications[notifications.notifications.length - 2].content
+            image: "https://team50.sytes.net/notifications_assets/Tasco.png",
+            label: "TASCO",
+            name: "Quick note deleted"
         }, {
             icon: "fa-solid fa-triangle-exclamation",
             id: 4,
-            image: `https://team50.sytes.net/notifications_assets/${notifications.notifications[notifications.notifications.length - 3].app}.png`,
-            label: notifications.notifications[notifications.notifications.length - 3].app,
-            name: notifications.notifications[notifications.notifications.length - 3].content
+            image: "https://team50.sytes.net/notifications_assets/Cryptox.png",
+            label: "CRYPTOX",
+            name: "Iv changed!"
         }, {
             id: 5,
-            image: `https://team50.sytes.net/notifications_assets/${notifications.notifications[notifications.notifications.length - 4].app}.png`,
-            label: notifications.notifications[notifications.notifications.length - 4].app,
-            name: notifications.notifications[notifications.notifications.length - 4].content
+            image: "https://team50.sytes.net/notifications_assets/Images.png",
+            label: "T50",
+            name: "Server restarted"
         }, {
             id: 6,
-            image: `https://team50.sytes.net/notifications_assets/${notifications.notifications[notifications.notifications.length - 5].app}.png`,
-            label: notifications.notifications[notifications.notifications.length - 5].app,
-            name: notifications.notifications[notifications.notifications.length - 5].content
+            image: "https://team50.sytes.net/notifications_assets/Gateway.png",
+            label: "EVOX",
+            name: "Server restarted"
         }, {
             id: 7,
-            image: `https://team50.sytes.net/notifications_assets/${notifications.notifications[5].app}.png`,
-            label: notifications.notifications[5].app,
-            name: notifications.notifications[5].content
+            image: "https://team50.sytes.net/notifications_assets/Gateway.png",
+            label: "EVOX",
+            name: "Server restarted"
         }].map((tool) => {
             const styles = {
                 backgroundImage: `url(${tool.image})`
