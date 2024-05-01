@@ -24,6 +24,19 @@
         //    var newUrl = window.location.href.replace("https://", "http://");
         //    window.location.href = newUrl;
         //}
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('merge')) {
+            console.log('Stopped');
+            let myinfo = urlParams.get('halt')
+            for (const key in myinfo) {
+                if (myinfo.hasOwnProperty(key)) {
+                    localStorage.setItem(key, myinfo[key]);
+                }
+            }
+            setTimeout(function() {
+                window.location.reload()
+            }, 2500)
+        }
         function handleGoBack() {
             try {
                 goback();
