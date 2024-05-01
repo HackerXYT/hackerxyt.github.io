@@ -196,7 +196,7 @@ function greetUser() {
 }
 
 function setup() {
-    fetch(`https://fat-swan-58.telebit.io/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+    fetch(`https://data.evoxs.xyz/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -298,7 +298,7 @@ function setup() {
   //} catch {
   //  console.error("Error Logging Out Of Florida. Safe")
   //}
-  fetch(`https://fat-swan-58.telebit.io/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+  fetch(`https://data.evoxs.xyz/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -340,7 +340,7 @@ function setup() {
       console.error('Fetch error:', error);
     });
   if (!localStorage.getItem("florida_init") && !window.location.href.includes("localhost")) {
-    fetch(`https://fat-swan-58.telebit.io/florida?method=largest&username=${localStorage.getItem("t50-username")}`)
+    fetch(`https://data.evoxs.xyz/florida?method=largest&username=${localStorage.getItem("t50-username")}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -401,7 +401,7 @@ function setup() {
         $("#container").fadeOut("fast")
         $("#loading").fadeIn("slow")
         $("#stuck").fadeOut("slow")
-        fetch(`https://fat-swan-58.telebit.io/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
+        fetch(`https://data.evoxs.xyz/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -477,7 +477,7 @@ function setup() {
               }
               const styles = `color: #766ee6; font-size: 19px; font-weight: normal;`;
               console.log('%c' + "Enabling Tasco", styles)
-              document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="https://team50.sytes.net/tasco/tasco-app.png" class="app"></img></a>`
+              document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="https://evoxs.xyz/tasco/tasco-app.png" class="app"></img></a>`
               console.log("Enabling SecureLine")
               //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('secureline')" href="#loadapp-secureline"><img src="./secureline/sline.png" class="app"></img></a>`
               if (localStorage.getItem("t50-username") === "papostol") {
@@ -582,7 +582,7 @@ function docready() {
       return;
     }
 
-    const url = `https://fat-swan-58.telebit.io/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${localStorage.getItem("IPV4")}`;
+    const url = `https://data.evoxs.xyz/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${localStorage.getItem("IPV4")}`;
 
     fetch(url)
       .then(response => {
@@ -598,7 +598,7 @@ function docready() {
           console.log('%c' + "Account Verified!", `color: green; font-size: 16px; font-weight: bold;`)
 
           if (ext) {
-            fetch(`https://fat-swan-58.telebit.io/evoxApp?method=assignAccount&id=${ext}&email=${loggedin}&password=${pswd}`)
+            fetch(`https://data.evoxs.xyz/evoxApp?method=assignAccount&id=${ext}&email=${loggedin}&password=${pswd}`)
               .then(response => {
                 if (!response.ok) {
                   throw new Error(`HTTP error! Status: ${response.status}`);
@@ -619,7 +619,7 @@ function docready() {
           }
 
           sessionStorage.setItem("loaded", true)
-          fetch(`https://fat-swan-58.telebit.io/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+          fetch(`https://data.evoxs.xyz/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -629,7 +629,7 @@ function docready() {
             .then(data => {
               $("#loading").fadeOut("slow")
               if (ext) {
-                fetch(`https://fat-swan-58.telebit.io/evoxApp?method=assignAccount&id=${ext}&email=${loggedin}&password=${pswd}`)
+                fetch(`https://data.evoxs.xyz/evoxApp?method=assignAccount&id=${ext}&email=${loggedin}&password=${pswd}`)
                   .then(response => {
                     if (!response.ok) {
                       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -652,7 +652,7 @@ function docready() {
                 console.log("IP Mapped")
                 setup()
               } else if (data === "Unknown IP") {
-                fetch(`https://fat-swan-58.telebit.io/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+                fetch(`https://data.evoxs.xyz/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
                   .then(response => {
                     if (!response.ok) {
                       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -691,7 +691,7 @@ function docready() {
           FloridaRun()
         } else if (data.includes("IP Not Verified")) {
           console.log('%c' + "Existing Account Verified! IP Not Mapped", `color: orange; font-size: 16px; font-weight: bold;`)
-          fetch(`https://fat-swan-58.telebit.io/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+          fetch(`https://data.evoxs.xyz/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -776,15 +776,15 @@ function docready() {
           }
         }
         $("#gateway").fadeIn("fast", function () {
-          document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a id="tasco-a" onclick="shake_me('tasco-a');notice('Tasco is currently not available')" href="#blocked-tasco"><img src="https://team50.sytes.net/tasco/tasco-app.png" class="disabledapp"></img></a>`
-          document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a id="dc-a" onclick="shake_me('dc-a');notice('Client is trying to connect. Please stand by.')" href="#blocked-dc"><img src="https://team50.sytes.net/t50-gateway-alpha/srv-offline.gif" class="app"></img></a>`
+          document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a id="tasco-a" onclick="shake_me('tasco-a');notice('Tasco is currently not available')" href="#blocked-tasco"><img src="https://evoxs.xyz/tasco/tasco-app.png" class="disabledapp"></img></a>`
+          document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a id="dc-a" onclick="shake_me('dc-a');notice('Client is trying to connect. Please stand by.')" href="#blocked-dc"><img src="https://evoxs.xyz/t50-gateway-alpha/srv-offline.gif" class="app"></img></a>`
 
           $("#apps").fadeIn("slow")
           $("#navigator").fadeIn("slow")
           $("#settings").fadeIn("slow")
           document.getElementById("usr-name").innerHTML = localStorage.getItem("t50-username")
           document.getElementById("usr-email").innerHTML = localStorage.getItem("t50-email")
-          document.getElementById("usr-img").src = "https://team50.sytes.net/t50-gateway-alpha/srv-offline.gif"
+          document.getElementById("usr-img").src = "https://evoxs.xyz/t50-gateway-alpha/srv-offline.gif"
           sessionStorage.setItem("block_interactions", true)
           $("#logout_icon").fadeOut("fast")
           document.getElementById("restart_icon").style.right = "55px"
@@ -813,7 +813,7 @@ function docready() {
     document.getElementById("rem-user").style.display = "block"
     document.getElementById("usr-img-autolg").src = "reloading-pfp.gif"
     const user = localStorage.getItem("t50-username")
-    const url = `https://fat-swan-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+    const url = `https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
     fetch(url)
       .then(response => response.text())
       .then(data => {
@@ -856,7 +856,7 @@ function docready() {
                 $("#dots").html(".")
                 setTimeout(function () {
                   $("#dots").html("..")
-                  fetch("https://fat-swan-58.telebit.io/accounts")
+                  fetch("https://data.evoxs.xyz/accounts")
                     .then(response => {
                       if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1048,7 +1048,7 @@ function verifycode() {
   //let dig6 = document.getElementById("dig6").value
   //let code = `${dig1}${dig2}${dig3}${dig4}${dig5}${dig6}`
   console.log("Just to verify:\n", email, username, password, code)
-  fetch(`https://fat-swan-58.telebit.io/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${localStorage.getItem("IPV4")}`)
+  fetch(`https://data.evoxs.xyz/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${localStorage.getItem("IPV4")}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1060,7 +1060,7 @@ function verifycode() {
         var wind = new URL(window.location.href);
         var ext = wind.searchParams.get("id");
         if (ext) {
-          fetch(`https://fat-swan-58.telebit.io/evoxApp?method=assignAccount&id=${ext}&email=${email}&password=${password}`)
+          fetch(`https://data.evoxs.xyz/evoxApp?method=assignAccount&id=${ext}&email=${email}&password=${password}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1141,7 +1141,7 @@ function login() {
     return;
   }
   console.log(email, "********")
-  const url = `https://fat-swan-58.telebit.io/accounts?email=${email}&password=${password}&ip=${localStorage.getItem("IPV4")}`;
+  const url = `https://data.evoxs.xyz/accounts?email=${email}&password=${password}&ip=${localStorage.getItem("IPV4")}`;
 
   fetch(url)
     .then(response => {
@@ -1191,7 +1191,7 @@ function login() {
         }
 
         if (ext) {
-          fetch(`https://fat-swan-58.telebit.io/evoxApp?method=assignAccount&id=${ext}&email=${email}&password=${password}`)
+          fetch(`https://data.evoxs.xyz/evoxApp?method=assignAccount&id=${ext}&email=${email}&password=${password}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1280,7 +1280,7 @@ document.getElementById("ver_code").addEventListener("keypress", function (event
 function reconnect() {
   console.log("Reconnecting..")
   $("#loading-bar").fadeIn("slow")
-  fetch("https://fat-swan-58.telebit.io/cron")
+  fetch("https://data.evoxs.xyz/cron")
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1319,7 +1319,7 @@ function ext_relogin() {
                 $("#dots").html(".")
                 setTimeout(function () {
                   $("#dots").html("..")
-                  fetch("https://fat-swan-58.telebit.io/accounts")
+                  fetch("https://data.evoxs.xyz/accounts")
                     .then(response => {
                       if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);

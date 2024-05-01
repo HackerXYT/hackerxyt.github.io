@@ -10,7 +10,7 @@ const date = currentDate.getDate();
 const formattedDate = `${dayOfWeek} ${date}, ${month}`;
 document.getElementById("button1-date").innerHTML = formattedDate
 function getnotes_num() {
-  const url = 'https://fat-swan-58.telebit.io/tasco';
+  const url = 'https://data.evoxs.xyz/tasco';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -51,7 +51,7 @@ function getnotes_num() {
 }
 getnotes_num()
 function getdebtsnum() {
-  fetch(`https://fat-swan-58.telebit.io/tasco?method=debts&debts=get&username=${localStorage.getItem("t50-username")}`)
+  fetch(`https://data.evoxs.xyz/tasco?method=debts&debts=get&username=${localStorage.getItem("t50-username")}`)
     .then(response => response.text())
     .then(data => {
       console.log("Debts", data)
@@ -213,7 +213,7 @@ function remove_task(name) {
   if(!name) {
     console.log("No label defined!")
   }
-  fetch(`https://fat-swan-58.telebit.io/tasco?method=delete&username=${global_username}&day=${dayOfWeek}&taskname=${name}`)
+  fetch(`https://data.evoxs.xyz/tasco?method=delete&username=${global_username}&day=${dayOfWeek}&taskname=${name}`)
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -264,7 +264,7 @@ function finalize_edit() {
   document.getElementById("task_edit_button").disabled = true
   const taskname = document.getElementById("task_edit_input").placeholder
   const newtaskname = document.getElementById("task_edit_input").value
-  fetch(`https://fat-swan-58.telebit.io/tasco?method=edit&username=${global_username}&day=${dayOfWeek}&taskname=${taskname}&newtaskname=${newtaskname}`)
+  fetch(`https://data.evoxs.xyz/tasco?method=edit&username=${global_username}&day=${dayOfWeek}&taskname=${taskname}&newtaskname=${newtaskname}`)
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);

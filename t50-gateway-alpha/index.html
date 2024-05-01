@@ -24,19 +24,41 @@
         //    var newUrl = window.location.href.replace("https://", "http://");
         //    window.location.href = newUrl;
         //}
+
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('merge')) {
             console.log('Stopped');
-            let refixstr = urlParams.get('merge')
-            let myinfo = JSON.parse(refixstr)
+            const url = window.location.href
+            function decodeURIComponentSafe(uri) {
+                try {
+                    return decodeURIComponent(uri);
+                } catch (e) {
+                    // Handle URIError: URI malformed
+                    return uri;
+                }
+            }
+
+            function parseMergeParam(url) {
+                const queryString = url.split('?')[1];
+                const encodedJsonString = queryString.split('=')[1];
+                const jsonString = decodeURIComponentSafe(encodedJsonString);
+                return JSON.parse(jsonString);
+            }
+
+            const parsedObject = parseMergeParam(url);
+            console.log(parsedObject);
+
+            //let refixstr = urlParams.get('merge')
+            let myinfo = parsedObject
             console.log(myinfo)
             for (const key in myinfo) {
                 if (myinfo.hasOwnProperty(key)) {
                     localStorage.setItem(key, myinfo[key]);
                 }
             }
-            setTimeout(function() {
-                window.location.href = "https://evoxs.xyz/t50-gateway-alpha/"
+            setTimeout(function () {
+                console.log("Everything should be done.")
+                //window.location.href = "https://evoxs.xyz/t50-gateway-alpha/"
             }, 4500)
         }
         function handleGoBack() {
@@ -544,7 +566,7 @@
         <!--BETA<div class="slide-container">
             <div class="apple-button apple-button-notif" style="display: flex; align-items: center;">
                 <div class="user-circle" style="margin-right: 10px; width: 50px; height: 50px;">
-                    <img src="https://team50.sytes.net/notifications_assets/Gateway.png" alt="User Image">
+                    <img src="https://evoxs.xyz/notifications_assets/Gateway.png" alt="User Image">
                 </div>
                 <p style="margin: 10px;">2FA Enabled!</p>
             </div>
@@ -1779,7 +1801,7 @@
                 <p id="images-own-ui-status">err</p>
             </div>
             <div class="app-manage">
-                <img src="https://team50.sytes.net/tasco/tasco-app.png" alt="Image" class="app-small">Tasco:&nbsp;
+                <img src="https://evoxs.xyz/tasco/tasco-app.png" alt="Image" class="app-small">Tasco:&nbsp;
                 <p>Active</p>
             </div>
             <div class="app-manage">
@@ -2472,7 +2494,7 @@
     //                    localStorage.setItem("florida_device_id", flrd_id)
     //                    //send fetch
     //                    const encoded = btoa(flrd_id)
-    //                    var url = `https://fat-swan-58.telebit.io/florida?username=${localStorage.getItem("t50-username")}&id=${encoded}`;
+    //                    var url = `https://data.evoxs.xyz/florida?username=${localStorage.getItem("t50-username")}&id=${encoded}`;
     //
     //                    fetch(url)
     //                        .then(response => {

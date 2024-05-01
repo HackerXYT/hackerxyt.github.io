@@ -56,7 +56,7 @@ $(document).ready(function() {
        document.getElementById("email").value = localStorage.getItem("t50-email")
        let user = localStorage.getItem("t50-username")
        if(user != null) {
-		    const url = `https://fat-swan-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+		    const url = `https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
 		    fetch(url)
 		      .then(response => response.text())
 		      .then(data => {
@@ -102,7 +102,7 @@ function login() {
     let email = document.getElementById("email").value
     let password = document.getElementById("password").value
     console.log(email, password)
-    const url = `https://fat-swan-58.telebit.io/accounts?email=${email}&password=${password}`;
+    const url = `https://data.evoxs.xyz/accounts?email=${email}&password=${password}`;
 
     fetch(url)
       .then(response => {

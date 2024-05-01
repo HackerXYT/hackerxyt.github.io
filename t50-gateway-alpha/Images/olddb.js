@@ -8,7 +8,7 @@ function load_img() {
     var password = atob(storedObject.imgpassword)
     //let api = "aHR0cHM6Ly84OTNkM2U5Ny00Y2YwLTRlN2QtOGY0MC1kMTVhMTcyZGZhMmEtMDAtcWxvc3BwYTY2M251LnNwb2NrLnJlcGxpdC5kZXYvP3Bhc3N3b3JkPQ=="
     console.log("Requesting")
-    fetch(`https://fat-swan-58.telebit.io/images-gallery/?password=${password}`, {
+    fetch(`https://data.evoxs.xyz/images-gallery/?password=${password}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -146,7 +146,7 @@ function encodeImageToBase64() {
           image: final,
           password: password
         };
-        let api = "https://fat-swan-58.telebit.io/images-database"
+        let api = "https://data.evoxs.xyz/images-database"
         fetch(api, {
         method: 'POST',
         headers: {
@@ -194,7 +194,7 @@ function encodeImageToBase64() {
           password: password
         };
         let mainapi = "aHR0cHM6Ly84OTNkM2U5Ny00Y2YwLTRlN2QtOGY0MC1kMTVhMTcyZGZhMmEtMDAtcWxvc3BwYTY2M251LnNwb2NrLnJlcGxpdC5kZXYv"
-        fetch("https://fat-swan-58.telebit.io/images-gallery/", {
+        fetch("https://data.evoxs.xyz/images-gallery/", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -275,7 +275,7 @@ function format() {
     if (userInput !== null) {
       // Display the input value in an alert
       let mainapi = "aHR0cHM6Ly84OTNkM2U5Ny00Y2YwLTRlN2QtOGY0MC1kMTVhMTcyZGZhMmEtMDAtcWxvc3BwYTY2M251LnNwb2NrLnJlcGxpdC5kZXYvP21ldGhvZD1kZWxldGUmcGFzc3dvcmQ9"
-      fetch(`https://fat-swan-58.telebit.io/images-gallery/?method=delete&password=${userInput}`, {
+      fetch(`https://data.evoxs.xyz/images-gallery/?method=delete&password=${userInput}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json', // Modify this based on your API's requirements
