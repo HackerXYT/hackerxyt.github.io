@@ -224,7 +224,7 @@ function setup() {
 
   //console.log("RUNNING SETUP!")
   $("#navigator").fadeIn("fast")
-  if (localStorage.getItem("New_ID0.92") !== "SEEN") {
+  if (localStorage.getItem("New_ID0.92.1") !== "SEEN") {
     document.getElementById("loading-text").innerHTML = "Waiting for user to read news."
     $("#loading-text").fadeOut("fast")
     $("#stuck").fadeOut("fast")
