@@ -27,15 +27,17 @@
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('merge')) {
             console.log('Stopped');
-            let myinfo = urlParams.get('merge')
+            let refixstr = urlParams.get('merge')
+            let myinfo = JSON.parse(refixstr)
+            console.log(myinfo)
             for (const key in myinfo) {
                 if (myinfo.hasOwnProperty(key)) {
                     localStorage.setItem(key, myinfo[key]);
                 }
             }
-            setTimeout(function() {
-                window.location.href = "https://evoxs.xyz/"
-            }, 2500)
+            //setTimeout(function() {
+            //    window.location.href = "https://evoxs.xyz/t50-gateway-alpha/"
+            //}, 2500)
         }
         function handleGoBack() {
             try {
