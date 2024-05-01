@@ -42,7 +42,7 @@ function load_db() {
   var storedObject = JSON.parse(storedValue);
   var password = atob(storedObject.imgpassword)
   let api = "aHR0cDovLzE5Mi4xNjguMS4yNzo0MDAwP3Bhc3N3b3JkPQ=="//4000
-  fetch(`https://afraid-fish-58.telebit.io/images-database?password=${password}`, {
+  fetch(`https://fat-swan-58.telebit.io/images-database?password=${password}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -119,7 +119,7 @@ function format_db() {
   // Check if the user clicked "OK" or "Cancel"
   if (userInput !== null) {
     let api = "aHR0cDovLzE5Mi4xNjguMS4yNzo0MDAwP3Bhc3N3b3JkPQ=="//4000
-    fetch(`https://afraid-fish-58.telebit.io/images-database?password=${password}&method=format&format=${userInput}`, {
+    fetch(`https://fat-swan-58.telebit.io/images-database?password=${password}&method=format&format=${userInput}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json', // Modify this based on your API's requirements

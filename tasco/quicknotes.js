@@ -75,7 +75,7 @@ function submitnewnote() {
     cancel_newnote()
     let value = document.getElementById("name_note_input").value
     if(value != null) {
-        const url = 'https://afraid-fish-58.telebit.io/tasco';
+        const url = 'https://fat-swan-58.telebit.io/tasco';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -132,7 +132,7 @@ function submitnewnote() {
 function delete_note() {
   if (document.getElementById("delete_note").innerHTML.includes("#FF0000")) {
     let notename = sessionStorage.getItem("current-note")
-  const url = 'https://afraid-fish-58.telebit.io/tasco';
+  const url = 'https://fat-swan-58.telebit.io/tasco';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -185,7 +185,7 @@ function delete_note() {
 
 function reload_notes(is, whatname) {
     //notes_section
-    const url = 'https://afraid-fish-58.telebit.io/tasco';
+    const url = 'https://fat-swan-58.telebit.io/tasco';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -326,7 +326,7 @@ function savenote() {
       repeatCount="indefinite"/>
   </path>
 </svg>`
-  const url = 'https://afraid-fish-58.telebit.io/tasco';
+  const url = 'https://fat-swan-58.telebit.io/tasco';
   const data = {
     notename: note_name,
     noteuser: global_username,

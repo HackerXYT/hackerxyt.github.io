@@ -68,8 +68,8 @@ function set(day, custom) {
   document.getElementById(`${dayOfWeek.charAt(0).toUpperCase()}${dayOfWeek.slice(1).toLowerCase()}`).disabled = true;
   document.getElementById(`${dayOfWeek.charAt(0).toUpperCase()}${dayOfWeek.slice(1).toLowerCase()}`).selected = true
   const username = global_username
-  //https://afraid-fish-58.telebit.io/tasco || httpe://192.168.1.21:4000/tasco -> added "e"
-  fetch(`https://afraid-fish-58.telebit.io/tasco?method=get&username=${username}&day=${dayOfWeek}`)
+  //https://fat-swan-58.telebit.io/tasco || httpe://192.168.1.21:4000/tasco -> added "e"
+  fetch(`https://fat-swan-58.telebit.io/tasco?method=get&username=${username}&day=${dayOfWeek}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -297,7 +297,7 @@ function custom_task_add(day) {
 
 }
 function addtask(day_val, time_val, label_val, custom) {
-  const url = 'https://afraid-fish-58.telebit.io/tasco';
+  const url = 'https://fat-swan-58.telebit.io/tasco';
 
   // Data to be sent in the request body (assuming it's JSON)
   const data = {
@@ -355,7 +355,7 @@ function reload() {
   document.getElementById("list").style.display = "none"
   document.getElementById("list").innerHTML = ""
   const username = global_username
-  fetch(`https://afraid-fish-58.telebit.io/tasco?method=get&username=${username}&day=${dayOfWeek}`)
+  fetch(`https://fat-swan-58.telebit.io/tasco?method=get&username=${username}&day=${dayOfWeek}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -570,7 +570,7 @@ function getFormattedDate(day) {
   return `${dayOfMonth}, ${monthName}`;
 }
 function loaddebts() {
-  fetch(`https://afraid-fish-58.telebit.io/tasco?method=debts&debts=get&username=${localStorage.getItem("t50-username")}`)
+  fetch(`https://fat-swan-58.telebit.io/tasco?method=debts&debts=get&username=${localStorage.getItem("t50-username")}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -629,7 +629,7 @@ function loaddebts() {
 
         // Appending user container to main container
         container.appendChild(userContainer);
-        const url = `https://afraid-fish-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`;
+        const url = `https://fat-swan-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`;
         fetch(url)
           .then(response => response.text())
           .then(data => {
@@ -755,7 +755,7 @@ function adddebt() {
   if (receiver === "" || price === "") {
     return;
   }
-  fetch(`https://afraid-fish-58.telebit.io/tasco?method=debts&debts=set&username=${username}&debtcost=${Number(price)}&issuer=${receiver}`)
+  fetch(`https://fat-swan-58.telebit.io/tasco?method=debts&debts=set&username=${username}&debtcost=${Number(price)}&issuer=${receiver}`)
     .then(response => response.text())
     .then(data => {
       console.log(data)
@@ -816,7 +816,7 @@ function debtoptions(element) {
 function cleardebt() {
   const username = localStorage.getItem("t50-username")
   const receiver = sessionStorage.getItem("curr_opt")
-  fetch(`https://afraid-fish-58.telebit.io/tasco?method=debts&debts=del&username=${username}&issuer=${receiver}`)
+  fetch(`https://fat-swan-58.telebit.io/tasco?method=debts&debts=del&username=${username}&issuer=${receiver}`)
     .then(response => response.text())
     .then(data => {
       console.log(data)
@@ -860,7 +860,7 @@ function handleFileSelect() {
       document.getElementById("upload-box").disabled = true
       document.getElementById(`${sessionStorage.getItem("chdebtpfp")}-img-opt`).src = "../t50-gateway-alpha/reloading.gif"
       $('#chpfp-popup').fadeOut();
-      fetch('https://afraid-fish-58.telebit.io/profiles', {
+      fetch('https://fat-swan-58.telebit.io/profiles', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -878,7 +878,7 @@ function handleFileSelect() {
             document.getElementById("upload-box").disabled = false
 
             document.getElementById(`${sessionStorage.getItem("chdebtpfp")}-img-opt`).src = "../t50-gateway-alpha/reloading-pfp.gif"
-            const url = `https://afraid-fish-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${sessionStorage.getItem("chdebtpfp")}`;
+            const url = `https://fat-swan-58.telebit.io/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${sessionStorage.getItem("chdebtpfp")}`;
             fetch(url)
               .then(response => response.text())
               .then(prof => {
