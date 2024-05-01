@@ -1,5 +1,5 @@
 //window.addEventListener('beforeunload', function (event) {
-//	fetch(`http://afraid-fish-58.telebit.io/setOffline?username=${localStorage.getItem("t50-username")}`)
+//	fetch(`https://data.evoxs.xyz/setOffline?username=${localStorage.getItem("t50-username")}`)
 //		.then(response => {
 //			if (!response.ok) {
 //				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -98,7 +98,7 @@ var login_ok = new Howl({
 	volume: 1
 });
 sessionStorage.removeItem("more_options")
-fetch(`http://afraid-fish-58.telebit.io/setOnline?username=${localStorage.getItem("t50-username")}`)
+fetch(`https://data.evoxs.xyz/setOnline?username=${localStorage.getItem("t50-username")}`)
 	.then(response => {
 		if (!response.ok) {
 			throw new Error(`HTTP error! Status: ${response.status}`);
@@ -5113,7 +5113,7 @@ function attach_file() {
 				//console.log(base64String);
 				//document.getElementById("upload-box-sline").disabled = true
 				//document.getElementById("usr-img-opt").src = "./reloading.gif"
-				fetch(`http://afraid-fish-58.telebit.io/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${base64String}`)
+				fetch(`https://data.evoxs.xyz/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${base64String}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
