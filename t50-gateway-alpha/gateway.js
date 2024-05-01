@@ -6,6 +6,19 @@ sessionStorage.removeItem("block_interactions")
 sessionStorage.setItem("loaded", true)
 sessionStorage.removeItem("autolg_off")
 
+
+function extAnnounc() {
+  if (localStorage.getItem("New_ID0.92.1") !== "SEEN") {
+    document.getElementById("loading-text").innerHTML = "Waiting for user to read news."
+    $("#loading-text").fadeOut("fast")
+    $("#stuck").fadeOut("fast")
+    $("#container").fadeOut("fast")
+    document.getElementById('gateway').style.filter = 'blur(25px)'
+    document.getElementById("whats_new").classList.add("active");
+    document.getElementById("navigator").style.display = "none"
+    return;
+  }
+}
 var windowE = new URL(window.location.href);
 var externalID = windowE.searchParams.get("id");
 if (externalID) {
@@ -744,6 +757,7 @@ function docready() {
         } else {
           $("#loading-bar").fadeOut("slow")
           document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
+          extAnnounc()
           document.getElementById("loading-apps-text").innerHTML = `Servers are currently offline.`
           try {
             critical.play()
