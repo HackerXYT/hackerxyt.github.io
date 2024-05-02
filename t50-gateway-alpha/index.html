@@ -223,8 +223,24 @@
     </div>
 
 
-
+    <div onclick="merge()" id="EvoxMerge" style="position: fixed;
+    top: 30px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;display: none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 16 16" version="1.1" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+            <path d="m3.25 7.25-1.5.75 6.25 3.25 6.25-3.25-1.5-.75m-11 3.75 6.25 3.25 6.25-3.25"/>
+            <path d="m8 8.25v-6.5m-2.25 4.5 2.25 2 2.25-2"/>
+            </svg>
+    </div>
     <div id="container" class="container" style="display:none;margin-top: 105px;">
+        
         <a><img src="evox-logo-t.png" alt="Logo" class="logo" id="myLogo"></a>
         <div id="rem-user" class="user-info-rem" style="display: none;">
             <div id="rem-user-ic" onclick="login_to_storage()" style=" float: left;margin-right: 10px;"
@@ -366,6 +382,33 @@
             </svg></a>
         <p style="margin: 6px" class="user-email"><b>Vox Center</b> is currently under development. Actual Vox features
             will be available after Vox Center exits beta.
+
+
+    </div>
+
+    <div id="evox_merge" class="vox">
+        
+        <h3>Merge Domains</h3>
+        <img src="DomainChange.png"
+            style="display: block; margin: 20px auto; max-width: 700px; border-radius: 20px;width:100%">
+        <p style="margin: 6px"><b>Evox</b> changed domains.<br>Your local information and credentials remain stored in the previous domain's local storage.
+            </p>
+        <p>You can effortlessly merge your information here with just a click of the button below.</p>
+        <a href="#" onclick="mergenow()" class="apple-button">Merge Now</a>
+
+        <a href="#" onclick="deleteLocal()" class="apple-button">Delete all local data (evoxs.xyz)</a>
+        <a href="#" onclick="" class="apple-button">Delete all external data (team50.sytes.net)</a>
+        <div onclick="return_login()"
+                    style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
+                    <div
+                        style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+                        <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" fill="#fff" width="24px" height="24px" viewBox="0 0 32 32" version="1.1">
+                            <path d="M10.771 8.518c-1.144 0.215-2.83 2.171-2.086 2.915l4.573 4.571-4.573 4.571c-0.915 0.915 1.829 3.656 2.744 2.742l4.573-4.571 4.573 4.571c0.915 0.915 3.658-1.829 2.744-2.742l-4.573-4.571 4.573-4.571c0.915-0.915-1.829-3.656-2.744-2.742l-4.573 4.571-4.573-4.571c-0.173-0.171-0.394-0.223-0.657-0.173v0zM16 1c-8.285 0-15 6.716-15 15s6.715 15 15 15 15-6.716 15-15-6.715-15-15-15zM16 4.75c6.213 0 11.25 5.037 11.25 11.25s-5.037 11.25-11.25 11.25-11.25-5.037-11.25-11.25c0.001-6.213 5.037-11.25 11.25-11.25z"/>
+                            </svg>
+                        Cancel
+                    </div>
+                </div>
+        
 
 
     </div>
@@ -1729,7 +1772,7 @@
                     <div id="usr-name" class="user-name">Error</div>
                     <div id="usr-email" class="user-email">error@example.com</div>
                 </div>
-                <div id="logout_icon" onclick="logoff()" style="position: fixed; right: 55px;">
+                <div id="logout_icon" onclick="confirmLogout()" style="position: fixed; right: 55px;">
                     <div class="user-circle" id="logoff_circle"
                         style="background-color: #d700004f; box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);width: 50px; height: 50px; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;">
                         <svg style="width: 40%; height: 40%; display: block;" xmlns="http://www.w3.org/2000/svg"
@@ -2367,6 +2410,23 @@
         <div class="buttons">
             <button onclick="enableCryptox()" class="buttons__allow">Continue</button>
             <button onclick="cancelCryptox()" class="buttons__decline">No&nbsp;thanks</button>
+        </div>
+
+    </div>
+    <div id="logout_confirm" class="cookie" style="background-color: #311313;border: 1px solid #271414">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24" fill="none">
+            <path d="M12 15H12.01M12 12V9M4.98207 19H19.0179C20.5615 19 21.5233 17.3256 20.7455 15.9923L13.7276 3.96153C12.9558 2.63852 11.0442 2.63852 10.2724 3.96153L3.25452 15.9923C2.47675 17.3256 3.43849 19 4.98207 19Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        
+
+        <p id="confirm__heading" class="cookie__heading">Warning!</p>
+        <p id="confirm__desc" class="cookie__desc">Logging out will result in the loss of all locally stored Evox data. You'll need to re-enter your credentials to regain access to your account.</p>
+
+
+
+        <div class="buttons">
+            <button onclick="logoff()" class="buttons__allow">Continue</button>
+            <button onclick="cancelLogout()" class="buttons__decline">Cancel</button>
         </div>
 
     </div>

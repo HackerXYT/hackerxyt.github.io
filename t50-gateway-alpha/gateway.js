@@ -5,6 +5,7 @@ sessionStorage.removeItem("current_sline")
 sessionStorage.removeItem("block_interactions")
 sessionStorage.setItem("loaded", true)
 sessionStorage.removeItem("autolg_off")
+sessionStorage.removeItem("blockBottomLogout")
 
 var windowE = new URL(window.location.href);
 var externalID = windowE.searchParams.get("id");
@@ -231,6 +232,7 @@ function setup() {
     document.getElementById("loading-text").innerHTML = "Waiting for user to read news."
     $("#loading-text").fadeOut("fast")
     $("#stuck").fadeOut("fast")
+    $("#EvoxMerge").fadeOut("fast")
     $("#container").fadeOut("fast")
     document.getElementById('gateway').style.filter = 'blur(25px)'
     document.getElementById("whats_new").classList.add("active");
@@ -387,7 +389,7 @@ function setup() {
         log("Loading Gateway", "green")
       }, 950)
     }
-
+    $("#EvoxMerge").fadeOut("fast")
     $("#container").fadeOut("slow", function () {
       $("#gateway").fadeIn("slow")
       if (username != null && email != null) {
@@ -401,6 +403,7 @@ function setup() {
           }, 950)
         }
 
+        $("#EvoxMerge").fadeOut("fast")
         $("#container").fadeOut("fast")
         $("#loading").fadeIn("slow")
         $("#stuck").fadeOut("slow")
@@ -837,6 +840,7 @@ function docready() {
         reject(error);
       });
     $("#loading-bar").fadeOut("slow")
+    $("#EvoxMerge").fadeIn("fast")
     $("#container").fadeIn("slow", function () {
       $("#loading").fadeOut("slow")
       $("#loading-div-text").fadeOut("fast")
@@ -870,6 +874,7 @@ function docready() {
                       $("#loading-bar").fadeOut("slow")
                       if (data === "T50 Database Online" && sessionStorage.getItem("skipped") !== "yes") {
                         console.log('%c' + "Server Online!", `color: green; font-size: 16px; font-weight: normal;`)
+                        $("#EvoxMerge").fadeIn("fast")
                         $("#container").fadeIn("slow", function () {
                           $("#loading").fadeOut("slow")
                           $("#loading-div-text").fadeOut("fast")
@@ -1177,6 +1182,7 @@ function login() {
           "password": password
         }
         sessionStorage.setItem("ACCOUNT_DATA", JSON.stringify(jsondata))
+        $("#EvoxMerge").fadeOut("fast")
         $("#container").fadeOut("slow")
         $("#2fa").fadeIn("slow")
         return;
@@ -1333,6 +1339,7 @@ function ext_relogin() {
                       $("#loading-bar").fadeOut("slow")
                       if (data === "T50 Database Online" && sessionStorage.getItem("skipped") !== "yes") {
                         console.log('%c' + "Server Online!", `color: green; font-size: 16px; font-weight: normal;`)
+                        $("#EvoxMerge").fadeIn("fast")
                         $("#container").fadeIn("slow", function () {
                           $("#loading").fadeOut("slow")
                           $("#loading-div-text").fadeOut("fast")
@@ -1417,4 +1424,44 @@ function ext_relogin() {
 
   })
 }
-//refix code
+
+function merge() {
+  document.getElementById("container").style.filter = "blur(10px)"
+  document.getElementById("evox_merge").classList.add("active")
+}
+
+function return_login() {
+	document.getElementById("container").style.filter = ""
+  document.getElementById("evox_merge").classList.remove("active")
+}
+
+function mergenow() {
+  localStorage.clear()
+  sessionStorage.clear()
+  window.location.href = "https://team50.sytes.net/?halt=true"
+}
+
+function deleteLocal() {
+  localStorage.clear()
+  sessionStorage.clear()
+  var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+  var request = indexedDB.open('EvoxSocial');
+  request.onsuccess = function (event) {
+    var db = event.target.result;
+    db.close();
+    var deleteRequest = indexedDB.deleteDatabase('EvoxSocial');
+    deleteRequest.onsuccess = function () {
+      console.log("Database deleted successfully");
+    };
+    deleteRequest.onerror = function () {
+      console.error("Error deleting database");
+    };
+  };
+
+  request.onerror = function (event) {
+    console.error("Error opening database:", event.target.errorCode);
+  };
+  setTimeout(function() {
+    window.location.reload()
+  }, 1500)
+}

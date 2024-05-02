@@ -555,6 +555,10 @@ function uielements() {
 }
 
 function settings() {
+	if(sessionStorage.getItem("blockBottomLogout") === "true") {
+		shake_me("logout_confirm")
+		return;
+	}
 	navigator("settings_tonexus")
 
 	//console.log(document.getElementById("popup").classList.contains("active"))
@@ -2646,7 +2650,10 @@ function dots() {
 }
 
 function profile() {
-
+	if(sessionStorage.getItem("blockBottomLogout") === "true") {
+		shake_me("logout_confirm")
+		return;
+	}
 	show_account()
 	settings()
 	navigator("return_settings")
@@ -2699,6 +2706,10 @@ function apparrow() {
 
 
 function vox() {
+	if(sessionStorage.getItem("blockBottomLogout") === "true") {
+		shake_me("logout_confirm")
+		return;
+	}
 	navigator("closevox")
 	qactions()
 	document.getElementById("gateway").style.filter = "blur(25px)"
@@ -3034,6 +3045,20 @@ function show_sline() {
 
 }
 
+
+function confirmLogout() {
+	settings()
+	sessionStorage.setItem("blockBottomLogout", "true")
+	document.getElementById("gateway").style.filter = "blur(10px)"
+	document.getElementById("logout_confirm").classList.add("active")
+}
+
+function cancelLogout() {
+	sessionStorage.removeItem("blockBottomLogout")
+	document.getElementById("gateway").style.filter = ""
+	document.getElementById("logout_confirm").classList.remove("active")
+	settings()
+}
 function enableCryptox() {
 	login_ok.play()
 	fetch(`https://data.evoxs.xyz/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
@@ -3995,6 +4020,7 @@ function changeCryptox() {
 }
 
 function navigator(w, f) {
+	
 	const sett_def = `<div onclick="settings()" id="settings">
 	<div
 		style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
@@ -5171,4 +5197,3 @@ function downloadPC() {
 			reject(error);
 		});
 }
-//recode fix
