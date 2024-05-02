@@ -4605,7 +4605,7 @@ function hide_new() {
 	document.getElementById('gateway').style.filter = ''
 	document.getElementById("whats_new").classList.remove("active");
 	$("#navigator").fadeIn("fast")
-	localStorage.setItem("New_ID0.92.1.1", "SEEN")
+	localStorage.setItem("New_ID0.92.1", "SEEN")
 	setup()
 }
 function hide_new_set() {

@@ -195,8 +195,8 @@ function greetUser() {
   return greeting;
 }
 
-function setup() {
-    fetch(`https://data.evoxs.xyz/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+function setupCrypt() {
+  fetch(`https://data.evoxs.xyz/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -217,12 +217,15 @@ function setup() {
 		}).catch(error => {
 			console.error(error);
 		});
+}
+function setup() {
+  setupCrypt()
   //if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
   //  window.location.href = "./update/"
   //  return;
   //}
 
-  //console.log("RUNNING SETUP!")
+  console.log("RUNNING SETUP!")
   $("#navigator").fadeIn("fast")
   if (localStorage.getItem("New_ID0.92.1") !== "SEEN") {
     document.getElementById("loading-text").innerHTML = "Waiting for user to read news."
