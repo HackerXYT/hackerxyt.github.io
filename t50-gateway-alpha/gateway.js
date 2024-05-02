@@ -8,6 +8,7 @@ sessionStorage.removeItem("autolg_off")
 
 
 function extAnnounc() {
+  return;
   if (localStorage.getItem("New_ID0.92.1") !== "SEEN") {
     document.getElementById("loading-text").innerHTML = "Waiting for user to read news."
     $("#loading-text").fadeOut("fast")
