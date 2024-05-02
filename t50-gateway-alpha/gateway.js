@@ -795,7 +795,7 @@ function docready(merge) {
         }
       })
       .catch(error => {
-        
+
         $("#stuck").fadeOut("fast")
         $("#loading-bar").fadeOut("fast")
         $("#vox").fadeIn("fast")
@@ -976,8 +976,7 @@ function docready(merge) {
                       fadeElement("nosignal", 10); // You can adjust the speed here (lower value for faster fading)
                       $("#stuck").fadeOut("fast")
                       $("#loading-bar").fadeOut("fast")
-                      $("#vox").fadeIn("fast")
-                      $("#profile").fadeIn("fast")
+
                       const errorString = error.toString();
                       if (errorString.includes("Failed to fetch")) {
                         //alert("Servers Are Currently Not Responding, Update Your Application And Wait.")
@@ -1004,6 +1003,8 @@ function docready(merge) {
                         document.getElementById("text-me-two").innerHTML = `We Are Sorry.`
                         document.getElementById("loading-apps-text").innerHTML = `You cannot login at the moment.<br>Since you haven't logged in yet, please wait until the servers are back online.`
                       } else {
+                        $("#vox").fadeIn("fast")
+                        $("#profile").fadeIn("fast")
                         $("#loading-bar").fadeOut("slow")
                         setInterval(reconnect(), 4000)
                         document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
