@@ -1973,3 +1973,7 @@ a {
   line-height: 1.6;
 }
 
+.mergingInfo li {
+  display: none;
+  margin:10px
+}

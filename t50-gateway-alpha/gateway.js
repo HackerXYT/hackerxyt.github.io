@@ -7,6 +7,16 @@ sessionStorage.setItem("loaded", true)
 sessionStorage.removeItem("autolg_off")
 sessionStorage.removeItem("blockBottomLogout")
 
+var merge_sound = new Howl({
+	src: ['./ui-sounds/merge.mp3'],
+	volume: 1
+});
+
+var update_complete = new Howl({
+	src: ['./ui-sounds/update_complete.mp3'],
+	volume: 1
+});
+
 var windowE = new URL(window.location.href);
 var externalID = windowE.searchParams.get("id");
 if (externalID) {
@@ -198,26 +208,26 @@ function greetUser() {
 
 function setupCrypt() {
   fetch(`https://data.evoxs.xyz/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! Status: ${response.status}`);
-			}
-			return response.text();
-		})
-		.then(status => {
-			if (status.includes("Enabled")) {
-				localStorage.setItem("cryptox-accepted", "true")
-			} else if (status === "Disabled") {
-				localStorage.setItem("cryptox-accepted", "false")
-			} else if (status === "Ready To Setup") {
-				localStorage.setItem("cryptox-accepted", "empty")
-			} else {
-				console.error("I dont know what i got from cryptox:", status)
-			}
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(status => {
+      if (status.includes("Enabled")) {
+        localStorage.setItem("cryptox-accepted", "true")
+      } else if (status === "Disabled") {
+        localStorage.setItem("cryptox-accepted", "false")
+      } else if (status === "Ready To Setup") {
+        localStorage.setItem("cryptox-accepted", "empty")
+      } else {
+        console.error("I dont know what i got from cryptox:", status)
+      }
 
-		}).catch(error => {
-			console.error(error);
-		});
+    }).catch(error => {
+      console.error(error);
+    });
 }
 function setup() {
   setupCrypt()
@@ -565,7 +575,7 @@ function setup() {
 }
 
 
-function docready() {
+function docready(merge) {
   //if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
   //  window.location.href = "./update/"
   //  return;
@@ -579,14 +589,50 @@ function docready() {
   let acc = localStorage.getItem("t50pswd")
   let pswd = atob(acc)
   let username = localStorage.getItem("t50-username")
+
+
+  const urlParams = new URLSearchParams(window.location.search);
+
+  if (urlParams.has('merge') && !merge && !username) {
+    merge_sound.play()
+    let refixstr = urlParams.get('merge')
+    let myinfo = JSON.parse(refixstr)
+    sessionStorage.setItem("transfer", JSON.stringify(myinfo))
+    document.getElementById("mrg-name").innerHTML = myinfo['t50-username']
+    document.getElementById("transfUsr").innerHTML = myinfo['t50-username']
+    document.getElementById("mrg-email").innerHTML = myinfo['t50-email']
+    document.getElementById("loading-text").innerHTML = ``
+    const url = `https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${myinfo['t50-username']}`;
+    fetch(url)
+      .then(response => response.text())
+      .then(data => {
+        if (data.indexOf("base64") === -1) {
+          // If it doesn't contain "base64", add the prefix
+          data = "data:image/jpeg;base64," + data;
+        }
+        document.getElementById("mrg-img").src = `${data}`;
+      })
+      .catch(error => {
+        console.error(error);
+        reject(error);
+      });
+    $("#loading").fadeOut("fast")
+    document.getElementById("complete_merge").classList.add("active")
+    return;
+  }
+
+  
+
   if (loggedin != null && autologin === "true") {
     var wind = new URL(window.location.href);
     var ext = wind.searchParams.get("id");
     var rel = wind.searchParams.get("switch");
-    if(rel) {
+    if (rel) {
       ext_relogin()
       return;
     }
+
+
 
     const url = `https://data.evoxs.xyz/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${localStorage.getItem("IPV4")}`;
 
@@ -1426,12 +1472,13 @@ function ext_relogin() {
 }
 
 function merge() {
+  merge_sound.play()
   document.getElementById("container").style.filter = "blur(10px)"
   document.getElementById("evox_merge").classList.add("active")
 }
 
 function return_login() {
-	document.getElementById("container").style.filter = ""
+  document.getElementById("container").style.filter = ""
   document.getElementById("evox_merge").classList.remove("active")
 }
 
@@ -1461,7 +1508,7 @@ function deleteLocal() {
   request.onerror = function (event) {
     console.error("Error opening database:", event.target.errorCode);
   };
-  setTimeout(function() {
+  setTimeout(function () {
     window.location.reload()
   }, 1500)
 }

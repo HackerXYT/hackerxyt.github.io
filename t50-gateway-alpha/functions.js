@@ -28,6 +28,10 @@ var account_show = new Howl({
 	volume: 1
 });
 
+var hero = new Howl({
+	src: ['./ui-sounds/hero.mp3'],
+	volume: 1
+});
 var error = new Howl({
 	src: ['./ui-sounds/critical.mp3'],
 	volume: 1
@@ -555,7 +559,7 @@ function uielements() {
 }
 
 function settings() {
-	if(sessionStorage.getItem("blockBottomLogout") === "true") {
+	if (sessionStorage.getItem("blockBottomLogout") === "true") {
 		shake_me("logout_confirm")
 		return;
 	}
@@ -2650,7 +2654,7 @@ function dots() {
 }
 
 function profile() {
-	if(sessionStorage.getItem("blockBottomLogout") === "true") {
+	if (sessionStorage.getItem("blockBottomLogout") === "true") {
 		shake_me("logout_confirm")
 		return;
 	}
@@ -2706,7 +2710,7 @@ function apparrow() {
 
 
 function vox() {
-	if(sessionStorage.getItem("blockBottomLogout") === "true") {
+	if (sessionStorage.getItem("blockBottomLogout") === "true") {
 		shake_me("logout_confirm")
 		return;
 	}
@@ -3025,15 +3029,15 @@ function show_sline() {
 		your data is
 		encrypted using advanced techniques, providing an extra layer of privacy protection.`
 		//Prompt to reenable
-	} else if(localStorage.getItem("cryptox-accepted") === "empty") {
+	} else if (localStorage.getItem("cryptox-accepted") === "empty") {
 		click.play()
 		var disabledDiv = document.body;
 		disabledDiv.classList.toggle('disabled');
 		document.getElementById("sline_cryptox").classList.add("active")
 	} else {
 		notice("Please Wait..")
-		const crypInt = setInterval(function() {
-			if(localStorage.getItem("cryptox-accepted")) {
+		const crypInt = setInterval(function () {
+			if (localStorage.getItem("cryptox-accepted")) {
 				toggleGlowAnimation()
 				show_sline()
 				clearInterval(crypInt)
@@ -4020,7 +4024,7 @@ function changeCryptox() {
 }
 
 function navigator(w, f) {
-	
+
 	const sett_def = `<div onclick="settings()" id="settings">
 	<div
 		style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
@@ -4894,10 +4898,10 @@ function loadPFP(username, idsuffix) {
 
 
 
-				}).catch(error => {
-					console.error("Cannot set src for", username)
-					console.error(error)
-				})
+					}).catch(error => {
+						console.error("Cannot set src for", username)
+						console.error(error)
+					})
 			} else {
 				console.log("Loading from server")
 				fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
@@ -5196,4 +5200,75 @@ function downloadPC() {
 			console.error(error);
 			reject(error);
 		});
+}
+
+function correctAccount() {
+	document.getElementById("complete_merge").classList.remove("active")
+	document.getElementById("merge_info").classList.add("active")
+	document.getElementById("rev-name").innerHTML = document.getElementById("mrg-name").innerHTML
+	document.getElementById("rev-email").innerHTML = document.getElementById("mrg-email").innerHTML
+	console.log(document.getElementById("mrg-img").src)
+	if (document.getElementById("mrg-img").src.includes("reloading-pfp.gif")) {
+		console.log("Waiting for pfp")
+		const pfpRev = setInterval(function () {
+			if (!document.getElementById("mrg-img").src.includes("reloading-pfp.gif")) {
+				document.getElementById("rev-img").src = document.getElementById("mrg-img").src
+				clearInterval(pfpRev)
+			}
+		}, 100)
+	} else {
+		document.getElementById("rev-img").src = document.getElementById("mrg-img").src
+	}
+
+	const mergeInfo = JSON.parse(sessionStorage.getItem("transfer"))
+	if (mergeInfo['t50-username']) {
+		$("#merge-username").fadeIn("fast")
+	}
+	if (mergeInfo['t50pswd']) {
+		$("#merge-paswd").fadeIn("fast")
+	}
+	if (mergeInfo['t50-email']) {
+		$("#merge-emails").fadeIn("fast")
+	}
+	if (mergeInfo['schedule-sort'] || mergeInfo['notes-sort']) {
+		$("#merge-tasco").fadeIn("fast")
+	}
+	if (mergeInfo['t50-autologin']) {
+		$("#merge-autolg").fadeIn("fast")
+	}
+	if (mergeInfo['notifications_seen']) {
+		document.getElementById("notifCount").innerHTML = mergeInfo['notifications_seen']
+		$("#merge-notifs").fadeIn("fast")
+	}
+	if (mergeInfo['account']) {
+		$("#merge-images").fadeIn("fast")
+	}
+}
+
+function completeAll() {
+	update_complete.play()
+	const myinfo = JSON.parse(sessionStorage.getItem("transfer"))
+	for (const key in myinfo) {
+		if (myinfo.hasOwnProperty(key)) {
+			localStorage.setItem(key, myinfo[key]);
+		}
+	}
+	docready('merge')
+	document.getElementById("merge_info").classList.remove("active")
+}
+
+function incorrectAccount() {
+	var url = window.location.href;
+
+	// Find the index of "t50-gateway-alpha/"
+	var index = url.indexOf("t50-gateway-alpha/");
+
+	// Check if "t50-gateway-alpha/" is found in the URL
+	if (index !== -1) {
+		// Remove everything after "t50-gateway-alpha/"
+		var newUrl = url.substring(0, index + "t50-gateway-alpha/".length);
+		window.location.href = newUrl
+	} else {
+		console.log("t50-gateway-alpha/ not found in the URL");
+	}
 }
