@@ -7,14 +7,36 @@ sessionStorage.setItem("loaded", true)
 sessionStorage.removeItem("autolg_off")
 sessionStorage.removeItem("blockBottomLogout")
 
+function fadeElement(elementId, speed) {
+  var element = document.getElementById(elementId);
+  var opacity = 1;
+  var direction = -1; // -1 for fade out, 1 for fade in
+
+  function fade() {
+    opacity += 0.01 * direction;
+    element.style.opacity = opacity;
+
+    if (opacity <= 0 || opacity >= 1) {
+      direction *= -1;
+    }
+
+    setTimeout(fade, speed);
+  }
+
+  fade();
+}
+
+
+
+
 var merge_sound = new Howl({
-	src: ['./ui-sounds/merge.mp3'],
-	volume: 1
+  src: ['./ui-sounds/merge.mp3'],
+  volume: 1
 });
 
 var update_complete = new Howl({
-	src: ['./ui-sounds/update_complete.mp3'],
-	volume: 1
+  src: ['./ui-sounds/update_complete.mp3'],
+  volume: 1
 });
 
 var windowE = new URL(window.location.href);
@@ -93,6 +115,11 @@ function goback() {
 }
 
 function change_acc() {
+  if (sessionStorage.getItem("block_interactions") === "true") {
+    shake_me("add_button")
+    //Servers Offline
+    return;
+  }
   sessionStorage.setItem("clearafter", true)
   document.getElementById("email").value = ""
   document.getElementById("email").disabled = false
@@ -621,7 +648,7 @@ function docready(merge) {
     return;
   }
 
-  
+
 
   if (loggedin != null && autologin === "true") {
     var wind = new URL(window.location.href);
@@ -768,6 +795,13 @@ function docready(merge) {
         }
       })
       .catch(error => {
+        
+        $("#stuck").fadeOut("fast")
+        $("#loading-bar").fadeOut("fast")
+        $("#vox").fadeIn("fast")
+        $("#profile").fadeIn("fast")
+        custombg()
+        fadeElement("nosignal", 10); // You can adjust the speed here (lower value for faster fading)
         const errorString = error.toString();
         if (errorString.includes("Failed to fetch")) {
           //alert("Servers Are Currently Not Responding, Update Your Application And Wait.")
@@ -836,7 +870,8 @@ function docready(merge) {
           $("#settings").fadeIn("slow")
           document.getElementById("usr-name").innerHTML = localStorage.getItem("t50-username")
           document.getElementById("usr-email").innerHTML = localStorage.getItem("t50-email")
-          document.getElementById("usr-img").src = "https://evoxs.xyz/t50-gateway-alpha/srv-offline.gif"
+          document.getElementById("usr-img").src = "SVKl.gif"
+          document.getElementById("profile-pfp").src = "SVKl.gif"
           sessionStorage.setItem("block_interactions", true)
           $("#logout_icon").fadeOut("fast")
           document.getElementById("restart_icon").style.right = "55px"
@@ -855,6 +890,7 @@ function docready(merge) {
     }
     return;
   } else if (autologin === "false") {
+
     $("#stuck").fadeOut("fast")
     document.getElementById("use_switch").style.display = "none"
     document.getElementById("password").style.display = "none"
@@ -882,8 +918,13 @@ function docready(merge) {
 
       })
       .catch(error => {
+        auto_login()
+        notice("Servers Are Offline!")
+        sessionStorage.setItem("block_interactions", "true")
+        document.getElementById("usr-img-autolg").src = "SVKl.gif"
         console.error(error);
         reject(error);
+
       });
     $("#loading-bar").fadeOut("slow")
     $("#EvoxMerge").fadeIn("fast")
@@ -931,6 +972,12 @@ function docready(merge) {
                       }
                     })
                     .catch(error => {
+                      custombg()
+                      fadeElement("nosignal", 10); // You can adjust the speed here (lower value for faster fading)
+                      $("#stuck").fadeOut("fast")
+                      $("#loading-bar").fadeOut("fast")
+                      $("#vox").fadeIn("fast")
+                      $("#profile").fadeIn("fast")
                       const errorString = error.toString();
                       if (errorString.includes("Failed to fetch")) {
                         //alert("Servers Are Currently Not Responding, Update Your Application And Wait.")
@@ -945,6 +992,7 @@ function docready(merge) {
                       $("#loading-div-text").fadeOut("fast")
                       $("#loading").fadeIn("fast")
                       const greet = greetUser()
+
                       document.getElementById("gateway").innerHTML = `<div class="centered-text">
                                                 <h2 id="text-me-two" style="margin:0">${greet}, <span id="user-text"></span></h2>
                                                <p id="loading-apps-text"></p>
@@ -960,7 +1008,9 @@ function docready(merge) {
                         setInterval(reconnect(), 4000)
                         document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
                         document.getElementById("loading-apps-text").innerHTML = `Servers are currently offline.`
+
                       }
+
 
                       $("#loading").fadeOut("fast")
                       let notes = localStorage.getItem("notes-owned")
@@ -986,6 +1036,7 @@ function docready(merge) {
 
                       $("#gateway").fadeIn("fast", function () {
                         $("#apps").fadeIn("slow")
+
                       })
 
 
@@ -1195,6 +1246,75 @@ function login() {
     return;
   }
   console.log(email, "********")
+  if (sessionStorage.getItem("block_interactions") === "true") {
+    //notice("Servers Are Offline!")
+    //return;
+    if (password === atob(localStorage.getItem("t50pswd"))) {
+      $("#EvoxMerge").fadeOut("fast")
+      console.log("Welcome Abroad")
+      //localStorage.setItem("2fa_status", "On")
+      //localStorage.setItem("t50pswd", `${btoa(password)}`)
+      //$("#container").fadeOut("fast")
+
+      docready()
+      $("#profile").fadeIn("slow")
+      $("#vox").fadeIn("slow")
+      $("#container").fadeOut("fast")
+      localStorage.setItem("t50-email", email)
+      localStorage.setItem("t50-autologin", true)
+      sessionStorage.setItem("loaded", true)
+      sessionStorage.setItem("loggedin", email)
+      sessionStorage.setItem("loggedinpswd", btoa(password))
+      $("#loading-div-text").fadeOut("fast")
+      $("#loading").fadeIn("fast")
+      const greet = greetUser()
+      document.getElementById("gateway").innerHTML = `<div class="centered-text">
+                                                <h2 id="text-me-two" style="margin:0">${greet}, <span id="user-text"></span></h2>
+                                               <p id="loading-apps-text"></p>
+                                                <div style="display: none" id="apps"></div>
+                                            </div>`
+      if (!localStorage.getItem("t50-username")) {
+        $("#loading-bar").fadeOut("slow")
+        setInterval(reconnect(), 4000)
+        document.getElementById("text-me-two").innerHTML = `We Are Sorry.`
+        document.getElementById("loading-apps-text").innerHTML = `You cannot login at the moment.<br>Since you haven't logged in yet, please wait until the servers are back online.`
+      } else {
+        $("#loading-bar").fadeOut("slow")
+        setInterval(reconnect(), 4000)
+        document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
+        document.getElementById("loading-apps-text").innerHTML = `Servers are currently offline.`
+      }
+
+      $("#loading").fadeOut("fast")
+      let notes = localStorage.getItem("notes-owned")
+      let images = localStorage.getItem("images-owned")
+      let chatvia = localStorage.getItem("chatvia-owned")
+      if (notes === "true") {//OWN NOTES
+        document.getElementById("apps").innerHTML = `<a onclick="shake_me('notes-app')" href="#loadapp-notes-disabled"><img id="notes-app" src="EvoxNotes.png" class="disabledapp"></img></a>`
+      }
+      if (images === "true") {//OWN IMAGES
+        if (document.getElementById("apps").innerHTML != "") {
+          document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('images-app')" href="#loadapp-images"><img id="images-app" src="t50-img.png" class="disabledapp"></img></a>`
+        } else {
+          document.getElementById("apps").innerHTML = `<a onclick="shake_me('images-app')" href="#loadapp-images"><img id="images-app" src="t50-img.png" class="disabledapp"></img></a>`
+        }
+      }
+      if (chatvia === "true") { //OWN CHATVIA
+        if (document.getElementById("apps").innerHTML != "") {
+          document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="shake_me('chatvia-app')" href="#loadapp-chatvia"><img id="chatvia-app" src="chatvia-img.png" class="disabledapp"></img></a>`
+        } else {
+          document.getElementById("apps").innerHTML = `<a onclick="shake_me('chatvia-app')" href="#loadapp-chatvia"><img id="chatvia-app" src="chatvia-img.png" class="disabledapp"></img></a>`
+        }
+      }
+
+      $("#gateway").fadeIn("fast", function () {
+        $("#apps").fadeIn("slow")
+      })
+    } else {
+      fadeError("2")
+      console.log("Wrong Email/Password")
+    }
+  }
   const url = `https://data.evoxs.xyz/accounts?email=${email}&password=${password}&ip=${localStorage.getItem("IPV4")}`;
 
   fetch(url)
@@ -1334,7 +1454,7 @@ document.getElementById("ver_code").addEventListener("keypress", function (event
 
 function reconnect() {
   console.log("Reconnecting..")
-  $("#loading-bar").fadeIn("slow")
+  //$("#loading-bar").fadeIn("slow")
   fetch("https://data.evoxs.xyz/cron")
     .then(response => {
       if (!response.ok) {
@@ -1350,10 +1470,10 @@ function reconnect() {
           window.location.reload()
         })
       } else {
-        $("#loading-bar").fadeOut("slow")
+        //$("#loading-bar").fadeOut("slow")
       }
     }).catch(error => {
-      $("#loading-bar").fadeOut("slow")
+      //$("#loading-bar").fadeOut("slow")
       reconnect()
     })
 }

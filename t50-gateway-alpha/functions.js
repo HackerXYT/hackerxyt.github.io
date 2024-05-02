@@ -645,6 +645,7 @@ function settings() {
 }
 
 function close_popup() {
+	$("#profile").fadeIn("fast")
 	fetch(`https://data.evoxs.xyz/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
@@ -798,99 +799,117 @@ function shake_me(what) {
 }
 
 function show_authip() {
-	//ipv4-list
-	fetch(`https://data.evoxs.xyz/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! Status: ${response.status}`);
-			}
-			return response.text();
-		})
-		.then(data => {
-			//console.log(data)
 
-			var ipAddresses = JSON.parse(data);
-			if (data === "[]") {
-				var ipv4List = document.getElementById("ipv4-list");
-				ipv4List.innerHTML = ""
-				var anchor = document.createElement("a");
-				anchor.setAttribute("href", "#");
-				anchor.setAttribute("style", "height: 50%");
-				anchor.classList.add("apple-button");
-				anchor.style.backgroundColor = "red"
-				anchor.innerHTML = `<img src="error.svg">
-				There are no IP adresses saved!<br>Try reloading Gateway.`;
-				ipv4List.appendChild(anchor);
-				console.log("No Values!")
-				return;
-			}
+	if (sessionStorage.getItem("block_interactions") === "true") {
+		notice("Cannot get external IP adresses while offline")
+		var ipv4List = document.getElementById("ipv4-list");
+		ipv4List.innerHTML = ""
+		var anchor = document.createElement("a");
+		anchor.setAttribute("href", "#");
+		anchor.setAttribute("style", "height: 50%");
+		anchor.classList.add("apple-button");
+		anchor.style.backgroundColor = "grey"
+		anchor.innerHTML = `<img src="error.svg">
+				${localStorage.getItem("IPV4")}`;
+		ipv4List.appendChild(anchor);
+		console.log("No Values!")
+		//return;
+	} else {
+		//ipv4-list
+		fetch(`https://data.evoxs.xyz/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.text();
+			})
+			.then(data => {
+				//console.log(data)
 
-			// Get the element with id "ipv4-list"
-			var ipv4List = document.getElementById("ipv4-list");
-			ipv4List.innerHTML = ""
-			// Loop through each IP address
-			ipAddresses.forEach(function (ip) {
-				if (ip === localStorage.getItem("IPV4")) {
-					var anchor = document.createElement("a");
-					anchor.setAttribute("href", "#");
-					anchor.setAttribute("style", "height: 50%");
-					anchor.classList.add("apple-button");
-					anchor.style.backgroundColor = "#3879e0"
-					anchor.innerText = `This Device (${ip})`;
-					anchor.onclick = function () {
-						let json = {
-							"innerHTML": ip
-						}
-						removeIP(json);
-					};
-					ipv4List.appendChild(anchor);
-					return;
-				}
-				if (ip === "1") {
-					return;
-				}
-				if (ip === "null") {
+				var ipAddresses = JSON.parse(data);
+				if (data === "[]") {
+					var ipv4List = document.getElementById("ipv4-list");
+					ipv4List.innerHTML = ""
 					var anchor = document.createElement("a");
 					anchor.setAttribute("href", "#");
 					anchor.setAttribute("style", "height: 50%");
 					anchor.classList.add("apple-button");
 					anchor.style.backgroundColor = "red"
-					anchor.innerHTML = `<img src="danger.svg">
-					IP Verification is disabled!<br>Re-enable 2FA by removing this value.`;
-					anchor.onclick = function () {
-						let json = {
-							"innerHTML": "null"
-						}
-						removeIP(json);
-					};
+					anchor.innerHTML = `<img src="error.svg">
+		There are no IP adresses saved!<br>Try reloading Gateway.`;
 					ipv4List.appendChild(anchor);
+					console.log("No Values!")
 					return;
 				}
-				// Create a new anchor element
-				var anchor = document.createElement("a");
 
-				// Set href attribute to "#"
-				anchor.setAttribute("href", "#");
+				// Get the element with id "ipv4-list"
+				var ipv4List = document.getElementById("ipv4-list");
+				ipv4List.innerHTML = ""
+				// Loop through each IP address
+				ipAddresses.forEach(function (ip) {
+					if (ip === localStorage.getItem("IPV4")) {
+						var anchor = document.createElement("a");
+						anchor.setAttribute("href", "#");
+						anchor.setAttribute("style", "height: 50%");
+						anchor.classList.add("apple-button");
+						anchor.style.backgroundColor = "#3879e0"
+						anchor.innerText = `This Device (${ip})`;
+						anchor.onclick = function () {
+							let json = {
+								"innerHTML": ip
+							}
+							removeIP(json);
+						};
+						ipv4List.appendChild(anchor);
+						return;
+					}
+					if (ip === "1") {
+						return;
+					}
+					if (ip === "null") {
+						var anchor = document.createElement("a");
+						anchor.setAttribute("href", "#");
+						anchor.setAttribute("style", "height: 50%");
+						anchor.classList.add("apple-button");
+						anchor.style.backgroundColor = "red"
+						anchor.innerHTML = `<img src="danger.svg">
+			IP Verification is disabled!<br>Re-enable 2FA by removing this value.`;
+						anchor.onclick = function () {
+							let json = {
+								"innerHTML": "null"
+							}
+							removeIP(json);
+						};
+						ipv4List.appendChild(anchor);
+						return;
+					}
+					// Create a new anchor element
+					var anchor = document.createElement("a");
 
-				// Set style attribute for height
-				anchor.setAttribute("style", "height: 50%");
+					// Set href attribute to "#"
+					anchor.setAttribute("href", "#");
 
-				// Add class "apple-button"
-				anchor.classList.add("apple-button");
+					// Set style attribute for height
+					anchor.setAttribute("style", "height: 50%");
 
-				// Set the inner text to the IP address
-				anchor.innerText = ip;
-				anchor.onclick = function () {
-					removeIP(this);
-				};
+					// Add class "apple-button"
+					anchor.classList.add("apple-button");
 
-				// Append the anchor element to the ipv4List
-				ipv4List.appendChild(anchor);
-			});
+					// Set the inner text to the IP address
+					anchor.innerText = ip;
+					anchor.onclick = function () {
+						removeIP(this);
+					};
 
-		}).catch(error => {
-			console.error(error)
-		})
+					// Append the anchor element to the ipv4List
+					ipv4List.appendChild(anchor);
+				});
+
+			}).catch(error => {
+				console.error(error)
+			})
+	}
+
 	navigator("authip")
 	$("#main_settings").fadeOut("fast", function () {
 		$("#authips").fadeIn("fast")
@@ -898,10 +917,6 @@ function show_authip() {
 }
 
 function show_account() {
-	if (sessionStorage.getItem("block_interactions") === "true") {
-		notice("Sorry. Servers Are Offline")
-		return;
-	}
 	//account_show.play()
 	navigator("show_account")
 	console.log("Changing Screens to account")
@@ -1001,32 +1016,44 @@ function enable2FA() {
 }
 function pswd_secure() {
 	navigator("password_secure")
-	fetch(`https://data.evoxs.xyz/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! Status: ${response.status}`);
-			}
-			return response.text();
-		})
-		.then(data => {
-			console.log(data)
-			if (data.includes("null")) {
-				document.getElementById("2fa_status").innerHTML = "Off"
-				document.getElementById("2fa_button").onclick = function () {
-					enable2FA();
-				};
-				localStorage.setItem("2fa_status", "Off")
-			} else {
-				document.getElementById("2fa_status").innerHTML = "On"
-				document.getElementById("2fa_button").onclick = function () {
-					disable2FA();
-				};
-				localStorage.setItem("2fa_status", "On")
-			}
+	if (sessionStorage.getItem("block_interactions") === "true") {
+		//notice("Sorry. Servers Are Offline")
+		if (localStorage.getItem("2fa_status") === "On") {
+			document.getElementById("2fa_status").innerHTML = "On"
+		} else if (!localStorage.getItem("2fa_status")) {
+			document.getElementById("2fa_status").innerHTML = "Unknown"
+		} else {
+			document.getElementById("2fa_status").innerHTML = "Off"
+		}
+	} else {
+		fetch(`https://data.evoxs.xyz/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.text();
+			})
+			.then(data => {
+				console.log(data)
+				if (data.includes("null")) {
+					document.getElementById("2fa_status").innerHTML = "Off"
+					document.getElementById("2fa_button").onclick = function () {
+						enable2FA();
+					};
+					localStorage.setItem("2fa_status", "Off")
+				} else {
+					document.getElementById("2fa_status").innerHTML = "On"
+					document.getElementById("2fa_button").onclick = function () {
+						disable2FA();
+					};
+					localStorage.setItem("2fa_status", "On")
+				}
 
-		}).catch(error => {
-			console.error(error)
-		})
+			}).catch(error => {
+				console.error(error)
+			})
+	}
+
 	//if (localStorage.getItem("2fa_status")) {
 	//	document.getElementById("2fa_status").innerHTML = localStorage.getItem("2fa_status")
 	//} else {
@@ -1053,8 +1080,8 @@ function pswd_secure() {
 
 function show_social() {
 	if (sessionStorage.getItem("block_interactions") === "true") {
-		notice("Sorry. Servers Are Offline")
-		return;
+		//notice("Sorry. Servers Are Offline")
+		//return;
 	}
 	$("#main_popup_settings").fadeOut("fast", function () {
 		$("#evox_social").fadeIn("fast")
@@ -1063,6 +1090,10 @@ function show_social() {
 }
 
 function show_search() {
+	navigator("show_search")
+	$("#evox_social").fadeOut("fast", function () {
+		$("#add_friends").fadeIn("fast")
+	})
 	//document.getElementById("options_section_1_username").innerHTML = localStorage.getItem("t50-username")
 	//document.getElementById("options_section_1_email").innerHTML = localStorage.getItem("t50-email")
 	//if(localStorage.getItem("t50-birthdate")) {
@@ -1077,10 +1108,158 @@ function show_search() {
 	//	document.getElementById("options_section_1_announcements").innerHTML = "Enabled"
 	//}
 	//$("#bottom-logo").fadeOut("fast")
-	navigator("show_search")
-	$("#evox_social").fadeOut("fast", function () {
-		$("#add_friends").fadeIn("fast")
-	})
+	if (sessionStorage.getItem("block_interactions") === "true") {
+		if (localStorage.getItem("evoxUsers")) {
+			console.log("Will try spawning")
+			let data = localStorage.getItem("evoxUsers")
+			let userlist = JSON.parse(data);
+			let containerId = "list-container";
+			var listContainer = document.getElementById(containerId);
+			listContainer.style.textAlign = "";
+			listContainer.style.marginTop = "";
+			listContainer.innerHTML = "<!--Empty-->";
+			let usersInfo = [];
+
+
+			// Fetch emails for each user individually
+			userlist.forEach(username => {
+				if (username === localStorage.getItem("t50-username")) {
+					return;
+				}
+				if (!localStorage.getItem("friends")) {
+					notice("Cannot load global list (Friends 404)")
+					return;
+				}
+				let friends = localStorage.getItem("friends")
+				let sentRequests;
+				let skipbutton;
+				let addButton;
+				// Check if the username already exists in the list
+				if (listContainer.querySelector(`#user-${username}-email`) === null) {
+					var userContainer = document.createElement("div");
+					userContainer.className = "list-user-info";
+
+					var userCircle = document.createElement("div");
+					userCircle.className = "user-circle";
+					userCircle.innerHTML = `<img onclick="fullimage(this)" src="loading-circle.gif" id="${username}-pfp" alt="User ${username} Image">`;
+					var userDetails = document.createElement("div");
+					userDetails.className = "user-details";
+
+					var userName = document.createElement("div");
+					userName.className = "user-name";
+					userName.textContent = username;
+
+					var userEmail = document.createElement("div");
+					userEmail.className = "user-email";
+					userEmail.id = `user-${username}-email`;
+					userEmail.textContent = 'offline';
+					if (JSON.stringify(friends).includes(username)) {
+						skipbutton = true
+						userDetails.appendChild(userName);
+						userDetails.appendChild(userEmail);
+
+						userContainer.appendChild(userCircle);
+						userContainer.appendChild(userDetails);
+
+						listContainer.appendChild(userContainer);
+						let localValue = localStorage.getItem("sent_friend_requests");
+
+						// Parse the retrieved data into an array or initialize an empty array
+						let requests = localValue ? JSON.parse(localValue) : [];
+
+						// Assuming 'username' is the value you want to remove
+						let indexToRemove = requests.indexOf(username);
+						console.log(indexToRemove)
+						if (indexToRemove !== -1) {
+							// Remove the element from the array
+							requests.splice(indexToRemove, 1);
+
+							// Save the updated array back to localStorage
+							localStorage.setItem("sent_friend_requests", JSON.stringify(requests));
+						} else {
+							console.log("Username not found in the array");
+						}
+					}
+
+					if (!localStorage.getItem("sentReq")) {
+						notice("Cannot load global list (SentReq 404)")
+						return;
+					}
+					let usersSent = localStorage.getItem("sentReq")
+					sentRequests = usersSent
+					if (sentRequests && sentRequests.includes(username) && skipbutton !== true) {
+						addButton = document.createElement("a");
+						addButton.href = "#";
+						addButton.id = username;
+						addButton.onclick = function () {
+							shake_me(this.id);
+						};
+						addButton.className = "apple-button-list";
+						addButton.textContent = "Sent";
+						userDetails.appendChild(userName);
+						userDetails.appendChild(userEmail);
+
+						userContainer.appendChild(userCircle);
+						userContainer.appendChild(userDetails);
+						userContainer.appendChild(addButton);
+
+						listContainer.appendChild(userContainer);
+					} else if (skipbutton !== true) {
+						addButton = document.createElement("a");
+						addButton.href = "#";
+						addButton.id = username;
+						addButton.onclick = function () {
+							//addfriend(this);
+						};
+						addButton.className = "apple-button-list";
+						addButton.textContent = "Add";
+
+						userDetails.appendChild(userName);
+						userDetails.appendChild(userEmail);
+
+						userContainer.appendChild(userCircle);
+						userContainer.appendChild(userDetails);
+						userContainer.appendChild(addButton);
+
+						listContainer.appendChild(userContainer);
+					}
+					let reqStatus = false
+
+					//INDEXDB
+					console.log(username)
+					loadPFP(username, "-pfp")
+					if (sentRequests.includes(username)) {
+						reqStatus = true
+					}
+					let userObj = {
+						"username": username,
+						"email": 'offline',
+						"friends": JSON.stringify(friends).includes(username),
+						"requested": reqStatus
+					};
+
+					usersInfo.push(userObj); // Push user object to the array
+
+					// Store JSON array in session storage
+					sessionStorage.setItem("usersInfo", JSON.stringify(usersInfo));
+
+
+				}
+
+
+
+			})
+			Promise.resolve().then(() => {
+				// Add the transparent placeholder after the loop that adds user information
+				var transparentPlaceholder = document.createElement("div");
+				transparentPlaceholder.className = "transparent-placeholder";
+				listContainer.parentNode.appendChild(transparentPlaceholder);
+			}).catch(error => {
+				console.error(error);
+			});
+		}
+	}
+	
 }
 function acceptfriend(element) {
 	document.getElementById(element.id).innerHTML = `<svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -1194,231 +1373,389 @@ function showFriend(element) {
 function show_friends() {
 	navigator("show_friends")
 	$("#load-users-friends").fadeIn("fast")
-	fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! Status: ${response.status}`);
-			}
-			return response.text();
-		})
-		.then(data => {
-			console.log(data);
-			if (data === "") {
-				$("#load-users-friends").fadeOut("fast", function () {
-					let containerId = "list-friends";
-					var listContainer = document.getElementById(containerId);
-					listContainer.style.textAlign = "center";
-					listContainer.style.marginTop = "50px";
-					listContainer.innerHTML = "No Friends";
-				});
-				return;
-			}
-			const user_requests = JSON.parse(data);
-			let containerId = "list-friends";
-			var listContainer = document.getElementById(containerId);
-			listContainer.style.textAlign = "";
-			listContainer.style.marginTop = "";
-			listContainer.innerHTML = "<!--Empty-->";
-			user_requests.forEach(username => {
-				fetch(`https://data.evoxs.xyz/accounts?method=getemailbyusername&username=${username}`)
-					.then(response => {
-						if (!response.ok) {
-							throw new Error(`HTTP error! Status: ${response.status}`);
-						}
-						return response.text();
-					})
-					.then(profileemail => {
-						let addButton;
-						if (listContainer.querySelector(`#user-${username}-email`) === null) {
-							var userContainer = document.createElement("div");
-							userContainer.className = "list-user-info";
-							userContainer.id = `friend-${username}`;
-							userContainer.onclick = function () {
-								showFriend(this);
-							};
-							var userCircle = document.createElement("div");
-							userCircle.className = "user-circle";
-							userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp-friends" alt="User ${username} Image">`;
-							var userDetails = document.createElement("div");
-							userDetails.className = "user-details";
-
-							var userName = document.createElement("div");
-							userName.className = "user-name";
-							userName.textContent = username;
-
-							var userEmail = document.createElement("div");
-							userEmail.className = "user-email";
-							userEmail.id = `user-${username}-email-friends`;
-							userEmail.textContent = profileemail;
-
-							userDetails.appendChild(userName);
-							userDetails.appendChild(userEmail);
-
-							userContainer.appendChild(userCircle);
-							userContainer.appendChild(userDetails);
-
-							listContainer.appendChild(userContainer);
-							loadPFP(username, '-pfp-friends')
-							//fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-							//	.then(response => {
-							//		if (!response.ok) {
-							//			throw new Error(`HTTP error! Status: ${response.status}`);
-							//		}
-							//		return response.text();
-							//	})
-							//	.then(profileimage => {
-							//		if (profileimage.indexOf("base64") === -1) {
-							//			profileimage = "data:image/jpeg;base64," + profileimage;
-							//			document.getElementById(`${username}-pfp-friends`).src = profileimage;
-							//		} else {
-							//			document.getElementById(`${username}-pfp-friends`).src = profileimage;
-							//		}
-							//	})
-							//	.catch(error => {
-							//		console.error("Cannot set src for", username);
-							//		console.error(error);
-							//	});
-						}
-					})
-					.catch(error => {
-						console.error(error);
-					});
-			});
-
-			Promise.resolve().then(() => {
-				// Add the transparent placeholder after the loop that adds user information
-				var transparentPlaceholder = document.createElement("div");
-				transparentPlaceholder.className = "transparent-placeholder";
-				listContainer.parentNode.appendChild(transparentPlaceholder);
-			}).catch(error => {
-				console.error(error);
-			});
-
-			$("#load-users-friends").fadeOut("fast");
-		})
-		.catch(error => {
-			console.error(error);
-		});
-
-
 	$("#evox_social").fadeOut("fast", function () {
 		$("#friends").fadeIn("fast")
 	})
+	if (sessionStorage.getItem("block_interactions") === "true") {
+		//notice("Cannot change while servers are offline.")
+		let data = localStorage.getItem("friends")
+		if (data === "") {
+			$("#load-users-friends").fadeOut("fast", function () {
+				let containerId = "list-friends";
+				var listContainer = document.getElementById(containerId);
+				listContainer.style.textAlign = "center";
+				listContainer.style.marginTop = "50px";
+				listContainer.innerHTML = "No Friends";
+			});
+			return;
+		}
+		if (data === null) {
+			$("#load-users-friends").fadeOut("fast", function () {
+				let containerId = "list-friends";
+				var listContainer = document.getElementById(containerId);
+				listContainer.style.textAlign = "center";
+				listContainer.style.marginTop = "50px";
+				listContainer.innerHTML = "Local Friends List Is Empty";
+			});
+			return;
+		}
+		$("#load-users-friends").fadeOut("fast")
+		const user_requests = JSON.parse(data);
+		let containerId = "list-friends";
+		var listContainer = document.getElementById(containerId);
+		listContainer.style.textAlign = "";
+		listContainer.style.marginTop = "";
+		listContainer.innerHTML = "<!--Empty-->";
+		user_requests.forEach(username => {
+			let addButton;
+			if (listContainer.querySelector(`#user-${username}-email`) === null) {
+				var userContainer = document.createElement("div");
+				userContainer.className = "list-user-info";
+				userContainer.id = `friend-${username}`;
+				//userContainer.onclick = function () {
+				//	showFriend(this);
+				//};
+				var userCircle = document.createElement("div");
+				userCircle.className = "user-circle";
+				userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp-friends" alt="User ${username} Image">`;
+				var userDetails = document.createElement("div");
+				userDetails.className = "user-details";
+
+				var userName = document.createElement("div");
+				userName.className = "user-name";
+				userName.textContent = username;
+
+				var userEmail = document.createElement("div");
+				userEmail.className = "user-email";
+				userEmail.id = `user-${username}-email-friends`;
+				userEmail.textContent = 'offline';
+
+				userDetails.appendChild(userName);
+				userDetails.appendChild(userEmail);
+
+				userContainer.appendChild(userCircle);
+				userContainer.appendChild(userDetails);
+
+				listContainer.appendChild(userContainer);
+				loadPFP(username, '-pfp-friends')
+			}
+		});
+		Promise.resolve().then(() => {
+			// Add the transparent placeholder after the loop that adds user information
+			var transparentPlaceholder = document.createElement("div");
+			transparentPlaceholder.className = "transparent-placeholder";
+			listContainer.parentNode.appendChild(transparentPlaceholder);
+		}).catch(error => {
+			console.error(error);
+		});
+	} else {
+		fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.text();
+			})
+			.then(data => {
+				console.log(data);
+				localStorage.setItem("friends", data)
+				if (data === "") {
+					$("#load-users-friends").fadeOut("fast", function () {
+						let containerId = "list-friends";
+						var listContainer = document.getElementById(containerId);
+						listContainer.style.textAlign = "center";
+						listContainer.style.marginTop = "50px";
+						listContainer.innerHTML = "No Friends";
+					});
+					return;
+				}
+				const user_requests = JSON.parse(data);
+				let containerId = "list-friends";
+				var listContainer = document.getElementById(containerId);
+				listContainer.style.textAlign = "";
+				listContainer.style.marginTop = "";
+				listContainer.innerHTML = "<!--Empty-->";
+				user_requests.forEach(username => {
+					fetch(`https://data.evoxs.xyz/accounts?method=getemailbyusername&username=${username}`)
+						.then(response => {
+							if (!response.ok) {
+								throw new Error(`HTTP error! Status: ${response.status}`);
+							}
+							return response.text();
+						})
+						.then(profileemail => {
+							let addButton;
+							if (listContainer.querySelector(`#user-${username}-email`) === null) {
+								var userContainer = document.createElement("div");
+								userContainer.className = "list-user-info";
+								userContainer.id = `friend-${username}`;
+								userContainer.onclick = function () {
+									showFriend(this);
+								};
+								var userCircle = document.createElement("div");
+								userCircle.className = "user-circle";
+								userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp-friends" alt="User ${username} Image">`;
+								var userDetails = document.createElement("div");
+								userDetails.className = "user-details";
+
+								var userName = document.createElement("div");
+								userName.className = "user-name";
+								userName.textContent = username;
+
+								var userEmail = document.createElement("div");
+								userEmail.className = "user-email";
+								userEmail.id = `user-${username}-email-friends`;
+								userEmail.textContent = profileemail;
+
+								userDetails.appendChild(userName);
+								userDetails.appendChild(userEmail);
+
+								userContainer.appendChild(userCircle);
+								userContainer.appendChild(userDetails);
+
+								listContainer.appendChild(userContainer);
+								loadPFP(username, '-pfp-friends')
+								//fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+								//	.then(response => {
+								//		if (!response.ok) {
+								//			throw new Error(`HTTP error! Status: ${response.status}`);
+								//		}
+								//		return response.text();
+								//	})
+								//	.then(profileimage => {
+								//		if (profileimage.indexOf("base64") === -1) {
+								//			profileimage = "data:image/jpeg;base64," + profileimage;
+								//			document.getElementById(`${username}-pfp-friends`).src = profileimage;
+								//		} else {
+								//			document.getElementById(`${username}-pfp-friends`).src = profileimage;
+								//		}
+								//	})
+								//	.catch(error => {
+								//		console.error("Cannot set src for", username);
+								//		console.error(error);
+								//	});
+							}
+						})
+						.catch(error => {
+							console.error(error);
+						});
+				});
+
+				Promise.resolve().then(() => {
+					// Add the transparent placeholder after the loop that adds user information
+					var transparentPlaceholder = document.createElement("div");
+					transparentPlaceholder.className = "transparent-placeholder";
+					listContainer.parentNode.appendChild(transparentPlaceholder);
+				}).catch(error => {
+					console.error(error);
+				});
+
+				$("#load-users-friends").fadeOut("fast");
+			})
+			.catch(error => {
+				console.error(error);
+			});
+	}
+
+
+
+
 }
 
 function show_requests() {
 	navigator("show_requests")
 	$("#load-users-requests").fadeIn("fast")
+
 	document.getElementById("list-requests").innerHTML = ""
-	fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! Status: ${response.status}`);
-			}
-			return response.text();
-		})
-		.then(data => {
-			console.log(JSON.stringify(data))
-			if (data === "None") {
-				$("#load-users-requests").fadeOut("fast", function () {
-					let containerId = "list-requests";
-					var listContainer = document.getElementById(containerId);
-					listContainer.style.textAlign = "center";
-					listContainer.style.marginTop = "50px";
-					listContainer.innerHTML = "No Friend Requests"
-				})
-				return;
-			}
-			const user_requests = JSON.parse(data)
-			let containerId = "list-requests";
-			var listContainer = document.getElementById(containerId);
-			listContainer.style.textAlign = "";
-			listContainer.style.marginTop = "";
-			listContainer.innerHTML = "<!--Empty-->";
-			user_requests.forEach(username => {
-				fetch(`https://data.evoxs.xyz/accounts?method=getemailbyusername&username=${username}`)
-					.then(response => {
-						if (!response.ok) {
-							throw new Error(`HTTP error! Status: ${response.status}`);
-						}
-						return response.text();
-					})
-					.then(profileemail => {
-						let addButton;
-						// Check if the username already exists in the list
-						if (listContainer.querySelector(`#user-${username}-email`) === null) {
-							var userContainer = document.createElement("div");
-							userContainer.className = "list-user-info";
-
-							var userCircle = document.createElement("div");
-							userCircle.className = "user-circle";
-							userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp-requests" alt="User ${username} Image">`;
-							var userDetails = document.createElement("div");
-							userDetails.className = "user-details";
-
-							var userName = document.createElement("div");
-							userName.className = "user-name";
-							userName.textContent = username;
-
-							var userEmail = document.createElement("div");
-							userEmail.className = "user-email";
-							userEmail.id = `user-${username}-email-requests`;
-							userEmail.textContent = profileemail;
-
-
-							addButton = document.createElement("a");
-							addButton.href = "#";
-							addButton.id = username;
-							addButton.onclick = function () {
-								acceptfriend(this);
-							};
-							addButton.className = "apple-button-list";
-							addButton.textContent = "Accept";
-
-
-							userDetails.appendChild(userName);
-							userDetails.appendChild(userEmail);
-
-							userContainer.appendChild(userCircle);
-							userContainer.appendChild(userDetails);
-							userContainer.appendChild(addButton);
-
-							listContainer.appendChild(userContainer);
-							loadPFP(username, '-pfp-requests')
-							//fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-							//	.then(response => {
-							//		if (!response.ok) {
-							//			throw new Error(`HTTP error! Status: ${response.status}`);
-							//		}
-							//		return response.text();
-							//	})
-							//	.then(profileimage => {
-							//		if (profileimage.indexOf("base64") === -1) {
-							//			// If it doesn't contain "base64", add the prefix
-							//			profileimage = "data:image/jpeg;base64," + profileimage;
-							//			document.getElementById(`${username}-pfp-requests`).src = profileimage
-							//		} else {
-							//			document.getElementById(`${username}-pfp-requests`).src = profileimage
-							//		}
-							//
-							//
-							//	}).catch(error => {
-							//		console.error("Cannot set src for", username)
-							//		console.error(error)
-							//	})
-						}
-					});
-				$("#load-users-requests").fadeOut("fast");
-			})
-				.catch(error => {
-					console.error(error);
-				});
-		}).catch(error => {
-			console.error(error);
-		});
 	$("#evox_social").fadeOut("fast", function () {
 		$("#friend_requests").fadeIn("fast")
 	})
+	if (sessionStorage.getItem("block_interactions") === "true") {
+		//notice("Cannot change while servers are offline.")
+		//return;
+		let data = localStorage.getItem("requests")
+		if (data === "None") {
+			$("#load-users-requests").fadeOut("fast", function () {
+				let containerId = "list-requests";
+				var listContainer = document.getElementById(containerId);
+				listContainer.style.textAlign = "center";
+				listContainer.style.marginTop = "50px";
+				listContainer.innerHTML = "No Local Friend Requests"
+			})
+			return;
+		}
+		if (data === null) {
+			$("#load-users-requests").fadeOut("fast", function () {
+				let containerId = "list-requests";
+				var listContainer = document.getElementById(containerId);
+				listContainer.style.textAlign = "center";
+				listContainer.style.marginTop = "50px";
+				listContainer.innerHTML = "No Friend Requests Data (Locally)"
+			})
+			return;
+		}
+		const user_requests = JSON.parse(data)
+		let containerId = "list-requests";
+		var listContainer = document.getElementById(containerId);
+		listContainer.style.textAlign = "";
+		listContainer.style.marginTop = "";
+		listContainer.innerHTML = "<!--Empty-->";
+		user_requests.forEach(username => {
+			let addButton;
+			// Check if the username already exists in the list
+			if (listContainer.querySelector(`#user-${username}-email`) === null) {
+				var userContainer = document.createElement("div");
+				userContainer.className = "list-user-info";
+
+				var userCircle = document.createElement("div");
+				userCircle.className = "user-circle";
+				userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp-requests" alt="User ${username} Image">`;
+				var userDetails = document.createElement("div");
+				userDetails.className = "user-details";
+
+				var userName = document.createElement("div");
+				userName.className = "user-name";
+				userName.textContent = username;
+
+				var userEmail = document.createElement("div");
+				userEmail.className = "user-email";
+				userEmail.id = `user-${username}-email-requests`;
+				userEmail.textContent = "offline";
+
+
+				addButton = document.createElement("a");
+				addButton.href = "#";
+				addButton.id = username;
+				addButton.onclick = function () {
+					shake_me(this.id);
+				};
+				addButton.className = "apple-button-list";
+				addButton.textContent = "Accept";
+
+
+				userDetails.appendChild(userName);
+				userDetails.appendChild(userEmail);
+
+				userContainer.appendChild(userCircle);
+				userContainer.appendChild(userDetails);
+				userContainer.appendChild(addButton);
+
+				listContainer.appendChild(userContainer);
+				loadPFP(username, '-pfp-requests')
+			}
+		});
+		$("#load-users-requests").fadeOut("fast");
+	} else {
+		fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.text();
+			})
+			.then(data => {
+				console.log(JSON.stringify(data))
+				localStorage.setItem("requests", data)
+				if (data === "None") {
+					$("#load-users-requests").fadeOut("fast", function () {
+						let containerId = "list-requests";
+						var listContainer = document.getElementById(containerId);
+						listContainer.style.textAlign = "center";
+						listContainer.style.marginTop = "50px";
+						listContainer.innerHTML = "No Friend Requests"
+					})
+					return;
+				}
+				const user_requests = JSON.parse(data)
+				let containerId = "list-requests";
+				var listContainer = document.getElementById(containerId);
+				listContainer.style.textAlign = "";
+				listContainer.style.marginTop = "";
+				listContainer.innerHTML = "<!--Empty-->";
+				user_requests.forEach(username => {
+					fetch(`https://data.evoxs.xyz/accounts?method=getemailbyusername&username=${username}`)
+						.then(response => {
+							if (!response.ok) {
+								throw new Error(`HTTP error! Status: ${response.status}`);
+							}
+							return response.text();
+						})
+						.then(profileemail => {
+							let addButton;
+							// Check if the username already exists in the list
+							if (listContainer.querySelector(`#user-${username}-email`) === null) {
+								var userContainer = document.createElement("div");
+								userContainer.className = "list-user-info";
+
+								var userCircle = document.createElement("div");
+								userCircle.className = "user-circle";
+								userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp-requests" alt="User ${username} Image">`;
+								var userDetails = document.createElement("div");
+								userDetails.className = "user-details";
+
+								var userName = document.createElement("div");
+								userName.className = "user-name";
+								userName.textContent = username;
+
+								var userEmail = document.createElement("div");
+								userEmail.className = "user-email";
+								userEmail.id = `user-${username}-email-requests`;
+								userEmail.textContent = profileemail;
+
+
+								addButton = document.createElement("a");
+								addButton.href = "#";
+								addButton.id = username;
+								addButton.onclick = function () {
+									acceptfriend(this);
+								};
+								addButton.className = "apple-button-list";
+								addButton.textContent = "Accept";
+
+
+								userDetails.appendChild(userName);
+								userDetails.appendChild(userEmail);
+
+								userContainer.appendChild(userCircle);
+								userContainer.appendChild(userDetails);
+								userContainer.appendChild(addButton);
+
+								listContainer.appendChild(userContainer);
+								loadPFP(username, '-pfp-requests')
+								//fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+								//	.then(response => {
+								//		if (!response.ok) {
+								//			throw new Error(`HTTP error! Status: ${response.status}`);
+								//		}
+								//		return response.text();
+								//	})
+								//	.then(profileimage => {
+								//		if (profileimage.indexOf("base64") === -1) {
+								//			// If it doesn't contain "base64", add the prefix
+								//			profileimage = "data:image/jpeg;base64," + profileimage;
+								//			document.getElementById(`${username}-pfp-requests`).src = profileimage
+								//		} else {
+								//			document.getElementById(`${username}-pfp-requests`).src = profileimage
+								//		}
+								//
+								//
+								//	}).catch(error => {
+								//		console.error("Cannot set src for", username)
+								//		console.error(error)
+								//	})
+							}
+						});
+					$("#load-users-requests").fadeOut("fast");
+				})
+					.catch(error => {
+						console.error(error);
+					});
+			}).catch(error => {
+				console.error(error);
+			});
+	}
+
+
 }
 function addfriend(element) {
 	//if (localStorage.getItem("sent_friend_requests")) {
@@ -1481,6 +1818,7 @@ function loadusers() {
 			return response.text();
 		})
 		.then(data => {
+			localStorage.setItem("evoxUsers", data)
 			let userlist = JSON.parse(data);
 			let containerId = "list-container";
 			var listContainer = document.getElementById(containerId);
@@ -1570,6 +1908,7 @@ function loadusers() {
 											return response.text();
 										})
 										.then(usersSent => {
+											localStorage.setItem("sentReq", usersSent)
 											sentRequests = usersSent
 											if (sentRequests && sentRequests.includes(username) && skipbutton !== true) {
 												addButton = document.createElement("a");
@@ -2081,6 +2420,10 @@ function handlesearch(value) {
 
 
 function change_password() {
+	if (sessionStorage.getItem("block_interactions") === "true") {
+		notice("Cannot change while servers are offline.")
+		return;
+	}
 	navigator("change_password")
 	let current = document.getElementById("current_pswd")
 	let newpswd = document.getElementById("new_pswd")
@@ -2247,6 +2590,10 @@ function return_to_options(where) {
 }
 
 function showUploadBox() {
+	if (sessionStorage.getItem("block_interactions") === "true") {
+		notice("Servers Are Offline!")
+		return;
+	}
 	document.getElementById('upload-box').click();
 }
 
@@ -3285,6 +3632,10 @@ function loadflrdinf() {
 
 //date_of_birth_change
 function birth_date() {
+	if (sessionStorage.getItem("block_interactions") === "true") {
+		notice("Cannot change while servers are offline.")
+		return;
+	}
 	document.getElementById("usr-name-chbirth").innerHTML = localStorage.getItem("t50-username")
 	document.getElementById("usr-email-chbirth").innerHTML = localStorage.getItem("t50-email")
 	document.getElementById("usr-img-chbirth").src = document.getElementById("usr-img").src
@@ -3487,6 +3838,10 @@ function padWithZero(number) {
 }
 
 function addemail() {
+	if (sessionStorage.getItem("block_interactions") === "true") {
+		notice("Cannot add emails while servers are offline.")
+		return;
+	}
 	navigator('addemail')
 	document.getElementById("usr-img-addemail").src = document.getElementById("usr-img-opt").src
 	document.getElementById("usr-name-addemail").innerHTML = document.getElementById("usr-name-opt").innerHTML
@@ -3772,6 +4127,10 @@ function fahrenheitToCelsius(fahrenheit) {
 
 
 function qa_pfp() {
+	if (sessionStorage.getItem("block_interactions") === "true") {
+		notice("Servers Are Offline!")
+		return;
+	}
 	showUploadBox()
 }
 
@@ -3877,6 +4236,10 @@ function cryptoxToggleUI() {
 
 
 function cryptox(no) {
+	if (sessionStorage.getItem("block_interactions") === "true") {
+		notice("Cannot view while servers are offline.")
+		return;
+	}
 	$("#stuck").fadeIn("fast")
 	fetch(`https://data.evoxs.xyz/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
@@ -4683,6 +5046,10 @@ function scrollToTop(divId) {
 }
 
 function optimizeNotifications(id, element) {
+	if (sessionStorage.getItem("block_interactions") === "true") {
+		notice("Unable to connect to server.")
+		return;
+	}
 	console.log("Optimizing")
 	let change;
 	if (element.checked) {
