@@ -328,6 +328,7 @@ function load(app) {
 			console.log("Hiding App Frame User Returned To Gateway")
 			document.getElementById("launchApp").src = "PreloadApp.html"
 			$("#launchApp").fadeOut("slow")
+			$("#iframeContainer").fadeOut("slow")
 			sessionStorage.removeItem("extRun")
 			clearInterval(appFrame)
 		}
