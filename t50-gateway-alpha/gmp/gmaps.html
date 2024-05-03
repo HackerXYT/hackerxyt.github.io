@@ -51,7 +51,7 @@
     function goback() {
     if(document.getElementById("back").innerHTML.includes("#00b300")) {
         console.log("FIRE")
-        window.history.back()
+        sessionStorage.setItem("extRun", "back")
     }
     document.getElementById("back").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
     <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#00b300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -64,7 +64,7 @@
     
 }
     if(localStorage.getItem("t50-username") != "papostol") {
-      window.history.back()
+      sessionStorage.setItem("extRun", "back")
       window.location.href = "/"
     }
     // Load Leaflet script with onload event

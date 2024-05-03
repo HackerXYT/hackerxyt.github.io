@@ -140,27 +140,27 @@
     </script>
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        try {
-            OneSignalDeferred.push(function (OneSignal) {
-                console.log("Running Init")
-                OneSignal.init({
-                    appId: "986f81a5-5fab-4c0d-8fb3-9a7f6ff80eab",
-                    safari_web_id: "web.onesignal.auto.261dc44c-6b5c-4882-ba5f-51ef0736d918",
-                    notifyButton: {
-                        enable: true,
-                        position: "bottom-right"
-                    },
-                });
-                document.getElementById("showinternalLogs").innerHTML = "Florida Ready"
-                //notice("Florida Ready")
-                console.log("Florida Ready")
-            });
-        } catch (error) {
-            document.getElementById("showinternalLogs").innerHTML = `Florida Crashed <br> ${error.toString()}`
-            //notice("Florida Crashed")
-            console.log("Florida Error", error)//release workflow
-        }
+        //window.OneSignalDeferred = window.OneSignalDeferred || [];
+        //try {
+        //    OneSignalDeferred.push(function (OneSignal) {
+        //        console.log("Running Init")
+        //        OneSignal.init({
+        //            appId: "986f81a5-5fab-4c0d-8fb3-9a7f6ff80eab",
+        //            safari_web_id: "web.onesignal.auto.261dc44c-6b5c-4882-ba5f-51ef0736d918",
+        //            notifyButton: {
+        //                enable: true,
+        //                position: "bottom-right"
+        //            },
+        //        });
+        //        document.getElementById("showinternalLogs").innerHTML = "Florida Ready"
+        //        //notice("Florida Ready")
+        //        console.log("Florida Ready")
+        //    });
+        //} catch (error) {
+        //    document.getElementById("showinternalLogs").innerHTML = `Florida Crashed <br> ${error.toString()}`
+        //    //notice("Florida Crashed")
+        //    console.log("Florida Error", error)//release workflow
+        //}
 
     </script>
 
@@ -280,8 +280,8 @@
         <button style="display: none;" id="goback_login" onclick="handleGoBack()" class="transparent-button">Go
             back</button><br>
         <p id="rem_text" style="color: #a7b3bf;display:none">Pick an account to login.</p>
-        <p id="def_text" style="color: #a7b3bf">Evox® Epsilon registered under Evox Communications & Co.<br><br><i
-                style="color: #0173d6e2">Public Beta Preview Version E0.92</i></p>
+        <p id="def_text" style="color: #a7b3bf">Evox® Epsilon registered under Evox Communications & Co.<br><br><!--<i
+                style="color: #0173d6e2">Public Beta Preview Version E1.00</i>--></p>
     </div>
     <div style="display: none;" id="2fa" class="container" style="display:none;margin-top: 105px;">
         <h3 style="color: white;">Two-Factor Authentication</h3>
@@ -391,6 +391,7 @@
         <a href="#" onclick="mergenow()" class="apple-button">Merge Now</a>
 
         <a href="#" onclick="deleteLocal()" class="apple-button">Delete all local data (evoxs.xyz)</a>
+        
         <div onclick="return_login()"
             style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
             <div
@@ -1145,7 +1146,8 @@
                                 repeatCount="indefinite" />
                         </circle>
                     </svg></a>
-                    <p style="margin: 6px;margin-top: 12px">Status: <span id="showinternalLogs"></span></p>
+                <p style="margin: 6px;margin-top: 12px">Status: <span id="showinternalLogs">Florida Disabled By
+                        Evox</span></p>
                 <a href="#" style="display: none;" id="restart_after_flrdclear" onclick="restart()"
                     class="apple-button">Restart<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
                         viewBox="0 0 24 24" fill="none">
@@ -1609,7 +1611,7 @@
         </div>
         <div id="store" style="display:none">
 
-            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">App Store Preview</h3>
+            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">App Store</h3>
             <div href="#" class="apple-button-withicon"><img
                     style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
                     src="../tasco/tasco-app.png">Tasco
@@ -1644,7 +1646,39 @@
                 <span onclick="getNOpen('chatvia')" id="chatvia-get" class="get-button">GET</span>
             </div>
 
-
+            <p id="moreApps" style="margin: 10px;margin-top: 20px;" class="user-email">MORE APPS AVAILABLE
+            </p>
+            <div id="secureline-appst" href="#" class="apple-button-withicon"><img
+                    style="width: auto; height: 40px; margin-right: 10px; border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                    src="./secureline/sline.png">
+                Secureline Alpha
+                <span onclick="getNOpen('secureline')" id="secureline-get" class="get-button">OLD</span>
+            </div>
+            <div id="mti-appst" href="#" class="apple-button-withicon"><img
+                    style="width: auto; height: 40px; margin-right: 10px; border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                    src="mt.jpg">
+                Moretti
+                <span onclick="getNOpen('mti')" id="mti-get" class="get-button">GET</span>
+            </div>
+            <div id="transports-appst" href="#" class="apple-button-withicon"><img
+                    style="width: auto; height: 40px; margin-right: 10px; border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                    src="T50Transports.png">
+                Transports
+                <span onclick="getNOpen('transports')" id="transports-get" class="get-button">GET</span>
+            </div>
+            <div id="emails-appst" href="#" class="apple-button-withicon"><img
+                    style="width: auto; height: 40px; margin-right: 10px; border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                    src="mails.png">
+                Mails
+                <span onclick="getNOpen('emails')" id="emails-get" class="get-button">OPEN</span>
+            </div>
+            <div id="dc-appst" href="#" class="apple-button-withicon"><img
+                    style="width: auto; height: 40px; margin-right: 10px; border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                    src="dc.png">
+                Datacenter Dashboard
+                <span onclick="getNOpen('dc')" id="dc-get" class="get-button">GET</span>
+            </div>
+            <div class="transparent-placeholder"></div>
 
 
 
@@ -1953,7 +1987,7 @@
                 </svg></a>
             <a onclick="show_social()" href="#" class="apple-button-withicon"><img
                     style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;"
-                    src="./icons/share-circle.svg">Social<svg xmlns="http://www.w3.org/2000/svg" width="20px"
+                    src="./icons/share-circle.svg">Social Center<svg xmlns="http://www.w3.org/2000/svg" width="20px"
                     height="20px" viewBox="0 0 24 24" fill="none">
                     <path
                         d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
@@ -1961,7 +1995,7 @@
                 </svg></a>
             <a id="evox_store" onclick="store()" href="#" class="apple-button-withicon"><img
                     style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;"
-                    src="./icons/apps.svg">Application Store Preview<svg xmlns="http://www.w3.org/2000/svg" width="20px"
+                    src="./icons/apps.svg">App Store<svg xmlns="http://www.w3.org/2000/svg" width="20px"
                     height="20px" viewBox="0 0 24 24" fill="none">
                     <path
                         d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
@@ -1970,7 +2004,7 @@
             <a id="coming_soon" onclick="coming()" href="#" class="apple-button-withicon"
                 style="background-color: #1c4437;"><img
                     style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;"
-                    src="EvoxEPSILON.png">What's Coming To Evox<svg xmlns="http://www.w3.org/2000/svg" width="20px"
+                    src="EvoxEPSILON.png">Evox Plans<svg xmlns="http://www.w3.org/2000/svg" width="20px"
                     height="20px" viewBox="0 0 24 24" fill="none">
                     <path
                         d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
@@ -2129,11 +2163,11 @@
         <div id="evox_gateway_info" style="display:none;overflow: hidden;">
 
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Evox® Gateway</h3>
-            <img src="V0.91_bugs.png"
+            <img src="evoxEpsilonStable.png"
                 style="display: block; margin: 20px auto; max-width: 500px; border-radius: 20px;width:100%">
             <div href="#" class="apple-button">
                 Current Version
-                <span>0.92-BETA</span>
+                <span>1.0.0</span>
             </div>
             <a href="#" onclick="restart()" class="apple-button">Restart<svg xmlns="http://www.w3.org/2000/svg"
                     width="20px" height="20px" viewBox="0 0 24 24" fill="none">
@@ -2598,6 +2632,10 @@
                 stroke-width="2" stroke-linecap="round" />
         </svg>
     </div>
+
+    <iframe id="launchApp" src="PreloadApp.html"
+        style="position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;display: none;">
+    </iframe>
 
 </body>
 

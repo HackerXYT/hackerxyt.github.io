@@ -61,7 +61,7 @@
 				<button onclick="mergeacc()">
 					Yes
 				</button>&nbsp;
-				<button onclick="window.history.back();">
+				<button onclick='sessionStorage.setItem("extRun", "back");'>
 					Cancel
 				</button>
 			</div>
@@ -71,7 +71,7 @@
 		<div class="password-popup">
 			<h2 id="acc-title" style="color: #fff;margin-top:0;text-align: center;">Account</h2>
 			<p style="font-size: large;">Username: <span id="username">"user"</span><br>Email: <span id="email">"email"</span><br>
-			Notes: <span id="notes-count">0</span></p>
+			Notes: <span id="notes-count">0</span><br>Go back: <button onclick='sessionStorage.setItem("extRun", "back")'>Click</button></p>
 		</div>
 	</div>
 	<div style="display: none" id="newnote" class="top-left-svg">

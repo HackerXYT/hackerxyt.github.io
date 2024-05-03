@@ -36,7 +36,7 @@ function showAccounts() {
     document.getElementById("tab-title").innerHTML = "Evox Accounts"
     document.getElementById("tab-desc").innerHTML = "Optimize your productivity with all registered Evox accounts."
     document.getElementById("tab-opt").style.display = ""
-    fetch(`https://evox-datacenter.onrender.com/?process=accounts&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
+    fetch(`https://data.evoxs.xyz/?process=accounts&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
         .then(response => {
             // Check if response status is OK (200)
             if (!response.ok) {
@@ -53,7 +53,7 @@ function showAccounts() {
                 document.getElementById("card-grid").innerHTML = ""
                 if (value.startsWith("Account_")) {
                     const email = value.split("_")[1];
-                    fetch(`https://evox-datacenter.onrender.com/accounts?method=getUserbyEmail&email=${email}`)
+                    fetch(`https://data.evoxs.xyz/accounts?method=getUserbyEmail&email=${email}`)
                         .then(response => {
                             // Check if response status is OK (200)
                             if (!response.ok) {
@@ -62,7 +62,7 @@ function showAccounts() {
                             // Parse the JSON from the response
                             return response.text();
                         }).then(username => {
-                            fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+                            fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
                                 .then(response => {
                                     // Check if response status is OK (200)
                                     if (!response.ok) {
@@ -76,7 +76,7 @@ function showAccounts() {
                                         pfp = "data:image/jpeg;base64," + pfp;
                                     }
                                     let stt;
-                                    fetch(`https://evox-datacenter.onrender.com/?process=toggleAcc&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}&email=${email}`)
+                                    fetch(`https://data.evoxs.xyz/?process=toggleAcc&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}&email=${email}`)
                                         .then(response => {
                                             // Check if response status is OK (200)
                                             if (!response.ok) {
@@ -171,7 +171,7 @@ function showAccounts() {
 }
 
 function toggleAcc(email, element) {
-    fetch(`https://evox-datacenter.onrender.com/?process=toggleAcc&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}&email=${email}&id=edit`)
+    fetch(`https://data.evoxs.xyz/?process=toggleAcc&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}&email=${email}&id=edit`)
         .then(response => {
             // Check if response status is OK (200)
             if (!response.ok) {
@@ -198,7 +198,7 @@ function showProfiles() {
     hideAll()
     document.getElementById("profile_tab").classList.add("active")
     document.getElementById("profile-content").style.display = ""
-    fetch(`https://evox-datacenter.onrender.com/?process=profiles&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
+    fetch(`https://data.evoxs.xyz/?process=profiles&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
         .then(response => {
             // Check if response status is OK (200)
             if (!response.ok) {
@@ -235,7 +235,7 @@ function showIPV4() {
     hideAll()
     document.getElementById("ipv4_tab").classList.add("active")
     document.getElementById("ipv4-content").style.display = ""
-    fetch(`https://evox-datacenter.onrender.com/?process=authips&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
+    fetch(`https://data.evoxs.xyz/?process=authips&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
         .then(response => {
             // Check if response status is OK (200)
             if (!response.ok) {
@@ -251,7 +251,7 @@ function showIPV4() {
                 const preuser = Object.keys(obj)[0];
                 var username = preuser.split('_')[0];
                 const ips = obj[preuser];
-                fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+                fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
                     .then(response => {
                         // Check if response status is OK (200)
                         if (!response.ok) {
@@ -326,7 +326,7 @@ function showSline() {
     document.getElementById("sline_tab").classList.add("active")
     document.getElementById("tab-title").innerHTML = "Evox Secureline Chats"
     document.getElementById("tab-desc").innerHTML = "Access all securely encrypted conversations within Evox's Secureline."
-    fetch(`https://evox-datacenter.onrender.com/?process=secureline&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
+    fetch(`https://data.evoxs.xyz/?process=secureline&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
         .then(response => {
             // Check if response status is OK (200)
             if (!response.ok) {
@@ -339,7 +339,7 @@ function showSline() {
             container.innerHTML = ""
 
             jsonData.forEach(data => {
-                fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${data.participants[0].start}`)
+                fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${data.participants[0].start}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
@@ -411,7 +411,7 @@ function showSline() {
         });
 }
 function showSocial() {
-    fetch(`https://evox-datacenter.onrender.com/?process=social&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
+    fetch(`https://data.evoxs.xyz/?process=social&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
         .then(response => {
             // Check if response status is OK (200)
             if (!response.ok) {
@@ -432,7 +432,7 @@ function showSocial() {
                 const pathParts = item.path.split('\\');
                 const username = pathParts[1];
                 const content = item.content;
-                fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+                fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
@@ -501,7 +501,7 @@ function showFlorida() {
     document.getElementById("florida_tab").classList.add("active")
     document.getElementById("tab-title").innerHTML = "Evox Florida Database"
     document.getElementById("tab-desc").innerHTML = "Access the Florida IDs database for all Evox accounts."
-    fetch(`https://evox-datacenter.onrender.com/?process=florida&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
+    fetch(`https://data.evoxs.xyz/?process=florida&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
         .then(response => {
             // Check if response status is OK (200)
             if (!response.ok) {
@@ -518,7 +518,7 @@ function showFlorida() {
                 const article = document.createElement('article');
                 article.classList.add('card');
                 var username = key.split(".")[0];
-                fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+                fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
@@ -579,7 +579,7 @@ function showTasco() {
     hideAll()
     document.getElementById("tasco_tab").classList.add("active")
     document.getElementById("tasco-content").style.display = ""
-    fetch(`https://evox-datacenter.onrender.com/?process=tasco&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
+    fetch(`https://data.evoxs.xyz/?process=tasco&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
         .then(response => {
             // Check if response status is OK (200)
             if (!response.ok) {
@@ -616,7 +616,7 @@ function showCryptox() {
     document.getElementById("cryptox_tab").classList.add("active");
     document.getElementById("cryptox-content").style.display = "block"; // Assuming cryptox-content is the container for card-grid-cryptox
 
-    fetch(`https://evox-datacenter.onrender.com/?process=cryptox&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
+    fetch(`https://data.evoxs.xyz/?process=cryptox&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
         .then(response => {
             // Check if response status is OK (200)
             if (!response.ok) {
@@ -628,7 +628,7 @@ function showCryptox() {
         .then(data => {
             // Function to create card elements
             function createCard(username, key, iv) {
-                fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+                fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
@@ -708,7 +708,7 @@ function showDatacenter() {
     hideAll()
     document.getElementById("datacenter_tab").classList.add("active")
     document.getElementById("datacenter-content").style.display = ""
-    fetch(`https://evox-datacenter.onrender.com/?process=datacenter&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
+    fetch(`https://data.evoxs.xyz/?process=datacenter&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
         .then(response => {
             // Check if response status is OK (200)
             if (!response.ok) {
@@ -745,7 +745,7 @@ function showVerification() {
     hideAll()
     document.getElementById("verfication_tab").classList.add("active")
     document.getElementById("verfication-content").style.display = ""
-    fetch(`https://evox-datacenter.onrender.com/?process=verification&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
+    fetch(`https://data.evoxs.xyz/?process=verification&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
         .then(response => {
             // Check if response status is OK (200)
             if (!response.ok) {
@@ -794,7 +794,7 @@ function showVerification() {
         });
 }
 function getInnerVerif(value) {
-    fetch(`https://evox-datacenter.onrender.com/verification?datac=inner&filename=${value}`)
+    fetch(`https://data.evoxs.xyz/verification?datac=inner&filename=${value}`)
         .then(response => {
             // Check if response status is OK (200)
             if (!response.ok) {
@@ -817,7 +817,7 @@ function showImgGal() {
     hideAll()
     document.getElementById("imggl_tab").classList.add("active")
     document.getElementById("imggl-content").style.display = ""
-    fetch(`https://evox-datacenter.onrender.com/?process=imagesGallery&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
+    fetch(`https://data.evoxs.xyz/?process=imagesGallery&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
         .then(response => {
             // Check if response status is OK (200)
             if (!response.ok) {
@@ -855,7 +855,7 @@ function load_img() {
     var storedObject = JSON.parse(storedValue);
     var password = atob(storedObject.imgpassword)
     console.log("Requesting")
-    fetch(`https://evox-datacenter.onrender.com/images-gallery/?password=${password}`, {
+    fetch(`https://data.evoxs.xyz/images-gallery/?password=${password}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -921,7 +921,7 @@ function showImgDb() {
     hideAll()
     document.getElementById("imgdb_tab").classList.add("active")
     document.getElementById("imgdb-content").style.display = ""
-    fetch(`https://evox-datacenter.onrender.com/?process=imagesDB&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
+    fetch(`https://data.evoxs.xyz/?process=imagesDB&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`)
         .then(response => {
             // Check if response status is OK (200)
             if (!response.ok) {
@@ -984,7 +984,7 @@ function hideAll() {
 }
 
 function downloadfiles() {
-    window.location.href = `https://evox-datacenter.onrender.com/?process=download&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`
+    window.location.href = `https://data.evoxs.xyz/?process=download&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}`
 }
 //&username=${localStorage.getItem("dcusr")}&password=${localStorage.getItem("dcauth")}
 let count = 0;

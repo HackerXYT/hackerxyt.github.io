@@ -10,12 +10,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-//https://evox-datacenter.onrender.com/emails/?action=get&username=papostol&email=gregpap03@gmail.com&password=notyourtone
+  function go_dash() {
+    sessionStorage.setItem("extRun", "back")
+  }
+//https://data.evoxs.xyz/emails/?action=get&username=papostol&email=gregpap03@gmail.com&password=notyourtone
 const global_username = localStorage.getItem("t50-username")
 const pswd = localStorage.getItem("t50pswd")
 const global_email = localStorage.getItem("t50-email")
 let emails;
-fetch(`https://evox-datacenter.onrender.com/emails/?action=get&username=${global_username}&email=${global_email}&password=${atob(pswd)}`)
+fetch(`https://data.evoxs.xyz/emails/?action=get&username=${global_username}&email=${global_email}&password=${atob(pswd)}`)
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -115,7 +118,7 @@ fetch(`https://evox-datacenter.onrender.com/emails/?action=get&username=${global
     });
 
 function send() {
-    var url = 'https://evox-datacenter.onrender.com/emails';
+    var url = 'https://data.evoxs.xyz/emails';
 
     // Check conditions for sending the request
     var username = global_username;

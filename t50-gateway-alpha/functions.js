@@ -270,9 +270,12 @@ function load(app) {
 	let chatvia = localStorage.getItem("chatvia-owned")
 	if (app === "notes") {
 		if (notes === "true") {
-			window.location.href = "./Notes/"
+			//window.location.href = "./Notes/"
+			sessionStorage.setItem("EmitApp", "evox")
+			launchAppN("./Notes/")
 		} else {
 			log("App Not Owned!", "red")
+			return;
 		}
 	} else if (app === "images") {
 		if (images === "true") {
@@ -281,28 +284,61 @@ function load(app) {
 				localStorage.setItem("rem-email", localStorage.getItem("t50-email"))
 				localStorage.setItem("img-app-email", localStorage.getItem("t50-email"))
 			}
-			window.location.href = "./Images/"
+			sessionStorage.setItem("EmitApp", "images")
+			launchAppN("./Images/")
 		} else {
 			log("App Not Owned!", "red")
+			return;
 		}
 	} else if (app === "chatvia") {
 		if (chatvia === "true") {
-			window.location.href = "./customize/"
+			sessionStorage.setItem("EmitApp", "chatvia")
+			launchAppN("./customize/")
+			//window.location.href = "./customize/"
 		} else {
 			log("App Not Owned!", "red")
+			return;
 		}
 	} else if (app === "transports") {
 		if (localStorage.getItem("t50-username") === "papostol") {
 			//window.location.href = "./gmp/gmaps.html"
-			window.location.href = "/secondConcept/"
+			sessionStorage.setItem("EmitApp", "mti")
+			launchAppN("./gmp/gmaps.html")
+			//window.location.href = "/secondConcept/"
 		}
-	} else if (app === "emails" && localStorage.getItem("t50-username") === "papostol") {
-		window.location.href = "./mails/"
+	} else if (app === "emails") {
+		//window.location.href = "./mails/"
+		sessionStorage.setItem("EmitApp", "evox")
+		launchAppN("./mails/")
 	} else if (app === "tasco") {
-		window.location.href = `../tasco/`
+		sessionStorage.setItem("EmitApp", "tasco")
+		launchAppN("../tasco/")
+		//window.location.href = `../tasco/`
 	} else if (app === "secureline") {
-		window.location.href = `./secureline/`
+		//window.location.href = `./secureline/`
+		sessionStorage.setItem("EmitApp", "evox")
+		launchAppN("./secureline/")
+
+	} else if (app === "dc") {
+		sessionStorage.setItem("EmitApp", "evox")
+		launchAppN("../DC/")
 	}
+	const appFrame = setInterval(function () {
+		if (sessionStorage.getItem("extRun") === "back") {
+			console.log("Hiding App Frame User Returned To Gateway")
+			document.getElementById("launchApp").src = "PreloadApp.html"
+			$("#launchApp").fadeOut("slow")
+			sessionStorage.removeItem("extRun")
+			clearInterval(appFrame)
+		}
+	}, 100)
+}
+
+function launchAppN(app) {
+	setTimeout(function () {
+		document.getElementById("launchApp").src = app
+	}, 1100)
+	$("#launchApp").fadeIn("slow")
 }
 
 function buy(app) {
@@ -1259,7 +1295,7 @@ function show_search() {
 			});
 		}
 	}
-	
+
 }
 function acceptfriend(element) {
 	document.getElementById(element.id).innerHTML = `<svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -3397,8 +3433,11 @@ function show_sline() {
 }
 
 
-function confirmLogout() {
-	settings()
+function confirmLogout(re) {
+	if(!re) {//see Unknown Error IPAUTH messed up local Values
+		settings()
+	}
+	
 	sessionStorage.setItem("blockBottomLogout", "true")
 	document.getElementById("gateway").style.filter = "blur(10px)"
 	document.getElementById("logout_confirm").classList.add("active")
@@ -4219,12 +4258,23 @@ function getNOpen(app) {
 	</circle>
 </svg>`;
 	setTimeout(function () {
+
+		if (oldInner === "OPEN") {
+			return_to_options('evox_store'); navigator('settings_tonexus')
+			close_popup()
+			load(app)
+			getButton.style.height = "auto"
+			getButton.style.width = "auto"
+			//height: 17px; width: 30px
+			getButton.innerHTML = oldInner;
+			return;
+		}
 		getButton.style.height = "auto"
 		getButton.style.width = "auto"
 		//height: 17px; width: 30px
 		getButton.innerHTML = oldInner;
 		shake_me(`${app}-get`)
-		notice("Accessing apps from this location is currently unavailable.")
+		notice("Access Denied")
 	}, 1500)
 
 }
@@ -5644,8 +5694,8 @@ function registerFlorida() {
 	try {
 		beamsClient.addDeviceInterest(`${localStorage.getItem("t50-username")}`)
 		console.log("Florida Configured Successfully!")
-	} catch(error) {
+	} catch (error) {
 		console.error("Florida Error:", error)
 	}
-	
+
 }

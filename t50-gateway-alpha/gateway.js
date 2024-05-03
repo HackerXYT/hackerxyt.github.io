@@ -263,6 +263,14 @@ function setup() {
   //  return;
   //}
 
+  if(localStorage.getItem("t50-username") === "papostol") {
+    $("#secureline-get").html("OPEN")
+    $("#mti-get").html("OPEN")
+    $("#transports-get").html("OPEN")
+    $("#emails-get").html("OPEN")
+    $("#dc-get").html("OPEN")
+  }
+
   console.log("RUNNING SETUP!")
   $("#navigator").fadeIn("fast")
   if (localStorage.getItem("New_ID0.92.1") !== "SEEN") {
@@ -294,7 +302,7 @@ function setup() {
 
   let version;
   try {
-    log("Evox Gateway V:Epsilon 0.7", "cyan")
+    log("Evox Gateway V:Epsilon 1.0", "cyan")
     try {
       clearInterval(version)
     } catch {
@@ -302,7 +310,7 @@ function setup() {
     }
   } catch {
     version = setInterval(function () {
-      log("Evox Gateway V:Epsilon 0.7", "cyan")
+      log("Evox Gateway V:Epsilon 1.0", "cyan")
     }, 800)
   }
 
@@ -527,7 +535,7 @@ function setup() {
                 console.log('%c' + "Enabling Transports", styles)
                 $("#transports-app").fadeIn("slow")
                 //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
-                document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="window.location.href='../DC/'" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a><a onclick="shake_me('transports-disabled');notice('T50 Transports is currently not available');load('transports')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
+                document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('dc')" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a><a onclick="shake_me('transports-disabled');notice('T50 Transports is currently not available');load('transports')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
               }
               $("#apps").fadeIn("slow")
               $("#loading-apps-text").fadeOut("slow", function () {
@@ -761,7 +769,10 @@ function docready(merge) {
                 //docready()
                 //return;
               } else {
-                console.error("Unknown Error IPAUTH")
+                console.error(`Unknown Error IPAUTH\nGot data: ${data}`)
+                if(data === "Username doesn't match the account") {
+                  document.getElementById("loading-div-text").innerHTML = "<p>Something messed up your client.<br>Your local username doesn't match your account<br>Click below to re-login</p><button onclick='logoff()'>Log out</button>"
+                }
               }
               //IF IP EXISTS THEN DONT REQUIRE 2FA, ELSE REQUIRE 2FA
             }).catch(error => {

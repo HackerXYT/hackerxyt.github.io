@@ -14,10 +14,11 @@ document.addEventListener('gesturestart', function (e) {
   e.preventDefault();
 });
 function login() {
+  return;
   let email = document.getElementById("email").value
   let password = document.getElementById("password").value
   console.log(email, "********")
-  const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}&autologin=true`;
+  const url = `https://data.evoxs.xyz/accounts?email=${email}&password=${password}&autologin=true`;
 
   fetch(url)
     .then(response => {
@@ -81,7 +82,7 @@ function docready(skipauto) {
     console.log("Logging In Automatically")
     let email = localStorage.getItem("t50-email")
     let password = atob(localStorage.getItem("t50pswd"))
-    const url = `https://evox-datacenter.onrender.com/accounts?email=${email}&password=${password}&autologin=true`;
+    const url = `https://data.evoxs.xyz/accounts?email=${email}&password=${password}&autologin=true`;
 
     fetch(url)
       .then(response => {
@@ -98,7 +99,7 @@ function docready(skipauto) {
             const match = credentialsString.match(/Username:(\w+)/);
             const username = match && match[1];
             //localStorage.setItem("t50-autologin", false)
-            localStorage.setItem("t50-username", username)
+            //localStorage.setItem("t50-username", username)
           }
           localStorage.setItem("t50-email", email)
           //localStorage.setItem("t50-autologin", false)
@@ -161,7 +162,7 @@ function docready(skipauto) {
                     $("#dots").html("...")
                     setTimeout(function () {
                       $("#dots").html("..")
-                      fetch("https://evox-datacenter.onrender.com/accounts")
+                      fetch("https://data.evoxs.xyz/accounts")
                         .then(response => {
                           if (!response.ok) {
                             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -235,7 +236,7 @@ function docready(skipauto) {
   })
   if (loggedin != null && autologin === "true") {
     return;
-    const url = `https://evox-datacenter.onrender.com/accounts?email=${loggedin}&password=${pswd}&autologin=true`;
+    const url = `https://data.evoxs.xyz/accounts?email=${loggedin}&password=${pswd}&autologin=true`;
 
     fetch(url)
       .then(response => {
@@ -375,7 +376,7 @@ document.getElementById("password").addEventListener("keypress", function (event
 function reconnect() {
   console.log("Reconnecting..")
   $("#loading-bar").fadeIn("slow")
-  fetch("https://evox-datacenter.onrender.com/accounts")
+  fetch("https://data.evoxs.xyz/accounts")
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -414,7 +415,7 @@ function send_message() {
     }
     message.disabled = true
     sessionStorage.setItem("sending", "true")
-    fetch(`https://evox-datacenter.onrender.com/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${message.value}`)
+    fetch(`https://data.evoxs.xyz/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${message.value}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -425,7 +426,7 @@ function send_message() {
         message.value = ""
         if (data === `Message Sent To ${recipient}`) {
           console.log("Message Sent")
-          fetch(`https://evox-datacenter.onrender.com/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}`)
+          fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -491,7 +492,7 @@ function reload_chat(whoto) {
   reloading = setInterval(function () {
     sessionStorage.setItem("current_sline", whoto)
     pfp = document.getElementById(`${whoto}-pfp-friends`)
-    fetch(`https://evox-datacenter.onrender.com/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}`)
+    fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -577,7 +578,7 @@ function showchat(element) {
 </p>`
   sessionStorage.setItem("current_sline", element.id)
   pfp = document.getElementById(`${element.id}-pfp-friends`)
-  fetch(`https://evox-datacenter.onrender.com/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
+  fetch(`https://data.evoxs.xyz/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -587,7 +588,7 @@ function showchat(element) {
     .then(data => {
       if (data === "Chat Exists.") {
         console.log("Getting Existing Chat")
-        fetch(`https://evox-datacenter.onrender.com/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
+        fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -668,7 +669,7 @@ function create_chat() {
       </path>
   </svg>
 </p>`
-  fetch(`https://evox-datacenter.onrender.com/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&createnew=true`)
+  fetch(`https://data.evoxs.xyz/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&createnew=true`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -689,11 +690,11 @@ function create_chat() {
     })
 }
 function go_dash() {
-  window.location.href = "../"
+  sessionStorage.setItem("extRun", "back")
 }
 function getFriends() {
   $("#load-users-friends").fadeIn("fast")
-  fetch(`https://evox-datacenter.onrender.com/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+  fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -721,7 +722,7 @@ function getFriends() {
       listContainer.style.marginTop = "";
       listContainer.innerHTML = "<!--Empty-->";
       user_requests.forEach(username => {
-        fetch(`https://evox-datacenter.onrender.com/accounts?method=getemailbyusername&username=${username}`)
+        fetch(`https://data.evoxs.xyz/accounts?method=getemailbyusername&username=${username}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -772,7 +773,7 @@ function getFriends() {
               //userContainer.appendChild(addButton);
 
               listContainer.appendChild(userContainer);
-              fetch(`https://evox-datacenter.onrender.com/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+              fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
                 .then(response => {
                   if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -832,7 +833,7 @@ function canceldelete() {
 function confirmdelete() {
   document.getElementById("cancelbtn").style.display = "none"
   const message = sessionStorage.getItem("removemsg")
-  fetch(`https://evox-datacenter.onrender.com/secureline?method=DeleteMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&whosentit=me&message=${message}`)
+  fetch(`https://data.evoxs.xyz/secureline?method=DeleteMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&whosentit=me&message=${message}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
