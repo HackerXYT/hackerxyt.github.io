@@ -152,11 +152,13 @@
                         position: "bottom-right"
                     },
                 });
-                notice("Florida Ready")
+                document.getElementById("showinternalLogs").innerHTML = "Florida Ready"
+                //notice("Florida Ready")
                 console.log("Florida Ready")
             });
         } catch (error) {
-            notice("Florida Crashed")
+            document.getElementById("showinternalLogs").innerHTML = `Florida Crashed <br> ${error.toString()}`
+            //notice("Florida Crashed")
             console.log("Florida Error", error)//release workflow
         }
 
@@ -1143,6 +1145,7 @@
                                 repeatCount="indefinite" />
                         </circle>
                     </svg></a>
+                    <p style="margin: 6px;margin-top: 12px">Status: <span id="showinternalLogs"></span></p>
                 <a href="#" style="display: none;" id="restart_after_flrdclear" onclick="restart()"
                     class="apple-button">Restart<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
                         viewBox="0 0 24 24" fill="none">
