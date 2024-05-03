@@ -137,30 +137,28 @@
             });
         });
     </script>
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script src="https://sdk.pushy.me/web/1.0.18/pushy-sdk.js"></script>
+
 
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function (registrations) {
-                for (let registration of registrations) {
-                    if (registration.active.scriptURL.includes("sw.js")) {
-                        registration.unregister();
-                    }
-                }
+        importScripts('https://sdk.pushy.me/web/1.0.18/pushy-service-worker.js');
+        import Pushy from 'pushy-sdk-web';
+        function registerFlorida() {
+            // Add an import statement if you installed from npm
+            // Register visitor's browser for push notifications
+            Pushy.register({ appId: '6634ddfd44f72bc8361c94eb' }).then(function (deviceToken) {
+                // Print device token to console
+                alert('Pushy device token: ' + deviceToken);
+
+                // Send the token to your backend server via an HTTP GET request
+                //fetch('https://your.api.hostname/register/device?token=' + deviceToken);
+
+                // Succeeded, optionally do something to alert the user
+            }).catch(function (err) {
+                // Notify user of failure
+                alert('Registration failed: ' + err.message);
             });
         }
-
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(function (OneSignal) {
-            OneSignal.init({
-                appId: "986f81a5-5fab-4c0d-8fb3-9a7f6ff80eab",
-                safari_web_id: "web.onesignal.auto.261dc44c-6b5c-4882-ba5f-51ef0736d918",
-                notifyButton: {
-                    enable: true,
-                    position: "bottom-right"
-                },
-            });
-        });
     </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JEBKFVFJT"></script>
