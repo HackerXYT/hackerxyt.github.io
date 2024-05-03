@@ -138,19 +138,29 @@
         });
     </script>
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    
+
     <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(function(OneSignal) {
-        OneSignal.init({
-          appId: "986f81a5-5fab-4c0d-8fb3-9a7f6ff80eab",
-          safari_web_id: "web.onesignal.auto.261dc44c-6b5c-4882-ba5f-51ef0736d918",
-          notifyButton: {
-            enable: true,
-            position: "bottom-right"
-          },
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                for (let registration of registrations) {
+                    if (registration.active.scriptURL.includes("sw.js")) {
+                        registration.unregister();
+                    }
+                }
+            });
+        }
+
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(function (OneSignal) {
+            OneSignal.init({
+                appId: "986f81a5-5fab-4c0d-8fb3-9a7f6ff80eab",
+                safari_web_id: "web.onesignal.auto.261dc44c-6b5c-4882-ba5f-51ef0736d918",
+                notifyButton: {
+                    enable: true,
+                    position: "bottom-right"
+                },
+            });
         });
-      });
     </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JEBKFVFJT"></script>
@@ -424,17 +434,17 @@
         </a>
 
         <a onclick="incorrectAccount()" href="#" class="apple-button-withicon"><img
-            style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
-            src="incorrectacc.png">
+                style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                src="incorrectacc.png">
             This is not me<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-            fill="none">
-            <path
-                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                fill="#666" />
-        </svg>
-    </a>
+                fill="none">
+                <path
+                    d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                    fill="#666" />
+            </svg>
+        </a>
 
-        
+
 
 
 
@@ -482,15 +492,18 @@
             style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
             <div
                 style="background-color: #33333370; border: none; color: #ffffff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
-                <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2C6.49 2 2 6.49 2 12C2 17.51 6.49 22 12 22C17.51 22 22 17.51 22 12C22 6.49 17.51 2 12 2ZM16.78 9.7L11.11 15.37C10.97 15.51 10.78 15.59 10.58 15.59C10.38 15.59 10.19 15.51 10.05 15.37L7.22 12.54C6.93 12.25 6.93 11.77 7.22 11.48C7.51 11.19 7.99 11.19 8.28 11.48L10.58 13.78L15.72 8.64C16.01 8.35 16.49 8.35 16.78 8.64C17.07 8.93 17.07 9.4 16.78 9.7Z" fill="#1c9d3f"/>
-                    </svg>
+                <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                    viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M12 2C6.49 2 2 6.49 2 12C2 17.51 6.49 22 12 22C17.51 22 22 17.51 22 12C22 6.49 17.51 2 12 2ZM16.78 9.7L11.11 15.37C10.97 15.51 10.78 15.59 10.58 15.59C10.38 15.59 10.19 15.51 10.05 15.37L7.22 12.54C6.93 12.25 6.93 11.77 7.22 11.48C7.51 11.19 7.99 11.19 8.28 11.48L10.58 13.78L15.72 8.64C16.01 8.35 16.49 8.35 16.78 8.64C17.07 8.93 17.07 9.4 16.78 9.7Z"
+                        fill="#1c9d3f" />
+                </svg>
                 Got it
             </div>
         </div>
 
-        
-        
+
+
 
         <!--<div onclick="return_login()"
             style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
@@ -2578,8 +2591,9 @@
     cursor: pointer;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;opacity: 0">
         <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
-            <path d="M20 4V14.3945M16 16V20M16 8V10.399M12 12V20M8 16V20M4 19V20M3 3L21 21" stroke="#9c1e1e" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <path d="M20 4V14.3945M16 16V20M16 8V10.399M12 12V20M8 16V20M4 19V20M3 3L21 21" stroke="#9c1e1e"
+                stroke-width="2" stroke-linecap="round" />
+        </svg>
     </div>
 
 </body>
