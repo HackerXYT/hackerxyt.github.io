@@ -138,15 +138,14 @@
             });
         });
     </script>
-    <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
-        const beamsClient = new PusherPushNotifications.Client({
-            instanceId: '2e5cb696-2581-4547-bd66-b129648da7c5',
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(function(OneSignal) {
+        OneSignal.init({
+          appId: "986f81a5-5fab-4c0d-8fb3-9a7f6ff80eab",
         });
-
-        beamsClient.start()
-            .then(() => console.log('Florida Started'))
-            .catch(console.error);
+      });
     </script>
 
     <!-- Google tag (gtag.js) -->
