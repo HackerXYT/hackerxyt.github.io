@@ -338,6 +338,7 @@ function launchAppN(app) {
 	setTimeout(function () {
 		document.getElementById("launchApp").src = app
 	}, 1100)
+	$("#iframeContainer").fadeIn("slow")
 	$("#launchApp").fadeIn("slow")
 }
 
