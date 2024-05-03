@@ -5639,3 +5639,13 @@ function incorrectAccount() {
 		console.log("t50-gateway-alpha/ not found in the URL");
 	}
 }
+
+function registerFlorida() {
+	try {
+		beamsClient.addDeviceInterest(`${localStorage.getItem("t50-username")}`)
+		console.log("Florida Configured Successfully!")
+	} catch(error) {
+		console.error("Florida Error:", error)
+	}
+	
+}

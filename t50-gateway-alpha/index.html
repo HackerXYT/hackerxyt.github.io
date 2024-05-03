@@ -141,14 +141,13 @@
     <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
     <script>
         const beamsClient = new PusherPushNotifications.Client({
-          instanceId: '2e5cb696-2581-4547-bd66-b129648da7c5',
+            instanceId: '2e5cb696-2581-4547-bd66-b129648da7c5',
         });
-      
+
         beamsClient.start()
-          .then(() => beamsClient.addDeviceInterest('hello'))
-          .then(() => console.log('Successfully registered and subscribed!'))
-          .catch(console.error);
-      </script>
+            .then(() => console.log('Florida Started'))
+            .catch(console.error);
+    </script>
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JEBKFVFJT"></script>
@@ -1110,9 +1109,9 @@
 
                 <div class="transparent-placeholder" style="height: 200px"></div>-->
                 <p style="margin: 6px;margin-top: 12px" class="user-email">FLORIDA OPTIONS</p>
-                <!--loadflrdinf() --><a href="#" onclick="registerFlorida()" class="apple-button">Get Florida Info<svg id="flrd_svg"
-                        style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20px"
-                        height="20px">
+                <!--loadflrdinf() --><a href="#" onclick="registerFlorida()" class="apple-button">Get Florida Info<svg
+                        id="flrd_svg" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
+                        width="20px" height="20px">
                         <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
                             <animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
                                 repeatCount="indefinite" />
