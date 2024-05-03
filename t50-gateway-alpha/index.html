@@ -138,41 +138,18 @@
             });
         });
     </script>
-    <script src="https://sdk.pushy.me/web/1.0.18/pushy-sdk.js" defer></script>
-
+    <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
     <script>
-        navigator.serviceWorker.getRegistrations().then(function (registrations) {
-            for (let registration of registrations) {
-                if (registration.active && registration.active.scriptURL.includes("OneSignalSDKWorker.js")) {
-                    registration.unregister().then(function (success) {
-                        console.log('Service worker unregistered:', success);
-                    }).catch(function (error) {
-                        console.log('Service worker unregister failed:', error);
-                    });
-                }
-            }
+        const beamsClient = new PusherPushNotifications.Client({
+          instanceId: '2e5cb696-2581-4547-bd66-b129648da7c5',
         });
+      
+        beamsClient.start()
+          .then(() => beamsClient.addDeviceInterest('hello'))
+          .then(() => console.log('Successfully registered and subscribed!'))
+          .catch(console.error);
+      </script>
 
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function () {
-                navigator.serviceWorker.register('/service-worker.js').then(function (registration) {
-                    // Registration was successful
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, function (err) {
-                    // Registration failed
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-            });
-        }
-        function registerFlorida() {
-            Pushy.register({ appId: '6634ddfd44f72bc8361c94eb' }).then(function (deviceToken) {
-                alert('Pushy device token: ' + deviceToken);
-                // You can proceed with other actions upon successful registration
-            }).catch(function (err) {
-                alert('Registration failed: ' + err.message);
-            });
-        }
-    </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JEBKFVFJT"></script>
     <script>
