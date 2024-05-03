@@ -139,23 +139,13 @@
     </script>
     <script src="https://sdk.pushy.me/web/1.0.18/pushy-sdk.js"></script>
 
-
     <script type="module">
-        importScripts('https://sdk.pushy.me/web/1.0.18/pushy-service-worker.js');
-        import Pushy from 'pushy-sdk-web';
+        import Pushy from 'https://sdk.pushy.me/web/1.0.18/pushy-sdk.js';
         function registerFlorida() {
-            // Add an import statement if you installed from npm
-            // Register visitor's browser for push notifications
             Pushy.register({ appId: '6634ddfd44f72bc8361c94eb' }).then(function (deviceToken) {
-                // Print device token to console
                 alert('Pushy device token: ' + deviceToken);
-
-                // Send the token to your backend server via an HTTP GET request
-                //fetch('https://your.api.hostname/register/device?token=' + deviceToken);
-
-                // Succeeded, optionally do something to alert the user
+                // You can proceed with other actions upon successful registration
             }).catch(function (err) {
-                // Notify user of failure
                 alert('Registration failed: ' + err.message);
             });
         }
