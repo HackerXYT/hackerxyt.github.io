@@ -140,12 +140,25 @@
     </script>
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(function(OneSignal) {
-        OneSignal.init({
-          appId: "986f81a5-5fab-4c0d-8fb3-9a7f6ff80eab",
-        });
-      });
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        try {
+            OneSignalDeferred.push(function (OneSignal) {
+
+                OneSignal.init({
+                    appId: "986f81a5-5fab-4c0d-8fb3-9a7f6ff80eab",
+                    notifyButton: {
+                        enable: true,
+                        position: "bottom-right"
+                    },
+                });
+                notice("Florida Ready")
+                console.log("Florida Ready")
+            });
+        } catch (error) {
+            notice("Florida Crashed")
+            console.log("Florida Error", error)
+        }
+
     </script>
 
     <!-- Google tag (gtag.js) -->
