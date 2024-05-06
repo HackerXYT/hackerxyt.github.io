@@ -6,6 +6,7 @@ sessionStorage.removeItem("block_interactions")
 sessionStorage.setItem("loaded", true)
 sessionStorage.removeItem("autolg_off")
 sessionStorage.removeItem("blockBottomLogout")
+sessionStorage.removeItem("unl")
 
 function fadeElement(elementId, speed) {
   var element = document.getElementById(elementId);
@@ -26,6 +27,26 @@ function fadeElement(elementId, speed) {
   fade();
 }
 
+
+var focusUnl = new Howl({
+  src: ['./internal/focusUnlock.mp3'],
+  volume: 1
+});
+
+var pressUnl = new Howl({
+  src: ['./internal/pressUnl.mp3'],
+  volume: 1
+});
+
+var successUnl = new Howl({
+  src: ['./internal/successUnl.mp3'],
+  volume: 1
+});
+
+var backUnl = new Howl({
+  src: ['./internal/backUnl.mp3'],
+  volume: 1
+});
 
 
 
@@ -263,7 +284,7 @@ function setup() {
   //  return;
   //}
 
-  if(localStorage.getItem("t50-username") === "papostol") {
+  if (localStorage.getItem("t50-username") === "papostol") {
     $("#secureline-get").html("OPEN")
     $("#mti-get").html("OPEN")
     $("#transports-get").html("OPEN")
@@ -737,7 +758,8 @@ function docready(merge) {
               }
               if (data === "IP is Mapped") {
                 console.log("IP Mapped")
-                setup()
+                lockMe()
+                //setup() is old
               } else if (data === "Unknown IP") {
                 fetch(`https://data.evoxs.xyz/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
                   .then(response => {
@@ -770,7 +792,7 @@ function docready(merge) {
                 //return;
               } else {
                 console.error(`Unknown Error IPAUTH\nGot data: ${data}`)
-                if(data === "Username doesn't match the account") {
+                if (data === "Username doesn't match the account") {
                   document.getElementById("loading-div-text").innerHTML = "<p>Something messed up your client.<br>Your local username doesn't match your account<br>Click below to re-login</p><button onclick='logoff()'>Log out</button>"
                 }
               }
@@ -791,7 +813,8 @@ function docready(merge) {
             .then(data => {
               if (data === "Complete") {
                 $("#loading-bar").fadeOut("slow")
-                setup()
+                lockMe()
+                //setup() is old
               }
             }).catch(error => {
               console.error('Fetch error:', error);
@@ -1583,6 +1606,7 @@ function ext_relogin() {
 
                       $("#gateway").fadeIn("fast", function () {
                         $("#apps").fadeIn("slow")
+
                       })
 
 
@@ -1643,4 +1667,173 @@ function deleteLocal() {
   setTimeout(function () {
     window.location.reload()
   }, 1500)
+}
+
+function lockMe() {
+  try {
+    custombg()
+  } catch {
+    let inter = setInterval(function () {
+      try {
+        custombg()
+        clearInterval(inter)
+      } catch (error) {
+        console.log("CustomBG Failed. Retrying", error)
+      }
+    }, 100)
+  }
+  const url = 'https://data.evoxs.xyz'; // Replace with your API URL
+
+  const startTime = performance.now();
+
+  fetch(url)
+    .then(response => {
+      const endTime = performance.now();
+      const elapsedTime = endTime - startTime;
+      
+      var integer = parseInt(elapsedTime);
+      console.log('Time taken to fetch ~', integer, 'milliseconds');
+      if(integer < 500) {
+        document.getElementById("signalInd").src = "./internal/perfect.svg"
+      } else if(integer < 900) {
+        document.getElementById("signalInd").src = "./internal/strong.svg"
+      } else {
+        document.getElementById("signalInd").src = "./internal/fair.svg"
+      }
+      return response.text();
+    })
+    .then(data => {
+      
+      // Handle the fetched data
+      console.log(data);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+    tips()
+  loadPFPget(localStorage.getItem("t50-username")).then((exist) => {
+    document.getElementById("userPfpLock").src = exist
+  })
+  $("#stuck").fadeOut("fast")
+  $("#gateway").fadeOut("fast", function () {
+    $("#lockscreen").fadeIn("fast")
+    $("#dots").fadeOut()
+    $("#profile").fadeOut()
+    //document.getElementById("profile").style.opacity = '0'
+    $("#vox").fadeOut()
+    $("#navigator").fadeOut()
+  })
+
+  fetch(`https://data.evoxs.xyz/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log("Fetching Notifications")
+      if (data === `{"notifications":[]}` || data === "No notifications!") {
+        console.log("No Notifications")
+        //Do nothing
+      } else {
+        const notifications = JSON.parse(data)
+
+        const preLatest = notifications.notifications;
+
+        // Initialize variables to hold the maximum and second maximum id and corresponding notifications
+        let maxId = -Infinity;
+        let secondMaxId = -Infinity;
+        let maxNotification = null;
+        let secondMaxNotification = null;
+
+        // Iterate over notifications array
+        preLatest.forEach(notification => {
+          // Parse id to integer
+          const id = parseInt(notification.id);
+          // Check if current id is greater than current maximum id
+          if (id > maxId) {
+            // Update second maximum id and corresponding notification
+            secondMaxId = maxId;
+            secondMaxNotification = maxNotification;
+            // Update maximum id and corresponding notification
+            maxId = id;
+            maxNotification = notification;
+          } else if (id > secondMaxId) {
+            // Update second maximum id and corresponding notification
+            secondMaxId = id;
+            secondMaxNotification = notification;
+          }
+        });
+        //const numNotifications = notifications.notifications.length;
+        console.log(notifications)
+        console.log("Notification with the previous largest id:");
+        console.log(secondMaxNotification);
+
+
+        let maxId2 = -Infinity;
+        let maxNotification2 = null;
+
+        // Iterate over notifications array
+        preLatest.forEach(notification => {
+          // Parse id to integer
+          const id = parseInt(notification.id);
+          // Check if current id is greater than current maximum id
+          if (id > maxId2) {
+            // Update maximum id and corresponding notification
+            maxId2 = id;
+            maxNotification2 = notification;
+          }
+        });
+
+        console.log("Notification with the highest id:");
+        console.log(maxNotification2);
+
+        let n1Icon = document.getElementById("notif1Icon")
+        let n1Title = document.getElementById("n1Title")
+        let n1Desc = document.getElementById("n1Desc")
+
+        if (maxNotification2.image.includes("http")) {
+          n1Icon.src = maxNotification2.image
+        } else {
+          loadPFPget(maxNotification2.image).then((exist) => {
+            n1Icon.src = exist
+          })
+        }
+
+        n1Title.innerHTML = maxNotification2.app
+        n1Desc.innerHTML = maxNotification2.content
+
+
+        let n2Icon = document.getElementById("notif2Icon")
+        let n2Title = document.getElementById("n2Title")
+        let n2Desc = document.getElementById("n2Desc")
+
+        if (secondMaxNotification.image.includes("http")) {
+          n2Icon.src = secondMaxNotification.image
+        } else {
+          loadPFPget(secondMaxNotification.image).then((exist) => {
+            n2Icon.src = exist
+          })
+
+        }
+
+        n2Title.innerHTML = secondMaxNotification.app
+        n2Desc.innerHTML = secondMaxNotification.content
+
+
+
+        document.getElementById('foryou').classList.remove('hidden')
+
+
+      }
+
+
+
+    })
+    .catch(error => {
+      console.error('Fetch error:', error);
+    });
+
+
 }

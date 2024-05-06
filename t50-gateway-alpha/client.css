@@ -1,6 +1,11 @@
+
 @font-face {
   font-family: "SF";
   src: url('SFUIText-Medium.ttf');
+}
+@font-face {
+  font-family: 'SFLight';
+  src: url('./internal/SFProDisplay-Light.ttf') format('truetype'); /* Adjust path and format */
 }
 
 
@@ -665,8 +670,113 @@ a {
   transition: filter 0.5s ease-in-out;
 }
 
+#lockscreen {
+  display: none;
+  overflow: hidden;
+  touch-action: none;
+  transition: filter 0.5s ease-in-out;
+}
+
+.foryou {
+  height: 260px;
+  width:461px;
+  bottom:0;
+  background-color: #00000060;
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  transition: transform 0.4s ease, opacity 0.4s ease, visibility 0.4s;
+  
+}
+
+.foryou.hidden {
+  transform: translateY(100%);
+}
+
+.foryou he {
+  color: white;
+  margin: 15px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: larger;
+}
+
+.foryou p.titleit {
+  margin-left: 15px;
+  margin: 0; /* Remove default margins */
+  padding: 0; /* Remove default padding */
+  font-size: large;
+  
+}
+
+.foryou p.detail {
+  margin: 0; /* Remove default margins */
+  padding: 0; /* Remove default padding */
+  font-family: "SFLight";
+  font-stretch:wider;
+  font-size: large;
+}
 
 
+.foryou .notification {
+  position: relative;
+  /* Add relative positioning */
+  align-items: center;
+  background-color: #393939;
+  border: none;
+  color: #fff;
+  padding: 15px 30px;
+  font-size: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  margin: 6px;
+  height: auto;
+  width: 88%;
+  text-wrap: wrap;
+  padding-left: 13px;
+
+  display: flex;
+    align-items: center; /* Center vertically */
+    margin-bottom: 10px; /* Adjust spacing between notifications */
+}
+
+.notification-content {
+  margin-left: 10px; /* Adjust this value as needed */
+}
+
+@media only screen and (min-width: 768px) {
+  .foryou {
+    border-radius: 15px;
+  }
+}
+
+.lock-circle {
+  height: 50px;
+  border-radius: 50%;
+  /* Use 50% for a perfect circle */
+  overflow: hidden;
+  margin-left: 5px;
+  flex-shrink: 0;
+  /* Prevent shrinking */
+}
+
+.lock-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#unlDots {
+  margin-top: 20px;
+  display: none;
+}
+#zoomImage {
+  transition: top 0.5s ease, left 0.5s ease;
+  transition: width 0.5s ease, height 0.5s ease; /* Add smooth transition for width and height */
+}
 .rad-label {
   display: flex;
   align-items: center;
@@ -1812,6 +1922,8 @@ a {
   /* Adjust height as needed */
   /* You can add additional styles such as margin, padding, etc. */
 }
+
+
 
 .user-circle-rem {
   margin-right: 5px;

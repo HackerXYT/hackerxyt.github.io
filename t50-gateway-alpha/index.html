@@ -306,6 +306,86 @@
         <p id="info_text2" style="color: white;display: none"></p>
         <button id="submit2" onclick="verifycode()" class="transparent-button">Continue</button><br>
     </div>
+    <div id="lockscreen">
+        <div id="lockScreen-signal" style="position: fixed;
+    top: 55px;
+    right: 105px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;">
+            <img id="signalInd" src="./internal/cloud.svg" alt="Signal Indicator">
+        </div>
+        <div id="lockScreen-pfp" style="position: fixed;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;">
+            <div class="user-circle">
+                <img id="userPfpLock" src="reloading-pfp.gif" alt="User Image">
+            </div>
+        </div>
+        <div style="display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <p id="tips" style="margin-bottom: 50px;color:white;display: none;">Welcome back</p>
+                <img id="zoomImage" onclick="startUnlock()" src="lockScreenMiddle.png"
+                    style="max-width: 100%; max-height: 100%; width: 210px;">
+                <div id="unlDots">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+                        <path d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M12 16.5a4.5 4.5 0 100-9 4.5 4.5 0 000 9zm0 1.5a6 6 0 100-12 6 6 0 000 12z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M12 16.5a4.5 4.5 0 100-9 4.5 4.5 0 000 9zm0 1.5a6 6 0 100-12 6 6 0 000 12z" />
+                    </svg>
+                </div>
+                <div style="display: none;" id="loadNex"><p style="color: white;">Loading Nexus..</p><div style="width: 30px;height: 30px;margin-top: 10px;" class="loading loading--circle" title="Loading">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                        y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                        <path fill="#fff"
+                            d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                            <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                                to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                        </path>
+                    </svg>
+                </div></div>
+            </div>
+            <div id="foryou" class="foryou hidden">
+                <he>For you</he>
+
+                <div onclick="startUnlock()" id="notification1" class="notification">
+                    <div class="lock-circle">
+                        <img id="notif1Icon" src="datacenter_icon.gif" alt="User Image">
+                    </div>
+                    <div class="notification-content">
+                        <p id="n1Title" class="titleit">First Notif</p>
+                        <p id="n1Desc" class="detail">Details of the notification go here...</p>
+                    </div>
+                </div>
+
+                <div onclick="startUnlock()" class="notification">
+                    <div class="lock-circle">
+                        <img id="notif2Icon" src="datacenter_icon.gif" alt="User Image">
+                    </div>
+                    <div class="notification-content">
+                        <p id="n2Title" class="titleit">First Notif</p>
+                        <p id="n2Desc" class="detail">Details of the notification go here...</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
     <div class="gateway" style="display: none;" id="gateway">
         <div class="centered-text">
 
@@ -391,7 +471,7 @@
         <a href="#" onclick="mergenow()" class="apple-button">Merge Now</a>
 
         <a href="#" onclick="deleteLocal()" class="apple-button">Delete all local data (evoxs.xyz)</a>
-        
+
         <div onclick="return_login()"
             style="position: fixed; bottom: 40px; transform: translate(-50%, -50%); left: 50%; align-items: center; justify-content: center; cursor: pointer; text-shadow: rgb(0, 0, 0) -1px -1px 0px, rgb(0, 0, 0) 1px -1px 0px, rgb(0, 0, 0) -1px 1px 0px, rgb(0, 0, 0) 1px 1px 0px;">
             <div
@@ -1994,18 +2074,16 @@
                         fill="#666"></path>
                 </svg></a>
             <a id="evox_store" onclick="store()" href="#" class="apple-button-withicon"><img
-                    style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;"
-                    src="./icons/apps.svg">App Store<svg xmlns="http://www.w3.org/2000/svg" width="20px"
-                    height="20px" viewBox="0 0 24 24" fill="none">
+                    style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;" src="./icons/apps.svg">App
+                Store<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                     <path
                         d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                         fill="#666"></path>
                 </svg></a>
             <a id="coming_soon" onclick="coming()" href="#" class="apple-button-withicon"
                 style="background-color: #1c4437;"><img
-                    style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;"
-                    src="EvoxEPSILON.png">Evox Plans<svg xmlns="http://www.w3.org/2000/svg" width="20px"
-                    height="20px" viewBox="0 0 24 24" fill="none">
+                    style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;" src="EvoxEPSILON.png">Evox
+                Plans<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                     <path
                         d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                         fill="#666"></path>
@@ -2638,7 +2716,7 @@
     </div>
 
     <style>
-         #iframeContainer {
+        #iframeContainer {
             position: fixed;
             top: 0;
             left: 0;
@@ -2647,8 +2725,10 @@
             overflow: hidden;
             z-index: 999999;
             display: none;
-            -webkit-overflow-scrolling: touch; /* For iOS Safari */
+            -webkit-overflow-scrolling: touch;
+            /* For iOS Safari */
         }
+
         #launchApp {
             width: 100%;
             height: 100%;

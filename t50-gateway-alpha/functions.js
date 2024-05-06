@@ -523,7 +523,8 @@ function uielements() {
 	$("#vox").fadeIn("slow")
 	var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 	if (width > 768) {
-		$("#pc").fadeIn("slow")
+		//$("#pc").fadeIn("slow")
+		console.log("This is PC")
 	}
 
 	//getFriends("pre")
@@ -659,6 +660,7 @@ function settings() {
 			}
 			$("#dots").fadeIn("slow")
 			$("#profile").fadeIn("slow")
+
 			if (sessionStorage.getItem("more_options") === "active") {
 				console.log("Showing more options")
 				var animatedButton = document.getElementById("animatedButton_notif");
@@ -745,7 +747,7 @@ function pfp(give) {
 					}
 					document.getElementById("usr-img").src = `${data}`;
 					document.getElementById("profile-pfp").src = `${data}`
-					if (sessionStorage.getItem("show_profile") === "waiting") {
+					if (sessionStorage.getItem("show_profile") === "waiting") {//pfp shit
 						$("#profile").fadeIn("slow")
 					}
 					if (give === "giveback") {
@@ -3436,10 +3438,10 @@ function show_sline() {
 
 
 function confirmLogout(re) {
-	if(!re) {//see Unknown Error IPAUTH messed up local Values
+	if (!re) {//see Unknown Error IPAUTH messed up local Values
 		settings()
 	}
-	
+
 	sessionStorage.setItem("blockBottomLogout", "true")
 	document.getElementById("gateway").style.filter = "blur(10px)"
 	document.getElementById("logout_confirm").classList.add("active")
@@ -5350,6 +5352,8 @@ function loadPFP(username, idsuffix) {
 	});
 }
 
+
+
 function loadPFPget(username) {
 	return new Promise((resolve, reject) => {
 		checkUsernameAndGetData(username, function (error, data) {
@@ -5390,6 +5394,8 @@ function loadPFPget(username) {
 		});
 	});
 }
+
+
 
 function clearflrd() {
 	$("#flrdclear_svg").fadeIn("fast")
@@ -5699,5 +5705,125 @@ function registerFlorida() {
 	} catch (error) {
 		console.error("Florida Error:", error)
 	}
+
+}
+let unlTime;
+function startUnlock() {
+	
+	$("#tips").fadeOut("fast")
+	if (sessionStorage.getItem("unl") === "1") {
+		pressUnl.play()
+		clearTimeout(unlTime)
+		document.getElementById("unlDots").innerHTML = `
+		<svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+                        <path d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
+                    </svg>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+					<path d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
+				</svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M12 16.5a4.5 4.5 0 100-9 4.5 4.5 0 000 9zm0 1.5a6 6 0 100-12 6 6 0 000 12z" />
+                    </svg>`
+		sessionStorage.setItem("unl", "2")
+		var image = document.getElementById("zoomImage");
+		var currentWidth = image.width;
+		var currentHeight = image.height;
+		image.style.width = currentWidth * 1.1 + "px";
+		image.style.height = currentHeight * 1.1 + "px";
+		unlTime = setTimeout(function () {
+			backUnl.play()
+			tips()
+			document.getElementById('foryou').classList.remove('hidden')
+			$("#unlDots").fadeOut("fast")
+			document.getElementById("unlDots").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+                        <path d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M12 16.5a4.5 4.5 0 100-9 4.5 4.5 0 000 9zm0 1.5a6 6 0 100-12 6 6 0 000 12z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M12 16.5a4.5 4.5 0 100-9 4.5 4.5 0 000 9zm0 1.5a6 6 0 100-12 6 6 0 000 12z" />
+                    </svg>`
+			var image = document.getElementById("zoomImage");
+			var currentWidth = image.width;
+			var currentHeight = image.height;
+			image.style.width = currentWidth / 1.1 + "px";
+			image.style.height = currentHeight / 1.1 + "px";
+			sessionStorage.removeItem("unl")
+		}, 2000)
+	} else if (sessionStorage.getItem("unl") === "2") {
+		clearTimeout(unlTime)
+		document.getElementById("unlDots").innerHTML = `
+		<svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+                        <path d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
+                    </svg>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+					<path d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
+				</svg>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+				<path d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
+			</svg>`
+		sessionStorage.setItem("unl", "3")
+		var image = document.getElementById("zoomImage");
+		var currentWidth = image.width;
+		var currentHeight = image.height;
+		image.style.width = currentWidth / 2 + "px";
+		image.style.height = currentHeight / 2 + "px";
+		$("#loadNex").fadeIn("fast")
+		successUnl.play()
+		
+		$("#lockScreen-pfp").fadeOut("slow", function () {
+			$("#lockScreen-signal").fadeOut("slow")
+		})
+		setTimeout(function () {
+			$("#lockscreen").fadeOut("fast")
+			setup()
+			login_ok.play()
+		}, 1500)
+	} else if (sessionStorage.getItem("unl") === "3") {
+		console.log("Unlock Now!")
+	} else {
+		focusUnl.play()
+		clearTimeout(unlTime)
+		document.getElementById('foryou').classList.add('hidden')
+		$("#unlDots").fadeIn("fast")
+		sessionStorage.setItem("unl", "1")
+		unlTime = setTimeout(function () {
+			backUnl.play()
+			tips()
+			document.getElementById('foryou').classList.remove('hidden')
+			$("#unlDots").fadeOut("fast")
+			document.getElementById("unlDots").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+                        <path d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M12 16.5a4.5 4.5 0 100-9 4.5 4.5 0 000 9zm0 1.5a6 6 0 100-12 6 6 0 000 12z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M12 16.5a4.5 4.5 0 100-9 4.5 4.5 0 000 9zm0 1.5a6 6 0 100-12 6 6 0 000 12z" />
+                    </svg>`
+			sessionStorage.removeItem("unl")
+		}, 2000)
+	}
+
+}
+
+function tips() {
+	return;
+	document.getElementById("tips").innerHTML = `Welcome back`
+	$("#tips").fadeIn("slow", function() {
+		unlTime = setTimeout(function() {
+			$("#tips").fadeOut("slow", function() {
+				document.getElementById("tips").innerHTML = `Tap the Evox logo three times to unlock.`
+				$("#tips").fadeIn("slow")
+			})
+		}, 900)
+		
+	})
 
 }
