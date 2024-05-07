@@ -7,7 +7,7 @@ sessionStorage.setItem("loaded", true)
 sessionStorage.removeItem("autolg_off")
 sessionStorage.removeItem("blockBottomLogout")
 sessionStorage.removeItem("unl")
-
+sessionStorage.removeItem("lockNotif")
 function fadeElement(elementId, speed) {
   var element = document.getElementById(elementId);
   var opacity = 1;
@@ -1721,7 +1721,7 @@ function lockMe() {
     .catch(error => {
       console.error('Error fetching data:', error);
     });
-    tips()
+    //tips()
   loadPFPget(localStorage.getItem("t50-username")).then((exist) => {
     document.getElementById("userPfpLock").src = exist
   })
@@ -1746,8 +1746,11 @@ function lockMe() {
       console.log("Fetching Notifications")
       if (data === `{"notifications":[]}` || data === "No notifications!") {
         console.log("No Notifications")
+        tips()
+        sessionStorage.setItem("lockNotif", "stop")
         //Do nothing
       } else {
+        
         const notifications = JSON.parse(data)
 
         const preLatest = notifications.notifications;

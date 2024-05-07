@@ -557,6 +557,14 @@ function uielements() {
 	$("#dots").fadeIn("slow")
 
 	pfp()
+	loadPFPget(localStorage.getItem("t50-username"))
+		.then(image => {
+			document.getElementById("usr-img").src = image
+			document.getElementById("profile-pfp").src = image
+		})
+		.catch(error => {
+			console.error("No local self image found:", error);
+		});
 	document.getElementById("usr-name").innerHTML = localStorage.getItem("t50-username")
 	document.getElementById("usr-email").innerHTML = localStorage.getItem("t50-email")
 	if (notes == "true") {
@@ -3219,7 +3227,11 @@ function show_notif(nosound) {
 			notifications.forEach(function (notification) {
 				var image;
 				const sentimage = notification.image;
-				if (!sentimage.includes("http")) {
+				if(!sentimage) {
+					createNotificationElement('https://evoxs.xyz/notifications_assets/Gateway.png', notification);
+					return;
+				}
+				if (sentimage && !sentimage.includes("http")) {
 					//indexdb
 					const image = loadPFPget()
 					// Usage
@@ -5709,7 +5721,7 @@ function registerFlorida() {
 }
 let unlTime;
 function startUnlock() {
-	
+
 	$("#tips").fadeOut("fast")
 	if (sessionStorage.getItem("unl") === "1") {
 		pressUnl.play()
@@ -5733,8 +5745,13 @@ function startUnlock() {
 		image.style.height = currentHeight * 1.1 + "px";
 		unlTime = setTimeout(function () {
 			backUnl.play()
-			tips()
-			document.getElementById('foryou').classList.remove('hidden')
+			if(!sessionStorage.getItem("lockNotif")) {
+				
+				document.getElementById('foryou').classList.remove('hidden')
+			} else {
+				tips()
+			}
+			
 			$("#unlDots").fadeOut("fast")
 			document.getElementById("unlDots").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
                         <path d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
@@ -5774,7 +5791,7 @@ function startUnlock() {
 		image.style.height = currentHeight / 2 + "px";
 		$("#loadNex").fadeIn("fast")
 		successUnl.play()
-		
+
 		$("#lockScreen-pfp").fadeOut("slow", function () {
 			$("#lockScreen-signal").fadeOut("slow")
 		})
@@ -5793,8 +5810,13 @@ function startUnlock() {
 		sessionStorage.setItem("unl", "1")
 		unlTime = setTimeout(function () {
 			backUnl.play()
-			tips()
-			document.getElementById('foryou').classList.remove('hidden')
+			
+			if(!sessionStorage.getItem("lockNotif")) {
+				document.getElementById('foryou').classList.remove('hidden')
+				
+			} else {
+				tips()
+			}
 			$("#unlDots").fadeOut("fast")
 			document.getElementById("unlDots").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
                         <path d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
@@ -5814,16 +5836,15 @@ function startUnlock() {
 }
 
 function tips() {
-	return;
 	document.getElementById("tips").innerHTML = `Welcome back`
-	$("#tips").fadeIn("slow", function() {
-		unlTime = setTimeout(function() {
-			$("#tips").fadeOut("slow", function() {
+	$("#tips").fadeIn("slow", function () {
+		unlTime = setTimeout(function () {
+			$("#tips").fadeOut("slow", function () {
 				document.getElementById("tips").innerHTML = `Tap the Evox logo three times to unlock.`
 				$("#tips").fadeIn("slow")
 			})
 		}, 900)
-		
+
 	})
 
 }
