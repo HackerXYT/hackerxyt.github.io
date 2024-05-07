@@ -758,7 +758,13 @@ function docready(merge) {
               }
               if (data === "IP is Mapped") {
                 console.log("IP Mapped")
-                lockMe()
+                if(sessionStorage.getItem("unlocked") === "true") {
+                  setup()
+                } else {
+                  lockMe()
+                  sessionStorage.setItem("unlocked", "true")
+                }
+                
                 //setup() is old
               } else if (data === "Unknown IP") {
                 fetch(`https://data.evoxs.xyz/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)

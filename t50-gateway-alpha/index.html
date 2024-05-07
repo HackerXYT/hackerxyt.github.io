@@ -838,13 +838,14 @@
                     <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#fff" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
                 </svg></a>
+            
             <div id="sline_prive" class="user-circle-sl">
                 <img id="secureline-img-chat" src="./t50-img.png" alt="User Image">
                 <p id="chat-username">SecureLine</p>
             </div>
         </div>
         <div onclick="options()" id="info" style="position: fixed;
-        top: 30px;
+        top: 47px;
         right: 20px;
         width: 30px;
         height: 30px;
@@ -870,7 +871,7 @@
             </svg>
         </div>
         <div id="info" style="position: fixed;
-        top: 30px;
+        top: 47px;
         right: 50px;
         width: 30px;
         height: 30px;
@@ -1010,7 +1011,7 @@
                 <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Account Options</h3>
                 <div style="margin: 0 auto;
             position: relative;width: 90px;height:90px" class="user-circle">
-                    <img onclick="showUploadBox()" id="usr-img-opt" src="t50-img.png" alt="User Image">
+                    <img onclick="pfpOptions()" id="usr-img-opt" src="t50-img.png" alt="User Image">
                 </div>
                 <div style="height: auto;
             margin: 0 auto;
@@ -1084,6 +1085,7 @@
                     </div>
                 </div> -->
             </div>
+            
             <div id="authips" style="display:none;overflow:auto;">
 
                 <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Logged In & IP Addresses</h3>
@@ -1638,6 +1640,13 @@
                         <div class="event-description">Migration to New Datacenter: Enhanced Speed and Security.</div>
                     </div>
                 </div>
+                <div class="event complete">
+                    <div class="event-content">
+                        <div class="event-date">May 2024</div>
+                        <div class="event-description">Introduction of Profile Picture Rollback Option
+                            Post-Change.</div>
+                    </div>
+                </div>
                 <div class="event">
                     <div class="event-content fadeInOut-timeline">
                         <div class="event-date">ETA: Mid 2024</div>
@@ -1666,13 +1675,7 @@
                     </div>
                 </div>
 
-                <div class="event">
-                    <div class="event-content fadeInOut-timeline">
-                        <div class="event-date">ETA: Mid 2024</div>
-                        <div class="event-description">Introduction of Profile Picture Rollback Option for 7 Days
-                            Post-Change.</div>
-                    </div>
-                </div>
+                
                 <div class="event">
                     <div class="event-content fadeInOut-timeline">
                         <div class="event-date">ETA: Unknown</div>
@@ -1991,7 +1994,7 @@
 
 
             <!-- Content of the popup -->
-            <h2 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Evox Gateway</h2>
+            <h2 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Settings</h2>
             <div id="user-info" class="user-info">
                 <div class="user-circle">
                     <img id="usr-img" src="t50-img.png" alt="User Image">
@@ -2056,7 +2059,7 @@
 
 
 
-            <h3 style="margin-bottom: 4px;">Evox Nexus</h3>
+            <h3 style="margin-bottom: 4px;">Nexus</h3>
             <a onclick="show_account()" href="#" class="apple-button-withicon"><img
                     style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;"
                     src="./icons/account-svgrepo-com.svg">Account Options<svg xmlns="http://www.w3.org/2000/svg"
@@ -2245,7 +2248,7 @@
                 style="display: block; margin: 20px auto; max-width: 500px; border-radius: 20px;width:100%">
             <div href="#" class="apple-button">
                 Current Version
-                <span>1.0.0</span>
+                <span>EeV1.0.1</span>
             </div>
             <a href="#" onclick="restart()" class="apple-button">Restart<svg xmlns="http://www.w3.org/2000/svg"
                     width="20px" height="20px" viewBox="0 0 24 24" fill="none">
@@ -2543,6 +2546,15 @@
 
     </button>
 
+
+    </div>
+    <div id="profileOptions_box" class="confirm">
+        <h3 style="color: rgb(59, 113, 221)">Profile Picture</h3>
+        <p>What would you like to do?</p>
+        <a onclick="showUploadBox()" class="apple-button" style="margin-top: 10px">Upload New Profile Picture</a>
+        <a onclick="revertPfp()" id="revertpfp" class="apple-button" style="display: none;">Revert To Old Profile Picture</a>
+        <a onclick="downloadPFP()" class="apple-button">Download Current Profile Picture</a>
+        <a id="pfpcancelbtn" onclick="cancelPFPOpt()" class="apple-button">Cancel</a>
 
     </div>
     <div id="removeIP_box" class="confirm">

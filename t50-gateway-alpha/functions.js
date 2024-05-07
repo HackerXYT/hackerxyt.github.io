@@ -559,8 +559,44 @@ function uielements() {
 	pfp()
 	loadPFPget(localStorage.getItem("t50-username"))
 		.then(image => {
-			document.getElementById("usr-img").src = image
-			document.getElementById("profile-pfp").src = image
+			if (document.getElementById("profile-pfp").src != "reloading-pfp.gif" && image != document.getElementById("usr-img").src) {
+				// Open a connection to the IndexedDB database
+				const request = indexedDB.open('EvoxSocial');
+
+				request.onerror = function (event) {
+					console.log("Error opening database");
+				};
+
+				request.onsuccess = function (event) {
+					const db = event.target.result;
+
+					// Access the "Profiles" object store
+					const transaction = db.transaction(['Profiles'], 'readwrite');
+					const objectStore = transaction.objectStore('Profiles');
+
+					// Use the delete() method to remove the value with the specified key
+					const deleteRequest = objectStore.delete(localStorage.getItem("t50-username"));
+
+					deleteRequest.onsuccess = function (event) {
+						console.log("Value selfuser deleted successfully");
+						loadPFPget(localStorage.getItem("t50-username"))
+							.then(image => {
+								document.getElementById("usr-img").src = image
+								document.getElementById("profile-pfp").src = image
+							}).catch(error => {
+								console.error("No local self image found:", error);
+							});
+					};
+
+					deleteRequest.onerror = function (event) {
+						console.log("Error deleting value selfuser");
+					};
+				};
+			} else {
+				document.getElementById("usr-img").src = image
+				document.getElementById("profile-pfp").src = image
+			}
+
 		})
 		.catch(error => {
 			console.error("No local self image found:", error);
@@ -753,6 +789,7 @@ function pfp(give) {
 						// If it doesn't contain "base64", add the prefix
 						data = "data:image/jpeg;base64," + data;
 					}
+					document.getElementById("usr-img-opt").src = `${data}`
 					document.getElementById("usr-img").src = `${data}`;
 					document.getElementById("profile-pfp").src = `${data}`
 					if (sessionStorage.getItem("show_profile") === "waiting") {//pfp shit
@@ -2657,6 +2694,7 @@ function handleFileSelect() {
 			//console.log(base64String);
 			document.getElementById("upload-box").disabled = true
 			document.getElementById("usr-img-opt").src = "./reloading.gif"
+			cancelPFPOpt()
 			fetch('https://data.evoxs.xyz/profiles', {
 				method: 'POST',
 				headers: {
@@ -3227,7 +3265,7 @@ function show_notif(nosound) {
 			notifications.forEach(function (notification) {
 				var image;
 				const sentimage = notification.image;
-				if(!sentimage) {
+				if (!sentimage) {
 					createNotificationElement('https://evoxs.xyz/notifications_assets/Gateway.png', notification);
 					return;
 				}
@@ -5745,13 +5783,13 @@ function startUnlock() {
 		image.style.height = currentHeight * 1.1 + "px";
 		unlTime = setTimeout(function () {
 			backUnl.play()
-			if(!sessionStorage.getItem("lockNotif")) {
-				
+			if (!sessionStorage.getItem("lockNotif")) {
+
 				document.getElementById('foryou').classList.remove('hidden')
 			} else {
 				tips()
 			}
-			
+
 			$("#unlDots").fadeOut("fast")
 			document.getElementById("unlDots").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px" height="20px" viewBox="0 0 24 24">
                         <path d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
@@ -5810,10 +5848,10 @@ function startUnlock() {
 		sessionStorage.setItem("unl", "1")
 		unlTime = setTimeout(function () {
 			backUnl.play()
-			
-			if(!sessionStorage.getItem("lockNotif")) {
+
+			if (!sessionStorage.getItem("lockNotif")) {
 				document.getElementById('foryou').classList.remove('hidden')
-				
+
 			} else {
 				tips()
 			}
@@ -5847,4 +5885,128 @@ function tips() {
 
 	})
 
+}
+
+function pfpOptions() {
+	fetch(`https://data.evoxs.xyz/profiles?authorize=hasOld&name=${localStorage.getItem("t50-username")}`)
+		.then(response => response.text())
+		.then(data => {
+			if (data === "true") {
+				console.log("Old pfp Exists")
+				$("#revertpfp").fadeIn("fast")
+			} else if (data === "false") {
+				console.log("Old pfp doesnt exist", data)
+			} else {
+				console.log("I dont know if oldPFP exists:", data)
+			}
+		})
+		.catch(error => {
+			console.error("Error fetching pfps:", error);
+		});
+	$("#navigator").fadeOut("fast", function () {
+		document.getElementById("main_settings").style.filter = "blur(10px)"
+		document.getElementById("profileOptions_box").classList.add("active")
+	})
+}
+
+function cancelPFPOpt() {
+	document.getElementById("profileOptions_box").classList.remove("active")
+	$("#navigator").fadeIn("fast")
+	document.getElementById("main_settings").style.filter = ""
+
+}
+
+function downloadPFP() {
+	document.getElementById("profileOptions_box").classList.remove("active")
+	$("#navigator").fadeIn("fast")
+	document.getElementById("main_settings").style.filter = ""
+	// Get the base64 data from the image element
+	const base64 = document.getElementById("usr-img-opt").src;
+
+	// Create an anchor element
+	const link = document.createElement("a");
+
+	// Set the href attribute to the base64 data
+	link.href = base64;
+	link.style.display = "none"
+
+	// Set the download attribute to specify the file name
+	link.download = `Evox-${localStorage.getItem("t50-username")}-pfp.png`;
+
+	// Append the anchor element to the document body
+	document.body.appendChild(link);
+
+	// Simulate a click on the anchor element to trigger the download
+	link.click();
+
+	// Remove the anchor element from the document body
+	document.body.removeChild(link);
+
+}
+
+function revertPfp() {
+	cancelPFPOpt()
+	fetch(`https://data.evoxs.xyz/profiles?authorize=setOld&name=${localStorage.getItem("t50-username")}`)
+		.then(response => response.text())
+		.then(data => {
+			if (data === "Success") {
+				try {
+					pfp()
+				} catch(error) {
+					console.log("Error settings pfp", error)
+				}
+				
+				
+				
+				loadPFPget(localStorage.getItem("t50-username"))
+					.then(image => {
+						if (document.getElementById("profile-pfp").src != "reloading-pfp.gif" && image != document.getElementById("usr-img").src) {
+							// Open a connection to the IndexedDB database
+							const request = indexedDB.open('EvoxSocial');
+
+							request.onerror = function (event) {
+								console.log("Error opening database");
+							};
+
+							request.onsuccess = function (event) {
+								const db = event.target.result;
+
+								// Access the "Profiles" object store
+								const transaction = db.transaction(['Profiles'], 'readwrite');
+								const objectStore = transaction.objectStore('Profiles');
+
+								// Use the delete() method to remove the value with the specified key
+								const deleteRequest = objectStore.delete(localStorage.getItem("t50-username"));
+
+								deleteRequest.onsuccess = function (event) {
+									console.log("Value selfuser deleted successfully");
+									loadPFPget(localStorage.getItem("t50-username"))
+										.then(image => {
+											document.getElementById("usr-img").src = image
+											document.getElementById("profile-pfp").src = image
+										}).catch(error => {
+											console.error("No local self image found:", error);
+										});
+								};
+
+								deleteRequest.onerror = function (event) {
+									console.log("Error deleting value selfuser");
+								};
+							};
+						} else {
+							document.getElementById("usr-img").src = image
+							document.getElementById("profile-pfp").src = image
+						}
+
+					})
+					.catch(error => {
+						console.error("No local self image found:", error);
+					});
+			} else {
+				console.log("I dont know what happened:", data)
+			}
+		})
+		.catch(error => {
+			console.error("Error fetching pfps:", error);
+		});
 }

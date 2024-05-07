@@ -254,6 +254,19 @@ img {
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
+@media only screen and (min-width: 768px) {
+  .popup {
+    justify-content: center;
+    text-align: center;
+  }
+  .apple-button-withicon {
+    justify-content: center;
+    text-align: center;
+    width: 90%;
+    max-width: 100%;
+  }
+}
+
 .popup {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -1436,7 +1449,7 @@ a {
   scroll-behavior: smooth;
   touch-action: auto;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(33,34,41,255);
   /* Semi-transparent black overlay */
   z-index: 999;
   box-sizing: border-box;
@@ -2090,4 +2103,11 @@ a {
 .mergingInfo li {
   display: none;
   margin:10px
+}
+
+.horizontal-line {
+  margin-left: 0;
+  justify-content: left;
+  border-bottom: 1px solid black; /* Adjust thickness and color as needed */
+  width: 200%; /* Adjust width as needed */
 }
