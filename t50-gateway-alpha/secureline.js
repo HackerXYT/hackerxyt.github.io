@@ -96,6 +96,12 @@ function reload_chat(whoto) {
         return response.text();
       })
       .then(messages => {
+        
+        if(sessionStorage.getItem("lastChatInter") === messages) {
+          console.log("No new messages")
+          return;
+        }
+        sessionStorage.setItem("lastChatInter", messages)
         if (messages === "No Chats Found") {
           document.getElementById("messages-container").innerHTML = `<p class='centered-text'>Chat Hasn't Been Created.<button style="margin-top: 20px" id="submit" onclick="create_chat()" class="transparent-button">Create Chat</button></p>`
           console.log("Chat Doesn't Exist")
@@ -149,6 +155,7 @@ function reload_chat(whoto) {
 function return_main_chats() {
   $("#navigator").fadeIn("fast")
   sessionStorage.removeItem("current_sline")
+  sessionStorage.removeItem("lastChatInter")
   try {
     clearInterval(reloading)
     log("Interval Cleared!", "green")

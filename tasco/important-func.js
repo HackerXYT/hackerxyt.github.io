@@ -65,11 +65,39 @@ function getdebtsnum() {
 }
 getdebtsnum()
 
+sessionStorage.removeItem("offlinebypass")
+sessionStorage.removeItem("bypassed")
+function continueAnyway() {
+  
+  if(sessionStorage.getItem("offlinebypass") === "true" && !sessionStorage.getItem("bypassed")) {
+    console.log("Continue Anyway")
+    $("#loading-screen").fadeOut("slow" ,function() {
+      $("#main").fadeIn("slow")
+    })
+    sessionStorage.setItem("bypassed", true)
+  }
+  
+  
+}
 window.addEventListener('load', function () {
   document.body.style.overflow = 'auto';
-  $("#loading-screen").fadeOut("slow")
+  fetch(`https://data.evoxs.xyz/tasco`)
+    .then(response => response.text())
+    .then(data => {
+      console.log("Tasco Server Online")
+      $("#loading-screen").fadeOut("slow" ,function() {
+        $("#main").fadeIn("slow")
+      })
+      
+    })
+    .catch(error => {
+      sessionStorage.setItem("offlinebypass", true)
+      $("#loading-text").html("Tasco server is offline.<br>Click anywhere to continue.")
+      console.error(error);
+    });
+
   //document.getElementById("loading-screen").style.display = "none"
-  $("#main").fadeIn("slow")
+
   //document.getElementById("main").style.display = "block"
   sort_services()
   updateGreeting()
@@ -100,12 +128,12 @@ function home() {
     document.getElementById("list").style.display = "none"
     document.getElementById("logo").src = "tasco-close.png"
     document.getElementById("logo-icon").onclick = "";
-    $("#schedule-content").fadeOut("fast", function() {
+    $("#schedule-content").fadeOut("fast", function () {
       $("#main-content").fadeIn("slow")
     })
-    
+
     //document.getElementById("main-content").style.display = ""
-    
+
     //document.getElementById("schedule-content").style.display = "none"
   }
   if (document.getElementById("notes-content").style.display != "none") {
@@ -115,18 +143,18 @@ function home() {
     document.getElementById("logo").src = "tasco-close.png"
     document.getElementById("logo-icon").onclick = "";
     //document.getElementById("main-content").style.display = ""
-    $("#notes-content").fadeOut("fast", function() {
+    $("#notes-content").fadeOut("fast", function () {
       $("#main-content").fadeIn("slow")
     })
-    
+
     //document.getElementById("notes-content").style.display = "none"
-    
+
   }
-  if(document.getElementById("debts-content").style.display != "none") {
+  if (document.getElementById("debts-content").style.display != "none") {
     document.getElementById("logo").src = "tasco-close.png"
     document.getElementById("logo-icon").onclick = "";
     //document.getElementById("main-content").style.display = ""
-    $("#debts-content").fadeOut("fast", function() {
+    $("#debts-content").fadeOut("fast", function () {
       $("#main-content").fadeIn("slow")
     })
   }
@@ -197,10 +225,10 @@ function tasco_options(name, id) {
     document.getElementById("schedule-content").style.filter = 'blur(5px)';
     document.getElementById("tasco_options").style.display = "block"
     document.getElementById("name").innerHTML = name
-    document.getElementById('remove_task').onclick = function() {
+    document.getElementById('remove_task').onclick = function () {
       remove_task(name);
     };
-    document.getElementById('edit_task').onclick = function() {
+    document.getElementById('edit_task').onclick = function () {
       console.log("Clicked Edit Task!")
       edit_task(name);
     };
@@ -210,36 +238,36 @@ function tasco_options(name, id) {
 
 function remove_task(name) {
   console.log("Removing task", name)
-  if(!name) {
+  if (!name) {
     console.log("No label defined!")
   }
   fetch(`https://data.evoxs.xyz/tasco?method=delete&username=${global_username}&day=${dayOfWeek}&taskname=${name}`)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.text();
-  })
-  .then(data => {
-    console.log(data)
-    document.getElementById("list").innerHTML = ""
-    document.getElementById("loader-schedule").style.display = ""
-    if(sessionStorage.getItem("custom-day")) {
-      set(dayOfWeek, "true")
-    } else {
-      set()
-    }
-    
-    document.getElementById("schedule-content").style.filter = '';
-    document.getElementById("tasco_options").style.display = "none"
-  }).catch(error => {
-    console.error('Fetch error:', error);
-  });
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log(data)
+      document.getElementById("list").innerHTML = ""
+      document.getElementById("loader-schedule").style.display = ""
+      if (sessionStorage.getItem("custom-day")) {
+        set(dayOfWeek, "true")
+      } else {
+        set()
+      }
+
+      document.getElementById("schedule-content").style.filter = '';
+      document.getElementById("tasco_options").style.display = "none"
+    }).catch(error => {
+      console.error('Fetch error:', error);
+    });
 }
 
 function edit_task(name) {
   console.log("Editing task", name)
-  if(!name) {
+  if (!name) {
     console.log("No task defined!")
     return;
   }
@@ -265,34 +293,34 @@ function finalize_edit() {
   const taskname = document.getElementById("task_edit_input").placeholder
   const newtaskname = document.getElementById("task_edit_input").value
   fetch(`https://data.evoxs.xyz/tasco?method=edit&username=${global_username}&day=${dayOfWeek}&taskname=${taskname}&newtaskname=${newtaskname}`)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.text();
-  })
-  .then(data => {
-    console.log(data)
-    document.getElementById("list").innerHTML = ""
-    document.getElementById("loader-schedule").style.display = ""
-    if(sessionStorage.getItem("custom-day")) {
-      set(dayOfWeek, "true")
-    } else {
-      set()
-    }
-    document.getElementById("schedule-content").style.filter = '';
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log(data)
+      document.getElementById("list").innerHTML = ""
+      document.getElementById("loader-schedule").style.display = ""
+      if (sessionStorage.getItem("custom-day")) {
+        set(dayOfWeek, "true")
+      } else {
+        set()
+      }
+      document.getElementById("schedule-content").style.filter = '';
 
-    document.getElementById("tasco_options").style.display = "none"
-    document.getElementById("schedule-content").style.filter = '';
-    document.getElementById("tasco_options").style.display = "none"
-    document.getElementById("task_edit").style.display = "none"
-    document.getElementById("task_edit_button").style.display = "none"
-    document.getElementById("task_edit_button").innerHTML = `Submit`
-    document.getElementById("task_edit_button").disabled = false
-  }).catch(error => {
-    document.getElementById("task_edit_button").innerHTML = `Submit`
-    console.error('Fetch error:', error);
-  });
+      document.getElementById("tasco_options").style.display = "none"
+      document.getElementById("schedule-content").style.filter = '';
+      document.getElementById("tasco_options").style.display = "none"
+      document.getElementById("task_edit").style.display = "none"
+      document.getElementById("task_edit_button").style.display = "none"
+      document.getElementById("task_edit_button").innerHTML = `Submit`
+      document.getElementById("task_edit_button").disabled = false
+    }).catch(error => {
+      document.getElementById("task_edit_button").innerHTML = `Submit`
+      console.error('Fetch error:', error);
+    });
 }
 function cancel_options() {
   document.getElementById("schedule-content").style.filter = '';
@@ -304,15 +332,15 @@ function cancel_options() {
 function sort_services() {
   let sort_notes = localStorage.getItem("notes-sort")
   let sort_schedule = localStorage.getItem("schedule-sort")
-  if(!sort_schedule || !sort_notes) {
+  if (!sort_schedule || !sort_notes) {
     console.log("Sorting System Doesn't Exist Yet")
     return;
   } else {
     console.log("Sorting System Exists")
-    if(Number(sort_notes) > Number(sort_schedule)) { //Notes are used more than schedule
-      if(sessionStorage.getItem("changed") === "schedule->notes") { //schedule span has been changed to notes (service1 = notes, service2 = schedule)
+    if (Number(sort_notes) > Number(sort_schedule)) { //Notes are used more than schedule
+      if (sessionStorage.getItem("changed") === "schedule->notes") { //schedule span has been changed to notes (service1 = notes, service2 = schedule)
         //correct position
-      } else if(sessionStorage.getItem("changed") === "schedule->schedule") {//schedule span has been changed to schedule (service1 = schedule, service2 = notes)
+      } else if (sessionStorage.getItem("changed") === "schedule->schedule") {//schedule span has been changed to schedule (service1 = schedule, service2 = notes)
         let schedule_default_span = document.getElementById("service1").innerHTML
         let notes_default_span = document.getElementById("service2").innerHTML
         document.getElementById("service1").innerHTML = notes_default_span
@@ -324,20 +352,20 @@ function sort_services() {
       //let notes_default_span = document.getElementById("service2").innerHTML
       //document.getElementById("service1").innerHTML = notes_default_span
       //document.getElementById("service2").innerHTML = schedule_default_span
-    } else if(Number(sort_notes) == Number(sort_schedule)) {
+    } else if (Number(sort_notes) == Number(sort_schedule)) {
       console.log("Services are sorted equally")
     } else {
-      if(sessionStorage.getItem("changed") === "schedule->notes") { //schedule span has been changed to notes (service1 = notes, service2 = schedule)
+      if (sessionStorage.getItem("changed") === "schedule->notes") { //schedule span has been changed to notes (service1 = notes, service2 = schedule)
         let schedule_default_span = document.getElementById("service2").innerHTML
         let notes_default_span = document.getElementById("service1").innerHTML
         document.getElementById("service1").innerHTML = schedule_default_span
         document.getElementById("service2").innerHTML = notes_default_span
-      } else if(sessionStorage.getItem("changed") === "schedule->schedule") {//schedule span has been changed to schedule (service1 = schedule, service2 = notes)
+      } else if (sessionStorage.getItem("changed") === "schedule->schedule") {//schedule span has been changed to schedule (service1 = schedule, service2 = notes)
         //corect position
       }
       sessionStorage.setItem("changed", "schedule->schedule")
       console.log("Schedule is used more than notes")
-      
+
     }
   }
 }
@@ -345,21 +373,21 @@ function sort_services() {
 function shake(elemid) {
   var element = document.getElementById(elemid);
 
-    // Add the shake class to start the animation
-    function startShake() {
-        element.classList.add('shake-element');
-    }
+  // Add the shake class to start the animation
+  function startShake() {
+    element.classList.add('shake-element');
+  }
 
-    // Remove the shake class to stop the animation
-    function stopShake() {
-        element.classList.remove('shake-element');
-    }
+  // Remove the shake class to stop the animation
+  function stopShake() {
+    element.classList.remove('shake-element');
+  }
 
-    // Example: Start shaking after a delay (e.g., 2 seconds)
-    setTimeout(startShake, 100);
-    
-    // Example: Stop shaking after another delay (e.g., 5 seconds)
-    setTimeout(stopShake, 700);
+  // Example: Start shaking after a delay (e.g., 2 seconds)
+  setTimeout(startShake, 100);
+
+  // Example: Stop shaking after another delay (e.g., 5 seconds)
+  setTimeout(stopShake, 700);
 }
 
 function updateGreeting() {
@@ -369,11 +397,11 @@ function updateGreeting() {
   // Determine the appropriate greeting based on the current time
   let greeting;
   if (hours < 12) {
-      greeting = 'Good morning,';
+    greeting = 'Good morning,';
   } else if (hours < 18) {
-      greeting = 'Good afternoon,';
+    greeting = 'Good afternoon,';
   } else {
-      greeting = 'Good evening,';
+    greeting = 'Good evening,';
   }
 
   // Update the inner HTML of the "greeting" element
@@ -381,14 +409,14 @@ function updateGreeting() {
 }
 
 function show_hide_stats(pre) {
-  if(pre) {
-    if(pre === "reload") {
+  if (pre) {
+    if (pre === "reload") {
       document.getElementById("schedule_stats").innerHTML = localStorage.getItem("schedule-sort")
       document.getElementById("notes_stats").innerHTML = localStorage.getItem("notes-sort")
       return;
     }
   }
-  if(document.getElementById("stats").style.display === "none") {
+  if (document.getElementById("stats").style.display === "none") {
     document.getElementById("schedule_stats").innerHTML = localStorage.getItem("schedule-sort")
     document.getElementById("notes_stats").innerHTML = localStorage.getItem("notes-sort")
     $("#stats").fadeIn("slow")

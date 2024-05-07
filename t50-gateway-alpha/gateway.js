@@ -896,7 +896,7 @@ function docready(merge) {
           }
         }
         $("#gateway").fadeIn("fast", function () {
-          document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a id="tasco-a" onclick="shake_me('tasco-a');notice('Tasco is currently not available')" href="#blocked-tasco"><img src="https://evoxs.xyz/tasco/tasco-app.png" class="disabledapp"></img></a>`
+          document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a id="tasco-a" onclick="load('tasco')" href="#blocked-tasco"><img src="https://evoxs.xyz/tasco/tasco-app.png" class="disabledapp"></img></a>`
           document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a id="dc-a" onclick="shake_me('dc-a');notice('Client is trying to connect. Please stand by.')" href="#blocked-dc"><img src="https://evoxs.xyz/t50-gateway-alpha/srv-offline.gif" class="app"></img></a>`
 
           $("#apps").fadeIn("slow")
@@ -904,8 +904,19 @@ function docready(merge) {
           $("#settings").fadeIn("slow")
           document.getElementById("usr-name").innerHTML = localStorage.getItem("t50-username")
           document.getElementById("usr-email").innerHTML = localStorage.getItem("t50-email")
-          document.getElementById("usr-img").src = "SVKl.gif"
+          loadPFPget(localStorage.getItem("t50-username"))
+						.then(image => {
+              console.log("Got LOcal image")
+							document.getElementById("usr-img").src = image
+          document.getElementById("profile-pfp").src = image
+							// You can use the image here
+						})
+						.catch(error => {
+              document.getElementById("usr-img").src = "SVKl.gif"
           document.getElementById("profile-pfp").src = "SVKl.gif"
+							console.error("Error loading image:", error);
+						});
+          
           sessionStorage.setItem("block_interactions", true)
           $("#logout_icon").fadeOut("fast")
           document.getElementById("restart_icon").style.right = "55px"
