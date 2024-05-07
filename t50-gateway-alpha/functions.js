@@ -5952,12 +5952,12 @@ function revertPfp() {
 			if (data === "Success") {
 				try {
 					pfp()
-				} catch(error) {
+				} catch (error) {
 					console.log("Error settings pfp", error)
 				}
-				
-				
-				
+
+
+
 				loadPFPget(localStorage.getItem("t50-username"))
 					.then(image => {
 						if (document.getElementById("profile-pfp").src != "reloading-pfp.gif" && image != document.getElementById("usr-img").src) {
@@ -6008,5 +6008,141 @@ function revertPfp() {
 		})
 		.catch(error => {
 			console.error("Error fetching pfps:", error);
+		});
+}
+
+function cancelSteal() {
+	pfpOptions()
+	//document.getElementById("main_settings").style.filter = ""
+	document.getElementById("steal_pfp").classList.remove("active")
+	//$("#navigator").fadeIn("fast")
+}
+function steal_pfp() {
+	cancelPFPOpt()
+	document.getElementById("friends-pfps").innerHTML = ""
+	document.getElementById("main_settings").style.filter = "blur(10px)"
+	document.getElementById("steal_pfp").classList.add("active")
+	$("#navigator").fadeOut("fast")
+	const users = JSON.parse(sessionStorage.getItem("usersInfo"));
+
+	// Function to create and append user elements
+	function spawnUserElement(username, email) {
+		const friendsPfps = document.getElementById("friends-pfps");
+		
+		// Create elements
+		const userInfo = document.createElement("div");
+		userInfo.classList.add("list-user-info");
+
+		const userCircle = document.createElement("div");
+		userCircle.classList.add("user-circle");
+
+		const userImg = document.createElement("img");
+		userImg.src = ""; // Set the image source here
+		userImg.id = `${username}-steal-pfp`
+		userImg.alt = "User " + username + " Image";
+		userImg.onclick = function () {
+			fullimage(this);
+		};
+
+		const userDetails = document.createElement("div");
+		userDetails.classList.add("user-details");
+
+		const userName = document.createElement("div");
+		userName.classList.add("user-name");
+		userName.textContent = username;
+
+		addButton = document.createElement("a");
+		addButton.href = "#";
+		addButton.id = `${username}-toSteal`;
+		addButton.onclick = function () {
+			stealPFP(this);
+		};
+		addButton.className = "apple-button-list";
+		addButton.textContent = "Steal";
+
+		// Append elements
+		userCircle.appendChild(userImg);
+		userDetails.appendChild(userName);
+		userInfo.appendChild(userCircle);
+		userInfo.appendChild(userDetails);
+		userInfo.appendChild(addButton);
+		friendsPfps.appendChild(userInfo);
+	}
+
+	// Iterate through users and spawn elements for those with friends:true
+	users.forEach(function (user) {
+		if (user.friends) {
+			spawnUserElement(user.username, user.email);
+			loadPFP(user.username, "-steal-pfp")
+		}
+	});
+}
+
+function stealPFP(elem) {
+	cancelSteal()
+	var value = elem.id;
+	var userToSteal = value.split('-')[0];
+	console.log(userToSteal);
+	fetch(`https://data.evoxs.xyz/profiles?authorize=stealFrom&name=${localStorage.getItem("t50-username")}&pfp=${userToSteal}`)
+		.then(response => response.text())
+		.then(data => {
+			if(data === "Done") {
+				cancelPFPOpt()
+				try {
+					pfp()
+				} catch (error) {
+					console.log("Error settings pfp", error)
+				}
+
+
+
+				loadPFPget(localStorage.getItem("t50-username"))
+					.then(image => {
+						if (document.getElementById("profile-pfp").src != "reloading-pfp.gif" && image != document.getElementById("usr-img").src) {
+							// Open a connection to the IndexedDB database
+							const request = indexedDB.open('EvoxSocial');
+
+							request.onerror = function (event) {
+								console.log("Error opening database");
+							};
+
+							request.onsuccess = function (event) {
+								const db = event.target.result;
+
+								// Access the "Profiles" object store
+								const transaction = db.transaction(['Profiles'], 'readwrite');
+								const objectStore = transaction.objectStore('Profiles');
+
+								// Use the delete() method to remove the value with the specified key
+								const deleteRequest = objectStore.delete(localStorage.getItem("t50-username"));
+
+								deleteRequest.onsuccess = function (event) {
+									console.log("Value selfuser deleted successfully");
+									loadPFPget(localStorage.getItem("t50-username"))
+										.then(image => {
+											document.getElementById("usr-img").src = image
+											document.getElementById("profile-pfp").src = image
+										}).catch(error => {
+											console.error("No local self image found:", error);
+										});
+								};
+
+								deleteRequest.onerror = function (event) {
+									console.log("Error deleting value selfuser");
+								};
+							};
+						} else {
+							document.getElementById("usr-img").src = image
+							document.getElementById("profile-pfp").src = image
+						}
+					})
+
+			} else {
+				console.log("Something went wrong", data)
+			}
+		})
+		.catch(error => {
+			console.error("Steal failed.", error);
+			
 		});
 }

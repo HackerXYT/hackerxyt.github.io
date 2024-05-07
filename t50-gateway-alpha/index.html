@@ -459,6 +459,9 @@
 
     </div>
 
+    
+    
+
     <div id="evox_merge" class="vox">
 
         <h3>Merge Domains</h3>
@@ -2548,12 +2551,21 @@
 
 
     </div>
+    <div id="steal_pfp" class="vox" style="background: rgba(33,34,41,255)">
+
+        <h3>Steal Profile Picture</h3>
+        <div id="friends-pfps"></div>
+        <a class="apple-button" onclick="cancelSteal()">Cancel</a>
+
+
+    </div>
     <div id="profileOptions_box" class="confirm">
         <h3 style="color: rgb(59, 113, 221)">Profile Picture</h3>
         <p>What would you like to do?</p>
         <a onclick="showUploadBox()" class="apple-button" style="margin-top: 10px">Upload New Profile Picture</a>
         <a onclick="revertPfp()" id="revertpfp" class="apple-button" style="display: none;">Revert To Old Profile Picture</a>
         <a onclick="downloadPFP()" class="apple-button">Download Current Profile Picture</a>
+        <a onclick="steal_pfp()" class="apple-button">Steal A Friend's Profile Picture 🎈</a>
         <a id="pfpcancelbtn" onclick="cancelPFPOpt()" class="apple-button">Cancel</a>
 
     </div>
