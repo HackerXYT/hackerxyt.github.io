@@ -2791,38 +2791,91 @@ function bgch() {
 	})
 }
 
-function addbg(element) {
-	const which = element.src
-	if (element.classList.contains("active")) {
-		console.log("Activated");
-		return;
-	}
-	let name;
-	if (which.includes("localhost")) {
-		name = which.replace(/^http:\/\/localhost:8080\/t50-gateway-alpha\/bgs\//, '');
+function addbg(element, convertMe) {
+	let which;
+	//must duplicate
+	if (convertMe === "true") {
+
+		const groundImgElements = document.querySelectorAll('[id^="groundImg"]');
+
+		// Iterate through each element and remove the "active" class
+		groundImgElements.forEach(element => {
+			element.classList.remove('active');
+		});
+		const source = element.src
+		element.src = "./internal/groundsLoading.gif"
+		urlToBase64(source)
+			.then(base64 => {
+				which = base64
+				if (element.classList.contains("active")) {
+					console.log("Activated");
+					return;
+				}
+				let name;
+				if (which.includes("localhost")) {
+					name = which.replace(/^http:\/\/localhost:8080\/t50-gateway-alpha\/bgs\//, '');
+				} else {
+					name = which.replace(/^https:\/\/evoxs.xyz\/t50-gateway-alpha\/bgs\//, '');
+				}
+
+				if (name === "default_bg.png") {
+					document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
+				} else {
+					document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('${which}');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+				}
+				document.getElementById("st1").classList.remove("active")
+				document.getElementById("st2").classList.remove("active")
+				document.getElementById("st3").classList.remove("active")
+				document.getElementById("st4").classList.remove("active")
+				try {
+					document.getElementById("st5").classList.remove("active")
+				} catch {
+					console.error("Cannot find st5, normal err")
+				}
+
+				element.classList.add("active")
+				localStorage.setItem("cbg", name)
+				ac_complete.play()
+				custombg()
+				element.src = source
+			})
+			.catch(error => {
+				console.error('Error converting image to base64:', error);
+			});
 	} else {
-		name = which.replace(/^https:\/\/evoxs.xyz\/t50-gateway-alpha\/bgs\//, '');
+		which = element.src
+		if (element.classList.contains("active")) {
+			console.log("Activated");
+			return;
+		}
+		let name;
+		if (which.includes("localhost")) {
+			name = which.replace(/^http:\/\/localhost:8080\/t50-gateway-alpha\/bgs\//, '');
+		} else {
+			name = which.replace(/^https:\/\/evoxs.xyz\/t50-gateway-alpha\/bgs\//, '');
+		}
+
+		if (name === "default_bg.png") {
+			document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
+		} else {
+			document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('${which}');background-size: cover;background-position: center;filter: blur(10px);"></div>`
+		}
+		document.getElementById("st1").classList.remove("active")
+		document.getElementById("st2").classList.remove("active")
+		document.getElementById("st3").classList.remove("active")
+		document.getElementById("st4").classList.remove("active")
+		try {
+			document.getElementById("st5").classList.remove("active")
+		} catch {
+			console.error("Cannot find st5, normal err")
+		}
+
+		element.classList.add("active")
+		localStorage.setItem("cbg", name)
+		ac_complete.play()
+		custombg()
 	}
 
-	if (name === "default_bg.png") {
-		document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
-	} else {
-		document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('${which}');background-size: cover;background-position: center;filter: blur(10px);"></div>`
-	}
-	document.getElementById("st1").classList.remove("active")
-	document.getElementById("st2").classList.remove("active")
-	document.getElementById("st3").classList.remove("active")
-	document.getElementById("st4").classList.remove("active")
-	try {
-		document.getElementById("st5").classList.remove("active")
-	} catch {
-		console.error("Cannot find st5, normal err")
-	}
-
-	element.classList.add("active")
-	localStorage.setItem("cbg", name)
-	ac_complete.play()
-	custombg()
 }
 
 function showUploadBox_BG() {
@@ -3265,22 +3318,23 @@ function show_notif(nosound) {
 			notifications.forEach(function (notification) {
 				var image;
 				const sentimage = notification.image;
-				if (!sentimage) {
-					createNotificationElement('https://evoxs.xyz/notifications_assets/Gateway.png', notification);
-					return;
-				}
+				//if (!sentimage) {
+				//	createNotificationElement('https://evoxs.xyz/notifications_assets/Gateway.png', notification);
+				//	return;
+				//}
 				if (sentimage && !sentimage.includes("http")) {
 					//indexdb
-					const image = loadPFPget()
+					//const image = loadPFPget()
 					// Usage
-					loadPFPget(notification.image)
-						.then(image => {
-							createNotificationElement(image, notification);
-							// You can use the image here
-						})
-						.catch(error => {
-							console.error("Error loading image:", error);
-						});
+					createNotificationElement('reloading-pfp.gif', notification);
+					try {
+						loadPFPflorida(sentimage, `${btoa(notification.timestamp)}`)
+						console.log(`Notification image for user ${sentimage} has been set.`)
+					} catch (error) {
+						console.error("Internal Florida Notification User Image Failed", error)
+					}
+
+
 
 					//const url = `https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${notification.image}`;
 					//fetch(url)
@@ -3380,6 +3434,7 @@ function createNotificationElement(image, notification) {
 
 	var img = document.createElement("img");
 	img.src = image;
+	img.id = `${btoa(notification.timestamp)}-floridaINIT`
 	img.alt = "User Image";
 	div.appendChild(img);
 
@@ -5403,6 +5458,48 @@ function loadPFP(username, idsuffix) {
 }
 
 
+function loadPFPflorida(username, timestamp64) {
+	checkUsernameAndGetData(username, function (error, data) {
+		if (error) {
+			console.error(error);
+		} else {
+			console.log("Retrieved data:", data);
+			if (data !== "None") {
+				console.log("Loading from localDB")
+				document.getElementById(`${timestamp64}-floridaINIT`).src = data.data
+				//Check if update is needed
+				//disabled due to datacenter overload
+				return;
+			} else {
+				console.log("Loading from server")
+				fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+						return response.text();
+					})
+					.then(profileimage => {
+						if (profileimage.indexOf("base64") === -1) {
+							// If it doesn't contain "base64", add the prefix
+							console.log("Fixing Base64")
+							profileimage = "data:image/jpeg;base64," + profileimage;
+						}
+						document.getElementById(`${timestamp64}-floridaINIT`).src = profileimage
+						profilesLocal(username, profileimage)
+
+
+					}).catch(error => {
+						console.error("Cannot set src for", username)
+						console.error(error)
+					})
+			}
+
+		}
+	});
+}
+
+
 
 function loadPFPget(username) {
 	return new Promise((resolve, reject) => {
@@ -6028,7 +6125,7 @@ function steal_pfp() {
 	// Function to create and append user elements
 	function spawnUserElement(username, email) {
 		const friendsPfps = document.getElementById("friends-pfps");
-		
+
 		// Create elements
 		const userInfo = document.createElement("div");
 		userInfo.classList.add("list-user-info");
@@ -6086,7 +6183,7 @@ function stealPFP(elem) {
 	fetch(`https://data.evoxs.xyz/profiles?authorize=stealFrom&name=${localStorage.getItem("t50-username")}&pfp=${userToSteal}`)
 		.then(response => response.text())
 		.then(data => {
-			if(data === "Done") {
+			if (data === "Done") {
 				cancelPFPOpt()
 				try {
 					pfp()
@@ -6143,6 +6240,180 @@ function stealPFP(elem) {
 		})
 		.catch(error => {
 			console.error("Steal failed.", error);
-			
+
 		});
+}
+
+function showGrounds() {
+	document.getElementById("EvoxGrounds").classList.add("active")
+	$("#navigator").fadeOut("fast")
+	//loadGrounds()
+}
+
+function previousFromGrounds() {
+	document.getElementById("EvoxGrounds").classList.remove("active")
+	$("#navigator").fadeIn("fast")
+}
+
+function loadGrounds() {
+	$("#noneImg").fadeOut("fast")
+	document.getElementById("imageContainer").innerHTML = `<div class="loading loading--circle" id="load-notifications" title="Loading">
+	<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+		<path fill="#fff" d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+			<animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animateTransform>
+		</path>
+	</svg>
+</div>`
+	fetch(`https://data.evoxs.xyz/grounds?method=getIds&username=${localStorage.getItem("t50-username")}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			if (data !== "None" && JSON.parse(data).files.length !== 0) {
+				const jsonIds = JSON.parse(data)
+				document.getElementById("imageContainer").innerHTML = ""
+				jsonIds.files.forEach(number => {
+
+					var container = document.getElementById("imageContainer");
+
+
+					// Create an img element
+					var img = document.createElement("img");
+
+					// Set the src attribute of the img element
+					img.src = `https://data.evoxs.xyz/grounds?method=getById&username=${localStorage.getItem("t50-username")}&id=${number}`;
+
+					// Optionally, you can set other attributes such as alt, width, height, etc.
+					img.onclick = function () {
+						groundOptions(this)
+						//addbg(this, "true") //convertMe
+					};
+					img.alt = "Server Failure";
+					img.id = `groundImg-${number}`
+
+
+					// Append the img element to the div container
+					container.appendChild(img);
+				});
+			} else {
+				document.getElementById("imageContainer").innerHTML = ""
+				$("#noneImg").fadeIn("fast")
+				console.log("No grounds")
+			}
+
+		}).catch(error => {
+			console.error(error);
+		});
+}
+
+function cancel_groundOptions() {
+	document.getElementById("groundIMG_options").classList.remove("active")
+	document.getElementById("EvoxGrounds").style.filter = ""
+}
+
+function groundOptions(element) {
+	document.getElementById("groundIMG_options").classList.add("active")
+	document.getElementById("EvoxGrounds").style.filter = "blur(10px)"
+	//document.getElementById("groundIMG_options").style.backgroundImage = `url('${element.src}')`
+	document.getElementById("groundOptions").innerHTML = ""
+	var link = document.createElement("a");
+	link.className = "apple-button"
+	link.textContent = "Set as current background";
+	link.onclick = function () {
+		addbg(element, "true");
+		cancel_groundOptions();
+		login_ok.play();
+		//addbg(this, "true") //convertMe
+	};
+	var groundOptions = document.getElementById("groundOptions");
+	groundOptions.appendChild(link);
+
+	var link2 = document.createElement("a");
+	link2.className = "apple-button"
+	link2.textContent = "Remove image from account";
+	link2.onclick = function () {
+		removeGround(element)
+	};
+	groundOptions.appendChild(link2);
+}
+
+function removeGround(element) {
+	var value = element.id;
+	var afterDash = value.split("-")[1];
+	console.log("Will remove id", afterDash)
+	element.src = "internal/groundsLoading.gif"
+	cancel_groundOptions();
+	login_ok.play();
+	fetch(`https://data.evoxs.xyz/grounds?method=removeImg&username=${localStorage.getItem("t50-username")}&id=${afterDash}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			ac_complete.play()
+			loadGrounds()
+
+		}).catch(error => {
+			console.error(error);
+		});
+}
+
+function urlToBase64(url) {
+	return fetch(url)
+		.then(response => response.blob())
+		.then(blob => {
+			return new Promise((resolve, reject) => {
+				const reader = new FileReader();
+				reader.onloadend = () => resolve(reader.result);
+				reader.onerror = reject;
+				reader.readAsDataURL(blob);
+			});
+		});
+}
+
+function uploadGround() {
+	document.getElementById('upload-ground').click();
+}
+
+function groundHandle() {
+	const input = document.getElementById('upload-ground');
+	const file = input.files[0];
+
+	if (file) {
+		const reader = new FileReader();
+		reader.onload = function (e) {
+			const base64String = e.target.result;
+			// Now you have the base64 representation of the selected image
+			//console.log(base64String);
+			fetch('https://data.evoxs.xyz/grounds', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					name: localStorage.getItem("t50-username"),
+					method: "add",
+					image: base64String
+				})
+			})
+				.then(response => response.text())
+				.then(data => {
+					console.log(data);
+					loadGrounds()
+
+				})
+				.catch(error => {
+					console.error(error);
+				});
+		};
+		reader.readAsDataURL(file);
+	}
+
+	// Reset the input value to allow selecting the same file again
+	input.value = '';
 }

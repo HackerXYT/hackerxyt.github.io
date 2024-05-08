@@ -1380,7 +1380,7 @@ a {
   /* Initially hidden */
   transform: translateY(100%);
   /* Initially off-screen to the left */
-  transition: transform 0.8s ease, opacity 0.8s ease, visibility 0.8s;
+  transition: transform 0.8s ease, opacity 0.8s ease, visibility 0.8s, filter 0.8s ease;
   /* Transition for sliding effect, opacity, and visibility */
 }
 
