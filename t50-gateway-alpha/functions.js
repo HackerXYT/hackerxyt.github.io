@@ -3261,7 +3261,7 @@ function clearNotifications() {
 		})
 		.then(data => {
 			console.log(data)
-			show_notif("no")
+			show_notif("no", "reload")
 			$("#notif_container").fadeIn("fast")
 		}).catch(error => {
 			console.error(error)
@@ -3269,7 +3269,7 @@ function clearNotifications() {
 }
 
 
-function show_notif(nosound) {
+function show_notif(nosound, reload) {
 	navigator("notifications")
 	document.getElementById('gateway').style.filter = 'blur(25px)'
 	document.getElementById("notif_container").innerHTML = `<div class="loading loading--circle" id="load-notifications" title="Loading">
@@ -3293,11 +3293,14 @@ function show_notif(nosound) {
 			console.log(data);
 			var container = document.getElementById("notif_container");
 			container.innerHTML = "";
-			animatedButton.classList.remove("fadeInOut")
-			animatedButton.innerHTML = `<svg id="notif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px" height="25px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
-            <path stroke="#fff" stroke-width="1" class="clr-i-outline clr-i-outline-path-1" d="M32.51,27.83A14.4,14.4,0,0,1,30,24.9a12.63,12.63,0,0,1-1.35-4.81V15.15A10.81,10.81,0,0,0,19.21,4.4V3.11a1.33,1.33,0,1,0-2.67,0V4.42A10.81,10.81,0,0,0,7.21,15.15v4.94A12.63,12.63,0,0,1,5.86,24.9a14.4,14.4,0,0,1-2.47,2.93,1,1,0,0,0-.34.75v1.36a1,1,0,0,0,1,1h27.8a1,1,0,0,0,1-1V28.58A1,1,0,0,0,32.51,27.83ZM5.13,28.94a16.17,16.17,0,0,0,2.44-3,14.24,14.24,0,0,0,1.65-5.85V15.15a8.74,8.74,0,1,1,17.47,0v4.94a14.24,14.24,0,0,0,1.65,5.85,16.17,16.17,0,0,0,2.44,3Z"/><path class="clr-i-outline clr-i-outline-path-2" d="M18,34.28A2.67,2.67,0,0,0,20.58,32H15.32A2.67,2.67,0,0,0,18,34.28Z"/>
-            <rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
-        </svg>`
+			if(!reload) {
+				animatedButton.classList.remove("fadeInOut")
+				animatedButton.innerHTML = `<svg id="notif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px" height="25px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
+				<path stroke="#fff" stroke-width="1" class="clr-i-outline clr-i-outline-path-1" d="M32.51,27.83A14.4,14.4,0,0,1,30,24.9a12.63,12.63,0,0,1-1.35-4.81V15.15A10.81,10.81,0,0,0,19.21,4.4V3.11a1.33,1.33,0,1,0-2.67,0V4.42A10.81,10.81,0,0,0,7.21,15.15v4.94A12.63,12.63,0,0,1,5.86,24.9a14.4,14.4,0,0,1-2.47,2.93,1,1,0,0,0-.34.75v1.36a1,1,0,0,0,1,1h27.8a1,1,0,0,0,1-1V28.58A1,1,0,0,0,32.51,27.83ZM5.13,28.94a16.17,16.17,0,0,0,2.44-3,14.24,14.24,0,0,0,1.65-5.85V15.15a8.74,8.74,0,1,1,17.47,0v4.94a14.24,14.24,0,0,0,1.65,5.85,16.17,16.17,0,0,0,2.44,3Z"/><path class="clr-i-outline clr-i-outline-path-2" d="M18,34.28A2.67,2.67,0,0,0,20.58,32H15.32A2.67,2.67,0,0,0,18,34.28Z"/>
+				<rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
+			</svg>`
+			}
+			
 			if (data === `{"notifications":[]}` || data === "No notifications!") {
 				var a = document.createElement("a");
 				a.href = "#";
@@ -3380,22 +3383,25 @@ function show_notif(nosound) {
 		notice_s.play();
 	}
 
-	if (document.getElementById("animatedButton_notif").style.display === "block") {
-		var animatedButton = document.getElementById("animatedButton_notif");
-		animatedButton.style.opacity = "0";
-		animatedButton.style.transform = "translateY(20px)";
-		setTimeout(function () {
-			animatedButton.style.display = "none";
-		}, 500); // Adjust the timing as needed
+	if(!reload) {
+		if (document.getElementById("animatedButton_notif").style.display === "block") {
+			var animatedButton = document.getElementById("animatedButton_notif");
+			animatedButton.style.opacity = "0";
+			animatedButton.style.transform = "translateY(20px)";
+			setTimeout(function () {
+				animatedButton.style.display = "none";
+			}, 500); // Adjust the timing as needed
+		}
+		if (document.getElementById("animatedButton_chats").style.display === "block") {
+			var animatedButton2 = document.getElementById("animatedButton_chats");
+			animatedButton2.style.opacity = "0";
+			animatedButton2.style.transform = "translateY(20px)";
+			setTimeout(function () {
+				animatedButton2.style.display = "none";
+			}, 500); // Adjust the timing as needed
+		}
 	}
-	if (document.getElementById("animatedButton_chats").style.display === "block") {
-		var animatedButton2 = document.getElementById("animatedButton_chats");
-		animatedButton2.style.opacity = "0";
-		animatedButton2.style.transform = "translateY(20px)";
-		setTimeout(function () {
-			animatedButton2.style.display = "none";
-		}, 500); // Adjust the timing as needed
-	}
+	
 }
 
 function createNotificationElement(image, notification) {
@@ -3423,7 +3429,8 @@ function createNotificationElement(image, notification) {
 	a.style.display = "flex";
 	a.style.alignItems = "center";
 	a.onclick = function () {
-		go_to(notification.app, this);
+		//go_to(notification.app, this);
+		notification_optBox(notification.app, this)
 	};
 
 	var div = document.createElement("div");
@@ -3920,7 +3927,7 @@ function go_to(where, element) {
 		console.log("No <p> element found in the provided HTML string.");
 	}
 	//where may be secureline or a url that contains an image for an evox app
-	if (where === "Secureline") {
+	if (where === "Secureline") { //to change, copy change to 'paragraphContent.includes("Secureline") || paragraphContent.includes("IP") || paragraphContent.includes("Password")'
 		close_notif()
 		show_sline()
 	} else if (paragraphContent.includes("IP")) {
@@ -6416,4 +6423,110 @@ function groundHandle() {
 
 	// Reset the input value to allow selecting the same file again
 	input.value = '';
+}
+
+function notification_optBox(app, element) {
+	if (document.getElementById("notification_box").classList.contains("active")) {
+		cancel_notifOptions()
+		setTimeout(function () {
+			document.getElementById("notifications").style.filter = "blur(10px)"
+			document.getElementById("notification_box").classList.add("active")
+			$("#navigator").fadeOut("fast")
+		}, 400)
+	} else {
+		document.getElementById("notifications").style.filter = "blur(10px)"
+		document.getElementById("notification_box").classList.add("active")
+		$("#navigator").fadeOut("fast")
+	}
+
+
+	const paragraphElement = element.querySelector('p');
+	let paragraphContent; //The notification's text
+	// Check if the <p> element exists
+	if (paragraphElement) {
+		// Get the text content of the <p> element
+		paragraphContent = paragraphElement.textContent.trim();
+		console.log(paragraphContent); // Output the content of <p>
+	} else {
+		console.log("No <p> element found in the provided HTML string.");
+	}
+
+	const imageElement = element.querySelector('img');
+
+	let imageSrc; //The notification's text
+	let imageId; //timestamp base64
+	// Check if the <p> element exists
+	if (imageElement) {
+		imageSrc = imageElement.src.trim();
+		imageId = imageElement.id.trim();
+	} else {
+		console.log("No <img> element found in the provided HTML string.");
+	}
+
+	document.getElementById("app-name").innerHTML = app
+	document.getElementById("notification-image").src = imageSrc
+	document.getElementById("notification-text").innerHTML = paragraphContent
+
+	document.getElementById("notification-buttons").innerHTML = ""
+	var notifButtons = document.getElementById("notification-buttons");
+	if (app.includes("Secureline") || paragraphContent.includes("IP") || paragraphContent.includes("Password")) {
+
+		var link3 = document.createElement("a");
+		link3.className = "apple-button"
+		link3.textContent = `Open ${app}`;
+		link3.onclick = function () {
+			go_to(app, element);
+			cancel_notifOptions();
+		};
+		notifButtons.appendChild(link3);
+	}
+
+
+
+
+	var link2 = document.createElement("a");
+	link2.className = "apple-button"
+	link2.textContent = "Delete Notification";
+	link2.style.color = "#ff454b"
+	link2.onclick = function () {
+		deleteNotification(imageId);
+		cancel_notifOptions();
+	};
+	notifButtons.appendChild(link2);
+
+	var link = document.createElement("a");
+	link.className = "apple-button"
+
+	link.textContent = "Cancel";
+	link.onclick = function () {
+		cancel_notifOptions();
+	};
+
+	notifButtons.appendChild(link);
+}
+
+function cancel_notifOptions() {
+	document.getElementById("notifications").style.filter = ""
+	document.getElementById("notification_box").classList.remove("active")
+	$("#navigator").fadeIn("fast")
+}
+
+function deleteNotification(id) {
+	let str = id;
+	let newStr = str.replace("-floridaINIT", "");
+	console.log("Will delete id:", id)
+	const url = `https://data.evoxs.xyz/notifications?process=delete&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}&id=${newStr}`;
+	fetch(url)
+		.then(response => response.text())
+		.then(data => {
+			if(data === "Done") {
+				show_notif("no", "reload")
+			} else {
+				console.log("Something failed:", data)
+			}
+
+		})
+		.catch(error => {
+			console.error(error);
+		});
 }

@@ -755,14 +755,12 @@
             </div>
         </div>
         <a onclick="clearNotifications()" style="right:50px;top:50px;position: absolute;">
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px"
-                height="25px" viewBox="0 0 1024 1024" t="1569683368540" class="icon" version="1.1" p-id="9723">
-                <defs>
-                    <style type="text/css" />
-                </defs>
-                <path
-                    d="M899.1 869.6l-53-305.6H864c14.4 0 26-11.6 26-26V346c0-14.4-11.6-26-26-26H618V138c0-14.4-11.6-26-26-26H432c-14.4 0-26 11.6-26 26v182H160c-14.4 0-26 11.6-26 26v192c0 14.4 11.6 26 26 26h17.9l-53 305.6c-0.3 1.5-0.4 3-0.4 4.4 0 14.4 11.6 26 26 26h723c1.5 0 3-0.1 4.4-0.4 14.2-2.4 23.7-15.9 21.2-30zM204 390h272V182h72v208h272v104H204V390z m468 440V674c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v156H416V674c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8v156H202.8l45.1-260H776l45.1 260H672z"
-                    p-id="9724" />
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" width="25px" height="25px" viewBox="-0.5 0 19 19" version="1.1">
+                <g id="out" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                    <path d="M4.91666667,14.8888889 C4.91666667,15.3571429 5.60416667,16 6.0625,16 L12.9375,16 C13.3958333,16 14.0833333,15.3571429 14.0833333,14.8888889 L14.0833333,6 L4.91666667,6 L4.91666667,14.8888889 L4.91666667,14.8888889 L4.91666667,14.8888889 Z M15,3.46500003 L12.5555556,3.46500003 L11.3333333,2 L7.66666667,2 L6.44444444,3.46500003 L4,3.46500003 L4,4.93000007 L15,4.93000007 L15,3.46500003 L15,3.46500003 L15,3.46500003 Z" id="path" fill="#fff" sketch:type="MSShapeGroup">
+            
+            </path>
+                </g>
             </svg>
         </a>
         <!--<a onclick="g()" style="right:50px;top:50px;position: absolute;">
@@ -998,6 +996,19 @@
     </div>
 
 
+
+    <div id="notification_box" class="confirm" style="background-color: #000000;">
+        <h3 style="color: rgb(239, 239, 239)"><span id="app-name"></span> Notification</h3>
+        <div class="user-circle" style="margin-right: 10px; width: 50px; height: 50px;">
+            <img src="reloading.gif"
+                id="notification-image" alt="Notification Image">
+        </div>
+        <p id="notification-text" style="margin: 10px;">Empty Notification.</p>
+        <div id="notification-buttons">
+
+        </div>
+
+    </div>
 
     <div id="confirm_box" class="confirm">
         <h3 style="color: red">Delete Message?</h3>

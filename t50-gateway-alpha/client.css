@@ -260,6 +260,10 @@ img {
     text-align: center;
   }
   .apple-button-withicon {
+    align-items: center; 
+    position:absolute;
+    left: 26.5%;
+    
     justify-content: center;
     text-align: center;
     width: 90%;
@@ -267,12 +271,23 @@ img {
   }
 
   .apple-button {
-    margin-left: auto;
-    margin-right: auto;
     justify-content: center;
     text-align: center;
     width: 90%;
     max-width: 40%;
+    position:absolute;
+    left: 26.5%;
+  }
+
+  .app-manage {
+    justify-content: center;
+    text-align: center;
+    left: 26.5%;
+  }
+
+  .user-info-default {
+    justify-content: center;
+    text-align: center;
   }
 }
 
