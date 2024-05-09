@@ -263,7 +263,16 @@ img {
     justify-content: center;
     text-align: center;
     width: 90%;
-    max-width: 100%;
+    max-width: 40%;
+  }
+
+  .apple-button {
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    text-align: center;
+    width: 90%;
+    max-width: 40%;
   }
 }
 

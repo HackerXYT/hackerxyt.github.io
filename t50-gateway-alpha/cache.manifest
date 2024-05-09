@@ -1,0 +1,14 @@
+CACHE MANIFEST
+# Version 1.0.0
+
+CACHE:
+index.html
+client.css
+secondary.css
+functions.js
+gateway.js
+secureline.js
+evox-logo-apple.png
+
+NETWORK:
+*
