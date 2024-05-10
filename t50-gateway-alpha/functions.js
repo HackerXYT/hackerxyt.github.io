@@ -6530,3 +6530,111 @@ function deleteNotification(id) {
 			console.error(error);
 		});
 }
+
+function get_discord() {
+	document.getElementById("discord_pfp").classList.add("active")
+	cancelPFPOpt()
+	$("#navigator").fadeOut("fast")
+}
+
+function step2Dsc() {
+	fetch(`https://data.evoxs.xyz/profiles?authorize=addFromDiscord&name=${localStorage.getItem("t50-username")}&pfp=${document.getElementById("dsc-id").value}`)
+	.then(response => response.text())
+	.then(data => {
+		if(data === "done") {
+			setTimeout(function() {
+				$("#dsc-img").fadeOut("fast")
+				$("#dsc-txt2").fadeOut("fast")
+				$("#dsc-confirm").fadeOut("fast")
+				$("#dsc-txt").fadeIn("fast")
+				$("#dsc-verify").fadeIn("fast")
+				$("#dsc-id").fadeIn("fast")
+				cancelDSC()
+				setTimeout(function() {
+					cancelPFPOpt()
+				}, 200)
+				
+				try {
+					pfp()
+				} catch (error) {
+					console.log("Error settings pfp", error)
+				}
+	
+	
+	
+				loadPFPget(localStorage.getItem("t50-username"))
+					.then(image => {
+						if (document.getElementById("profile-pfp").src != "reloading-pfp.gif" && image != document.getElementById("usr-img").src) {
+							// Open a connection to the IndexedDB database
+							const request = indexedDB.open('EvoxSocial');
+	
+							request.onerror = function (event) {
+								console.log("Error opening database");
+							};
+	
+							request.onsuccess = function (event) {
+								const db = event.target.result;
+	
+								// Access the "Profiles" object store
+								const transaction = db.transaction(['Profiles'], 'readwrite');
+								const objectStore = transaction.objectStore('Profiles');
+	
+								// Use the delete() method to remove the value with the specified key
+								const deleteRequest = objectStore.delete(localStorage.getItem("t50-username"));
+	
+								deleteRequest.onsuccess = function (event) {
+									console.log("Value selfuser deleted successfully");
+									loadPFPget(localStorage.getItem("t50-username"))
+										.then(image => {
+											document.getElementById("usr-img").src = image
+											document.getElementById("profile-pfp").src = image
+										}).catch(error => {
+											console.error("No local self image found:", error);
+										});
+								};
+	
+								deleteRequest.onerror = function (event) {
+									console.log("Error deleting value selfuser");
+								};
+							};
+						} else {
+							document.getElementById("usr-img").src = image
+							document.getElementById("profile-pfp").src = image
+						}
+					})
+			}, 2000)
+			
+		}
+
+	})
+	.catch(error => {
+		console.error(error);
+	});
+}
+
+function cancelDSC() {
+	document.getElementById("discord_pfp").classList.remove("active")
+	pfpOptions()
+	$("#navigator").fadeOut("fast")
+}
+
+function searchPFP() {
+	const dscid = document.getElementById("dsc-id").value
+	fetch(`https://discordlookup.mesavirep.xyz/v1/user/${dscid}`)
+		.then(response => response.json())
+		.then(data => {
+			const pfp = data.avatar.link
+			document.getElementById("dsc-img").src = pfp
+			$("#dsc-txt").fadeOut("fast")
+			$("#dsc-verify").fadeOut("fast")
+			$("#dsc-id").fadeOut("fast", function() {
+				$("#dsc-img").fadeIn("fast")
+				$("#dsc-txt2").fadeIn("fast")
+				$("#dsc-confirm").fadeIn("fast")
+			})
+
+		})
+		.catch(error => {
+			console.error(error);
+		});
+}
