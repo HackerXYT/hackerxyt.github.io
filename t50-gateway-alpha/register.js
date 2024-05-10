@@ -28,7 +28,7 @@ function prepare() {
 }
 
 function register(username, email, password) {
-    fetch('http://192.168.1.21:4000/accounts', {
+    fetch('https://data.evoxs.xyz/accounts', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -47,9 +47,11 @@ function register(username, email, password) {
                 var base64username = btoa(username);
                 console.log("Accepted!")
                 $("#container").fadeOut("fast", function () {
+                    window.location.href = "index.html"
+                    return;
                     $("#2fa").fadeIn("fast")
                 })
-                const url = `http://192.168.1.21:4000/accounts?email=${email}&password=${password}&ip=0`;
+                const url = `https://data.evoxs.xyz/accounts?email=${email}&password=${password}&ip=0`;
 
                 fetch(url)
                     .then(response => {
@@ -175,7 +177,7 @@ function verifycode() {
     let dig6 = document.getElementById("dig6").value
     let code = `${dig1}${dig2}${dig3}${dig4}${dig5}${dig6}`
     console.log("Just to verify:\n", email, username, password, code)
-    fetch(`http://192.168.1.21:4000/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=0`)
+    fetch(`https://data.evoxs.xyz/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=0`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);

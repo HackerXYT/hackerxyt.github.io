@@ -81,22 +81,6 @@
         <button id="submit" onclick="prepare()" style="border: 2px solid #3a6d30;"
             class="transparent-button">Register</button><br>
         <p id="autolg_text" style="color: #a7b3bf;display: none;"></i></p>
-        <script>
-            function remMe(elem) {
-                if (elem.checked) {
-                    //$("#autolg_text").fadeOut("fast")
-                    elem.checked = true
-                    console.log("Checked!");
-                    sessionStorage.removeItem("autolg_off")
-                } else {
-                    elem.checked = false
-                    notice("You will need to re-enter your password for each new session")
-                    //$("#autolg_text").fadeIn("fast")
-                    sessionStorage.setItem("autolg_off", "true")
-                    console.log("Unchecked!");
-                }
-            }
-        </script>
         <!--<div class="checkbox-container">
             <label class="checkbox-label">
                 <input type="checkbox" class="checkbox-input">
