@@ -776,6 +776,7 @@ function docready(merge) {
                     return response.text();
                   })
                   .then(data => {
+                    $("#loading").fadeOut("slow")
                     console.log("IP Unknown")
                     if (data === "Complete") {
                       var elementToRemove = document.getElementById("loading-div-text");
@@ -798,6 +799,7 @@ function docready(merge) {
                 //docready()
                 //return;
               } else {
+
                 console.error(`Unknown Error IPAUTH\nGot data: ${data}`)
                 if (data === "Username doesn't match the account") {
                   document.getElementById("loading-div-text").innerHTML = "<p>Something messed up your client.<br>Your local username doesn't match your account<br>Click below to re-login</p><button onclick='logoff()'>Log out</button>"
@@ -809,6 +811,7 @@ function docready(merge) {
             });
           FloridaRun()
         } else if (data.includes("IP Not Verified")) {
+          $("#loading").fadeOut("slow")
           console.log('%c' + "Existing Account Verified! IP Not Mapped", `color: orange; font-size: 16px; font-weight: bold;`)
           fetch(`https://data.evoxs.xyz/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
