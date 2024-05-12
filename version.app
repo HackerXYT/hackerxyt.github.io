@@ -1,6 +1,6 @@
 {
     "description": "Evox Desktop Application Latest",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "framework": "E",
     "url": "default"
 }
