@@ -278,21 +278,21 @@ function setupCrypt() {
     });
 }
 function setup() {
-  try {
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(function (OneSignal) {
-        OneSignal.init({
-            appId: "986f81a5-5fab-4c0d-8fb3-9a7f6ff80eab",
-            safari_web_id: "web.onesignal.auto.261dc44c-6b5c-4882-ba5f-51ef0736d918",
-            notifyButton: {
-                enable: true
-            },
-            userId: localStorage.getItem("t50-username") // Specify a unique user ID here
-        });
-    });
-} catch(error) {
-    console.error("Florida failed to load onesignal:", error);
-}
+  //try {
+  //  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  //  OneSignalDeferred.push(function (OneSignal) {
+  //    OneSignal.init({
+  //      appId: "986f81a5-5fab-4c0d-8fb3-9a7f6ff80eab",
+  //      safari_web_id: "web.onesignal.auto.261dc44c-6b5c-4882-ba5f-51ef0736d918",
+  //      notifyButton: {
+  //        enable: true
+  //      },
+  //      userId: localStorage.getItem("t50-username") // Specify a unique user ID here
+  //    });
+  //  });
+  //} catch (error) {
+  //  console.error("Florida failed to load onesignal:", error);
+  //}
   setupCrypt()
   //if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
   //  window.location.href = "./update/"
@@ -774,13 +774,13 @@ function docready(merge) {
               }
               if (data === "IP is Mapped") {
                 console.log("IP Mapped")
-                if(sessionStorage.getItem("unlocked") === "true") {
+                if (sessionStorage.getItem("unlocked") === "true") {
                   setup()
                 } else {
                   lockMe()
                   sessionStorage.setItem("unlocked", "true")
                 }
-                
+
                 //setup() is old
               } else if (data === "Unknown IP") {
                 fetch(`https://data.evoxs.xyz/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
@@ -930,18 +930,18 @@ function docready(merge) {
           document.getElementById("usr-name").innerHTML = localStorage.getItem("t50-username")
           document.getElementById("usr-email").innerHTML = localStorage.getItem("t50-email")
           loadPFPget(localStorage.getItem("t50-username"))
-						.then(image => {
+            .then(image => {
               console.log("Got LOcal image")
-							document.getElementById("usr-img").src = image
-          document.getElementById("profile-pfp").src = image
-							// You can use the image here
-						})
-						.catch(error => {
+              document.getElementById("usr-img").src = image
+              document.getElementById("profile-pfp").src = image
+              // You can use the image here
+            })
+            .catch(error => {
               document.getElementById("usr-img").src = "SVKl.gif"
-          document.getElementById("profile-pfp").src = "SVKl.gif"
-							console.error("Error loading image:", error);
-						});
-          
+              document.getElementById("profile-pfp").src = "SVKl.gif"
+              console.error("Error loading image:", error);
+            });
+
           sessionStorage.setItem("block_interactions", true)
           $("#logout_icon").fadeOut("fast")
           document.getElementById("restart_icon").style.right = "55px"
@@ -1726,12 +1726,12 @@ function lockMe() {
     .then(response => {
       const endTime = performance.now();
       const elapsedTime = endTime - startTime;
-      
+
       var integer = parseInt(elapsedTime);
       console.log('Time taken to fetch ~', integer, 'milliseconds');
-      if(integer < 500) {
+      if (integer < 500) {
         document.getElementById("signalInd").src = "./internal/perfect.svg"
-      } else if(integer < 900) {
+      } else if (integer < 900) {
         document.getElementById("signalInd").src = "./internal/strong.svg"
       } else {
         document.getElementById("signalInd").src = "./internal/fair.svg"
@@ -1739,14 +1739,14 @@ function lockMe() {
       return response.text();
     })
     .then(data => {
-      
+
       // Handle the fetched data
       console.log(data);
     })
     .catch(error => {
       console.error('Error fetching data:', error);
     });
-    //tips()
+  //tips()
   loadPFPget(localStorage.getItem("t50-username")).then((exist) => {
     document.getElementById("userPfpLock").src = exist
   })
@@ -1775,7 +1775,7 @@ function lockMe() {
         sessionStorage.setItem("lockNotif", "stop")
         //Do nothing
       } else {
-        
+
         const notifications = JSON.parse(data)
 
         const preLatest = notifications.notifications;
