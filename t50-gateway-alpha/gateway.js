@@ -280,19 +280,19 @@ function setupCrypt() {
 function setup() {
   try {
     window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(function (OneSignal) {
-            OneSignal.init({
-                appId: "986f81a5-5fab-4c0d-8fb3-9a7f6ff80eab",
-                safari_web_id: "web.onesignal.auto.261dc44c-6b5c-4882-ba5f-51ef0736d918",
-                notifyButton: {
-                    enable: true,
-                    userId: localStorage.getItem("t50-username") // Specify a unique user ID here
-                },
-            });
+    OneSignalDeferred.push(function (OneSignal) {
+        OneSignal.init({
+            appId: "986f81a5-5fab-4c0d-8fb3-9a7f6ff80eab",
+            safari_web_id: "web.onesignal.auto.261dc44c-6b5c-4882-ba5f-51ef0736d918",
+            notifyButton: {
+                enable: true
+            },
+            userId: localStorage.getItem("t50-username") // Specify a unique user ID here
         });
-  } catch(error) {
-    console.error("Florida failed to load onesignal:", error)
-  }
+    });
+} catch(error) {
+    console.error("Florida failed to load onesignal:", error);
+}
   setupCrypt()
   //if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
   //  window.location.href = "./update/"
