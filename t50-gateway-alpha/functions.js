@@ -3104,7 +3104,7 @@ function moretti() {
 	setTimeout(function () {
 		const oldhtml = document.getElementById("notification").innerHTML
 		var notification = document.getElementById('notification');
-		document.location.href = "UI.html"
+		document.location.href = "http://192.168.1.21:8080/t50-gateway-alpha/UI.html"
 		return;
 		if (notification.className.includes("show")) {
 			console.log("Notification Is Shown")
