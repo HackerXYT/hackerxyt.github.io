@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		body {
+			font-family: 'Arial', sans-serif;
+			background-color: #1c1c1c;
+			margin: 0;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+
+		.apple-button {
+			background-color: #333;
+			border: none;
+			color: #fff;
+			padding: 15px 30px;
+			font-size: 16px;
+			border-radius: 8px;
+			cursor: pointer;
+			display: inline-block;
+			text-decoration: none;
+			transition: background-color 0.3s ease;
+		}
+
+		.apple-button:hover {
+			background-color: #555;
+		}
+	</style>
+	<title>Apple ID Settings</title>
+</head>
+
+<body>
+	<a href="#" class="apple-button">Username, Email, Icon</a><br>
+	<a href="#" class="apple-button">Apple ID Settings</a>
+</body>
+<script>
+	function runFL() {
+		//const playerId = '2f25fc95-ddbc-40d8-941c-b3c596ced168'; // Here is the subscription id
+		//const pl2 = "89065003-346c-43b2-be9d-342ff5c70e61"
+
+		const playerIds = ['2f25fc95-ddbc-40d8-941c-b3c596ced168', '89065003-346c-43b2-be9d-342ff5c70e61'];
+		const apiKey = 'ZmM2Y2Q4MDgtZGZiYy00ZDdjLTkyMGEtNTg2NTIxNjI4YTBm'; // Replace YOUR_ONESIGNAL_API_KEY with your OneSignal REST API Key
+
+		const notificationData = {
+			app_id: '60647dcd-b776-4527-93fa-dbfcb86494af', // Replace YOUR_ONESIGNAL_APP_ID with your OneSignal App ID
+			include_player_ids: playerIds,
+			contents: {
+				en: 'Your notification message here'
+			}
+		};
+
+		fetch('https://onesignal.com/api/v1/notifications', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Basic ${apiKey}`
+			},
+			body: JSON.stringify(notificationData)
+		})
+			.then(response => response.json())
+			.then(data => {
+				console.log('Notification sent successfully:', data);
+			})
+			.catch(error => {
+				console.error('Error sending notification:', error);
+			});
+
+	}
+</script>
+
+</html>

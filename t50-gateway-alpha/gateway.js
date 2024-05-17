@@ -278,6 +278,18 @@ function setupCrypt() {
     });
 }
 function setup() {
+  if(localStorage.getItem("t50-username") === "papostol" || localStorage.getItem("t50-username") === "Kyriakos" || localStorage.getItem("t50-username") === "Clxpzie"|| localStorage.getItem("t50-username") === "DarkAngel"|| localStorage.getItem("t50-username") === "bantou") {
+    if(localStorage.getItem("betaOK") !== "true") {
+      console.log("Username was papostol or Kyriakos and neverSho")
+      document.getElementById("gateway").style.filter = "blur(10px)"
+      document.getElementById("recommendationUSR").classList.add("active")
+      sessionStorage.setItem("blockBottomLogout", "true")
+      sessionStorage.setItem("blockBottomLogout", "true")
+    } else {
+      console.log("Beta is seen")
+    }
+    
+  }
   //try {
   //  window.OneSignalDeferred = window.OneSignalDeferred || [];
   //  OneSignalDeferred.push(function (OneSignal) {

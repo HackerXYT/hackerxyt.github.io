@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html onclick="myFunction()">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Add this meta tag to make the web app capable of fullscreen display -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    
+    <!-- You can also specify a status bar style for the web app -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        @font-face {
+            font-family: "SF";
+            src: url('SFUIText-Medium.ttf');
+        }
+
+        body,
+        html {
+            background-color: #1c1c1c;
+            color: #e6e6e6;
+            font-family: "SF";
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            -webkit-user-select: none;
+            /* Safari */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* Internet Explorer/Edge */
+            user-select: none;
+            /* Standard syntax */
+        }
+
+        .container {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cont" class="container">
+        <div id="live-time"></div>
+        <h1><span id="text">1</span>/15</h1>
+    </div>
+
+</body>
+<script>
+    function myFunction() {
+        if (Number(document.getElementById("text").innerHTML) < 15) {
+            document.getElementById("text").innerHTML = Number(document.getElementById("text").innerHTML) + 1
+        } else {
+            document.getElementById("cont").innerHTML = `<h1>Complete!</h1>`
+        }
+
+    }
+
+    function liveTime() {
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+
+        // Add leading zero if needed
+        hours = (hours < 10 ? "0" : "") + hours;
+        minutes = (minutes < 10 ? "0" : "") + minutes;
+
+        // Display the time
+        var currentTime = hours + ":" + minutes;
+        return currentTime;
+    }
+
+    function updateTime() {
+        var liveTimeElement = document.getElementById('live-time');
+        if (liveTimeElement) {
+            liveTimeElement.textContent = liveTime();
+        }
+    }
+
+    // Update time initially
+    updateTime();
+
+    // Update time every second
+    setInterval(updateTime, 1000);
+</script>
+
+</html>

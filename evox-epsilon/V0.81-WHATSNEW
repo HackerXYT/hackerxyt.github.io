@@ -1,0 +1,62 @@
+<div style="text-align: center; margin-top: 20px;">
+            <h3 style="margin-bottom: 5px;">What's New</h3>
+            <h5 style="margin: 0; font-weight: lighter; font-size: 12px;">March 13, 2024</h5>
+        </div>
+
+        <img src="V0.81.png" style="display: block; margin: 20px auto; max-width: 500px; border-radius: 20px;width:100%">
+
+        <div style="margin: 20px;">
+            <h3>Security Updates</h3>
+            <ul style="padding-left: 20px;">
+                <li>Introducing Cryptox in Evox Gateway, enabling users to securely encrypt all sent information using
+                    cryptographic operations, retrievable only with identical keys and IVs, thus preventing data
+                    breaches.</li>
+                <li>Secureline now employs Cryptox for chatting, ensuring that messages are only accessible to chat
+                    participants.</li>
+            </ul>
+            <p style="text-align: center; margin-top: 10px; font-weight: lighter; font-size: 14px;">You can manage your
+                Cryptox IV under account options in gateway settings.</p>
+        </div>
+
+        <div style="margin: 20px;">
+            <h3>Account Updates</h3>
+            <ul style="padding-left: 20px;">
+                <li>Multiple email addresses can now be added to your account, allowing login with various emails and
+                    ensuring access to your Evox account even when your primary email is unavailable.</li>
+                <li>You can remove any IP addresses accessing your account and block their connection until passing the
+                    2FA process.</li>
+            </ul>
+        </div>
+
+        <div style="margin: 20px;">
+            <h3>In-App Notifications</h3>
+            <ul style="padding-left: 20px;">
+                <li>All Evox Apps notifications are now centralized within the Evox Gateway. Access your notifications
+                    under more options to track your account activity.</li>
+            </ul>
+        </div>
+
+        <div style="margin: 20px;">
+            <h3>UI Updates</h3>
+            <ul style="padding-left: 20px;">
+                <li>Easily switch between accounts by disabling auto-login in Vox Center, allowing you to choose which
+                    accounts to log in without logging out.</li>
+                <li>View weather updates in your area, change your profile picture more quickly, and access other quick
+                    actions by opening Vox Center.</li>
+                <li>Date of Birth is now available for all users! In the future you will be able to see your friends'
+                    birthdates. Set your birthdate under account options.</li>
+            </ul>
+        </div>
+
+        <div style="margin: 20px;">
+            <h3>Evox Previews</h3>
+            <ul style="padding-left: 20px;">
+                <li>App Store Preview:<br><br>An application store is coming to Evox! Soon, you'll be able to easily
+                    acquire and remove new Evox applications for your Gateway. Check out the store's UI in your gateway
+                    settings.</li>
+                <br>
+                <li>Notifications Preview:<br><br>Evox Gateway will allow you to customize which notifications you
+                    receive from specific Evox apps and pick your topics. Check the preview under account options in
+                    Gateway settings.</li>
+            </ul>
+        </div>

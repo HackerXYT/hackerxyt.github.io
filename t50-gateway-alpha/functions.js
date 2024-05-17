@@ -23,61 +23,61 @@
 //var notifications = new Audio('./ui-sounds/notifications.mp3');
 //var notice_s = new Audio("./ui-sounds/notice.mp3")
 
-let voxHTML = document.getElementById("VOXhtml").innerHTML 
-let currentHTML = localStorage.getItem("voxHTML")
-if(currentHTML) {
-	if(currentHTML !== voxHTML) {
-		localStorage.setItem('voxHTML', voxHTML)
-		const message = "Updating.."
-	const oldhtml = document.getElementById("notification").innerHTML
-	var notification = document.getElementById('notification');
-	if (notification.className.includes("show")) {
-		notification.classList.remove('show');
-		setTimeout(function () {
-			document.getElementById("notification").innerHTML = message
-			notification.classList.add('show');
-			setTimeout(function () {
-				notification.classList.remove('show');
-			}, 2500);
-		}, 500)
-	} else {
-		document.getElementById("notification").innerHTML = message
-		notification.classList.add('show');
-		setTimeout(function () {
-			notification.classList.remove('show');
-		}, 2500);
-	}
-	setTimeout(function () {
-		document.getElementById("notification").innerHTML = oldhtml
-	}, 3000)
-	} else {
-		console.log("Updated To Latest")
-	}
-} else {
-	localStorage.setItem('voxHTML', voxHTML)
-	const message = "Updating.."
-	const oldhtml = document.getElementById("notification").innerHTML
-	var notification = document.getElementById('notification');
-	if (notification.className.includes("show")) {
-		notification.classList.remove('show');
-		setTimeout(function () {
-			document.getElementById("notification").innerHTML = message
-			notification.classList.add('show');
-			setTimeout(function () {
-				notification.classList.remove('show');
-			}, 2500);
-		}, 500)
-	} else {
-		document.getElementById("notification").innerHTML = message
-		notification.classList.add('show');
-		setTimeout(function () {
-			notification.classList.remove('show');
-		}, 2500);
-	}
-	setTimeout(function () {
-		document.getElementById("notification").innerHTML = oldhtml
-	}, 3000)
-}
+//let voxHTML = document.getElementById("VOXhtml").innerHTML 
+//let currentHTML = localStorage.getItem("voxHTML")
+//if(currentHTML) {
+//	if(currentHTML !== voxHTML) {
+//		localStorage.setItem('voxHTML', voxHTML)
+//		const message = "Updating.."
+//	const oldhtml = document.getElementById("notification").innerHTML
+//	var notification = document.getElementById('notification');
+//	if (notification.className.includes("show")) {
+//		notification.classList.remove('show');
+//		setTimeout(function () {
+//			document.getElementById("notification").innerHTML = message
+//			notification.classList.add('show');
+//			setTimeout(function () {
+//				notification.classList.remove('show');
+//			}, 2500);
+//		}, 500)
+//	} else {
+//		document.getElementById("notification").innerHTML = message
+//		notification.classList.add('show');
+//		setTimeout(function () {
+//			notification.classList.remove('show');
+//		}, 2500);
+//	}
+//	setTimeout(function () {
+//		document.getElementById("notification").innerHTML = oldhtml
+//	}, 3000)
+//	} else {
+//		console.log("Updated To Latest")
+//	}
+//} else {
+//	localStorage.setItem('voxHTML', voxHTML)
+//	const message = "Updating.."
+//	const oldhtml = document.getElementById("notification").innerHTML
+//	var notification = document.getElementById('notification');
+//	if (notification.className.includes("show")) {
+//		notification.classList.remove('show');
+//		setTimeout(function () {
+//			document.getElementById("notification").innerHTML = message
+//			notification.classList.add('show');
+//			setTimeout(function () {
+//				notification.classList.remove('show');
+//			}, 2500);
+//		}, 500)
+//	} else {
+//		document.getElementById("notification").innerHTML = message
+//		notification.classList.add('show');
+//		setTimeout(function () {
+//			notification.classList.remove('show');
+//		}, 2500);
+//	}
+//	setTimeout(function () {
+//		document.getElementById("notification").innerHTML = oldhtml
+//	}, 3000)
+//}
 var account_show = new Howl({
 	src: ['./ui-sounds/qa_start_old.mp3'],
 	volume: 1
@@ -157,6 +157,8 @@ var login_ok = new Howl({
 	volume: 1
 });
 sessionStorage.removeItem("more_options")
+
+
 fetch(`https://data.evoxs.xyz/setOnline?username=${localStorage.getItem("t50-username")}`)
 	.then(response => {
 		if (!response.ok) {
@@ -6765,4 +6767,48 @@ function searchPFP() {
 		.catch(error => {
 			console.error(error);
 		});
+}
+
+function seeNewE() {
+	//load
+	sessionStorage.setItem("EmitApp", "vox")
+	launchAppN("../evox-epsilon/")
+	const appFrame = setInterval(function () {
+		if (sessionStorage.getItem("extRun") === "back") {
+			console.log("Hiding App Frame User Returned To Gateway")
+			document.getElementById("launchApp").src = "PreloadApp.html"
+			$("#launchApp").fadeOut("slow")
+			$("#iframeContainer").fadeOut("slow")
+			document.getElementById("gateway").style.filter = ""
+			sessionStorage.removeItem("extRun")
+			clearInterval(appFrame)
+		}
+	}, 100)
+	document.getElementById("recommendationUSR").classList.remove("active")
+	localStorage.setItem("betaOK", "true")
+}
+
+function declineNewE() {
+	document.getElementById("recommendationUSR").classList.remove("active")
+	document.getElementById("gateway").style.filter = ""
+	sessionStorage.removeItem("blockBottomLogout")
+	localStorage.setItem("betaOK", "true")
+}
+
+function launchBeta() {
+	closevox();navigator('sett_def')
+	sessionStorage.setItem("EmitApp", "vox")
+	launchAppN("../evox-epsilon/")
+	const appFrame = setInterval(function () {
+		if (sessionStorage.getItem("extRun") === "back") {
+			console.log("Hiding App Frame User Returned To Gateway")
+			document.getElementById("launchApp").src = "PreloadApp.html"
+			$("#launchApp").fadeOut("slow")
+			$("#iframeContainer").fadeOut("slow")
+			document.getElementById("gateway").style.filter = ""
+			sessionStorage.removeItem("extRun")
+			clearInterval(appFrame)
+			
+		}
+	}, 100)
 }

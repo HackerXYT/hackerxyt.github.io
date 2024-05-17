@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: black;
+        }
+        .chat-leftsidebar .user-status-box .chat-user-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .align-self-center {
+            -ms-flex-item-align: center !important;
+            align-self: center !important;
+        }
+
+        .me-3 {
+            margin-right: 1rem !important;
+        }
+
+        .ms-0 {
+            margin-left: 0 !important;
+        }
+
+        .rounded-circle {
+            border-radius: 50% !important;
+        }
+
+        .avatar-xs {
+            height: 2.2rem;
+            width: 2.2rem;
+            margin-bottom: -5px; /* Adjust margin to overlap with the indicator */
+            z-index: 1; /* Ensure image is behind the indicator */
+            position: relative; /* Needed for z-index to work */
+        }
+
+        .chat-user-img {
+            position: relative;
+            display: inline-block;
+        }
+
+        .chat-user-img .user-status {
+            width: 10px;
+            height: 10px;
+            background-color: #adb5bd;
+            border-radius: 50%;
+            border: 2px solid var(--bs-card-bg);
+            position: absolute;
+            bottom: -5px; /* Adjusted to overlap the image */
+            right: -5px; /* Adjusted to overlap the image */
+            z-index: 2; /* To place it above the image */
+        }
+
+        .chat-user-img.online .user-status {
+            background-color: #06d6a0;
+        }
+
+        .chat-user-img.away .user-status {
+            background-color: #ffd166;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-user-img online align-self-center me-3 ms-0">
+        <img id="smart-icon-t50-pfp" src="../t50/socket-io.png" class="rounded-circle avatar-xs" alt="">
+        <span class="user-status"></span>
+    </div>
+</body>
+</html>

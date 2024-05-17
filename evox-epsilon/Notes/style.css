@@ -1,0 +1,304 @@
+/* Reset some default styles */
+body,
+textarea,
+button {
+	position: relative;
+	font-family: 'Arial', sans-serif;
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+}
+
+body {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background: linear-gradient(135deg, #0c0c0c, #212121);
+	user-select: none;
+	-webkit-user-select: none;
+	/*Safari*/
+	-moz-user-select: none;
+	/*Firefox*/
+	/* A simple gradient background */
+}
+
+textarea {
+	width: 84%;
+	height: 70vh;
+	/* Taking the whole screen minus space for the button and its margins */
+	resize: none;
+	/* Disable resizing */
+	padding: 15px;
+	/* Padding for better typing experience */
+	font-size: 16px;
+	/* Increase font size a bit */
+	border: none;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	/* Adding a subtle shadow */
+	border-radius: 10px;
+	margin-bottom: 10px;
+}
+
+button {
+	margin-top: 10px;
+	/* Space between textarea and button */
+	padding: 10px 25px;
+	/* Padding for better appearance */
+	font-size: 18px;
+	/* Increase font size a bit */
+	cursor: pointer;
+	/* Hand pointer when hovering */
+	background-color: #5c5c5c;
+	/* A dark background color */
+	color: #FFF;
+	/* White text color */
+	border-radius: 5px;
+	/* Rounded corners */
+	transition: background-color 0.3s ease;
+	/* Smooth transition */
+}
+
+button:hover {
+	background-color: #555;
+	/* A slightly lighter color on hover */
+}
+
+h2 {
+	color: rgb(237, 237, 237);
+}
+
+#mainContent {
+	width: 100vw;
+	/* Set the width to the viewport width */
+}
+
+/* Centered container */
+.centered-container {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+}
+
+/* Style for the button group */
+.button-group {
+	display: flex;
+	/* Display buttons side by side */
+}
+
+.button-group button {
+	margin: 0 5px;
+	/* Space between buttons */
+}
+
+/* The overlay which will cover the whole screen */
+.overlay {
+	display: none;
+	/* Hidden by default */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+	/* Black with a bit of transparency */
+	z-index: 1000;
+	/* Place on top of everything */
+}
+
+/* Styles for the password prompt */
+.password-popup {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	/* Center it */
+	background: #333;
+	color: #fff;
+	padding: 20px;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	z-index: 1001;
+	/* Place above the overlay */
+	display: flex;
+	/* Use flexbox */
+	flex-direction: column;
+	/* Stack children vertically */
+	align-items: center;
+	/* Center children horizontally */
+	justify-content: center;
+	/* Center children vertically */
+}
+
+.group {
+	position: relative;
+	margin-bottom: 5px;
+	margin-top: 15px;
+}
+
+input {
+	background-color: #333;
+	font-size: 18px;
+	padding: 10px 10px 10px 5px;
+	display: block;
+	width: 300px;
+	border: none;
+	color: #a3a3a3;
+	border-bottom: 1px solid #a3a3a3;
+}
+
+input:focus {
+	outline: none;
+}
+
+/* LABEL ======================================= */
+label {
+	color: #999;
+	font-size: 18px;
+	font-weight: normal;
+	position: absolute;
+	pointer-events: none;
+	left: 5px;
+	top: 10px;
+	transition: 0.2s ease all;
+	-moz-transition: 0.2s ease all;
+	-webkit-transition: 0.2s ease all;
+}
+
+/* active state */
+input:focus~label,
+input:valid~label {
+	top: -20px;
+	font-size: 14px;
+	color: #a3a3a3;
+}
+
+/* BOTTOM BARS ================================= */
+.bar {
+	position: relative;
+	display: block;
+	width: 300px;
+}
+
+.bar:before,
+.bar:after {
+	content: '';
+	height: 2px;
+	width: 0;
+	bottom: 1px;
+	position: absolute;
+	background: #a3a3a3;
+	transition: 0.2s ease all;
+	-moz-transition: 0.2s ease all;
+	-webkit-transition: 0.2s ease all;
+}
+
+.bar:before {
+	left: 50%;
+}
+
+.bar:after {
+	right: 50%;
+}
+
+/* active state */
+input:focus~.bar:before,
+input:focus~.bar:after {
+	width: 50%;
+}
+
+/* HIGHLIGHTER ================================== */
+.highlight {
+	position: absolute;
+	height: 60%;
+	width: 100px;
+	top: 25%;
+	left: 0;
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+/* active state */
+input:focus~.highlight {
+	-webkit-animation: inputHighlighter 0.3s ease;
+	-moz-animation: inputHighlighter 0.3s ease;
+	animation: inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+	from {
+		background: #5264AE;
+	}
+
+	to {
+		width: 0;
+		background: transparent;
+	}
+}
+
+@-moz-keyframes inputHighlighter {
+	from {
+		background: #5264AE;
+	}
+
+	to {
+		width: 0;
+		background: transparent;
+	}
+}
+
+@keyframes inputHighlighter {
+	from {
+		background: #5264AE;
+	}
+
+	to {
+		width: 0;
+		background: transparent;
+	}
+}
+
+.top-left-svg {
+	position: absolute;
+	top: 3%;
+	left: 3%;
+	z-index: 1000;
+	/* Ensure it's above other content */
+}
+
+.top-right-svg {
+	position: absolute;
+	top: 3%;
+	right: 3%;
+	z-index: 1000;
+	/* Ensure it's above other content */
+}
+
+
+
+.rounded-box {
+	color: #fff;
+	background-color: #333;
+	padding: 20px;
+	border-radius: 10px;
+	width: 85%;
+	max-width: 1000px;
+}
+
+.rounded-box h3 {
+	color: #FFF;
+	font-weight: bold;
+	margin: 0 0 15px 0;
+}
+
+.rounded-box p {
+	color: #CCC;
+	margin: 0;
+}
