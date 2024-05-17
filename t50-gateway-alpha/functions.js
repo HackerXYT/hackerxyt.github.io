@@ -23,6 +23,61 @@
 //var notifications = new Audio('./ui-sounds/notifications.mp3');
 //var notice_s = new Audio("./ui-sounds/notice.mp3")
 
+let voxHTML = document.getElementById("VOXhtml").innerHTML 
+let currentHTML = localStorage.getItem("voxHTML")
+if(currentHTML) {
+	if(currentHTML !== voxHTML) {
+		localStorage.setItem('voxHTML', voxHTML)
+		const message = "Updating.."
+	const oldhtml = document.getElementById("notification").innerHTML
+	var notification = document.getElementById('notification');
+	if (notification.className.includes("show")) {
+		notification.classList.remove('show');
+		setTimeout(function () {
+			document.getElementById("notification").innerHTML = message
+			notification.classList.add('show');
+			setTimeout(function () {
+				notification.classList.remove('show');
+			}, 2500);
+		}, 500)
+	} else {
+		document.getElementById("notification").innerHTML = message
+		notification.classList.add('show');
+		setTimeout(function () {
+			notification.classList.remove('show');
+		}, 2500);
+	}
+	setTimeout(function () {
+		document.getElementById("notification").innerHTML = oldhtml
+	}, 3000)
+	} else {
+		console.log("Updated To Latest")
+	}
+} else {
+	localStorage.setItem('voxHTML', voxHTML)
+	const message = "Updating.."
+	const oldhtml = document.getElementById("notification").innerHTML
+	var notification = document.getElementById('notification');
+	if (notification.className.includes("show")) {
+		notification.classList.remove('show');
+		setTimeout(function () {
+			document.getElementById("notification").innerHTML = message
+			notification.classList.add('show');
+			setTimeout(function () {
+				notification.classList.remove('show');
+			}, 2500);
+		}, 500)
+	} else {
+		document.getElementById("notification").innerHTML = message
+		notification.classList.add('show');
+		setTimeout(function () {
+			notification.classList.remove('show');
+		}, 2500);
+	}
+	setTimeout(function () {
+		document.getElementById("notification").innerHTML = oldhtml
+	}, 3000)
+}
 var account_show = new Howl({
 	src: ['./ui-sounds/qa_start_old.mp3'],
 	volume: 1
@@ -651,7 +706,12 @@ function settings() {
 	//console.log(document.getElementById("popup").classList.contains("active"))
 	if (document.getElementById("popup").classList.contains("active") === false) {
 		return_to_options("reset")
-		$("#onesignal-bell-container").fadeIn("fast")
+		try {
+			$("#onesignal-bell-container").fadeIn("fast")
+		} catch {
+			console.log("Couldn't Show Florida Bell")
+		}
+		
 		settings_open.play()
 		//document.body.style.overflow = 'hidden';
 		document.getElementById("gateway").style.overflow = "hidden"
@@ -683,7 +743,12 @@ function settings() {
 			//document.body.style.overflow = 'hidden';
 		}, 100)
 	} else if (document.getElementById("popup").classList.contains("active")) {
-		$("#onesignal-bell-container").fadeOut("fast")
+		
+		try {
+			$("#onesignal-bell-container").fadeOut("fast")
+		} catch {
+			console.log("Couldn't Hide Florida Bell")
+		}
 		navigator("sett_def")
 		try {
 			goback.play()
@@ -3039,6 +3104,8 @@ function moretti() {
 	setTimeout(function () {
 		const oldhtml = document.getElementById("notification").innerHTML
 		var notification = document.getElementById('notification');
+		document.location.href = "UI.html"
+		return;
 		if (notification.className.includes("show")) {
 			console.log("Notification Is Shown")
 			notification.classList.remove('show');
@@ -3293,14 +3360,14 @@ function show_notif(nosound, reload) {
 			console.log(data);
 			var container = document.getElementById("notif_container");
 			container.innerHTML = "";
-			if(!reload) {
+			if (!reload) {
 				animatedButton.classList.remove("fadeInOut")
 				animatedButton.innerHTML = `<svg id="notif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px" height="25px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
 				<path stroke="#fff" stroke-width="1" class="clr-i-outline clr-i-outline-path-1" d="M32.51,27.83A14.4,14.4,0,0,1,30,24.9a12.63,12.63,0,0,1-1.35-4.81V15.15A10.81,10.81,0,0,0,19.21,4.4V3.11a1.33,1.33,0,1,0-2.67,0V4.42A10.81,10.81,0,0,0,7.21,15.15v4.94A12.63,12.63,0,0,1,5.86,24.9a14.4,14.4,0,0,1-2.47,2.93,1,1,0,0,0-.34.75v1.36a1,1,0,0,0,1,1h27.8a1,1,0,0,0,1-1V28.58A1,1,0,0,0,32.51,27.83ZM5.13,28.94a16.17,16.17,0,0,0,2.44-3,14.24,14.24,0,0,0,1.65-5.85V15.15a8.74,8.74,0,1,1,17.47,0v4.94a14.24,14.24,0,0,0,1.65,5.85,16.17,16.17,0,0,0,2.44,3Z"/><path class="clr-i-outline clr-i-outline-path-2" d="M18,34.28A2.67,2.67,0,0,0,20.58,32H15.32A2.67,2.67,0,0,0,18,34.28Z"/>
 				<rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
 			</svg>`
 			}
-			
+
 			if (data === `{"notifications":[]}` || data === "No notifications!") {
 				var a = document.createElement("a");
 				a.href = "#";
@@ -3383,7 +3450,7 @@ function show_notif(nosound, reload) {
 		notice_s.play();
 	}
 
-	if(!reload) {
+	if (!reload) {
 		if (document.getElementById("animatedButton_notif").style.display === "block") {
 			var animatedButton = document.getElementById("animatedButton_notif");
 			animatedButton.style.opacity = "0";
@@ -3401,7 +3468,7 @@ function show_notif(nosound, reload) {
 			}, 500); // Adjust the timing as needed
 		}
 	}
-	
+
 }
 
 function createNotificationElement(image, notification) {
@@ -4487,6 +4554,20 @@ function getNShow(element) {
 		})
 		navigator("notif_tasco")
 	}
+	if (app.includes("Secureline")) {
+		console.log("Showing Secureline Notifications")
+		$("#notifications_options").fadeOut("fast", function () {
+			$("#secureline-florida").fadeIn("fast")
+		})
+		navigator("notif_secureline")
+	}
+	if (app.includes("Cryptox")) {
+		console.log("Showing Cryptox Notifications")
+		$("#notifications_options").fadeOut("fast", function () {
+			$("#cryptox-florida").fadeIn("fast")
+		})
+		navigator("notif_cryptox")
+	}
 }
 
 function getNShowNexus(element) {
@@ -5004,6 +5085,42 @@ Settings
 	Notifications
 </div>
 </div>`
+	const notif_secureline = `<div onclick='$("#secureline-florida").fadeOut("fast", function () {$("#notifications_options").fadeIn("fast")});navigator("notifications_main")'
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Notifications
+</div>
+</div>`
+	const notif_cryptox = `<div onclick='$("#cryptox-florida").fadeOut("fast", function () {$("#notifications_options").fadeIn("fast")});navigator("notifications_main")'
+>
+<div
+	style="background-color: #33333370; border: none; color: #fff; padding: 15px 30px; font-size: 16px; border-radius: 19px; cursor: pointer; display: flex; align-items: center; text-decoration: none; transition: background-color 0.3s ease;">
+	<svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+	Notifications
+</div>
+</div>`
 	const sign_in_wevox_e = `<div onclick='$("#evox_gateway_info").fadeOut("fast", function () {$("#apps_using_evox").fadeIn("fast")});navigator("sign_in_wevox")'
 >
 <div
@@ -5140,6 +5257,12 @@ Settings
 		if (w === "coming") {
 			document.getElementById("navigator").innerHTML = coming
 		}
+		if (w === "notif_secureline") {
+			document.getElementById("navigator").innerHTML = notif_secureline
+		}
+		if (w === "notif_cryptox") {
+			document.getElementById("navigator").innerHTML = notif_cryptox
+		}
 
 
 
@@ -5216,7 +5339,12 @@ function optimizeNotifications(id, element) {
 		notice("Unable to connect to server.")
 		return;
 	}
-	console.log("Optimizing")
+	if(id && element) {
+		console.log("Optimizing")
+	} else {
+		return;
+	}
+	
 	let change;
 	if (element.checked) {
 		// Checkbox is checked, perform actions for when it's checked
@@ -6519,7 +6647,7 @@ function deleteNotification(id) {
 	fetch(url)
 		.then(response => response.text())
 		.then(data => {
-			if(data === "Done") {
+			if (data === "Done") {
 				show_notif("no", "reload")
 			} else {
 				console.log("Something failed:", data)
@@ -6539,77 +6667,77 @@ function get_discord() {
 
 function step2Dsc() {
 	fetch(`https://data.evoxs.xyz/profiles?authorize=addFromDiscord&name=${localStorage.getItem("t50-username")}&pfp=${document.getElementById("dsc-id").value}`)
-	.then(response => response.text())
-	.then(data => {
-		if(data === "done") {
-			setTimeout(function() {
-				$("#dsc-img").fadeOut("fast")
-				$("#dsc-txt2").fadeOut("fast")
-				$("#dsc-confirm").fadeOut("fast")
-				$("#dsc-txt").fadeIn("fast")
-				$("#dsc-verify").fadeIn("fast")
-				$("#dsc-id").fadeIn("fast")
-				cancelDSC()
-				setTimeout(function() {
-					cancelPFPOpt()
-				}, 200)
-				
-				try {
-					pfp()
-				} catch (error) {
-					console.log("Error settings pfp", error)
-				}
-	
-	
-	
-				loadPFPget(localStorage.getItem("t50-username"))
-					.then(image => {
-						if (document.getElementById("profile-pfp").src != "reloading-pfp.gif" && image != document.getElementById("usr-img").src) {
-							// Open a connection to the IndexedDB database
-							const request = indexedDB.open('EvoxSocial');
-	
-							request.onerror = function (event) {
-								console.log("Error opening database");
-							};
-	
-							request.onsuccess = function (event) {
-								const db = event.target.result;
-	
-								// Access the "Profiles" object store
-								const transaction = db.transaction(['Profiles'], 'readwrite');
-								const objectStore = transaction.objectStore('Profiles');
-	
-								// Use the delete() method to remove the value with the specified key
-								const deleteRequest = objectStore.delete(localStorage.getItem("t50-username"));
-	
-								deleteRequest.onsuccess = function (event) {
-									console.log("Value selfuser deleted successfully");
-									loadPFPget(localStorage.getItem("t50-username"))
-										.then(image => {
-											document.getElementById("usr-img").src = image
-											document.getElementById("profile-pfp").src = image
-										}).catch(error => {
-											console.error("No local self image found:", error);
-										});
-								};
-	
-								deleteRequest.onerror = function (event) {
-									console.log("Error deleting value selfuser");
-								};
-							};
-						} else {
-							document.getElementById("usr-img").src = image
-							document.getElementById("profile-pfp").src = image
-						}
-					})
-			}, 2000)
-			
-		}
+		.then(response => response.text())
+		.then(data => {
+			if (data === "done") {
+				setTimeout(function () {
+					$("#dsc-img").fadeOut("fast")
+					$("#dsc-txt2").fadeOut("fast")
+					$("#dsc-confirm").fadeOut("fast")
+					$("#dsc-txt").fadeIn("fast")
+					$("#dsc-verify").fadeIn("fast")
+					$("#dsc-id").fadeIn("fast")
+					cancelDSC()
+					setTimeout(function () {
+						cancelPFPOpt()
+					}, 200)
 
-	})
-	.catch(error => {
-		console.error(error);
-	});
+					try {
+						pfp()
+					} catch (error) {
+						console.log("Error settings pfp", error)
+					}
+
+
+
+					loadPFPget(localStorage.getItem("t50-username"))
+						.then(image => {
+							if (document.getElementById("profile-pfp").src != "reloading-pfp.gif" && image != document.getElementById("usr-img").src) {
+								// Open a connection to the IndexedDB database
+								const request = indexedDB.open('EvoxSocial');
+
+								request.onerror = function (event) {
+									console.log("Error opening database");
+								};
+
+								request.onsuccess = function (event) {
+									const db = event.target.result;
+
+									// Access the "Profiles" object store
+									const transaction = db.transaction(['Profiles'], 'readwrite');
+									const objectStore = transaction.objectStore('Profiles');
+
+									// Use the delete() method to remove the value with the specified key
+									const deleteRequest = objectStore.delete(localStorage.getItem("t50-username"));
+
+									deleteRequest.onsuccess = function (event) {
+										console.log("Value selfuser deleted successfully");
+										loadPFPget(localStorage.getItem("t50-username"))
+											.then(image => {
+												document.getElementById("usr-img").src = image
+												document.getElementById("profile-pfp").src = image
+											}).catch(error => {
+												console.error("No local self image found:", error);
+											});
+									};
+
+									deleteRequest.onerror = function (event) {
+										console.log("Error deleting value selfuser");
+									};
+								};
+							} else {
+								document.getElementById("usr-img").src = image
+								document.getElementById("profile-pfp").src = image
+							}
+						})
+				}, 2000)
+
+			}
+
+		})
+		.catch(error => {
+			console.error(error);
+		});
 }
 
 function cancelDSC() {
@@ -6627,7 +6755,7 @@ function searchPFP() {
 			document.getElementById("dsc-img").src = pfp
 			$("#dsc-txt").fadeOut("fast")
 			$("#dsc-verify").fadeOut("fast")
-			$("#dsc-id").fadeOut("fast", function() {
+			$("#dsc-id").fadeOut("fast", function () {
 				$("#dsc-img").fadeIn("fast")
 				$("#dsc-txt2").fadeIn("fast")
 				$("#dsc-confirm").fadeIn("fast")

@@ -1,0 +1,80 @@
+@font-face {
+    font-family: "SF";
+    src: url('SFUIText-Medium.ttf');
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "SF", sans-serif;
+    background-color: #121212;
+    color: white;
+}
+
+.navbar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 90px;
+    background-color: #2c2c2c;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 1;
+    box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #b3b3b3;
+    font-size: 12px;
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+}
+
+.nav-item i, .nav-item img {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.nav-item.active {
+    color: #a259ff;
+}
+
+.nav-item.active i, .nav-item.active img {
+    color: #a259ff;
+}
+
+.nav-item img.profile-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+}
+
+.nav-item span {
+    margin-top: 2px;
+}
+
+.settings {
+    position: relative;
+    bottom: 15px; /* Adjust as needed to position the icon */
+}
+
+.settings .circle {
+    background: linear-gradient(135deg, #a259ff, #7a00ff);
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px; /* Adjust size as needed */
+    height: 50px; /* Adjust size as needed */
+}
+
+.settings .circle i {
+    color: white;
+    font-size: 24px; /* Adjust size as needed */
+}

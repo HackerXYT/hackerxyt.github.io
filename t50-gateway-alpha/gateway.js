@@ -436,10 +436,10 @@ function setup() {
       })
       .then(data => {
         if (data !== "Error") {
-          OneSignalDeferred.push(function () {
-            const tologin = `${localStorage.getItem("t50-username")}${data}`
-            OneSignal.login(tologin);
-          });
+          //OneSignalDeferred.push(function () {
+          //  const tologin = `${localStorage.getItem("t50-username")}${data}`
+          //  OneSignal.login(tologin);
+          //});
           localStorage.setItem("florida_init_registered", `${localStorage.getItem("t50-username")}${data}`)
           localStorage.setItem("florida_init", true)
         } else {
