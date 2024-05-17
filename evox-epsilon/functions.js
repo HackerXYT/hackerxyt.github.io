@@ -427,6 +427,7 @@ function skip() {
 }
 
 function custombg() {
+	return;
 	document.getElementById("st1").style.display = ""
 	document.getElementById("st2").style.display = ""
 	document.getElementById("st3").style.display = ""
