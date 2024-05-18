@@ -848,6 +848,7 @@ function docready(merge) {
               if (data === "Complete") {
                 $("#loading-bar").fadeOut("slow")
                 lockMe()
+                sessionStorage.setItem("unlocked", "true")
                 //setup() is old
               }
             }).catch(error => {
