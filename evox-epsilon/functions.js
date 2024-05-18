@@ -290,10 +290,6 @@ function switchNAV(element) {
 				show_notif()
 
 				//slide from right to left
-			} else if (currScreen === "Profile") {
-
-
-				//slide from left to right
 			} else if (currScreen === "Chats") {
 				secureline.classList.remove("active")
 				notifications.classList.remove("slideL-R")
@@ -303,6 +299,7 @@ function switchNAV(element) {
 				show_notif()
 				//slide from left to right
 			} else if (currScreen === "Profile") {
+				//slide from left to right
 				return;
 			}
 		} else if (goTo === "Home") {
@@ -939,7 +936,7 @@ function settings() {
 		}
 		document.getElementById('notifications').style.filter = 'blur(20px)'
 		document.getElementById('secureline').style.filter = 'blur(20px)'
-		document.getElementById('main_settings').style.filter = 'blur(20px)'
+		document.getElementById('myAcc').style.filter = 'blur(20px)'
 		document.getElementById('gateway').style.filter = 'blur(20px)'; // Add a blur effect to the mainContent
 		//$("#bottom-logo").fadeIn("slow")
 		//$("#settings").fadeOut("slow")
@@ -965,7 +962,7 @@ function settings() {
 
 		document.getElementById('notifications').style.filter = 'none'
 		document.getElementById('secureline').style.filter = 'none'
-		document.getElementById('main_settings').style.filter = 'none'
+		document.getElementById('myAcc').style.filter = 'none'
 		document.getElementById('gateway').style.filter = 'none'; // Add a blur effect to the mainContent
 		//$("#bottom-logo").fadeOut("slow", function () {
 		//$("#settings").fadeIn("slow")
@@ -1176,6 +1173,17 @@ function show_authip() {
 		//return;
 	} else {
 		//ipv4-list
+		var ipv4List = document.getElementById("ipv4-list");
+		ipv4List.innerHTML = `<div class="loading loading--circle" id="load-notifications" title="Loading">
+		<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+			y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+			<path fill="#fff"
+				d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+				<animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+					to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+			</path>
+		</svg>
+	</div>`
 		fetch(`https://data.evoxs.xyz/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 			.then(response => {
 				if (!response.ok) {
@@ -3551,11 +3559,11 @@ function show_notif(nosound, reload) {
 	//navigator("notifications")
 	//document.getElementById('gateway').style.filter = 'blur(25px)'
 	$("#miniLoading").fadeIn("slow")
-	if(!localStorage.getItem("lastReceivedNotifications")) {
+	if (!localStorage.getItem("lastReceivedNotifications")) {
 		$("#load-container").fadeIn("fast")
 		$("#notif_container").fadeOut("fast")
 	}
-	
+
 	fetch(`https://data.evoxs.xyz/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
@@ -3588,26 +3596,26 @@ function show_notif(nosound, reload) {
 			if (localStorage.getItem("lastReceivedNotifications") === data && container.innerHTML.includes("apple-button") === true) {
 				console.log("No new notifications |FLR")
 				console.log(container.innerHTML.includes("apple-button"), "|FLR")
-				$("#load-container").fadeOut("fast", function() {
+				$("#load-container").fadeOut("fast", function () {
 					$("#notif_container").fadeIn("fast")
 				})
 				$("#miniLoading").fadeOut("slow")
 				return;
 			} else {
-				if(container.innerHTML.includes("apple-button") === true) {
-					$("#notif_container").fadeOut("fast", function() {
-						$("#load-container").fadeIn("fast", function() {
+				if (container.innerHTML.includes("apple-button") === true) {
+					$("#notif_container").fadeOut("fast", function () {
+						$("#load-container").fadeIn("fast", function () {
 							$("#load-container").fadeOut("fast")
 						})
-						
+
 					})
 				}
-				
-				
+
+
 				console.log("New Notifications |FLR")
 				container.innerHTML = "";
 				localStorage.setItem("lastReceivedNotifications", data)
-				
+
 			}
 
 			let jsonData = JSON.parse(data);
@@ -3666,11 +3674,11 @@ function show_notif(nosound, reload) {
 				transparentPlaceholder.className = "transparent-placeholder";
 				container.parentNode.appendChild(transparentPlaceholder);
 				$("#miniLoading").fadeOut("slow")
-				$("#load-container").fadeOut("fast", function() {
+				$("#load-container").fadeOut("fast", function () {
 					$("#notif_container").fadeIn("fast")
 				})
-				
-				
+
+
 			}).catch(error => {
 				console.error(error);
 			});
@@ -3994,7 +4002,7 @@ slider.oninput = function () {
 
 function removeIP(element) {
 	$("#authip_back_btn").fadeOut("fast", function () {
-		document.getElementById("authips").style.filter = "blur(10px)"
+		document.getElementById("myAcc").style.filter = "blur(10px)"
 		document.getElementById("removeIP_box").classList.add("active")
 		const ip = element.innerHTML
 		console.log("IP", ip)
@@ -4007,7 +4015,7 @@ function removeIP(element) {
 
 function cancel_ipremove() {
 
-	document.getElementById("authips").style.filter = ""
+	document.getElementById("myAcc").style.filter = ""
 	document.getElementById("removeIP_box").classList.remove("active")
 	setTimeout(function () {
 		$("#authip_back_btn").fadeIn("fast", function () {
@@ -5566,132 +5574,132 @@ function profilesLocal(username, img) {
 
 
 function checkUsernameAndGetData(username, getDataCallback) {
-    let request = window.indexedDB.open('EvoxSocial'); // Change version number to 2
+	let request = window.indexedDB.open('EvoxSocial'); // Change version number to 2
 
-    request.onerror = function (event) {
-        console.log("Database error:", event.target.error);
-    };
+	request.onerror = function (event) {
+		console.log("Database error:", event.target.error);
+	};
 
-    request.onsuccess = function (event) {
-        // Database has been opened successfully
-        let db = event.target.result;
+	request.onsuccess = function (event) {
+		// Database has been opened successfully
+		let db = event.target.result;
 
-        if (!db.objectStoreNames.contains('Profiles')) {
-            // If the 'Profiles' object store doesn't exist, create it
-            let version = db.version + 1;
-            db.close(); // Close the database to perform the upgrade
+		if (!db.objectStoreNames.contains('Profiles')) {
+			// If the 'Profiles' object store doesn't exist, create it
+			let version = db.version + 1;
+			db.close(); // Close the database to perform the upgrade
 
-            let upgradeRequest = window.indexedDB.open('EvoxSocial', version);
+			let upgradeRequest = window.indexedDB.open('EvoxSocial', version);
 
-            upgradeRequest.onerror = function (event) {
-                console.log("Database upgrade error:", event.target.error);
-            };
+			upgradeRequest.onerror = function (event) {
+				console.log("Database upgrade error:", event.target.error);
+			};
 
-            upgradeRequest.onupgradeneeded = function (event) {
-                // Create the 'Profiles' object store
-                let db = event.target.result;
-                db.createObjectStore('Profiles', { keyPath: 'username' });
-            };
+			upgradeRequest.onupgradeneeded = function (event) {
+				// Create the 'Profiles' object store
+				let db = event.target.result;
+				db.createObjectStore('Profiles', { keyPath: 'username' });
+			};
 
-            upgradeRequest.onsuccess = function (event) {
-                console.log("Object store 'Profiles' created.");
-                // After creating the object store, retry retrieving data
-                checkUsernameAndGetData(username, getDataCallback);
-            };
-        } else {
-            // If the 'Profiles' object store exists, proceed with retrieving data
-            let transaction = db.transaction(['Profiles'], 'readonly');
-            let objectStore = transaction.objectStore('Profiles');
-            let getRequest = objectStore.get(username);
+			upgradeRequest.onsuccess = function (event) {
+				console.log("Object store 'Profiles' created.");
+				// After creating the object store, retry retrieving data
+				checkUsernameAndGetData(username, getDataCallback);
+			};
+		} else {
+			// If the 'Profiles' object store exists, proceed with retrieving data
+			let transaction = db.transaction(['Profiles'], 'readonly');
+			let objectStore = transaction.objectStore('Profiles');
+			let getRequest = objectStore.get(username);
 
-            getRequest.onsuccess = function (event) {
-                let result = event.target.result;
-                if (result) {
-                    // Username exists, run the getDataCallback function to retrieve the data
-                    getDataCallback(null, result);
-                } else {
-                    getDataCallback(null, "None");
-                    console.log("Username not found: " + username);
-                }
-            };
+			getRequest.onsuccess = function (event) {
+				let result = event.target.result;
+				if (result) {
+					// Username exists, run the getDataCallback function to retrieve the data
+					getDataCallback(null, result);
+				} else {
+					getDataCallback(null, "None");
+					console.log("Username not found: " + username);
+				}
+			};
 
-            getRequest.onerror = function (event) {
-                console.log("Error checking username:", event.target.error);
-            };
-        }
-    };
+			getRequest.onerror = function (event) {
+				console.log("Error checking username:", event.target.error);
+			};
+		}
+	};
 }
 
 
 
 function loadPFP(username, idsuffix) {
-    checkUsernameAndGetData(username, function (error, data) {
-        if (error) {
-            console.error(error);
-        } else {
-            console.log("Retrieved data:", data);
-            const imgElement = document.getElementById(`${username}${idsuffix}`);
-            if (!imgElement) {
-                console.error(`Element with id ${username}${idsuffix} not found.`);
+	checkUsernameAndGetData(username, function (error, data) {
+		if (error) {
+			console.error(error);
+		} else {
+			console.log("Retrieved data:", data);
+			const imgElement = document.getElementById(`${username}${idsuffix}`);
+			if (!imgElement) {
+				console.error(`Element with id ${username}${idsuffix} not found.`);
 				console.log("Retrying..")
 				loadPFP(username, idsuffix)
-                return;
-            }
+				return;
+			}
 
-            if (data !== "None") {
-                console.log("Loading from localDB");
-                imgElement.src = data.data;
-                //Check if update is needed
-                //disabled due to datacenter overload
-                return;
-                fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        return response.text();
-                    })
-                    .then(profileimage => {
-                        if (profileimage.indexOf("base64") === -1) {
-                            // If it doesn't contain "base64", add the prefix
-                            console.log("Fixing Base64");
-                            profileimage = "data:image/jpeg;base64," + profileimage;
-                        }
-                        if (profileimage === data.data) {
-                            console.log("Profile Picture Appears to be the same as Db");
-                        } else {
-                            profilesLocal(username, profileimage);
-                            imgElement.src = profileimage;
-                            console.log("Updating!");
-                        }
-                    }).catch(error => {
-                        console.error("Cannot set src for", username);
-                        console.error(error);
-                    });
-            } else {
-                console.log("Loading from server");
-                fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        return response.text();
-                    })
-                    .then(profileimage => {
-                        if (profileimage.indexOf("base64") === -1) {
-                            // If it doesn't contain "base64", add the prefix
-                            console.log("Fixing Base64");
-                            profileimage = "data:image/jpeg;base64," + profileimage;
-                        }
-                        imgElement.src = profileimage;
-                        profilesLocal(username, profileimage);
-                    }).catch(error => {
-                        console.error("Cannot set src for", username);
-                        console.error(error);
-                    });
-            }
-        }
-    });
+			if (data !== "None") {
+				console.log("Loading from localDB");
+				imgElement.src = data.data;
+				//Check if update is needed
+				//disabled due to datacenter overload
+				return;
+				fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+						return response.text();
+					})
+					.then(profileimage => {
+						if (profileimage.indexOf("base64") === -1) {
+							// If it doesn't contain "base64", add the prefix
+							console.log("Fixing Base64");
+							profileimage = "data:image/jpeg;base64," + profileimage;
+						}
+						if (profileimage === data.data) {
+							console.log("Profile Picture Appears to be the same as Db");
+						} else {
+							profilesLocal(username, profileimage);
+							imgElement.src = profileimage;
+							console.log("Updating!");
+						}
+					}).catch(error => {
+						console.error("Cannot set src for", username);
+						console.error(error);
+					});
+			} else {
+				console.log("Loading from server");
+				fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+						return response.text();
+					})
+					.then(profileimage => {
+						if (profileimage.indexOf("base64") === -1) {
+							// If it doesn't contain "base64", add the prefix
+							console.log("Fixing Base64");
+							profileimage = "data:image/jpeg;base64," + profileimage;
+						}
+						imgElement.src = profileimage;
+						profilesLocal(username, profileimage);
+					}).catch(error => {
+						console.error("Cannot set src for", username);
+						console.error(error);
+					});
+			}
+		}
+	});
 }
 
 

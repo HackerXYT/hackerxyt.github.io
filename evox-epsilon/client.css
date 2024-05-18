@@ -65,6 +65,7 @@
   transform: translateY(50%);
   /* Initially off-screen to the left */
   transition: transform 0.7s ease, opacity 0.5s ease, visibility 0.5s;
+  z-index: 999;
 }
 
 .navbar.active {
@@ -444,8 +445,8 @@ img {
   touch-action: auto;
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
-  /* Semi-transparent black overlay 
-  z-index: 999;*/
+  /* Semi-transparent black overlay */
+  z-index: 998;
   box-sizing: border-box;
   /* Include padding in the element's total width and height */
   box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
@@ -456,7 +457,7 @@ img {
   /* Initially hidden */
   transform: translateY(50%);
   /* Initially off-screen to the left */
-  transition: transform 0.7s ease, opacity 0.5s ease, visibility 0.5s;
+  transition: transform 1s ease, opacity 1s ease, visibility 1s;
   /* Transition for sliding effect, opacity, and visibility */
 }
 
@@ -841,7 +842,7 @@ a {
 .gateway {
   overflow: hidden;
   touch-action: none;
-  transition: filter 0.5s ease-in-out;
+  transition: filter 1s ease-in;
 }
 
 #lockscreen {
@@ -2575,4 +2576,3 @@ a {
     transform: scale(1);
   }
 }
-
