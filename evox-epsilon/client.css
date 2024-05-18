@@ -1,11 +1,12 @@
-
 @font-face {
   font-family: "SF";
   src: url('SFUIText-Medium.ttf');
 }
+
 @font-face {
   font-family: 'SFLight';
-  src: url('./internal/SFProDisplay-Light.ttf') format('truetype'); /* Adjust path and format */
+  src: url('./internal/SFProDisplay-Light.ttf') format('truetype');
+  /* Adjust path and format */
 }
 
 
@@ -122,16 +123,42 @@
 }
 
 .settings .circle {
-  background: linear-gradient(135deg, #a259ff, #7a00ff);
+  background: radial-gradient(#795dce, #2d1968);
   border-radius: 50%;
   padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 50px;
-  /* Adjust size as needed */
   height: 50px;
-  /* Adjust size as needed */
+  transition: transform 0.3s ease; /* Transition for smooth animation */
+}
+
+.settings .circle:active {
+  animation: pulse 0.3s ease;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(0.9);
+  }
+  35% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(0.7);
+  }
+  75% {
+    transform: scale(0.8);
+  }
+  95% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .settings .circle svg {
@@ -169,7 +196,7 @@ body {
   padding: 0;
   min-height: 100vh;
   background: #000000;
-  
+
   position: fixed;
   width: 100%;
 
@@ -366,11 +393,12 @@ img {
     justify-content: center;
     text-align: center;
   }
+
   .apple-button-withicon {
-    align-items: center; 
-    position:absolute;
+    align-items: center;
+    position: absolute;
     left: 26.5%;
-    
+
     justify-content: center;
     text-align: center;
     width: 90%;
@@ -382,7 +410,7 @@ img {
     text-align: center;
     width: 90%;
     max-width: 40%;
-    position:absolute;
+    position: absolute;
     left: 26.5%;
   }
 
@@ -729,6 +757,8 @@ a {
 }
 
 #greet {
+  /*top: 0;
+  position: absolute;*/
   margin-bottom: 5px;
   background: #fff;
   -webkit-background-clip: text;
@@ -823,14 +853,14 @@ a {
 
 .foryou {
   height: 260px;
-  width:461px;
-  bottom:0;
+  width: 461px;
+  bottom: 0;
   background-color: #00000060;
   display: flex;
   position: fixed;
   flex-direction: column;
   transition: transform 0.4s ease, opacity 0.4s ease, visibility 0.4s;
-  
+
 }
 
 .foryou.hidden {
@@ -847,17 +877,21 @@ a {
 
 .foryou p.titleit {
   margin-left: 15px;
-  margin: 0; /* Remove default margins */
-  padding: 0; /* Remove default padding */
+  margin: 0;
+  /* Remove default margins */
+  padding: 0;
+  /* Remove default padding */
   font-size: large;
-  
+
 }
 
 .foryou p.detail {
-  margin: 0; /* Remove default margins */
-  padding: 0; /* Remove default padding */
+  margin: 0;
+  /* Remove default margins */
+  padding: 0;
+  /* Remove default padding */
   font-family: "SFLight";
-  font-stretch:wider;
+  font-stretch: wider;
   font-size: large;
 }
 
@@ -883,12 +917,15 @@ a {
   padding-left: 13px;
 
   display: flex;
-    align-items: center; /* Center vertically */
-    margin-bottom: 10px; /* Adjust spacing between notifications */
+  align-items: center;
+  /* Center vertically */
+  margin-bottom: 10px;
+  /* Adjust spacing between notifications */
 }
 
 .notification-content {
-  margin-left: 10px; /* Adjust this value as needed */
+  margin-left: 10px;
+  /* Adjust this value as needed */
 }
 
 @media only screen and (min-width: 768px) {
@@ -919,10 +956,13 @@ a {
   margin-top: 20px;
   display: none;
 }
+
 #zoomImage {
   transition: top 0.5s ease, left 0.5s ease;
-  transition: width 0.5s ease, height 0.5s ease; /* Add smooth transition for width and height */
+  transition: width 0.5s ease, height 0.5s ease;
+  /* Add smooth transition for width and height */
 }
+
 .rad-label {
   display: flex;
   align-items: center;
@@ -1081,6 +1121,7 @@ a {
   right: 20px;
   /* Adjust as needed */
 }
+
 @media only screen and (min-width: 769px) {
 
   /* Hide the .apple-button svg on devices with a minimum width of 769px or more (assumed to be PCs) */
@@ -1290,11 +1331,25 @@ a {
 }
 
 @keyframes shake {
-  0% { transform: translateY(0); }
-  25% { transform: translateY(0.1vw); }
-  50% { transform: translateY(-0.1vw); }
-  75% { transform: translateY(0.1vw); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+
+  25% {
+    transform: translateY(0.1vw);
+  }
+
+  50% {
+    transform: translateY(-0.1vw);
+  }
+
+  75% {
+    transform: translateY(0.1vw);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .notif_shake {
@@ -1302,9 +1357,17 @@ a {
 }
 
 @keyframes fadeBackground {
-  0% { background-color: rgb(35, 85, 68); }
-  50% { background-color: #33333370; }
-  100% { background-color: rgb(35, 85, 68); }
+  0% {
+    background-color: rgb(35, 85, 68);
+  }
+
+  50% {
+    background-color: #33333370;
+  }
+
+  100% {
+    background-color: rgb(35, 85, 68);
+  }
 }
 
 .fadeInOut {
@@ -1312,9 +1375,17 @@ a {
 }
 
 @keyframes fadeBackground-tl {
-  0% { background-color: #434343; }
-  50% { background-color: #333333; }
-  100% { background-color: #434343; }
+  0% {
+    background-color: #434343;
+  }
+
+  50% {
+    background-color: #333333;
+  }
+
+  100% {
+    background-color: #434343;
+  }
 }
 
 .fadeInOut-timeline {
@@ -1322,9 +1393,17 @@ a {
 }
 
 @keyframes fadeBackground-tl-new {
-  0% { background-color: #198c38; }
-  50% { background-color: #333333; }
-  100% { background-color: #198c38; }
+  0% {
+    background-color: #198c38;
+  }
+
+  50% {
+    background-color: #333333;
+  }
+
+  100% {
+    background-color: #198c38;
+  }
 }
 
 .fadeInOut-timeline-new {
@@ -1335,9 +1414,11 @@ a {
   0% {
     box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.7);
   }
+
   50% {
     box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0px rgba(255, 255, 255, 0);
   }
@@ -1350,13 +1431,16 @@ a {
   position: fixed;
   bottom: 286px;
   right: 35px;
-  width: 50px; /* Set width and height to make it a circle */
-  height: 50px; /* Set width and height to make it a circle */
+  width: 50px;
+  /* Set width and height to make it a circle */
+  height: 50px;
+  /* Set width and height to make it a circle */
   background-color: #33333370;
   border: none;
   color: #fff;
   font-size: 16px;
-  border-radius: 50%; /* Ensure border-radius is set to 50% to make it a circle */
+  border-radius: 50%;
+  /* Ensure border-radius is set to 50% to make it a circle */
   cursor: pointer;
   transition: background-color 0.3s ease, opacity 0.5s ease, transform 0.5s ease;
   opacity: 0;
@@ -1370,13 +1454,16 @@ a {
   position: fixed;
   top: 286px;
   right: 35px;
-  width: 50px; /* Set width and height to make it a circle */
-  height: 50px; /* Set width and height to make it a circle */
+  width: 50px;
+  /* Set width and height to make it a circle */
+  height: 50px;
+  /* Set width and height to make it a circle */
   background-color: #33333370;
   border: none;
   color: #fff;
   font-size: 16px;
-  border-radius: 50%; /* Ensure border-radius is set to 50% to make it a circle */
+  border-radius: 50%;
+  /* Ensure border-radius is set to 50% to make it a circle */
   cursor: pointer;
   transition: background-color 0.3s ease, opacity 0.5s ease, transform 0.5s ease;
   transform: translateY(20px);
@@ -1580,7 +1667,7 @@ a {
   scroll-behavior: smooth;
   touch-action: auto;
   justify-content: center;
-  background: rgba(33,34,41,255);
+  background: rgba(33, 34, 41, 255);
   /* Semi-transparent black overlay */
   z-index: 999;
   box-sizing: border-box;
@@ -2106,9 +2193,12 @@ a {
   display: flex;
   flex-direction: column;
   position: absolute;
-  left: 100%; /* Position the details to the right of the image */
-  top: 50%; /* Center vertically */
-  transform: translateY(-50%); /* Center vertically */
+  left: 100%;
+  /* Position the details to the right of the image */
+  top: 50%;
+  /* Center vertically */
+  transform: translateY(-50%);
+  /* Center vertically */
 }
 
 .user-name-rem {
@@ -2131,7 +2221,8 @@ a {
 
 .apple-button-notif {
   width: 80%;
-  padding-right: 100px; /* Width of delete option */
+  padding-right: 100px;
+  /* Width of delete option */
   transition: transform 0.3s ease;
 }
 
@@ -2139,26 +2230,32 @@ a {
 .delete-option {
   position: absolute;
   top: 0;
-  right: -100px; /* Hide delete option initially */
-  width: 100px; /* Width of delete option */
+  right: -100px;
+  /* Hide delete option initially */
+  width: 100px;
+  /* Width of delete option */
   height: 100%;
-  background-color: red; /* Adjust styling as needed */
+  background-color: red;
+  /* Adjust styling as needed */
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 8px;
   color: white;
   cursor: pointer;
-  transition: right 0.3s ease; /* Change transform to right */
+  transition: right 0.3s ease;
+  /* Change transform to right */
   height: 80%
 }
 
 .slide-container.active .apple-button {
-  transform: translateX(-100px); /* Width of delete option */
+  transform: translateX(-100px);
+  /* Width of delete option */
 }
 
 .slide-container.active .delete-option {
-  right: 0; /* Display delete option */
+  right: 0;
+  /* Display delete option */
 }
 
 .timeline {
@@ -2233,14 +2330,16 @@ a {
 
 .mergingInfo li {
   display: none;
-  margin:10px
+  margin: 10px
 }
 
 .horizontal-line {
   margin-left: 0;
   justify-content: left;
-  border-bottom: 1px solid black; /* Adjust thickness and color as needed */
-  width: 200%; /* Adjust width as needed */
+  border-bottom: 1px solid black;
+  /* Adjust thickness and color as needed */
+  width: 200%;
+  /* Adjust width as needed */
 }
 
 
@@ -2323,3 +2422,157 @@ a {
   transform: translateX(0);
   /* Slide the popup into view */
 }
+
+.loader {
+  --speed: 1000ms;
+  position: relative;
+  font-size: 2.5em;
+}
+
+.loader .tile {
+  color: #795dce;
+  width: 35px;
+  height: 35px;
+  -webkit-animation: var(--speed) ease infinite jump;
+          animation: var(--speed) ease infinite jump;
+  transform-origin: 0 100%;
+  will-change: transform;
+}
+
+.loader .tile::before {
+  content: "";
+  display: block;
+  width: inherit;
+  height: inherit;
+  border-radius: 40px;
+  background-color: currentColor;
+  -webkit-animation: var(--speed) ease-out infinite spin;
+          animation: var(--speed) ease-out infinite spin;
+  will-change: transform;
+}
+
+.loader::after {
+  content: "";
+  display: block;
+  width: 1.1em;
+  height: 0.2em;
+  background-color: rgba(192, 174, 174, 0.133);
+  border-radius: 60%;
+  position: absolute;
+  left: -0.05em;
+  bottom: -0.3em;
+  z-index: -1;
+  -webkit-animation: var(--speed) ease-in-out infinite shadow;
+          animation: var(--speed) ease-in-out infinite shadow;
+  filter: blur(0.02em);
+  will-change: transform filter;
+}
+
+@-webkit-keyframes jump {
+  0% {
+    transform: scaleY(1) translateY(0);
+  }
+  16% {
+    transform: scaleY(0.6) translateY(0);
+  }
+  22% {
+    transform: scaleY(1.2) translateY(-5%);
+  }
+  24%, 62% {
+    transform: scaleY(1) translateY(-33%);
+  }
+  66% {
+    transform: scaleY(1.2) translateY(0);
+  }
+  72% {
+    transform: scaleY(0.8) translateY(0);
+  }
+  88% {
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+@keyframes jump {
+  0% {
+    transform: scaleY(1) translateY(0);
+  }
+  16% {
+    transform: scaleY(0.6) translateY(0);
+  }
+  22% {
+    transform: scaleY(1.2) translateY(-5%);
+  }
+  24%, 62% {
+    transform: scaleY(1) translateY(-33%);
+  }
+  66% {
+    transform: scaleY(1.2) translateY(0);
+  }
+  72% {
+    transform: scaleY(0.8) translateY(0);
+  }
+  88% {
+    transform: scaleY(1) translateY(0);
+  }
+}
+@-webkit-keyframes spin {
+  0%, 18% {
+    transform: rotateZ(0);
+    border-radius: 0.15em;
+  }
+  38% {
+    border-radius: 0.25em;
+  }
+  66%, 100% {
+    transform: rotateZ(1turn);
+    border-radius: 0.15em;
+  }
+}
+@keyframes spin {
+  0%, 18% {
+    transform: rotateZ(0);
+    border-radius: 0.15em;
+  }
+  38% {
+    border-radius: 0.25em;
+  }
+  66%, 100% {
+    transform: rotateZ(1turn);
+    border-radius: 0.15em;
+  }
+}
+@-webkit-keyframes shadow {
+  0% {
+    transform: scale(1);
+    filter: blur(0.02em);
+  }
+  25%, 60% {
+    transform: scale(0.8);
+    filter: blur(0.06em);
+  }
+  70% {
+    transform: scale(1.1);
+    filter: blur(0.02em);
+  }
+  90% {
+    transform: scale(1);
+  }
+}
+@keyframes shadow {
+  0% {
+    transform: scale(1);
+    filter: blur(0.02em);
+  }
+  25%, 60% {
+    transform: scale(0.8);
+    filter: blur(0.06em);
+  }
+  70% {
+    transform: scale(1.1);
+    filter: blur(0.02em);
+  }
+  90% {
+    transform: scale(1);
+  }
+}
+

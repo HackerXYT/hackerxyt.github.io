@@ -278,6 +278,7 @@ function setupCrypt() {
     });
 }
 function setup() {
+
   //try {
   //  window.OneSignalDeferred = window.OneSignalDeferred || [];
   //  OneSignalDeferred.push(function (OneSignal) {
@@ -309,8 +310,9 @@ function setup() {
 
   console.log("RUNNING SETUP!")
   //$("#navigator").fadeIn("fast")
-  loadGrounds()
+  //loadGrounds()
   if (localStorage.getItem("New_ID0.92.1") !== "SEEN") {
+    return;
     document.getElementById("loading-text").innerHTML = "Waiting for user to read news."
     $("#loading-text").fadeOut("fast")
     $("#stuck").fadeOut("fast")
@@ -339,7 +341,7 @@ function setup() {
 
   let version;
   try {
-    log("Evox Gateway V:Epsilon 1.0", "cyan")
+    log("Evox Gateway V:Epsilon 2.0", "cyan")
     try {
       clearInterval(version)
     } catch {
@@ -347,7 +349,7 @@ function setup() {
     }
   } catch {
     version = setInterval(function () {
-      log("Evox Gateway V:Epsilon 1.0", "cyan")
+      log("Evox Gateway V:Epsilon 2.0", "cyan")
     }, 800)
   }
 
@@ -578,7 +580,7 @@ function setup() {
               }
               $("#apps").fadeIn("slow")
               $("#loading-apps-text").fadeOut("slow", function () {
-                const phrases = [
+                const OLDphrases = [
                   "Your Evox Applications are available below.",
                   "Find your Evox Applications listed below.",
                   "Below, you'll find your Evox Applications.",
@@ -589,6 +591,9 @@ function setup() {
                   "Displayed below are your Evox Applications.",
                   "Your Evox Applications await you below.",
                   "Below, you'll locate your Evox Applications."
+                ];
+                const phrases = [
+                  ""
                 ];
 
                 const randomIndex = Math.floor(Math.random() * phrases.length);
@@ -657,7 +662,7 @@ function docready(merge) {
   //}
 
   console.log('%c' + "Loading Out", `color: green; font-size: 16px; font-weight: normal;`)
-  document.getElementById("loading-text").innerHTML = `Storage initialized!<br>Now verifying account...`
+  //document.getElementById("loading-text").innerHTML = `Storage initialized!<br>Now verifying account...`
   console.log('%c' + "Text In", `color: cyan; font-size: 16px; font-weight: normal;`)
   let autologin = localStorage.getItem("t50-autologin")
   let loggedin = localStorage.getItem("t50-email")
@@ -720,7 +725,7 @@ function docready(merge) {
       })
       .then(data => {
         if (data.includes("Credentials Correct")) {
-          document.getElementById("loading-text").innerHTML = `Account Verified!`
+          //document.getElementById("loading-text").innerHTML = `Account Verified!`
           $("#loading-bar").fadeOut("slow")
           console.log('%c' + "Account Verified!", `color: green; font-size: 16px; font-weight: bold;`)
 
@@ -780,6 +785,7 @@ function docready(merge) {
                 if (sessionStorage.getItem("unlocked") === "true") {
                   setup()
                 } else {
+                  $("#loading-text").fadeOut("fast")
                   lockMe()
                   sessionStorage.setItem("unlocked", "true")
                 }

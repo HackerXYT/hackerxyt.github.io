@@ -235,7 +235,7 @@ function switchNAV(element) {
 	}
 
 	if (goTo === currScreen) {
-		if(currScreen === "Notifications" && !document.getElementById("notifications").classList.contains("active")) {
+		if (currScreen === "Notifications" && !document.getElementById("notifications").classList.contains("active")) {
 			switchNAV(element)
 		}
 		console.log("Cannot Go To The Same Place")
@@ -260,8 +260,8 @@ function switchNAV(element) {
 				secureline.classList.remove("secureline")
 				//secureline.classList.remove("slideL-R")
 				secureline.classList.add("slideR-L")
-				setTimeout(function() {
-					
+				setTimeout(function () {
+
 					secureline.classList.add("active")
 				}, 250)
 				//slide from left to right
@@ -273,7 +273,7 @@ function switchNAV(element) {
 				secureline.classList.add("slideL-R")
 				secureline.classList.add("active")
 				//slide from left to right
-			} else if(currScreen === "Profile") {
+			} else if (currScreen === "Profile") {
 				return;
 			}
 			setActive(goTo)
@@ -285,14 +285,14 @@ function switchNAV(element) {
 				notifications.classList.remove("slideR-L");
 				notifications.classList.add("slideL-R");
 				document.getElementById("gateway").classList.remove("active")
-					notifications.classList.add("active");
-					notifications.style.opacity = "1"
+				notifications.classList.add("active");
+				notifications.style.opacity = "1"
 				show_notif()
 
 				//slide from right to left
 			} else if (currScreen === "Profile") {
 
-				
+
 				//slide from left to right
 			} else if (currScreen === "Chats") {
 				secureline.classList.remove("active")
@@ -302,7 +302,7 @@ function switchNAV(element) {
 				notifications.style.opacity = "1"
 				show_notif()
 				//slide from left to right
-			} else if(currScreen === "Profile") {
+			} else if (currScreen === "Profile") {
 				return;
 			}
 		} else if (goTo === "Home") {
@@ -333,21 +333,22 @@ function switchNAV(element) {
 				document.getElementById("gateway").classList.add("active")
 				setActive(goTo)
 				//slide from left to right
-			} else if(currScreen === "Profile") {
+			} else if (currScreen === "Profile") {
 				document.getElementById("gateway").classList.add("active")
 				document.getElementById("myAcc").classList.remove("active")
-				
+
 			}
 			setActive(goTo)
-		} else if(goTo === "Profile") {
+		} else if (goTo === "Profile") {
 			setActive("Profile")
-			if(currScreen === "Home") {
+			if (currScreen === "Home") {
 				document.getElementById("gateway").classList.remove("active")
 				document.getElementById("myAcc").classList.add("active")
+				show_account()
 			} else {
 				return;
 			}
-			
+
 		}
 		currScreen = goTo
 		//sessionStorage.setItem("place", goTo)
@@ -577,7 +578,7 @@ function load(app) {
 			document.getElementById("launchApp").src = "PreloadApp.html"
 			$("#launchApp").fadeOut("slow")
 
-			$("#iframeContainer").fadeOut("slow", function() {
+			$("#iframeContainer").fadeOut("slow", function () {
 				document.getElementById("navbar").classList.add("active")
 			})
 			sessionStorage.removeItem("extRun")
@@ -591,7 +592,7 @@ function launchAppN(app) {
 		document.getElementById("launchApp").src = app
 	}, 1100)
 	$("#iframeContainer").fadeIn("slow")
-	$("#launchApp").fadeIn("slow", function() {
+	$("#launchApp").fadeIn("slow", function () {
 		document.getElementById("navbar").classList.remove("active")
 	})
 }
@@ -1277,7 +1278,7 @@ function show_authip() {
 
 function show_account() {
 	//account_show.play()
-	navigator("show_account")
+	//navigator("show_account")
 	console.log("Changing Screens to account")
 	document.getElementById("usr-email-opt").innerHTML = localStorage.getItem("t50-email")
 	document.getElementById("usr-name-opt").innerHTML = localStorage.getItem("t50-username")
@@ -1287,9 +1288,9 @@ function show_account() {
 		document.getElementById("usr-img-opt").src = document.getElementById("usr-img").src
 	}
 
-	$("#main_popup_settings").fadeOut("fast", function () {
-		$("#account_options").fadeIn("fast")
-	})
+	//$("#main_popup_settings").fadeOut("fast", function () {
+	//	$("#account_options").fadeIn("fast")
+	//})
 }
 
 function return_settings() {
@@ -2813,12 +2814,12 @@ function return_to_options(where) {
 		if (where === "security") {
 			$("#pswd_secure").fadeOut("fast", function () {
 				$("#main_settings").fadeIn("fast")
-				navigator("return_settings")
+				//navigator("return_settings")
 			})
 		} else if (where === "usr-emails") {
 			$("#username_email_icon_show").fadeOut("fast", function () {
 				$("#main_settings").fadeIn("fast")
-				navigator("return_settings")
+				//navigator("return_settings")
 			})
 		} else if (where === "add_friends") {
 			//$("#bottom-logo").fadeIn("fast")
@@ -2864,7 +2865,7 @@ function return_to_options(where) {
 		} else if (where === "authip") {
 			$("#authips").fadeOut("fast", function () {
 				$("#main_settings").fadeIn("fast")
-				navigator("return_settings")
+				//navigator("return_settings")
 			})
 		} else if (where === "bg_settings") {
 			$("#background_change_color").fadeOut("fast", function () {
@@ -2893,7 +2894,7 @@ function return_to_options(where) {
 		} else if (where === "cryptox") {
 			$("#cryptox_info").fadeOut("fast", function () {
 				$("#main_settings").fadeIn("fast")
-				navigator("return_settings")
+				//navigator("return_settings")
 			})
 		} else if (where === "coming") {
 			//$("#vox").fadeIn("fast")
@@ -3546,18 +3547,15 @@ function clearNotifications() {
 
 
 function show_notif(nosound, reload) {
+	console.log("Getting Account Notifications |FLR")
 	//navigator("notifications")
 	//document.getElementById('gateway').style.filter = 'blur(25px)'
-	document.getElementById("notif_container").innerHTML = `<div class="loading loading--circle" id="load-notifications" title="Loading">
-	<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-		y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
-		<path fill="#fff"
-			d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
-			<animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
-				to="360 25 25" dur="0.6s" repeatCount="indefinite" />
-		</path>
-	</svg>
-</div>`
+	$("#miniLoading").fadeIn("slow")
+	if(!localStorage.getItem("lastReceivedNotifications")) {
+		$("#load-container").fadeIn("fast")
+		$("#notif_container").fadeOut("fast")
+	}
+	
 	fetch(`https://data.evoxs.xyz/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
@@ -3566,9 +3564,10 @@ function show_notif(nosound, reload) {
 			return response.text();
 		})
 		.then(data => {
+			console.log("Successful Request |FLR")
 			//console.log(data);
 			var container = document.getElementById("notif_container");
-			container.innerHTML = "";
+
 			//if (!reload) {
 			//	animatedButton.classList.remove("fadeInOut")
 			//	animatedButton.innerHTML = `<svg id="notif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px" height="25px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
@@ -3586,10 +3585,35 @@ function show_notif(nosound, reload) {
 				container.appendChild(a);
 				return;
 			}
+			if (localStorage.getItem("lastReceivedNotifications") === data && container.innerHTML.includes("apple-button") === true) {
+				console.log("No new notifications |FLR")
+				console.log(container.innerHTML.includes("apple-button"), "|FLR")
+				$("#load-container").fadeOut("fast", function() {
+					$("#notif_container").fadeIn("fast")
+				})
+				$("#miniLoading").fadeOut("slow")
+				return;
+			} else {
+				if(container.innerHTML.includes("apple-button") === true) {
+					$("#notif_container").fadeOut("fast", function() {
+						$("#load-container").fadeIn("fast", function() {
+							$("#load-container").fadeOut("fast")
+						})
+						
+					})
+				}
+				
+				
+				console.log("New Notifications |FLR")
+				container.innerHTML = "";
+				localStorage.setItem("lastReceivedNotifications", data)
+				
+			}
+
 			let jsonData = JSON.parse(data);
 			var numNotifications = jsonData.notifications.length;
 			console.log(numNotifications)
-			
+
 			localStorage.setItem("notifications_seen", numNotifications)
 			var notifications = jsonData.notifications;
 			console.log(notifications);
@@ -3641,6 +3665,12 @@ function show_notif(nosound, reload) {
 				var transparentPlaceholder = document.createElement("div");
 				transparentPlaceholder.className = "transparent-placeholder";
 				container.parentNode.appendChild(transparentPlaceholder);
+				$("#miniLoading").fadeOut("slow")
+				$("#load-container").fadeOut("fast", function() {
+					$("#notif_container").fadeIn("fast")
+				})
+				
+				
 			}).catch(error => {
 				console.error(error);
 			});
@@ -4856,7 +4886,7 @@ function navigator(w, f) {
 	</svg>
 </div>`, authip = `
 
-<div id="authip_back_btn" onclick="return_to_options('authip')" class="circle">
+<div id="authip_back_btn" onclick="return_to_options('authip');navigator('sett_def')" class="circle">
 <svg xmlns="http://www.w3.org/2000/svg"
 xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
 version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
@@ -4925,7 +4955,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 			</g>
 		</g>
 	</svg>
-</div>`, username_email_icon_show = `<div id="hide_for_rememail" onclick="return_to_options('usr-emails')" class="circle">
+</div>`, username_email_icon_show = `<div id="hide_for_rememail" onclick="return_to_options('usr-emails');navigator('sett_def')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
 		version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
@@ -4962,7 +4992,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 			</g>
 		</g>
 	</svg>
-</div>`, password_secure = `<div onclick="return_to_options('security');navigator('username_email_icon_show')" class="circle">
+</div>`, password_secure = `<div onclick="return_to_options('security');navigator('sett_def')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
 		version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
@@ -4998,7 +5028,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 			</g>
 		</g>
 	</svg>
-</div>`, cryptox = `<div id="authip_back_btn" onclick="return_to_options('cryptox');navigator('username_email_icon_show')" class="circle">
+</div>`, cryptox = `<div id="authip_back_btn" onclick="return_to_options('cryptox');navigator('sett_def')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
 		version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
@@ -5132,7 +5162,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
             <path d="M8 12.5H13.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path>
         </svg>
 </div>`
-	const notifications_main = `<div onclick="notif_goback();navigator('show_account')" class="circle">
+	const notifications_main = `<div onclick="notif_goback();navigator('sett_def')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
@@ -5536,130 +5566,132 @@ function profilesLocal(username, img) {
 
 
 function checkUsernameAndGetData(username, getDataCallback) {
-	let request = window.indexedDB.open('EvoxSocial'); // Change version number to 2
+    let request = window.indexedDB.open('EvoxSocial'); // Change version number to 2
 
-	request.onerror = function (event) {
-		console.log("Database error:", event.target.error);
-	};
+    request.onerror = function (event) {
+        console.log("Database error:", event.target.error);
+    };
 
-	request.onsuccess = function (event) {
-		// Database has been opened successfully
-		let db = event.target.result;
+    request.onsuccess = function (event) {
+        // Database has been opened successfully
+        let db = event.target.result;
 
-		if (!db.objectStoreNames.contains('Profiles')) {
-			// If the 'Profiles' object store doesn't exist, create it
-			let version = db.version + 1;
-			db.close(); // Close the database to perform the upgrade
+        if (!db.objectStoreNames.contains('Profiles')) {
+            // If the 'Profiles' object store doesn't exist, create it
+            let version = db.version + 1;
+            db.close(); // Close the database to perform the upgrade
 
-			let upgradeRequest = window.indexedDB.open('EvoxSocial', version);
+            let upgradeRequest = window.indexedDB.open('EvoxSocial', version);
 
-			upgradeRequest.onerror = function (event) {
-				console.log("Database upgrade error:", event.target.error);
-			};
+            upgradeRequest.onerror = function (event) {
+                console.log("Database upgrade error:", event.target.error);
+            };
 
-			upgradeRequest.onupgradeneeded = function (event) {
-				// Create the 'Profiles' object store
-				let db = event.target.result;
-				db.createObjectStore('Profiles', { keyPath: 'username' });
-			};
+            upgradeRequest.onupgradeneeded = function (event) {
+                // Create the 'Profiles' object store
+                let db = event.target.result;
+                db.createObjectStore('Profiles', { keyPath: 'username' });
+            };
 
-			upgradeRequest.onsuccess = function (event) {
-				console.log("Object store 'Profiles' created.");
-				// After creating the object store, retry retrieving data
-				checkUsernameAndGetData(username, getDataCallback);
-			};
-		} else {
-			// If the 'Profiles' object store exists, proceed with retrieving data
-			let transaction = db.transaction(['Profiles'], 'readonly');
-			let objectStore = transaction.objectStore('Profiles');
-			let getRequest = objectStore.get(username);
+            upgradeRequest.onsuccess = function (event) {
+                console.log("Object store 'Profiles' created.");
+                // After creating the object store, retry retrieving data
+                checkUsernameAndGetData(username, getDataCallback);
+            };
+        } else {
+            // If the 'Profiles' object store exists, proceed with retrieving data
+            let transaction = db.transaction(['Profiles'], 'readonly');
+            let objectStore = transaction.objectStore('Profiles');
+            let getRequest = objectStore.get(username);
 
-			getRequest.onsuccess = function (event) {
-				let result = event.target.result;
-				if (result) {
-					// Username exists, run the getDataCallback function to retrieve the data
-					getDataCallback(null, result);
-				} else {
-					getDataCallback(null, "None");
-					console.log("Username not found: " + username);
-				}
-			};
+            getRequest.onsuccess = function (event) {
+                let result = event.target.result;
+                if (result) {
+                    // Username exists, run the getDataCallback function to retrieve the data
+                    getDataCallback(null, result);
+                } else {
+                    getDataCallback(null, "None");
+                    console.log("Username not found: " + username);
+                }
+            };
 
-			getRequest.onerror = function (event) {
-				console.log("Error checking username:", event.target.error);
-			};
-		}
-	};
+            getRequest.onerror = function (event) {
+                console.log("Error checking username:", event.target.error);
+            };
+        }
+    };
 }
 
 
 
 function loadPFP(username, idsuffix) {
-	checkUsernameAndGetData(username, function (error, data) {
-		if (error) {
-			console.error(error);
-		} else {
-			console.log("Retrieved data:", data);
-			if (data !== "None") {
-				console.log("Loading from localDB")
-				document.getElementById(`${username}${idsuffix}`).src = data.data
-				//Check if update is needed
-				//disabled due to datacenter overload
-				return;
-				fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-					.then(response => {
-						if (!response.ok) {
-							throw new Error(`HTTP error! Status: ${response.status}`);
-						}
-						return response.text();
-					})
-					.then(profileimage => {
-						if (profileimage.indexOf("base64") === -1) {
-							// If it doesn't contain "base64", add the prefix
-							console.log("Fixing Base64")
-							profileimage = "data:image/jpeg;base64," + profileimage;
-						}
-						if (profileimage === data.data) {
-							console.log("Profile Picture Appears to be the same as Db")
-						} else {
-							profilesLocal(username, profileimage)
-							document.getElementById(`${username}${idsuffix}`).src = profileimage
-							console.log("Updating!")
-						}
+    checkUsernameAndGetData(username, function (error, data) {
+        if (error) {
+            console.error(error);
+        } else {
+            console.log("Retrieved data:", data);
+            const imgElement = document.getElementById(`${username}${idsuffix}`);
+            if (!imgElement) {
+                console.error(`Element with id ${username}${idsuffix} not found.`);
+				console.log("Retrying..")
+				loadPFP(username, idsuffix)
+                return;
+            }
 
-
-
-					}).catch(error => {
-						console.error("Cannot set src for", username)
-						console.error(error)
-					})
-			} else {
-				console.log("Loading from server")
-				fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-					.then(response => {
-						if (!response.ok) {
-							throw new Error(`HTTP error! Status: ${response.status}`);
-						}
-						return response.text();
-					})
-					.then(profileimage => {
-						if (profileimage.indexOf("base64") === -1) {
-							// If it doesn't contain "base64", add the prefix
-							console.log("Fixing Base64")
-							profileimage = "data:image/jpeg;base64," + profileimage;
-						}
-						document.getElementById(`${username}${idsuffix}`).src = profileimage
-						profilesLocal(username, profileimage)
-
-
-					}).catch(error => {
-						console.error("Cannot set src for", username)
-						console.error(error)
-					})
-			}
-
-		}
-	});
+            if (data !== "None") {
+                console.log("Loading from localDB");
+                imgElement.src = data.data;
+                //Check if update is needed
+                //disabled due to datacenter overload
+                return;
+                fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(profileimage => {
+                        if (profileimage.indexOf("base64") === -1) {
+                            // If it doesn't contain "base64", add the prefix
+                            console.log("Fixing Base64");
+                            profileimage = "data:image/jpeg;base64," + profileimage;
+                        }
+                        if (profileimage === data.data) {
+                            console.log("Profile Picture Appears to be the same as Db");
+                        } else {
+                            profilesLocal(username, profileimage);
+                            imgElement.src = profileimage;
+                            console.log("Updating!");
+                        }
+                    }).catch(error => {
+                        console.error("Cannot set src for", username);
+                        console.error(error);
+                    });
+            } else {
+                console.log("Loading from server");
+                fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(profileimage => {
+                        if (profileimage.indexOf("base64") === -1) {
+                            // If it doesn't contain "base64", add the prefix
+                            console.log("Fixing Base64");
+                            profileimage = "data:image/jpeg;base64," + profileimage;
+                        }
+                        imgElement.src = profileimage;
+                        profilesLocal(username, profileimage);
+                    }).catch(error => {
+                        console.error("Cannot set src for", username);
+                        console.error(error);
+                    });
+            }
+        }
+    });
 }
 
 
@@ -6837,3 +6869,4 @@ function searchPFP() {
 			console.error(error);
 		});
 }
+

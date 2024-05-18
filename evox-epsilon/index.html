@@ -20,6 +20,9 @@
     <link rel="stylesheet" href="indicator.css">
     <script src="../scripts/howler.js"></script>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css'>
+    <link rel='stylesheet'
+        href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css'>
     <!--<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>-->
     <script defer>
         //if (window.location.href.includes("https://")) {
@@ -377,6 +380,7 @@
                 <div class="carousel-container" id="apps">
 
                 </div>
+                
                 <div id="buttons" style="display:none">
                     <button class="prev" onclick="prevSlide()">
                         <svg style="filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.447)); "
@@ -399,7 +403,7 @@
         </div>
     </div>
 
-    
+
 
 
     <!--<div class="gateway" style="display: none;" id="gateway">
@@ -764,6 +768,17 @@
                 </svg>
             </div>
         </div>
+        <a id="miniLoading" style="right:95px;top:50px;position: absolute;display: none;">
+            <svg width="25px" height="25px" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+                style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                <path fill="#fff"
+                    d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                    <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                        to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                </path>
+            </svg>
+        </a>
         <a onclick="clearNotifications()" style="right:50px;top:50px;position: absolute;">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" width="25px" height="25px" viewBox="-0.5 0 19 19"
@@ -795,6 +810,18 @@
             </div>
             <div class="delete-option">Delete</div>
         </div>-->
+        <div id="load-container">
+            <div class="loading loading--circle" id="load-notifications" title="Loading">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                    y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                    <path fill="#fff"
+                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                    </path>
+                </svg>
+            </div>
+        </div>
         <div id="notif_container"></div>
         <!--<a href="#" onclick="oneo()" class="apple-button" style="display: flex; align-items: center;">
             <div class="user-circle" style="margin-right: 10px;width: 50px;height: 50px;">
@@ -818,7 +845,7 @@
     </div>
 
     <div id="secureline" class="secureline">
-        <h3>SecureLine Chats</h3>
+        <h3>Chats</h3>
         <div onclick="getFriends('disablep')" style="right:50px;top:50px;position: absolute;">
             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -1036,9 +1063,9 @@
         class="bottom-logo">
     <img style="display: none;user-select: none;" id="bottom-logo-start" src="footer-in.png" alt="Another Logo"
         class="bottom-logo">
-        
+
     <div id="popup" class="popup">
-       
+
         <div id="background_change" style="display:none;overflow: auto;">
 
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Background</h3>
@@ -1844,22 +1871,19 @@
             </div>
             <div>
                 <a onclick="username_email_icon_show()" href="#" class="apple-button">Username & Emails<svg
-                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                        fill="none">
+                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path
                             d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                             fill="#666" />
                     </svg></a>
                 <a onclick="pswd_secure()" href="#" class="apple-button">Password & Security<svg
-                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                        fill="none">
+                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path
                             d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                             fill="#666" />
                     </svg></a>
                 <a onclick="show_authip()" href="#" class="apple-button">Logged In & IP Addresses<svg
-                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                        fill="none">
+                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path
                             d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                             fill="#666" />
@@ -1872,8 +1896,7 @@
                             fill="#666" />
                     </svg></a>
                 <a onclick="notifications_options()" href="#" class="apple-button">Manage Notifications<svg
-                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                        fill="none">
+                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path
                             d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                             fill="#666" />
@@ -1938,8 +1961,7 @@
         <div id="notifications_options" style="display:none">
 
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Notifications</h3>
-            <h5
-                style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
+            <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
                 Florida</h5><!--& Gateway-->
             <p style="margin: 6px" class="user-email">FLORIDA (Push Notifications)</p>
             <a onclick="getNShow(this)" href="#" class="apple-button-withicon"><img
@@ -2038,8 +2060,8 @@
                 </svg></a>
 
             <a href="#" id="hide_after_clear" onclick="clearflrd()" class="apple-button">Clear Florida Database
-                ⚠️<svg id="flrdclear_svg" style="display:none" xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 100 100" width="20px" height="20px">
+                ⚠️<svg id="flrdclear_svg" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
+                    width="20px" height="20px">
                     <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
                         <animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
                             repeatCount="indefinite" />
@@ -2065,8 +2087,7 @@
         <div id="cryptox-florida" style="display:none;overflow: auto;">
 
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Cryptox Notifications</h3>
-            <h5
-                style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
+            <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
                 Florida</h5>
             <p style="margin: 6px" class="user-email">OPERATIONS</p>
             <div href="#" id="" style="height: 50%" class="apple-button notif">Key & IV Refresh
@@ -2103,8 +2124,7 @@
         <div id="secureline-florida" style="display:none;overflow: auto;">
 
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Secureline Notifications</h3>
-            <h5
-                style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
+            <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
                 Florida</h5>
             <p style="margin: 6px" class="user-email">CHATS</p>
             <div href="#" id="" style="height: 50%" class="apple-button notif">Chat Creation
@@ -2141,8 +2161,7 @@
         <div id="tasco-florida" style="display:none;overflow: auto;">
 
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Tasco Notifications</h3>
-            <h5
-                style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
+            <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
                 Florida</h5>
             <p style="margin: 6px" class="user-email">TASKS</p>
             <div href="#" id="" style="height: 50%" class="apple-button notif">Personalized task completion
@@ -2195,8 +2214,7 @@
         <div id="gateway-florida" style="display:none;overflow: auto;">
 
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Gateway Notifications</h3>
-            <h5
-                style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
+            <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
                 Florida</h5>
             <p style="margin: 6px" class="user-email">ACCOUNT CHANGES</p>
             <div href="#" id="login_notifs" style="height: 50%" class="apple-button notif">Login to account
@@ -2359,8 +2377,8 @@
 
             <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Password & Security</h3>
             <a href="#" id="change_password" onclick="change_password()" style="height: 50%;color: #0083fe"
-                class="apple-button">Change Password<svg xmlns="http://www.w3.org/2000/svg" width="20px"
-                    height="20px" viewBox="0 0 24 24" fill="none">
+                class="apple-button">Change Password<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                    viewBox="0 0 24 24" fill="none">
                     <path
                         d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                         fill="#666" />
@@ -2390,7 +2408,7 @@
             <a href="#" style="height: 50%" class="apple-button">Account Recovery<span>Set Up</span></a>
             <p style="margin: 6px" class="user-email">If you forget your password, you have a few options to recover
                 your data.</p>
-                
+
         </div>
 
 
@@ -2786,15 +2804,17 @@
     <div class="notification-container" id="notification">
         Datacenter change is coming soon!<br>Prepare for downtimes..
     </div>
-    <div id="loading-div-text"
-        style="display: block;margin: 0;padding: 0;height: 100vh;position: relative;color: rgb(255, 255, 255)">
+    <div id="loading-div-text">
         <div id="loading-text"
-            style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);text-align: center;">
-            <p id="wait">Waiting For IP</p>
+            style="position: absolute;top: 50%;bottom:50%;left: 50%;transform: translate(-50%, -50%);text-align: center;">
+            <div class="loader">
+                <div class="tile"></div>
+            </div>
+
         </div>
     </div>
     <div style="display: block" id="loading" class="icon-container">
-        <div class="item">
+        <div style="display: none;" class="item">
             <i class="loader --2"></i>
         </div>
     </div>
@@ -2887,9 +2907,9 @@
             transform: translate(-50%, -50%);">
                 <img id="fullimage-src" src="" class="rounded-circle avatar-xs" alt="">
                 <!--<span class="user-status"></span>-->
-                
+
             </div>
-            
+
         </div>
     </div>
     <!--<div id="navigator"
@@ -2964,6 +2984,7 @@
             overflow: hidden;
         }
     </style>
+    <div style="display: none;" id="preNotif"><!--This Part Is Used For Checking New Notifications--></div>
 </body>
 
 
@@ -3061,6 +3082,7 @@
     //        }
     //    }, 1000)
 </script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js' defer></script>
 
 <script src='../scripts/iro.min.js'></script>
 <script src="./colors.js"></script>
