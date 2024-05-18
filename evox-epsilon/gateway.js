@@ -900,6 +900,7 @@ function docready(merge) {
           $("#loading-bar").fadeOut("slow")
           document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
           document.getElementById("loading-apps-text").innerHTML = `Servers are currently offline.`
+          document.getElementById("navbar").classList.add("active")
           try {
             critical.play()
           } catch {

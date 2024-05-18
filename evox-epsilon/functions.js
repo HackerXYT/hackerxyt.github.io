@@ -337,6 +337,7 @@ function switchNAV(element) {
 			}
 			setActive(goTo)
 		} else if (goTo === "Profile") {
+			$("#nav-Notifications-text").fadeOut("fast")
 			setActive("Profile")
 			if (currScreen === "Home") {
 				document.getElementById("gateway").classList.remove("active")
@@ -362,15 +363,15 @@ function setActive(option) {
 		d="M9 17.25C8.58579 17.25 8.25 17.5858 8.25 18C8.25 18.4142 8.58579 18.75 9 18.75H15C15.4142 18.75 15.75 18.4142 15.75 18C15.75 17.5858 15.4142 17.25 15 17.25H9Z"
 		fill="#000" />
 </svg>
-<span>Home</span>`
+<span style="display: none">Home</span>`
 	const chatsH = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
 	<path fill-rule="evenodd" clip-rule="evenodd"
 		d="M22 12C22 17.5228 17.5228 22 12 22C10.4003 22 8.88837 21.6244 7.54753 20.9565C7.19121 20.7791 6.78393 20.72 6.39939 20.8229L4.17335 21.4185C3.20701 21.677 2.32295 20.793 2.58151 19.8267L3.17712 17.6006C3.28001 17.2161 3.22094 16.8088 3.04346 16.4525C2.37562 15.1116 2 13.5997 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM12 7.25C12.4142 7.25 12.75 7.58579 12.75 8V16C12.75 16.4142 12.4142 16.75 12 16.75C11.5858 16.75 11.25 16.4142 11.25 16V8C11.25 7.58579 11.5858 7.25 12 7.25ZM8.75 10C8.75 9.58579 8.41421 9.25 8 9.25C7.58579 9.25 7.25 9.58579 7.25 10V14C7.25 14.4142 7.58579 14.75 8 14.75C8.41421 14.75 8.75 14.4142 8.75 14V10ZM16 9.25C16.4142 9.25 16.75 9.58579 16.75 10V14C16.75 14.4142 16.4142 14.75 16 14.75C15.5858 14.75 15.25 14.4142 15.25 14V10C15.25 9.58579 15.5858 9.25 16 9.25Z"
 		fill="#787676" />
 </svg>
-<span>Chats</span>`
+<span style="display: none">Chats</span>`
 	const notificationsH = `<i class="fas fa-bell"></i>
-<span>Notifications</span>`
+<span style="display: none">Notifications</span>`
 	const home = document.getElementById("nav-Home")
 	const chats = document.getElementById("nav-Chats")
 	const notifications = document.getElementById("nav-Notifications")
@@ -382,6 +383,7 @@ function setActive(option) {
 
 
 	if (option === "Home") {
+		$("#nav-Notifications-text").fadeOut("fast")
 		home.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
 		<path opacity="1"
 			d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z"
@@ -392,6 +394,7 @@ function setActive(option) {
 	</svg>
 	<span style="color: #cccccc">Home</span>`
 	} else if (option === "Chats") {
+		$("#nav-Notifications-text").fadeOut("fast")
 		chats.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
 		<path fill-rule="evenodd" clip-rule="evenodd"
 			d="M22 12C22 17.5228 17.5228 22 12 22C10.4003 22 8.88837 21.6244 7.54753 20.9565C7.19121 20.7791 6.78393 20.72 6.39939 20.8229L4.17335 21.4185C3.20701 21.677 2.32295 20.793 2.58151 19.8267L3.17712 17.6006C3.28001 17.2161 3.22094 16.8088 3.04346 16.4525C2.37562 15.1116 2 13.5997 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM12 7.25C12.4142 7.25 12.75 7.58579 12.75 8V16C12.75 16.4142 12.4142 16.75 12 16.75C11.5858 16.75 11.25 16.4142 11.25 16V8C11.25 7.58579 11.5858 7.25 12 7.25ZM8.75 10C8.75 9.58579 8.41421 9.25 8 9.25C7.58579 9.25 7.25 9.58579 7.25 10V14C7.25 14.4142 7.58579 14.75 8 14.75C8.41421 14.75 8.75 14.4142 8.75 14V10ZM16 9.25C16.4142 9.25 16.75 9.58579 16.75 10V14C16.75 14.4142 16.4142 14.75 16 14.75C15.5858 14.75 15.25 14.4142 15.25 14V10C15.25 9.58579 15.5858 9.25 16 9.25Z"
@@ -399,6 +402,7 @@ function setActive(option) {
 	</svg>
 	<span style="color: #cccccc">Chats</span>`
 	} else if (option === "Notifications") {
+		$("#nav-Notifications-text").fadeIn("fast")
 		notifications.style.color = "#cccccc"
 	}
 }
