@@ -6915,3 +6915,14 @@ function searchPFP() {
 		});
 }
 
+function bypassSetup() {
+	if (confirm('Are you sure you want to bypass normal setup?')) {
+  // Save it!
+  setup()
+  //console.log('Thing was saved to the database.');
+} else {
+  // Do nothing!
+  console.log('Thing was not saved to the client.');
+}
+
+}
