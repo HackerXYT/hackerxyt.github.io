@@ -303,6 +303,10 @@ let profint;
 function preloadSFriends() {
   $("#sline-container").fadeIn("slow");
   //$("#sline-container").fadeOut("fast");
+  if(!localStorage.getItem("t50-username")) {
+    console.warn("Logged Out! Secureline Preloading Stopped!")
+    return;
+  }
   fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
     .then(response => {
       if (!response.ok) {
@@ -324,7 +328,13 @@ function preloadSFriends() {
       } else {
         console.log(`${JSON.stringify(data)} != "[]" data isnt empty`);
       }
-      const user_requests = JSON.parse(data);
+      let user_requests;
+      try {
+        user_requests = JSON.parse(data);
+      } catch (error) {
+        console.warn("Data is empty")
+      }
+      
       console.log(user_requests)
       user_requests.sort(); // Sort the usernames alphabetically
       console.log(user_requests)

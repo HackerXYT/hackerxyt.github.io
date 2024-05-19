@@ -294,38 +294,36 @@ function setup() {
   //} catch (error) {
   //  console.error("Florida failed to load onesignal:", error);
   //}
-  setupCrypt()
+  try {
+    setupCrypt()
+  } catch {
+    alert("Cryptox Operations Failed")
+  }
+  
   //if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
   //  window.location.href = "./update/"
   //  return;
   //}
 
   if (localStorage.getItem("t50-username") === "papostol") {
-    $("#secureline-get").html("OPEN")
-    $("#mti-get").html("OPEN")
-    $("#transports-get").html("OPEN")
-    $("#emails-get").html("OPEN")
-    $("#dc-get").html("OPEN")
+    try {
+      $("#secureline-get").html("OPEN")
+      $("#mti-get").html("OPEN")
+      $("#transports-get").html("OPEN")
+      $("#emails-get").html("OPEN")
+      $("#dc-get").html("OPEN")
+    } catch (error) {
+      console.error(error)
+    }
+    
   }
 
   console.log("RUNNING SETUP!")
   //$("#navigator").fadeIn("fast")
   //loadGrounds()
-  if (localStorage.getItem("New_ID0.92.1") !== "SEEN") {
-    return;
-    document.getElementById("loading-text").innerHTML = "Waiting for user to read news."
-    $("#loading-text").fadeOut("fast")
-    $("#stuck").fadeOut("fast")
-    $("#EvoxMerge").fadeOut("fast")
-    $("#container").fadeOut("fast")
-    document.getElementById('gateway').style.filter = 'blur(25px)'
-    document.getElementById("whats_new").classList.add("active");
-    document.getElementById("navigator").style.display = "none"
-    return;
-  } else {
-    $("#loading-text").fadeIn("fast")
-    $("#stuck").fadeIn("fast")
-  }
+  
+  $("#loading-text").fadeIn("fast")
+  $("#stuck").fadeIn("fast")
   try {
     custombg()
   } catch {
@@ -783,11 +781,12 @@ function docready(merge) {
               if (data === "IP is Mapped") {
                 console.log("IP Mapped")
                 if (sessionStorage.getItem("unlocked") === "true") {
-                  setup()
+                  lockMe()
+                  //setup()
                 } else {
                   //$("#loading-text").fadeOut("fast")
-                  //lockMe()
-                  setup()
+                  lockMe()
+                  //setup()
                   sessionStorage.setItem("unlocked", "true")
                 }
 
@@ -834,7 +833,7 @@ function docready(merge) {
             }).catch(error => {
               console.error('Fetch error:', error);
             });
-          FloridaRun()
+          //FloridaRun()
         } else if (data.includes("IP Not Verified")) {
           $("#loading").fadeOut("slow")
           console.log('%c' + "Existing Account Verified! IP Not Mapped", `color: orange; font-size: 16px; font-weight: bold;`)
@@ -855,7 +854,7 @@ function docready(merge) {
             }).catch(error => {
               console.error('Fetch error:', error);
             });
-          FloridaRun()
+          //FloridaRun()
         } else {
           console.log('%c' + "Account Verification Failed!", `color: red; font-size: 20px; font-weight: bold;`)
           localStorage.removeItem("t50-email")
@@ -1493,7 +1492,7 @@ function login() {
           return;
         }
         setup()
-        FloridaRun()
+        //FloridaRun()
       } else if (data === "Credentials Incorrect") {
         fadeError("2")
         console.log("Wrong Email/Password")
@@ -1718,6 +1717,7 @@ function deleteLocal() {
 }
 
 function lockMe() {
+  $("#loading-text").fadeOut("slow")
   try {
     custombg()
   } catch {
@@ -1859,15 +1859,27 @@ function lockMe() {
         let n2Icon = document.getElementById("notif2Icon")
         let n2Title = document.getElementById("n2Title")
         let n2Desc = document.getElementById("n2Desc")
-
-        if (secondMaxNotification.image.includes("http")) {
-          n2Icon.src = secondMaxNotification.image
+        console.log("Second Max:", secondMaxNotification)
+        if(secondMaxNotification) {
+          if (secondMaxNotification.image.includes("http")) {
+            n2Icon.src = secondMaxNotification.image
+          } else {
+            loadPFPget(secondMaxNotification.image).then((exist) => {
+              n2Icon.src = exist
+            })
+  
+          }
         } else {
-          loadPFPget(secondMaxNotification.image).then((exist) => {
-            n2Icon.src = exist
-          })
-
+          document.getElementById("notification2").style.display = "none"
+          document.getElementById('foryou').style.height = "150px"
+          setTimeout(function() {
+            document.getElementById('foryou').classList.remove('hidden')
+          }, 100)
+          
+          
+          return;
         }
+        
 
         n2Title.innerHTML = secondMaxNotification.app
         n2Desc.innerHTML = secondMaxNotification.content
