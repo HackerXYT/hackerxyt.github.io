@@ -236,6 +236,7 @@ function FloridaRun() {
 
 }
 
+
 function greetUser() {
   const currentTime = new Date();
   const currentHour = currentTime.getHours();
@@ -299,7 +300,7 @@ function setup() {
   } catch {
     alert("Cryptox Operations Failed")
   }
-  
+
   //if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
   //  window.location.href = "./update/"
   //  return;
@@ -315,13 +316,13 @@ function setup() {
     } catch (error) {
       console.error(error)
     }
-    
+
   }
 
   console.log("RUNNING SETUP!")
   //$("#navigator").fadeIn("fast")
   //loadGrounds()
-  
+
   $("#loading-text").fadeIn("fast")
   $("#stuck").fadeIn("fast")
   try {
@@ -410,7 +411,7 @@ function setup() {
             //animatedButton.innerHTML = `<svg id="notif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px" height="25px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
             //<path stroke="#fff" stroke-width="2" class="clr-i-outline--badged clr-i-outline-path-1--badged" d="M18,34.28A2.67,2.67,0,0,0,20.58,32H15.32A2.67,2.67,0,0,0,18,34.28Z"/><path class="clr-i-outline--badged clr-i-outline-path-2--badged" d="M32.51,27.83A14.4,14.4,0,0,1,30,24.9a12.63,12.63,0,0,1-1.35-4.81V15.15a10.92,10.92,0,0,0-.16-1.79,7.44,7.44,0,0,1-2.24-.84,8.89,8.89,0,0,1,.4,2.64v4.94a14.24,14.24,0,0,0,1.65,5.85,16.17,16.17,0,0,0,2.44,3H5.13a16.17,16.17,0,0,0,2.44-3,14.24,14.24,0,0,0,1.65-5.85V15.15A8.8,8.8,0,0,1,18,6.31a8.61,8.61,0,0,1,4.76,1.44A7.49,7.49,0,0,1,22.5,6c0-.21,0-.42,0-.63a10.58,10.58,0,0,0-3.32-1V3.11a1.33,1.33,0,1,0-2.67,0V4.42A10.81,10.81,0,0,0,7.21,15.15v4.94A12.63,12.63,0,0,1,5.86,24.9a14.4,14.4,0,0,1-2.47,2.93,1,1,0,0,0-.34.75v1.36a1,1,0,0,0,1,1h27.8a1,1,0,0,0,1-1V28.58A1,1,0,0,0,32.51,27.83Z"/><circle class="clr-i-outline--badged clr-i-outline-path-1--badged clr-i-badge" cx="30" cy="6" r="5"/>
             //<rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
-        //</svg>`
+            //</svg>`
             //setTimeout(function () {
             //  animatedButton.style.opacity = "1";
             //  animatedButton.style.transform = "translateY(0)";
@@ -567,7 +568,6 @@ function setup() {
               const styles = `color: #766ee6; font-size: 19px; font-weight: normal;`;
               console.log('%c' + "Enabling Tasco", styles)
               document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="https://evoxs.xyz/tasco/tasco-app.png" class="app"></img></a>`
-              
               console.log("Enabling SecureLine")
               //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('secureline')" href="#loadapp-secureline"><img src="./secureline/sline.png" class="app"></img></a>`
               if (localStorage.getItem("t50-username") === "papostol") {
@@ -1860,26 +1860,26 @@ function lockMe() {
         let n2Title = document.getElementById("n2Title")
         let n2Desc = document.getElementById("n2Desc")
         console.log("Second Max:", secondMaxNotification)
-        if(secondMaxNotification) {
+        if (secondMaxNotification) {
           if (secondMaxNotification.image.includes("http")) {
             n2Icon.src = secondMaxNotification.image
           } else {
             loadPFPget(secondMaxNotification.image).then((exist) => {
               n2Icon.src = exist
             })
-  
+
           }
         } else {
           document.getElementById("notification2").style.display = "none"
           document.getElementById('foryou').style.height = "150px"
-          setTimeout(function() {
+          setTimeout(function () {
             document.getElementById('foryou').classList.remove('hidden')
           }, 100)
-          
-          
+
+
           return;
         }
-        
+
 
         n2Title.innerHTML = secondMaxNotification.app
         n2Desc.innerHTML = secondMaxNotification.content
@@ -1900,3 +1900,186 @@ function lockMe() {
 
 
 }
+
+
+
+const swipeAreaChats = document.getElementById('secureline');
+
+let touchstartXChats = 0;
+let touchendXChats = 0;
+
+function handleGestureChats() {
+  const distance = touchendXChats - touchstartXChats;
+
+  if (distance > 50) { // Left-to-right swipe
+    console.log('Swiped from left to right');
+    // Run your desired function for left-to-right swipe here
+    let secureline = document.getElementById("secureline")
+    if (secureline.classList.contains("slideL-R")) {
+      secureline.classList.remove("slideL-R")
+      secureline.classList.add("slideR-L")
+    } else {
+      secureline.classList.remove("slideR-L")
+      secureline.classList.add("slideL-R")
+    }
+    secureline.classList.remove("active")
+
+    document.getElementById("gateway").classList.add("active")
+    setActive("Home")
+    currScreen = "Home"
+    //alert('Swiped from left to right');
+  } else if (distance < -50) { // Right-to-left swipe
+    let secureline = document.getElementById("secureline")
+    let notifications = document.getElementById("notifications")
+    console.log('Swiped from right to left');
+    secureline.classList.remove("active")
+    notifications.classList.remove("slideL-R")
+    notifications.classList.add("slideR-L")
+    notifications.classList.add("active")
+    notifications.style.opacity = "1"
+    show_notif()
+    setActive("Notifications")
+    currScreen = "Notifications"
+  }
+}
+
+swipeAreaChats.addEventListener('touchstart', (event) => {
+  touchstartXChats = event.changedTouches[0].screenX;
+});
+
+swipeAreaChats.addEventListener('touchend', (event) => {
+  touchendXChats = event.changedTouches[0].screenX;
+  handleGestureChats();
+});
+
+
+
+
+
+const swipeAreaHome1 = document.getElementById('gateway');
+
+let touchstartXHome1 = 0;
+let touchendXHome1 = 0;
+
+function handleGestureHome1() {
+  const distance = touchendXHome1 - touchstartXHome1;
+
+  if (distance > 50) { // Left-to-right swipe
+    console.log('Swiped from left to right');
+    // Run your desired function for left-to-right swipe here
+    shake_me("gateway")
+    //alert('Swiped from left to right');
+  } else if (distance < -50) { // Right-to-left swipe
+    console.log('Swiped from right to left');
+    // Run your desired function for right-to-left swipe here
+    //alert('Swiped from right to left');
+    let secureline = document.getElementById("secureline")
+    document.getElementById("gateway").classList.remove("active")
+    secureline.classList.remove("secureline")
+    secureline.classList.remove("slideL-R")
+    secureline.classList.add("slideR-L")
+    secureline.classList.add("active")
+    setActive("Chats")
+    currScreen = "Chats"
+  }
+}
+
+swipeAreaHome1.addEventListener('touchstart', (event) => {
+  touchstartXHome1 = event.changedTouches[0].screenX;
+});
+
+swipeAreaHome1.addEventListener('touchend', (event) => {
+  touchendXHome1 = event.changedTouches[0].screenX;
+  handleGestureHome1();
+});
+
+const swipeAreaNotifications = document.getElementById('notifications');
+
+let touchstartXNotifications = 0;
+let touchendXNotifications = 0;
+
+function handleGestureNotifications() {
+  const distance = touchendXNotifications - touchstartXNotifications;
+
+  if (distance > 50) { // Left-to-right swipe
+    console.log('Swiped from left to right');
+    // Run your desired function for left-to-right swipe here
+    let secureline = document.getElementById("secureline")
+    let notifications = document.getElementById("notifications")
+    notifications.classList.remove("active")
+    secureline.classList.remove("slideR-L")
+    //notifications.classList.add("vox")
+    secureline.classList.remove("secureline")
+    //secureline.classList.remove("slideL-R")
+    secureline.classList.add("slideR-L")
+    setTimeout(function () {
+
+      secureline.classList.add("active")
+    }, 250)
+    setActive("Chats")
+    currScreen = "Chats"
+  } else if (distance < -50) { // Right-to-left swipe
+    console.log('Swiped from right to left');
+    // Run your desired function for right-to-left swipe here
+    $("#nav-Notifications-text").fadeOut("fast")
+    setActive("Profile")
+    currScreen = "Profile"
+    let notifications = document.getElementById("notifications")
+    notifications.classList.remove("slideL-R");
+    notifications.classList.add("slideR-L");
+    document.getElementById("notifications").classList.remove("active")
+    document.getElementById("myAcc").classList.add("active")
+    show_account()
+  }
+}
+
+swipeAreaNotifications.addEventListener('touchstart', (event) => {
+  touchstartXNotifications = event.changedTouches[0].screenX;
+});
+
+swipeAreaNotifications.addEventListener('touchend', (event) => {
+  touchendXNotifications = event.changedTouches[0].screenX;
+  handleGestureNotifications();
+});
+
+const swipeAreaProfile = document.getElementById('myAcc');
+
+let touchstartXProfile = 0;
+let touchendXProfile = 0;
+
+function handleGestureProfile() {
+  const distance = touchendXProfile - touchstartXProfile;
+
+  if (distance > 50) { // Left-to-right swipe
+    console.log('Swiped from left to right');
+    // Run your desired function for left-to-right swipe here
+    setActive("Notifications")
+    currScreen = "Notifications"
+    let notifications = document.getElementById("notifications")
+    let secureline = document.getElementById("secureline")
+    notifications.classList.remove("slideR-L");
+    notifications.classList.add("slideL-R");
+    document.getElementById("myAcc").classList.remove("active")
+    notifications.classList.add("active");
+    notifications.style.opacity = "1"
+    show_notif()
+    setTimeout(function () {
+      notifications.classList.remove("slideR-L");
+      notifications.classList.add("slideL-R");
+    }, 800)
+
+  } else if (distance < -50) { // Right-to-left swipe
+    console.log('Swiped from right to left');
+    // Run your desired function for right-to-left swipe here
+    shake_me("myAcc")
+  }
+}
+
+swipeAreaProfile.addEventListener('touchstart', (event) => {
+  touchstartXProfile = event.changedTouches[0].screenX;
+});
+
+swipeAreaProfile.addEventListener('touchend', (event) => {
+  touchendXProfile = event.changedTouches[0].screenX;
+  handleGestureProfile();
+});

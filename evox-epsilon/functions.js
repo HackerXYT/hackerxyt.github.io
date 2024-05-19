@@ -266,9 +266,8 @@ function switchNAV(element) {
 				}, 250)
 				//slide from left to right
 			} else if (currScreen === "Profile") {
-				try {
-					secureline.classList.remove("secureline")
-				} catch { }
+				document.getElementById("myAcc").classList.remove("active")
+				secureline.classList.remove("secureline")
 				secureline.classList.remove("slideR-L")
 				secureline.classList.add("slideL-R")
 				secureline.classList.add("active")
@@ -299,8 +298,18 @@ function switchNAV(element) {
 				show_notif()
 				//slide from left to right
 			} else if (currScreen === "Profile") {
+				notifications.classList.remove("slideL-R");
+				notifications.classList.add("slideR-L");
+				document.getElementById("myAcc").classList.remove("active")
+				notifications.classList.add("active");
+				notifications.style.opacity = "1"
+				show_notif()
+				setTimeout(function () {
+					notifications.classList.remove("slideR-L");
+					notifications.classList.add("slideL-R");
+				}, 800)
+
 				//slide from left to right
-				return;
 			}
 		} else if (goTo === "Home") {
 			let notifications = document.getElementById("notifications")
@@ -343,6 +352,14 @@ function switchNAV(element) {
 				document.getElementById("gateway").classList.remove("active")
 				document.getElementById("myAcc").classList.add("active")
 				show_account()
+			} else if (currScreen === "Notifications") {
+				document.getElementById("notifications").classList.remove("active")
+				document.getElementById("myAcc").classList.add("active")
+				show_account()
+			} else if (currScreen === "Chats") {
+				document.getElementById("secureline").classList.remove("active")
+				document.getElementById("myAcc").classList.add("active")
+				show_account()
 			} else {
 				return;
 			}
@@ -380,6 +397,8 @@ function setActive(option) {
 	chats.innerHTML = chatsH
 	//notifications.innerHTML = notificationsH
 	notifications.style.color = "#787676"
+	const profileD = document.getElementById("profile-pfp")
+	profileD.classList.remove("active")
 
 
 	if (option === "Home") {
@@ -404,6 +423,8 @@ function setActive(option) {
 	} else if (option === "Notifications") {
 		$("#nav-Notifications-text").fadeIn("fast")
 		notifications.style.color = "#cccccc"
+	} else if(option === "Profile") {
+		profileD.classList.add("active")
 	}
 }
 function skip() {
@@ -1283,7 +1304,7 @@ function show_authip() {
 	}
 
 	navigator("authip")
-	$("#main_settings").fadeOut("fast", function () {
+	$("#main_popup_settings").fadeOut("fast", function () {
 		$("#authips").fadeIn("fast")
 	})
 }
@@ -1475,7 +1496,7 @@ function pswd_secure() {
 	//} else {
 	//	document.getElementById("options_section_1_announcements").innerHTML = "Enabled"
 	//}
-	$("#main_settings").fadeOut("fast", function () {
+	$("#main_popup_settings").fadeOut("fast", function () {
 		$("#pswd_secure").fadeIn("fast")
 	})
 }
@@ -2855,7 +2876,7 @@ function return_to_options(where) {
 	if (where) {
 		if (where === "security") {
 			$("#pswd_secure").fadeOut("fast", function () {
-				$("#main_settings").fadeIn("fast")
+				$("#main_popup_settings").fadeIn("fast")
 				//navigator("return_settings")
 			})
 		} else if (where === "usr-emails") {
@@ -2906,7 +2927,7 @@ function return_to_options(where) {
 			})
 		} else if (where === "authip") {
 			$("#authips").fadeOut("fast", function () {
-				$("#main_settings").fadeIn("fast")
+				$("#main_popup_settings").fadeIn("fast")
 				//navigator("return_settings")
 			})
 		} else if (where === "bg_settings") {
@@ -2935,7 +2956,7 @@ function return_to_options(where) {
 			})
 		} else if (where === "cryptox") {
 			$("#cryptox_info").fadeOut("fast", function () {
-				$("#main_settings").fadeIn("fast")
+				$("#main_popup_settings").fadeIn("fast")
 				//navigator("return_settings")
 			})
 		} else if (where === "coming") {
@@ -4528,10 +4549,12 @@ function confirmRemoveEmail() {
 			document.getElementById("email_new_ver_code").value = ""
 			if (data === "Complete") {
 				ac_complete.play()
-				document.getElementById("username_email_icon_show").style.filter = ""
+				document.getElementById("myAcc").style.filter = ""
 				document.getElementById("confirm_email_remove").classList.remove("active")
 				setTimeout(function () {
-					document.getElementById("hide_for_rememail").style.display = ""
+					$("#navigator").fadeIn("fast")
+					navigator("sett_def")
+					//document.getElementById("hide_for_rememail").style.display = ""
 				}, 550)
 
 				document.getElementById("email-del-content").innerHTML = ""
@@ -4777,7 +4800,7 @@ function cryptox(no) {
 				document.getElementById("cryptox-iv").style.display = "none"
 			}
 
-			$("#main_settings").fadeOut("fast", function () {
+			$("#main_popup_settings").fadeOut("fast", function () {
 				$("#cryptox_info").fadeIn("fast")
 			})
 
@@ -6894,12 +6917,12 @@ function searchPFP() {
 
 function bypassSetup() {
 	if (confirm('Are you sure you want to bypass normal setup?')) {
-  // Save it!
-  setup()
-  //console.log('Thing was saved to the database.');
-} else {
-  // Do nothing!
-  console.log('Thing was not saved to the client.');
-}
+		// Save it!
+		setup()
+		//console.log('Thing was saved to the database.');
+	} else {
+		// Do nothing!
+		console.log('Thing was not saved to the client.');
+	}
 
 }

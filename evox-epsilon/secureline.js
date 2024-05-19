@@ -171,11 +171,35 @@ function return_main_chats() {
   $("#secureline").fadeIn("fast")
 }
 function showchat(element) {//json id=Username
-  
+  const swipeArea = document.getElementById('private_chat');
+
+  let touchstartX = 0;
+  let touchendX = 0;
+
+  function handleGesture() {
+      if (touchendX > touchstartX) {
+          const distance = touchendX - touchstartX;
+          if (distance > 50) { // Detect a swipe if the distance is greater than 50 pixels
+              console.log('Swiped from left to right');
+              // Run your desired function here
+              //alert('Swiped from left to right');
+              return_main_chats()
+          }
+      }
+  }
+
+  swipeArea.addEventListener('touchstart', (event) => {
+      touchstartX = event.changedTouches[0].screenX;
+  });
+
+  swipeArea.addEventListener('touchend', (event) => {
+      touchendX = event.changedTouches[0].screenX;
+      handleGesture();
+  });
   $("#navbar").fadeOut("fast", function() {
     document.getElementById("navbar").classList.remove("active")
   })
-  $("#navigator").fadeOut("fast")
+  //$("#navigator").fadeOut("fast")
   $("#profile").fadeOut("slow")
   console.log("Got element:", element)
   //document.getElementById("secureline_chat").classList.add("active")
