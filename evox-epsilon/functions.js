@@ -1291,6 +1291,36 @@ function show_authip() {
 function show_account() {
 	//account_show.play()
 	//navigator("show_account")
+	loademails()
+	document.getElementById("options_section_0_email").innerHTML = localStorage.getItem("t50-email")
+	fetch(`https://data.evoxs.xyz/accounts?birth=get&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			console.log(data)
+			if (data === "") {
+				document.getElementById("options_section_0_birthdate").innerHTML = "Not set"
+			} else {
+				document.getElementById("options_section_0_birthdate").innerHTML = data
+				let dateParts = data.split('/');
+
+				let day = parseInt(dateParts[0]);
+				let month = parseInt(dateParts[1]);
+				let year = parseInt(dateParts[2]);
+
+				document.getElementById("day_b").value = day
+				document.getElementById("month_b").value = month
+				document.getElementById("year_b").value = year
+			}
+
+
+		}).catch(error => {
+			console.error(error)
+		})
 	console.log("Changing Screens to account")
 	document.getElementById("usr-email-opt").innerHTML = localStorage.getItem("t50-email")
 	document.getElementById("usr-name-opt").innerHTML = localStorage.getItem("t50-username")
@@ -2889,7 +2919,7 @@ function return_to_options(where) {
 			})
 		} else if (where === "add_email") {
 			$("#add_email").fadeOut("fast", function () {
-				$("#username_email_icon_show").fadeIn("fast")
+				$("#main_settings").fadeIn("fast")
 			})
 		} else if (where === "cancel_addemail") {
 			$("#verify_email").fadeOut("fast", function () {
@@ -3744,7 +3774,7 @@ function createNotificationElement(image, notification) {
 
 	var a = document.createElement("a");
 	a.href = "#";
-	a.className = "apple-button";
+	a.className = "apple-button notifOptions";
 	a.style.display = "flex";
 	a.style.alignItems = "center";
 	a.onclick = function () {
@@ -4320,7 +4350,7 @@ function addemail() {
 	document.getElementById("usr-img-addemail").src = document.getElementById("usr-img-opt").src
 	document.getElementById("usr-name-addemail").innerHTML = document.getElementById("usr-name-opt").innerHTML
 	document.getElementById("usr-email-addemail").innerHTML = document.getElementById("usr-email-opt").innerHTML
-	$("#username_email_icon_show").fadeOut("fast", function () {
+	$("#main_settings").fadeOut("fast", function () {
 		$("#add_email").fadeIn("fast")
 	})
 }
@@ -4391,7 +4421,9 @@ function verify_addemail() {
 				sessionStorage.removeItem("ver_code_email")
 				console.log("Complete!")
 				navigator("username_email_icon_show")
-				return_to_options('cancel_addemail')
+				$("#verify_email").fadeOut("fast", function () {
+					$("#main_settings").fadeIn("fast")
+				})
 				loademails()
 			} else if (data === "Incorrect Code") {
 				error.play()
@@ -4425,7 +4457,7 @@ function loademails() {
 				return;
 			}
 			let thisJson = JSON.parse(data)
-			const container = document.getElementById("more_emails");
+			const container = document.getElementById("more_emails0");
 			container.innerHTML = ""
 
 			thisJson.forEach(email => {
@@ -4488,17 +4520,18 @@ function sign_in_wevox() {
 }
 
 function removeEmail(element) {
-	document.getElementById("hide_for_rememail").style.display = "none"
-	document.getElementById("username_email_icon_show").style.filter = "blur(10px)"
+	//document.getElementById("hide_for_rememail").style.display = "none"
+	$("#navigator").fadeOut("fast")
+	document.getElementById("myAcc").style.filter = "blur(10px)"
 	document.getElementById("confirm_email_remove").classList.add("active")
 	document.getElementById("email-del-content").innerHTML = element.innerHTML
 }
 
 function cancelRemoveEmail() {
-	document.getElementById("username_email_icon_show").style.filter = ""
+	document.getElementById("myAcc").style.filter = ""
 	document.getElementById("confirm_email_remove").classList.remove("active")
 	setTimeout(function () {
-		document.getElementById("hide_for_rememail").style.display = ""
+		$("#navigator").fadeIn("fast")
 	}, 550)
 
 	document.getElementById("email-del-content").innerHTML = ""
@@ -4979,7 +5012,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 			</g>
 		</g>
 	</svg>
-</div>`, addemail = `<div onclick="return_to_options('add_email');navigator('username_email_icon_show')" class="circle">
+</div>`, addemail = `<div onclick="return_to_options('add_email');navigator('sett_def')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">

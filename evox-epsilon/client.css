@@ -124,6 +124,7 @@
 }
 
 .settings .circle {
+  /*background: linear-gradient(145deg, #795dce, #2d1968, #571d1d, #2d1968, #795dce);*/
   background: radial-gradient(#795dce, #2d1968);
   border-radius: 50%;
   padding: 10px;
@@ -133,6 +134,7 @@
   width: 50px;
   height: 50px;
   transition: transform 0.3s ease; /* Transition for smooth animation */
+  animation: animateSettings 10s infinite linear;
 }
 
 .settings .circle:active {
@@ -412,7 +414,7 @@ img {
     width: 90%;
     max-width: 40%;
     position: absolute;
-    left: 26.5%;
+    /*left: 26.5%;*/
   }
 
   .app-manage {
@@ -1047,9 +1049,15 @@ a {
   transition: background-color 0.7s ease;
   margin: 6px;
   width: 80%;
+  max-width: 90%;
   text-wrap: wrap;
 }
 
+.notifOptions {
+  width: auto;
+  padding: 10px 20px;
+  border-radius: 25px;
+}
 
 
 .apple-button span {
@@ -2574,5 +2582,23 @@ a {
   }
   90% {
     transform: scale(1);
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes animateSettings {
+  0% {
+    background-position: 0% 65%;
+  }
+
+  50% {
+    background-position: 100% 65%;
+  }
+
+  100% {
+    background-position: 0% 65%;
   }
 }

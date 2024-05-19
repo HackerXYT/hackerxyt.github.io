@@ -380,7 +380,7 @@
                 <div class="carousel-container" id="apps">
 
                 </div>
-                
+
                 <div id="buttons" style="display:none">
                     <button class="prev" onclick="prevSlide()">
                         <svg style="filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.447)); "
@@ -1630,8 +1630,19 @@
                 <p id="chatvia-own-ui-status">err</p>
             </div>
 
-
-
+            <h3 style="margin-bottom: 4px;">Account</h3>
+            <a onclick="pswd_secure()" href="#" class="apple-button">Password & Security<svg
+                xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                    fill="#666" />
+            </svg></a>
+            <a onclick="show_authip()" href="#" class="apple-button">Logged In & IP Addresses<svg
+                xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                    fill="#666" />
+            </svg></a>
             <h3 style="margin-bottom: 4px;">Nexus</h3>
             <!--<a onclick="show_account()" href="#" class="apple-button-withicon"><img
                     style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;"
@@ -1641,6 +1652,7 @@
                         d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                         fill="#666"></path>
                 </svg></a>-->
+
             <a onclick="show_social()" href="#" class="apple-button-withicon"><img
                     style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;"
                     src="./icons/share-circle.svg">Social Center<svg xmlns="http://www.w3.org/2000/svg" width="20px"
@@ -1700,12 +1712,12 @@
             <div class="transparent-placeholder"></div>
 
         </div>
-        
+
     </div>
     <div id="myAcc" class="slideR-L">
         <div id="main_settings">
 
-            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Account Options</h3>
+            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Your Profile</h3>
             <div style="margin: 0 auto;
         position: relative;width: 90px;height:90px" class="user-circle">
                 <img onclick="pfpOptions()" id="usr-img-opt" src="t50-img.png" alt="User Image">
@@ -1720,24 +1732,29 @@
                 </div>
             </div>
             <div>
-                <a onclick="username_email_icon_show()" href="#" class="apple-button">Username & Emails<svg
+                <p style="margin: 6px" class="user-email">EMAIL & PHONE NUMBERS</p>
+                <a href="#" id="options_section_0_email" style="height: 50%" class="apple-button"></a>
+                <div id="more_emails0"></div>
+                <a href="#" onclick="addemail()" id="options_section_0_email_add" style="height: 50%"
+                    class="apple-button">Add email<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                        viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+                <p style="margin: 6px;display: none;" class="user-email">These email addresses and phone numbers can be used to sign
+                    in. They can also be used to reach you with Chatvia, Evox® and more.</p>
+                <p style="margin: 6px" class="user-email">DATE OF BIRTH</p>
+                <a onclick="birth_date()" href="#" style="height: 50%" class="apple-button">Date of birth<span
+                        id="options_section_0_birthdate">Unknown</span></a>
+                <a onclick="username_email_icon_show()" href="#" class="apple-button hidden">Username & Emails<svg
                         xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path
                             d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                             fill="#666" />
                     </svg></a>
-                <a onclick="pswd_secure()" href="#" class="apple-button">Password & Security<svg
-                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#666" />
-                    </svg></a>
-                <a onclick="show_authip()" href="#" class="apple-button">Logged In & IP Addresses<svg
-                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#666" />
-                    </svg></a>
+                
+                
                 <a onclick="cryptox()" href="#" class="apple-button">Crypto Ops & Ciphering
                     <svg id="arrow_cryptox" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
                         viewBox="0 0 24 24" fill="none">

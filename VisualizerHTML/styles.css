@@ -1,0 +1,22 @@
+/* styles.css */
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+#visualizer-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+    background: #3e287b;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
