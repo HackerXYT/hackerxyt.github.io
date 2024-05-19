@@ -785,8 +785,9 @@ function docready(merge) {
                 if (sessionStorage.getItem("unlocked") === "true") {
                   setup()
                 } else {
-                  $("#loading-text").fadeOut("fast")
-                  lockMe()
+                  //$("#loading-text").fadeOut("fast")
+                  //lockMe()
+                  setup()
                   sessionStorage.setItem("unlocked", "true")
                 }
 
