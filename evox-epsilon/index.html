@@ -2,6 +2,18 @@
 <html id="VOXhtml" lang="en"> <!--  manifest="cache.manifest"-->
 
 <head>
+    <script>
+    // Override the global error handler
+window.onerror = function(message, source, lineno, colno, error) {
+    notice(`An error occurred: ${message} at ${source}:${lineno}:${colno}`);
+    return false;  // Let the browser console still show the error if available
+};
+
+// Handle unhandled promise rejections
+window.addEventListener('unhandledrejection', function(event) {
+    notice(`An unhandled promise rejection occurred: ${event.reason}`);
+});
+    </script>
     <meta name="theme-color" content="#121212" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
     <meta charset="UTF-8">
