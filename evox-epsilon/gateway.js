@@ -781,8 +781,8 @@ function docready(merge) {
               if (data === "IP is Mapped") {
                 console.log("IP Mapped")
                 if (sessionStorage.getItem("unlocked") === "true") {
-                  lockMe()
-                  //setup()
+                  //lockMe()
+                  setup()
                 } else {
                   //$("#loading-text").fadeOut("fast")
                   lockMe()

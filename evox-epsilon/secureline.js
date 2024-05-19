@@ -153,6 +153,10 @@ function reload_chat(whoto) {
 }
 
 function return_main_chats() {
+  
+  $("#navbar").fadeIn("fast", function() {
+    document.getElementById("navbar").classList.add("active")
+  })
   $("#navigator").fadeIn("fast")
   sessionStorage.removeItem("current_sline")
   sessionStorage.removeItem("lastChatInter")
@@ -167,6 +171,10 @@ function return_main_chats() {
   $("#secureline").fadeIn("fast")
 }
 function showchat(element) {//json id=Username
+  
+  $("#navbar").fadeOut("fast", function() {
+    document.getElementById("navbar").classList.remove("active")
+  })
   $("#navigator").fadeOut("fast")
   $("#profile").fadeOut("slow")
   console.log("Got element:", element)

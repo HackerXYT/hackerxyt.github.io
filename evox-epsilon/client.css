@@ -68,6 +68,17 @@
   z-index: 999;
 }
 
+@media only screen and (max-width: 768px) {
+  .navbar {
+    padding: 10px 0 30px;
+  }
+
+  .bottom-actions {
+    padding: 10px 0 15px;
+  }
+  
+}
+
 .navbar.active {
   opacity: 1;
   /* Show the popup */
@@ -1676,7 +1687,7 @@ a {
   scroll-behavior: smooth;
   touch-action: auto;
   justify-content: center;
-  background: rgba(33, 34, 41, 255);
+  background: #ffffff00;
   /* Semi-transparent black overlay */
   z-index: 999;
   box-sizing: border-box;
@@ -1729,12 +1740,12 @@ a {
   flex-direction: row;
   /*background-color: #000;*/
   /*background: black;*/
-  height: 2%;
-  bottom: 8%;
+  height: 55px;
+  bottom: 0;
   position: fixed;
   left: 0;
   width: 100%;
-  padding: 10px;
+  padding: 15px 12 0;
   /* Add some padding to the bottom actions */
   z-index: 1;
   /* Ensure the input container appears above messages */
@@ -1776,7 +1787,7 @@ a {
 
 
 .apple-input-sl {
-  position: fixed;
+  position:relative;
   bottom: 10px;
   background-color: #333;
   /* Your desired background color */
@@ -1784,24 +1795,22 @@ a {
   color: #fff;
   padding: 15px 30px;
   padding-left: 20px;
-  /* Adjust this value to add space on the left */
+  /*Adjust this value to add space on the left */
   font-size: 16px;
-  border-radius: 52px;
+  border-radius: 10px;
   cursor: pointer;
-  display: inline-block;
   text-decoration: none;
   transition: background-color 0.3s ease;
   margin: 4px;
-  width: 100%;
-  max-width: 76%;
+  width: 90%;
   outline: none;
 }
 
-@media only screen and (max-width: 768px) {
+/*@media only screen and (max-width: 768px) {
   .apple-input-sl {
     width: 62%;
   }
-}
+}*/
 
 .user-container-sl {
   display: flex;
