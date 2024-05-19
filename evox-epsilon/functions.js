@@ -3394,30 +3394,7 @@ function moretti() {
 
 }
 
-function notice(message) {
-	const oldhtml = document.getElementById("notification").innerHTML
-	var notification = document.getElementById('notification');
-	if (notification.className.includes("show")) {
-		console.log("Notification Is Shown")
-		notification.classList.remove('show');
-		setTimeout(function () {
-			document.getElementById("notification").innerHTML = message
-			notification.classList.add('show');
-			setTimeout(function () {
-				notification.classList.remove('show');
-			}, 2500);
-		}, 500)
-	} else {
-		document.getElementById("notification").innerHTML = message
-		notification.classList.add('show');
-		setTimeout(function () {
-			notification.classList.remove('show');
-		}, 2500);
-	}
-	setTimeout(function () {
-		document.getElementById("notification").innerHTML = oldhtml
-	}, 3000)
-}
+
 
 function dots() {
 	if (sessionStorage.getItem("more_options")) {
