@@ -18,6 +18,7 @@
 
         body,
         html {
+            text-align: center;
             background-color: #1c1c1c;
             color: #e6e6e6;
             font-family: "SF";
@@ -45,16 +46,42 @@
 <body>
     <div id="cont" class="container">
         <div id="live-time"></div>
-        <h1><span id="text">1</span>/15</h1>
+        <h3 id="motive" style="display: none;margin-top: 10px"></h3>
+        <h1><span id="text">1</span>/18</h1>
     </div>
 
 </body>
 <script>
     function myFunction() {
-        if (Number(document.getElementById("text").innerHTML) < 15) {
+        document.getElementById("motive").style.display = "none"
+        if (Number(document.getElementById("text").innerHTML) < 17) {
             document.getElementById("text").innerHTML = Number(document.getElementById("text").innerHTML) + 1
         } else {
-            document.getElementById("cont").innerHTML = `<h1>Complete!</h1>`
+            document.getElementById("cont").innerHTML = `<h1>Complete 🎉<br>You Can Now Rest!</h1>`
+        }
+
+        if (Number(document.getElementById("text").innerHTML) === 9) {
+            document.getElementById("motive").innerHTML = "Halfway Done ⛳"
+            document.getElementById("motive").style.display = "block"
+            setTimeout(function() {
+                document.getElementById("motive").style.display = "none"
+            }, 30000)
+        }
+
+        if (Number(document.getElementById("text").innerHTML) === 17) {
+            document.getElementById("motive").innerHTML = "One More 🚀"
+            document.getElementById("motive").style.display = "block"
+            setTimeout(function() {
+                document.getElementById("motive").style.display = "none"
+            }, 30000)
+        }
+
+        if (Number(document.getElementById("text").innerHTML) === 5) {
+            document.getElementById("motive").innerHTML = "Let's Go 👟"
+            document.getElementById("motive").style.display = "block"
+            setTimeout(function() {
+                document.getElementById("motive").style.display = "none"
+            }, 30000)
         }
 
     }
