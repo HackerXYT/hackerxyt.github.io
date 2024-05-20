@@ -243,6 +243,7 @@ function switchNAV(element) {
 	} else {
 
 		if (goTo === "Chats") {
+			
 
 			let secureline = document.getElementById("secureline")
 			let notifications = document.getElementById("notifications")
@@ -254,6 +255,7 @@ function switchNAV(element) {
 				secureline.classList.add("active")
 				//slide from right to left
 			} else if (currScreen === "Notifications") {
+				notif_out.play()
 				notifications.classList.remove("active")
 				secureline.classList.remove("slideR-L")
 				//notifications.classList.add("vox")
@@ -275,6 +277,7 @@ function switchNAV(element) {
 			} else if (currScreen === "Profile") {
 				return;
 			}
+			sline_open.play()
 			setActive(goTo)
 		} else if (goTo === "Notifications") {
 			setActive(goTo)
@@ -290,6 +293,7 @@ function switchNAV(element) {
 
 				//slide from right to left
 			} else if (currScreen === "Chats") {
+				sline_close.play()
 				secureline.classList.remove("active")
 				notifications.classList.remove("slideL-R")
 				notifications.classList.add("slideR-L")
@@ -311,10 +315,13 @@ function switchNAV(element) {
 
 				//slide from left to right
 			}
+			notifications.play()
+			
 		} else if (goTo === "Home") {
 			let notifications = document.getElementById("notifications")
 			let secureline = document.getElementById("secureline")
 			if (currScreen === "Notifications") {
+				notif_out.play()
 				//if (notifications.classList.contains("slideL-R")) {
 				//	notifications.classList.remove("slideL-R")
 				//	notifications.classList.add("slideR-L")
@@ -327,6 +334,7 @@ function switchNAV(element) {
 				setActive(goTo)
 				//slide from left to right
 			} else if (currScreen === "Chats") {
+				sline_close.play()
 				if (secureline.classList.contains("slideL-R")) {
 					secureline.classList.remove("slideL-R")
 					secureline.classList.add("slideR-L")
@@ -353,10 +361,12 @@ function switchNAV(element) {
 				document.getElementById("myAcc").classList.add("active")
 				show_account()
 			} else if (currScreen === "Notifications") {
+				notif_out.play()
 				document.getElementById("notifications").classList.remove("active")
 				document.getElementById("myAcc").classList.add("active")
 				show_account()
 			} else if (currScreen === "Chats") {
+				sline_close.play()
 				document.getElementById("secureline").classList.remove("active")
 				document.getElementById("myAcc").classList.add("active")
 				show_account()
@@ -4518,6 +4528,7 @@ function sign_in_wevox() {
 }
 
 function removeEmail(element) {
+	disabled.play()
 	//document.getElementById("hide_for_rememail").style.display = "none"
 	$("#navigator").fadeOut("fast")
 	document.getElementById("myAcc").style.filter = "blur(10px)"
@@ -6702,6 +6713,7 @@ function groundHandle() {
 }
 
 function notification_optBox(app, element) {
+	more_opt.play()
 	if (document.getElementById("notification_box").classList.contains("active")) {
 		cancel_notifOptions()
 		setTimeout(function () {
@@ -6782,6 +6794,7 @@ function notification_optBox(app, element) {
 }
 
 function cancel_notifOptions() {
+	more_opt_c.play()
 	document.getElementById("notifications").style.filter = ""
 	document.getElementById("notification_box").classList.remove("active")
 	$("#navigator").fadeIn("fast")
