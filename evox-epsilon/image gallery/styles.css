@@ -62,7 +62,7 @@ body {
     justify-content: space-evenly;
     /* Ensure equal spacing around items */
     align-items: center;
-    padding: 10px 0;
+    padding: 10px 0 30px;
     /* Correct padding syntax */
     box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
     opacity: 0;
