@@ -109,7 +109,7 @@ var qaexit = new Howl({
 	src: ['./ui-sounds/qa_exit.mp3'],
 	volume: 1
 });
-var notifications = new Howl({
+var notificationsMP3 = new Howl({
 	src: ['./ui-sounds/notifications.mp3'],
 	volume: 1
 });
@@ -315,7 +315,7 @@ function switchNAV(element) {
 
 				//slide from left to right
 			}
-			notifications.play()
+			notificationsMP3.play()
 			
 		} else if (goTo === "Home") {
 			let notifications = document.getElementById("notifications")
@@ -566,7 +566,7 @@ function load(app) {
 				localStorage.setItem("img-app-email", localStorage.getItem("t50-email"))
 			}
 			sessionStorage.setItem("EmitApp", "images")
-			launchAppN("./Images/")
+			launchAppN("./image gallery/")
 		} else {
 			log("App Not Owned!", "red")
 			return;
