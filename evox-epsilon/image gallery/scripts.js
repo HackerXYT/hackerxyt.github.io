@@ -1,6 +1,27 @@
 if (!localStorage.getItem("t50pswd")) {
     alert("Ops will fail")
 }
+function notice(message) {
+	const oldhtml = document.getElementById("notification").innerHTML
+	var notification = document.getElementById('notification');
+	if (notification.className.includes("show")) {
+		console.log("Notification Is Shown")
+		notification.classList.remove('show');
+		setTimeout(function () {
+			document.getElementById("notification").innerHTML = message
+			notification.classList.add('show');
+			setTimeout(function () {
+				notification.classList.remove('show');
+			}, 2500);
+		}, 500)
+	} else {
+		document.getElementById("notification").innerHTML = message
+		notification.classList.add('show');
+		setTimeout(function () {
+			notification.classList.remove('show');
+		}, 2500);
+	}
+}
 document.addEventListener('DOMContentLoaded', function () {
     const items = document.querySelectorAll('.item');
     items.forEach(item => {
@@ -110,11 +131,15 @@ function createElements(values) {
         const div = document.createElement("div")
         div.className = `item`
         div.id = `item${index + 1}`
+        
 
         const img = document.createElement("img")
         img.alt = `Image ${index + 1}`
         img.id = `img${index + 1}`
         img.src = value
+        img.onclick = function() {
+            fullscreen(this)
+        }
 
         div.appendChild(img)
         container.appendChild(div)
@@ -203,6 +228,7 @@ xml:space="preserve">
                     img.onload = function () {
                         const height = img.offsetHeight;
                         document.getElementById(itemId).style.height = `${height}px`;
+                        
                     };
                 }
 
@@ -215,6 +241,8 @@ xml:space="preserve">
                     console.log("No images loaded")
 
                 }
+
+                
             }, 500)
             //$("#images-container").fadeIn(1000)
             // Handle the response data
@@ -257,63 +285,92 @@ xml:space="preserve">
 <div class="transparent-placeholder"></div>`)
     loaded = false
     fadeLoad()
-    fetch(`https://data.evoxs.xyz/images-database/?password=${atob(localStorage.getItem("t50pswd"))}`, {
+    fetch(`https://data.evoxs.xyz/images-database?password=${atob(localStorage.getItem("t50pswd"))}&method=getIDs`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json', // Modify this based on your API's requirements
         }
     })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
-            if (data === "Access Denied") {
-                alert("Denied")
-                return;
-            }
-            loaded = true
+            loaded = true;
+            const numberOfValues = data.length;
 
+            data.sort((a, b) => {
+                // Extract the numeric part of the filenames
+                let numA = parseInt(a.match(/\d+/)[0]);
+                let numB = parseInt(b.match(/\d+/)[0]);
+
+                // Compare the numeric parts
+                return numA - numB;
+            });
+
+            const container = document.getElementById("images-container");
+            container.innerHTML = ""; // Clear the container once before the loop
 
             setTimeout(function () {
-                console.log('Response:', data);
-                let jsonData = JSON.parse(data)
-                const numberOfValues = Object.keys(jsonData).length;
-                console.log(numberOfValues)
-                // Decode each value and store them in an array
-                const decodedValues = Object.values(jsonData).map(value => atob(value));
-                const totalSizeInMB = calculateTotalSize(decodedValues);
-                console.log(`Total gallery image size: ${totalSizeInMB.toFixed(2)} MB`);
-                //document.getElementById("size-img").innerHTML = `${totalSizeInMB.toFixed(2)}MB`
-                console.log(decodedValues)
-                // Call the createElements function with the decoded values
-                createElements(decodedValues);
-                console.log("Loaded:", numberOfValues, "images")
+                const transparent = document.createElement("div");
+                transparent.className = "transparent-placeholder";
+                container.appendChild(transparent);
+            }, 800);
+            data.forEach(value => {
+                let number = value.match(/\d+/)[0];
+                console.log("num:", number);
+
+                // Create and append the transparent placeholder
+                
+
+                // Create and append the image element
+                const div = document.createElement("div");
+                div.className = `item`;
+                div.id = `item${number}`;
+
+                const img = document.createElement("img");
+                img.alt = `Image ${number}`;
+                img.id = `img${number}`;
+                img.src = `https://data.evoxs.xyz/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                img.onclick = function() {
+                    fullscreen(this)
+                }
+
+                div.appendChild(img);
+                container.appendChild(div);
 
                 function setItemHeight(imgId, itemId) {
                     const img = document.getElementById(imgId);
-                    img.onload = function () {
-                        const height = img.offsetHeight;
-                        document.getElementById(itemId).style.height = `${height}px`;
-                    };
+                    if (img) { // Check if the image element exists
+                        img.onload = function () {
+                            const height = img.offsetHeight;
+                            document.getElementById(itemId).style.height = `${height}px`;
+                            notice(`Image ${imgId} loaded.`)
+                        };
+                    } else {
+                        console.error(`Image with id ${imgId} not found.`);
+                    }
                 }
-                $("#loadedimg").html(numberOfValues)
-                localStorage.setItem("numOfVal", numberOfValues)
-                for (let i = 1; i <= Number(numberOfValues); i++) {
-                    setItemHeight(`img${i}`, `item${i}`);
-                }
-                document.getElementById("navbar").classList.add("active")
-                if (numberOfValues == null) {
-                    console.log("No images loaded")
 
-                }
-            }, 500)
-            //$("#images-container").fadeIn(1000)
-            // Handle the response data
+                setItemHeight(`img${number}`, `item${number}`);
+            });
 
+            $("#loadedimg").html(numberOfValues);
+            localStorage.setItem("numOfVal", numberOfValues);
+
+            document.getElementById("navbar").classList.add("active");
+
+            if (numberOfValues === 0) {
+                console.log("No images loaded");
+            }
+
+            console.log("Ready");
         })
         .catch(error => {
             // Handle errors
-            alert(error)
+            alert(error);
             console.error('Error:', error);
         });
+
+
+
 }
 
 function connection() {
@@ -428,6 +485,84 @@ loadPFPget(localStorage.getItem("t50-username"))
         document.getElementById("usr-email").innerHTML = localStorage.getItem("t50-email")
     })
 
-    function goback() {
-        sessionStorage.setItem("extRun", 'back')
-    }
+function goback() {
+    sessionStorage.setItem("extRun", 'back')
+}
+
+function upldb() {
+    document.getElementById("imageFileInput").click()
+}
+
+function encodeImageToBase64() {
+    const input = document.getElementById('imageFileInput');
+    const file = input.files[0];
+  
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64Text = reader.result.split(',')[1];
+      base64Temp = base64Text
+  
+      let final = `data:image/png;base64,${base64Text}`
+      //var nextImageNumber = getNextImageNumber();
+      //var newImageKey = "image" + nextImageNumber;
+      // Set the new value in local storage
+      //localStorage.setItem(newImageKey, btoa(final));
+      //console.log("New image key:", newImageKey);
+      var password = atob(localStorage.getItem('t50pswd'));
+
+        console.log("Private DB")
+        const totalSizeInMB = calculateImageSize(final);
+        if (totalSizeInMB.toFixed(2) > 3.5) {
+          alert(`File Is Large And May Fail Uploading (${totalSizeInMB.toFixed(2)}MB). Continue?`);
+        } else {
+          alert(`Size Is ${totalSizeInMB.toFixed(2)}MB. Continue?`);
+        }
+  
+        const postData = {
+          image: final,
+          password: password,
+          method: "upload"
+        };
+        let api = "https://data.evoxs.xyz/images-database"
+        fetch(api, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json', // Modify this based on your API's requirements
+          },
+          body: JSON.stringify(postData), // Convert FormData to JSON
+        })
+          .then(response => response.text())
+          .then(data => {
+            // Handle the response data
+            console.log('Response:', data);
+            //dbload()
+            
+          })
+          .catch(error => {
+            alert(error)
+            // Handle errors
+            console.error('Error:', error);
+          });  
+    };
+  
+    reader.readAsDataURL(file);
+  }
+
+  function fullscreen(elem) {
+    const imgSrc = elem.src
+    const fullscreenContainer = document.getElementById('fullscreen-container');
+    const fullscreenImage = document.getElementById('fullscreen-image');
+    fullscreenImage.src = imgSrc;
+    fullscreenContainer.classList.add('active');
+    document.getElementById('imgid').innerHTML = elem.id;
+    document.getElementById('downld').innerHTML = `<a href="${imgSrc}" download="image${elem.id}.png" class="apple-button" >Download</a>`;
+  }
+
+  function hidefull() {
+    const fullscreenContainer = document.getElementById('fullscreen-container');
+    fullscreenContainer.classList.remove('active');
+  }
+
+  function dlnd(id) {
+
+  }

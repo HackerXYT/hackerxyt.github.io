@@ -62,6 +62,10 @@
 
 
         </div>
+        <button class="apple-button" onclick="">Upload To Gallery</button>
+        
+        <button class="apple-button" onclick="upldb()">Upload To Database</button>
+        <br>
         <button class="apple-button" onclick="document.getElementById('connection').classList.remove('active')">Close Connection Settings</button>
     </div>
     <div id="images-container" class="container">
@@ -72,6 +76,12 @@
         <div id="item3" class="item"><img id="img5" src="ph.png" alt="Image 5"></div>
         <div id="item4" class="item"><img id="img6" src="ph.png" alt="Image 6"></div>
         <div class="transparent-placeholder"></div>
+    </div>
+    <div onclick="hidefull()" id="fullscreen-container">
+        <img id="fullscreen-image" src="" alt="Fullscreen Image">
+        <p class="user-email">INFO</p>
+        <p style="color: #fff">ID: <span id="imgid"></span></p>
+        <div id="downld"></div>
     </div>
     <div id="navbar" class="navbar">
         <div onclick="loadGL()" id="nav-galer" class="nav-item">
@@ -128,6 +138,10 @@
                 alt="Profile" class="profile-icon">
         </div>
     </div>
+    <div class="notification-container" id="notification">
+        Datacenter change is coming soon!<br>Prepare for downtimes..
+    </div>
+    <input type="file" accept="image/*" id="imageFileInput" onchange="encodeImageToBase64()" style="display:none;" multiple accept="image/*"><br>
     <script src="scripts.js"></script>
 </body>
 
