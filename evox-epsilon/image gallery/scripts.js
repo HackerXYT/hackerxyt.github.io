@@ -1,6 +1,45 @@
 if (!localStorage.getItem("t50pswd")) {
     console.log("Operations will fail.")
+    getEmailAndPassword()
 }
+
+function getEmailAndPassword() {
+    // Prompt for email
+    const username = prompt("Please enter your username:");
+
+    // Check if email is provided
+    if (!username) {
+        alert("Username is required!");
+        return;
+    }
+
+    const email = prompt("Please enter your email:");
+
+    // Check if email is provided
+    if (!email) {
+        alert("Email is required!");
+        return;
+    }
+
+    // Prompt for password
+    const password = prompt("Please enter your password:");
+
+    // Check if password is provided
+    if (!password) {
+        alert("Password is required!");
+        return;
+    }
+
+    // Display entered email and password
+    alert(`Connecting to Evox..`);
+    localStorage.setItem("t50-email", email)
+    localStorage.setItem("t50pswd", `${btoa(password)}`)
+    localStorage.setItem("t50-username", username)
+    
+}
+
+// Call the function to display the prompts
+getEmailAndPassword();
 function notice(message) {
     const oldhtml = document.getElementById("notification").innerHTML
     var notification = document.getElementById('notification');
