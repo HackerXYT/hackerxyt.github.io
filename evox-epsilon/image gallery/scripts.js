@@ -1,5 +1,5 @@
 if (!localStorage.getItem("t50pswd")) {
-    alert("Ops will fail")
+    console.log("Operations will fail.")
 }
 function notice(message) {
     const oldhtml = document.getElementById("notification").innerHTML
