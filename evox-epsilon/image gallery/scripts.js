@@ -35,7 +35,7 @@ function getEmailAndPassword() {
     localStorage.setItem("t50-email", email)
     localStorage.setItem("t50pswd", `${btoa(password)}`)
     localStorage.setItem("t50-username", username)
-    
+    window.location.reload()
 }
 
 // Call the function to display the prompts
@@ -677,9 +677,9 @@ function handleGestureProfile() {
     if (distanceX > 50) { // Left-to-right swipe
       console.log('Swiped from left to right');
       // Run your desired function for left-to-right swipe here
-      loadGL();
+      //loadGL();
       if(pressed > 2) {
-        connection()
+        //connection()
       }
       setTimeout(function() {
         pressed = 0
@@ -689,7 +689,7 @@ function handleGestureProfile() {
     } else if (distanceX < -50) { // Right-to-left swipe
       console.log('Swiped from right to left');
       // Run your desired function for right-to-left swipe here
-      dbload();
+      //dbload();
     }
   } else {
     // Vertical swipe
