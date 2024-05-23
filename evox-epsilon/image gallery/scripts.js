@@ -2,102 +2,160 @@ if (!localStorage.getItem("t50pswd")) {
     alert("Ops will fail")
 }
 function notice(message) {
-	const oldhtml = document.getElementById("notification").innerHTML
-	var notification = document.getElementById('notification');
-	if (notification.className.includes("show")) {
-		console.log("Notification Is Shown")
-		notification.classList.remove('show');
-		setTimeout(function () {
-			document.getElementById("notification").innerHTML = message
-			notification.classList.add('show');
-			setTimeout(function () {
-				notification.classList.remove('show');
-			}, 2500);
-		}, 500)
-	} else {
-		document.getElementById("notification").innerHTML = message
-		notification.classList.add('show');
-		setTimeout(function () {
-			notification.classList.remove('show');
-		}, 2500);
-	}
+    const oldhtml = document.getElementById("notification").innerHTML
+    var notification = document.getElementById('notification');
+    if (notification.className.includes("show")) {
+        console.log("Notification Is Shown")
+        notification.classList.remove('show');
+        setTimeout(function () {
+            document.getElementById("notification").innerHTML = message
+            notification.classList.add('show');
+            setTimeout(function () {
+                notification.classList.remove('show');
+            }, 2500);
+        }, 500)
+    } else {
+        document.getElementById("notification").innerHTML = message
+        notification.classList.add('show');
+        setTimeout(function () {
+            notification.classList.remove('show');
+        }, 2500);
+    }
 }
 document.addEventListener('DOMContentLoaded', function () {
-    const items = document.querySelectorAll('.item');
-    items.forEach(item => {
-        item.addEventListener('click', () => {
-            item.classList.toggle('active');
-        });
-    });
-    loadGL()
-    //function setItemHeight(imgId, itemId) {
-    //    const img = document.getElementById(imgId);
-    //    img.onload = function () {
-    //        const height = img.offsetHeight;
-    //        document.getElementById(itemId).style.height = height + "px";
-    //    };
-    //}
-    //
-    //if(localStorage.getItem("numOfVal")) {
-    //    for (let i = 1; i <= Number(localStorage.getItem("numOfVal")); i++) {
-    //        setItemHeight(`img${i}`, `item${i}`);
-    //    }
-    //} else {
-    //    for (let i = 1; i <= 6; i++) {
-    //        setItemHeight(`img${i}`, `item${i}`);
-    //    }
-    //}
+
+    if (localStorage.getItem("t50-username")) {
+        //check username
+        fetch(`https://data.evoxs.xyz/images/checkOwnerShip?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json', // Modify this based on your API's requirements
+            }
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data)
+                if (data === "Accepted") {
+                    //continue
+                    const items = document.querySelectorAll('.item');
+                    items.forEach(item => {
+                        item.addEventListener('click', () => {
+                            item.classList.toggle('active');
+                        });
+                    });
+                    loadGL()
+                    //function setItemHeight(imgId, itemId) {
+                    //    const img = document.getElementById(imgId);
+                    //    img.onload = function () {
+                    //        const height = img.offsetHeight;
+                    //        document.getElementById(itemId).style.height = height + "px";
+                    //    };
+                    //}
+                    //
+                    //if(localStorage.getItem("numOfVal")) {
+                    //    for (let i = 1; i <= Number(localStorage.getItem("numOfVal")); i++) {
+                    //        setItemHeight(`img${i}`, `item${i}`);
+                    //    }
+                    //} else {
+                    //    for (let i = 1; i <= 6; i++) {
+                    //        setItemHeight(`img${i}`, `item${i}`);
+                    //    }
+                    //}
 
 
-    //document.getElementById("navbar").classList.add("active")
-});
+                    //document.getElementById("navbar").classList.add("active")
+                    const targetElement = document.querySelector('.container');
 
+                    // Create a new ResizeObserver
+                    const resizeObserver = new ResizeObserver(entries => {
+                        for (let entry of entries) {
+                            // Check if the maximum width or height of the element has changed
+                            if (entry.contentRect.width !== entry.contentRect.height) {
+                                // Run your code here when max-width or max-height changes
+                                console.log('Max-width or max-height changed!');
+                                function setItemHeight(imgId, itemId) {
+                                    const img = document.getElementById(imgId);
+                                    try {
+                                        img.onload = function () {
+                                            const height = img.offsetHeight;
+                                            try {
+                                                document.getElementById(itemId).style.height = `${height}px`;
+                                            } catch {
+                                                console.log("Not fully loaded")
+                                            }
 
-const targetElement = document.querySelector('.container');
+                                        };
+                                    } catch {
+                                        console.log("Not fully loaded")
+                                    }
+                                }
 
-// Create a new ResizeObserver
-const resizeObserver = new ResizeObserver(entries => {
-    for (let entry of entries) {
-        // Check if the maximum width or height of the element has changed
-        if (entry.contentRect.width !== entry.contentRect.height) {
-            // Run your code here when max-width or max-height changes
-            console.log('Max-width or max-height changed!');
-            function setItemHeight(imgId, itemId) {
-                const img = document.getElementById(imgId);
-                img.onload = function () {
-                    const height = img.offsetHeight;
+                                if (localStorage.getItem("numOfVal")) {
+                                    console.log("Local NUM")
+                                    for (let i = 1; i <= Number(localStorage.getItem("numOfVal")); i++) {
+                                        setItemHeight(`img${i}`, `item${i}`);
+                                    }
+                                } else {
+                                    console.log("Def NUM")
+                                    for (let i = 1; i <= 6; i++) {
+                                        setItemHeight(`img${i}`, `item${i}`);
+                                    }
+                                }
+
+                                document.getElementById("navbar").classList.remove("active")
+                                setTimeout(function () {
+                                    document.getElementById("navbar").classList.add("active")
+                                }, 500)
+                                // You can add your custom code logic here
+                            }
+                        }
+                    });
+
+                    // Start observing the target element
+                    resizeObserver.observe(targetElement);
+                } else {
+                    document.getElementById("blocktext").innerHTML = data
                     try {
-                        document.getElementById(itemId).style.height = `${height}px`;
+                        document.getElementById("navbar").style.display = "none"
+                        $("#images-container").fadeOut("fast")
                     } catch {
-                        console.log("Not fully loaded")
+                        document.getElementById("navbar").style.display = "none"
+                        document.getElementById("images-container").style.display = "none"
                     }
+                    document.getElementById("blocked").style.display = "flex"
 
-                };
-            }
-
-            if (localStorage.getItem("numOfVal")) {
-                console.log("Local NUM")
-                for (let i = 1; i <= Number(localStorage.getItem("numOfVal")); i++) {
-                    setItemHeight(`img${i}`, `item${i}`);
                 }
-            } else {
-                console.log("Def NUM")
-                for (let i = 1; i <= 6; i++) {
-                    setItemHeight(`img${i}`, `item${i}`);
-                }
-            }
 
-            document.getElementById("navbar").classList.remove("active")
-            setTimeout(function () {
-                document.getElementById("navbar").classList.add("active")
-            }, 500)
-            // You can add your custom code logic here
+                loadPFPget(localStorage.getItem("t50-username"))
+                    .then(image => {
+                        document.getElementById("usr-img").src = image
+                        document.getElementById("profile-pfp").src = image
+                        document.getElementById("usr-name").innerHTML = localStorage.getItem("t50-username")
+                        document.getElementById("usr-email").innerHTML = localStorage.getItem("t50-email")
+                    })
+
+            }).catch(error => {
+                // Handle errors
+                alert(error)
+                console.error('Error:', error);
+            });
+    } else {
+        document.getElementById("blocktext").innerHTML = "You haven't logged in yet."
+        try {
+            document.getElementById("navbar").style.display = "none"
+            $("#images-container").fadeOut("fast")
+        } catch {
+            document.getElementById("navbar").style.display = "none"
+            document.getElementById("images-container").style.display = "none"
         }
+        $("#blocked").fadeIn("fast")
+        return;
     }
+
 });
 
-// Start observing the target element
-resizeObserver.observe(targetElement);
+
+
 
 function calculateImageSize(base64String) {
     const base64WithoutPrefix = base64String.replace(/^data:image\/[a-z]+;base64,/, '');
@@ -131,13 +189,13 @@ function createElements(values) {
         const div = document.createElement("div")
         div.className = `item`
         div.id = `item${index + 1}`
-        
+
 
         const img = document.createElement("img")
         img.alt = `Image ${index + 1}`
         img.id = `img${index + 1}`
         img.src = value
-        img.onclick = function() {
+        img.onclick = function () {
             fullscreen(this)
         }
 
@@ -181,12 +239,12 @@ xml:space="preserve">
         d="M382.322,210.354l-72.351-26.699V105.2l-35.597-14.02l-0.023-39.481l-83.176-30.766l-83.196,30.43l-0.003,39.818   l-35.597,14.02v78.449L0,210.053V317.89l83.199,31.905l47.447-18.195l60.53,29.8l60.522-29.796l47.436,18.19l83.199-31.905   L382.322,210.354z M191.176,37.222l58.991,21.549l-58.991,22.621L132.184,58.77L191.176,37.222z M24.207,217.535l58.992-21.549   l58.991,21.549l-58.992,22.623L24.207,217.535z M191.176,337.993l-33.804-16.643l9.026-3.461l-0.004-107.784l-73.013-26.689   v-63.917l14.597-5.749v45.375l83.198,31.906l83.199-31.906V113.75l14.597,5.749v63.911l-73.03,26.712l-0.006,107.768l9.036,3.466   L191.176,337.993z M240.144,217.535l58.992-21.549l58.991,21.549l-58.992,22.623L240.144,217.535z" />
 </g>
 </svg>`)
-    $("#images-container").html(`<div id="item1" class="item"><img id="img1" src="ph.png" alt="Image 1"></div>
-<div id="item2" class="item"><img id="img2" src="ph.png" alt="Image 2"></div>
-<div id="item3" class="item"><img id="img3" src="ph.png" alt="Image 3"></div>
-<div id="item4" class="item"><img id="img4" src="ph.png" alt="Image 4"></div>
-<div id="item3" class="item"><img id="img5" src="ph.png" alt="Image 5"></div>
-<div id="item4" class="item"><img id="img6" src="ph.png" alt="Image 6"></div>
+    $("#images-container").html(`<div class="item"><img src="ph.png" alt="Image 1"></div>
+<div class="item"><img src="ph.png" alt="Image 2"></div>
+<div class="item"><img src="ph.png" alt="Image 3"></div>
+<div class="item"><img src="ph.png" alt="Image 4"></div>
+<div class="item"><img src="ph.png" alt="Image 5"></div>
+<div class="item"><img src="ph.png" alt="Image 6"></div>
 <div class="transparent-placeholder"></div>`)
     loaded = false
     fadeLoad()
@@ -228,7 +286,7 @@ xml:space="preserve">
                     img.onload = function () {
                         const height = img.offsetHeight;
                         document.getElementById(itemId).style.height = `${height}px`;
-                        
+
                     };
                 }
 
@@ -242,7 +300,7 @@ xml:space="preserve">
 
                 }
 
-                
+
             }, 500)
             //$("#images-container").fadeIn(1000)
             // Handle the response data
@@ -295,6 +353,7 @@ xml:space="preserve">
         .then(data => {
             loaded = true;
             const numberOfValues = data.length;
+            //const numberOfValues = 50
 
             data.sort((a, b) => {
                 // Extract the numeric part of the filenames
@@ -318,7 +377,7 @@ xml:space="preserve">
                 console.log("num:", number);
 
                 // Create and append the transparent placeholder
-                
+
 
                 // Create and append the image element
                 const div = document.createElement("div");
@@ -329,7 +388,7 @@ xml:space="preserve">
                 img.alt = `Image ${number}`;
                 img.id = `img${number}`;
                 img.src = `https://data.evoxs.xyz/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
-                img.onclick = function() {
+                img.onclick = function () {
                     fullscreen(this)
                 }
 
@@ -477,13 +536,7 @@ function loadPFPget(username) {
     });
 }
 
-loadPFPget(localStorage.getItem("t50-username"))
-    .then(image => {
-        document.getElementById("usr-img").src = image
-        document.getElementById("profile-pfp").src = image
-        document.getElementById("usr-name").innerHTML = localStorage.getItem("t50-username")
-        document.getElementById("usr-email").innerHTML = localStorage.getItem("t50-email")
-    })
+
 
 function goback() {
     sessionStorage.setItem("extRun", 'back')
@@ -496,59 +549,59 @@ function upldb() {
 function encodeImageToBase64() {
     const input = document.getElementById('imageFileInput');
     const file = input.files[0];
-  
+
     const reader = new FileReader();
     reader.onload = () => {
-      const base64Text = reader.result.split(',')[1];
-      base64Temp = base64Text
-  
-      let final = `data:image/png;base64,${base64Text}`
-      //var nextImageNumber = getNextImageNumber();
-      //var newImageKey = "image" + nextImageNumber;
-      // Set the new value in local storage
-      //localStorage.setItem(newImageKey, btoa(final));
-      //console.log("New image key:", newImageKey);
-      var password = atob(localStorage.getItem('t50pswd'));
+        const base64Text = reader.result.split(',')[1];
+        base64Temp = base64Text
+
+        let final = `data:image/png;base64,${base64Text}`
+        //var nextImageNumber = getNextImageNumber();
+        //var newImageKey = "image" + nextImageNumber;
+        // Set the new value in local storage
+        //localStorage.setItem(newImageKey, btoa(final));
+        //console.log("New image key:", newImageKey);
+        var password = atob(localStorage.getItem('t50pswd'));
 
         console.log("Private DB")
         const totalSizeInMB = calculateImageSize(final);
         if (totalSizeInMB.toFixed(2) > 3.5) {
-          alert(`File Is Large And May Fail Uploading (${totalSizeInMB.toFixed(2)}MB). Continue?`);
+            alert(`File Is Large And May Fail Uploading (${totalSizeInMB.toFixed(2)}MB). Continue?`);
         } else {
-          alert(`Size Is ${totalSizeInMB.toFixed(2)}MB. Continue?`);
+            alert(`Size Is ${totalSizeInMB.toFixed(2)}MB. Continue?`);
         }
-  
+
         const postData = {
-          image: final,
-          password: password,
-          method: "upload"
+            image: final,
+            password: password,
+            method: "upload"
         };
         let api = "https://data.evoxs.xyz/images-database"
         fetch(api, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json', // Modify this based on your API's requirements
-          },
-          body: JSON.stringify(postData), // Convert FormData to JSON
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // Modify this based on your API's requirements
+            },
+            body: JSON.stringify(postData), // Convert FormData to JSON
         })
-          .then(response => response.text())
-          .then(data => {
-            // Handle the response data
-            console.log('Response:', data);
-            //dbload()
-            
-          })
-          .catch(error => {
-            alert(error)
-            // Handle errors
-            console.error('Error:', error);
-          });  
-    };
-  
-    reader.readAsDataURL(file);
-  }
+            .then(response => response.text())
+            .then(data => {
+                // Handle the response data
+                console.log('Response:', data);
+                //dbload()
 
-  function fullscreen(elem) {
+            })
+            .catch(error => {
+                alert(error)
+                // Handle errors
+                console.error('Error:', error);
+            });
+    };
+
+    reader.readAsDataURL(file);
+}
+
+function fullscreen(elem) {
     const imgSrc = elem.src
     const fullscreenContainer = document.getElementById('fullscreen-container');
     const fullscreenImage = document.getElementById('fullscreen-image');
@@ -556,13 +609,13 @@ function encodeImageToBase64() {
     fullscreenContainer.classList.add('active');
     document.getElementById('imgid').innerHTML = elem.id;
     document.getElementById('downld').innerHTML = `<a href="${imgSrc}" download="image${elem.id}.png" class="apple-button" >Download</a>`;
-  }
+}
 
-  function hidefull() {
+function hidefull() {
     const fullscreenContainer = document.getElementById('fullscreen-container');
     fullscreenContainer.classList.remove('active');
-  }
+}
 
-  function dlnd(id) {
-
-  }
+function abort() {
+    window.location.href = "../index.html"
+}

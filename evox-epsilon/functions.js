@@ -243,7 +243,7 @@ function switchNAV(element) {
 	} else {
 
 		if (goTo === "Chats") {
-			
+
 
 			let secureline = document.getElementById("secureline")
 			let notifications = document.getElementById("notifications")
@@ -316,7 +316,7 @@ function switchNAV(element) {
 				//slide from left to right
 			}
 			notificationsMP3.play()
-			
+
 		} else if (goTo === "Home") {
 			let notifications = document.getElementById("notifications")
 			let secureline = document.getElementById("secureline")
@@ -433,7 +433,7 @@ function setActive(option) {
 	} else if (option === "Notifications") {
 		$("#nav-Notifications-text").fadeIn("fast")
 		notifications.style.color = "#cccccc"
-	} else if(option === "Profile") {
+	} else if (option === "Profile") {
 		profileD.classList.add("active")
 	}
 }
@@ -4705,7 +4705,7 @@ function store() {
 	//error.play()
 }
 
-function getNOpen(app) {
+function getNOpen(app, view) {
 	if (sessionStorage.getItem("block_interactions") === "true") {
 		notice("Sorry. Servers Are Offline")
 		return;
@@ -4723,12 +4723,16 @@ function getNOpen(app) {
 	//var getButton = element.querySelector('.get-button');
 
 	// Change the inner HTML of the <span> element
-	getButton.style.height = "17px"
-	getButton.style.width = "30px"
-	//height: 17px; width: 30px
+	if (view === "2") {
+		load(app)
+		return;
+	} else {
+		getButton.style.height = "17px"
+		getButton.style.width = "30px"
+		//height: 17px; width: 30px
 
 
-	getButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="55%" height="55%">
+		getButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="55%" height="55%">
 	<circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
 		<animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
 			repeatCount="indefinite" />
@@ -4736,6 +4740,8 @@ function getNOpen(app) {
 			repeatCount="indefinite" />
 	</circle>
 </svg>`;
+	}
+
 	setTimeout(function () {
 
 		if (oldInner === "OPEN") {

@@ -582,8 +582,10 @@ function preloadSFriends() {
     });
 }
 
+if(localStorage.getItem("t50-username")) {
+  preloadSFriends()
+}
 
-preloadSFriends()
 function getFriends(pre) {
   if (!pre) {
     if(sessionStorage.getItem("preloaded-sline")) {

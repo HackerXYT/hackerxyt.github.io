@@ -279,6 +279,7 @@ function setupCrypt() {
     });
 }
 function setup() {
+  preloadSFriends()
 
   //try {
   //  window.OneSignalDeferred = window.OneSignalDeferred || [];
@@ -544,10 +545,11 @@ function setup() {
                 }
               } else {
                 localStorage.setItem("images-owned", false)
+                document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="getNOpen('emails', '2')" href="#loadapp-mails"><img src="mails.png" class="app"></img></a>`
                 if (document.getElementById("apps").innerHTML != "") {
-                  document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
+                  document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a class="hide" onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
                 } else {
-                  document.getElementById("apps").innerHTML = `<a onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
+                  document.getElementById("apps").innerHTML = `<a class="hide" onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
                 }
               }
               if (chatvia === "owned") { //OWN CHATVIA
@@ -598,7 +600,10 @@ function setup() {
                 const randomlySelectedPhrase = phrases[randomIndex];
                 document.getElementById("loading-apps-text").innerHTML = randomlySelectedPhrase
                 $("#loading-apps-text").fadeIn("slow")
-                document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="sessionStorage.setItem('extRun', 'back')" href="#loadapp-return"><img src="return.png" class="app"></img></a>`
+                if(sessionStorage.getItem("extLoaded")) {
+                  document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="sessionStorage.setItem('extRun', 'back')" href="#loadapp-return"><img src="return.png" class="app"></img></a>`
+                }
+                
               })
               $("#loading").fadeOut("slow")
               try {

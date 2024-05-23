@@ -380,6 +380,7 @@ function load(app) {
 		sessionStorage.setItem("EmitApp", "evox")
 		launchAppN("../DC/")
 	}
+	
 	const appFrame = setInterval(function () {
 		if (sessionStorage.getItem("extRun") === "back") {
 			console.log("Hiding App Frame User Returned To Gateway")
@@ -387,12 +388,19 @@ function load(app) {
 			$("#launchApp").fadeOut("slow")
 			$("#iframeContainer").fadeOut("slow")
 			sessionStorage.removeItem("extRun")
+			try {
+				sessionStorage.removeItem("extLoaded")
+			} catch(error) {
+				console.log("Second Item Clear Failed", error)
+			}
+			
 			clearInterval(appFrame)
 		}
 	}, 100)
 }
 
 function launchAppN(app) {
+	sessionStorage.setItem("extLoaded", "true")
 	setTimeout(function () {
 		document.getElementById("launchApp").src = app
 	}, 1100)
@@ -6801,7 +6809,8 @@ function launchBeta() {
 	launchAppN("../evox-epsilon/")
 	const appFrame = setInterval(function () {
 		if (sessionStorage.getItem("extRun") === "back") {
-			console.log("Hiding App Frame User Returned To Gateway")
+			sessionStorage.removeItem("extLoaded")
+			console.log("Hiding App Frame User Returned To Gateway From Beta")
 			document.getElementById("launchApp").src = "PreloadApp.html"
 			$("#launchApp").fadeOut("slow")
 			$("#iframeContainer").fadeOut("slow")
