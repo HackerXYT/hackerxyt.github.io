@@ -38,8 +38,6 @@ function getEmailAndPassword() {
     window.location.reload()
 }
 
-// Call the function to display the prompts
-getEmailAndPassword();
 function notice(message) {
     const oldhtml = document.getElementById("notification").innerHTML
     var notification = document.getElementById('notification');
