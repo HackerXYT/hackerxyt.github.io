@@ -619,3 +619,65 @@ function hidefull() {
 function abort() {
     window.location.href = "../index.html"
 }
+
+const swipeAreaProfile = document.getElementById('images-container');
+
+let touchstartXProfile = 0;
+let touchendXProfile = 0;
+let touchstartYProfile = 0;
+let touchendYProfile = 0;
+
+
+let pressed = 0
+function handleGestureProfile() {
+  const distanceX = touchendXProfile - touchstartXProfile;
+  const distanceY = touchendYProfile - touchstartYProfile;
+
+  if (Math.abs(distanceX) > Math.abs(distanceY)) {
+    // Horizontal swipe
+    if (distanceX > 50) { // Left-to-right swipe
+      console.log('Swiped from left to right');
+      // Run your desired function for left-to-right swipe here
+      loadGL();
+      if(pressed > 2) {
+        connection()
+      }
+      setTimeout(function() {
+        pressed = 0
+      }, 2500)
+      pressed = pressed + 1
+      console.log("Pressed:", pressed, "times")
+    } else if (distanceX < -50) { // Right-to-left swipe
+      console.log('Swiped from right to left');
+      // Run your desired function for right-to-left swipe here
+      dbload();
+    }
+  } else {
+    // Vertical swipe
+    if (distanceY > 50) { // Top-to-bottom swipe
+      console.log('Swiped from top to bottom');
+      // Run your desired function for top-to-bottom swipe here
+    } else if (distanceY < -50) { // Bottom-to-top swipe (Swipe up)
+      console.log('Swiped from bottom to top');
+      // Run your desired function for bottom-to-top swipe here
+      //handleSwipeUp();
+    }
+  }
+}
+
+swipeAreaProfile.addEventListener('touchstart', (event) => {
+  touchstartXProfile = event.changedTouches[0].screenX;
+  touchstartYProfile = event.changedTouches[0].screenY;
+});
+
+swipeAreaProfile.addEventListener('touchend', (event) => {
+  touchendXProfile = event.changedTouches[0].screenX;
+  touchendYProfile = event.changedTouches[0].screenY;
+  handleGestureProfile();
+});
+
+function handleSwipeUp() {
+  
+  console.log('Handling swipe up action');
+  // Example function for swipe up
+}
