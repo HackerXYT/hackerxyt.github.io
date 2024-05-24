@@ -9,12 +9,12 @@ body {
   font-family: 'SF';
   background-color: #121212;
   height: 100%;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 
 .container {
-  overflow: auto;
+  /*overflow: auto;*/
   margin: 10px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
