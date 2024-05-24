@@ -1,8 +1,3 @@
-if (!localStorage.getItem("t50pswd")) {
-    console.log("Operations will fail.")
-    getEmailAndPassword()
-}
-
 function getEmailAndPassword() {
     // Prompt for email
     const username = prompt("Please enter your username:");
@@ -38,11 +33,18 @@ function getEmailAndPassword() {
     window.location.reload()
 }
 
+function shake_me(what) {
+	document.getElementById(`${what}`).classList.add('shake');
+	setTimeout(function () {
+		document.getElementById(`${what}`).classList.remove('shake');
+	}, 500);
+}
+
 function notice(message) {
     const oldhtml = document.getElementById("notification").innerHTML
     var notification = document.getElementById('notification');
     if (notification.className.includes("show")) {
-        console.log("Notification Is Shown")
+        //console.log("Notification Is Shown")
         notification.classList.remove('show');
         setTimeout(function () {
             document.getElementById("notification").innerHTML = message
@@ -61,9 +63,64 @@ function notice(message) {
 }
 document.addEventListener('DOMContentLoaded', function () {
 
+
     if (localStorage.getItem("t50-username")) {
+        if(localStorage.getItem("T50Pin")) {
+            document.getElementById("pin").value = "****"
+            if(sessionStorage.getItem("remUnlocked") === "true") {
+                console.log("Unlocked!")
+                $("#images-container").fadeIn("fast")
+                ready()
+            } else {
+                document.body.style.touchAction = 'none';
+                $("#lock").fadeIn("fast")
+                $("#images-container").fadeOut("fast")
+            }
+            //document.body.style.overflow = 'hidden';
+            
+        } else {
+            $("#images-container").fadeIn("fast")
+            ready()
+        }
         //check username
-        fetch(`https://data.evoxs.xyz/images/checkOwnerShip?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}`, {
+        
+    } else {
+        document.getElementById("loginNow").style.display("block")
+        document.getElementById("blocktext").innerHTML = "You haven't logged in yet."
+        try {
+            document.getElementById("navbar").style.display = "none"
+            $("#images-container").fadeOut("fast")
+        } catch {
+            document.getElementById("navbar").style.display = "none"
+            document.getElementById("images-container").style.display = "none"
+        }
+        document.getElementById("blocked").style.display = "flex"
+        return;
+    }
+
+});
+
+function remPin(elem) {
+    if(elem.innerHTML === "False") {
+        localStorage.setItem("remPIN", "true")
+        sessionStorage.setItem("remUnlocked", "true")
+        document.getElementById("remPin").innerHTML = "True"
+    } else if(elem.innerHTML === "True") {
+        localStorage.removeItem("remPIN")
+        sessionStorage.removeItem("remUnlocked")
+        document.getElementById("remPin").innerHTML = "False"
+    } else {
+        console.error("Cannot identify:", elem.innerHTML)
+    }
+}
+
+function ready() {
+    if(localStorage.getItem("remPIN") === "true") {
+        document.getElementById("remPin").innerHTML = "True"
+    } else {
+        document.getElementById("remPin").innerHTML = "False"
+    }
+    fetch(`https://data.evoxs.xyz/images/checkOwnerShip?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -71,15 +128,49 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.text())
             .then(data => {
-                console.log(data)
+                //console.log(data)
                 if (data === "Accepted") {
+                    function isMobileScreen() {
+                        const mediaQuery = window.matchMedia('(max-width: 768px)');
+
+                        // Return the current state of the media query
+                        return mediaQuery.matches;
+                    }
+
+                    if (isMobileScreen()) {
+                        document.getElementById("animatedButton_dbupl").style.bottom = "120px"
+                    }
+
+                    if (localStorage.getItem("uplButtonVisibility") === "hide") {
+                        document.getElementById("visibilityUPLD").innerHTML = "Hidden"
+                        var animatedButton2 = document.getElementById("animatedButton_dbupl");
+                        animatedButton2.style.display = "block";
+                        setTimeout(function () {
+                            animatedButton2.style.opacity = "0";
+                            animatedButton2.style.transform = "translateY(20px)";
+                        }, 100);
+                    } else {
+                        document.getElementById("visibilityUPLD").innerHTML = "Shown"
+                        var animatedButton2 = document.getElementById("animatedButton_dbupl");
+                        animatedButton2.style.display = "block";
+                        setTimeout(function () {
+                            animatedButton2.style.opacity = "1";
+                            animatedButton2.style.transform = "translateY(0)";
+                        }, 100);
+                    }
+                    //var animatedButton2 = document.getElementById("animatedButton_dbupl");
+                    //animatedButton2.style.display = "block";
+                    //setTimeout(function () {
+                    //    animatedButton2.style.opacity = "1";
+                    //    animatedButton2.style.transform = "translateY(0)";
+                    //}, 100);
                     //continue
-                    const items = document.querySelectorAll('.item');
-                    items.forEach(item => {
-                        item.addEventListener('click', () => {
-                            item.classList.toggle('active');
-                        });
-                    });
+                    //const items = document.querySelectorAll('.item');
+                    //items.forEach(item => {
+                    //    item.addEventListener('click', () => {
+                    //        item.classList.toggle('active');
+                    //    });
+                    //});
                     loadGL()
                     //function setItemHeight(imgId, itemId) {
                     //    const img = document.getElementById(imgId);
@@ -109,40 +200,69 @@ document.addEventListener('DOMContentLoaded', function () {
                             // Check if the maximum width or height of the element has changed
                             if (entry.contentRect.width !== entry.contentRect.height) {
                                 // Run your code here when max-width or max-height changes
-                                console.log('Max-width or max-height changed!');
+                                //console.log('Max-width or max-height changed!');
+                                if (loaded !== true) {
+                                    //console.log("Cancelled")
+                                    return;
+                                }
+                                var container = document.getElementById('images-container');
+
+                                // Get all div elements within the container
+                                var divs = container.getElementsByTagName('div');
+
+                                // Get the number of div elements
+                                var numberOfDivs = divs.length;
+
+                                // Output the number of div elements
+                                ////console.log(numberOfDivs);
                                 function setItemHeight(imgId, itemId) {
                                     const img = document.getElementById(imgId);
-                                    try {
-                                        img.onload = function () {
-                                            const height = img.offsetHeight;
-                                            try {
-                                                document.getElementById(itemId).style.height = `${height}px`;
-                                            } catch {
-                                                console.log("Not fully loaded")
-                                            }
+                                    const item = document.getElementById(itemId);
 
-                                        };
-                                    } catch {
-                                        console.log("Not fully loaded")
+                                    function updateHeight() {
+                                        const height = img.offsetHeight;
+                                        //console.log(`setting: ${height}px to ${itemId}`);
+                                        item.style.height = `${height}px`;
+                                    }
+
+                                    if (img) {
+                                        if (img.complete) {
+                                            updateHeight();
+                                        } else {
+                                            img.onload = updateHeight;
+                                            img.onerror = function () {
+                                                //console.log("Image failed to load");
+                                            };
+                                        }
                                     }
                                 }
 
-                                if (localStorage.getItem("numOfVal")) {
-                                    console.log("Local NUM")
-                                    for (let i = 1; i <= Number(localStorage.getItem("numOfVal")); i++) {
-                                        setItemHeight(`img${i}`, `item${i}`);
-                                    }
-                                } else {
-                                    console.log("Def NUM")
-                                    for (let i = 1; i <= 6; i++) {
-                                        setItemHeight(`img${i}`, `item${i}`);
-                                    }
-                                }
-
-                                document.getElementById("navbar").classList.remove("active")
                                 setTimeout(function () {
-                                    document.getElementById("navbar").classList.add("active")
-                                }, 500)
+                                    if (localStorage.getItem("numOfVal")) {
+                                        ////console.log("Local NUM")
+                                        for (let i = 1; i <= Number(localStorage.getItem("numOfVal")); i++) {
+                                            setItemHeight(`img${i}`, `item${i}`);
+                                        }
+                                    } else {
+                                        ////console.log("Def NUM", Number(numberOfDivs))
+                                        for (let i = 1; i <= Number(numberOfDivs); i++) {
+                                            //////console.log(`Set img${i}`)
+                                            setItemHeight(`img${i}`, `item${i}`);
+                                        }
+                                    }
+                                }, 1200)
+
+
+                                if (isMobileScreen()) {
+                                    document.getElementById("animatedButton_dbupl").style.bottom = "120px"
+                                } else {
+                                    document.getElementById("animatedButton_dbupl").style.bottom = "50px"
+                                }
+
+                                //document.getElementById("navbar").classList.remove("active")
+                                //setTimeout(function () {
+                                //    document.getElementById("navbar").classList.add("active")
+                                //}, 500)
                                 // You can add your custom code logic here
                             }
                         }
@@ -176,22 +296,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert(error)
                 console.error('Error:', error);
             });
-    } else {
-        document.getElementById("blocktext").innerHTML = "You haven't logged in yet."
-        try {
-            document.getElementById("navbar").style.display = "none"
-            $("#images-container").fadeOut("fast")
-        } catch {
-            document.getElementById("navbar").style.display = "none"
-            document.getElementById("images-container").style.display = "none"
-        }
-        $("#blocked").fadeIn("fast")
-        return;
-    }
-
-});
-
-
+}
 
 
 function calculateImageSize(base64String) {
@@ -239,9 +344,24 @@ function createElements(values) {
         div.appendChild(img)
         container.appendChild(div)
 
+        function setItemHeight(imgId, itemId) {
+            const img = document.getElementById(imgId);
+            if (img) { // Check if the image element exists
+                img.onload = function () {
+                    const height = img.offsetHeight;
+                    document.getElementById(itemId).style.height = `${height}px`;
+                    notice(`Image ${imgId} loaded.`)
+                };
+            } else {
+                console.error(`Image with id ${imgId} not found.`);
+            }
+        }
+
+        setItemHeight(`img${index + 1}`, `item${index + 1}`);
+
     });
 
-    console.log("Ready")
+    ////console.log("Ready")
     //document.getElementById("images-container").style.opacity = "1"
 
 }
@@ -303,37 +423,37 @@ xml:space="preserve">
             loaded = true
 
             setTimeout(function () {
-                console.log('Response:', data);
+                ////console.log('Response:', data);
                 let jsonData = JSON.parse(data)
                 const numberOfValues = Object.keys(jsonData).length;
-                console.log(numberOfValues)
+                ////console.log(numberOfValues)
                 // Decode each value and store them in an array
                 const decodedValues = Object.values(jsonData).map(value => atob(value));
                 const totalSizeInMB = calculateTotalSize(decodedValues);
-                console.log(`Total gallery image size: ${totalSizeInMB.toFixed(2)} MB`);
+                ////console.log(`Total gallery image size: ${totalSizeInMB.toFixed(2)} MB`);
                 //document.getElementById("size-img").innerHTML = `${totalSizeInMB.toFixed(2)}MB`
-                console.log(decodedValues)
+                ////console.log(decodedValues)
                 // Call the createElements function with the decoded values
                 createElements(decodedValues);
                 $("#loadedimg").html(numberOfValues)
-                console.log("Loaded:", numberOfValues, "images")
+                ////console.log("Loaded:", numberOfValues, "images")
 
-                function setItemHeight(imgId, itemId) {
-                    const img = document.getElementById(imgId);
-                    img.onload = function () {
-                        const height = img.offsetHeight;
-                        document.getElementById(itemId).style.height = `${height}px`;
-
-                    };
-                }
-
-                localStorage.setItem("numOfVal", numberOfValues)
-                for (let i = 1; i <= Number(numberOfValues); i++) {
-                    setItemHeight(`img${i}`, `item${i}`);
-                }
+                //function setItemHeight(imgId, itemId) {
+                //    const img = document.getElementById(imgId);
+                //    img.onload = function () {
+                //        const height = img.offsetHeight;
+                //        document.getElementById(itemId).style.height = `${height}px`;
+                //
+                //    };
+                //}
+                //
+                //localStorage.setItem("numOfVal", numberOfValues)
+                //for (let i = 1; i <= Number(numberOfValues); i++) {
+                //    setItemHeight(`img${i}`, `item${i}`);
+                //}
                 document.getElementById("navbar").classList.add("active")
                 if (numberOfValues == null) {
-                    console.log("No images loaded")
+                    ////console.log("No images loaded")
 
                 }
 
@@ -411,7 +531,7 @@ xml:space="preserve">
             }, 800);
             data.forEach(value => {
                 let number = value.match(/\d+/)[0];
-                console.log("num:", number);
+                ////console.log("num:", number);
 
                 // Create and append the transparent placeholder
 
@@ -454,10 +574,10 @@ xml:space="preserve">
             document.getElementById("navbar").classList.add("active");
 
             if (numberOfValues === 0) {
-                console.log("No images loaded");
+                ////console.log("No images loaded");
             }
 
-            console.log("Ready");
+            ////console.log("Ready");
         })
         .catch(error => {
             // Handle errors
@@ -477,7 +597,7 @@ function checkUsernameAndGetData(username, getDataCallback) {
     let request = window.indexedDB.open('EvoxSocial'); // Change version number to 2
 
     request.onerror = function (event) {
-        console.log("Database error:", event.target.error);
+        ////console.log("Database error:", event.target.error);
     };
 
     request.onsuccess = function (event) {
@@ -492,7 +612,7 @@ function checkUsernameAndGetData(username, getDataCallback) {
             let upgradeRequest = window.indexedDB.open('EvoxSocial', version);
 
             upgradeRequest.onerror = function (event) {
-                console.log("Database upgrade error:", event.target.error);
+                ////console.log("Database upgrade error:", event.target.error);
             };
 
             upgradeRequest.onupgradeneeded = function (event) {
@@ -502,7 +622,7 @@ function checkUsernameAndGetData(username, getDataCallback) {
             };
 
             upgradeRequest.onsuccess = function (event) {
-                console.log("Object store 'Profiles' created.");
+                ////console.log("Object store 'Profiles' created.");
                 // After creating the object store, retry retrieving data
                 checkUsernameAndGetData(username, getDataCallback);
             };
@@ -519,12 +639,12 @@ function checkUsernameAndGetData(username, getDataCallback) {
                     getDataCallback(null, result);
                 } else {
                     getDataCallback(null, "None");
-                    console.log("Username not found: " + username);
+                    ////console.log("Username not found: " + username);
                 }
             };
 
             getRequest.onerror = function (event) {
-                console.log("Error checking username:", event.target.error);
+                ////console.log("Error checking username:", event.target.error);
             };
         }
     };
@@ -539,13 +659,13 @@ function loadPFPget(username) {
                 console.error(error);
                 reject(error);
             } else {
-                console.log("Retrieved data:", data);
+                ////console.log("Retrieved data:", data);
                 if (data !== "None") {
-                    console.log("Loading from localDB");
+                    ////console.log("Loading from localDB");
                     // Resolve with data if available
                     resolve(data.data);
                 } else {
-                    console.log("Loading from server");
+                    ////console.log("Loading from server");
                     fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
                         .then(response => {
                             if (!response.ok) {
@@ -555,7 +675,7 @@ function loadPFPget(username) {
                         })
                         .then(profileimage => {
                             if (profileimage.indexOf("base64") === -1) {
-                                console.log("Fixing Base64");
+                                ////console.log("Fixing Base64");
                                 profileimage = "data:image/jpeg;base64," + profileimage;
                             }
                             // Resolve with profile image
@@ -597,10 +717,10 @@ function encodeImageToBase64() {
         //var newImageKey = "image" + nextImageNumber;
         // Set the new value in local storage
         //localStorage.setItem(newImageKey, btoa(final));
-        //console.log("New image key:", newImageKey);
+        //////console.log("New image key:", newImageKey);
         var password = atob(localStorage.getItem('t50pswd'));
 
-        console.log("Private DB")
+        ////console.log("Private DB")
         const totalSizeInMB = calculateImageSize(final);
         if (totalSizeInMB.toFixed(2) > 3.5) {
             alert(`File Is Large And May Fail Uploading (${totalSizeInMB.toFixed(2)}MB). Continue?`);
@@ -624,7 +744,7 @@ function encodeImageToBase64() {
             .then(response => response.text())
             .then(data => {
                 // Handle the response data
-                console.log('Response:', data);
+                ////console.log('Response:', data);
                 //dbload()
 
             })
@@ -667,54 +787,213 @@ let touchendYProfile = 0;
 
 let pressed = 0
 function handleGestureProfile() {
-  const distanceX = touchendXProfile - touchstartXProfile;
-  const distanceY = touchendYProfile - touchstartYProfile;
+    const distanceX = touchendXProfile - touchstartXProfile;
+    const distanceY = touchendYProfile - touchstartYProfile;
 
-  if (Math.abs(distanceX) > Math.abs(distanceY)) {
-    // Horizontal swipe
-    if (distanceX > 50) { // Left-to-right swipe
-      console.log('Swiped from left to right');
-      // Run your desired function for left-to-right swipe here
-      //loadGL();
-      if(pressed > 2) {
-        //connection()
-      }
-      setTimeout(function() {
-        pressed = 0
-      }, 2500)
-      pressed = pressed + 1
-      console.log("Pressed:", pressed, "times")
-    } else if (distanceX < -50) { // Right-to-left swipe
-      console.log('Swiped from right to left');
-      // Run your desired function for right-to-left swipe here
-      //dbload();
+    if (Math.abs(distanceX) > Math.abs(distanceY)) {
+        // Horizontal swipe
+        if (distanceX > 50) { // Left-to-right swipe
+            ////console.log('Swiped from left to right');
+            // Run your desired function for left-to-right swipe here
+            //loadGL();
+            if (pressed > 2) {
+                //connection()
+            }
+            setTimeout(function () {
+                pressed = 0
+            }, 2500)
+            pressed = pressed + 1
+            ////console.log("Pressed:", pressed, "times")
+        } else if (distanceX < -50) { // Right-to-left swipe
+            ////console.log('Swiped from right to left');
+            // Run your desired function for right-to-left swipe here
+            //dbload();
+        }
+    } else {
+        // Vertical swipe
+        if (distanceY > 50) { // Top-to-bottom swipe
+            ////console.log('Swiped from top to bottom');
+            // Run your desired function for top-to-bottom swipe here
+        } else if (distanceY < -50) { // Bottom-to-top swipe (Swipe up)
+            ////console.log('Swiped from bottom to top');
+            // Run your desired function for bottom-to-top swipe here
+            //handleSwipeUp();
+        }
     }
-  } else {
-    // Vertical swipe
-    if (distanceY > 50) { // Top-to-bottom swipe
-      console.log('Swiped from top to bottom');
-      // Run your desired function for top-to-bottom swipe here
-    } else if (distanceY < -50) { // Bottom-to-top swipe (Swipe up)
-      console.log('Swiped from bottom to top');
-      // Run your desired function for bottom-to-top swipe here
-      //handleSwipeUp();
-    }
-  }
 }
 
 swipeAreaProfile.addEventListener('touchstart', (event) => {
-  touchstartXProfile = event.changedTouches[0].screenX;
-  touchstartYProfile = event.changedTouches[0].screenY;
+    touchstartXProfile = event.changedTouches[0].screenX;
+    touchstartYProfile = event.changedTouches[0].screenY;
 });
 
 swipeAreaProfile.addEventListener('touchend', (event) => {
-  touchendXProfile = event.changedTouches[0].screenX;
-  touchendYProfile = event.changedTouches[0].screenY;
-  handleGestureProfile();
+    touchendXProfile = event.changedTouches[0].screenX;
+    touchendYProfile = event.changedTouches[0].screenY;
+    handleGestureProfile();
 });
 
 function handleSwipeUp() {
-  
-  console.log('Handling swipe up action');
-  // Example function for swipe up
+
+    ////console.log('Handling swipe up action');
+    // Example function for swipe up
+}
+
+function setUploadBtVis() {
+    if (!localStorage.getItem("uplButtonVisibility")) {
+        document.getElementById("visibilityUPLD").innerHTML = "Hidden"
+        localStorage.setItem("uplButtonVisibility", "hide")
+        var animatedButton2 = document.getElementById("animatedButton_dbupl");
+        animatedButton2.style.display = "block";
+        setTimeout(function () {
+            animatedButton2.style.opacity = "0";
+            animatedButton2.style.transform = "translateY(20px)";
+        }, 100);
+    } else {
+        if (localStorage.getItem("uplButtonVisibility") === "hide") {
+            document.getElementById("visibilityUPLD").innerHTML = "Shown"
+            var animatedButton2 = document.getElementById("animatedButton_dbupl");
+            animatedButton2.style.display = "block";
+            setTimeout(function () {
+                animatedButton2.style.opacity = "1";
+                animatedButton2.style.transform = "translateY(0)";
+            }, 100);
+            localStorage.setItem("uplButtonVisibility", "show")
+        } else {
+            document.getElementById("visibilityUPLD").innerHTML = "Hidden"
+            var animatedButton2 = document.getElementById("animatedButton_dbupl");
+            animatedButton2.style.display = "block";
+            setTimeout(function () {
+                animatedButton2.style.opacity = "0";
+                animatedButton2.style.transform = "translateY(20px)";
+            }, 100);
+            localStorage.setItem("uplButtonVisibility", "hide")
+        }
+    }
+}
+
+function containsNumber(value) {
+    // Check if the value includes a number
+    return /\d/.test(value);
+}
+
+
+function setPIN() {
+    let pin = document.getElementById("pin").value
+
+    if (pin !== "") {
+        if (containsNumber(pin)) {
+            document.getElementById("pin").value = "****"
+            let encoded = btoa(pin)
+            localStorage.setItem("T50Pin", encoded)
+        } else {
+            notice("Only Numbers Accepted!");
+            // Do something when the value does not contain a number
+        }
+
+    } else {
+        notice("No PIN Given!")
+    }
+}
+let pin = "";
+let proccessingPIN = false
+function clickPIN(element) {
+    let number = element.innerHTML
+    //console.log(number)
+    
+    if(pin.length <= 3) {
+        if(pin.length == 0) {
+            document.getElementById("ps1").style.width = "10px"
+            document.getElementById("ps1").style.height = "10px"
+        } else if(pin.length == 1) {
+            document.getElementById("ps2").style.width = "10px"
+            document.getElementById("ps2").style.height = "10px"
+        } else if(pin.length == 2) {
+            document.getElementById("ps3").style.width = "10px"
+            document.getElementById("ps3").style.height = "10px"
+        } else if(pin.length == 3) {
+            document.getElementById("ps4").style.width = "10px"
+            document.getElementById("ps4").style.height = "10px"
+        }
+        //not full
+        pin = `${pin}${number}`
+        //console.log("Pin Got:", pin)
+        if(pin.length == 4) {
+            proccessingPIN = true
+            $("#PINdots").fadeOut("fast", function() {
+                $("#PINload").fadeIn("fast")
+            })
+            setTimeout(function() {
+                let accpin = atob(localStorage.getItem("T50Pin"))
+                //console.log(pin, "-->", accpin)
+                if(pin === accpin) {
+                    
+                    proccessingPIN = false
+                    //console.log("Correct")
+                    $("#PINload").fadeOut("fast", function() {
+                        //document.body.style.overflow = 'auto';
+                        document.body.style.touchAction = '';
+                        $("#lock").fadeOut("fast", function() {
+                            $("#images-container").fadeIn("fast")
+                        })
+                        if(localStorage.getItem("remPIN") === "true") {
+                            sessionStorage.setItem("remUnlocked", "true")
+                        }
+                        ready()
+                    })
+                } else {
+                    
+                    proccessingPIN = false
+                    deletePIN()
+                    deletePIN()
+                    deletePIN()
+                    deletePIN()
+                    $("#PINload").fadeOut("fast", function() {
+                        $("#PINdots").fadeIn("fast", function() {
+                            shake_me("pin-input")
+                        })
+                    })
+                }
+            }, 900)
+        }
+    }
+    // else {    
+    // Complete here    
+    //    //console.log("Pin Final:", pin)
+    //}
+}
+
+function deletePIN() {
+    if(proccessingPIN === true) {
+        shake_me("pin-input")
+        return;
+    }
+    if(pin.length == 0) {
+        document.getElementById("ps1").style.width = "5px"
+        document.getElementById("ps1").style.height = "5px"
+    } else if(pin.length == 1) {
+        document.getElementById("ps1").style.width = "5px"
+        document.getElementById("ps1").style.height = "5px"
+    } else if(pin.length == 2) {
+        document.getElementById("ps2").style.width = "5px"
+        document.getElementById("ps2").style.height = "5px"
+    } else if(pin.length == 3) {
+        document.getElementById("ps3").style.width = "5px"
+        document.getElementById("ps3").style.height = "5px"
+    } else if(pin.length == 4) {
+        document.getElementById("ps4").style.width = "5px"
+        document.getElementById("ps4").style.height = "5px"
+    }
+    
+    pin = pin.slice(0, -1);
+    //console.log("Removed last", pin)
+}
+
+function removePIN() {
+    localStorage.removeItem("T50Pin")
+}
+
+function lockNow() {
+    sessionStorage.removeItem("remUnlocked")
+    window.location.reload()
 }
