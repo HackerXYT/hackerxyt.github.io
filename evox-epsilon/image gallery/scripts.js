@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
         //check username
         
     } else {
-        document.getElementById("loginNow").style.display("block")
+        document.getElementById("loginNow").style.display = "block"
         document.getElementById("blocktext").innerHTML = "You haven't logged in yet."
         try {
             document.getElementById("navbar").style.display = "none"
