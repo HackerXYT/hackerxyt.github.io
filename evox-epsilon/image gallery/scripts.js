@@ -115,6 +115,7 @@ function remPin(elem) {
 }
 
 function ready() {
+    document.body.style.touchAction = 'auto';
     if(localStorage.getItem("remPIN") === "true") {
         document.getElementById("remPin").innerHTML = "True"
     } else {
