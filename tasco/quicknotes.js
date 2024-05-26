@@ -82,6 +82,8 @@ function submitnewnote() {
     notename: value,
     noteuser: global_username,
     notemethod: "new",
+    email: localStorage.getItem("t50-email"),
+    password: atob(localStorage.getItem("t50pswd")),
   };
 
   // Fetch options for the POST request
@@ -139,6 +141,8 @@ function delete_note() {
     notename: notename,
     noteuser: global_username,
     notemethod: "delete",
+    email: localStorage.getItem("t50-email"),
+    password: atob(localStorage.getItem("t50pswd")),
   };
 
   // Fetch options for the POST request
@@ -192,6 +196,8 @@ function reload_notes(is, whatname) {
     notename: "none",
     noteuser: global_username,
     notemethod: "get",
+    email: localStorage.getItem("t50-email"),
+    password: atob(localStorage.getItem("t50pswd"))
   };
 
   // Fetch options for the POST request
@@ -229,11 +235,18 @@ function reload_notes(is, whatname) {
             var username = key.split('-')[1].split('.')[0];
 
             // Create the HTML elements
-            var noteDiv = document.createElement('div');
+            let noteDiv = document.createElement('div');
             noteDiv.id = username + '-note';
 
             // Create a function to handle the onclick event with the correct username
-            noteDiv.onclick = createNoteClickHandler(username);
+            if(JSON.stringify(notesObject).includes("Moretti-No Quick Notes Saved! Create One Now! ↗️")) {
+              noteDiv.onclick = function() {
+                shake_me(this.id)
+              };
+            } else {
+              noteDiv.onclick = createNoteClickHandler(username);
+            }
+           
 
             noteDiv.style.marginBottom = '20px';
             noteDiv.style.marginTop = '20px';
@@ -331,7 +344,9 @@ function savenote() {
     notename: note_name,
     noteuser: global_username,
     notemethod: "edit",
-    contents: note_contents
+    contents: note_contents,
+    email: localStorage.getItem("t50-email"),
+    password: atob(localStorage.getItem("t50pswd")),
   };
   const options = {
     method: 'POST',

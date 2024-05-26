@@ -17,6 +17,8 @@ function getnotes_num() {
     notename: "none",
     noteuser: global_username,
     notemethod: "get",
+    email: localStorage.getItem("t50-email"),
+    password: atob(localStorage.getItem("t50pswd")),
   };
 
   // Fetch options for the POST request
@@ -64,6 +66,14 @@ function getdebtsnum() {
     });
 }
 getdebtsnum()
+
+function shake_me(what) {
+	document.getElementById(`${what}`).classList.add('shake');
+	setTimeout(function () {
+		document.getElementById(`${what}`).classList.remove('shake');
+	}, 500);
+}
+
 
 sessionStorage.removeItem("offlinebypass")
 sessionStorage.removeItem("bypassed")

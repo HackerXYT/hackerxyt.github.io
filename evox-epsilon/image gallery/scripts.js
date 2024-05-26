@@ -406,9 +406,14 @@ xml:space="preserve">
 <div class="transparent-placeholder"></div>`)
     loaded = false
     fadeLoad()
+    document.getElementById("navbar").classList.add("active")
 
+    setTimeout(function() {
+        document.getElementById('innerC').classList.add('workCT')
+        document.getElementById('outerC').classList.add('workC')
+    }, 1000)
 
-
+    
     fetch(`https://data.evoxs.xyz/images-gallery/?password=${atob(localStorage.getItem("t50pswd"))}`, {
         method: 'GET',
         headers: {
