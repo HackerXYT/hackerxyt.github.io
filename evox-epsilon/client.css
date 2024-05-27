@@ -140,32 +140,40 @@
   align-items: center;
   width: 50px;
   height: 50px;
-  transition: transform 0.3s ease; /* Transition for smooth animation */
+  transition: transform 0.3s ease;
+  /* Transition for smooth animation */
   animation: animateSettings 10s infinite linear;
 }
 
 .settings .circle:active {
   animation: pulse 0.3s ease;
 }
+
 @keyframes pulse {
   0% {
     transform: scale(1);
   }
+
   15% {
     transform: scale(0.9);
   }
+
   35% {
     transform: scale(0.8);
   }
+
   50% {
     transform: scale(0.7);
   }
+
   75% {
     transform: scale(0.8);
   }
+
   95% {
     transform: scale(0.9);
   }
+
   100% {
     transform: scale(1);
   }
@@ -400,6 +408,7 @@ img {
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
+
 @media only screen and (min-width: 768px) {
   .popup {
     justify-content: center;
@@ -408,13 +417,20 @@ img {
 
   .apple-button-withicon {
     align-items: center;
-    position: absolute;
-    left: 26.5%;
+    position: fixed;
+    left: 0;
 
     justify-content: center;
     text-align: center;
-    width: 90%;
-    max-width: 40%;
+    width: 70%;
+    flex-flow: row;
+  }
+
+  .apple-button-withicon.storeApp {
+    align-items: unset;
+
+    justify-content: unset;
+    text-align: unset;
   }
 
   .apple-button {
@@ -470,6 +486,38 @@ img {
   /* Initially off-screen to the left */
   transition: transform 1s ease, opacity 1s ease, visibility 1s;
   /* Transition for sliding effect, opacity, and visibility */
+}
+
+@media only screen and (min-width: 768px) {
+  .popup {
+    left: unset;
+    width: 668px;
+    border-radius: 38px;
+    height: 89%;
+
+    margin: auto;
+    margin-top: 10px;
+    box-shadow: 0 0 40px 5px rgba(123, 73, 221, 0.25);
+  }
+
+  .parent-popup-container {
+    display: flex;
+    justify-content: center;
+    /* Centers the element horizontally */
+    align-items: center;
+    /* Centers the element vertically, if needed */
+    height: 100vh;
+    /* Optional: Sets the height of the container to 100% of the viewport height */
+  }
+
+  .navbar {
+    width: 60%;
+    border-radius: 28px;
+    bottom: 10px;
+    box-shadow: 0 0 40px 5px rgba(122, 73, 221, 0.134);
+
+
+  }
 }
 
 .popup div {
@@ -1785,7 +1833,7 @@ a {
 
 
 .apple-input-sl {
-  position:relative;
+  position: relative;
   bottom: 10px;
   background-color: #333;
   /* Your desired background color */
@@ -2450,7 +2498,7 @@ a {
   width: 35px;
   height: 35px;
   -webkit-animation: var(--speed) ease infinite jump;
-          animation: var(--speed) ease infinite jump;
+  animation: var(--speed) ease infinite jump;
   transform-origin: 0 100%;
   will-change: transform;
 }
@@ -2463,7 +2511,7 @@ a {
   border-radius: 40px;
   background-color: currentColor;
   -webkit-animation: var(--speed) ease-out infinite spin;
-          animation: var(--speed) ease-out infinite spin;
+  animation: var(--speed) ease-out infinite spin;
   will-change: transform;
 }
 
@@ -2479,7 +2527,7 @@ a {
   bottom: -0.3em;
   z-index: -1;
   -webkit-animation: var(--speed) ease-in-out infinite shadow;
-          animation: var(--speed) ease-in-out infinite shadow;
+  animation: var(--speed) ease-in-out infinite shadow;
   filter: blur(0.02em);
   will-change: transform filter;
 }
@@ -2488,21 +2536,28 @@ a {
   0% {
     transform: scaleY(1) translateY(0);
   }
+
   16% {
     transform: scaleY(0.6) translateY(0);
   }
+
   22% {
     transform: scaleY(1.2) translateY(-5%);
   }
-  24%, 62% {
+
+  24%,
+  62% {
     transform: scaleY(1) translateY(-33%);
   }
+
   66% {
     transform: scaleY(1.2) translateY(0);
   }
+
   72% {
     transform: scaleY(0.8) translateY(0);
   }
+
   88% {
     transform: scaleY(1) translateY(0);
   }
@@ -2512,81 +2567,110 @@ a {
   0% {
     transform: scaleY(1) translateY(0);
   }
+
   16% {
     transform: scaleY(0.6) translateY(0);
   }
+
   22% {
     transform: scaleY(1.2) translateY(-5%);
   }
-  24%, 62% {
+
+  24%,
+  62% {
     transform: scaleY(1) translateY(-33%);
   }
+
   66% {
     transform: scaleY(1.2) translateY(0);
   }
+
   72% {
     transform: scaleY(0.8) translateY(0);
   }
+
   88% {
     transform: scaleY(1) translateY(0);
   }
 }
+
 @-webkit-keyframes spin {
-  0%, 18% {
+
+  0%,
+  18% {
     transform: rotateZ(0);
     border-radius: 0.15em;
   }
+
   38% {
     border-radius: 0.25em;
   }
-  66%, 100% {
+
+  66%,
+  100% {
     transform: rotateZ(1turn);
     border-radius: 0.15em;
   }
 }
+
 @keyframes spin {
-  0%, 18% {
+
+  0%,
+  18% {
     transform: rotateZ(0);
     border-radius: 0.15em;
   }
+
   38% {
     border-radius: 0.25em;
   }
-  66%, 100% {
+
+  66%,
+  100% {
     transform: rotateZ(1turn);
     border-radius: 0.15em;
   }
 }
+
 @-webkit-keyframes shadow {
   0% {
     transform: scale(1);
     filter: blur(0.02em);
   }
-  25%, 60% {
+
+  25%,
+  60% {
     transform: scale(0.8);
     filter: blur(0.06em);
   }
+
   70% {
     transform: scale(1.1);
     filter: blur(0.02em);
   }
+
   90% {
     transform: scale(1);
   }
 }
+
 @keyframes shadow {
   0% {
     transform: scale(1);
     filter: blur(0.02em);
   }
-  25%, 60% {
+
+  25%,
+  60% {
     transform: scale(0.8);
     filter: blur(0.06em);
   }
+
   70% {
     transform: scale(1.1);
     filter: blur(0.02em);
   }
+
   90% {
     transform: scale(1);
   }
@@ -2623,8 +2707,8 @@ a {
   .bottom-actions {
     padding: 10px 0 15px;
   }
-  
+
   .foryou {
-    height: 290px;  
+    height: 290px;
   }
 }
