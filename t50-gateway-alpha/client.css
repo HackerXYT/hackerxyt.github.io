@@ -1,11 +1,12 @@
-
 @font-face {
   font-family: "SF";
   src: url('SFUIText-Medium.ttf');
 }
+
 @font-face {
   font-family: 'SFLight';
-  src: url('./internal/SFProDisplay-Light.ttf') format('truetype'); /* Adjust path and format */
+  src: url('./internal/SFProDisplay-Light.ttf') format('truetype');
+  /* Adjust path and format */
 }
 
 
@@ -259,11 +260,12 @@ img {
     justify-content: center;
     text-align: center;
   }
+
   .apple-button-withicon {
-    align-items: center; 
-    position:absolute;
+    align-items: center;
+    position: absolute;
     left: 26.5%;
-    
+
     justify-content: center;
     text-align: center;
     width: 90%;
@@ -275,7 +277,7 @@ img {
     text-align: center;
     width: 90%;
     max-width: 40%;
-    position:absolute;
+    position: absolute;
     left: 26.5%;
   }
 
@@ -716,14 +718,15 @@ a {
 
 .foryou {
   height: 260px;
-  width:461px;
-  bottom:0;
+  width: 461px;
+  bottom: 0;
   background-color: #00000060;
   display: flex;
   position: fixed;
   flex-direction: column;
+  border-radius: 10px;
   transition: transform 0.4s ease, opacity 0.4s ease, visibility 0.4s;
-  
+
 }
 
 .foryou.hidden {
@@ -740,17 +743,21 @@ a {
 
 .foryou p.titleit {
   margin-left: 15px;
-  margin: 0; /* Remove default margins */
-  padding: 0; /* Remove default padding */
+  margin: 0;
+  /* Remove default margins */
+  padding: 0;
+  /* Remove default padding */
   font-size: large;
-  
+
 }
 
 .foryou p.detail {
-  margin: 0; /* Remove default margins */
-  padding: 0; /* Remove default padding */
+  margin: 0;
+  /* Remove default margins */
+  padding: 0;
+  /* Remove default padding */
   font-family: "SFLight";
-  font-stretch:wider;
+  font-stretch: wider;
   font-size: large;
 }
 
@@ -776,12 +783,15 @@ a {
   padding-left: 13px;
 
   display: flex;
-    align-items: center; /* Center vertically */
-    margin-bottom: 10px; /* Adjust spacing between notifications */
+  align-items: center;
+  /* Center vertically */
+  margin-bottom: 10px;
+  /* Adjust spacing between notifications */
 }
 
 .notification-content {
-  margin-left: 10px; /* Adjust this value as needed */
+  margin-left: 10px;
+  /* Adjust this value as needed */
 }
 
 @media only screen and (min-width: 768px) {
@@ -812,10 +822,13 @@ a {
   margin-top: 20px;
   display: none;
 }
+
 #zoomImage {
   transition: top 0.5s ease, left 0.5s ease;
-  transition: width 0.5s ease, height 0.5s ease; /* Add smooth transition for width and height */
+  transition: width 0.5s ease, height 0.5s ease;
+  /* Add smooth transition for width and height */
 }
+
 .rad-label {
   display: flex;
   align-items: center;
@@ -974,6 +987,7 @@ a {
   right: 20px;
   /* Adjust as needed */
 }
+
 @media only screen and (min-width: 769px) {
 
   /* Hide the .apple-button svg on devices with a minimum width of 769px or more (assumed to be PCs) */
@@ -1183,11 +1197,25 @@ a {
 }
 
 @keyframes shake {
-  0% { transform: translateY(0); }
-  25% { transform: translateY(0.1vw); }
-  50% { transform: translateY(-0.1vw); }
-  75% { transform: translateY(0.1vw); }
-  100% { transform: translateY(0); }
+  0% {
+    transform: translateY(0);
+  }
+
+  25% {
+    transform: translateY(0.1vw);
+  }
+
+  50% {
+    transform: translateY(-0.1vw);
+  }
+
+  75% {
+    transform: translateY(0.1vw);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .notif_shake {
@@ -1195,9 +1223,17 @@ a {
 }
 
 @keyframes fadeBackground {
-  0% { background-color: rgb(35, 85, 68); }
-  50% { background-color: #33333370; }
-  100% { background-color: rgb(35, 85, 68); }
+  0% {
+    background-color: rgb(35, 85, 68);
+  }
+
+  50% {
+    background-color: #33333370;
+  }
+
+  100% {
+    background-color: rgb(35, 85, 68);
+  }
 }
 
 .fadeInOut {
@@ -1205,9 +1241,17 @@ a {
 }
 
 @keyframes fadeBackground-tl {
-  0% { background-color: #434343; }
-  50% { background-color: #333333; }
-  100% { background-color: #434343; }
+  0% {
+    background-color: #434343;
+  }
+
+  50% {
+    background-color: #333333;
+  }
+
+  100% {
+    background-color: #434343;
+  }
 }
 
 .fadeInOut-timeline {
@@ -1215,9 +1259,17 @@ a {
 }
 
 @keyframes fadeBackground-tl-new {
-  0% { background-color: #198c38; }
-  50% { background-color: #333333; }
-  100% { background-color: #198c38; }
+  0% {
+    background-color: #198c38;
+  }
+
+  50% {
+    background-color: #333333;
+  }
+
+  100% {
+    background-color: #198c38;
+  }
 }
 
 .fadeInOut-timeline-new {
@@ -1228,9 +1280,11 @@ a {
   0% {
     box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.7);
   }
+
   50% {
     box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
   }
+
   100% {
     box-shadow: 0 0 0 0px rgba(255, 255, 255, 0);
   }
@@ -1243,13 +1297,16 @@ a {
   position: fixed;
   bottom: 286px;
   right: 35px;
-  width: 50px; /* Set width and height to make it a circle */
-  height: 50px; /* Set width and height to make it a circle */
+  width: 50px;
+  /* Set width and height to make it a circle */
+  height: 50px;
+  /* Set width and height to make it a circle */
   background-color: #33333370;
   border: none;
   color: #fff;
   font-size: 16px;
-  border-radius: 50%; /* Ensure border-radius is set to 50% to make it a circle */
+  border-radius: 50%;
+  /* Ensure border-radius is set to 50% to make it a circle */
   cursor: pointer;
   transition: background-color 0.3s ease, opacity 0.5s ease, transform 0.5s ease;
   opacity: 0;
@@ -1263,13 +1320,16 @@ a {
   position: fixed;
   top: 286px;
   right: 35px;
-  width: 50px; /* Set width and height to make it a circle */
-  height: 50px; /* Set width and height to make it a circle */
+  width: 50px;
+  /* Set width and height to make it a circle */
+  height: 50px;
+  /* Set width and height to make it a circle */
   background-color: #33333370;
   border: none;
   color: #fff;
   font-size: 16px;
-  border-radius: 50%; /* Ensure border-radius is set to 50% to make it a circle */
+  border-radius: 50%;
+  /* Ensure border-radius is set to 50% to make it a circle */
   cursor: pointer;
   transition: background-color 0.3s ease, opacity 0.5s ease, transform 0.5s ease;
   transform: translateY(20px);
@@ -1473,7 +1533,7 @@ a {
   scroll-behavior: smooth;
   touch-action: auto;
   justify-content: center;
-  background: rgba(33,34,41,255);
+  background: rgba(33, 34, 41, 255);
   /* Semi-transparent black overlay */
   z-index: 999;
   box-sizing: border-box;
@@ -1999,9 +2059,12 @@ a {
   display: flex;
   flex-direction: column;
   position: absolute;
-  left: 100%; /* Position the details to the right of the image */
-  top: 50%; /* Center vertically */
-  transform: translateY(-50%); /* Center vertically */
+  left: 100%;
+  /* Position the details to the right of the image */
+  top: 50%;
+  /* Center vertically */
+  transform: translateY(-50%);
+  /* Center vertically */
 }
 
 .user-name-rem {
@@ -2024,7 +2087,8 @@ a {
 
 .apple-button-notif {
   width: 80%;
-  padding-right: 100px; /* Width of delete option */
+  padding-right: 100px;
+  /* Width of delete option */
   transition: transform 0.3s ease;
 }
 
@@ -2032,26 +2096,32 @@ a {
 .delete-option {
   position: absolute;
   top: 0;
-  right: -100px; /* Hide delete option initially */
-  width: 100px; /* Width of delete option */
+  right: -100px;
+  /* Hide delete option initially */
+  width: 100px;
+  /* Width of delete option */
   height: 100%;
-  background-color: red; /* Adjust styling as needed */
+  background-color: red;
+  /* Adjust styling as needed */
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 8px;
   color: white;
   cursor: pointer;
-  transition: right 0.3s ease; /* Change transform to right */
+  transition: right 0.3s ease;
+  /* Change transform to right */
   height: 80%
 }
 
 .slide-container.active .apple-button {
-  transform: translateX(-100px); /* Width of delete option */
+  transform: translateX(-100px);
+  /* Width of delete option */
 }
 
 .slide-container.active .delete-option {
-  right: 0; /* Display delete option */
+  right: 0;
+  /* Display delete option */
 }
 
 .timeline {
@@ -2126,13 +2196,46 @@ a {
 
 .mergingInfo li {
   display: none;
-  margin:10px
+  margin: 10px
 }
 
 .horizontal-line {
   margin-left: 0;
   justify-content: left;
-  border-bottom: 1px solid black; /* Adjust thickness and color as needed */
-  width: 200%; /* Adjust width as needed */
+  border-bottom: 1px solid black;
+  /* Adjust thickness and color as needed */
+  width: 200%;
+  /* Adjust width as needed */
 }
 
+@media only screen and (min-width: 768px) {
+  .parent-div-container {
+    display: flex;
+    justify-content: center;
+    /* Centers the element horizontally */
+    align-items: center;
+    flex-direction: column;
+    /* Centers the element vertically, if needed */
+    height: 100vh;
+    /* Optional: Sets the height of the container to 100% of the viewport height */
+  }
+
+  .foryou.hidden {
+    transform: translateX(-100%);
+  }
+
+  .foryou {
+    height: 100%;
+    width: 461px;
+    left: 0;
+    background-color: #121213a5;
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    transition: transform 0.4s ease, opacity 0.4s ease, visibility 0.4s;
+  }
+
+  #he {
+    margin-top: 70%;
+  }
+}

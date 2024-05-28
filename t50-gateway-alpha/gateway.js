@@ -1888,3 +1888,23 @@ function lockMe() {
 
 
 }
+
+let initialWidth = window.innerWidth;
+
+// Function to handle the resize event
+function handleResize() {
+  // Current width of the window
+  const currentWidth = window.innerWidth;
+
+  // Check if the width has changed
+  if (currentWidth !== initialWidth) {
+    console.log(`Width changed from ${initialWidth} to ${currentWidth}`);
+    // Update the initial width
+    initialWidth = currentWidth;
+
+    // Add any additional logic you want to perform on width change
+  }
+}
+
+// Add event listener for window resize
+window.addEventListener('resize', handleResize);

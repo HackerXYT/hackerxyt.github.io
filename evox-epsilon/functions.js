@@ -3649,7 +3649,6 @@ function show_notif(nosound, reload) {
 						$("#load-container").fadeIn("fast", function () {
 							$("#load-container").fadeOut("fast")
 						})
-
 					})
 				}
 
@@ -3780,6 +3779,10 @@ function createNotificationElement(image, notification) {
 		container.appendChild(dateSeparator);
 	}
 
+	var parentDiv = document.createElement("div");
+	parentDiv.className = "parent-popup-container"
+	parentDiv.style.height = "auto"
+
 	var a = document.createElement("a");
 	a.href = "#";
 	a.className = "apple-button notifOptions";
@@ -3812,7 +3815,8 @@ function createNotificationElement(image, notification) {
 	a.appendChild(div);
 	a.appendChild(p);
 
-	container.appendChild(a);
+	parentDiv.appendChild(a)
+	container.appendChild(parentDiv);
 }
 
 

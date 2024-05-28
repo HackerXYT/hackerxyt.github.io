@@ -1114,6 +1114,7 @@ a {
   width: auto;
   padding: 10px 20px;
   border-radius: 25px;
+  max-width: 40%;
 }
 
 
