@@ -1044,7 +1044,7 @@ function docready(merge) {
                 $("#dots").html(".")
                 setTimeout(function () {
                   $("#dots").html("..")
-                  fetch("${srv}/accounts")
+                  fetch(`${srv}/accounts`)
                     .then(response => {
                       if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1746,7 +1746,7 @@ function lockMe() {
       }
     }, 100)
   }
-  const url = '${srv}'; // Replace with your API URL
+  const url = srv // Replace with your API URL
 
   const startTime = performance.now();
 
