@@ -312,7 +312,7 @@ function setup() {
 
   if (!localStorage.getItem("betaNotice")) {
     try {
-      createLocalNotification("You are on beta!", "The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!", null, "13000")
+      createLocalNotification("You are using beta!", "The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!", null, "13000")
       setTimeout(function() {
         notice("Swipe from left to right to dismiss!")
       }, 3000)
@@ -321,7 +321,7 @@ function setup() {
       }, 9000)
     } catch {
       setTimeout(function() {
-        createLocalNotification("You are on beta!", "The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!", null, "13000")
+        createLocalNotification("You are using beta!", "The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!", null, "13000")
         setTimeout(function() {
           notice("Swipe from left to right to dismiss!")
         }, 3000)
