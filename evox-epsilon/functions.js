@@ -203,7 +203,24 @@ function switchNAV(element) {
 	} else if (place.includes("Profile")) {
 		console.log("Profile")
 		goTo = "Profile"
+		
 	}
+
+	if(goTo !== "Home") {
+		$("#appUP").fadeOut("fast", function() {
+			document.getElementById("appUP").innerHTML = `Epsilon • ${goTo}`
+			$("#appUP").fadeIn("fast")
+		})
+		
+	} else {
+		$("#appUP").fadeOut("fast", function() {
+			document.getElementById("appUP").innerHTML = `Epsilon 3.8`
+			$("#appUP").fadeIn("fast")
+		})
+		
+	}
+
+	
 
 	if (goTo === currScreen) {
 		if (currScreen === "Notifications" && !document.getElementById("notifications").classList.contains("active")) {
@@ -402,7 +419,7 @@ function setActive(option) {
 	</svg>
 	<span style="color: #cccccc">Chats</span>`
 	} else if (option === "Notifications") {
-		$("#nav-Notifications-text").fadeIn("fast")
+		//$("#nav-Notifications-text").fadeIn("fast")
 		notifications.style.color = "#cccccc"
 	} else if (option === "Profile") {
 		profileD.classList.add("active")
@@ -583,6 +600,7 @@ function load(app) {
 
 			$("#iframeContainer").fadeOut("slow", function () {
 				document.getElementById("navbar").classList.add("active")
+				document.getElementById("apple-style").classList.add("active")
 			})
 			sessionStorage.removeItem("extRun")
 			clearInterval(appFrame)
@@ -597,6 +615,7 @@ function launchAppN(app) {
 	$("#iframeContainer").fadeIn("slow")
 	$("#launchApp").fadeIn("slow", function () {
 		document.getElementById("navbar").classList.remove("active")
+		document.getElementById("apple-style").classList.remove("active")
 	})
 }
 
@@ -778,6 +797,7 @@ function uielements() {
 	console.log(notes, images, chatvia)
 	//$("#navbar").fadeIn("fast")
 	document.getElementById("navbar").classList.add("active")
+	document.getElementById("apple-style").classList.add("active")
 	$("#navigator").fadeIn("slow")
 	//$("#settings").fadeIn("slow")
 	//$("#vox").fadeIn("slow")
@@ -933,6 +953,7 @@ function uielements() {
 
 
 function settings() {
+	
 	if (sessionStorage.getItem("blockBottomLogout") === "true") {
 		shake_me("logout_confirm")
 		return;
@@ -941,6 +962,7 @@ function settings() {
 
 	//console.log(document.getElementById("popup").classList.contains("active"))
 	if (document.getElementById("popup").classList.contains("active") === false) {
+		document.getElementById("apple-style").classList.remove("active")
 		return_to_options("reset")
 		try {
 			$("#onesignal-bell-container").fadeIn("fast")
@@ -983,6 +1005,7 @@ function settings() {
 			//document.body.style.overflow = 'hidden';
 		}, 100)
 	} else if (document.getElementById("popup").classList.contains("active")) {
+		document.getElementById("apple-style").classList.add("active")
 
 		try {
 			$("#onesignal-bell-container").fadeOut("fast")
@@ -7052,11 +7075,14 @@ function bypassSetup() {
 }
 let lnele;
 let isLNactive = false;
-function createLocalNotification(title, description, image) {
+function createLocalNotification(title, description, image, customTime) {
 	if (!title || !description) {
 		return;
 	} else if (!image) {
 		image = "evox-logo-apple.png"
+	}
+	if(!customTime) {
+		customTime = 5000
 	}
 	let titleEle = document.getElementById("lNotif-title")
 	let descEle = document.getElementById("lNotif-desc")
@@ -7072,8 +7098,8 @@ function createLocalNotification(title, description, image) {
 		}
 		imgEle.src = image
 		titleEle.innerHTML = title
-		if (description.length > 85) {
-			let truncated = description.substring(0, 85);
+		if (description.length > 150) {
+			let truncated = description.substring(0, 150);
 			let lastSpace = truncated.lastIndexOf(' ');
 
 			// Ensure we don't cut a word in half
@@ -7088,7 +7114,7 @@ function createLocalNotification(title, description, image) {
 		ele.classList.add("active")
 		lnele = setTimeout(function () { //local notification element
 			ele.classList.remove("active")
-		}, 5000)
+		}, customTime)
 	} else if (isLNactive === true) {
 		ele.classList.remove("active")
 		clearTimeout(lnele)
@@ -7097,5 +7123,9 @@ function createLocalNotification(title, description, image) {
 			createLocalNotification(title, description, image)
 		}, 600)
 	}
+
+}
+
+if(document.getElementById("popup").classList.contains("active")) {
 
 }

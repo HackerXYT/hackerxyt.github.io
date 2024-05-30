@@ -1,5 +1,5 @@
 let srv = "https://data.evoxs.xyz"
-if(localStorage.getItem("currentSrv")) {
+if (localStorage.getItem("currentSrv")) {
   srv = localStorage.getItem("currentSrv")
 } else {
   localStorage.setItem("currentSrv", "https://data.evoxs.xyz")
@@ -310,6 +310,28 @@ function setup() {
     alert("Cryptox Operations Failed")
   }
 
+  if (!localStorage.getItem("betaNotice")) {
+    try {
+      createLocalNotification("You are on beta!", "The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!", null, "13000")
+      setTimeout(function() {
+        notice("Swipe from left to right to dismiss!")
+      }, 3000)
+      setTimeout(function() {
+        localStorage.setItem("betaNotice", "acknowledged")
+      }, 9000)
+    } catch {
+      setTimeout(function() {
+        createLocalNotification("You are on beta!", "The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!", null, "13000")
+        setTimeout(function() {
+          notice("Swipe from left to right to dismiss!")
+        }, 3000)
+        setTimeout(function() {
+          localStorage.setItem("betaNotice", "acknowledged")
+        }, 9000)
+      }, 5000)
+    }
+    
+  }
   //if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
   //  window.location.href = "./update/"
   //  return;
@@ -608,10 +630,10 @@ function setup() {
                 const randomlySelectedPhrase = phrases[randomIndex];
                 document.getElementById("loading-apps-text").innerHTML = randomlySelectedPhrase
                 $("#loading-apps-text").fadeIn("slow")
-                if(sessionStorage.getItem("extLoaded")) {
+                if (sessionStorage.getItem("extLoaded")) {
                   document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="sessionStorage.setItem('extRun', 'back')" href="#loadapp-return"><img src="return.png" class="app"></img></a>`
                 }
-                
+
               })
               $("#loading").fadeOut("slow")
               try {
@@ -914,6 +936,7 @@ function docready(merge) {
           document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
           document.getElementById("loading-apps-text").innerHTML = `Servers are currently offline.`
           document.getElementById("navbar").classList.add("active")
+          document.getElementById("apple-style").classList.add("active")
           try {
             critical.play()
           } catch {
@@ -1569,10 +1592,10 @@ function reconnect() {
       }
     }).catch(error => {
       //$("#loading-bar").fadeOut("slow")
-      setTimeout(function() {
+      setTimeout(function () {
         reconnect()
       }, 1000)
-      
+
     })
 }
 
@@ -1926,6 +1949,7 @@ let touchstartXChats = 0;
 let touchendXChats = 0;
 
 function handleGestureChats() {
+  return;
   const distance = touchendXChats - touchstartXChats;
 
   if (distance > 50) { // Left-to-right swipe
@@ -1979,6 +2003,7 @@ let touchstartXHome1 = 0;
 let touchendXHome1 = 0;
 
 function handleGestureHome1() {
+  return;
   const distance = touchendXHome1 - touchstartXHome1;
 
   if (distance > 50) { // Left-to-right swipe
@@ -2016,6 +2041,7 @@ let touchstartXNotifications = 0;
 let touchendXNotifications = 0;
 
 function handleGestureNotifications() {
+  return;
   const distance = touchendXNotifications - touchstartXNotifications;
 
   if (distance > 50) { // Left-to-right swipe
@@ -2059,7 +2085,7 @@ swipeAreaNotifications.addEventListener('touchend', (event) => {
   handleGestureNotifications();
 });
 
-const swipeAreaProfile = document.getElementById('myAcc');
+const swipeAreaProfile = document.getElementById('lnotif');
 
 let touchstartXProfile = 0;
 let touchendXProfile = 0;
@@ -2069,6 +2095,18 @@ function handleGestureProfile() {
 
   if (distance > 50) { // Left-to-right swipe
     console.log('Swiped from left to right');
+    let ele = document.getElementById("lnotif")
+    ele.classList.remove("active")
+    clearTimeout(lnele)
+		isLNactive = false
+    if(ele.innerHTML.includes("The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!")) {
+      console.log("This is the beta notice one")
+      localStorage.setItem("betaNotice", "acknowledged")
+    }
+		
+    
+
+    return;
     // Run your desired function for left-to-right swipe here
     setActive("Notifications")
     currScreen = "Notifications"
@@ -2088,7 +2126,7 @@ function handleGestureProfile() {
   } else if (distance < -50) { // Right-to-left swipe
     console.log('Swiped from right to left');
     // Run your desired function for right-to-left swipe here
-    shake_me("myAcc")
+    shake_me("lnotif")
   }
 }
 
@@ -2100,3 +2138,4 @@ swipeAreaProfile.addEventListener('touchend', (event) => {
   touchendXProfile = event.changedTouches[0].screenX;
   handleGestureProfile();
 });
+

@@ -121,6 +121,7 @@
 }
 
 .nav-item span {
+  display: none;
   margin-top: 2px;
 }
 
@@ -2719,6 +2720,8 @@ a {
 @media only screen and (max-width: 768px) {
   .navbar {
     padding: 10px 0 30px;
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
   }
 
   .bottom-actions {
@@ -2808,7 +2811,7 @@ a {
 
 .notification-cont {
   padding-right: 10px;
-  font-size: 18px;
+  font-size: 13px;
   color: #919191;
 }
 
@@ -2819,27 +2822,27 @@ a {
 @media only screen and (max-width: 768px) {
   .apple-style {
     display: flex;
-    flex-direction: row;
-    flex-basis: 0;
-    padding-block-start: 0%;
+    flex-direction: column;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
     /* Aligns the element to the start (left) */
     align-items: center;
-    background-color: #121212;
-    border-radius: 73px;
-    width: 99%;
+    background-color: #2c2c2c;
+    width: 100%;
     position: absolute;
-    height: 60px;
-    top: -60px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
+    height: 25px;
+    top: 0;
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 1s ease;
     transform: translateY(-50%);
     /* Initially off-screen to the left */
-    transition: transform 0.7s ease, opacity 0.5s ease, visibility 0.5s;
-    z-index: 995;
+    transition: transform 1s ease, opacity 1s ease, visibility 1s;
+    z-index: 999;
+  }
+
+  .apple-style span {
+    font-size: smaller;
+    font-family: "SFLight";
   }
 
   .apple-style.active {
