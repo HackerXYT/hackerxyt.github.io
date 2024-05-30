@@ -1,3 +1,11 @@
+let srv = "https://data.evoxs.xyz"
+if(localStorage.getItem("currentSrv")) {
+  srv = localStorage.getItem("currentSrv")
+} else {
+  localStorage.setItem("currentSrv", "https://data.evoxs.xyz")
+  srv = "https://data.evoxs.xyz"
+}
+
 
 sessionStorage.removeItem("skipped")
 sessionStorage.removeItem("sending")
@@ -256,7 +264,7 @@ function greetUser() {
 }
 
 function setupCrypt() {
-  fetch(`https://data.evoxs.xyz/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+  fetch(`${srv}/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -387,7 +395,7 @@ function setup() {
   //} catch {
   //  console.error("Error Logging Out Of Florida. Safe")
   //}
-  fetch(`https://data.evoxs.xyz/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+  fetch(`${srv}/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -430,7 +438,7 @@ function setup() {
       console.error('Fetch error:', error);
     });
   if (!localStorage.getItem("florida_init") && !window.location.href.includes("localhost")) {
-    fetch(`https://data.evoxs.xyz/florida?method=largest&username=${localStorage.getItem("t50-username")}`)
+    fetch(`${srv}/florida?method=largest&username=${localStorage.getItem("t50-username")}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -492,7 +500,7 @@ function setup() {
         $("#container").fadeOut("fast")
         $("#loading").fadeIn("slow")
         $("#stuck").fadeOut("slow")
-        fetch(`https://data.evoxs.xyz/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
+        fetch(`${srv}/accounts?applications=get&email=${localStorage.getItem("t50-email")}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -685,7 +693,7 @@ function docready(merge) {
     document.getElementById("transfUsr").innerHTML = myinfo['t50-username']
     document.getElementById("mrg-email").innerHTML = myinfo['t50-email']
     document.getElementById("loading-text").innerHTML = ``
-    const url = `https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${myinfo['t50-username']}`;
+    const url = `${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${myinfo['t50-username']}`;
     fetch(url)
       .then(response => response.text())
       .then(data => {
@@ -717,7 +725,7 @@ function docready(merge) {
 
 
 
-    const url = `https://data.evoxs.xyz/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${localStorage.getItem("IPV4")}`;
+    const url = `${srv}/accounts?email=${loggedin}&password=${pswd}&autologin=true&ip=${localStorage.getItem("IPV4")}`;
 
     fetch(url)
       .then(response => {
@@ -733,7 +741,7 @@ function docready(merge) {
           console.log('%c' + "Account Verified!", `color: green; font-size: 16px; font-weight: bold;`)
 
           if (ext) {
-            fetch(`https://data.evoxs.xyz/evoxApp?method=assignAccount&id=${ext}&email=${loggedin}&password=${pswd}`)
+            fetch(`${srv}/evoxApp?method=assignAccount&id=${ext}&email=${loggedin}&password=${pswd}`)
               .then(response => {
                 if (!response.ok) {
                   throw new Error(`HTTP error! Status: ${response.status}`);
@@ -754,7 +762,7 @@ function docready(merge) {
           }
 
           sessionStorage.setItem("loaded", true)
-          fetch(`https://data.evoxs.xyz/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+          fetch(`${srv}/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -764,7 +772,7 @@ function docready(merge) {
             .then(data => {
               $("#loading").fadeOut("slow")
               if (ext) {
-                fetch(`https://data.evoxs.xyz/evoxApp?method=assignAccount&id=${ext}&email=${loggedin}&password=${pswd}`)
+                fetch(`${srv}/evoxApp?method=assignAccount&id=${ext}&email=${loggedin}&password=${pswd}`)
                   .then(response => {
                     if (!response.ok) {
                       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -797,7 +805,7 @@ function docready(merge) {
 
                 //setup() is old
               } else if (data === "Unknown IP") {
-                fetch(`https://data.evoxs.xyz/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+                fetch(`${srv}/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
                   .then(response => {
                     if (!response.ok) {
                       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -842,7 +850,7 @@ function docready(merge) {
         } else if (data.includes("IP Not Verified")) {
           $("#loading").fadeOut("slow")
           console.log('%c' + "Existing Account Verified! IP Not Mapped", `color: orange; font-size: 16px; font-weight: bold;`)
-          fetch(`https://data.evoxs.xyz/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+          fetch(`${srv}/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -987,7 +995,7 @@ function docready(merge) {
     document.getElementById("rem-user").style.display = "block"
     document.getElementById("usr-img-autolg").src = "reloading-pfp.gif"
     const user = localStorage.getItem("t50-username")
-    const url = `https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+    const url = `${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
     fetch(url)
       .then(response => response.text())
       .then(data => {
@@ -1005,7 +1013,7 @@ function docready(merge) {
       })
       .catch(error => {
         auto_login()
-        notice("Servers Are Offline!")
+        createLocalNotification("Gateway", "Servers Are Offline!")
         sessionStorage.setItem("block_interactions", "true")
         document.getElementById("usr-img-autolg").src = "SVKl.gif"
         console.error(error);
@@ -1036,7 +1044,7 @@ function docready(merge) {
                 $("#dots").html(".")
                 setTimeout(function () {
                   $("#dots").html("..")
-                  fetch("https://data.evoxs.xyz/accounts")
+                  fetch("${srv}/accounts")
                     .then(response => {
                       if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1240,7 +1248,7 @@ function verifycode() {
   //let dig6 = document.getElementById("dig6").value
   //let code = `${dig1}${dig2}${dig3}${dig4}${dig5}${dig6}`
   console.log("Just to verify:\n", email, username, password, code)
-  fetch(`https://data.evoxs.xyz/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${localStorage.getItem("IPV4")}`)
+  fetch(`${srv}/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${localStorage.getItem("IPV4")}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1252,7 +1260,7 @@ function verifycode() {
         var wind = new URL(window.location.href);
         var ext = wind.searchParams.get("id");
         if (ext) {
-          fetch(`https://data.evoxs.xyz/evoxApp?method=assignAccount&id=${ext}&email=${email}&password=${password}`)
+          fetch(`${srv}/evoxApp?method=assignAccount&id=${ext}&email=${email}&password=${password}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1402,7 +1410,7 @@ function login() {
       console.log("Wrong Email/Password")
     }
   }
-  const url = `https://data.evoxs.xyz/accounts?email=${email}&password=${password}&ip=${localStorage.getItem("IPV4")}`;
+  const url = `${srv}/accounts?email=${email}&password=${password}&ip=${localStorage.getItem("IPV4")}`;
 
   fetch(url)
     .then(response => {
@@ -1453,7 +1461,7 @@ function login() {
         }
 
         if (ext) {
-          fetch(`https://data.evoxs.xyz/evoxApp?method=assignAccount&id=${ext}&email=${email}&password=${password}`)
+          fetch(`${srv}/evoxApp?method=assignAccount&id=${ext}&email=${email}&password=${password}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1542,7 +1550,7 @@ document.getElementById("ver_code").addEventListener("keypress", function (event
 function reconnect() {
   console.log("Reconnecting..")
   //$("#loading-bar").fadeIn("slow")
-  fetch("https://data.evoxs.xyz/cron")
+  fetch(`${srv}/cron`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1561,7 +1569,10 @@ function reconnect() {
       }
     }).catch(error => {
       //$("#loading-bar").fadeOut("slow")
-      reconnect()
+      setTimeout(function() {
+        reconnect()
+      }, 1000)
+      
     })
 }
 
@@ -1581,7 +1592,7 @@ function ext_relogin() {
                 $("#dots").html(".")
                 setTimeout(function () {
                   $("#dots").html("..")
-                  fetch("https://data.evoxs.xyz/accounts")
+                  fetch(`${srv}/accounts`)
                     .then(response => {
                       if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1735,7 +1746,7 @@ function lockMe() {
       }
     }, 100)
   }
-  const url = 'https://data.evoxs.xyz'; // Replace with your API URL
+  const url = '${srv}'; // Replace with your API URL
 
   const startTime = performance.now();
 
@@ -1751,6 +1762,7 @@ function lockMe() {
       } else if (integer < 900) {
         document.getElementById("signalInd").src = "./internal/strong.svg"
       } else {
+        document.getElementById("lockScreen-signal").style.backgroundColor = "transparent"
         document.getElementById("signalInd").src = "./internal/fair.svg"
       }
       return response.text();
@@ -1777,7 +1789,7 @@ function lockMe() {
     $("#navigator").fadeOut()
   })
 
-  fetch(`https://data.evoxs.xyz/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+  fetch(`${srv}/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

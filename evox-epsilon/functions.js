@@ -1,5 +1,5 @@
 //window.addEventListener('beforeunload', function (event) {
-//	fetch(`https://data.evoxs.xyz/setOffline?username=${localStorage.getItem("t50-username")}`)
+//	fetch(`${srv}/setOffline?username=${localStorage.getItem("t50-username")}`)
 //		.then(response => {
 //			if (!response.ok) {
 //				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -158,35 +158,6 @@ var login_ok = new Howl({
 	volume: 1
 });
 sessionStorage.removeItem("more_options")
-fetch(`https://data.evoxs.xyz/setOnline?username=${localStorage.getItem("t50-username")}`)
-	.then(response => {
-		if (!response.ok) {
-			throw new Error(`HTTP error! Status: ${response.status}`);
-		}
-		return response.text();
-	})
-	.then(data => {
-		if (data === "200") {
-			fetch(`https://data.evoxs.xyz/getOnlineUsers`)
-				.then(response => {
-					if (!response.ok) {
-						throw new Error(`HTTP error! Status: ${response.status}`);
-					}
-					return response.text();
-				})
-				.then(users => {
-					const onlineUsers = JSON.parse(users)
-					console.log(onlineUsers)
-				})
-				.catch(error => {
-					console.error('Fetch error:', error);
-				});
-		}
-
-	})
-	.catch(error => {
-		console.error('Fetch error:', error);
-	});
 
 function fadeError(method) {
 	var targetColor = "rgb(255, 99, 71)";
@@ -388,7 +359,7 @@ function setActive(option) {
 		fill="#787676" />
 	<path
 		d="M9 17.25C8.58579 17.25 8.25 17.5858 8.25 18C8.25 18.4142 8.58579 18.75 9 18.75H15C15.4142 18.75 15.75 18.4142 15.75 18C15.75 17.5858 15.4142 17.25 15 17.25H9Z"
-		fill="#000" />
+		fill="#212121" />
 </svg>
 <span style="display: none">Home</span>`
 	const chatsH = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
@@ -419,7 +390,7 @@ function setActive(option) {
 			fill="#cccccc" />
 		<path
 			d="M9 17.25C8.58579 17.25 8.25 17.5858 8.25 18C8.25 18.4142 8.58579 18.75 9 18.75H15C15.4142 18.75 15.75 18.4142 15.75 18C15.75 17.5858 15.4142 17.25 15 17.25H9Z"
-			fill="#000" />
+			fill="#212121" />
 	</svg>
 	<span style="color: #cccccc">Home</span>`
 	} else if (option === "Chats") {
@@ -710,7 +681,7 @@ function continue_purch(app) {
 function check_ccode(app) {
 	$("#loading").fadeIn("slow")
 	let coupon = document.getElementById("coupon").value
-	const url = `https://data.evoxs.xyz/accounts?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
+	const url = `${srv}/accounts?applications=${app}&coupon=${coupon}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`;
 
 	fetch(url)
 		.then(response => {
@@ -928,7 +899,38 @@ function uielements() {
 		document.getElementById("auto-login").style.color = `#eb2424`
 	}
 
+	fetch(`${srv}/setOnline?username=${localStorage.getItem("t50-username")}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			if (data === "200") {
+				fetch(`${srv}/getOnlineUsers`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+						return response.text();
+					})
+					.then(users => {
+						const onlineUsers = JSON.parse(users)
+						console.log(onlineUsers)
+					})
+					.catch(error => {
+						console.error('Fetch error:', error);
+					});
+			}
+
+		})
+		.catch(error => {
+			console.error('Fetch error:', error);
+		});
+
 }
+
 
 function settings() {
 	if (sessionStorage.getItem("blockBottomLogout") === "true") {
@@ -1037,7 +1039,7 @@ function settings() {
 
 function close_popup() {
 	//$("#profile").fadeIn("fast")
-	fetch(`https://data.evoxs.xyz/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+	fetch(`${srv}/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1088,7 +1090,7 @@ function pfp(give) {
 		let user = localStorage.getItem("t50-username");
 		if (user != null) {
 			document.getElementById("usr-img-opt").src = "reloading-pfp.gif"
-			const url = `https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+			const url = `${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
 			fetch(url)
 				.then(response => response.text())
 				.then(data => {
@@ -1193,7 +1195,7 @@ function shake_me(what) {
 function show_authip() {
 
 	if (sessionStorage.getItem("block_interactions") === "true") {
-		notice("Cannot get external IP adresses while offline")
+		createLocalNotification("Gateway", 'Cannot get external IP adresses while offline!')
 		var ipv4List = document.getElementById("ipv4-list");
 		ipv4List.innerHTML = ""
 		var anchor = document.createElement("a");
@@ -1219,7 +1221,7 @@ function show_authip() {
 			</path>
 		</svg>
 	</div>`
-		fetch(`https://data.evoxs.xyz/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+		fetch(`${srv}/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1324,7 +1326,7 @@ function show_account() {
 	//navigator("show_account")
 	loademails()
 	document.getElementById("options_section_0_email").innerHTML = localStorage.getItem("t50-email")
-	fetch(`https://data.evoxs.xyz/accounts?birth=get&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+	fetch(`${srv}/accounts?birth=get&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1405,7 +1407,7 @@ function username_email_icon_show() {
 
 function disable2FA() {
 	//disable 2fa
-	fetch(`https://data.evoxs.xyz/authip?method=forceadd&email=${localStorage.getItem("t50-email")}&username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=null`)
+	fetch(`${srv}/authip?method=forceadd&email=${localStorage.getItem("t50-email")}&username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=null`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1427,7 +1429,7 @@ function disable2FA() {
 }
 
 function enable2FA() {
-	fetch(`https://data.evoxs.xyz/authip?method=RemoveIP&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=null`)
+	fetch(`${srv}/authip?method=RemoveIP&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=null`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1459,7 +1461,7 @@ function pswd_secure() {
 			document.getElementById("2fa_status").innerHTML = "Off"
 		}
 	} else {
-		fetch(`https://data.evoxs.xyz/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+		fetch(`${srv}/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1560,7 +1562,7 @@ function show_search() {
 					return;
 				}
 				if (!localStorage.getItem("friends")) {
-					notice("Cannot load global list (Friends 404)")
+					createLocalNotification("Gateway", 'Cannot load global list (Friends 404)')
 					return;
 				}
 				let friends = localStorage.getItem("friends")
@@ -1615,7 +1617,7 @@ function show_search() {
 					}
 
 					if (!localStorage.getItem("sentReq")) {
-						notice("Cannot load global list (SentReq 404)")
+						createLocalNotification("Gateway", 'Cannot load global list (SentReq 404)')
 						return;
 					}
 					let usersSent = localStorage.getItem("sentReq")
@@ -1705,7 +1707,7 @@ function acceptfriend(element) {
 	</path>
 </svg>`
 	console.log("Accepting Request From", element.id)
-	fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=acceptRequest&who=${element.id}`)
+	fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=acceptRequest&who=${element.id}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1748,7 +1750,7 @@ function showFriend(element) {
 		}
 		document.getElementById("friend-username").innerHTML = friend
 		$("#friends").fadeOut("fast", function () {
-			fetch(`https://data.evoxs.xyz/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&method=last_login`)
+			fetch(`${srv}/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&method=last_login`)
 				.then(response => {
 					if (!response.ok) {
 						throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1756,7 +1758,7 @@ function showFriend(element) {
 					return response.text();
 				})
 				.then(data => {
-					fetch(`https://data.evoxs.xyz/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&birth=get`)
+					fetch(`${srv}/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&birth=get`)
 						.then(response => {
 							if (!response.ok) {
 								throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1882,7 +1884,7 @@ function show_friends() {
 			console.error(error);
 		});
 	} else {
-		fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+		fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1909,7 +1911,7 @@ function show_friends() {
 				listContainer.style.marginTop = "";
 				listContainer.innerHTML = "<!--Empty-->";
 				user_requests.forEach(username => {
-					fetch(`https://data.evoxs.xyz/accounts?method=getemailbyusername&username=${username}`)
+					fetch(`${srv}/accounts?method=getemailbyusername&username=${username}`)
 						.then(response => {
 							if (!response.ok) {
 								throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1948,7 +1950,7 @@ function show_friends() {
 
 								listContainer.appendChild(userContainer);
 								loadPFP(username, '-pfp-friends')
-								//fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+								//fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 								//	.then(response => {
 								//		if (!response.ok) {
 								//			throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2079,7 +2081,7 @@ function show_requests() {
 		});
 		$("#load-users-requests").fadeOut("fast");
 	} else {
-		fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
+		fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2106,7 +2108,7 @@ function show_requests() {
 				listContainer.style.marginTop = "";
 				listContainer.innerHTML = "<!--Empty-->";
 				user_requests.forEach(username => {
-					fetch(`https://data.evoxs.xyz/accounts?method=getemailbyusername&username=${username}`)
+					fetch(`${srv}/accounts?method=getemailbyusername&username=${username}`)
 						.then(response => {
 							if (!response.ok) {
 								throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2155,7 +2157,7 @@ function show_requests() {
 
 								listContainer.appendChild(userContainer);
 								loadPFP(username, '-pfp-requests')
-								//fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+								//fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 								//	.then(response => {
 								//		if (!response.ok) {
 								//			throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2207,7 +2209,7 @@ function addfriend(element) {
 			to="360 25 25" dur="0.5s" repeatCount="indefinite" />
 	</path>
 </svg>`
-	fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=friendRequest&who=${element.id}`)
+	fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=friendRequest&who=${element.id}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2241,7 +2243,7 @@ function submit_search() {
 
 
 function loadusers() {
-	let url = `https://data.evoxs.xyz/search?search=`;
+	let url = `${srv}/search?search=`;
 
 	fetch(url)
 		.then(response => {
@@ -2266,7 +2268,7 @@ function loadusers() {
 				if (username === localStorage.getItem("t50-username")) {
 					return;
 				}
-				fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+				fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2276,7 +2278,7 @@ function loadusers() {
 					.then(friends => {
 						let sentRequests;
 
-						fetch(`https://data.evoxs.xyz/accounts?method=getemailbyusername&username=${username}`)
+						fetch(`${srv}/accounts?method=getemailbyusername&username=${username}`)
 							.then(response => {
 								if (!response.ok) {
 									throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2333,7 +2335,7 @@ function loadusers() {
 										}
 									}
 
-									fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
+									fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
 										.then(response => {
 											if (!response.ok) {
 												throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2450,7 +2452,7 @@ function loadusers() {
 //		// add timeout if search is started or end value exists in div
 //		console.log("Accepted");
 //		$("#load-users").fadeIn("fast");
-//		let url = `https://data.evoxs.xyz/search?search=${value}`;
+//		let url = `${srv}/search?search=${value}`;
 //		const data = result
 //				if (JSON.stringify(data) === '"[]"') {
 //					$("#load-users").fadeOut("fast", function () {
@@ -2476,7 +2478,7 @@ function loadusers() {
 //					if (val.username === localStorage.getItem("t50-username")) {
 //						return;
 //					}
-//					fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+//					fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
 //						.then(response => {
 //							if (!response.ok) {
 //								throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2533,7 +2535,7 @@ function loadusers() {
 //											}
 //										}
 //
-//										fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
+//										fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
 //											.then(response => {
 //												if (!response.ok) {
 //													throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2579,7 +2581,7 @@ function loadusers() {
 //													listContainer.appendChild(userContainer);
 //												}
 //												loadPFP(val.username, '-pfp')
-//												//fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+//												//fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 //												//	.then(response => {
 //												//		if (!response.ok) {
 //												//			throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2738,7 +2740,7 @@ function handlesearch(value) {
 		console.log("Accepted");
 		//$("#load-users").fadeIn("fast");
 
-		let url = `https://data.evoxs.xyz/search?search=${value}`;
+		let url = `${srv}/search?search=${value}`;
 		const data = result;
 		if (JSON.stringify(data) === '[]') {
 			$("#load-users").fadeOut("fast", function () {
@@ -2854,7 +2856,7 @@ function handlesearch(value) {
 
 function change_password() {
 	if (sessionStorage.getItem("block_interactions") === "true") {
-		notice("Cannot change while servers are offline.")
+		createLocalNotification("Gateway", 'Cannot change while servers are offline.')
 		return;
 	}
 	navigator("change_password")
@@ -3024,7 +3026,7 @@ function return_to_options(where) {
 
 function showUploadBox() {
 	if (sessionStorage.getItem("block_interactions") === "true") {
-		notice("Servers Are Offline!")
+		createLocalNotification("Gateway", 'Servers Are Offline!')
 		return;
 	}
 	document.getElementById('upload-box').click();
@@ -3043,7 +3045,7 @@ function handleFileSelect() {
 			document.getElementById("upload-box").disabled = true
 			document.getElementById("usr-img-opt").src = "./reloading.gif"
 			cancelPFPOpt()
-			fetch('https://data.evoxs.xyz/profiles', {
+			fetch(`${srv}/profiles`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -3299,7 +3301,7 @@ function complete_chpswd() {
 		return;
 	}
 	//info.email && info.password && info.username && info.newpass
-	fetch('https://data.evoxs.xyz/accounts', {
+	fetch(`${srv}/accounts`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -3579,7 +3581,7 @@ function closevox() {
 
 function clearNotifications() {
 	$("#notif_container").fadeOut("fast")
-	fetch(`https://data.evoxs.xyz/notifications?process=clear&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+	fetch(`${srv}/notifications?process=clear&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -3606,7 +3608,7 @@ function show_notif(nosound, reload) {
 		$("#notif_container").fadeOut("fast")
 	}
 
-	fetch(`https://data.evoxs.xyz/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+	fetch(`${srv}/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -3689,7 +3691,7 @@ function show_notif(nosound, reload) {
 
 
 
-					//const url = `https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${notification.image}`;
+					//const url = `${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${notification.image}`;
 					//fetch(url)
 					//	.then(response => response.text())
 					//	.then(data => {
@@ -3727,7 +3729,87 @@ function show_notif(nosound, reload) {
 
 		})
 		.catch(error => {
-			console.error(error);
+			console.error('Fetch Error', error);
+
+			if (localStorage.getItem("lastReceivedNotifications")) {
+				var container = document.getElementById("notif_container");
+				let data = localStorage.getItem("lastReceivedNotifications")
+				console.log(data)
+				if (data === `{"notifications":[]}` || data === "No notifications!") {
+					var a = document.createElement("a");
+					a.href = "#";
+					a.className = "apple-button";
+					localStorage.setItem("notifications_seen", "0")
+					a.appendChild(document.createTextNode("There's nothing here, yet." + " "));
+					container.appendChild(a);
+					return;
+				}
+
+				let jsonData = JSON.parse(data);
+				var numNotifications = jsonData.notifications.length;
+				console.log(numNotifications)
+
+				localStorage.setItem("notifications_seen", numNotifications)
+				var notifications = jsonData.notifications;
+				console.log(notifications);
+				notifications.reverse(); // Reverse the order of notifications
+
+				notifications.forEach(function (notification) {
+					var image;
+					const sentimage = notification.image;
+					//if (!sentimage) {
+					//	createNotificationElement('https://evoxs.xyz/notifications_assets/Gateway.png', notification);
+					//	return;
+					//}
+					if (sentimage && !sentimage.includes("http")) {
+						//indexdb
+						//const image = loadPFPget()
+						// Usage
+						createNotificationElement('reloading-pfp.gif', notification, "offline");
+						try {
+							loadPFPflorida(sentimage, `${btoa(notification.timestamp)}`)
+							console.log(`Notification image for user ${sentimage} has been set.`)
+						} catch (error) {
+							console.error("Internal Florida Notification User Image Failed", error)
+						}
+
+
+
+						//const url = `${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${notification.image}`;
+						//fetch(url)
+						//	.then(response => response.text())
+						//	.then(data => {
+						//		if (data.indexOf("base64") === -1) {
+						//			// If it doesn't contain "base64", add the prefix
+						//			data = "data:image/jpeg;base64," + data;
+						//		}
+						//		image = data;
+						//		
+						//	})
+						//	.catch(error => {
+						//		console.error(error);
+						//	});
+
+					} else {
+						image = notification.image;
+						createNotificationElement(image, notification, "offline");
+					}
+				});
+				Promise.resolve().then(() => {
+					// Add the transparent placeholder after the loop that adds user information
+					var transparentPlaceholder = document.createElement("div");
+					transparentPlaceholder.className = "transparent-placeholder";
+					container.parentNode.appendChild(transparentPlaceholder);
+					$("#miniLoading").fadeOut("slow")
+					$("#load-container").fadeOut("fast", function () {
+						$("#notif_container").fadeIn("fast")
+					})
+
+
+				}).catch(error => {
+					console.error(error);
+				});
+			}
 		});
 
 	//document.getElementById("notifications").classList.add("active");
@@ -3760,7 +3842,7 @@ function show_notif(nosound, reload) {
 
 }
 
-function createNotificationElement(image, notification) {
+function createNotificationElement(image, notification, offline) {
 	var container = document.getElementById("notif_container");
 	var currentDate = null;
 
@@ -3788,10 +3870,19 @@ function createNotificationElement(image, notification) {
 	a.className = "apple-button notifOptions";
 	a.style.display = "flex";
 	a.style.alignItems = "center";
-	a.onclick = function () {
-		//go_to(notification.app, this);
-		notification_optBox(notification.app, this)
-	};
+	if (offline) {
+		a.onclick = function () {
+			//go_to(notification.app, this);
+			error.play()
+			createLocalNotification("Gateway", "Cannot Open Notification While Servers Are Offline!", 'incorrectacc.png')
+		};
+	} else {
+		a.onclick = function () {
+			//go_to(notification.app, this);
+			notification_optBox(notification.app, this)
+		};
+	}
+
 
 	var div = document.createElement("div");
 	div.className = "user-circle";
@@ -3928,7 +4019,7 @@ function cancelLogout() {
 }
 function enableCryptox() {
 	login_ok.play()
-	fetch(`https://data.evoxs.xyz/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+	fetch(`${srv}/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4072,7 +4163,7 @@ function cancel_ipremove() {
 
 function confirm_ipremove() {
 	const ip = document.getElementById("ip-del-content").innerHTML
-	fetch(`https://data.evoxs.xyz/authip?method=RemoveIP&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=${ip}`)
+	fetch(`${srv}/authip?method=RemoveIP&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=${ip}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4149,7 +4240,7 @@ function loadflrdinf() {
 //date_of_birth_change
 function birth_date() {
 	if (sessionStorage.getItem("block_interactions") === "true") {
-		notice("Cannot change while servers are offline.")
+		createLocalNotification("Gateway", 'Cannot change while servers are offline.')
 		return;
 	}
 	document.getElementById("usr-name-chbirth").innerHTML = localStorage.getItem("t50-username")
@@ -4208,7 +4299,7 @@ function complete_birth() {
 			document.getElementById("error_date").style.display = "none"
 			let birthdate = `${day}/${month}/${year}`
 			console.log(birthdate)
-			fetch(`https://data.evoxs.xyz/accounts?birth=true&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&what=${birthdate}`)
+			fetch(`${srv}/accounts?birth=true&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&what=${birthdate}`)
 				.then(response => {
 					if (!response.ok) {
 						throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4243,7 +4334,7 @@ function complete_birth() {
 }
 
 function getBirth() {
-	fetch(`https://data.evoxs.xyz/accounts?birth=get&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+	fetch(`${srv}/accounts?birth=get&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4355,7 +4446,7 @@ function padWithZero(number) {
 
 function addemail() {
 	if (sessionStorage.getItem("block_interactions") === "true") {
-		notice("Cannot add emails while servers are offline.")
+		createLocalNotification("Gateway", 'Cannot add emails while servers are offline.')
 		return;
 	}
 	navigator('addemail')
@@ -4377,7 +4468,7 @@ function complete_addemail() {
 	} else {
 		login_ok.play()
 	}
-	fetch(`https://data.evoxs.xyz/accounts?method=addemail&newemail=${email}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+	fetch(`${srv}/accounts?method=addemail&newemail=${email}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4418,7 +4509,7 @@ function verify_addemail() {
 		shake_me("email_new_ver_code")
 		return;
 	}
-	fetch(`https://data.evoxs.xyz/accounts?method=ver_new_email&email=${email}&what=${code}&mainemail=${localStorage.getItem("t50-email")}`)
+	fetch(`${srv}/accounts?method=ver_new_email&email=${email}&what=${code}&mainemail=${localStorage.getItem("t50-email")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4457,7 +4548,7 @@ function verify_addemail() {
 }
 
 function loademails() {
-	fetch(`https://data.evoxs.xyz/accounts?method=getemails&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+	fetch(`${srv}/accounts?method=getemails&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4552,7 +4643,7 @@ function cancelRemoveEmail() {
 
 function confirmRemoveEmail() {
 	let emailtorem = document.getElementById("email-del-content").innerHTML
-	fetch(`https://data.evoxs.xyz/accounts?method=removeemail&email=${emailtorem}&password=${atob(localStorage.getItem("t50pswd"))}&mainemail=${localStorage.getItem("t50-email")}`)
+	fetch(`${srv}/accounts?method=removeemail&email=${emailtorem}&password=${atob(localStorage.getItem("t50pswd"))}&mainemail=${localStorage.getItem("t50-email")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4586,7 +4677,7 @@ function confirmRemoveEmail() {
 }
 
 function qactions() {
-	fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
+	fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=getRequests`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4650,7 +4741,7 @@ function fahrenheitToCelsius(fahrenheit) {
 
 function qa_pfp() {
 	if (sessionStorage.getItem("block_interactions") === "true") {
-		notice("Servers Are Offline!")
+		createLocalNotification("Gateway", 'Servers Are Offline!')
 		return;
 	}
 	showUploadBox()
@@ -4711,7 +4802,7 @@ function store() {
 
 function getNOpen(app, view) {
 	if (sessionStorage.getItem("block_interactions") === "true") {
-		notice("Sorry. Servers Are Offline")
+		createLocalNotification("Gateway", 'Sorry. Servers Are Offline')
 		return;
 	}
 	var getButton = document.getElementById(`${app}-get`);
@@ -4776,11 +4867,11 @@ function cryptoxToggleUI() {
 
 function cryptox(no) {
 	if (sessionStorage.getItem("block_interactions") === "true") {
-		notice("Cannot view while servers are offline.")
+		createLocalNotification("Gateway", 'Cannot view while servers are offline.')
 		return;
 	}
 	$("#stuck").fadeIn("fast")
-	fetch(`https://data.evoxs.xyz/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+	fetch(`${srv}/accounts?method=cryptox-status&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4891,7 +4982,7 @@ function changeCryptox() {
 	console.log(toggle)
 	if (toggle === true) {
 		console.log("Disable")
-		notice("You cannot disable cryptox operations at the moment.")
+		createLocalNotification("Gateway", 'You cannot disable cryptox operations at the moment.')
 		cryptox("no")
 		document.getElementById("warn-cryptox").style.backgroundColor = "#7d121296"
 		setTimeout(function () {
@@ -4899,7 +4990,7 @@ function changeCryptox() {
 		}, 3500)
 		return;
 		cryptox()
-		fetch(`https://data.evoxs.xyz/cryptox?method=disable&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+		fetch(`${srv}/cryptox?method=disable&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4919,7 +5010,7 @@ function changeCryptox() {
 	} else {
 		console.log("Enable")
 		login_ok.play()
-		fetch(`https://data.evoxs.xyz/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+		fetch(`${srv}/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! Status: ${response.status}`);
@@ -4943,18 +5034,17 @@ function navigator(w, f) {
 	console.log("Navigator:", w)
 
 	const sett_def = `
-	<div onclick="settings()" class="circle">
-	<svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24" fill="none">
-		<circle cx="12" cy="12" r="3" stroke="#e2e2e2" stroke-width="1.5" />
-		<path
-			d="M3.66122 10.6392C4.13377 10.9361 4.43782 11.4419 4.43782 11.9999C4.43781 12.558 4.13376 13.0638 3.66122 13.3607C3.33966 13.5627 3.13248 13.7242 2.98508 13.9163C2.66217 14.3372 2.51966 14.869 2.5889 15.3949C2.64082 15.7893 2.87379 16.1928 3.33973 16.9999C3.80568 17.8069 4.03865 18.2104 4.35426 18.4526C4.77508 18.7755 5.30694 18.918 5.83284 18.8488C6.07287 18.8172 6.31628 18.7185 6.65196 18.5411C7.14544 18.2803 7.73558 18.2699 8.21895 18.549C8.70227 18.8281 8.98827 19.3443 9.00912 19.902C9.02332 20.2815 9.05958 20.5417 9.15224 20.7654C9.35523 21.2554 9.74458 21.6448 10.2346 21.8478C10.6022 22 11.0681 22 12 22C12.9319 22 13.3978 22 13.7654 21.8478C14.2554 21.6448 14.6448 21.2554 14.8478 20.7654C14.9404 20.5417 14.9767 20.2815 14.9909 19.9021C15.0117 19.3443 15.2977 18.8281 15.7811 18.549C16.2644 18.27 16.8545 18.2804 17.3479 18.5412C17.6837 18.7186 17.9271 18.8173 18.1671 18.8489C18.693 18.9182 19.2249 18.7756 19.6457 18.4527C19.9613 18.2106 20.1943 17.807 20.6603 17C20.8677 16.6407 21.029 16.3614 21.1486 16.1272M20.3387 13.3608C19.8662 13.0639 19.5622 12.5581 19.5621 12.0001C19.5621 11.442 19.8662 10.9361 20.3387 10.6392C20.6603 10.4372 20.8674 10.2757 21.0148 10.0836C21.3377 9.66278 21.4802 9.13092 21.411 8.60502C21.3591 8.2106 21.1261 7.80708 20.6601 7.00005C20.1942 6.19301 19.9612 5.7895 19.6456 5.54732C19.2248 5.22441 18.6929 5.0819 18.167 5.15113C17.927 5.18274 17.6836 5.2814 17.3479 5.45883C16.8544 5.71964 16.2643 5.73004 15.781 5.45096C15.2977 5.1719 15.0117 4.6557 14.9909 4.09803C14.9767 3.71852 14.9404 3.45835 14.8478 3.23463C14.6448 2.74458 14.2554 2.35523 13.7654 2.15224C13.3978 2 12.9319 2 12 2C11.0681 2 10.6022 2 10.2346 2.15224C9.74458 2.35523 9.35523 2.74458 9.15224 3.23463C9.05958 3.45833 9.02332 3.71848 9.00912 4.09794C8.98826 4.65566 8.70225 5.17191 8.21891 5.45096C7.73557 5.73002 7.14548 5.71959 6.65205 5.4588C6.31633 5.28136 6.0729 5.18269 5.83285 5.15108C5.30695 5.08185 4.77509 5.22436 4.35427 5.54727C4.03866 5.78945 3.80569 6.19297 3.33974 7C3.13231 7.35929 2.97105 7.63859 2.85138 7.87273"
-			stroke="#e2e2e2" stroke-width="1.5" stroke-linecap="round" />
-	</svg>
+	<div onclick="settings();this.classList.add('rotate')" class="circle">
+	<svg id="rotateIcon" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 28 28" fill="none">
+                        <path
+                            d="M19.9818 21.6364L21.7093 22.3948C22.0671 22.5518 22.4849 22.4657 22.7517 22.1799C23.9944 20.8492 24.9198 19.2536 25.4586 17.5131C25.5748 17.1376 25.441 16.7296 25.1251 16.4965L23.5988 15.3698C23.1628 15.0489 22.9 14.5403 22.9 13.9994C22.9 13.4586 23.1628 12.95 23.5978 12.6297L25.1228 11.5035C25.4386 11.2703 25.5723 10.8623 25.4561 10.487C24.9172 8.74611 23.9912 7.1504 22.7478 5.81991C22.4807 5.53405 22.0626 5.44818 21.7048 5.60568L19.9843 6.36294C19.769 6.45838 19.5385 6.507 19.3055 6.50663C18.4387 6.50572 17.7116 5.85221 17.617 4.98937L17.4079 3.11017C17.3643 2.71823 17.077 2.39734 16.6928 2.31149C15.8128 2.11485 14.9147 2.01047 14.0131 2.00006C13.0891 2.01071 12.19 2.11504 11.3089 2.31138C10.9245 2.39704 10.637 2.71803 10.5933 3.11017L10.3844 4.98794C10.3244 5.52527 10.0133 6.00264 9.54617 6.27415C9.07696 6.54881 8.50793 6.58168 8.01296 6.36404L6.29276 5.60691C5.93492 5.44941 5.51684 5.53528 5.24971 5.82114C4.00637 7.15163 3.08038 8.74734 2.54142 10.4882C2.42513 10.8638 2.55914 11.272 2.87529 11.5051L4.40162 12.6306C4.83721 12.9512 5.09414 13.4598 5.09414 14.0007C5.09414 14.5415 4.83721 15.0501 4.40219 15.3703L2.8749 16.4977C2.55922 16.7307 2.42533 17.1384 2.54122 17.5137C3.07924 19.2561 4.00474 20.8536 5.24806 22.1859C5.51493 22.4718 5.93281 22.558 6.29071 22.4009L8.01859 21.6424C8.51117 21.4269 9.07783 21.4586 9.54452 21.7281C10.0112 21.9976 10.3225 22.4731 10.3834 23.0093L10.5908 24.8855C10.6336 25.273 10.9148 25.5917 11.2933 25.682C13.0725 26.1061 14.9263 26.1061 16.7055 25.682C17.084 25.5917 17.3651 25.273 17.408 24.8855L17.6157 23.0066C17.675 22.4693 17.9729 21.9924 18.44 21.7219C18.9071 21.4515 19.4876 21.4197 19.9818 21.6364ZM14 18C11.7909 18 10 16.2091 10 14C10 11.7909 11.7909 10 14 10C16.2091 10 18 11.7909 18 14C18 16.2091 16.2091 18 14 18Z"
+                            fill="#212121" />
+                    </svg>
 </div>`, authip = `
 
 <div id="authip_back_btn" onclick="return_to_options('authip');navigator('sett_def')" class="circle">
 <svg xmlns="http://www.w3.org/2000/svg"
-xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px"
 version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 <g>
 	<g>
@@ -4967,7 +5057,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </div>
 `, return_settings = `<div onclick="return_settings()" class="circle">
 <svg xmlns="http://www.w3.org/2000/svg"
-	xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+	xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px"
 	version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	<g>
 		<g>
@@ -4978,14 +5068,15 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	</g>
 </svg>
 </div>`, settings_tonexus = ` <div onclick="close_popup()" class="circle">
-<svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24" fill="none">
-		<circle cx="12" cy="12" r="3" stroke="#e2e2e2" stroke-width="1.5"></circle>
-		<path d="M3.66122 10.6392C4.13377 10.9361 4.43782 11.4419 4.43782 11.9999C4.43781 12.558 4.13376 13.0638 3.66122 13.3607C3.33966 13.5627 3.13248 13.7242 2.98508 13.9163C2.66217 14.3372 2.51966 14.869 2.5889 15.3949C2.64082 15.7893 2.87379 16.1928 3.33973 16.9999C3.80568 17.8069 4.03865 18.2104 4.35426 18.4526C4.77508 18.7755 5.30694 18.918 5.83284 18.8488C6.07287 18.8172 6.31628 18.7185 6.65196 18.5411C7.14544 18.2803 7.73558 18.2699 8.21895 18.549C8.70227 18.8281 8.98827 19.3443 9.00912 19.902C9.02332 20.2815 9.05958 20.5417 9.15224 20.7654C9.35523 21.2554 9.74458 21.6448 10.2346 21.8478C10.6022 22 11.0681 22 12 22C12.9319 22 13.3978 22 13.7654 21.8478C14.2554 21.6448 14.6448 21.2554 14.8478 20.7654C14.9404 20.5417 14.9767 20.2815 14.9909 19.9021C15.0117 19.3443 15.2977 18.8281 15.7811 18.549C16.2644 18.27 16.8545 18.2804 17.3479 18.5412C17.6837 18.7186 17.9271 18.8173 18.1671 18.8489C18.693 18.9182 19.2249 18.7756 19.6457 18.4527C19.9613 18.2106 20.1943 17.807 20.6603 17C20.8677 16.6407 21.029 16.3614 21.1486 16.1272M20.3387 13.3608C19.8662 13.0639 19.5622 12.5581 19.5621 12.0001C19.5621 11.442 19.8662 10.9361 20.3387 10.6392C20.6603 10.4372 20.8674 10.2757 21.0148 10.0836C21.3377 9.66278 21.4802 9.13092 21.411 8.60502C21.3591 8.2106 21.1261 7.80708 20.6601 7.00005C20.1942 6.19301 19.9612 5.7895 19.6456 5.54732C19.2248 5.22441 18.6929 5.0819 18.167 5.15113C17.927 5.18274 17.6836 5.2814 17.3479 5.45883C16.8544 5.71964 16.2643 5.73004 15.781 5.45096C15.2977 5.1719 15.0117 4.6557 14.9909 4.09803C14.9767 3.71852 14.9404 3.45835 14.8478 3.23463C14.6448 2.74458 14.2554 2.35523 13.7654 2.15224C13.3978 2 12.9319 2 12 2C11.0681 2 10.6022 2 10.2346 2.15224C9.74458 2.35523 9.35523 2.74458 9.15224 3.23463C9.05958 3.45833 9.02332 3.71848 9.00912 4.09794C8.98826 4.65566 8.70225 5.17191 8.21891 5.45096C7.73557 5.73002 7.14548 5.71959 6.65205 5.4588C6.31633 5.28136 6.0729 5.18269 5.83285 5.15108C5.30695 5.08185 4.77509 5.22436 4.35427 5.54727C4.03866 5.78945 3.80569 6.19297 3.33974 7C3.13231 7.35929 2.97105 7.63859 2.85138 7.87273" stroke="#e2e2e2" stroke-width="1.5" stroke-linecap="round"></path>
-	</svg>
+<svg id="rotateIcon" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 28 28" fill="none">
+                        <path
+                            d="M19.9818 21.6364L21.7093 22.3948C22.0671 22.5518 22.4849 22.4657 22.7517 22.1799C23.9944 20.8492 24.9198 19.2536 25.4586 17.5131C25.5748 17.1376 25.441 16.7296 25.1251 16.4965L23.5988 15.3698C23.1628 15.0489 22.9 14.5403 22.9 13.9994C22.9 13.4586 23.1628 12.95 23.5978 12.6297L25.1228 11.5035C25.4386 11.2703 25.5723 10.8623 25.4561 10.487C24.9172 8.74611 23.9912 7.1504 22.7478 5.81991C22.4807 5.53405 22.0626 5.44818 21.7048 5.60568L19.9843 6.36294C19.769 6.45838 19.5385 6.507 19.3055 6.50663C18.4387 6.50572 17.7116 5.85221 17.617 4.98937L17.4079 3.11017C17.3643 2.71823 17.077 2.39734 16.6928 2.31149C15.8128 2.11485 14.9147 2.01047 14.0131 2.00006C13.0891 2.01071 12.19 2.11504 11.3089 2.31138C10.9245 2.39704 10.637 2.71803 10.5933 3.11017L10.3844 4.98794C10.3244 5.52527 10.0133 6.00264 9.54617 6.27415C9.07696 6.54881 8.50793 6.58168 8.01296 6.36404L6.29276 5.60691C5.93492 5.44941 5.51684 5.53528 5.24971 5.82114C4.00637 7.15163 3.08038 8.74734 2.54142 10.4882C2.42513 10.8638 2.55914 11.272 2.87529 11.5051L4.40162 12.6306C4.83721 12.9512 5.09414 13.4598 5.09414 14.0007C5.09414 14.5415 4.83721 15.0501 4.40219 15.3703L2.8749 16.4977C2.55922 16.7307 2.42533 17.1384 2.54122 17.5137C3.07924 19.2561 4.00474 20.8536 5.24806 22.1859C5.51493 22.4718 5.93281 22.558 6.29071 22.4009L8.01859 21.6424C8.51117 21.4269 9.07783 21.4586 9.54452 21.7281C10.0112 21.9976 10.3225 22.4731 10.3834 23.0093L10.5908 24.8855C10.6336 25.273 10.9148 25.5917 11.2933 25.682C13.0725 26.1061 14.9263 26.1061 16.7055 25.682C17.084 25.5917 17.3651 25.273 17.408 24.8855L17.6157 23.0066C17.675 22.4693 17.9729 21.9924 18.44 21.7219C18.9071 21.4515 19.4876 21.4197 19.9818 21.6364ZM14 18C11.7909 18 10 16.2091 10 14C10 11.7909 11.7909 10 14 10C16.2091 10 18 11.7909 18 14C18 16.2091 16.2091 18 14 18Z"
+                            fill="#212121" />
+                    </svg>
 	
 </div>`, show_account = `<div onclick="return_settings()" class="circle">
 <svg xmlns="http://www.w3.org/2000/svg"
-	xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+	xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px"
 	version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	<g>
 		<g>
@@ -4998,7 +5089,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </div>`, evox_social = `<div onclick="return_to_options('evox_social');navigator('settings_tonexus')" class="circle">
 
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5011,7 +5102,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </div>`, store = `<div onclick="return_to_options('evox_store');navigator('settings_tonexus')" class="circle">
 
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5023,7 +5114,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	</svg>
 </div>`, username_email_icon_show = `<div id="hide_for_rememail" onclick="return_to_options('usr-emails');navigator('sett_def')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px"
 		version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5035,7 +5126,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	</svg>
 </div>`, addemail = `<div onclick="return_to_options('add_email');navigator('sett_def')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5048,7 +5139,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </div>`, birth = `<div onclick="return_to_options('birth');navigator('username_email_icon_show')" class="circle">
 
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5060,7 +5151,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	</svg>
 </div>`, password_secure = `<div onclick="return_to_options('security');navigator('sett_def')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px"
 		version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5072,7 +5163,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	</svg>
 </div>`, change_password = `<div onclick="return_to_options('password_change');navigator('password_secure')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5084,7 +5175,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	</svg>
 </div>`, sign_in_wevox = `<div onclick="return_to_options('app_use_info');navigator('password_secure')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5096,7 +5187,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	</svg>
 </div>`, cryptox = `<div id="authip_back_btn" onclick="return_to_options('cryptox');navigator('sett_def')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px"
 		version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5109,7 +5200,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </div>`, closevox = `<div>
 <div onclick="closevox();navigator('sett_def')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5121,7 +5212,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </div>`, bg = `<div onclick="return_to_options('gateway_settings')" class="circle">
 
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5133,7 +5224,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	</svg>
 </div>`, show_search = `<div onclick="return_to_options('add_friends');navigator('evox_social')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5146,7 +5237,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </div>`, show_requests = `<div onclick="return_to_options('requests');navigator('evox_social')" class="circle">
 
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5159,7 +5250,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </div>`, show_friends = `<div onclick="return_to_options('friends');navigator('evox_social')" class="circle">
 
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5171,7 +5262,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	</svg>
 </div>`, showFriend = `<div onclick="return_to_options('user-friend');navigator('show_friends')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5183,7 +5274,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	</svg>
 </div>`, show_sline = `<div onclick="close_sline();navigator('sett_def')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5197,7 +5288,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </div>
 </div>`, coming = `<div onclick="return_to_options('coming');navigator('settings_tonexus')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5210,7 +5301,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </div>`;
 	const notifications = `<div onclick="close_notif();navigator('sett_def')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5223,14 +5314,14 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </div>`
 	const sline_options = `<div onclick="goback_options();navigator('show_sline', 'y')" class="circle" id="settings">
 	<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
-            <path d="M13.0867 21.3877L13.7321 21.7697L13.0867 21.3877ZM13.6288 20.4718L12.9833 20.0898L13.6288 20.4718ZM10.3712 20.4718L9.72579 20.8539H9.72579L10.3712 20.4718ZM10.9133 21.3877L11.5587 21.0057L10.9133 21.3877ZM2.3806 15.9134L3.07351 15.6264V15.6264L2.3806 15.9134ZM7.78958 18.9915L7.77666 19.7413L7.78958 18.9915ZM5.08658 18.6194L4.79957 19.3123H4.79957L5.08658 18.6194ZM21.6194 15.9134L22.3123 16.2004V16.2004L21.6194 15.9134ZM16.2104 18.9915L16.1975 18.2416L16.2104 18.9915ZM18.9134 18.6194L19.2004 19.3123H19.2004L18.9134 18.6194ZM19.6125 2.7368L19.2206 3.37628L19.6125 2.7368ZM21.2632 4.38751L21.9027 3.99563V3.99563L21.2632 4.38751ZM4.38751 2.7368L3.99563 2.09732V2.09732L4.38751 2.7368ZM2.7368 4.38751L2.09732 3.99563H2.09732L2.7368 4.38751ZM9.40279 19.2098L9.77986 18.5615L9.77986 18.5615L9.40279 19.2098ZM13.7321 21.7697L14.2742 20.8539L12.9833 20.0898L12.4412 21.0057L13.7321 21.7697ZM9.72579 20.8539L10.2679 21.7697L11.5587 21.0057L11.0166 20.0898L9.72579 20.8539ZM12.4412 21.0057C12.2485 21.3313 11.7515 21.3313 11.5587 21.0057L10.2679 21.7697C11.0415 23.0767 12.9585 23.0767 13.7321 21.7697L12.4412 21.0057ZM10.5 2.75H13.5V1.25H10.5V2.75ZM21.25 10.5V11.5H22.75V10.5H21.25ZM2.75 11.5V10.5H1.25V11.5H2.75ZM1.25 11.5C1.25 12.6546 1.24959 13.5581 1.29931 14.2868C1.3495 15.0223 1.45323 15.6344 1.68769 16.2004L3.07351 15.6264C2.92737 15.2736 2.84081 14.8438 2.79584 14.1847C2.75041 13.5189 2.75 12.6751 2.75 11.5H1.25ZM7.8025 18.2416C6.54706 18.2199 5.88923 18.1401 5.37359 17.9265L4.79957 19.3123C5.60454 19.6457 6.52138 19.7197 7.77666 19.7413L7.8025 18.2416ZM1.68769 16.2004C2.27128 17.6093 3.39066 18.7287 4.79957 19.3123L5.3736 17.9265C4.33223 17.4951 3.50486 16.6678 3.07351 15.6264L1.68769 16.2004ZM21.25 11.5C21.25 12.6751 21.2496 13.5189 21.2042 14.1847C21.1592 14.8438 21.0726 15.2736 20.9265 15.6264L22.3123 16.2004C22.5468 15.6344 22.6505 15.0223 22.7007 14.2868C22.7504 13.5581 22.75 12.6546 22.75 11.5H21.25ZM16.2233 19.7413C17.4786 19.7197 18.3955 19.6457 19.2004 19.3123L18.6264 17.9265C18.1108 18.1401 17.4529 18.2199 16.1975 18.2416L16.2233 19.7413ZM20.9265 15.6264C20.4951 16.6678 19.6678 17.4951 18.6264 17.9265L19.2004 19.3123C20.6093 18.7287 21.7287 17.6093 22.3123 16.2004L20.9265 15.6264ZM13.5 2.75C15.1512 2.75 16.337 2.75079 17.2619 2.83873C18.1757 2.92561 18.7571 3.09223 19.2206 3.37628L20.0044 2.09732C19.2655 1.64457 18.4274 1.44279 17.4039 1.34547C16.3915 1.24921 15.1222 1.25 13.5 1.25V2.75ZM22.75 10.5C22.75 8.87781 22.7508 7.6085 22.6545 6.59611C22.5572 5.57256 22.3554 4.73445 21.9027 3.99563L20.6237 4.77938C20.9078 5.24291 21.0744 5.82434 21.1613 6.73809C21.2492 7.663 21.25 8.84876 21.25 10.5H22.75ZM19.2206 3.37628C19.7925 3.72672 20.2733 4.20752 20.6237 4.77938L21.9027 3.99563C21.4286 3.22194 20.7781 2.57144 20.0044 2.09732L19.2206 3.37628ZM10.5 1.25C8.87781 1.25 7.6085 1.24921 6.59611 1.34547C5.57256 1.44279 4.73445 1.64457 3.99563 2.09732L4.77938 3.37628C5.24291 3.09223 5.82434 2.92561 6.73809 2.83873C7.663 2.75079 8.84876 2.75 10.5 2.75V1.25ZM2.75 10.5C2.75 8.84876 2.75079 7.663 2.83873 6.73809C2.92561 5.82434 3.09223 5.24291 3.37628 4.77938L2.09732 3.99563C1.64457 4.73445 1.44279 5.57256 1.34547 6.59611C1.24921 7.6085 1.25 8.87781 1.25 10.5H2.75ZM3.99563 2.09732C3.22194 2.57144 2.57144 3.22194 2.09732 3.99563L3.37628 4.77938C3.72672 4.20752 4.20752 3.72672 4.77938 3.37628L3.99563 2.09732ZM11.0166 20.0898C10.8136 19.7468 10.6354 19.4441 10.4621 19.2063C10.2795 18.9559 10.0702 18.7304 9.77986 18.5615L9.02572 19.8582C9.07313 19.8857 9.13772 19.936 9.24985 20.0898C9.37122 20.2564 9.50835 20.4865 9.72579 20.8539L11.0166 20.0898ZM7.77666 19.7413C8.21575 19.7489 8.49387 19.7545 8.70588 19.7779C8.90399 19.7999 8.98078 19.832 9.02572 19.8582L9.77986 18.5615C9.4871 18.3912 9.18246 18.3215 8.87097 18.287C8.57339 18.2541 8.21375 18.2487 7.8025 18.2416L7.77666 19.7413ZM14.2742 20.8539C14.4916 20.4865 14.6287 20.2564 14.7501 20.0898C14.8622 19.936 14.9268 19.8857 14.9742 19.8582L14.2201 18.5615C13.9298 18.7304 13.7204 18.9559 13.5379 19.2063C13.3646 19.4441 13.1864 19.7468 12.9833 20.0898L14.2742 20.8539ZM16.1975 18.2416C15.7862 18.2487 15.4266 18.2541 15.129 18.287C14.8175 18.3215 14.5129 18.3912 14.2201 18.5615L14.9742 19.8582C15.0192 19.832 15.096 19.7999 15.2941 19.7779C15.5061 19.7545 15.7842 19.7489 16.2233 19.7413L16.1975 18.2416Z" fill="#fff"></path>
+            <path d="M13.0867 21.3877L13.7321 21.7697L13.0867 21.3877ZM13.6288 20.4718L12.9833 20.0898L13.6288 20.4718ZM10.3712 20.4718L9.72579 20.8539H9.72579L10.3712 20.4718ZM10.9133 21.3877L11.5587 21.0057L10.9133 21.3877ZM2.3806 15.9134L3.07351 15.6264V15.6264L2.3806 15.9134ZM7.78958 18.9915L7.77666 19.7413L7.78958 18.9915ZM5.08658 18.6194L4.79957 19.3123H4.79957L5.08658 18.6194ZM21.6194 15.9134L22.3123 16.2004V16.2004L21.6194 15.9134ZM16.2104 18.9915L16.1975 18.2416L16.2104 18.9915ZM18.9134 18.6194L19.2004 19.3123H19.2004L18.9134 18.6194ZM19.6125 2.7368L19.2206 3.37628L19.6125 2.7368ZM21.2632 4.38751L21.9027 3.99563V3.99563L21.2632 4.38751ZM4.38751 2.7368L3.99563 2.09732V2.09732L4.38751 2.7368ZM2.7368 4.38751L2.09732 3.99563H2.09732L2.7368 4.38751ZM9.40279 19.2098L9.77986 18.5615L9.77986 18.5615L9.40279 19.2098ZM13.7321 21.7697L14.2742 20.8539L12.9833 20.0898L12.4412 21.0057L13.7321 21.7697ZM9.72579 20.8539L10.2679 21.7697L11.5587 21.0057L11.0166 20.0898L9.72579 20.8539ZM12.4412 21.0057C12.2485 21.3313 11.7515 21.3313 11.5587 21.0057L10.2679 21.7697C11.0415 23.0767 12.9585 23.0767 13.7321 21.7697L12.4412 21.0057ZM10.5 2.75H13.5V1.25H10.5V2.75ZM21.25 10.5V11.5H22.75V10.5H21.25ZM2.75 11.5V10.5H1.25V11.5H2.75ZM1.25 11.5C1.25 12.6546 1.24959 13.5581 1.29931 14.2868C1.3495 15.0223 1.45323 15.6344 1.68769 16.2004L3.07351 15.6264C2.92737 15.2736 2.84081 14.8438 2.79584 14.1847C2.75041 13.5189 2.75 12.6751 2.75 11.5H1.25ZM7.8025 18.2416C6.54706 18.2199 5.88923 18.1401 5.37359 17.9265L4.79957 19.3123C5.60454 19.6457 6.52138 19.7197 7.77666 19.7413L7.8025 18.2416ZM1.68769 16.2004C2.27128 17.6093 3.39066 18.7287 4.79957 19.3123L5.3736 17.9265C4.33223 17.4951 3.50486 16.6678 3.07351 15.6264L1.68769 16.2004ZM21.25 11.5C21.25 12.6751 21.2496 13.5189 21.2042 14.1847C21.1592 14.8438 21.0726 15.2736 20.9265 15.6264L22.3123 16.2004C22.5468 15.6344 22.6505 15.0223 22.7007 14.2868C22.7504 13.5581 22.75 12.6546 22.75 11.5H21.25ZM16.2233 19.7413C17.4786 19.7197 18.3955 19.6457 19.2004 19.3123L18.6264 17.9265C18.1108 18.1401 17.4529 18.2199 16.1975 18.2416L16.2233 19.7413ZM20.9265 15.6264C20.4951 16.6678 19.6678 17.4951 18.6264 17.9265L19.2004 19.3123C20.6093 18.7287 21.7287 17.6093 22.3123 16.2004L20.9265 15.6264ZM13.5 2.75C15.1512 2.75 16.337 2.75079 17.2619 2.83873C18.1757 2.92561 18.7571 3.09223 19.2206 3.37628L20.0044 2.09732C19.2655 1.64457 18.4274 1.44279 17.4039 1.34547C16.3915 1.24921 15.1222 1.25 13.5 1.25V2.75ZM22.75 10.5C22.75 8.87781 22.7508 7.6085 22.6545 6.59611C22.5572 5.57256 22.3554 4.73445 21.9027 3.99563L20.6237 4.77938C20.9078 5.24291 21.0744 5.82434 21.1613 6.73809C21.2492 7.663 21.25 8.84876 21.25 10.5H22.75ZM19.2206 3.37628C19.7925 3.72672 20.2733 4.20752 20.6237 4.77938L21.9027 3.99563C21.4286 3.22194 20.7781 2.57144 20.0044 2.09732L19.2206 3.37628ZM10.5 1.25C8.87781 1.25 7.6085 1.24921 6.59611 1.34547C5.57256 1.44279 4.73445 1.64457 3.99563 2.09732L4.77938 3.37628C5.24291 3.09223 5.82434 2.92561 6.73809 2.83873C7.663 2.75079 8.84876 2.75 10.5 2.75V1.25ZM2.75 10.5C2.75 8.84876 2.75079 7.663 2.83873 6.73809C2.92561 5.82434 3.09223 5.24291 3.37628 4.77938L2.09732 3.99563C1.64457 4.73445 1.44279 5.57256 1.34547 6.59611C1.24921 7.6085 1.25 8.87781 1.25 10.5H2.75ZM3.99563 2.09732C3.22194 2.57144 2.57144 3.22194 2.09732 3.99563L3.37628 4.77938C3.72672 4.20752 4.20752 3.72672 4.77938 3.37628L3.99563 2.09732ZM11.0166 20.0898C10.8136 19.7468 10.6354 19.4441 10.4621 19.2063C10.2795 18.9559 10.0702 18.7304 9.77986 18.5615L9.02572 19.8582C9.07313 19.8857 9.13772 19.936 9.24985 20.0898C9.37122 20.2564 9.50835 20.4865 9.72579 20.8539L11.0166 20.0898ZM7.77666 19.7413C8.21575 19.7489 8.49387 19.7545 8.70588 19.7779C8.90399 19.7999 8.98078 19.832 9.02572 19.8582L9.77986 18.5615C9.4871 18.3912 9.18246 18.3215 8.87097 18.287C8.57339 18.2541 8.21375 18.2487 7.8025 18.2416L7.77666 19.7413ZM14.2742 20.8539C14.4916 20.4865 14.6287 20.2564 14.7501 20.0898C14.8622 19.936 14.9268 19.8857 14.9742 19.8582L14.2201 18.5615C13.9298 18.7304 13.7204 18.9559 13.5379 19.2063C13.3646 19.4441 13.1864 19.7468 12.9833 20.0898L14.2742 20.8539ZM16.1975 18.2416C15.7862 18.2487 15.4266 18.2541 15.129 18.287C14.8175 18.3215 14.5129 18.3912 14.2201 18.5615L14.9742 19.8582C15.0192 19.832 15.096 19.7999 15.2941 19.7779C15.5061 19.7545 15.7842 19.7489 16.2233 19.7413L16.1975 18.2416Z" fill="#212121"></path>
             <path d="M8 9H16" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path>
             <path d="M8 12.5H13.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round"></path>
         </svg>
 </div>`
 	const notifications_main = `<div onclick="notif_goback();navigator('sett_def')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5244,7 +5335,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 
 	const notif_gateway = `<div onclick='$("#gateway-florida").fadeOut("fast", function () {$("#notifications_options").fadeIn("fast")});navigator("notifications_main")' class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5257,7 +5348,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </div>`
 	const notif_tasco = `<div onclick='$("#tasco-florida").fadeOut("fast", function () {$("#notifications_options").fadeIn("fast")});navigator("notifications_main")' class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5270,7 +5361,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </div>`
 	const notif_secureline = `<div onclick='$("#secureline-florida").fadeOut("fast", function () {$("#notifications_options").fadeIn("fast")});navigator("notifications_main")' class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5283,7 +5374,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </div>`
 	const notif_cryptox = `<div onclick='$("#cryptox-florida").fadeOut("fast", function () {$("#notifications_options").fadeIn("fast")});navigator("notifications_main")' class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5297,7 +5388,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	const sign_in_wevox_e = `<div onclick='$("#evox_gateway_info").fadeOut("fast", function () {$("#apps_using_evox").fadeIn("fast")});navigator("sign_in_wevox")' class="circle">
 
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5311,7 +5402,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	const fullimage = `<div onclick="close_fullimage()" class="circle">
 
 	<svg xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" height="24px" width="24px" version="1.1"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		<g>
 			<g>
@@ -5502,7 +5593,7 @@ function scrollToTop(divId) {
 
 function optimizeNotifications(id, element) {
 	if (sessionStorage.getItem("block_interactions") === "true") {
-		notice("Unable to connect to server.")
+		createLocalNotification("Gateway", 'Unable to connect to server.')
 		return;
 	}
 	if (id && element) {
@@ -5521,7 +5612,7 @@ function optimizeNotifications(id, element) {
 		console.log("Checkbox is unchecked");
 		change = 2
 	}
-	fetch(`https://data.evoxs.xyz/florida?username=${localStorage.getItem("t50-username")}&method=prefs_Set&id=${id}&change=${change}`)
+	fetch(`${srv}/florida?username=${localStorage.getItem("t50-username")}&method=prefs_Set&id=${id}&change=${change}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -5543,7 +5634,7 @@ function optimizeNotifications(id, element) {
 }
 
 function loadPrefs() {
-	fetch(`https://data.evoxs.xyz/florida?username=${localStorage.getItem("t50-username")}&method=prefs_Get`)
+	fetch(`${srv}/florida?username=${localStorage.getItem("t50-username")}&method=prefs_Get`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -5710,7 +5801,7 @@ function loadPFP(username, idsuffix) {
 				//Check if update is needed
 				//disabled due to datacenter overload
 				return;
-				fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+				fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -5736,7 +5827,7 @@ function loadPFP(username, idsuffix) {
 					});
 			} else {
 				console.log("Loading from server");
-				fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+				fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -5775,7 +5866,7 @@ function loadPFPflorida(username, timestamp64) {
 				return;
 			} else {
 				console.log("Loading from server")
-				fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+				fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -5818,7 +5909,7 @@ function loadPFPget(username) {
 					resolve(data.data);
 				} else {
 					console.log("Loading from server");
-					fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+					fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
 						.then(response => {
 							if (!response.ok) {
 								throw new Error(`HTTP error! Status: ${response.status}`);
@@ -6019,7 +6110,7 @@ function attach_file() {
 				//console.log(base64String);
 				//document.getElementById("upload-box-sline").disabled = true
 				//document.getElementById("usr-img-opt").src = "./reloading.gif"
-				fetch(`https://data.evoxs.xyz/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${base64String}`)
+				fetch(`${srv}/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${base64String}`)
 					.then(response => {
 						if (!response.ok) {
 							throw new Error(`HTTP error! Status: ${response.status}`);
@@ -6206,8 +6297,8 @@ function startUnlock() {
 			var image = document.getElementById("zoomImage");
 			var currentWidth = image.width;
 			var currentHeight = image.height;
-			image.style.width = currentWidth / 1.1 + "px";
-			image.style.height = currentHeight / 1.1 + "px";
+			image.style.width = currentWidth / 1.21 + "px";
+			image.style.height = currentHeight / 1.21 + "px";
 			sessionStorage.removeItem("unl")
 		}, 2000)
 	} else if (sessionStorage.getItem("unl") === "2") {
@@ -6243,11 +6334,21 @@ function startUnlock() {
 		console.log("Unlock Now!")
 	} else {
 		focusUnl.play()
+		var image = document.getElementById("zoomImage");
+		var currentWidth = image.width;
+		var currentHeight = image.height;
+		image.style.width = currentWidth * 1.1 + "px";
+		image.style.height = currentHeight * 1.1 + "px";
 		clearTimeout(unlTime)
 		document.getElementById('foryou').classList.add('hidden')
 		$("#unlDots").fadeIn("fast")
 		sessionStorage.setItem("unl", "1")
 		unlTime = setTimeout(function () {
+			var image = document.getElementById("zoomImage");
+			var currentWidth = image.width;
+			var currentHeight = image.height;
+			image.style.width = currentWidth / 1.1 + "px";
+			image.style.height = currentHeight / 1.1 + "px";
 			backUnl.play()
 
 			if (!sessionStorage.getItem("lockNotif")) {
@@ -6289,7 +6390,7 @@ function tips() {
 }
 
 function pfpOptions() {
-	fetch(`https://data.evoxs.xyz/profiles?authorize=hasOld&name=${localStorage.getItem("t50-username")}`)
+	fetch(`${srv}/profiles?authorize=hasOld&name=${localStorage.getItem("t50-username")}`)
 		.then(response => response.text())
 		.then(data => {
 			if (data === "true") {
@@ -6347,7 +6448,7 @@ function downloadPFP() {
 
 function revertPfp() {
 	cancelPFPOpt()
-	fetch(`https://data.evoxs.xyz/profiles?authorize=setOld&name=${localStorage.getItem("t50-username")}`)
+	fetch(`${srv}/profiles?authorize=setOld&name=${localStorage.getItem("t50-username")}`)
 		.then(response => response.text())
 		.then(data => {
 			if (data === "Success") {
@@ -6484,7 +6585,7 @@ function stealPFP(elem) {
 	var value = elem.id;
 	var userToSteal = value.split('-')[0];
 	console.log(userToSteal);
-	fetch(`https://data.evoxs.xyz/profiles?authorize=stealFrom&name=${localStorage.getItem("t50-username")}&pfp=${userToSteal}`)
+	fetch(`${srv}/profiles?authorize=stealFrom&name=${localStorage.getItem("t50-username")}&pfp=${userToSteal}`)
 		.then(response => response.text())
 		.then(data => {
 			if (data === "Done") {
@@ -6568,7 +6669,7 @@ function loadGrounds() {
 		</path>
 	</svg>
 </div>`
-	fetch(`https://data.evoxs.xyz/grounds?method=getIds&username=${localStorage.getItem("t50-username")}`)
+	fetch(`${srv}/grounds?method=getIds&username=${localStorage.getItem("t50-username")}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -6588,7 +6689,7 @@ function loadGrounds() {
 					var img = document.createElement("img");
 
 					// Set the src attribute of the img element
-					img.src = `https://data.evoxs.xyz/grounds?method=getById&username=${localStorage.getItem("t50-username")}&id=${number}`;
+					img.src = `${srv}/grounds?method=getById&username=${localStorage.getItem("t50-username")}&id=${number}`;
 
 					// Optionally, you can set other attributes such as alt, width, height, etc.
 					img.onclick = function () {
@@ -6651,7 +6752,7 @@ function removeGround(element) {
 	element.src = "internal/groundsLoading.gif"
 	cancel_groundOptions();
 	login_ok.play();
-	fetch(`https://data.evoxs.xyz/grounds?method=removeImg&username=${localStorage.getItem("t50-username")}&id=${afterDash}`)
+	fetch(`${srv}/grounds?method=removeImg&username=${localStorage.getItem("t50-username")}&id=${afterDash}`)
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -6694,7 +6795,7 @@ function groundHandle() {
 			const base64String = e.target.result;
 			// Now you have the base64 representation of the selected image
 			//console.log(base64String);
-			fetch('https://data.evoxs.xyz/grounds', {
+			fetch(`${srv}/grounds`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -6814,7 +6915,7 @@ function deleteNotification(id) {
 	let str = id;
 	let newStr = str.replace("-floridaINIT", "");
 	console.log("Will delete id:", id)
-	const url = `https://data.evoxs.xyz/notifications?process=delete&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}&id=${newStr}`;
+	const url = `${srv}/notifications?process=delete&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}&id=${newStr}`;
 	fetch(url)
 		.then(response => response.text())
 		.then(data => {
@@ -6837,7 +6938,7 @@ function get_discord() {
 }
 
 function step2Dsc() {
-	fetch(`https://data.evoxs.xyz/profiles?authorize=addFromDiscord&name=${localStorage.getItem("t50-username")}&pfp=${document.getElementById("dsc-id").value}`)
+	fetch(`${srv}/profiles?authorize=addFromDiscord&name=${localStorage.getItem("t50-username")}&pfp=${document.getElementById("dsc-id").value}`)
 		.then(response => response.text())
 		.then(data => {
 			if (data === "done") {
@@ -6946,6 +7047,55 @@ function bypassSetup() {
 	} else {
 		// Do nothing!
 		console.log('Thing was not saved to the client.');
+	}
+
+}
+let lnele;
+let isLNactive = false;
+function createLocalNotification(title, description, image) {
+	if (!title || !description) {
+		return;
+	} else if (!image) {
+		image = "evox-logo-apple.png"
+	}
+	let titleEle = document.getElementById("lNotif-title")
+	let descEle = document.getElementById("lNotif-desc")
+	let imgEle = document.getElementById("lNotif-img")
+	let ele = document.getElementById("lnotif")
+
+	if (isLNactive === false) {
+		isLNactive = true
+		try {
+			clearTimeout(lnele)
+		} catch {
+			//console.log("No Lnele")
+		}
+		imgEle.src = image
+		titleEle.innerHTML = title
+		if (description.length > 85) {
+			let truncated = description.substring(0, 85);
+			let lastSpace = truncated.lastIndexOf(' ');
+
+			// Ensure we don't cut a word in half
+			if (lastSpace > -1) {
+				truncated = truncated.substring(0, lastSpace);
+			}
+
+			descEle.innerHTML = truncated + "..";
+		} else {
+			descEle.innerHTML = description
+		}
+		ele.classList.add("active")
+		lnele = setTimeout(function () { //local notification element
+			ele.classList.remove("active")
+		}, 5000)
+	} else if (isLNactive === true) {
+		ele.classList.remove("active")
+		clearTimeout(lnele)
+		isLNactive = false
+		setTimeout(function () {
+			createLocalNotification(title, description, image)
+		}, 600)
 	}
 
 }
