@@ -2829,7 +2829,7 @@ a {
     width: 99%;
     position: absolute;
     height: 60px;
-    top: -50px;
+    top: -60px;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 20px;
@@ -2839,7 +2839,7 @@ a {
     transform: translateY(-50%);
     /* Initially off-screen to the left */
     transition: transform 0.7s ease, opacity 0.5s ease, visibility 0.5s;
-    z-index: 998;
+    z-index: 995;
   }
 
   .apple-style.active {
