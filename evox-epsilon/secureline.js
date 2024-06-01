@@ -505,6 +505,19 @@ function preloadSFriends() {
 
       // Array to store promises of fetch requests
       const fetchPromises = [];
+      let onlineUsrs;
+      fetch(`${srv}/getOnlineUsers`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(thisJSON => {
+          onlineUsrs = JSON.stringify(thisJSON)
+        }).catch(error => {
+          console.error(error)
+        })
 
       user_requests.forEach(username => {
         const promise = fetch(`https://data.evoxs.xyz/accounts?method=getemailbyusername&username=${username}`)
@@ -526,6 +539,9 @@ function preloadSFriends() {
               };
               var userCircle = document.createElement("div");
               userCircle.className = "user-circle-sl";
+              //if(onlineUsrs.includes(username)) {
+              //  userCircle.className = "user-circle-sl activeUser";
+              //}
               userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp-secureline" alt="User ${username} Image">`;
               var userDetails = document.createElement("div");
               userDetails.className = "user-details";
@@ -550,6 +566,7 @@ function preloadSFriends() {
                 }).catch(error => {
                   console.error(error)
                 })
+
 
 
               //addButton = document.createElement("a");

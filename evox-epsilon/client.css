@@ -117,7 +117,7 @@
 }
 
 .nav-item img.profile-icon.active {
-  box-shadow: 0 0 20px 2px #a159ffb3;
+  box-shadow: 0 0 20px 2px #ecececb3;
 }
 
 .nav-item span {
@@ -217,6 +217,7 @@ body {
   overscroll-behavior-y: contain;
   /* For newer browsers */
   overscroll-behavior: contain;
+  font-size: medium;
   /* For older browsers */
 }
 
@@ -451,6 +452,7 @@ img {
     width: 90%;
     max-width: 40%;
     position: absolute;
+    border-radius: 25px;
     /*left: 26.5%;*/
   }
 
@@ -464,6 +466,16 @@ img {
     justify-content: center;
     text-align: center;
   }
+  .parent-sline-container {
+    display: flex;
+    justify-content:center;
+    /* Centers the element horizontally */
+    align-items:center;
+    /* Centers the element vertically, if needed */
+    flex-direction: column;
+    /* Optional: Sets the height of the container to 100% of the viewport height */
+  }
+  
 }
 
 .popup {
@@ -775,8 +787,8 @@ a {
 
 .app {
   margin: 5px;
-  width: 70px;
-  height: 70px;
+  width: 90px;
+  height: 90px;
   border: none;
   border-radius: 12px;
   outline: none;
@@ -796,8 +808,8 @@ a {
   opacity: 0.5;
   /* Adjust the opacity value as needed */
   margin: 5px;
-  width: 70px;
-  height: 70px;
+  width: 90px;
+  height: 90px;
   border: none;
   border-radius: 12px;
   outline: none;
@@ -857,8 +869,8 @@ a {
   border-radius: 20px;
   display: flex;
   align-items: center;
-  gap: 16px;
-  box-shadow: 1px 2px 5px #091948;
+  gap: 25px;
+  min-width: 400px;
 }
 
 .c-avatar__status {
@@ -1112,7 +1124,7 @@ a {
   color: #fff;
   padding: 15px 30px;
   font-size: 16px;
-  border-radius: 8px;
+  border-radius: 25px;
   cursor: pointer;
   display: inline-block;
   text-decoration: none;
@@ -1159,8 +1171,9 @@ a {
 
   /* Hide the .apple-button svg on devices with a minimum width of 769px or more (assumed to be PCs) */
   .apple-button {
-    width: 90%;
     display: block;
+    max-width: 784px;
+
   }
 }
 
@@ -1628,7 +1641,7 @@ a {
 .app,
 .disabledapp {
   margin: 5px;
-  height: 70px;
+  height: 90px;
   border: none;
   border-radius: 17px;
   outline: none;
@@ -1883,6 +1896,7 @@ a {
 }
 
 .user-circle-sl {
+  
   color: #fff;
   background-color: #000;
   width: 60px;
@@ -1893,6 +1907,10 @@ a {
   margin-left: 5px;
   display: flex;
   align-items: center;
+}
+
+.activeUser {
+  box-shadow: 0 0 8px 1px #108c18b3;
 }
 
 .user-circle-sl img {
@@ -2507,13 +2525,13 @@ a {
 }
 
 .loader {
-  --speed: 1000ms;
+  --speed: 1200ms;
   position: relative;
   font-size: 2.5em;
 }
 
 .loader .tile {
-  color: #795dce;
+  color: #ebebeb;
   width: 35px;
   height: 35px;
   -webkit-animation: var(--speed) ease infinite jump;
@@ -2732,6 +2750,8 @@ a {
   .foryou {
     height: 290px;
   }
+
+
 }
 
 .parent-notification-container {
@@ -3071,4 +3091,37 @@ form {
 	.grid-3 {
 		grid-template-columns: repeat(3,1fr);
 	}
+  .parent-grid-container {
+    display: flex;
+    justify-content: center;
+    /* Centers the element horizontally */
+    align-items: center;
+    /* Centers the element vertically, if needed */
+    height: 100vh;
+    /* Optional: Sets the height of the container to 100% of the viewport height */
+  }
+}
+
+.noScript {
+  display: none;
+}
+
+.carousel-container-epsilon {
+  width: 400px; /* Adjust the width as needed */
+  height: 800px;
+  overflow-y: scroll;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel {
+  gap: 10px;
+  display: flex;
+  flex-direction: row; /* Arrange images vertically */
+}
+
+.carousel img {
+  width: auto; /* Adjust width as needed */
+  margin: 5px 0; /* Adjust margin as needed */
 }

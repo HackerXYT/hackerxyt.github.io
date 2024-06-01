@@ -70,9 +70,20 @@
 
 
 
-    <div id="container" class="container" style="display:none;margin-top: 105px;">
+    <div id="container" style="display:none;margin-top: 105px;display: flex;flex-direction: column;position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: transparent;
+    border-radius: 10px;
+    transition: filter 0.5s ease-in-out;">
         <a><img src="evox-logo-t.png" alt="Logo" class="logo" id="myLogo"></a>
 
+        <div style="flex-direction: row;"><input autocomplete="off" type="name" class="input-box" placeholder="First Name" id="fname" style="width: 125px;"><input autocomplete="off" type="name" class="input-box" placeholder="Last Name" style="width: 125px;" id="lname"></div>
         <span id="use_switch"><input autocomplete="off" id="email" type="email" class="input-box"
                 placeholder="Email"></span>
         <input autocomplete="off" type="username" class="input-box" placeholder="Username" id="username">

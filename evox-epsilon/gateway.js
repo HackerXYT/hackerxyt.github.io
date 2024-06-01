@@ -397,7 +397,7 @@ function preloadHubDetails() {
             }
             if(usersNum === 1) {
               document.getElementById("delivery-1-shipping").innerHTML = `${usersNum} user is online`
-            } else if(usersNum === 0) {
+            } else if(usersNum <= 0) {
               document.getElementById("delivery-1-shipping").innerHTML = `No users online`
             } else {
               document.getElementById("delivery-1-shipping").innerHTML = `${usersNum} users are online`
@@ -708,9 +708,9 @@ function setup() {
                 localStorage.setItem("images-owned", false)
                 document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="getNOpen('emails', '2')" href="#loadapp-mails"><img src="mails.png" class="app"></img></a>`
                 if (document.getElementById("apps").innerHTML != "") {
-                  document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a class="hide" onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
+                  //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a class="hide" onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
                 } else {
-                  document.getElementById("apps").innerHTML = `<a class="hide" onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
+                  //document.getElementById("apps").innerHTML = `<a class="hide" onclick="buy('images')" href="#loadapp-images-disabled"><img src="t50-img.png" class="disabledapp"></img></a>`
                 }
               }
               if (chatvia === "owned") { //OWN CHATVIA
@@ -737,7 +737,9 @@ function setup() {
                 console.log('%c' + "Enabling Transports", styles)
                 $("#transports-app").fadeIn("slow")
                 //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
-                document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('dc')" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a><a onclick="shake_me('transports-disabled');notice('T50 Transports is currently not available');load('transports')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
+                //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('dc')" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a><a onclick="shake_me('transports-disabled');notice('T50 Transports is currently not available');load('transports')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
+                document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('dc')" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a>`
+                //
               }
               $("#apps").fadeIn("slow")
               $("#loading-apps-text").fadeOut("slow", function () {
