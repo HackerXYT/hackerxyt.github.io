@@ -1,4 +1,55 @@
 let srv = "https://data.evoxs.xyz"
+let selfLoginLoad = false
+function loadSelfLogin() {
+  if (localStorage.getItem("t50-email")) {
+    fetch(`${srv}/accounts?email=${localStorage.getItem("t50-email")}&username=${localStorage.getItem("t50-username")}&method=last_login`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.text();
+      })
+      .then(data => {
+        selfLoginLoad = true
+        console.log(data)
+        if (data === "Unknown") {
+          document.getElementById("options_section_0_lastseen").innerHTML = "Never"
+        } else {
+          const inputDate = new Date(data);
+          const currentDate = new Date();
+          let final;
+
+          const isToday = inputDate.getDate() === currentDate.getDate() &&
+            inputDate.getMonth() === currentDate.getMonth() &&
+            inputDate.getFullYear() === currentDate.getFullYear();
+
+          if (isToday) {
+            console.log(padWithZero(inputDate.getHours()) + ":" +
+              padWithZero(inputDate.getMinutes()));
+            final = "Today at " + padWithZero(inputDate.getHours()) + ":" + padWithZero(inputDate.getMinutes());
+          } else {
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const day = inputDate.getDate();
+            const month = months[inputDate.getMonth()];
+            const year = inputDate.getFullYear();
+            console.log(month + " " + day + " " + year);
+            final = month + " " + day + " " + year
+          }
+          document.getElementById("options_section_0_lastseen").innerHTML = final
+        }
+
+
+      }).catch(error => {
+        console.error(error)
+      })
+  } else {
+    selfLoginLoad = false
+  }
+
+}
+if (selfLoginLoad === false) {
+  loadSelfLogin()
+}
 if (localStorage.getItem("currentSrv")) {
   srv = localStorage.getItem("currentSrv")
 } else {
@@ -286,7 +337,87 @@ function setupCrypt() {
       console.error(error);
     });
 }
+function preloadHubDetails() {
+  fetch(`${srv}/getOnlineUsers`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(onlineUsers => {
+      console.log("<--- Online Users! --->")
+      console.log(onlineUsers)
+      console.log(onlineUsers.length)
+      console.log('NO1:', onlineUsers[0])
+
+      if (onlineUsers.length === 1) {
+        if (onlineUsers[0] === "null" || onlineUsers[0] === localStorage.getItem("t50-username")) {
+          document.getElementById("delivery-1-shipping").innerHTML = `No users are online`
+          return;
+        }
+      }
+      let friendNum = 0;
+
+
+
+
+
+      fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(friends => {
+          onlineUsers.forEach(thisUser => {
+            if (thisUser === null) {
+              console.log("NULL User")
+              return;
+            } else {
+              if (JSON.stringify(friends).includes(thisUser)) {
+                //is friends
+                friendNum = friendNum + 1
+              } else if (friends.length === 0) {
+                //no friends
+                friendNum = 0
+              }
+              console.log(thisUser)
+            }
+          })
+          if(friendNum === 1) {
+            document.getElementById("delivery-1-shipping").innerHTML = `${friendNum} friend is online`
+          } else if(friendNum === 0) {
+            let usersNum;
+            if(JSON.stringify(onlineUsers).includes("null")) {
+              usersNum = onlineUsers.length - 2
+            } else {
+              usersNum = onlineUsers.length - 1
+            }
+            if(usersNum === 1) {
+              document.getElementById("delivery-1-shipping").innerHTML = `${usersNum} user is online`
+            } else if(usersNum === 0) {
+              document.getElementById("delivery-1-shipping").innerHTML = `No users online`
+            } else {
+              document.getElementById("delivery-1-shipping").innerHTML = `${usersNum} users are online`
+            }
+            
+          } else {
+            document.getElementById("delivery-1-shipping").innerHTML = `${friendNum} friends are online`
+          }
+        }).catch(error => {
+          console.error(error);
+        });
+
+
+    }).catch(error => {
+      console.error(error);
+    });
+}
 function setup() {
+  preloadHubDetails()
+
   preloadSFriends()
 
   //try {
@@ -313,24 +444,24 @@ function setup() {
   if (!localStorage.getItem("betaNotice")) {
     try {
       createLocalNotification("You are on beta!", "The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!", null, "13000")
-      setTimeout(function() {
+      setTimeout(function () {
         notice("Swipe from left to right to dismiss!")
       }, 3000)
-      setTimeout(function() {
+      setTimeout(function () {
         localStorage.setItem("betaNotice", "acknowledged")
       }, 9000)
     } catch {
-      setTimeout(function() {
+      setTimeout(function () {
         createLocalNotification("You are on beta!", "The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!", null, "13000")
-        setTimeout(function() {
+        setTimeout(function () {
           notice("Swipe from left to right to dismiss!")
         }, 3000)
-        setTimeout(function() {
+        setTimeout(function () {
           localStorage.setItem("betaNotice", "acknowledged")
         }, 9000)
       }, 5000)
     }
-    
+
   }
   //if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
   //  window.location.href = "./update/"
@@ -2098,13 +2229,13 @@ function handleGestureProfile() {
     let ele = document.getElementById("lnotif")
     ele.classList.remove("active")
     clearTimeout(lnele)
-		isLNactive = false
-    if(ele.innerHTML.includes("The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!")) {
+    isLNactive = false
+    if (ele.innerHTML.includes("The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!")) {
       console.log("This is the beta notice one")
       localStorage.setItem("betaNotice", "acknowledged")
     }
-		
-    
+
+
 
     return;
     // Run your desired function for left-to-right swipe here
@@ -2139,3 +2270,43 @@ swipeAreaProfile.addEventListener('touchend', (event) => {
   handleGestureProfile();
 });
 
+let totalSeconds = 0;
+
+// Function to update the counter display
+function updateCounterDisplay() {
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  const formattedDays = days < 10 ? `0${days}` : days;
+  const formattedHours = hours < 10 ? `0${hours}` : hours;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+
+  if (days > 0) {
+    document.getElementById('timeUsed').innerText = `${formattedDays}:${formattedHours}:${formattedMinutes}`;
+  } else {
+    document.getElementById('timeUsed').innerText = `${formattedMinutes}:${formattedSeconds}`;
+  }
+}
+
+// Function to update the time variables and counter display
+function updateCounter() {
+  totalSeconds++;
+  updateCounterDisplay();
+}
+
+// Function to save the time to localStorage
+function saveTime() {
+  localStorage.setItem('totalSeconds', totalSeconds);
+}
+
+// Retrieve the time from localStorage if it exists
+window.onload = function () {
+  if (localStorage.getItem('totalSeconds') !== null) {
+    totalSeconds = parseInt(localStorage.getItem('totalSeconds'), 10);
+  }
+  updateCounterDisplay();
+}
+setInterval(updateCounter, 1000);
+setInterval(saveTime, 2000);

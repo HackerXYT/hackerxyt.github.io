@@ -96,13 +96,13 @@ function reload_chat(whoto) {
         return response.text();
       })
       .then(messages => {
-        
-        if(sessionStorage.getItem("lastChatInter") === messages) {
+
+        if (sessionStorage.getItem("lastChatInter") === messages) {
           console.log("No new messages")
           return;
         }
         sessionStorage.setItem("lastChatInter", messages)
-        if (messages === "No Chats Found") {
+        if (messages === "Chat not created") {
           document.getElementById("messages-container").innerHTML = `<p class='centered-text'>Chat Hasn't Been Created.<button style="margin-top: 20px" id="submit" onclick="create_chat()" class="transparent-button">Create Chat</button></p>`
           console.log("Chat Doesn't Exist")
           return;
@@ -153,8 +153,8 @@ function reload_chat(whoto) {
 }
 
 function return_main_chats() {
-  
-  $("#navbar").fadeIn("fast", function() {
+
+  $("#navbar").fadeIn("fast", function () {
     document.getElementById("navbar").classList.add("active")
   })
   $("#navigator").fadeIn("fast")
@@ -177,26 +177,26 @@ function showchat(element) {//json id=Username
   let touchendX = 0;
 
   function handleGesture() {
-      if (touchendX > touchstartX) {
-          const distance = touchendX - touchstartX;
-          if (distance > 50) { // Detect a swipe if the distance is greater than 50 pixels
-              console.log('Swiped from left to right');
-              // Run your desired function here
-              //alert('Swiped from left to right');
-              return_main_chats()
-          }
+    if (touchendX > touchstartX) {
+      const distance = touchendX - touchstartX;
+      if (distance > 50) { // Detect a swipe if the distance is greater than 50 pixels
+        console.log('Swiped from left to right');
+        // Run your desired function here
+        //alert('Swiped from left to right');
+        return_main_chats()
       }
+    }
   }
 
   swipeArea.addEventListener('touchstart', (event) => {
-      touchstartX = event.changedTouches[0].screenX;
+    touchstartX = event.changedTouches[0].screenX;
   });
 
   swipeArea.addEventListener('touchend', (event) => {
-      touchendX = event.changedTouches[0].screenX;
-      handleGesture();
+    touchendX = event.changedTouches[0].screenX;
+    handleGesture();
   });
-  $("#navbar").fadeOut("fast", function() {
+  $("#navbar").fadeOut("fast", function () {
     document.getElementById("navbar").classList.remove("active")
   })
   //$("#navigator").fadeOut("fast")
@@ -204,7 +204,7 @@ function showchat(element) {//json id=Username
   console.log("Got element:", element)
   //document.getElementById("secureline_chat").classList.add("active")
   //$("#private_chat").fadeIn("fast")
-  
+
   document.getElementById("private_chat").classList.add("active")
   document.getElementById("secureline").classList.remove("active")
   document.getElementById("delete_msg_list").innerHTML = ""
@@ -335,7 +335,7 @@ let profint;
 function preloadSFriends() {
   $("#sline-container").fadeIn("slow");
   //$("#sline-container").fadeOut("fast");
-  if(!localStorage.getItem("t50-username")) {
+  if (!localStorage.getItem("t50-username")) {
     console.warn("Logged Out! Secureline Preloading Stopped!")
     return;
   }
@@ -350,12 +350,12 @@ function preloadSFriends() {
       console.log(JSON.stringify(data)); //["Kyriakos","bantou","twentysix","Moretti","fando","Clxpzie","Kravaritis","DarkAngel","AIT","Oykas"]
       if (JSON.stringify(data) === '"[]"') {
         //$("#load-users-friends").fadeOut("fast", function () {
-      //	let containerId = "list-friends";
-      //	var listContainer = document.getElementById(containerId);
-      //	listContainer.style.textAlign = "center";
-      //	listContainer.style.marginTop = "50px";
-      //	listContainer.innerHTML = "No Friends"
-      //})
+        //	let containerId = "list-friends";
+        //	var listContainer = document.getElementById(containerId);
+        //	listContainer.style.textAlign = "center";
+        //	listContainer.style.marginTop = "50px";
+        //	listContainer.innerHTML = "No Friends"
+        //})
         return;
       } else {
         console.log(`${JSON.stringify(data)} != "[]" data isnt empty`);
@@ -366,7 +366,7 @@ function preloadSFriends() {
       } catch (error) {
         console.warn("Data is empty")
       }
-      
+
       console.log(user_requests)
       user_requests.sort(); // Sort the usernames alphabetically
       console.log(user_requests)
@@ -385,71 +385,83 @@ function preloadSFriends() {
           })
           .then(profileemail => {
             let addButton;
-          // Check if the username already exists in the list
-          if (listContainer.querySelector(`#user-${username}-email`) === null) {
-            var userContainer = document.createElement("div");
-            userContainer.className = "list-user-info";
-            userContainer.id = username;
-            userContainer.onclick = function () {
-              showchat(this);
-            };
-            var userCircle = document.createElement("div");
-            userCircle.className = "user-circle-sl";
-            userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp-secureline" alt="User ${username} Image">`;
-            var userDetails = document.createElement("div");
-            userDetails.className = "user-details";
+            // Check if the username already exists in the list
+            if (listContainer.querySelector(`#user-${username}-email`) === null) {
+              var userContainer = document.createElement("div");
+              userContainer.className = "list-user-info";
+              userContainer.id = username;
+              userContainer.onclick = function () {
+                showchat(this);
+              };
+              var userCircle = document.createElement("div");
+              userCircle.className = "user-circle-sl";
+              userCircle.innerHTML = `<img src="loading-circle.gif" id="${username}-pfp-secureline" alt="User ${username} Image">`;
+              var userDetails = document.createElement("div");
+              userDetails.className = "user-details";
 
-            var userName = document.createElement("div");
-            userName.className = "user-name";
-            userName.textContent = username;
+              var userName = document.createElement("div");
+              userName.className = "user-name";
+              userName.textContent = username;
 
-            var userEmail = document.createElement("div");
-            userEmail.className = "user-email";
-            userEmail.id = `user-${username}-email-secureline`;
-            userEmail.textContent = profileemail;
+              var userEmail = document.createElement("div");
+              userEmail.className = "user-email";
+              userEmail.id = `user-${username}-email-secureline`;
+              userEmail.textContent = 'Loading..';
+              fetch(`${srv}/secureline?method=lastMSG&username=${localStorage.getItem("t50-username")}&recipient_username=${username}`)
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                  }
+                  return response.text();
+                })
+                .then(lastmsg => {
+                  userEmail.textContent = lastmsg;
+                }).catch(error => {
+                  console.error(error)
+                })
 
 
-            //addButton = document.createElement("a");
-            //addButton.href = "#";
-            //addButton.id = username;
-            //addButton.onclick = function () {
-            //	acceptfriend(this);
-            //};
-            //addButton.className = "apple-button-list";
-            //addButton.textContent = "Accept";
+              //addButton = document.createElement("a");
+              //addButton.href = "#";
+              //addButton.id = username;
+              //addButton.onclick = function () {
+              //	acceptfriend(this);
+              //};
+              //addButton.className = "apple-button-list";
+              //addButton.textContent = "Accept";
 
 
-            userDetails.appendChild(userName);
-            userDetails.appendChild(userEmail);
+              userDetails.appendChild(userName);
+              userDetails.appendChild(userEmail);
 
-            userContainer.appendChild(userCircle);
-            userContainer.appendChild(userDetails);
-            //userContainer.appendChild(addButton);
+              userContainer.appendChild(userCircle);
+              userContainer.appendChild(userDetails);
+              //userContainer.appendChild(addButton);
 
-            listContainer.appendChild(userContainer);
-            loadPFP(username, '-pfp-secureline')
-            //fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
-            //  .then(response => {
-            //    if (!response.ok) {
-            //      throw new Error(`HTTP error! Status: ${response.status}`);
-            //    }
-            //    return response.text();
-            //  })
-            //  .then(profileimage => {
-            //    if (profileimage.indexOf("base64") === -1) {
-            //      // If it doesn't contain "base64", add the prefix
-            //      profileimage = "data:image/jpeg;base64," + profileimage;
-            //      document.getElementById(`${username}-pfp-secureline`).src = profileimage
-            //    } else {
-            //      document.getElementById(`${username}-pfp-secureline`).src = profileimage
-            //    }
-//
-//
-            //  }).catch(error => {
-            //    console.error("Cannot set src for", username)
-            //    console.error(error)
-            //  })
-          }
+              listContainer.appendChild(userContainer);
+              loadPFP(username, '-pfp-secureline')
+              //fetch(`https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+              //  .then(response => {
+              //    if (!response.ok) {
+              //      throw new Error(`HTTP error! Status: ${response.status}`);
+              //    }
+              //    return response.text();
+              //  })
+              //  .then(profileimage => {
+              //    if (profileimage.indexOf("base64") === -1) {
+              //      // If it doesn't contain "base64", add the prefix
+              //      profileimage = "data:image/jpeg;base64," + profileimage;
+              //      document.getElementById(`${username}-pfp-secureline`).src = profileimage
+              //    } else {
+              //      document.getElementById(`${username}-pfp-secureline`).src = profileimage
+              //    }
+              //
+              //
+              //  }).catch(error => {
+              //    console.error("Cannot set src for", username)
+              //    console.error(error)
+              //  })
+            }
           });
         $("#load-users-friends").fadeOut("fast");
         $("#sline-container").fadeIn("slow");
@@ -490,7 +502,7 @@ function preloadSFriends() {
       listContainer.style.textAlign = "";
       listContainer.style.marginTop = "";
       listContainer.innerHTML = "<!--Empty-->";
-      
+
       // Array to store promises of fetch requests
       const fetchPromises = [];
 
@@ -525,7 +537,19 @@ function preloadSFriends() {
               var userEmail = document.createElement("div");
               userEmail.className = "user-email";
               userEmail.id = `user-${username}-email-secureline`;
-              userEmail.textContent = profileemail;
+              userEmail.textContent = "Loading..";
+              fetch(`${srv}/secureline?method=lastMSG&username=${localStorage.getItem("t50-username")}&recipient_username=${username}`)
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                  }
+                  return response.text();
+                })
+                .then(lastmsg => {
+                  userEmail.textContent = lastmsg;
+                }).catch(error => {
+                  console.error(error)
+                })
 
 
               //addButton = document.createElement("a");
@@ -544,22 +568,22 @@ function preloadSFriends() {
               userContainer.appendChild(userCircle);
               userContainer.appendChild(userDetails);
               //userContainer.appendChild(addButton);
-              
+
 
               return userContainer;
             }
           });
-          setTimeout(function() {
-            loadPFP(username, '-pfp-secureline')
-          }, 850)
-          
+        setTimeout(function () {
+          loadPFP(username, '-pfp-secureline')
+        }, 850)
+
 
         fetchPromises.push(promise);
       });
 
       Promise.all(fetchPromises)
         .then(userContainers => {
-          
+
           // Sort userContainers alphabetically by username
           userContainers.sort((a, b) => {
             const usernameA = a.querySelector('.user-name').textContent;
@@ -570,7 +594,7 @@ function preloadSFriends() {
           // Append sorted userContainers to listContainer
           userContainers.forEach(userContainer => {
             listContainer.appendChild(userContainer);
-            
+
           });
 
           $("#load-users-friends").fadeOut("fast");
@@ -582,14 +606,14 @@ function preloadSFriends() {
     });
 }
 
-if(localStorage.getItem("t50-username")) {
+if (localStorage.getItem("t50-username")) {
   preloadSFriends()
 }
 
 function getFriends(pre) {
   if (!pre) {
-    if(sessionStorage.getItem("preloaded-sline")) {
-      
+    if (sessionStorage.getItem("preloaded-sline")) {
+
     }
     profint = setInterval(function () {
       $("#profile").fadeOut("slow")
@@ -600,7 +624,7 @@ function getFriends(pre) {
     sline_refresh.play()
   }
   $("#load-users-friends").fadeIn("fast")
-  
+
 
   //$("#main_settings").fadeOut("fast", function () {
   //  $("#friends").fadeIn("fast")

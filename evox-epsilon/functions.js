@@ -194,33 +194,33 @@ function switchNAV(element) {
 	if (place.includes("Home")) {
 		console.log("Home")
 		goTo = "Home"
-	} else if (place.includes("Chats")) {
-		console.log("Chats")
-		goTo = "Chats"
+	} else if (place.includes("Social")) {
+		console.log("Social")
+		goTo = "Social"
 	} else if (place.includes("Notifications")) {
 		console.log("Notifications")
 		goTo = "Notifications"
 	} else if (place.includes("Profile")) {
 		console.log("Profile")
 		goTo = "Profile"
-		
+
 	}
 
-	if(goTo !== "Home") {
-		$("#appUP").fadeOut("fast", function() {
+	if (goTo !== "Home") {
+		$("#appUP").fadeOut("fast", function () {
 			document.getElementById("appUP").innerHTML = `Epsilon • ${goTo}`
 			$("#appUP").fadeIn("fast")
 		})
-		
+
 	} else {
-		$("#appUP").fadeOut("fast", function() {
+		$("#appUP").fadeOut("fast", function () {
 			document.getElementById("appUP").innerHTML = `Epsilon 3.8`
 			$("#appUP").fadeIn("fast")
 		})
-		
+
 	}
 
-	
+
 
 	if (goTo === currScreen) {
 		if (currScreen === "Notifications" && !document.getElementById("notifications").classList.contains("active")) {
@@ -230,7 +230,7 @@ function switchNAV(element) {
 
 	} else {
 
-		if (goTo === "Chats") {
+		if (goTo === "Social") {
 
 
 			let secureline = document.getElementById("secureline")
@@ -280,7 +280,7 @@ function switchNAV(element) {
 				show_notif()
 
 				//slide from right to left
-			} else if (currScreen === "Chats") {
+			} else if (currScreen === "Social") {
 				sline_close.play()
 				secureline.classList.remove("active")
 				notifications.classList.remove("slideL-R")
@@ -321,7 +321,7 @@ function switchNAV(element) {
 				document.getElementById("gateway").classList.add("active")
 				setActive(goTo)
 				//slide from left to right
-			} else if (currScreen === "Chats") {
+			} else if (currScreen === "Social") {
 				sline_close.play()
 				if (secureline.classList.contains("slideL-R")) {
 					secureline.classList.remove("slideL-R")
@@ -353,7 +353,7 @@ function switchNAV(element) {
 				document.getElementById("notifications").classList.remove("active")
 				document.getElementById("myAcc").classList.add("active")
 				show_account()
-			} else if (currScreen === "Chats") {
+			} else if (currScreen === "Social") {
 				sline_close.play()
 				document.getElementById("secureline").classList.remove("active")
 				document.getElementById("myAcc").classList.add("active")
@@ -379,12 +379,13 @@ function setActive(option) {
 		fill="#212121" />
 </svg>
 <span style="display: none">Home</span>`
-	const chatsH = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-	<path fill-rule="evenodd" clip-rule="evenodd"
-		d="M22 12C22 17.5228 17.5228 22 12 22C10.4003 22 8.88837 21.6244 7.54753 20.9565C7.19121 20.7791 6.78393 20.72 6.39939 20.8229L4.17335 21.4185C3.20701 21.677 2.32295 20.793 2.58151 19.8267L3.17712 17.6006C3.28001 17.2161 3.22094 16.8088 3.04346 16.4525C2.37562 15.1116 2 13.5997 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM12 7.25C12.4142 7.25 12.75 7.58579 12.75 8V16C12.75 16.4142 12.4142 16.75 12 16.75C11.5858 16.75 11.25 16.4142 11.25 16V8C11.25 7.58579 11.5858 7.25 12 7.25ZM8.75 10C8.75 9.58579 8.41421 9.25 8 9.25C7.58579 9.25 7.25 9.58579 7.25 10V14C7.25 14.4142 7.58579 14.75 8 14.75C8.41421 14.75 8.75 14.4142 8.75 14V10ZM16 9.25C16.4142 9.25 16.75 9.58579 16.75 10V14C16.75 14.4142 16.4142 14.75 16 14.75C15.5858 14.75 15.25 14.4142 15.25 14V10C15.25 9.58579 15.5858 9.25 16 9.25Z"
-		fill="#787676" />
-</svg>
-<span style="display: none">Chats</span>`
+	const chatsH = `<svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<path d="M12 9C10.3431 9 9 7.65685 9 6C9 4.34315 10.3431 3 12 3C13.6569 3 15 4.34315 15 6C15 7.65685 13.6569 9 12 9Z" stroke="#9e9e9e" stroke-width="1.5"/>
+	<path d="M5.5 21C3.84315 21 2.5 19.6569 2.5 18C2.5 16.3431 3.84315 15 5.5 15C7.15685 15 8.5 16.3431 8.5 18C8.5 19.6569 7.15685 21 5.5 21Z" stroke="#9e9e9e" stroke-width="1.5"/>
+	<path d="M18.5 21C16.8431 21 15.5 19.6569 15.5 18C15.5 16.3431 16.8431 15 18.5 15C20.1569 15 21.5 16.3431 21.5 18C21.5 19.6569 20.1569 21 18.5 21Z" stroke="#9e9e9e" stroke-width="1.5"/>
+	<path opacity="0.5" d="M20 13C20 10.6106 18.9525 8.46589 17.2916 7M4 13C4 10.6106 5.04752 8.46589 6.70838 7M10 20.748C10.6392 20.9125 11.3094 21 12 21C12.6906 21 13.3608 20.9125 14 20.748" stroke="#9e9e9e" stroke-width="1.5" stroke-linecap="round"/>
+	</svg>
+<span style="display: none">Social</span>`
 	const notificationsH = `<i class="fas fa-bell"></i>
 <span style="display: none">Notifications</span>`
 	const home = document.getElementById("nav-Home")
@@ -410,14 +411,15 @@ function setActive(option) {
 			fill="#212121" />
 	</svg>
 	<span style="color: #cccccc">Home</span>`
-	} else if (option === "Chats") {
+	} else if (option === "Social") {
 		$("#nav-Notifications-text").fadeOut("fast")
-		chats.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-		<path fill-rule="evenodd" clip-rule="evenodd"
-			d="M22 12C22 17.5228 17.5228 22 12 22C10.4003 22 8.88837 21.6244 7.54753 20.9565C7.19121 20.7791 6.78393 20.72 6.39939 20.8229L4.17335 21.4185C3.20701 21.677 2.32295 20.793 2.58151 19.8267L3.17712 17.6006C3.28001 17.2161 3.22094 16.8088 3.04346 16.4525C2.37562 15.1116 2 13.5997 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM12 7.25C12.4142 7.25 12.75 7.58579 12.75 8V16C12.75 16.4142 12.4142 16.75 12 16.75C11.5858 16.75 11.25 16.4142 11.25 16V8C11.25 7.58579 11.5858 7.25 12 7.25ZM8.75 10C8.75 9.58579 8.41421 9.25 8 9.25C7.58579 9.25 7.25 9.58579 7.25 10V14C7.25 14.4142 7.58579 14.75 8 14.75C8.41421 14.75 8.75 14.4142 8.75 14V10ZM16 9.25C16.4142 9.25 16.75 9.58579 16.75 10V14C16.75 14.4142 16.4142 14.75 16 14.75C15.5858 14.75 15.25 14.4142 15.25 14V10C15.25 9.58579 15.5858 9.25 16 9.25Z"
-			fill="#cccccc" />
-	</svg>
-	<span style="color: #cccccc">Chats</span>`
+		chats.innerHTML = `<svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path d="M12 9C10.3431 9 9 7.65685 9 6C9 4.34315 10.3431 3 12 3C13.6569 3 15 4.34315 15 6C15 7.65685 13.6569 9 12 9Z" stroke="#fff" stroke-width="1.5"/>
+		<path d="M5.5 21C3.84315 21 2.5 19.6569 2.5 18C2.5 16.3431 3.84315 15 5.5 15C7.15685 15 8.5 16.3431 8.5 18C8.5 19.6569 7.15685 21 5.5 21Z" stroke="#fff" stroke-width="1.5"/>
+		<path d="M18.5 21C16.8431 21 15.5 19.6569 15.5 18C15.5 16.3431 16.8431 15 18.5 15C20.1569 15 21.5 16.3431 21.5 18C21.5 19.6569 20.1569 21 18.5 21Z" stroke="#fff" stroke-width="1.5"/>
+		<path opacity="0.5" d="M20 13C20 10.6106 18.9525 8.46589 17.2916 7M4 13C4 10.6106 5.04752 8.46589 6.70838 7M10 20.748C10.6392 20.9125 11.3094 21 12 21C12.6906 21 13.3608 20.9125 14 20.748" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+		</svg>
+	<span style="color: #cccccc">Social</span>`
 	} else if (option === "Notifications") {
 		//$("#nav-Notifications-text").fadeIn("fast")
 		notifications.style.color = "#cccccc"
@@ -953,7 +955,7 @@ function uielements() {
 
 
 function settings() {
-	
+
 	if (sessionStorage.getItem("blockBottomLogout") === "true") {
 		shake_me("logout_confirm")
 		return;
@@ -1349,6 +1351,7 @@ function show_account() {
 	//navigator("show_account")
 	loademails()
 	document.getElementById("options_section_0_email").innerHTML = localStorage.getItem("t50-email")
+
 	fetch(`${srv}/accounts?birth=get&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => {
 			if (!response.ok) {
@@ -4595,7 +4598,6 @@ function loademails() {
 					removeEmail(this)
 				};
 				container.appendChild(link);
-				container.appendChild(document.createElement("br")); // Adding line breaks for separation
 			});
 
 
@@ -5078,6 +5080,21 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 </g>
 </svg>
 </div>
+`, securelineGrid = `
+
+<div onclick="$('#chats').fadeOut('fast',function() {$('#gridSection').fadeIn('fast');navigator('sett_def')});" class="circle">
+<svg xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px"
+version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+<g>
+	<g>
+		<path xmlns="http://www.w3.org/2000/svg"
+			d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+		</path>
+	</g>
+</g>
+</svg>
+</div>
 `, return_settings = `<div onclick="return_settings()" class="circle">
 <svg xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px"
@@ -5542,6 +5559,9 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	}
 	if (w === "notif_cryptox") {
 		document.getElementById("navigator").innerHTML = notif_cryptox
+	}
+	if (w === "securelineGrid") {
+		document.getElementById("navigator").innerHTML = securelineGrid
 	}
 
 
@@ -7081,7 +7101,7 @@ function createLocalNotification(title, description, image, customTime) {
 	} else if (!image) {
 		image = "evox-logo-apple.png"
 	}
-	if(!customTime) {
+	if (!customTime) {
 		customTime = 5000
 	}
 	let titleEle = document.getElementById("lNotif-title")
@@ -7126,6 +7146,36 @@ function createLocalNotification(title, description, image, customTime) {
 
 }
 
-if(document.getElementById("popup").classList.contains("active")) {
+
+function showSlineGrid() {
+	navigator('securelineGrid')
+	$("#deliv-0-svg").fadeOut("fast", function () {
+		document.getElementById("deliv-0-svg").innerHTML = `<svg width="25px" height="25px" style="position:absolute;top: 20px;right:20px;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+		x="0px" y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+		xml:space="preserve">
+		<path fill="#7697f7"
+			d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+			<animateTransform attributeType="XML" attributeName="transform" type="rotate"
+				from="0 25 25" to="360 25 25" dur="0.3s" repeatCount="indefinite" />
+		</path>
+	</svg>`
+		$("#deliv-0-svg").fadeIn("fast")
+		setTimeout(function () {
+			$("#gridSection").fadeOut("fast", function () {
+				$("#chats").fadeIn("slow")
+				document.getElementById("deliv-0-svg").innerHTML = `<svg style="position:absolute;top: 20px;right:20px;" xmlns="http://www.w3.org/2000/svg"
+			width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+			<path d="M12 16V8" stroke="#7697f7" stroke-width="1.5" stroke-linecap="round" />
+			<path d="M8 14V10" stroke="#7697f7" stroke-width="1.5" stroke-linecap="round" />
+			<path d="M16 14V10" stroke="#7697f7" stroke-width="1.5" stroke-linecap="round" />
+			<path
+				d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7"
+				stroke="#7697f7" stroke-width="1.5" stroke-linecap="round" />
+		</svg>`
+			})
+
+		}, 500)
+	})
+
 
 }
