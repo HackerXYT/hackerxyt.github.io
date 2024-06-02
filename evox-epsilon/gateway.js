@@ -953,8 +953,8 @@ function docready(merge) {
                   setup()
                 } else {
                   //$("#loading-text").fadeOut("fast")
-                  lockMe()
-                  //setup()
+                  //lockMe()
+                  setup()
                   sessionStorage.setItem("unlocked", "true")
                 }
 

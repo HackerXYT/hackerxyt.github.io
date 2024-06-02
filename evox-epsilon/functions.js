@@ -1774,6 +1774,57 @@ function acceptfriend(element) {
 			console.error(error)
 		})
 }
+
+function showCoverUpBox() {
+	document.getElementById('upload-box-cover').click();
+}
+
+function setUserCover() {
+	const input = document.getElementById('upload-box-cover');
+	const file = input.files[0];
+
+	if (file) {
+		const reader = new FileReader();
+		reader.onload = function (e) {
+			const base64String = e.target.result;
+			// Now you have the base64 representation of the selected image
+			//console.log(base64String);
+			document.getElementById("upload-box-cover").disabled = true
+			//cancelPFPOpt()
+			fetch(`${srv}/profiles`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					name: localStorage.getItem("t50-username"),
+					pfp: base64String,
+					method: "userCover"
+				})
+			})
+				.then(response => response.text())
+				.then(data => {
+					cancelPFPOpt()
+					if(data === "done") {
+						createLocalNotification("User Cover Successfully Set", "Users can now see the video you selected in your profile.")
+					} else {
+						createLocalNotification("Something Failed..", `Data: ${data}`)
+					}
+				})
+				.catch(error => {
+					console.error(error);
+					createLocalNotification("Something Failed..", `Error: ${error}`)
+				});
+		};
+		reader.readAsDataURL(file);
+	}
+
+	// Reset the input value to allow selecting the same file again
+	input.value = '';
+}
+function setProfileBG(base64String) {
+	
+}
 let friendinterval;
 function showFriend(element) {
 	$("#stuck").fadeIn("fast")
@@ -1799,6 +1850,7 @@ function showFriend(element) {
 				document.getElementById("friend-pfp").src = document.getElementById(`${friend}-pfp-friends`).src
 			}, 500)
 		}
+
 		document.getElementById("friend-username").innerHTML = friend
 		$("#friends").fadeOut("fast", function () {
 			fetch(`${srv}/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&method=last_login`)
@@ -1809,7 +1861,18 @@ function showFriend(element) {
 					return response.text();
 				})
 				.then(data => {
-					fetch(`${srv}/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&birth=get`)
+					fetch(`${srv}/profiles?name=${friend}&authorize=cover`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+						return response.text();
+					})
+					.then(coverIMG => {
+						if(coverIMG !== "None") {
+							document.getElementById("user-video-forDisplay").src = coverIMG
+						}
+						fetch(`${srv}/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&birth=get`)
 						.then(response => {
 							if (!response.ok) {
 								throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1838,6 +1901,11 @@ function showFriend(element) {
 						.catch(error => {
 							console.error(error);
 						})
+					}).catch(error => {
+						console.error(error);
+					})
+
+					
 
 
 				})
@@ -2961,6 +3029,7 @@ function return_to_options(where) {
 				$("#evox_social").fadeIn("fast")
 			})
 		} else if (where === "user-friend") {
+			document.getElementById("user-video-forDisplay").src = ""
 			var element = document.querySelector('[id^="secureline-"]');
 
 			// Check if the element is found
