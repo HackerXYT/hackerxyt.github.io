@@ -917,7 +917,7 @@ function docready(merge) {
           }
 
           sessionStorage.setItem("loaded", true)
-          fetch(`${srv}/authip?method=get&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+          fetch(`${srv}/authip?method=Eget&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -960,7 +960,7 @@ function docready(merge) {
 
                 //setup() is old
               } else if (data === "Unknown IP") {
-                fetch(`${srv}/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+                fetch(`${srv}/authip?method=Eforceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
                   .then(response => {
                     if (!response.ok) {
                       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -971,6 +971,7 @@ function docready(merge) {
                     $("#loading").fadeOut("slow")
                     console.log("IP Unknown")
                     if (data === "Complete") {
+                      setup()
                       var elementToRemove = document.getElementById("loading-div-text");
 
                       // Check if the element exists before trying to remove it
@@ -1005,7 +1006,7 @@ function docready(merge) {
         } else if (data.includes("IP Not Verified")) {
           $("#loading").fadeOut("slow")
           console.log('%c' + "Existing Account Verified! IP Not Mapped", `color: orange; font-size: 16px; font-weight: bold;`)
-          fetch(`${srv}/authip?method=forceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
+          fetch(`${srv}/authip?method=Eforceadd&email=${loggedin}&username=${username}&password=${pswd}&ip=${localStorage.getItem("IPV4")}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1015,9 +1016,9 @@ function docready(merge) {
             .then(data => {
               if (data === "Complete") {
                 $("#loading-bar").fadeOut("slow")
-                lockMe()
+                //lockMe()
                 sessionStorage.setItem("unlocked", "true")
-                //setup() is old
+                setup() //is old
               }
             }).catch(error => {
               console.error('Fetch error:', error);
@@ -1404,7 +1405,7 @@ function verifycode() {
   //let dig6 = document.getElementById("dig6").value
   //let code = `${dig1}${dig2}${dig3}${dig4}${dig5}${dig6}`
   console.log("Just to verify:\n", email, username, password, code)
-  fetch(`${srv}/authip?method=add&email=${email}&username=${username}&password=${password}&code=${code}&ip=${localStorage.getItem("IPV4")}`)
+  fetch(`${srv}/authip?method=Eadd&email=${email}&username=${username}&password=${password}&code=${code}&ip=${localStorage.getItem("IPV4")}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

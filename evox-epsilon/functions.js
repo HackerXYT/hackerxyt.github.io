@@ -1216,7 +1216,34 @@ function shake_me(what) {
 		document.getElementById(`${what}`).classList.remove('shake');
 	}, 500);
 }
+function mergeOldIPS() {
+	$("#mergeOldIPS").fadeOut("fast")
+	createLocalNotification('Merge Has Started', "You will be notified when everything is complete.")
+	fetch(`${srv}/authip?method=mergeOldDb&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(mergeIP => {
+			if (mergeIP === 'Complete') {
+				if (document.getElementById("authips").style.display === "none") {
+					createLocalNotification('Merge Complete', "Return To Logged In & IP Adresses to see changes.")
+				} else {
+					createLocalNotification('Merge Complete', "Now loading the new ip adresses.")
+					show_authip()
+				}
 
+				//
+			} else {
+				console.error("Merge Failed", mergeIP)
+				createLocalNotification('Merge Failed', mergeIP)
+			}
+		}).catch(error => {
+			console.log("Ignoring optional authip function [merge error]")
+		})
+}
 function show_authip() {
 
 	if (sessionStorage.getItem("block_interactions") === "true") {
@@ -1246,7 +1273,7 @@ function show_authip() {
 			</path>
 		</svg>
 	</div>`
-		fetch(`${srv}/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+		fetch(`${srv}/authip?method=Eread&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1255,8 +1282,34 @@ function show_authip() {
 			})
 			.then(data => {
 				//console.log(data)
-
-				var ipAddresses = JSON.parse(data);
+				fetch(`${srv}/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						}
+						return response.text();
+					})
+					.then(mergeIP => {
+						fetch(`${srv}/authip?method=mergeComplete&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+							.then(response => {
+								if (!response.ok) {
+									throw new Error(`HTTP error! Status: ${response.status}`);
+								}
+								return response.text();
+							})
+							.then(complete => {
+								if (complete !== "Yes") {
+									$("#mergeOldIPS").fadeIn("fast")
+								}
+							}).catch(error => {
+								console.log("Ignoring optional authip function [merge error]")
+							})
+					}).catch(error => {
+						console.log("Ignoring optional authip function [merge error]")
+					})
+				var ipAddressesS = JSON.parse(data);
+				var ipAddresses = ipAddressesS;
+				console.log(ipAddresses)
 				if (data === "[]") {
 					var ipv4List = document.getElementById("ipv4-list");
 					ipv4List.innerHTML = ""
@@ -1276,27 +1329,29 @@ function show_authip() {
 				var ipv4List = document.getElementById("ipv4-list");
 				ipv4List.innerHTML = ""
 				// Loop through each IP address
-				ipAddresses.forEach(function (ip) {
-					if (ip === localStorage.getItem("IPV4")) {
+				ipAddresses.adresses.forEach(function (eachIP) {
+					console.log(eachIP)
+					if (eachIP.ip === localStorage.getItem("IPV4")) {
 						var anchor = document.createElement("a");
 						anchor.setAttribute("href", "#");
 						anchor.setAttribute("style", "height: 50%");
-						anchor.classList.add("apple-button");
+						anchor.classList.add("apple-button-withicon");
+						anchor.classList.add("truncated-text");
 						anchor.style.backgroundColor = "#3879e0"
-						anchor.innerText = `This Device (${ip})`;
+						anchor.innerHTML = `<img style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;" src="https://flagsapi.com/${eachIP.country}/shiny/64.png"></img>${eachIP.ip}`;
 						anchor.onclick = function () {
 							let json = {
-								"innerHTML": ip
+								"innerHTML": eachIP
 							}
 							removeIP(json);
 						};
 						ipv4List.appendChild(anchor);
 						return;
 					}
-					if (ip === "1") {
+					if (eachIP.ip === "1") {
 						return;
 					}
-					if (ip === "null") {
+					if (eachIP.ip === "null") {
 						var anchor = document.createElement("a");
 						anchor.setAttribute("href", "#");
 						anchor.setAttribute("style", "height: 50%");
@@ -1323,10 +1378,16 @@ function show_authip() {
 					anchor.setAttribute("style", "height: 50%");
 
 					// Add class "apple-button"
-					anchor.classList.add("apple-button");
+					anchor.classList.add("apple-button-withicon");
+					anchor.classList.add("truncated-text");
 
 					// Set the inner text to the IP address
-					anchor.innerText = ip;
+					if (eachIP.bogon) {
+						anchor.innerHTML = `<img style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;" src="bogon.svg"></img>${eachIP.ip}`;
+					} else {
+						anchor.innerHTML = `<img style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;" src="https://flagsapi.com/${eachIP.country}/shiny/64.png"></img>${eachIP.ip}`;
+					}
+
 					anchor.onclick = function () {
 						removeIP(this);
 					};
@@ -1487,7 +1548,7 @@ function pswd_secure() {
 			document.getElementById("2fa_status").innerHTML = "Off"
 		}
 	} else {
-		fetch(`${srv}/authip?method=read&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+		fetch(`${srv}/authip?method=Eread&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1805,7 +1866,7 @@ function setUserCover() {
 				.then(response => response.text())
 				.then(data => {
 					cancelPFPOpt()
-					if(data === "done") {
+					if (data === "done") {
 						createLocalNotification("User Cover Successfully Set", "Users can now see the video you selected in your profile.")
 					} else {
 						createLocalNotification("Something Failed..", `Data: ${data}`)
@@ -1823,7 +1884,7 @@ function setUserCover() {
 	input.value = '';
 }
 function setProfileBG(base64String) {
-	
+
 }
 let friendinterval;
 function showFriend(element) {
@@ -1862,50 +1923,50 @@ function showFriend(element) {
 				})
 				.then(data => {
 					fetch(`${srv}/profiles?name=${friend}&authorize=cover`)
-					.then(response => {
-						if (!response.ok) {
-							throw new Error(`HTTP error! Status: ${response.status}`);
-						}
-						return response.text();
-					})
-					.then(coverIMG => {
-						if(coverIMG !== "None") {
-							document.getElementById("user-video-forDisplay").src = coverIMG
-						}
-						fetch(`${srv}/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&birth=get`)
 						.then(response => {
 							if (!response.ok) {
 								throw new Error(`HTTP error! Status: ${response.status}`);
 							}
 							return response.text();
 						})
-						.then(bd => {
-							if (bd !== "") {
-								document.getElementById("Friendbirth").style.display = ""
-								document.getElementById("FriendbirthTXT").innerHTML = bd
-							} else {
-								document.getElementById("Friendbirth").style.display = "none"
+						.then(coverIMG => {
+							if (coverIMG !== "None") {
+								document.getElementById("user-video-forDisplay").src = coverIMG
 							}
-							if (data !== "Unknown") {
-								const date = printTimeOrDate(data)
-								document.getElementById("last_seen").innerHTML = date
-								$("#user-friend").fadeIn("fast")
-							} else {
-								document.getElementById("last_seen").innerHTML = data
-								$("#user-friend").fadeIn("fast")
-							}
-							$("#stuck").fadeOut("fast")
+							fetch(`${srv}/accounts?email=${document.getElementById("friend-email").innerHTML}&username=${friend}&birth=get`)
+								.then(response => {
+									if (!response.ok) {
+										throw new Error(`HTTP error! Status: ${response.status}`);
+									}
+									return response.text();
+								})
+								.then(bd => {
+									if (bd !== "") {
+										document.getElementById("Friendbirth").style.display = ""
+										document.getElementById("FriendbirthTXT").innerHTML = bd
+									} else {
+										document.getElementById("Friendbirth").style.display = "none"
+									}
+									if (data !== "Unknown") {
+										const date = printTimeOrDate(data)
+										document.getElementById("last_seen").innerHTML = date
+										$("#user-friend").fadeIn("fast")
+									} else {
+										document.getElementById("last_seen").innerHTML = data
+										$("#user-friend").fadeIn("fast")
+									}
+									$("#stuck").fadeOut("fast")
 
 
-						})
-						.catch(error => {
+								})
+								.catch(error => {
+									console.error(error);
+								})
+						}).catch(error => {
 							console.error(error);
 						})
-					}).catch(error => {
-						console.error(error);
-					})
 
-					
+
 
 
 				})

@@ -1211,6 +1211,8 @@ a {
   width: 80%;
   height: auto;
   /* Set height to auto to fit content */
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 
@@ -1987,7 +1989,7 @@ a {
   scroll-behavior: smooth;
   touch-action: auto;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgb(0, 0, 0);
   /* Semi-transparent black overlay */
   z-index: 999;
   box-sizing: border-box;
@@ -2751,8 +2753,20 @@ a {
     height: 290px;
   }
 
+  .apple-button-withicon {
+    max-width: 310px;
+  }
+
 
 }
+
+.truncated-text {
+  max-width: 310px; /* Adjust this width as needed */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 
 .parent-notification-container {
   display: flex;
