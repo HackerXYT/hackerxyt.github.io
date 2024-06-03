@@ -1411,6 +1411,7 @@ function show_account() {
 	//account_show.play()
 	//navigator("show_account")
 	loademails()
+	
 	document.getElementById("options_section_0_email").innerHTML = localStorage.getItem("t50-email")
 
 	fetch(`${srv}/accounts?birth=get&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)

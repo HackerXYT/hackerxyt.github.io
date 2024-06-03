@@ -419,6 +419,21 @@ function setup() {
   preloadHubDetails()
 
   preloadSFriends()
+  fetch(`${srv}/profiles?name=${localStorage.getItem("t50-username")}&authorize=cover`)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.text();
+		})
+		.then(coverIMG => {
+			if (coverIMG !== "None") {
+				document.getElementById("user-video-self").src = coverIMG
+			}
+		})
+		.catch(error => {
+			console.error(error);
+		})
 
   //try {
   //  window.OneSignalDeferred = window.OneSignalDeferred || [];
