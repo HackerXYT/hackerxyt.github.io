@@ -1407,12 +1407,11 @@ function show_authip() {
 	})
 }
 
+let birth_data;
 function show_account() {
 	//account_show.play()
 	//navigator("show_account")
-	loademails()
-	
-	document.getElementById("options_section_0_email").innerHTML = localStorage.getItem("t50-email")
+
 
 	fetch(`${srv}/accounts?birth=get&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => {
@@ -1427,6 +1426,7 @@ function show_account() {
 				document.getElementById("options_section_0_birthdate").innerHTML = "Not set"
 			} else {
 				document.getElementById("options_section_0_birthdate").innerHTML = data
+				birth_data = data
 				let dateParts = data.split('/');
 
 				let day = parseInt(dateParts[0]);
@@ -1549,6 +1549,9 @@ function pswd_secure() {
 			document.getElementById("2fa_status").innerHTML = "Off"
 		}
 	} else {
+		loademails()
+
+		document.getElementById("options_section_0_email").innerHTML = localStorage.getItem("t50-email")
 		fetch(`${srv}/authip?method=Eread&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 			.then(response => {
 				if (!response.ok) {
@@ -1853,6 +1856,7 @@ function setUserCover() {
 			//console.log(base64String);
 			document.getElementById("upload-box-cover").disabled = true
 			//cancelPFPOpt()
+			document.getElementById("user-video-self").src = "uploading.mp4"
 			fetch(`${srv}/profiles`, {
 				method: 'POST',
 				headers: {
@@ -1869,6 +1873,21 @@ function setUserCover() {
 					cancelPFPOpt()
 					if (data === "done") {
 						createLocalNotification("User Cover Successfully Set", "Users can now see the video you selected in your profile.")
+						fetch(`${srv}/profiles?name=${localStorage.getItem("t50-username")}&authorize=cover`)
+							.then(response => {
+								if (!response.ok) {
+									throw new Error(`HTTP error! Status: ${response.status}`);
+								}
+								return response.text();
+							})
+							.then(coverIMG => {
+								if (coverIMG !== "None") {
+									document.getElementById("user-video-self").src = coverIMG
+								}
+							})
+							.catch(error => {
+								console.error(error);
+							})
 					} else {
 						createLocalNotification("Something Failed..", `Data: ${data}`)
 					}
@@ -1989,7 +2008,7 @@ function showFriend(element) {
 function show_friends() {
 	navigator("show_friends")
 	$("#load-users-friends").fadeIn("fast")
-	$("#evox_social").fadeOut("fast", function () {
+	$("#main_settings").fadeOut("fast", function () {
 		$("#friends").fadeIn("fast")
 	})
 	if (sessionStorage.getItem("block_interactions") === "true") {
@@ -3088,7 +3107,7 @@ function return_to_options(where) {
 			})
 		} else if (where === "friends") {
 			$("#friends").fadeOut("fast", function () {
-				$("#evox_social").fadeIn("fast")
+				$("#main_settings").fadeIn("fast")
 			})
 		} else if (where === "user-friend") {
 			document.getElementById("user-video-forDisplay").src = ""
@@ -3130,12 +3149,15 @@ function return_to_options(where) {
 			})
 		} else if (where === "birth") {
 			$("#date_of_birth_change").fadeOut("fast", function () {
-				$("#username_email_icon_show").fadeIn("fast")
-			})
-		} else if (where === "add_email") {
-			$("#add_email").fadeOut("fast", function () {
 				$("#main_settings").fadeIn("fast")
 			})
+		} else if (where === "add_email") {
+			$("#verify_email").fadeOut("fast", function () {
+				$("#add_email").fadeOut("fast", function () {
+					$("#pswd_secure").fadeIn("fast")
+				})
+			})
+
 		} else if (where === "cancel_addemail") {
 			$("#verify_email").fadeOut("fast", function () {
 				$("#username_email_icon_show").fadeIn("fast")
@@ -4428,7 +4450,7 @@ function birth_date() {
 	document.getElementById("usr-name-chbirth").innerHTML = localStorage.getItem("t50-username")
 	document.getElementById("usr-email-chbirth").innerHTML = localStorage.getItem("t50-email")
 	document.getElementById("usr-img-chbirth").src = document.getElementById("usr-img").src
-	$("#username_email_icon_show").fadeOut("fast", function () {
+	$("#main_settings").fadeOut("fast", function () {
 		navigator("birth")
 		$("#date_of_birth_change").fadeIn("fast")
 	})
@@ -4632,10 +4654,10 @@ function addemail() {
 		return;
 	}
 	navigator('addemail')
-	document.getElementById("usr-img-addemail").src = document.getElementById("usr-img-opt").src
-	document.getElementById("usr-name-addemail").innerHTML = document.getElementById("usr-name-opt").innerHTML
-	document.getElementById("usr-email-addemail").innerHTML = document.getElementById("usr-email-opt").innerHTML
-	$("#main_settings").fadeOut("fast", function () {
+	document.getElementById("usr-img-addemail").src = document.getElementById("usr-img").src
+	document.getElementById("usr-name-addemail").innerHTML = document.getElementById("usr-name").innerHTML
+	document.getElementById("usr-email-addemail").innerHTML = document.getElementById("usr-email").innerHTML
+	$("#pswd_secure").fadeOut("fast", function () {
 		$("#add_email").fadeIn("fast")
 	})
 }
@@ -4661,9 +4683,9 @@ function complete_addemail() {
 			console.log(data)
 			document.getElementById("new_email").value = ""
 			if (data === "Waiting For Verification") {
-				document.getElementById("usr-img-vermail").src = document.getElementById("usr-img-opt").src
-				document.getElementById("usr-name-vermail").innerHTML = document.getElementById("usr-name-opt").innerHTML
-				document.getElementById("usr-email-vermail").innerHTML = `${document.getElementById("usr-email-opt").innerHTML} && ${email}`
+				document.getElementById("usr-img-vermail").src = document.getElementById("usr-img").src
+				document.getElementById("usr-name-vermail").innerHTML = document.getElementById("usr-name").innerHTML
+				document.getElementById("usr-email-vermail").innerHTML = `${document.getElementById("usr-email").innerHTML} && ${email}`
 				document.getElementById("textfinalstep").innerHTML = `Final step! Please enter the code that was sent to ${email}.`
 				sessionStorage.setItem("ver_code_email", email)
 				$("#add_email").fadeOut("fast", function () {
@@ -4705,9 +4727,9 @@ function verify_addemail() {
 				ac_complete.play()
 				sessionStorage.removeItem("ver_code_email")
 				console.log("Complete!")
-				navigator("username_email_icon_show")
+				navigator("password_secure")
 				$("#verify_email").fadeOut("fast", function () {
-					$("#main_settings").fadeIn("fast")
+					$("#pswd_secure").fadeIn("fast")
 				})
 				loademails()
 			} else if (data === "Incorrect Code") {
@@ -4715,8 +4737,10 @@ function verify_addemail() {
 				shake_me("email_new_ver_code")
 			} else if (data === "Email set already") {
 				error.play()
-				navigator("username_email_icon_show")
-				return_to_options('cancel_addemail')
+				navigator("password_secure")
+				$("#verify_email").fadeOut("fast", function () {
+					$("#pswd_secure").fadeIn("fast")
+				})
 				loademails()
 			} else {
 				console.error("Unknown response:", data)
@@ -5320,7 +5344,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 			</g>
 		</g>
 	</svg>
-</div>`, addemail = `<div onclick="return_to_options('add_email');navigator('sett_def')" class="circle">
+</div>`, addemail = `<div onclick="return_to_options('add_email');navigator('password_secure')" class="circle">
 	<svg xmlns="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
 		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
@@ -5332,7 +5356,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 			</g>
 		</g>
 	</svg>
-</div>`, birth = `<div onclick="return_to_options('birth');navigator('username_email_icon_show')" class="circle">
+</div>`, birth = `<div onclick="return_to_options('birth');navigator('sett_def')" class="circle">
 
 	<svg xmlns="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
@@ -5443,7 +5467,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 			</g>
 		</g>
 	</svg>
-</div>`, show_friends = `<div onclick="return_to_options('friends');navigator('evox_social')" class="circle">
+</div>`, show_friends = `<div onclick="return_to_options('friends');navigator('sett_def')" class="circle">
 
 	<svg xmlns="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
@@ -6713,7 +6737,7 @@ function revertPfp() {
 }
 
 function cancelSteal() {
-	pfpOptions()
+	//pfpOptions()
 	//document.getElementById("main_settings").style.filter = ""
 	document.getElementById("steal_pfp").classList.remove("active")
 	//$("#navigator").fadeIn("fast")
@@ -6780,7 +6804,7 @@ function steal_pfp() {
 }
 
 function stealPFP(elem) {
-	cancelSteal()
+	//cancelSteal()
 	var value = elem.id;
 	var userToSteal = value.split('-')[0];
 	console.log(userToSteal);
@@ -7334,4 +7358,114 @@ function showSlineGrid() {
 	})
 
 
+}
+let canvasVID;
+
+function canvas() {
+	if (document.getElementById("canvas-toggle").innerHTML.includes('svg')) {
+		//canvasVID = document.getElementById("user-video-self").src
+		document.getElementById("user-video-self").style.display = "none"
+		document.getElementById("canvas-toggle").innerHTML = `<img src="canvas-off.png">`
+	} else {
+		document.getElementById("user-video-self").style.display = ""
+		//document.getElementById("user-video-self").src = canvasVID
+		document.getElementById("canvas-toggle").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 192 192"><path d="M0 0h192v192H0z" style="fill:none"/><path d="M67.63 35.2h56.75v121.6H67.63zM51.41 136.53H39.25V55.47h12.16m88.16 81.06h13.18V55.47h-13.18" style="stroke-width:12px;fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round"/><path d="M26.08 67.63H20v56.74h6.08m139.84-56.74H172v56.74h-6.08" style="fill:none;stroke-width:8px;stroke:#fff;stroke-linecap:round;stroke-linejoin:round"/></svg>`
+	}
+
+}
+
+function changeStatus() {
+	document.getElementById("status_box").classList.add("active")
+}
+
+function cancel_setStatus() {
+	document.getElementById("status_box").classList.remove("active")
+}
+
+function setStatus(toWhat) {
+	if (toWhat === 'online') {
+		fetch(`${srv}/setOnline?username=${localStorage.getItem("t50-username")}`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.text();
+			})
+			.then(data => {
+				if (data === "200") {
+					document.getElementById("options_section_0_status").innerHTML = "Online"
+					document.getElementById("status-invisible").style.backgroundColor = '#333'
+					document.getElementById("status-online").style.backgroundColor = '#0083fe'
+				}
+
+			})
+			.catch(error => {
+				console.error('Fetch error:', error);
+			});
+	} else {
+		fetch(`${srv}/setOffline?username=${localStorage.getItem("t50-username")}`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.text();
+			})
+			.then(data => {
+				if (data === "200") {
+					document.getElementById("options_section_0_status").innerHTML = "Invisible"
+					document.getElementById("status-online").style.backgroundColor = '#333'
+					document.getElementById("status-invisible").style.backgroundColor = '#0083fe'
+				}
+
+			})
+			.catch(error => {
+				console.error('Fetch error:', error);
+			});
+	}
+}
+
+function customizeProfile() {
+	document.getElementById("previewProfile").src = `./previewProfile.html?bd=${birth_data}&llogin=${document.getElementById("options_section_0_lastseen").innerHTML}`
+	const iframe = document.getElementById('previewProfile');
+	current = "customize"
+	// Ensure the iframe has loaded
+	iframe.onload = function () {
+		// Access the iframe's document
+		const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+		console.log("Iframe Loaded!")
+		// Find the target element within the iframe
+		const targetElement = iframeDocument.getElementById('user-video-forPreview');
+		const theELEMPFP = iframeDocument.getElementById('friend-pfp');
+
+		// Check if the target element exists
+		if (targetElement) {
+			console.log("Element Found!")
+			// Change the innerHTML of the target element
+			let countIt;
+			setInterval(function () {
+				if (targetElement.src !== document.getElementById("user-video-self").src) {
+					targetElement.src = document.getElementById("user-video-self").src
+				}
+				if(theELEMPFP.src !== document.getElementById("profile-pfp").src) {
+					theELEMPFP.src = document.getElementById("profile-pfp").src
+				}
+				//src = srcMAin
+				;
+			}, 500)
+
+		} else {
+			console.error('Target element not found in iframe.');
+		}
+	};
+	$("#main_settings").fadeOut("fast", function () {
+		$("#profile-preview").fadeIn("fast")
+
+	})
+}
+
+function moreOptions() {
+	current = "more_options"
+	$("#profile-preview").fadeOut("fast", function () {
+		$("#profile-options").fadeIn("fast")
+	})
 }

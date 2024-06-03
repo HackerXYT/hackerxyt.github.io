@@ -435,6 +435,20 @@ function setup() {
 			console.error(error);
 		})
 
+    fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error(`HTTP error! Status: ${response.status}`);
+				}
+				return response.json();
+			})
+			.then(data => {
+        document.getElementById("friendsCount").innerHTML = data.length
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
   //try {
   //  window.OneSignalDeferred = window.OneSignalDeferred || [];
   //  OneSignalDeferred.push(function (OneSignal) {
@@ -2095,20 +2109,32 @@ function lockMe() {
 
 }
 
+let current;
 
-
-const swipeAreaChats = document.getElementById('secureline');
+const swipeAreaChats = document.getElementById('myAcc'); //not chats
 
 let touchstartXChats = 0;
 let touchendXChats = 0;
 
 function handleGestureChats() {
-  return;
   const distance = touchendXChats - touchstartXChats;
 
-  if (distance > 50) { // Left-to-right swipe
+  if (distance > 40) { // Left-to-right swipe
     console.log('Swiped from left to right');
     // Run your desired function for left-to-right swipe here
+    if(current === "more_options") {
+      current = "customize"
+      $("#profile-options").fadeOut("fast", function() {
+        $("#profile-preview").fadeIn("fast")
+      })
+    } else if(current === "customize") {
+      current = ""
+      $("#profile-preview").fadeOut("fast", function() {
+        $("#main_settings").fadeIn("fast")
+      })
+    }
+    
+    return;
     let secureline = document.getElementById("secureline")
     if (secureline.classList.contains("slideL-R")) {
       secureline.classList.remove("slideL-R")
@@ -2124,6 +2150,8 @@ function handleGestureChats() {
     currScreen = "Home"
     //alert('Swiped from left to right');
   } else if (distance < -50) { // Right-to-left swipe
+
+    return;
     let secureline = document.getElementById("secureline")
     let notifications = document.getElementById("notifications")
     console.log('Swiped from right to left');
