@@ -1019,6 +1019,11 @@ function docready(merge) {
                 //lockMe()
                 sessionStorage.setItem("unlocked", "true")
                 setup() //is old
+              } else if (data === "Exists") {
+                sessionStorage.setItem("unlocked", "true")
+                setup() //is old
+              } else {
+                createLocalNotification("Error", `Authorization IP Ops Failed<br>Data: ${data}`, "bogon.svg")
               }
             }).catch(error => {
               console.error('Fetch error:', error);
