@@ -4048,7 +4048,7 @@ function createNotificationElement(image, notification, offline) {
 
 	var a = document.createElement("a");
 	a.href = "#";
-	a.className = "apple-button notifOptions";
+	a.className = "apple-button notifOptions truncated-text-notifications";
 	a.style.display = "flex";
 	a.style.alignItems = "center";
 	if (offline) {

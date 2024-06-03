@@ -2757,6 +2757,13 @@ a {
     max-width: 310px;
   }
 
+  
+.truncated-text-notifications {
+  max-width: 389px; /* Adjust this width as needed */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
 }
 
@@ -2766,6 +2773,8 @@ a {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+
 
 
 .parent-notification-container {
