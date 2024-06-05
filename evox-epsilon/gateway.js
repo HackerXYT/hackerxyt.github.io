@@ -2331,10 +2331,11 @@ swipeAreaProfile.addEventListener('touchend', (event) => {
   handleGestureProfile();
 });
 
-let totalSeconds = 0;
+//let totalSeconds = 0;
 
 // Function to update the counter display
 function updateCounterDisplay() {
+  let totalSeconds = Number(localStorage.getItem("app-Evox-track")) + Math.floor(totalTimeSpent / 1000)
   const days = Math.floor(totalSeconds / 86400);
   const hours = Math.floor((totalSeconds % 86400) / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -2353,7 +2354,7 @@ function updateCounterDisplay() {
 
 // Function to update the time variables and counter display
 function updateCounter() {
-  totalSeconds++;
+  //totalSeconds++;
   updateCounterDisplay();
 }
 
@@ -2364,13 +2365,13 @@ function saveTime() {
 
 // Retrieve the time from localStorage if it exists
 window.onload = function () {
-  if (localStorage.getItem('totalSeconds') !== null) {
-    totalSeconds = parseInt(localStorage.getItem('totalSeconds'), 10);
-  }
+  //if (localStorage.getItem('totalSeconds') !== null) {
+  //  totalSeconds = parseInt(localStorage.getItem('totalSeconds'), 10);
+  //}
   updateCounterDisplay();
 }
 setInterval(updateCounter, 1000);
-setInterval(saveTime, 2000);
+//setInterval(saveTime, 2000);
 
 function addElemApp(app) {
   if (app === "images" || app === "tasco" || app === "Evox Datacenter") {

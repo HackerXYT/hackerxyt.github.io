@@ -143,6 +143,12 @@
                 script3.defer = true;
                 document.head.appendChild(script3);
 
+                let script4 = document.createElement('script');
+                script4.src = 'tracker.js';
+                script4.defer = true;
+                document.head.appendChild(script4);
+                
+
                 // Add more script tags for other JavaScript files as needed
             }
 
@@ -414,7 +420,7 @@
                     <img src="evox-logo-beta-large.png"
                         style="position: absolute; width: 80px; height:auto; top: 40px; left: 40px;">
                     <div style="position: absolute; height:auto; top: 45px; left: 140px;" class="search-container">
-                        <input type="text" class="search-input" placeholder="Search Evox..">
+                        <input type="text" id="globalSearch" class="search-input" placeholder="Search Evox..">
                         <button class="search-button">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -435,7 +441,7 @@
                     </div>
                 </div>
 
-                <div style="position: relative; width: 90%; max-height: 700px;margin-top:10px">
+                <div class="parent-popup-container" style="position: relative; width: 90%; max-height: 700px;margin-top:10px;height: auto">
                     <div class="carousela">
                         <div class="carousel-images">
                             <img src="nexusBeta.png" alt="Image 1">
