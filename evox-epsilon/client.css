@@ -3218,3 +3218,196 @@ form {
   position: relative;
   overflow: hidden; /* Ensure no overflow due to scaling */
 }
+
+.simple-center-container {
+  display: flex;
+  /* Centers the element horizontally */
+  align-items: center;
+  /* Centers the element vertically, if needed */
+  height: 100vh;
+  /* Optional: Sets the height of the container to 100% of the viewport height */
+}
+
+
+.evox-app span {
+  position: absolute;
+  right: 20px;
+  /* Adjust as needed */
+}
+
+.evox-app:hover { 
+  background-color: #203c7d6c;
+}
+.evox-app {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: transparent; /* Background color of the button */
+  border: none;
+  color: #fff;
+  padding: 9px;
+  font-size: 16px;
+  border-radius: 40px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  margin: 6px;
+  width: 400px;
+  height: auto;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.evox-app img {
+  width: 90px; /* Adjust width for icon size */
+  height: auto;
+  border-radius: 35px; /* Less border radius for the game icon */
+  margin-right: 20px;
+}
+
+.info {
+  flex-grow: 1; /* Make the info section take the remaining space */
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.title::first-letter {
+  text-transform: uppercase;
+}
+
+.time {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #b0b0b0; /* Lighter color for the time text */
+}
+
+.tag {
+  background-color: #ff6584; /* Background color for the tag */
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 14px;
+}
+
+.get-button-nx {
+  background-color: #007aff;
+  border: none;
+  border-radius: 18px;
+  color: #fff;
+  font-size: 15px;
+  padding: 10px 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 122, 255, 0.2);
+  transition: background-color 0.3s;
+  position: relative;
+  /* Add relative positioning */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.get-button-nx svg {
+  position: absolute;
+  /* Set SVG as absolute */
+  top: 50%;
+  /* Center vertically */
+  left: 50%;
+  /* Center horizontally */
+  transform: translate(-50%, -50%);
+  /* Center the SVG precisely */
+}
+
+.get-button-nx:hover {
+  background-color: #ff658484;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border-radius: 30px;
+  padding: 10px 4px;
+  border: 2px solid #2c2c2c;
+  box-shadow: 0 0 10px rgba(44, 44, 44, 0.5);
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 10px;
+  font-size: 16px;
+  outline: none;
+  flex: 1;
+}
+
+.search-button, .filter-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 10px 6px;
+  outline: none;
+}
+
+.search-button svg, .filter-button svg {
+  fill: none;
+  stroke: #fff;
+}
+
+.carousela {
+  position: relative;
+  width: 100%;
+  max-height: 700px;
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.carousel-images {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousela img {
+  width: 100%;
+  border-radius: 20px;
+  display: block;
+}
+
+.carousel-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+}
+
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  background-color: #888;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.carousel-dot.active {
+  background-color: #fff;
+}
+
+.carousel-caption {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 24px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 10px;
+}

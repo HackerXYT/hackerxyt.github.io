@@ -602,7 +602,9 @@ function load(app) {
 
 			$("#iframeContainer").fadeOut("slow", function () {
 				document.getElementById("navbar").classList.add("active")
-				document.getElementById("apple-style").classList.add("active")
+				if(localStorage.getItem("topNav") !== "disabled") {
+					document.getElementById("apple-style").classList.add("active")
+				  }
 			})
 			sessionStorage.removeItem("extRun")
 			clearInterval(appFrame)
@@ -617,7 +619,9 @@ function launchAppN(app) {
 	$("#iframeContainer").fadeIn("slow")
 	$("#launchApp").fadeIn("slow", function () {
 		document.getElementById("navbar").classList.remove("active")
-		document.getElementById("apple-style").classList.remove("active")
+		if(localStorage.getItem("topNav") !== "disabled") {
+            document.getElementById("apple-style").classList.remove("active")
+          }
 	})
 }
 
@@ -799,7 +803,9 @@ function uielements() {
 	console.log(notes, images, chatvia)
 	//$("#navbar").fadeIn("fast")
 	document.getElementById("navbar").classList.add("active")
-	document.getElementById("apple-style").classList.add("active")
+	if(localStorage.getItem("topNav") !== "disabled") {
+		document.getElementById("apple-style").classList.add("active")
+	  }
 	$("#navigator").fadeIn("slow")
 	//$("#settings").fadeIn("slow")
 	//$("#vox").fadeIn("slow")
@@ -964,7 +970,9 @@ function settings() {
 
 	//console.log(document.getElementById("popup").classList.contains("active"))
 	if (document.getElementById("popup").classList.contains("active") === false) {
-		document.getElementById("apple-style").classList.remove("active")
+		if(localStorage.getItem("topNav") !== "disabled") {
+            document.getElementById("apple-style").classList.remove("active")
+          }
 		return_to_options("reset")
 		try {
 			$("#onesignal-bell-container").fadeIn("fast")
@@ -1007,7 +1015,9 @@ function settings() {
 			//document.body.style.overflow = 'hidden';
 		}, 100)
 	} else if (document.getElementById("popup").classList.contains("active")) {
-		document.getElementById("apple-style").classList.add("active")
+		if(localStorage.getItem("topNav") !== "disabled") {
+            document.getElementById("apple-style").classList.add("active")
+          }
 
 		try {
 			$("#onesignal-bell-container").fadeOut("fast")
@@ -3694,27 +3704,27 @@ function errors() {
 
 }
 
-let currentIndex = 0;
-
-function prevSlide() {
-	if (currentIndex > 0) {
-		currentIndex--;
-		updateCarousel();
-	}
-}
-
-function nextSlide() {
-	if (currentIndex < document.querySelectorAll('.app').length - 1) {
-		currentIndex++;
-		updateCarousel();
-	}
-}
-
-function updateCarousel() {
-	const carousel = document.getElementById('apps');
-	const offset = currentIndex * (carousel.offsetWidth / 2);
-	carousel.style.transform = `translateX(-${offset}px)`;
-}
+//let currentIndex = 0;
+//
+//function prevSlide() {
+//	if (currentIndex > 0) {
+//		currentIndex--;
+//		updateCarousel();
+//	}
+//}
+//
+//function nextSlide() {
+//	if (currentIndex < document.querySelectorAll('.app').length - 1) {
+//		currentIndex++;
+//		updateCarousel();
+//	}
+//}
+//
+//function updateCarousel() {
+//	const carousel = document.getElementById('apps');
+//	const offset = currentIndex * (carousel.offsetWidth / 2);
+//	carousel.style.transform = `translateX(-${offset}px)`;
+//}
 
 function apparrow() {
 	const div = document.getElementById('apps');
@@ -5059,6 +5069,64 @@ function getNOpen(app, view) {
 		//height: 17px; width: 30px
 		getButton.innerHTML = oldInner;
 		shake_me(`${app}-get`)
+		notice("Access Denied")
+	}, 1500)
+
+}
+
+
+function getNOpenNX(app, view) {
+	if (sessionStorage.getItem("block_interactions") === "true") {
+		createLocalNotification("Gateway", 'Sorry. Servers Are Offline')
+		return;
+	}
+	var getButton = document.getElementById(`${app}-nx`);
+	var oldInner = getButton.innerHTML;
+	if (oldInner === "CURRENT") {
+		getButton.style.backgroundColor = "#cb180074";
+		shake_me(`${app}-nx`);
+		setTimeout(function () {
+			getButton.style.backgroundColor = "#007aff";
+		}, 1200);
+		return;
+	}
+	//var getButton = element.querySelector('.get-button');
+
+	// Change the inner HTML of the <span> element
+	if (view === "2") {
+		load(app)
+		return;
+	} else {
+		getButton.style.height = "17px"
+		getButton.style.width = "30px"
+		//height: 17px; width: 30px
+
+
+		getButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="55%" height="55%">
+	<circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
+		<animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
+			repeatCount="indefinite" />
+		<animate attributeName="stroke-dashoffset" values="0, -200;-200, -900" dur="2s"
+			repeatCount="indefinite" />
+	</circle>
+</svg>`;
+	}
+
+	setTimeout(function () {
+
+		if (oldInner === "OPEN") {
+			load(app)
+			getButton.style.height = "auto"
+			getButton.style.width = "auto"
+			//height: 17px; width: 30px
+			getButton.innerHTML = oldInner;
+			return;
+		}
+		getButton.style.height = "auto"
+		getButton.style.width = "auto"
+		//height: 17px; width: 30px
+		getButton.innerHTML = oldInner;
+		shake_me(`${app}-nx`)
 		notice("Access Denied")
 	}, 1500)
 
@@ -7468,4 +7536,14 @@ function moreOptions() {
 	$("#profile-preview").fadeOut("fast", function () {
 		$("#profile-options").fadeIn("fast")
 	})
+}
+
+let clickedBar = 0;
+function hideME() {
+	clickedBar = clickedBar + 1
+	if(clickedBar >= 3) {
+		createLocalNotification("Top Navigation Bar Disabled", "The top navbar is now globally disabled.")
+		localStorage.setItem("topNav", "disabled")
+		document.getElementById("apple-style").classList.remove("active")
+	}
 }

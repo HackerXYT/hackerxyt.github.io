@@ -386,23 +386,23 @@ function preloadHubDetails() {
               console.log(thisUser)
             }
           })
-          if(friendNum === 1) {
+          if (friendNum === 1) {
             document.getElementById("delivery-1-shipping").innerHTML = `${friendNum} friend is online`
-          } else if(friendNum === 0) {
+          } else if (friendNum === 0) {
             let usersNum;
-            if(JSON.stringify(onlineUsers).includes("null")) {
+            if (JSON.stringify(onlineUsers).includes("null")) {
               usersNum = onlineUsers.length - 2
             } else {
               usersNum = onlineUsers.length - 1
             }
-            if(usersNum === 1) {
+            if (usersNum === 1) {
               document.getElementById("delivery-1-shipping").innerHTML = `${usersNum} user is online`
-            } else if(usersNum <= 0) {
+            } else if (usersNum <= 0) {
               document.getElementById("delivery-1-shipping").innerHTML = `No users online`
             } else {
               document.getElementById("delivery-1-shipping").innerHTML = `${usersNum} users are online`
             }
-            
+
           } else {
             document.getElementById("delivery-1-shipping").innerHTML = `${friendNum} friends are online`
           }
@@ -420,34 +420,34 @@ function setup() {
 
   preloadSFriends()
   fetch(`${srv}/profiles?name=${localStorage.getItem("t50-username")}&authorize=cover`)
-		.then(response => {
-			if (!response.ok) {
-				throw new Error(`HTTP error! Status: ${response.status}`);
-			}
-			return response.text();
-		})
-		.then(coverIMG => {
-			if (coverIMG !== "None") {
-				document.getElementById("user-video-self").src = coverIMG
-			}
-		})
-		.catch(error => {
-			console.error(error);
-		})
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(coverIMG => {
+      if (coverIMG !== "None") {
+        document.getElementById("user-video-self").src = coverIMG
+      }
+    })
+    .catch(error => {
+      console.error(error);
+    })
 
-    fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
-			.then(response => {
-				if (!response.ok) {
-					throw new Error(`HTTP error! Status: ${response.status}`);
-				}
-				return response.json();
-			})
-			.then(data => {
-        document.getElementById("friendsCount").innerHTML = data.length
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      document.getElementById("friendsCount").innerHTML = data.length
+    })
+    .catch(error => {
+      console.error(error);
+    });
 
   //try {
   //  window.OneSignalDeferred = window.OneSignalDeferred || [];
@@ -473,16 +473,16 @@ function setup() {
   if (!localStorage.getItem("betaNotice")) {
     try {
       createLocalNotification("You are using beta!", "The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!", null, "13000")
-      setTimeout(function() {
+      setTimeout(function () {
         notice("Swipe from left to right to dismiss!")
       }, 3000)
       setTimeout(function () {
         localStorage.setItem("betaNotice", "acknowledged")
       }, 9000)
     } catch {
-      setTimeout(function() {
+      setTimeout(function () {
         createLocalNotification("You are using beta!", "The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!", null, "13000")
-        setTimeout(function() {
+        setTimeout(function () {
           notice("Swipe from left to right to dismiss!")
         }, 3000)
         setTimeout(function () {
@@ -492,6 +492,10 @@ function setup() {
     }
 
   }
+
+
+
+  setInterval(nextSlide, 5000); // Change image every 5 seconds
   //if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
   //  window.location.href = "./update/"
   //  return;
@@ -728,6 +732,7 @@ function setup() {
               }
               if (images === "owned") {//OWN IMAGES
                 localStorage.setItem("images-owned", true)
+                addElemApp("images")
                 if (document.getElementById("apps").innerHTML != "") {
                   document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('images')" href="#loadapp-images"><img src="t50-img.png" class="app"></img></a>`
                 } else {
@@ -759,6 +764,7 @@ function setup() {
               }
               const styles = `color: #766ee6; font-size: 19px; font-weight: normal;`;
               console.log('%c' + "Enabling Tasco", styles)
+              addElemApp("tasco")
               document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('tasco')" href="#loadapp-tasco"><img src="https://evoxs.xyz/tasco/tasco-app.png" class="app"></img></a>`
               console.log("Enabling SecureLine")
               //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('secureline')" href="#loadapp-secureline"><img src="./secureline/sline.png" class="app"></img></a>`
@@ -767,6 +773,7 @@ function setup() {
                 $("#transports-app").fadeIn("slow")
                 //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
                 //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('dc')" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a><a onclick="shake_me('transports-disabled');notice('T50 Transports is currently not available');load('transports')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
+                addElemApp("Evox Datacenter")
                 document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('dc')" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a>`
                 //
               }
@@ -1104,7 +1111,10 @@ function docready(merge) {
           document.getElementById("text-me-two").innerHTML = `Welcome back, ${localStorage.getItem("t50-username")}`
           document.getElementById("loading-apps-text").innerHTML = `Servers are currently offline.`
           document.getElementById("navbar").classList.add("active")
-          document.getElementById("apple-style").classList.add("active")
+          if (localStorage.getItem("topNav") !== "disabled") {
+            document.getElementById("apple-style").classList.add("active")
+          }
+
           try {
             critical.play()
           } catch {
@@ -2122,18 +2132,18 @@ function handleGestureChats() {
   if (distance > 40) { // Left-to-right swipe
     console.log('Swiped from left to right');
     // Run your desired function for left-to-right swipe here
-    if(current === "more_options") {
+    if (current === "more_options") {
       current = "customize"
-      $("#profile-options").fadeOut("fast", function() {
+      $("#profile-options").fadeOut("fast", function () {
         $("#profile-preview").fadeIn("fast")
       })
-    } else if(current === "customize") {
+    } else if (current === "customize") {
       current = ""
-      $("#profile-preview").fadeOut("fast", function() {
+      $("#profile-preview").fadeOut("fast", function () {
         $("#main_settings").fadeIn("fast")
       })
     }
-    
+
     return;
     let secureline = document.getElementById("secureline")
     if (secureline.classList.contains("slideL-R")) {
@@ -2361,3 +2371,42 @@ window.onload = function () {
 }
 setInterval(updateCounter, 1000);
 setInterval(saveTime, 2000);
+
+function addElemApp(app) {
+  if (app === "images" || app === "tasco" || app === "Evox Datacenter") {
+    let prevHTML = document.getElementById("app-cont").innerHTML;
+    document.getElementById("app-cont").innerHTML = `${prevHTML}<button class="evox-app">
+    <img src="./appicons/${app}.png" alt="App Icon">
+    <div class="info">
+      <div class="title">${app}</div>
+      <div class="time"><svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="13px" height="13px" viewBox="0 0 24 24" fill="none">
+        <path d="M12 7V12L10.5 14.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>20:30 - Unset</div>
+    </div>
+    <span onclick="getNOpenNX('${app}')" id="${app}-nx" class="get-button-nx">OPEN</span>
+  </button>`
+  }
+
+}
+
+let currentIndex = 0;
+const slides = document.querySelectorAll('.carousel img');
+const dotsca = document.querySelectorAll('.carousel-dot');
+const totalSlides = 5;
+
+function moveToSlide(index) {
+  const carouselImages = document.querySelector('.carousel-images');
+  carouselImages.style.transform = `translateX(-${index * 100}%)`;
+  currentIndex = index;
+  updateDots();
+}
+
+function updateDots() {
+  dotsca.forEach(dot => dot.classList.remove('active'));
+  dotsca[currentIndex].classList.add('active');
+}
+
+function nextSlide() {
+  currentIndex = (currentIndex + 1) % totalSlides;
+  moveToSlide(currentIndex);
+}
