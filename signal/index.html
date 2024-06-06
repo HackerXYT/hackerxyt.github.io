@@ -19,19 +19,19 @@
                     enable: true,
                 },
             });
-            OneSignal.push(function () {
-                if (localStorage.getItem('os-user') === null) {
-                    try {
-                        OneSignal.getUserId(function (userId) {
-                            localStorage.setItem('os-user', userId);
-                            //OneSignal.setExternalUserId(userId);
-                        });
-                    } catch (error) {
-                        console.error("Florida Error:", error)
-                    }
-
-                }
-            });
+            //OneSignal.push(function () {
+            //    if (localStorage.getItem('os-user') === null) {
+            //        try {
+            //            OneSignal.getUserId(function (userId) {
+            //                localStorage.setItem('os-user', userId);
+            //                //OneSignal.setExternalUserId(userId);
+            //            });
+            //        } catch (error) {
+            //            console.error("Florida Error:", error)
+            //        }
+            //
+            //    }
+            //});
         });
     </script>
 </head>
