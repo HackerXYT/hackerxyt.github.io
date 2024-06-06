@@ -529,7 +529,7 @@ function custombg() {
 		} else if (document.getElementById("st5").classList.contains("active") && document.getElementById("st4").classList.contains("active")) {
 			document.getElementById("st4").style.display = "none"
 		}
-	} catch {
+	} catch (error) {
 		console.log("Couldn't Customize Custom BG Displays. Ignoring")
 	}
 
@@ -1021,7 +1021,7 @@ function settings() {
 		navigator("sett_def")
 		try {
 			goback.play()
-		} catch {
+		} catch (error){
 			console.error("error playing audio")
 		}
 
@@ -1138,7 +1138,7 @@ function pfp(give) {
 					}
 					try {
 						sessionStorage.setItem("pfp", data);
-					} catch {
+					} catch (error) {
 						console.error("Couldn't add PFP to sessionStorage")
 					}
 
@@ -1463,7 +1463,7 @@ function return_settings() {
 	navigator("settings_tonexus")
 	try {
 		goback.play()
-	} catch {
+	} catch (error) {
 		console.error("Audio couldn't be played. Restart")
 	}
 
@@ -3083,7 +3083,7 @@ function change_password() {
 function return_to_options(where) {
 	try {
 		goback.play()
-	} catch {
+	} catch (error){
 		console.error("Couldn't play audio")
 	}
 
@@ -3331,8 +3331,8 @@ function bgch() {
 		console.log("Blur amount:", blurAmount, "pixels");
 		var x = blurAmount; // Assuming x is 10 for example
 		document.getElementById("myRange").value = x
-	} catch {
-
+	} catch (error){
+		console.error(error)
 	}
 
 	$("#loading").fadeIn("fast")
@@ -3385,7 +3385,7 @@ function addbg(element, convertMe) {
 				document.getElementById("st4").classList.remove("active")
 				try {
 					document.getElementById("st5").classList.remove("active")
-				} catch {
+				} catch(error) {
 					console.error("Cannot find st5, normal err")
 				}
 
@@ -3422,7 +3422,7 @@ function addbg(element, convertMe) {
 		document.getElementById("st4").classList.remove("active")
 		try {
 			document.getElementById("st5").classList.remove("active")
-		} catch {
+		} catch (error){
 			console.error("Cannot find st5, normal err")
 		}
 
@@ -4261,10 +4261,10 @@ function close_sline() {
 		clearInterval(profint)
 		try {
 			clearInterval(fixxint)
-		} catch {
+		} catch (error){
 			//
 		}
-	} catch {
+	} catch (error){
 		fixxint = setInterval(function () {
 			clearInterval(profint)
 		})
@@ -7349,8 +7349,8 @@ function createLocalNotification(title, description, image, customTime) {
 		isLNactive = true
 		try {
 			clearTimeout(lnele)
-		} catch {
-			//console.log("No Lnele")
+		} catch (error){
+			console.log("No Lnele")
 		}
 		imgEle.src = image
 		titleEle.innerHTML = title

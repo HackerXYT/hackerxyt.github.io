@@ -422,7 +422,7 @@ function setup() {
       setTimeout(function () {
         localStorage.setItem("betaNotice", "acknowledged")
       }, 9000)
-    } catch {
+    } catch (error){
       setTimeout(function () {
         createLocalNotification("You are using beta!", "The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!", null, "13000")
         setTimeout(function () {
@@ -465,7 +465,7 @@ function setup() {
   $("#stuck").fadeIn("fast")
   try {
     custombg()
-  } catch {
+  } catch (error){
     let inter = setInterval(function () {
       try {
         custombg()
@@ -481,10 +481,10 @@ function setup() {
     log("Evox Gateway V:Epsilon 2.0", "cyan")
     try {
       clearInterval(version)
-    } catch {
-      //
+    } catch (error){
+      console.error(error)
     }
-  } catch {
+  } catch (error){
     version = setInterval(function () {
       log("Evox Gateway V:Epsilon 2.0", "cyan")
     }, 800)
@@ -493,12 +493,12 @@ function setup() {
 
   try {
     loadusers()
-  } catch {
+  } catch (error){
     let inter = setInterval(function () {
       try {
         loadusers()
         clearInterval(inter)
-      } catch {
+      } catch (error){
         console.log("loadusers Failed. Retrying")
       }
     }, 100)
@@ -506,12 +506,12 @@ function setup() {
   try {
     loadPrefs()
     console.log("Loaded Prefs")
-  } catch {
+  } catch (error){
     let interv = setInterval(function () {
       try {
         loadPrefs()
         clearInterval(interv)
-      } catch {
+      } catch (error){
         console.log("loadPrefs Failed. Retrying")
       }
     }, 100)
@@ -595,7 +595,7 @@ function setup() {
     document.getElementById("greet").innerHTML = `${greet}, <span style="margin-bottom: 10px;" id="user-text">${username}</span>`
     try {
       log("Loading Gateway", "green")
-    } catch {
+    } catch (error){
       setTimeout(function () {
         log("Loading Gateway", "green")
       }, 950)
@@ -608,7 +608,7 @@ function setup() {
         $("#user-text").html(username)
         try {
           log("Loading Gateway", "green")
-        } catch {
+        } catch (error){
           setTimeout(function () {
             log("Loading Gateway", "green")
           }, 950)
@@ -739,12 +739,12 @@ function setup() {
               $("#loading").fadeOut("slow")
               try {
                 uielements()
-              } catch {
+              } catch (error){
                 let inter = setInterval(function () {
                   try {
                     uielements()
                     clearInterval(inter)
-                  } catch {
+                  } catch (error){
                     console.log("uielements Failed. Retrying")
                   }
                 }, 100)
@@ -761,12 +761,12 @@ function setup() {
               }
               try {
                 uielements()
-              } catch {
+              } catch (error){
                 let inter = setInterval(function () {
                   try {
                     uielements()
                     clearInterval(inter)
-                  } catch {
+                  } catch (error){
                     console.log("uielements Failed. Retrying")
                   }
                 }, 100)
@@ -1049,7 +1049,7 @@ function docready(merge) {
 
           try {
             critical.play()
-          } catch {
+          } catch (error){
             console.error("Couldn't play sound. User hasn't interacted yet")
           }
 
@@ -1139,7 +1139,7 @@ function docready(merge) {
         document.getElementById("usr-img-autolg").src = `${data}`;
         try {
           sessionStorage.setItem("pfp", data);
-        } catch {
+        } catch (error){
           console.error("Couldn't add PFP to sessionStorage")
         }
 
@@ -1464,8 +1464,8 @@ function verifycode() {
 function login() {
   try {
     login_ok.play()
-  } catch {
-    //no problem
+  } catch (error){
+    console.error("Sound can't play", error)
   }
 
   let email = document.getElementById("email").value
@@ -1869,7 +1869,7 @@ function lockMe() {
   $("#loading-text").fadeOut("slow")
   try {
     custombg()
-  } catch {
+  } catch (error){
     let inter = setInterval(function () {
       try {
         custombg()

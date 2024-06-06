@@ -296,8 +296,8 @@ function create_chat() {
   document.getElementById("actions").style.overflow = ""
   try {
     clearInterval(reloading)
-  } catch {
-    console.error("Unknown Error, Cannot Clear Interval")
+  } catch (error){
+    console.error("Unknown Error, Cannot Clear Interval", error)
   }
   document.getElementById("messages-container").innerHTML = `<p class='centered-text'>Creating Chat
   <svg style="margin-top: 20px" width="50px" height="40px" version="1.1" id="loading-circle" xmlns="http://www.w3.org/2000/svg"
