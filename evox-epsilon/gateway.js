@@ -249,49 +249,7 @@ function FloridaDelete() {
   };
 }
 function FloridaRun() {
-  // Open the IndexedDB database
-  var request = window.indexedDB.open('ONE_SIGNAL_SDK_DB');
-
-  request.onerror = function (event) {
-    console.error("IndexedDB error:", event.target.errorCode);
-  };
-
-  request.onsuccess = function (event) {
-    var db = event.target.result;
-
-    // Start a transaction to access the database
-    var transaction = db.transaction(['pushSubscriptions'], 'readonly');
-
-    // Retrieve the object store
-    var objectStore = transaction.objectStore('pushSubscriptions');
-
-    // Open a cursor to iterate over the data
-    var cursorRequest = objectStore.openCursor();
-
-    cursorRequest.onsuccess = function (event) {
-      var cursor = event.target.result;
-      if (cursor) {
-        // Access each object in the object store and do something with it
-        console.log(cursor.value);
-        const onesignalid = cursor.value
-        sessionStorage.setItem("flrd_info", JSON.stringify(onesignalid.onesignalId))
-
-        // Move to the next object in the object store
-        cursor.continue();
-      } else {
-        console.log('No more entries');
-      }
-    };
-
-    cursorRequest.onerror = function (event) {
-      console.error("Cursor error:", event.target.errorCode);
-    };
-  };
-
-  request.onupgradeneeded = function (event) {
-    var db = event.target.result;
-    db.createObjectStore('pushSubscriptions');
-  };
+  return;
 
 }
 
@@ -449,21 +407,6 @@ function setup() {
       console.error(error);
     });
 
-  //try {
-  //  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  //  OneSignalDeferred.push(function (OneSignal) {
-  //    OneSignal.init({
-  //      appId: "986f81a5-5fab-4c0d-8fb3-9a7f6ff80eab",
-  //      safari_web_id: "web.onesignal.auto.261dc44c-6b5c-4882-ba5f-51ef0736d918",
-  //      notifyButton: {
-  //        enable: true
-  //      },
-  //      userId: localStorage.getItem("t50-username") // Specify a unique user ID here
-  //    });
-  //  });
-  //} catch (error) {
-  //  console.error("Florida failed to load onesignal:", error);
-  //}
   try {
     setupCrypt()
   } catch {
@@ -574,13 +517,6 @@ function setup() {
     }, 100)
   }
   let lg_status = sessionStorage.getItem("loaded")
-  //try {
-  //  OneSignalDeferred.push(function() {
-  //    OneSignal.logout();
-  //  });
-  //} catch {
-  //  console.error("Error Logging Out Of Florida. Safe")
-  //}
   fetch(`${srv}/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
     .then(response => {
       if (!response.ok) {
@@ -623,32 +559,28 @@ function setup() {
     .catch(error => {
       console.error('Fetch error:', error);
     });
-  if (!localStorage.getItem("florida_init") && !window.location.href.includes("localhost")) {
-    fetch(`${srv}/florida?method=largest&username=${localStorage.getItem("t50-username")}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.text();
-      })
-      .then(data => {
-        if (data !== "Error") {
-          //OneSignalDeferred.push(function () {
-          //  const tologin = `${localStorage.getItem("t50-username")}${data}`
-          //  OneSignal.login(tologin);
-          //});
-          localStorage.setItem("florida_init_registered", `${localStorage.getItem("t50-username")}${data}`)
-          localStorage.setItem("florida_init", true)
-        } else {
-          console.error("Got an error response for florida")
-        }
-
-      })
-      .catch(error => {
-        console.error('Fetch error:', error);
-      });
-
-  }
+  //if (!localStorage.getItem("florida_init") && !window.location.href.includes("localhost")) {
+  //  fetch(`${srv}/florida?method=largest&username=${localStorage.getItem("t50-username")}`)
+  //    .then(response => {
+  //      if (!response.ok) {
+  //        throw new Error(`HTTP error! Status: ${response.status}`);
+  //      }
+  //      return response.text();
+  //    })
+  //    .then(data => {
+  //      if (data !== "Error") {;
+  //        localStorage.setItem("florida_init_registered", `${localStorage.getItem("t50-username")}${data}`)
+  //        localStorage.setItem("florida_init", true)
+  //      } else {
+  //        console.error("Got an error response for florida")
+  //      }
+  //
+  //    })
+  //    .catch(error => {
+  //      console.error('Fetch error:', error);
+  //    });
+  //
+  //}
 
 
 

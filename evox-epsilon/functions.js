@@ -974,11 +974,7 @@ function settings() {
             document.getElementById("apple-style").classList.remove("active")
           }
 		return_to_options("reset")
-		try {
-			$("#onesignal-bell-container").fadeIn("fast")
-		} catch {
-			console.log("Couldn't Show Florida Bell")
-		}
+		
 
 		settings_open.play()
 		//document.body.style.overflow = 'hidden';
@@ -1019,11 +1015,7 @@ function settings() {
             document.getElementById("apple-style").classList.add("active")
           }
 
-		try {
-			$("#onesignal-bell-container").fadeOut("fast")
-		} catch {
-			console.log("Couldn't Hide Florida Bell")
-		}
+
 		//$("#navigator").fadeOut("fast")
 		navigator("sett_def")
 		try {
@@ -1468,7 +1460,6 @@ function show_account() {
 
 function return_settings() {
 	navigator("settings_tonexus")
-	//$("#onesignal-bell-container").fadeOut("fast")
 	try {
 		goback.play()
 	} catch {
@@ -4406,7 +4397,6 @@ function confirm_ipremove() {
 
 function loadflrdinf() {
 	$("#flrd_svg").fadeIn("fast")
-	//$("#onesignal-bell-container").fadeIn("fast")
 
 	setTimeout(function () {
 		const oldhtml = document.getElementById("notification").innerHTML
@@ -6233,9 +6223,6 @@ function clearflrd() {
 	$("#flrdclear_svg").fadeIn("fast")
 	localStorage.removeItem("florida_init")
 	localStorage.removeItem("florida_init_registered")
-	localStorage.removeItem("operationCache")
-	localStorage.removeItem("os_pageViews")
-	sessionStorage.removeItem("onesignal-pageview-count")
 	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
 
 	var request = indexedDB.deleteDatabase("ONE_SIGNAL_SDK_DB");
