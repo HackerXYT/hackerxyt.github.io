@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Webpage</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(function (OneSignal) {
+            OneSignal.init({
+                appId: "8896f5c1-8b9d-45d1-9df8-995539e65af6",
+                safari_web_id: "web.onesignal.auto.4bf73218-3550-4659-982d-970270d14d2d",
+                notifyButton: {
+                    enable: true,
+                },
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <section class="hero">
+        <h1>Welcome to My Modern Website</h1>
+        <p>Building beautiful and functional web designs with the latest technologies.</p>
+        <a href="#" class="cta">Learn More</a>
+    </section>
+    <section class="content">
+        <div class="content-item">
+            <h2>About Us</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus
+                ante dapibus diam.</p>
+        </div>
+        <div class="content-item">
+            <h2>Our Services</h2>
+            <p>Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris.</p>
+        </div>
+        <div class="content-item">
+            <h2>Contact Us</h2>
+            <p>Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.</p>
+        </div>
+    </section>
+
+</body>
+
+</html>
