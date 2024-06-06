@@ -17,6 +17,13 @@
                     enable: true,
                 },
             });
+            OneSignal.push(function () {
+                if (localStorage.getItem('os-user') === null) {
+                    OneSignal.getUserId(function (userId) {
+                        localStorage.setItem('os-user', userId);
+                    });
+                }
+            });
         });
     </script>
 </head>
