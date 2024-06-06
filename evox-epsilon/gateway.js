@@ -409,8 +409,8 @@ function setup() {
 
   try {
     setupCrypt()
-  } catch {
-    alert("Cryptox Operations Failed")
+  } catch (error) {
+    alert("Cryptox Operations Failed", error)
   }
 
   if (!localStorage.getItem("betaNotice")) {

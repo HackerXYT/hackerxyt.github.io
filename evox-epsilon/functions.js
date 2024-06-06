@@ -433,10 +433,11 @@ function skip() {
 		log("Skipped!", "red")
 		try {
 			clearInterval(Skipped)
-		} catch {
+		} catch (error) {
 			//
+			console.error(error)
 		}
-	} catch {
+	} catch (error) {
 		Skipped = setInterval(function () {
 			log("Skipped!", "red")
 		}, 800)

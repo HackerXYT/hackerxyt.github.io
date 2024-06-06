@@ -163,8 +163,8 @@ function return_main_chats() {
   try {
     clearInterval(reloading)
     log("Interval Cleared!", "green")
-  } catch {
-    log("Error Clearing Reload Interval", "red")
+  } catch (error) {
+    log(`Error Clearing Reload Interval ${error}`, "red")
   }
   document.getElementById("secureline").classList.add("active")
   document.getElementById("private_chat").classList.remove("active")
