@@ -7483,7 +7483,7 @@ function setStatus(toWhat) {
 function customizeProfile() {
 	document.getElementById("previewProfile").src = `./previewProfile.html?bd=${birth_data}&llogin=${document.getElementById("options_section_0_lastseen").innerHTML}`
 	const iframe = document.getElementById('previewProfile');
-	current = "customize"
+	currentState = "customize"
 	// Ensure the iframe has loaded
 	iframe.onload = function () {
 		// Access the iframe's document
@@ -7520,7 +7520,7 @@ function customizeProfile() {
 }
 
 function moreOptions() {
-	current = "more_options"
+	currentState = "more_options"
 	$("#profile-preview").fadeOut("fast", function () {
 		$("#profile-options").fadeIn("fast")
 	})

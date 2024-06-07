@@ -2052,7 +2052,7 @@ function lockMe() {
 
 }
 
-let current;
+let currentState;
 
 const swipeAreaChats = document.getElementById('myAcc'); //not chats
 
@@ -2065,13 +2065,13 @@ function handleGestureChats() {
   if (distance > 40) { // Left-to-right swipe
     console.log('Swiped from left to right');
     // Run your desired function for left-to-right swipe here
-    if (current === "more_options") {
-      current = "customize";
+    if (currentState === "more_options") {
+      currentState = "customize";
       $("#profile-options").fadeOut("fast", function () {
         $("#profile-preview").fadeIn("fast");
       });
-    } else if (current === "customize") {
-      current = "";
+    } else if (currentState === "customize") {
+      currentState = "";
       $("#profile-preview").fadeOut("fast", function () {
         $("#main_settings").fadeIn("fast");
       });
