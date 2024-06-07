@@ -591,9 +591,12 @@ function load(app) {
 		sessionStorage.setItem("EmitApp", "evox")
 		launchAppN("./secureline/")
 
-	} else if (app === "dc") {
+	} else if (app === "dc" || app === "Evox") {
 		sessionStorage.setItem("EmitApp", "evox")
 		launchAppN("../DC/")
+	} else {
+		createLocalNotification("An Error Occured", `'${app}' is not owned or doesn't exist!`)
+		return;
 	}
 	const appFrame = setInterval(function () {
 		if (sessionStorage.getItem("extRun") === "back") {
@@ -603,9 +606,9 @@ function load(app) {
 
 			$("#iframeContainer").fadeOut("slow", function () {
 				document.getElementById("navbar").classList.add("active")
-				if(localStorage.getItem("topNav") !== "disabled") {
+				if (localStorage.getItem("topNav") !== "disabled") {
 					document.getElementById("apple-style").classList.add("active")
-				  }
+				}
 			})
 			sessionStorage.removeItem("extRun")
 			clearInterval(appFrame)
@@ -620,9 +623,9 @@ function launchAppN(app) {
 	$("#iframeContainer").fadeIn("slow")
 	$("#launchApp").fadeIn("slow", function () {
 		document.getElementById("navbar").classList.remove("active")
-		if(localStorage.getItem("topNav") !== "disabled") {
-            document.getElementById("apple-style").classList.remove("active")
-          }
+		if (localStorage.getItem("topNav") !== "disabled") {
+			document.getElementById("apple-style").classList.remove("active")
+		}
 	})
 }
 
@@ -804,9 +807,9 @@ function uielements() {
 	console.log(notes, images, chatvia)
 	//$("#navbar").fadeIn("fast")
 	document.getElementById("navbar").classList.add("active")
-	if(localStorage.getItem("topNav") !== "disabled") {
+	if (localStorage.getItem("topNav") !== "disabled") {
 		document.getElementById("apple-style").classList.add("active")
-	  }
+	}
 	$("#navigator").fadeIn("slow")
 	//$("#settings").fadeIn("slow")
 	//$("#vox").fadeIn("slow")
@@ -971,11 +974,11 @@ function settings() {
 
 	//console.log(document.getElementById("popup").classList.contains("active"))
 	if (document.getElementById("popup").classList.contains("active") === false) {
-		if(localStorage.getItem("topNav") !== "disabled") {
-            document.getElementById("apple-style").classList.remove("active")
-          }
+		if (localStorage.getItem("topNav") !== "disabled") {
+			document.getElementById("apple-style").classList.remove("active")
+		}
 		return_to_options("reset")
-		
+
 
 		settings_open.play()
 		//document.body.style.overflow = 'hidden';
@@ -1012,16 +1015,16 @@ function settings() {
 			//document.body.style.overflow = 'hidden';
 		}, 100)
 	} else if (document.getElementById("popup").classList.contains("active")) {
-		if(localStorage.getItem("topNav") !== "disabled") {
-            document.getElementById("apple-style").classList.add("active")
-          }
+		if (localStorage.getItem("topNav") !== "disabled") {
+			document.getElementById("apple-style").classList.add("active")
+		}
 
 
 		//$("#navigator").fadeOut("fast")
 		navigator("sett_def")
 		try {
 			goback.play()
-		} catch (error){
+		} catch (error) {
 			console.error("error playing audio")
 		}
 
@@ -3058,8 +3061,8 @@ function handlesearch(value) {
 
 function change_password() {
 	if (sessionStorage.getItem("block_interactions") === "true") {
-	  createLocalNotification("Gateway", 'Cannot change while servers are offline.');
-	  return;
+		createLocalNotification("Gateway", 'Cannot change while servers are offline.');
+		return;
 	}
 	navigator("change_password");
 	let currentPassword = document.getElementById("current_pswd");
@@ -3076,14 +3079,14 @@ function change_password() {
 	document.getElementById("usr-name-chpswd").innerHTML = document.getElementById("usr-name-opt").innerHTML;
 	document.getElementById("usr-email-chpswd").innerHTML = document.getElementById("usr-email-opt").innerHTML;
 	$("#pswd_secure").fadeOut("fast", function () {
-	  $("#password_change").fadeIn("fast");
+		$("#password_change").fadeIn("fast");
 	});
-  }
+}
 
 function return_to_options(where) {
 	try {
 		goback.play()
-	} catch (error){
+	} catch (error) {
 		console.error("Couldn't play audio")
 	}
 
@@ -3331,7 +3334,7 @@ function bgch() {
 		console.log("Blur amount:", blurAmount, "pixels");
 		var x = blurAmount; // Assuming x is 10 for example
 		document.getElementById("myRange").value = x
-	} catch (error){
+	} catch (error) {
 		console.error(error)
 	}
 
@@ -3385,7 +3388,7 @@ function addbg(element, convertMe) {
 				document.getElementById("st4").classList.remove("active")
 				try {
 					document.getElementById("st5").classList.remove("active")
-				} catch(error) {
+				} catch (error) {
 					console.error("Cannot find st5, normal err")
 				}
 
@@ -3422,7 +3425,7 @@ function addbg(element, convertMe) {
 		document.getElementById("st4").classList.remove("active")
 		try {
 			document.getElementById("st5").classList.remove("active")
-		} catch (error){
+		} catch (error) {
 			console.error("Cannot find st5, normal err")
 		}
 
@@ -4261,10 +4264,10 @@ function close_sline() {
 		clearInterval(profint)
 		try {
 			clearInterval(fixxint)
-		} catch (error){
+		} catch (error) {
 			//
 		}
-	} catch (error){
+	} catch (error) {
 		fixxint = setInterval(function () {
 			clearInterval(profint)
 		})
@@ -5066,34 +5069,66 @@ function getNOpen(app, view) {
 }
 
 
-function getNOpenNX(app, view) {
+function getNOpenNX(app, view, version) {
 	if (sessionStorage.getItem("block_interactions") === "true") {
 		createLocalNotification("Gateway", 'Sorry. Servers Are Offline')
 		return;
 	}
-	var getButton = document.getElementById(`${app}-nx`);
-	var oldInner = getButton.innerHTML;
-	if (oldInner === "CURRENT") {
-		getButton.style.backgroundColor = "#cb180074";
-		shake_me(`${app}-nx`);
-		setTimeout(function () {
-			getButton.style.backgroundColor = "#007aff";
-		}, 1200);
-		return;
-	}
-	//var getButton = element.querySelector('.get-button');
 
-	// Change the inner HTML of the <span> element
-	if (view === "2") {
-		load(app)
-		return;
+	if (version === "epsilon") {
+		var oldHTML = document.getElementById("app-cont").innerHTML
+		var TriggeredButton = document.getElementById(`${app}-nx`);
+		$("#app-cont").fadeOut("slow", function () {
+			document.getElementById("app-cont").innerHTML = `<button class="evox-app">` + TriggeredButton.innerHTML + `</div>`
+			document.getElementById(`timeUsed-${app}`).innerHTML = `Loading.. <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px" y="0px" width="16px" height="16px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+            xml:space="preserve">
+            <path fill="#fff"
+                d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25"
+                    to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+            </path>
+        </svg>`
+			document.getElementById(`tag-${app}`).style.display = "none"
+			$("#app-cont").fadeIn("slow", function () {
+				setTimeout(function () {
+					load(app)
+					setTimeout(function () {
+						$("#app-cont").fadeOut("slow", function () {
+							document.getElementById("app-cont").innerHTML = oldHTML
+							$("#app-cont").fadeIn("slow", function () {
+
+							})
+						})
+					}, 1500)
+				}, 500)
+			})
+		})
+
 	} else {
-		getButton.style.height = "17px"
-		getButton.style.width = "30px"
-		//height: 17px; width: 30px
+		var getButton = document.getElementById(`${app}-nx`);
+		var oldInner = getButton.innerHTML;
+		if (oldInner === "CURRENT") {
+			getButton.style.backgroundColor = "#cb180074";
+			shake_me(`${app}-nx`);
+			setTimeout(function () {
+				getButton.style.backgroundColor = "#007aff";
+			}, 1200);
+			return;
+		}
+		//var getButton = element.querySelector('.get-button');
+
+		// Change the inner HTML of the <span> element
+		if (view === "2") {
+			load(app)
+			return;
+		} else {
+			getButton.style.height = "17px"
+			getButton.style.width = "30px"
+			//height: 17px; width: 30px
 
 
-		getButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="55%" height="55%">
+			getButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="55%" height="55%">
 	<circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
 		<animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
 			repeatCount="indefinite" />
@@ -5101,25 +5136,27 @@ function getNOpenNX(app, view) {
 			repeatCount="indefinite" />
 	</circle>
 </svg>`;
-	}
+		}
 
-	setTimeout(function () {
+		setTimeout(function () {
 
-		if (oldInner === "OPEN") {
-			load(app)
+			if (oldInner === "OPEN") {
+				load(app)
+				getButton.style.height = "auto"
+				getButton.style.width = "auto"
+				//height: 17px; width: 30px
+				getButton.innerHTML = oldInner;
+				return;
+			}
 			getButton.style.height = "auto"
 			getButton.style.width = "auto"
 			//height: 17px; width: 30px
 			getButton.innerHTML = oldInner;
-			return;
-		}
-		getButton.style.height = "auto"
-		getButton.style.width = "auto"
-		//height: 17px; width: 30px
-		getButton.innerHTML = oldInner;
-		shake_me(`${app}-nx`)
-		notice("Access Denied")
-	}, 1500)
+			shake_me(`${app}-nx`)
+			notice("Access Denied")
+		}, 1500)
+	}
+
 
 }
 
@@ -7349,7 +7386,7 @@ function createLocalNotification(title, description, image, customTime) {
 		isLNactive = true
 		try {
 			clearTimeout(lnele)
-		} catch (error){
+		} catch (error) {
 			console.log("No Lnele")
 		}
 		imgEle.src = image
@@ -7502,7 +7539,7 @@ function customizeProfile() {
 				if (targetElement.src !== document.getElementById("user-video-self").src) {
 					targetElement.src = document.getElementById("user-video-self").src
 				}
-				if(theELEMPFP.src !== document.getElementById("profile-pfp").src) {
+				if (theELEMPFP.src !== document.getElementById("profile-pfp").src) {
 					theELEMPFP.src = document.getElementById("profile-pfp").src
 				}
 				//src = srcMAin
@@ -7529,7 +7566,7 @@ function moreOptions() {
 let clickedBar = 0;
 function hideME() {
 	clickedBar = clickedBar + 1
-	if(clickedBar >= 3) {
+	if (clickedBar >= 3) {
 		createLocalNotification("Top Navigation Bar Disabled", "The top navbar is now globally disabled.")
 		localStorage.setItem("topNav", "disabled")
 		document.getElementById("apple-style").classList.remove("active")

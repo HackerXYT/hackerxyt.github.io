@@ -3224,7 +3224,6 @@ form {
   /* Centers the element horizontally */
   align-items: center;
   /* Centers the element vertically, if needed */
-  height: 100vh;
   /* Optional: Sets the height of the container to 100% of the viewport height */
 }
 
@@ -3286,11 +3285,13 @@ form {
 }
 
 .tag {
-  background-color: #ff6584; /* Background color for the tag */
+  /* background-color: #ff6584; Background color for the tag */
   color: #fff;
   padding: 5px 10px;
   border-radius: 15px;
   font-size: 14px;
+  margin-top: 30px;
+  margin-right: 15px;
 }
 
 .get-button-nx {
@@ -3442,4 +3443,28 @@ form {
 .bubble.expand {
   width: 2000px;
   height: 2000px;
+}
+
+div .tasco {
+  font-size: small;
+  color: #4e4c9b;
+  font-family: "SF";
+  font-weight:lighter;
+  background-color: #ab9ff5;
+}
+
+div .Evox {
+  font-size: small;
+  font-family: "SF";
+  font-weight:lighter;
+  color: #1c4bb6;
+  background-color: #699de0;
+}
+
+div .images {
+  font-size: small;
+  font-family: "SF";
+  font-weight:lighter;
+  color: #d23155;
+  background-color: #ee9cbe;
 }

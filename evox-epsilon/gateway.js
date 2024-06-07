@@ -2298,18 +2298,29 @@ setInterval(updateCounter, 1000);
 function addElemApp(app) {
   if (app === "images" || app === "tasco" || app === "Evox Datacenter") {
     let prevHTML = document.getElementById("app-cont").innerHTML;
-    document.getElementById("app-cont").innerHTML = `${prevHTML}<button class="evox-app">
+    document.getElementById("app-cont").innerHTML = `${prevHTML}<button onclick="getNOpenNX('${app.split(' ')[0]}', null , 'epsilon')" id="${app.split(' ')[0]}-nx" class="evox-app">
     <img src="./appicons/${app}.png" alt="App Icon">
     <div class="info">
       <div class="title">${app}</div>
-      <div class="time"><svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="13px" height="13px" viewBox="0 0 24 24" fill="none">
+      <div id='timeUsed-${app.split(' ')[0]}' class="time"><svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="13px" height="13px" viewBox="0 0 24 24" fill="none">
         <path d="M12 7V12L10.5 14.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>20:30 - Unset</div>
     </div>
-    <span onclick="getNOpenNX('${app}')" id="${app}-nx" class="get-button-nx">OPEN</span>
+    <div id="tag-${app.split(' ')[0]}" class="tag ${app.split(' ')[0]}">${getAppType(app)}</div>
+    <span style='display: none' class="get-button-nx">OPEN</span>
   </button>`
   }
 
+}
+
+function getAppType(app) {
+  if(app === "tasco") {
+    return 'Productivity'
+  } else if(app === "images") {
+    return 'Gallery'
+  } else if(app === "Evox Datacenter") {
+    return 'Management'
+  }
 }
 
 let currentIndex = 0;

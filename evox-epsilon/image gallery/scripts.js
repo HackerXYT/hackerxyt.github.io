@@ -1,3 +1,41 @@
+function updateCounterDisplay() {
+    let totalSeconds = Number(localStorage.getItem("app-Images-track")) + Math.floor(totalTimeSpent / 1000)
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    const formattedDays = days < 10 ? `0${days}` : days;
+    const formattedHours = hours < 10 ? `0${hours}` : hours;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+  
+    //if (days > 0) {
+    //  document.getElementById('timeUsed').innerText = `${formattedDays}:${formattedHours}:${formattedMinutes}`;
+    //} else {
+    //  document.getElementById('timeUsed').innerText = `${formattedMinutes}:${formattedSeconds}`;
+    //}
+  }
+  
+  // Function to update the time variables and counter display
+  function updateCounter() {
+    //totalSeconds++;
+    updateCounterDisplay();
+  }
+  
+  // Function to save the time to localStorage
+  function saveTime() {
+    localStorage.setItem('totalSeconds', totalSeconds);
+  }
+  
+  // Retrieve the time from localStorage if it exists
+  window.onload = function () {
+    //if (localStorage.getItem('totalSeconds') !== null) {
+    //  totalSeconds = parseInt(localStorage.getItem('totalSeconds'), 10);
+    //}
+    updateCounterDisplay();
+  }
+  setInterval(updateCounter, 1000);
+
 function getEmailAndPassword() {
     // Prompt for email
     const username = prompt("Please enter your username:");
