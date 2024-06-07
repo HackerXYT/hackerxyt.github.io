@@ -3364,7 +3364,7 @@ form {
   max-width: 500px;
   max-height: 500px;
   margin-top: 10px;
-  overflow: hidden;
+  overflow-x: hidden;
   border-radius: 20px;
 }
 

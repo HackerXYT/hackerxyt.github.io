@@ -373,6 +373,7 @@ function preloadHubDetails() {
       console.error(error);
     });
 }
+let carouselaInt;
 function setup() {
   preloadHubDetails()
 
@@ -422,7 +423,7 @@ function setup() {
       setTimeout(function () {
         localStorage.setItem("betaNotice", "acknowledged")
       }, 9000)
-    } catch (error){
+    } catch (error) {
       setTimeout(function () {
         createLocalNotification("You are using beta!", "The Evox app is still a work in progress, so you might run into a few bugs or errors. Just keep that in mind and enjoy exploring!", null, "13000")
         setTimeout(function () {
@@ -438,7 +439,7 @@ function setup() {
 
 
 
-  setInterval(nextSlide, 5000); // Change image every 5 seconds
+  carouselaInt = setInterval(nextSlide, 5000); // Change image every 5 seconds
   //if (localStorage.getItem("updated_To_Epsilon") !== "ready" && localStorage.getItem("t50-username")) {
   //  window.location.href = "./update/"
   //  return;
@@ -465,7 +466,7 @@ function setup() {
   $("#stuck").fadeIn("fast")
   try {
     custombg()
-  } catch (error){
+  } catch (error) {
     let inter = setInterval(function () {
       try {
         custombg()
@@ -481,10 +482,10 @@ function setup() {
     log("Evox Gateway V:Epsilon 2.0", "cyan")
     try {
       clearInterval(version)
-    } catch (error){
+    } catch (error) {
       console.error(error)
     }
-  } catch (error){
+  } catch (error) {
     version = setInterval(function () {
       log("Evox Gateway V:Epsilon 2.0", "cyan")
     }, 800)
@@ -493,12 +494,12 @@ function setup() {
 
   try {
     loadusers()
-  } catch (error){
+  } catch (error) {
     let inter = setInterval(function () {
       try {
         loadusers()
         clearInterval(inter)
-      } catch (error){
+      } catch (error) {
         console.log("loadusers Failed. Retrying")
       }
     }, 100)
@@ -506,12 +507,12 @@ function setup() {
   try {
     loadPrefs()
     console.log("Loaded Prefs")
-  } catch (error){
+  } catch (error) {
     let interv = setInterval(function () {
       try {
         loadPrefs()
         clearInterval(interv)
-      } catch (error){
+      } catch (error) {
         console.log("loadPrefs Failed. Retrying")
       }
     }, 100)
@@ -595,7 +596,7 @@ function setup() {
     document.getElementById("greet").innerHTML = `${greet}, <span style="margin-bottom: 10px;" id="user-text">${username}</span>`
     try {
       log("Loading Gateway", "green")
-    } catch (error){
+    } catch (error) {
       setTimeout(function () {
         log("Loading Gateway", "green")
       }, 950)
@@ -608,7 +609,7 @@ function setup() {
         $("#user-text").html(username)
         try {
           log("Loading Gateway", "green")
-        } catch (error){
+        } catch (error) {
           setTimeout(function () {
             log("Loading Gateway", "green")
           }, 950)
@@ -739,12 +740,12 @@ function setup() {
               $("#loading").fadeOut("slow")
               try {
                 uielements()
-              } catch (error){
+              } catch (error) {
                 let inter = setInterval(function () {
                   try {
                     uielements()
                     clearInterval(inter)
-                  } catch (error){
+                  } catch (error) {
                     console.log("uielements Failed. Retrying")
                   }
                 }, 100)
@@ -761,12 +762,12 @@ function setup() {
               }
               try {
                 uielements()
-              } catch (error){
+              } catch (error) {
                 let inter = setInterval(function () {
                   try {
                     uielements()
                     clearInterval(inter)
-                  } catch (error){
+                  } catch (error) {
                     console.log("uielements Failed. Retrying")
                   }
                 }, 100)
@@ -1049,7 +1050,7 @@ function docready(merge) {
 
           try {
             critical.play()
-          } catch (error){
+          } catch (error) {
             console.error("Couldn't play sound. User hasn't interacted yet")
           }
 
@@ -1139,7 +1140,7 @@ function docready(merge) {
         document.getElementById("usr-img-autolg").src = `${data}`;
         try {
           sessionStorage.setItem("pfp", data);
-        } catch (error){
+        } catch (error) {
           console.error("Couldn't add PFP to sessionStorage")
         }
 
@@ -1464,7 +1465,7 @@ function verifycode() {
 function login() {
   try {
     login_ok.play()
-  } catch (error){
+  } catch (error) {
     console.error("Sound can't play", error)
   }
 
@@ -1869,7 +1870,7 @@ function lockMe() {
   $("#loading-text").fadeOut("slow")
   try {
     custombg()
-  } catch (error){
+  } catch (error) {
     let inter = setInterval(function () {
       try {
         custombg()
@@ -2065,46 +2066,46 @@ function handleGestureChats() {
     console.log('Swiped from left to right');
     // Run your desired function for left-to-right swipe here
     if (current === "more_options") {
-      current = "customize"
+      current = "customize";
       $("#profile-options").fadeOut("fast", function () {
-        $("#profile-preview").fadeIn("fast")
-      })
+        $("#profile-preview").fadeIn("fast");
+      });
     } else if (current === "customize") {
-      current = ""
+      current = "";
       $("#profile-preview").fadeOut("fast", function () {
-        $("#main_settings").fadeIn("fast")
-      })
+        $("#main_settings").fadeIn("fast");
+      });
     }
 
     return;
-    let secureline = document.getElementById("secureline")
+    let secureline = document.getElementById("secureline");
     if (secureline.classList.contains("slideL-R")) {
-      secureline.classList.remove("slideL-R")
-      secureline.classList.add("slideR-L")
+      secureline.classList.remove("slideL-R");
+      secureline.classList.add("slideR-L");
     } else {
-      secureline.classList.remove("slideR-L")
-      secureline.classList.add("slideL-R")
+      secureline.classList.remove("slideR-L");
+      secureline.classList.add("slideL-R");
     }
-    secureline.classList.remove("active")
+    secureline.classList.remove("active");
 
-    document.getElementById("gateway").classList.add("active")
-    setActive("Home")
-    currScreen = "Home"
+    document.getElementById("gateway").classList.add("active");
+    setActive("Home");
+    currScreen = "Home";
     //alert('Swiped from left to right');
   } else if (distance < -50) { // Right-to-left swipe
 
     return;
-    let secureline = document.getElementById("secureline")
-    let notifications = document.getElementById("notifications")
+    let secureline = document.getElementById("secureline");
+    let notifications = document.getElementById("notifications");
     console.log('Swiped from right to left');
-    secureline.classList.remove("active")
-    notifications.classList.remove("slideL-R")
-    notifications.classList.add("slideR-L")
-    notifications.classList.add("active")
-    notifications.style.opacity = "1"
-    show_notif()
-    setActive("Notifications")
-    currScreen = "Notifications"
+    secureline.classList.remove("active");
+    notifications.classList.remove("slideL-R");
+    notifications.classList.add("slideR-L");
+    notifications.classList.add("active");
+    notifications.style.opacity = "1";
+    show_notif();
+    setActive("Notifications");
+    currScreen = "Notifications";
   }
 }
 
@@ -2121,42 +2122,31 @@ swipeAreaChats.addEventListener('touchend', (event) => {
 
 
 
-const swipeAreaHome1 = document.getElementById('gateway');
+const swipeAreaCarousela = document.getElementById('carouselHandler');
 
-let touchstartXHome1 = 0;
-let touchendXHome1 = 0;
+let touchstartXCarousela = 0;
+let touchendXCarousela = 0;
 
-function handleGestureHome1() {
-  return;
-  const distance = touchendXHome1 - touchstartXHome1;
+function handleGestureCarousela() {
+  const distance = touchendXCarousela - touchstartXCarousela;
 
   if (distance > 50) { // Left-to-right swipe
     console.log('Swiped from left to right');
-    // Run your desired function for left-to-right swipe here
-    shake_me("gateway")
-    //alert('Swiped from left to right');
+    prevSlide()
   } else if (distance < -50) { // Right-to-left swipe
     console.log('Swiped from right to left');
-    // Run your desired function for right-to-left swipe here
-    //alert('Swiped from right to left');
-    let secureline = document.getElementById("secureline")
-    document.getElementById("gateway").classList.remove("active")
-    secureline.classList.remove("secureline")
-    secureline.classList.remove("slideL-R")
-    secureline.classList.add("slideR-L")
-    secureline.classList.add("active")
-    setActive("Chats")
-    currScreen = "Chats"
+    nextSlide()
+
   }
 }
 
-swipeAreaHome1.addEventListener('touchstart', (event) => {
-  touchstartXHome1 = event.changedTouches[0].screenX;
+swipeAreaCarousela.addEventListener('touchstart', (event) => {
+  touchstartXCarousela = event.changedTouches[0].screenX;
 });
 
-swipeAreaHome1.addEventListener('touchend', (event) => {
-  touchendXHome1 = event.changedTouches[0].screenX;
-  handleGestureHome1();
+swipeAreaCarousela.addEventListener('touchend', (event) => {
+  touchendXCarousela = event.changedTouches[0].screenX;
+  handleGestureCarousela();
 });
 
 const swipeAreaNotifications = document.getElementById('notifications');
@@ -2342,4 +2332,19 @@ function updateDots() {
 function nextSlide() {
   currentIndex = (currentIndex + 1) % totalSlides;
   moveToSlide(currentIndex);
+  restartCarouselCount()
+}
+
+function prevSlide() {
+  if (currentIndex > 0) {
+    currentIndex = (currentIndex - 1) % totalSlides;
+    moveToSlide(currentIndex);
+    restartCarouselCount()
+  }
+  
+}
+
+function restartCarouselCount() {
+  clearInterval(carouselaInt)
+  carouselaInt = setInterval(nextSlide, 5000);
 }

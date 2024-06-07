@@ -3058,27 +3058,27 @@ function handlesearch(value) {
 
 function change_password() {
 	if (sessionStorage.getItem("block_interactions") === "true") {
-		createLocalNotification("Gateway", 'Cannot change while servers are offline.')
-		return;
+	  createLocalNotification("Gateway", 'Cannot change while servers are offline.');
+	  return;
 	}
-	navigator("change_password")
-	let current = document.getElementById("current_pswd")
-	let newpswd = document.getElementById("new_pswd")
-	let confirm = document.getElementById("confirm_pswd")
-	current.value = ""
-	newpswd.value = ""
-	confirm.value = ""
-	$("#same_pswd").fadeOut("fast")
-	$("#old_pswd").fadeOut("fast")
-	$("#wrong_pswd").fadeOut("fast")
-	document.getElementById('gateway').style.filter = 'blur(50px)'
-	document.getElementById("usr-img-chpswd").src = document.getElementById("usr-img-opt").src
-	document.getElementById("usr-name-chpswd").innerHTML = document.getElementById("usr-name-opt").innerHTML
-	document.getElementById("usr-email-chpswd").innerHTML = document.getElementById("usr-email-opt").innerHTML
+	navigator("change_password");
+	let currentPassword = document.getElementById("current_pswd");
+	let newpswd = document.getElementById("new_pswd");
+	let confirm = document.getElementById("confirm_pswd");
+	currentPassword.value = "";
+	newpswd.value = "";
+	confirm.value = "";
+	$("#same_pswd").fadeOut("fast");
+	$("#old_pswd").fadeOut("fast");
+	$("#wrong_pswd").fadeOut("fast");
+	document.getElementById('gateway').style.filter = 'blur(50px)';
+	document.getElementById("usr-img-chpswd").src = document.getElementById("usr-img-opt").src;
+	document.getElementById("usr-name-chpswd").innerHTML = document.getElementById("usr-name-opt").innerHTML;
+	document.getElementById("usr-email-chpswd").innerHTML = document.getElementById("usr-email-opt").innerHTML;
 	$("#pswd_secure").fadeOut("fast", function () {
-		$("#password_change").fadeIn("fast")
-	})
-}
+	  $("#password_change").fadeIn("fast");
+	});
+  }
 
 function return_to_options(where) {
 	try {
@@ -3486,14 +3486,14 @@ function complete_chpswd() {
 	$("#old_pswd").fadeOut("fast")
 	$("#wrong_pswd").fadeOut("fast")
 	$("#same_pswd").fadeOut("fast")
-	let current = document.getElementById("current_pswd").value
+	let currentPswd = document.getElementById("current_pswd").value
 	let newpswd = document.getElementById("new_pswd").value
 	let confirm = document.getElementById("confirm_pswd").value
 	if (newpswd != confirm) {
 		shake_me("confirm_pswd")
 		return;
 	}
-	if (current === "") {
+	if (currentPswd === "") {
 		shake_me("current_pswd")
 		return;
 	}
@@ -3501,7 +3501,7 @@ function complete_chpswd() {
 		shake_me("new_pswd")
 		return;
 	}
-	if (current === newpswd) {
+	if (currentPswd === newpswd) {
 		$("#same_pswd").fadeIn("fast")
 		console.log("Same Password!")
 		return;
@@ -3515,7 +3515,7 @@ function complete_chpswd() {
 		body: JSON.stringify({
 			email: localStorage.getItem("t50-email"),
 			username: localStorage.getItem("t50-username"),
-			password: current,
+			password: currentPswd,
 			newpass: newpswd
 		})
 	})
