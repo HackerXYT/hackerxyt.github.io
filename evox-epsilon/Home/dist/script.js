@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Function to handle the state change
         if(localStorage.getItem("clientSecret") && !new URLSearchParams(window.location.search).get('code')) {
             window.location.href = authUrl
+        } else {
+            getCurrentlyPlayingTrack()
         }
         function handleDeviceToggle(event) {
             const checkbox = event.target;
