@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("houseAuth") === 'ready') {
         getStates1()
         getStates2()
+        // Call the function to get the currently playing track
+        getCurrentlyPlayingTrack();
         // Function to handle the state change
         function handleDeviceToggle(event) {
             const checkbox = event.target;
@@ -41,6 +43,34 @@ document.addEventListener('DOMContentLoaded', () => {
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', handleDeviceToggle);
         });
+
+        fetch(`https://data.evoxs.xyz/house?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&method=authenticate`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(item => {
+                if (item.status !== "403") {
+                    localStorage.setItem("apiKey", item.apikey)
+                    localStorage.setItem("bedID", item.bed)
+                    localStorage.setItem("wallID", item.wall)
+                    localStorage.setItem("clientId", item.clientId)
+                    localStorage.setItem("clientSecret", item.clientSecret)
+                    localStorage.setItem("houseAuth", "ready")
+                    //setTimeout(function () {
+                    //    window.location.reload()
+                    //}, 1000)
+
+                } else {
+                    //alert("Access Denied")
+                    window.location.href = "../../../AuthFailure/"
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+            });
     } else {
         alert("Now Authenticating..")
         fetch(`https://data.evoxs.xyz/house?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&method=authenticate`)
@@ -51,13 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 return response.json();
             })
             .then(item => {
-                if(item.status !== "403") {
+                if (item.status !== "403") {
                     localStorage.setItem("apiKey", item.apikey)
                     localStorage.setItem("bedID", item.bed)
                     localStorage.setItem("wallID", item.wall)
                     localStorage.setItem("clientId", item.clientId)
+                    localStorage.setItem("clientSecret", item.clientSecret)
                     localStorage.setItem("houseAuth", "ready")
-                    setTimeout(function() {
+                    setTimeout(function () {
                         window.location.reload()
                     }, 1000)
 
@@ -80,10 +111,10 @@ window.addEventListener('load', () => {
         const day = currentDate.getDate();
         const monthIndex = currentDate.getMonth();
         const year = currentDate.getFullYear();
-    
+
         return `${day} ${months[monthIndex]} ${year}`;
     }
-    
+
     const formattedDate = getCurrentDate();
     document.getElementById("currDate").innerHTML = formattedDate
     const weatherTypeElement = document.getElementById('weatherType');
@@ -91,39 +122,39 @@ window.addEventListener('load', () => {
 
     // Function to fetch weather data
     function getWeather() {
-      // You can replace 'YOUR_API_KEY' with your actual API key
-      const apiKey = '7f6a18c825301e553a8e40a09e617863';
-      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Athens&appid=${apiKey}`;
+        // You can replace 'YOUR_API_KEY' with your actual API key
+        const apiKey = '7f6a18c825301e553a8e40a09e617863';
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Athens&appid=${apiKey}`;
 
-      fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-          const weatherDescription = data.weather[0].main;
-          const weatherIcon = data.weather[0].icon;
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const weatherDescription = data.weather[0].main;
+                const weatherIcon = data.weather[0].icon;
 
-          // Update HTML elements
-          weatherTypeElement.innerHTML = weatherDescription;
-          weatherIconElement.innerHTML = `<img style="filter: invert(100%);" src="http://openweathermap.org/img/wn/${weatherIcon}.png" alt="Weather Icon">`;
+                // Update HTML elements
+                weatherTypeElement.innerHTML = weatherDescription;
+                weatherIconElement.innerHTML = `<img style="filter: invert(100%);" src="http://openweathermap.org/img/wn/${weatherIcon}.png" alt="Weather Icon">`;
 
-          const weatherTemp = data.main.temp
-          const celsiusWeather = Number(weatherTemp) - 273.15
-          document.getElementById("degrees").innerHTML = `${Math.floor(celsiusWeather)}°<sup>C</sup>` 
+                const weatherTemp = data.main.temp
+                const celsiusWeather = Number(weatherTemp) - 273.15
+                document.getElementById("degrees").innerHTML = `${Math.floor(celsiusWeather)}°<sup>C</sup>`
 
-          const humidity = data.main.humidity
-          document.getElementById("humid").innerHTML = `${Math.floor(humidity)}%` 
+                const humidity = data.main.humidity
+                document.getElementById("humid").innerHTML = `${Math.floor(humidity)}%`
 
-          const clouds = data.clouds.all
-          document.getElementById("clouds").innerHTML = `${clouds}` 
+                const clouds = data.clouds.all
+                document.getElementById("clouds").innerHTML = `${clouds}`
 
-        })
-        .catch(error => {
-          console.log('Error fetching weather data:', error);
-        });
+            })
+            .catch(error => {
+                console.log('Error fetching weather data:', error);
+            });
     }
 
     // Call the function to get weather data on page load
     getWeather();
-  });
+});
 
 function changeDev(setIt, dev) {
     let devId;
@@ -280,47 +311,64 @@ function getStates2() {
 
 }
 
-const client_id = localStorage.getItem("clientId") // Replace with your client ID
+const client_id = localStorage.getItem("clientId"); // Replace with your client ID
 const redirect_uri = 'https://evoxs.xyz/evox-epsilon/Home/dist/'; // Replace with your redirect URI
 const scopes = 'user-read-playback-state user-read-currently-playing';
 
 const authUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=${client_id}&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(redirect_uri)}`;
 
 
+async function getAccessToken() {
+    const code = new URLSearchParams(window.location.search).get('code');
+    const client_id = localStorage.getItem("clientId"); // Replace with your client ID
+    const client_secret = localStorage.getItem("clientSecret"); // Replace with your client secret
+    const redirect_uri = 'https://evoxs.xyz/evox-epsilon/Home/dist/'; // Replace with your redirect URI
 
-function getAccessToken() {
-    const hash = window.location.hash.substring(1);
-    const params = new URLSearchParams(hash);
-    return params.get('access_token');
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Basic ' + btoa(client_id + ':' + client_secret)
+        },
+        body: new URLSearchParams({
+            grant_type: 'authorization_code',
+            code: code,
+            redirect_uri: redirect_uri
+        })
+    });
+
+    const data = await response.json();
+    return data.access_token;
 }
 
-const accessToken = getAccessToken();
-if (accessToken) {
-    console.log('Access Token:', accessToken);
-    // You can now use the access token to fetch the currently playing track
-    getCurrentlyPlayingTrack(accessToken);
-} else {
-    console.log('Access token not found.');
-}
+async function getCurrentlyPlayingTrack() {
+    const accessToken = await getAccessToken();
 
-// Function to get currently playing track
-async function getCurrentlyPlayingTrack(token) {
     const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${accessToken}`
         }
     });
 
-    if (response.status === 204) {
-        console.log('No track currently playing.');
-    } else if (response.status === 200) {
-        document.getElementById("fridge").checked = "true"
+    if (response.status === 204 || response.status === 200) {
         const data = await response.json();
-        console.log('Currently playing track:', data.item.name);
-        document.getElementById("songName").innerHTML = data.item.name
-        console.log('Artists:', data.item.artists.map(artist => artist.name).join(', '));
-        document.getElementById("artists").innerHTML = data.item.artists.map(artist => artist.name).join(', ')
+        if (data.item) {
+            console.log('Currently playing track:', data.item.name);
+            console.log('Artists:', data.item.artists.map(artist => artist.name).join(', '));
+            //console.log('Currently playing track:', data.item.name);
+            document.getElementById("songName").innerHTML = data.item.name
+            //console.log('Artists:', data.item.artists.map(artist => artist.name).join(', '));
+            document.getElementById("artists").innerHTML = data.item.artists.map(artist => artist.name).join(', ')
+        } else {
+            document.getElementById("songName").innerHTML = 'No track playing.'
+            console.log('No track currently playing.');
+        }
     } else {
         console.error('Error fetching currently playing track:', response.status);
     }
+}
+
+
+function goBack() {
+    sessionStorage.setItem("extRun", 'back')
 }
