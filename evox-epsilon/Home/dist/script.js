@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         getStates2()
         // Call the function to get the currently playing track
         // Function to handle the state change
-        if(localStorage.getItem("clientSecret")) {
+        if(localStorage.getItem("clientSecret") && !new URLSearchParams(window.location.search).get('code')) {
             window.location.href = authUrl
         }
         function handleDeviceToggle(event) {
