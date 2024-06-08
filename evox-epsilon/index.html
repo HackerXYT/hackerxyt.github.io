@@ -414,11 +414,11 @@
     </div>
     <div id="container">
         <div class="gateway slideR-L active" id="gateway" style="display: none;overflow-x:hidden">
-            <div class="simple-center-container" style="flex-direction: column;margin-top: 90px">
-                <div style="flex-direction: row;">
+            <div class="simple-center-container" style="flex-direction: column;margin-top: 20px">
+                <div style="display:flex;flex-direction: row;">
                     <img src="evox-logo-beta-large.png"
-                        style="position: absolute; width: 80px; height:auto; top: 40px; left: 40px;">
-                    <div style="position: absolute; height:auto; top: 45px; left: 140px;" class="search-container">
+                        style="width: 80px; height:80px; top: 40px; left: 40px;">
+                    <div style=" height:auto; top: 45px; left: 140px;" class="search-container">
                         <input type="text" id="globalSearch" class="search-input" placeholder="Search Evox..">
                         <button class="search-button">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -440,7 +440,7 @@
                     </div>
                 </div>
 
-                <div class="parent-popup-container" style="position: relative; width: 90%; max-height: 700px;margin-top:10px;height: auto">
+                <div class="parent-popup-container pc-only" style="position: relative; width: 90%;height: auto;max-height: 230px;">
                     <div id="carouselHandler" class="carousela">
                         <div class="carousel-images">
                             <img src="nexusBeta.png" alt="Image 1">
@@ -458,9 +458,10 @@
                             <div class="carousel-dot" onclick="moveToSlide(4)"></div>
                         </div>
                     </div>
-                    <p style="position: absolute; bottom: -30px; margin: 0; color: white;">Your Apps</p>
+                    <p style="position: absolute; bottom: -40px; margin: 0; color: white;" class="pc-hide">Your Apps</p>
                 </div>
                 <div id="app-cont" style="margin-top: 40px;">
+                    <p class="pc-show">Your Apps</p>
                     <!--<button class="evox-app">
                         <img src="evox-logo-apple.png" alt="Game Icon">
                         <div class="info">
@@ -474,6 +475,7 @@
 
 
                 </div>
+                <div class="transparent-placeholder"></div>
             </div>
             <div style="display: none;" class="centered-text">
 

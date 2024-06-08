@@ -707,6 +707,7 @@ function setup() {
                 //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('emails')" href="#loadapp-transports"><img src="evox-logo-dark.png" class="app"></img></a>`
                 //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('dc')" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a><a onclick="shake_me('transports-disabled');notice('T50 Transports is currently not available');load('transports')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
                 addElemApp("Evox Datacenter")
+                addElemApp("Home")
                 document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('dc')" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a>`
                 //
               }
@@ -2296,7 +2297,7 @@ setInterval(updateCounter, 1000);
 //setInterval(saveTime, 2000);
 
 function addElemApp(app) {
-  if (app === "images" || app === "tasco" || app === "Evox Datacenter") {
+  if (app === "images" || app === "tasco" || app === "Evox Datacenter" || app === "Home") {
     let prevHTML = document.getElementById("app-cont").innerHTML;
     document.getElementById("app-cont").innerHTML = `${prevHTML}<button onclick="getNOpenNX('${app.split(' ')[0]}', null , 'epsilon')" id="${app.split(' ')[0]}-nx" class="evox-app">
     <img src="./appicons/${app}.png" alt="App Icon">
@@ -2309,6 +2310,8 @@ function addElemApp(app) {
     <div id="tag-${app.split(' ')[0]}" class="tag ${app.split(' ')[0]}">${getAppType(app)}</div>
     <span style='display: none' class="get-button-nx">OPEN</span>
   </button>`
+  } else {
+    return "Denied."
   }
 
 }
@@ -2320,6 +2323,10 @@ function getAppType(app) {
     return 'Gallery'
   } else if(app === "Evox Datacenter") {
     return 'Management'
+  } else if(app === "Home") {
+    return 'Security'
+  } else {
+    return 'External'
   }
 }
 

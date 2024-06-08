@@ -3,6 +3,10 @@
   src: url('SFUIText-Medium.ttf');
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 @font-face {
   font-family: 'SFLight';
   src: url('./internal/SFProDisplay-Light.ttf') format('truetype');
@@ -487,6 +491,10 @@ img {
 
 }
 
+.pc-show {
+  display: none;
+}
+
 .popup {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -543,6 +551,18 @@ img {
     /* Optional: Sets the height of the container to 100% of the viewport height */
   }
 
+  .pc-only {
+    margin-top: 50px;
+  }
+
+  .pc-show {
+    display: block;
+  }
+
+  .pc-hide {
+    display: none;
+  }
+
   .navbar {
     width: 60%;
     border-radius: 28px;
@@ -565,6 +585,7 @@ img {
   transform: translateX(0);
   /* Slide the popup into view */
 }
+
 
 .popupright {
   position: fixed;
@@ -2822,7 +2843,7 @@ a {
   box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
-  transform: translateY(-100%);
+  transform: translateY(-200%);
   /* Initially off-screen to the left */
   transition: transform 0.7s ease, opacity 0.5s ease, visibility 0.5s;
   z-index: 998;
@@ -2893,7 +2914,7 @@ a {
     top: 0;
     opacity: 0;
     transition: opacity 1s ease;
-    transform: translateY(-50%);
+    transform: translateY(-100%);
     /* Initially off-screen to the left */
     transition: transform 1s ease, opacity 1s ease, visibility 1s;
     z-index: 999;
@@ -3378,6 +3399,8 @@ form {
   width: 100%;
   border-radius: 20px;
   display: block;
+  height: 100%;
+  object-fit: cover;
 }
 
 .carousel-dots {
@@ -3399,7 +3422,7 @@ form {
 }
 
 .carousel-dot.active {
-  background-color: #fff;
+  background-color: #00fe77;
 }
 
 .carousel-caption {
@@ -3467,4 +3490,12 @@ div .images {
   font-weight:lighter;
   color: #d23155;
   background-color: #ee9cbe;
+}
+
+div .Home {
+  font-size: small;
+  font-family: "SF";
+  font-weight:lighter;
+  color: #138462;
+  background-color: #9ceea3;
 }

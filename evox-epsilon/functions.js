@@ -16,6 +16,7 @@
 //		});
 //});
 
+
 //var disabled = new Audio('./ui-sounds/qa_exit_old.mp3');
 //var ac_complete = new Audio('./ui-sounds/action_complete.mp3');
 //var qastart = new Audio('./ui-sounds/qa_start.mp3');
@@ -547,6 +548,7 @@ function load(app) {
 			launchAppN("./Notes/")
 		} else {
 			log("App Not Owned!", "red")
+			createLocalNotification("Error!", `App '${app}' Is Not Owned By ${localStorage.getItem("t50-username")}`)
 			return;
 		}
 	} else if (app === "images") {
@@ -560,6 +562,7 @@ function load(app) {
 			launchAppN("./image gallery/")
 		} else {
 			log("App Not Owned!", "red")
+			createLocalNotification("Error!", `App '${app}' Is Not Owned By ${localStorage.getItem("t50-username")}`)
 			return;
 		}
 	} else if (app === "chatvia") {
@@ -594,7 +597,14 @@ function load(app) {
 	} else if (app === "dc" || app === "Evox") {
 		sessionStorage.setItem("EmitApp", "evox")
 		launchAppN("../DC/")
-	} else {
+	} else if (app === "Home") {
+		if (localStorage.getItem("t50-username") === "papostol") {
+			sessionStorage.setItem("EmitApp", "evox")
+			launchAppN("./Home/")
+		}
+
+	}
+	else {
 		createLocalNotification("An Error Occured", `'${app}' is not owned or doesn't exist!`)
 		return;
 	}
@@ -1173,6 +1183,8 @@ function restart() {
 	$("#popup").removeClass("active");
 	$("#settings").fadeOut("fast")
 	$("#gateway").fadeOut("fast", function () {
+		document.getElementById("navbar").classList.remove("active")
+		document.getElementById("apple-style").classList.remove("active")
 		//$("#bottom-logo").fadeOut("fast", function () {
 		setTimeout(function () {
 			window.location.reload()
@@ -1344,7 +1356,7 @@ function show_authip() {
 						anchor.classList.add("apple-button-withicon");
 						anchor.classList.add("truncated-text");
 						anchor.style.backgroundColor = "#3879e0"
-						anchor.innerHTML = `<img style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;" src="https://flagsapi.com/${eachIP.country}/shiny/64.png"></img>${eachIP.ip}`;
+						anchor.innerHTML = `<img style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;" src="https://flagsapi.com/${eachIP.country}/flat/64.png"></img>${eachIP.ip}`;
 						anchor.onclick = function () {
 							let json = {
 								"innerHTML": eachIP
@@ -1391,7 +1403,7 @@ function show_authip() {
 					if (eachIP.bogon) {
 						anchor.innerHTML = `<img style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;" src="bogon.svg"></img>${eachIP.ip}`;
 					} else {
-						anchor.innerHTML = `<img style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;" src="https://flagsapi.com/${eachIP.country}/shiny/64.png"></img>${eachIP.ip}`;
+						anchor.innerHTML = `<img style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;" src="https://flagsapi.com/${eachIP.country}/flat/64.png"></img>${eachIP.ip}`;
 					}
 
 					anchor.onclick = function () {
@@ -7571,4 +7583,10 @@ function hideME() {
 		localStorage.setItem("topNav", "disabled")
 		document.getElementById("apple-style").classList.remove("active")
 	}
+}
+
+try {
+	document.timeline.targetFPS = 90;
+} catch (error) {
+	console.error(`FPS Setting Failed To Load. Error: ${error}`)
 }
