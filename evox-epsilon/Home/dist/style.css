@@ -471,3 +471,11 @@ header {
 .colored {
   color: #fff;
 }
+
+.transparent-placeholder {
+  opacity: 0;
+  /* Make it transparent */
+  height: 120px;
+  /* Adjust height as needed */
+  /* You can add additional styles such as margin, padding, etc. */
+}

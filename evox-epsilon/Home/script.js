@@ -1,5 +1,5 @@
 if (localStorage.getItem("houseAuth") === 'ready') {
-  window.location.href = "./dist"
+  window.location.href = "./dist?code=21"
 }
 var select = function (s) {
   return document.querySelector(s);
@@ -37,7 +37,7 @@ function onDOMLoaded(e) {
     //anim.loop = true;  
     //anim.playSegments(420, 0)
     //alert("Complete")
-    window.location.href = "./dist"
+    window.location.href = "./dist?code=21"
   }
   )
 }
