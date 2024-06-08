@@ -354,6 +354,14 @@ async function getCurrentlyPlayingTrack() {
         }
     });
 
+    try {
+        setInterval(function() {
+            getCurrentlyPlayingTrack()
+        }, 30000)
+    } catch {
+        console.error("Spotify Refresh Failed")
+    }
+
     if (response.status === 204 || response.status === 200) {
         const data = await response.json();
         if (data.item) {
