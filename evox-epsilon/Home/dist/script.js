@@ -357,6 +357,7 @@ async function getCurrentlyPlayingTrack() {
     if (response.status === 204 || response.status === 200) {
         const data = await response.json();
         if (data.item) {
+            document.getElementById("fridge").checked = "true"
             console.log('Currently playing track:', data.item.name);
             console.log('Artists:', data.item.artists.map(artist => artist.name).join(', '));
             //console.log('Currently playing track:', data.item.name);
@@ -369,6 +370,7 @@ async function getCurrentlyPlayingTrack() {
         }
     } else {
         console.error('Error fetching currently playing track:', response.status);
+        document.getElementById("artists").innerHTML = "401 (Unauthorized)"
     }
 }
 
