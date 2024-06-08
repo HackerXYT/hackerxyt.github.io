@@ -480,7 +480,7 @@ header {
 .transparent-placeholder {
   opacity: 0;
   /* Make it transparent */
-  height: 120px;
+  height: 50px;
   /* Adjust height as needed */
   /* You can add additional styles such as margin, padding, etc. */
 }
