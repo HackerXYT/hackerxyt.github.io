@@ -4,8 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
         getStates1()
         getStates2()
         // Call the function to get the currently playing track
-        getCurrentlyPlayingTrack();
         // Function to handle the state change
+        if(localStorage.getItem("clientSecret")) {
+            window.location.href = authUrl
+        }
         function handleDeviceToggle(event) {
             const checkbox = event.target;
             const isChecked = checkbox.checked;
