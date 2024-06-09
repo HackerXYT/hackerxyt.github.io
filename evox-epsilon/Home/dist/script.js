@@ -3,9 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem("houseAuth") === 'ready') {
         getStates1()
         getStates2()
+        getStates3()
         // Call the function to get the currently playing track
         // Function to handle the state change
-        if(localStorage.getItem("clientSecret") && !new URLSearchParams(window.location.search).get('code')) {
+        if (localStorage.getItem("clientSecret") && !new URLSearchParams(window.location.search).get('code') && !window.location.href.includes('localhost') && !window.location.href.includes('192.168.1.21')) {
             window.location.href = authUrl
         } else {
             getCurrentlyPlayingTrack()
@@ -38,6 +39,38 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (deviceName === "Spotify") {
                 //window.open(authUrl);
                 window.location.href = authUrl
+            } else if (deviceName === "Computer") {
+                if (state === 'online') {
+                    const setiT = "on"
+                    const apiUrl = `https://data.evoxs.xyz/house?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&method=poweron`;
+
+                    fetch(apiUrl)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status !== "200") {
+                                document.getElementById("air").checked = ""
+                            }
+
+                        })
+                        .catch(error => {
+                            console.log('Error fetching weather data:', error);
+                        });
+                } else {
+                    const setiT = "off"
+                    const apiUrl = `https://data.evoxs.xyz/house?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&method=shutdown`;
+
+                    fetch(apiUrl)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status !== "200") {
+                                document.getElementById("air").checked = "true"
+                            }
+
+                        })
+                        .catch(error => {
+                            console.log('Error fetching weather data:', error);
+                        });
+                }
             }
             // Add any additional functionality here
         }
@@ -315,6 +348,22 @@ function getStates2() {
 
 }
 
+function getStates3() {
+    const apiUrl = `https://data.evoxs.xyz/house?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&method=isOnline`;
+
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "online") {
+                document.getElementById("air").checked = "true"
+            }
+
+        })
+        .catch(error => {
+            console.log('Error fetching weather data:', error);
+        });
+}
+
 const client_id = localStorage.getItem("clientId"); // Replace with your client ID
 const redirect_uri = 'https://evoxs.xyz/evox-epsilon/Home/dist/'; // Replace with your redirect URI
 const scopes = 'user-read-playback-state user-read-currently-playing';
@@ -378,3 +427,4 @@ async function getCurrentlyPlayingTrack() {
 function goBack() {
     sessionStorage.setItem("extRun", 'back')
 }
+
