@@ -1911,13 +1911,20 @@ a {
   padding-left: 20px;
   /*Adjust this value to add space on the left */
   font-size: 16px;
-  border-radius: 15px;
+  border-radius: 25px;
   cursor: pointer;
   text-decoration: none;
   transition: background-color 0.3s ease;
   margin: 4px;
-  width: 90%;
+  width: 85%;
   outline: none;
+}
+
+.send_message_btn {
+  background-color: #302585;
+  border-radius: 50%;
+  padding: 10px;
+  transition: background-color 0.3s ease;
 }
 
 /*@media only screen and (max-width: 768px) {
@@ -3199,9 +3206,12 @@ form {
 
 .parent-phone-container {
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  height: 100vh; /* Full viewport height */
+  justify-content: center;
+  /* Center horizontally */
+  align-items: center;
+  /* Center vertically */
+  height: 100vh;
+  /* Full viewport height */
 }
 
 .noScript {
@@ -3237,7 +3247,8 @@ form {
   justify-content: center;
   align-items: center;
   position: relative;
-  overflow: hidden; /* Ensure no overflow due to scaling */
+  overflow: hidden;
+  /* Ensure no overflow due to scaling */
 }
 
 .simple-center-container {
@@ -3255,14 +3266,16 @@ form {
   /* Adjust as needed */
 }
 
-.evox-app:hover { 
+.evox-app:hover {
   background-color: #203c7d6c;
 }
+
 .evox-app {
   position: relative;
   display: flex;
   align-items: center;
-  background-color: transparent; /* Background color of the button */
+  background-color: transparent;
+  /* Background color of the button */
   border: none;
   color: #fff;
   padding: 9px;
@@ -3280,14 +3293,17 @@ form {
 }
 
 .evox-app img {
-  width: 90px; /* Adjust width for icon size */
+  width: 90px;
+  /* Adjust width for icon size */
   height: auto;
-  border-radius: 35px; /* Less border radius for the game icon */
+  border-radius: 35px;
+  /* Less border radius for the game icon */
   margin-right: 20px;
 }
 
 .info {
-  flex-grow: 1; /* Make the info section take the remaining space */
+  flex-grow: 1;
+  /* Make the info section take the remaining space */
 }
 
 .title {
@@ -3302,7 +3318,8 @@ form {
 .time {
   margin-top: 10px;
   font-size: 14px;
-  color: #b0b0b0; /* Lighter color for the time text */
+  color: #b0b0b0;
+  /* Lighter color for the time text */
 }
 
 .tag {
@@ -3367,7 +3384,8 @@ form {
   flex: 1;
 }
 
-.search-button, .filter-button {
+.search-button,
+.filter-button {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -3375,7 +3393,8 @@ form {
   outline: none;
 }
 
-.search-button svg, .filter-button svg {
+.search-button svg,
+.filter-button svg {
   fill: none;
   stroke: #fff;
 }
@@ -3439,7 +3458,8 @@ form {
 
 .bubble {
   position: absolute;
-  top: 10px; /* Adjust to align with input */
+  top: 10px;
+  /* Adjust to align with input */
   left: 50%;
   transform: translateX(-50%);
   width: 100px;
@@ -3472,14 +3492,14 @@ div .tasco {
   font-size: small;
   color: #4e4c9b;
   font-family: "SF";
-  font-weight:lighter;
+  font-weight: lighter;
   background-color: #ab9ff5;
 }
 
 div .Evox {
   font-size: small;
   font-family: "SF";
-  font-weight:lighter;
+  font-weight: lighter;
   color: #1c4bb6;
   background-color: #699de0;
 }
@@ -3487,7 +3507,7 @@ div .Evox {
 div .images {
   font-size: small;
   font-family: "SF";
-  font-weight:lighter;
+  font-weight: lighter;
   color: #d23155;
   background-color: #ee9cbe;
 }
@@ -3495,7 +3515,26 @@ div .images {
 div .Home {
   font-size: small;
   font-family: "SF";
-  font-weight:lighter;
+  font-weight: lighter;
   color: #138462;
   background-color: #9ceea3;
+}
+
+.default-parent {
+  display: flex;
+  justify-content: center;
+  /* Centers the element horizontally */
+  align-items: center;
+  /* Centers the element vertically, if needed */
+  height: 100vh;
+  /* Optional: Sets the height of the container to 100% of the viewport height */
+  flex-direction: column;
+}
+
+.loading-text-default {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

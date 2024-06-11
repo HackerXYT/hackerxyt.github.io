@@ -601,6 +601,9 @@ function load(app) {
 		if (localStorage.getItem("t50-username") === "papostol") {
 			sessionStorage.setItem("EmitApp", "evox")
 			launchAppN("./Home/")
+		} else {
+			createLocalNotification("An Error Occured", `You don't own the app '${app}'!`, `./appicons/Home.png`)
+			return;
 		}
 
 	}

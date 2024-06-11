@@ -146,7 +146,7 @@
                 script4.src = 'tracker.js';
                 script4.defer = true;
                 document.head.appendChild(script4);
-                
+
 
                 // Add more script tags for other JavaScript files as needed
             }
@@ -416,8 +416,7 @@
         <div class="gateway slideR-L active" id="gateway" style="display: none;overflow-x:hidden">
             <div class="simple-center-container" style="flex-direction: column;margin-top: 20px">
                 <div style="display:flex;flex-direction: row;">
-                    <img src="evox-logo-beta-large.png"
-                        style="width: 80px; height:80px; top: 40px; left: 40px;">
+                    <img src="evox-logo-beta-large.png" style="width: 80px; height:80px; top: 40px; left: 40px;">
                     <div style=" height:auto; top: 45px; left: 140px;" class="search-container">
                         <input type="text" id="globalSearch" class="search-input" placeholder="Search Evox..">
                         <button class="search-button">
@@ -440,7 +439,8 @@
                     </div>
                 </div>
 
-                <div class="parent-popup-container pc-only" style="position: relative; width: 90%;height: auto;max-height: 230px;">
+                <div class="parent-popup-container pc-only"
+                    style="position: relative; width: 90%;height: auto;max-height: 230px;">
                     <div id="carouselHandler" class="carousela">
                         <div class="carousel-images">
                             <img src="nexusBeta.png" alt="Image 1">
@@ -1246,7 +1246,7 @@
                         </svg>
                     </div>
                 </a>-->
-                <a onclick="send_message()">
+                <a class="send_message_btn" onclick="send_message()">
                     <div style="position: relative;">
                         <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -1293,8 +1293,18 @@
         </div>
 
 
-        <span onclick="goback_options()" class="popup-close"><svg xmlns="http://www.w3.org/2000/svg" width="29px"
-                height="29px" viewBox="0 0 24 24" fill="none">
+        <span onclick="goback_options()" style="position: fixed;
+        top: 70px;
+        right: 20px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;"><svg
+                xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
                 <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#b2b2b2" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" />
             </svg></span>
@@ -3149,8 +3159,7 @@
         Datacenter change is coming soon!<br>Prepare for downtimes..
     </div>
     <div id="loading-div-text">
-        <div id="loading-text"
-            style="position: absolute;top: 50%;bottom:50%;left: 50%;transform: translate(-50%, -50%);text-align: center;">
+        <div id="loading-text" class="loading-text-default">
             <div class="loader">
                 <div class="tile"></div>
             </div>

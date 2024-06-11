@@ -27,7 +27,7 @@ function send_message() {
         message.value = ""
         if (data === `Message Sent To ${recipient}`) {
           console.log("Message Sent")
-          fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}`)
+          fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&password=${atob(localStorage.getItem("t50pswd"))}`)
             .then(response => {
               if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -35,6 +35,12 @@ function send_message() {
               return response.text();
             })
             .then(messages => {
+              try {
+                const integrityCheck = JSON.parse(messages)
+              } catch {
+                console.error("Possible Account Verification Error:", messages)
+                return;
+              }
               console.log(messages)
               const jsonData = JSON.parse(messages);
 
@@ -88,7 +94,7 @@ function reload_chat(whoto) {
   reloading = setInterval(function () {
     sessionStorage.setItem("current_sline", whoto)
     pfp = document.getElementById(`${whoto}-pfp-secureline`)
-    fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}`)
+    fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}&password=${atob(localStorage.getItem("t50pswd"))}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -97,6 +103,12 @@ function reload_chat(whoto) {
       })
       .then(messages => {
 
+        try {
+          const integrityCheck = JSON.parse(messages)
+        } catch {
+          console.error("Possible Account Verification Error:", messages)
+          return;
+        }
         if (sessionStorage.getItem("lastChatInter") === messages) {
           console.log("No new messages")
           return;
@@ -154,6 +166,68 @@ function reload_chat(whoto) {
 
 function return_main_chats() {
 
+  //now reload previews
+  if (!localStorage.getItem("t50-username")) {
+    console.warn("Logged Out! Secureline Preloading Stopped!")
+    return;
+  }
+  fetch(`https://data.evoxs.xyz/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.text();
+    })
+    .then(data => {
+      console.log(JSON.stringify(data)); //["Kyriakos","bantou","twentysix","Moretti","fando","Clxpzie","Kravaritis","DarkAngel","AIT","Oykas"]
+      if (JSON.stringify(data) === '"[]"') {
+        //$("#load-users-friends").fadeOut("fast", function () {
+        //	let containerId = "list-friends";
+        //	var listContainer = document.getElementById(containerId);
+        //	listContainer.style.textAlign = "center";
+        //	listContainer.style.marginTop = "50px";
+        //	listContainer.innerHTML = "No Friends"
+        //})
+        return;
+      } else {
+        console.log(`${JSON.stringify(data)} != "[]" data isnt empty`);
+      }
+      let user_requests;
+      try {
+        user_requests = JSON.parse(data);
+      } catch (error) {
+        console.warn("Data is empty")
+      }
+
+      console.log(user_requests)
+      user_requests.sort(); // Sort the usernames alphabetically
+      console.log(user_requests)
+      let containerId = "sline-container";
+      var listContainer = document.getElementById(containerId);
+      listContainer.style.textAlign = "";
+      listContainer.style.marginTop = "";
+
+
+      user_requests.forEach(username => {
+
+        fetch(`${srv}/secureline?method=lastMSG&username=${localStorage.getItem("t50-username")}&recipient_username=${username}&password=${atob(localStorage.getItem("t50pswd"))}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+          })
+          .then(lastmsg => {
+            document.getElementById(`user-${username}-email-secureline`).innerText = lastmsg
+          }).catch(error => {
+            console.error(error)
+          })
+
+
+        $("#load-users-friends").fadeOut("fast");
+        $("#sline-container").fadeIn("slow");
+      });
+    });
   $("#navbar").fadeIn("fast", function () {
     document.getElementById("navbar").classList.add("active")
   })
@@ -222,7 +296,7 @@ function showchat(element) {//json id=Username
 </p>`
   sessionStorage.setItem("current_sline", element.id)
   pfp = document.getElementById(`${element.id}-pfp-secureline`)
-  fetch(`https://data.evoxs.xyz/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
+  fetch(`https://data.evoxs.xyz/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}&password=${atob(localStorage.getItem("t50pswd"))}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -232,7 +306,7 @@ function showchat(element) {//json id=Username
     .then(data => {
       if (data === "Chat Exists.") {
         console.log("Getting Existing Chat")
-        fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}`)
+        fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}&password=${atob(localStorage.getItem("t50pswd"))}`)
           .then(response => {
             if (!response.ok) {
               throw new Error(`HTTP error! Status: ${response.status}`);
@@ -240,6 +314,12 @@ function showchat(element) {//json id=Username
             return response.text();
           })
           .then(messages => {
+            try {
+              const integrityCheck = JSON.parse(messages)
+            } catch {
+              console.error("Possible Account Verification Error:", messages)
+              return;
+            }
             console.log(messages)
             const jsonData = JSON.parse(messages);
 
@@ -296,7 +376,7 @@ function create_chat() {
   document.getElementById("actions").style.overflow = ""
   try {
     clearInterval(reloading)
-  } catch (error){
+  } catch (error) {
     console.error("Unknown Error, Cannot Clear Interval", error)
   }
   document.getElementById("messages-container").innerHTML = `<p class='centered-text'>Creating Chat
@@ -310,7 +390,7 @@ function create_chat() {
       </path>
   </svg>
 </p>`
-  fetch(`https://data.evoxs.xyz/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&createnew=true`)
+  fetch(`https://data.evoxs.xyz/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&createnew=true&password=${atob(localStorage.getItem("t50pswd"))}`)
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -407,7 +487,7 @@ function preloadSFriends() {
               userEmail.className = "user-email";
               userEmail.id = `user-${username}-email-secureline`;
               userEmail.textContent = 'Loading..';
-              fetch(`${srv}/secureline?method=lastMSG&username=${localStorage.getItem("t50-username")}&recipient_username=${username}`)
+              fetch(`${srv}/secureline?method=lastMSG&username=${localStorage.getItem("t50-username")}&recipient_username=${username}&password=${atob(localStorage.getItem("t50pswd"))}`)
                 .then(response => {
                   if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -493,10 +573,17 @@ function preloadSFriends() {
       } else {
         console.log(`${JSON.stringify(data)} != "[]" data isnt empty`);
       }
-      const user_requests = JSON.parse(data);
-      console.log(user_requests)
-      user_requests.sort(); // Sort the usernames alphabetically
-      console.log(user_requests)
+      let user_requests_2;
+      try {
+        user_requests_2 = JSON.parse(data);
+      } catch {
+        console.error("Secureline Ops Failed")
+        return;
+      }
+
+      console.log(user_requests_2)
+      user_requests_2.sort(); // Sort the usernames alphabetically
+      console.log(user_requests_2)
       let containerId = "sline-container";
       var listContainer = document.getElementById(containerId);
       listContainer.style.textAlign = "";
@@ -519,7 +606,7 @@ function preloadSFriends() {
           console.error(error)
         })
 
-      user_requests.forEach(username => {
+      user_requests_2.forEach(username => {
         const promise = fetch(`https://data.evoxs.xyz/accounts?method=getemailbyusername&username=${username}`)
           .then(response => {
             if (!response.ok) {
@@ -554,7 +641,7 @@ function preloadSFriends() {
               userEmail.className = "user-email";
               userEmail.id = `user-${username}-email-secureline`;
               userEmail.textContent = "Loading..";
-              fetch(`${srv}/secureline?method=lastMSG&username=${localStorage.getItem("t50-username")}&recipient_username=${username}`)
+              fetch(`${srv}/secureline?method=lastMSG&username=${localStorage.getItem("t50-username")}&recipient_username=${username}&password=${atob(localStorage.getItem("t50pswd"))}`)
                 .then(response => {
                   if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -649,7 +736,7 @@ function getFriends(pre) {
 }
 
 function options() {
-  navigator("sline_options")
+  //navigator("sline_options")
   $("#navigator").fadeIn("fast")
   $("#options_box").fadeIn("fast")
   //document.getElementById("options_box").classList.add("active")

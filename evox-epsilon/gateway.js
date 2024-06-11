@@ -965,7 +965,36 @@ function docready(merge) {
 
                 console.error(`Unknown Error IPAUTH\nGot data: ${data}`)
                 if (data === "Username doesn't match the account") {
-                  document.getElementById("loading-div-text").innerHTML = "<p>Something messed up your client.<br>Your local username doesn't match your account<br>Click below to re-login</p><button onclick='logoff()'>Log out</button>"
+                  document.getElementById("loading-text").classList.remove("loading-text-default")
+                  document.getElementById("loading-text").classList.add("default-parent")
+                  document.getElementById("loading-text").innerHTML = `Loading..`
+                  fetch(`${srv}/accounts?method=getUserbyEmail&email=${localStorage.getItem("t50-email")}`)
+                    .then(response => {
+                      if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                      }
+                      return response.text();
+                    })
+                    .then(data => {
+                      if (data === "Account Not Found") {
+                        document.getElementById("loading-text").innerHTML = `<p>Something messed up your client.<br>Your credentials don't match your account<br>Click below to re-login</p><button class="transparent-button" onclick='logoff()'>Log out</button>`
+                        $("#loading-text").fadeIn("fast", function () {
+                          $("#stuck").fadeOut("fast")
+                        })
+                      } else {
+                        document.getElementById("loading-text").innerHTML = `<p>Something messed up your client.<br>Your local username doesn't match your account<br><br>Local Username: ${localStorage.getItem("t50-username")} <br>Correct Username: ${data}</p><button style="border: 2px solid #439723;" class="transparent-button" onclick='localStorage.setItem("t50-username", "${data}");restart()'>Fix Automatically</button><br><button class="transparent-button" onclick='logoff()'>Log out</button>`
+                        $("#loading-text").fadeIn("fast", function () {
+                          $("#stuck").fadeOut("fast")
+                        })
+                      }
+                    }).catch(error => {
+                      console.error('Fetch error:', error);
+                      document.getElementById("loading-text").innerHTML = `<p>Something messed up your client and server.<br>Click below to re-login</p><button class="transparent-button" onclick='logoff()'>Log out</button><br><button class="transparent-button" onclick='restart()'>Reload</button>`
+                        $("#loading-text").fadeIn("fast", function () {
+                          $("#stuck").fadeOut("fast")
+                        })
+                    });
+
                 }
               }
               //IF IP EXISTS THEN DONT REQUIRE 2FA, ELSE REQUIRE 2FA
@@ -2317,13 +2346,13 @@ function addElemApp(app) {
 }
 
 function getAppType(app) {
-  if(app === "tasco") {
+  if (app === "tasco") {
     return 'Productivity'
-  } else if(app === "images") {
+  } else if (app === "images") {
     return 'Gallery'
-  } else if(app === "Evox Datacenter") {
+  } else if (app === "Evox Datacenter") {
     return 'Management'
-  } else if(app === "Home") {
+  } else if (app === "Home") {
     return 'Security'
   } else {
     return 'External'
@@ -2359,7 +2388,7 @@ function prevSlide() {
     moveToSlide(currentIndex);
     restartCarouselCount()
   }
-  
+
 }
 
 function restartCarouselCount() {
