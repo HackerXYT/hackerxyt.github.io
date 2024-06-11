@@ -322,20 +322,20 @@ function setup() {
   console.log("RUNNING SETUP!")
   $("#navigator").fadeIn("fast")
   loadGrounds()
-  if (localStorage.getItem("New_ID0.92.1") !== "SEEN") {
-    document.getElementById("loading-text").innerHTML = "Waiting for user to read news."
-    $("#loading-text").fadeOut("fast")
-    $("#stuck").fadeOut("fast")
-    $("#EvoxMerge").fadeOut("fast")
-    $("#container").fadeOut("fast")
-    document.getElementById('gateway').style.filter = 'blur(25px)'
-    document.getElementById("whats_new").classList.add("active");
-    document.getElementById("navigator").style.display = "none"
-    return;
-  } else {
+  //if (localStorage.getItem("New_ID0.92.1") !== "SEEN") {
+  //  document.getElementById("loading-text").innerHTML = "Waiting for user to read news."
+  //  $("#loading-text").fadeOut("fast")
+  //  $("#stuck").fadeOut("fast")
+  //  $("#EvoxMerge").fadeOut("fast")
+  //  $("#container").fadeOut("fast")
+  //  document.getElementById('gateway').style.filter = 'blur(25px)'
+  //  document.getElementById("whats_new").classList.add("active");
+  //  document.getElementById("navigator").style.display = "none"
+  //  return;
+  //} else {
     $("#loading-text").fadeIn("fast")
     $("#stuck").fadeIn("fast")
-  }
+  //}
   try {
     custombg()
   } catch {

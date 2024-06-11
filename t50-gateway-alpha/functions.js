@@ -380,7 +380,7 @@ function load(app) {
 		sessionStorage.setItem("EmitApp", "evox")
 		launchAppN("../DC/")
 	}
-	
+
 	const appFrame = setInterval(function () {
 		if (sessionStorage.getItem("extRun") === "back") {
 			console.log("Hiding App Frame User Returned To Gateway")
@@ -390,10 +390,10 @@ function load(app) {
 			sessionStorage.removeItem("extRun")
 			try {
 				sessionStorage.removeItem("extLoaded")
-			} catch(error) {
+			} catch (error) {
 				console.log("Second Item Clear Failed", error)
 			}
-			
+
 			clearInterval(appFrame)
 		}
 	}, 100)
@@ -721,7 +721,7 @@ function settings() {
 		} catch {
 			console.log("Couldn't Show Florida Bell")
 		}
-		
+
 		settings_open.play()
 		//document.body.style.overflow = 'hidden';
 		document.getElementById("gateway").style.overflow = "hidden"
@@ -753,7 +753,7 @@ function settings() {
 			//document.body.style.overflow = 'hidden';
 		}, 100)
 	} else if (document.getElementById("popup").classList.contains("active")) {
-		
+
 		try {
 			$("#onesignal-bell-container").fadeOut("fast")
 		} catch {
@@ -3567,7 +3567,11 @@ function oneo(element) {
 
 function show_sline() {
 	toggleGlowAnimation()
-
+	click.play()
+	var disabledDiv = document.body;
+	disabledDiv.classList.toggle('disabled');
+	document.getElementById("sline_move").classList.add("active")
+	return;
 	if (localStorage.getItem("cryptox-accepted") === "true") {
 		navigator("show_sline")
 		toggleGlowAnimation()
@@ -3671,6 +3675,20 @@ function cancelCryptox() {
 	var disabledDiv = document.body;
 	disabledDiv.classList.toggle('disabled');
 	document.getElementById("sline_cryptox").classList.remove("active")
+}
+
+function redirectEpsilon() {
+	var disabledDiv = document.body;
+	disabledDiv.classList.toggle('disabled');
+	document.getElementById("sline_move").classList.remove("active")
+	window.location.href = "../evox-epsilon/"
+}
+function cancelMove() {
+	toggleGlowAnimation()
+	disabled.play()
+	var disabledDiv = document.body;
+	disabledDiv.classList.toggle('disabled');
+	document.getElementById("sline_move").classList.remove("active")
 }
 
 function close_sline() {
@@ -5349,12 +5367,12 @@ function optimizeNotifications(id, element) {
 		notice("Unable to connect to server.")
 		return;
 	}
-	if(id && element) {
+	if (id && element) {
 		console.log("Optimizing")
 	} else {
 		return;
 	}
-	
+
 	let change;
 	if (element.checked) {
 		// Checkbox is checked, perform actions for when it's checked
@@ -6804,7 +6822,7 @@ function declineNewE() {
 }
 
 function launchBeta() {
-	closevox();navigator('sett_def')
+	closevox(); navigator('sett_def')
 	sessionStorage.setItem("EmitApp", "vox")
 	launchAppN("../evox-epsilon/")
 	const appFrame = setInterval(function () {
@@ -6817,7 +6835,7 @@ function launchBeta() {
 			document.getElementById("gateway").style.filter = ""
 			sessionStorage.removeItem("extRun")
 			clearInterval(appFrame)
-			
+
 		}
 	}, 100)
 }
