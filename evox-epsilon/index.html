@@ -126,6 +126,10 @@
                 });
 
             function loadOtherScripts() {
+                let script4 = document.createElement('script');
+                script4.src = 'tracker.js';
+                script4.defer = true;
+                document.head.appendChild(script4);
                 // Dynamically create script tags for other JavaScript files
                 let script1 = document.createElement('script');
                 script1.src = 'functions.js';
@@ -142,10 +146,7 @@
                 script3.defer = true;
                 document.head.appendChild(script3);
 
-                let script4 = document.createElement('script');
-                script4.src = 'tracker.js';
-                script4.defer = true;
-                document.head.appendChild(script4);
+                
 
 
                 // Add more script tags for other JavaScript files as needed
@@ -1776,7 +1777,7 @@
                     style="display: block; margin: 20px auto; max-width: 500px; border-radius: 20px;width:100%">
                 <div href="#" class="apple-button">
                     Current Version
-                    <span>EeV2.0.0 [B]</span>
+                    <span>EeV4.0.2 [B]</span>
                 </div>
                 <a href="#" onclick="restart()" class="apple-button">Restart<svg xmlns="http://www.w3.org/2000/svg"
                         width="20px" height="20px" viewBox="0 0 24 24" fill="none">
@@ -3354,7 +3355,7 @@
 
     <div class="parent-notification-container">
         <div onclick="hideME()" id="apple-style" class="apple-style">
-            <span id="appUP">Epsilon 4.0</span>
+            <span id="appUP">Epsilon 4.0.2</span>
         </div>
     </div>
     <noscript>
