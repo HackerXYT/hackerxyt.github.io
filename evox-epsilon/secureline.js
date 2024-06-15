@@ -549,6 +549,11 @@ function preloadSFriends() {
     });
 }
 
+function promptCryptoxSl() {
+  document.getElementById("sline-container").innerHTML = `<p>Add friends to chat with them!</p>`
+  //document.getElementById("sline-container").innerHTML = `<p>Secureline Needs Cryptox Enabled</p><button onclick="enableCryptox();preloadSFriends()" class="apple-button">Enable Cryptox Now</button>`
+}
+
 function preloadSFriends() {
   sessionStorage.setItem("preloaded-sline", "true")
   //$("#sline-container").fadeOut("fast");
@@ -577,7 +582,10 @@ function preloadSFriends() {
       try {
         user_requests_2 = JSON.parse(data);
       } catch {
-        console.error("Secureline Ops Failed")
+        console.error("Secureline Ops Failed\nCannot decrypt:", data)
+        if(data === "") {
+          promptCryptoxSl()
+        }
         return;
       }
 

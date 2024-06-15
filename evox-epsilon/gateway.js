@@ -402,9 +402,16 @@ function setup() {
       return response.json();
     })
     .then(data => {
-      document.getElementById("friendsCount").innerHTML = data.length
+      console.log('friendsOp',data.length)
+      if(data.length === 0) {
+        document.getElementById("friendsCount").innerHTML = "0"
+      } else {
+        document.getElementById("friendsCount").innerHTML = data.length
+      }
+      
     })
     .catch(error => {
+      document.getElementById("friendsCount").innerHTML = "0"
       console.error(error);
     });
 

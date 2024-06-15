@@ -4253,10 +4253,10 @@ function enableCryptox() {
 		.then(cryptoxcheck => {
 			if (cryptoxcheck === "Cryptox Already Enabled" || cryptoxcheck === "Cryptox Enabled") {
 				console.log("I can proceed!")
-				var disabledDiv = document.body;
-				disabledDiv.classList.toggle('disabled');
-				document.getElementById("sline_cryptox").classList.remove("active")
-				show_sline()
+				//var disabledDiv = document.body;
+				//disabledDiv.classList.toggle('disabled');
+				//document.getElementById("sline_cryptox").classList.remove("active")
+				//show_sline()
 			} else {
 				console.error(cryptoxcheck)
 			}
