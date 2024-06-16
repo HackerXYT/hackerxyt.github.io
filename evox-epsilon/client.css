@@ -4,7 +4,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
 }
 
 @font-face {
@@ -509,7 +509,7 @@ img {
   align-items: center;
   overflow-y: auto;
   /* Change from 'visible' to 'auto' */
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   touch-action: auto;
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
@@ -598,7 +598,7 @@ img {
   align-items: center;
   overflow: auto;
   /* Change from 'visible' to 'auto' */
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   touch-action: auto;
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
@@ -1716,7 +1716,7 @@ a {
   align-items: center;
   overflow: auto;
   /* Change from 'visible' to 'auto' */
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   touch-action: auto;
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
@@ -1757,7 +1757,7 @@ a {
   align-items: center;
   overflow: auto;
   /* Change from 'visible' to 'auto' */
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   touch-action: auto;
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
@@ -1798,7 +1798,7 @@ a {
   align-items: center;
   overflow: auto;
   /* Change from 'visible' to 'auto' */
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   touch-action: auto;
   justify-content: center;
   background: #ffffff00;
@@ -1988,7 +1988,7 @@ a {
   align-items: center;
   overflow: auto;
   /* Change from 'visible' to 'auto' */
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   touch-action: auto;
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
@@ -2027,7 +2027,7 @@ a {
   align-items: center;
   overflow: auto;
   /* Change from 'visible' to 'auto' */
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   touch-action: auto;
   justify-content: center;
   background: rgb(0, 0, 0);
@@ -2498,7 +2498,7 @@ a {
   align-items: center;
   overflow: auto;
   /* Change from 'visible' to 'auto' */
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   touch-action: auto;
   justify-content: center;
   background: rgba(0, 0, 0, 0);
@@ -2538,7 +2538,7 @@ a {
   align-items: center;
   overflow: auto;
   /* Change from 'visible' to 'auto' */
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   touch-action: auto;
   justify-content: center;
   background: rgba(0, 0, 0, 0);
