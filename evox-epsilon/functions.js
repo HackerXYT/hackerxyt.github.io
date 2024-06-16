@@ -606,6 +606,15 @@ function load(app) {
 			return;
 		}
 
+	}else if (app === "OASA") {
+		if (localStorage.getItem("t50-username") === "papostol") {
+			sessionStorage.setItem("EmitApp", "evox")
+			launchAppN("./oasa/")
+		} else {
+			createLocalNotification("An Error Occured", `You don't own the app '${app}'!`, `./appicons/Home.png`)
+			return;
+		}
+
 	}
 	else {
 		createLocalNotification("An Error Occured", `'${app}' is not owned or doesn't exist!`)

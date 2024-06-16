@@ -27,6 +27,14 @@
         //    window.location.href = newUrl;
         //}
 
+        window.onerror = function (message, source, lineno, colno, error) {
+            notice(`Oh no.${source}`)
+            setTimeout(function(){
+                alert(`An error occurred: ${message} at ${source}:${lineno}:${colno}`);
+            }, 1000)
+            
+            return false;  // Let the browser console still show the error if available
+        };
 
         function handleGoBack() {
             try {

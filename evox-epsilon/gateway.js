@@ -715,6 +715,7 @@ function setup() {
                 //document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('dc')" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a><a onclick="shake_me('transports-disabled');notice('T50 Transports is currently not available');load('transports')" href="#loadapp-transports"><img id="transports-disabled" src="T50Transports.png" class="disabledapp"></img></a><a onclick="moretti()" href="#loadapp-mt"><img id="mt-disabled" src="mt.jpg" class="disabledapp"></img></a>`
                 addElemApp("Evox Datacenter")
                 addElemApp("Home")
+                addElemApp("OASA")
                 document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('dc')" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a>`
                 //
               }
@@ -2333,7 +2334,7 @@ setInterval(updateCounter, 1000);
 //setInterval(saveTime, 2000);
 
 function addElemApp(app) {
-  if (app === "images" || app === "tasco" || app === "Evox Datacenter" || app === "Home") {
+  if (app === "images" || app === "tasco" || app === "Evox Datacenter" || app === "Home" || app === "OASA") {
     let prevHTML = document.getElementById("app-cont").innerHTML;
     document.getElementById("app-cont").innerHTML = `${prevHTML}<button onclick="getNOpenNX('${app.split(' ')[0]}', null , 'epsilon')" id="${app.split(' ')[0]}-nx" class="evox-app">
     <img src="./appicons/${app}.png" alt="App Icon">
