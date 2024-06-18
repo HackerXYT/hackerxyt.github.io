@@ -1,0 +1,151 @@
+@font-face {
+    font-family: 'SFLight';
+    src: url('SFProDisplay-Light.ttf') format('truetype');
+}
+
+canvas#neuro {
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+    opacity: .5;
+}
+
+
+@font-face {
+    font-family: "SF";
+    src: url('SFUIText-Medium.ttf');
+}
+
+body {
+    touch-action: manipulation;
+    background-color: #252525;
+    color: #eaeaea;
+    font-family: "SF";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+
+
+.welcome {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.logo {
+    position: relative;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    color: white;
+}
+
+.icon {
+    margin-top: 25vh;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon img {
+    width: 24px;
+    height: 24px;
+}
+
+.content h1 {
+    font-size: 24px;
+    margin: 20px 0 10px;
+}
+
+.content p {
+    font-size: 16px;
+    margin: 0 0 20px;
+    color: #b0b0b0;
+    font-family: 'SFLight';
+    text-align: center;
+}
+
+.pagination {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.pagination div {
+    width: 30px;
+    height: 5px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.pagination .active {
+    background-color: white;
+}
+
+.centeredd {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    border: 2px solid #000;
+    width: auto;
+}
+
+.button {
+    margin-top: auto;
+    
+    padding: 10px 20px;
+    background-color: rgb(255, 255, 255);
+    color: #252525;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    width: 80%;
+    font-family: "SF";
+    cursor: pointer;
+    font-weight: bolder;
+}
+
+.button2 {
+    margin-top: auto;
+    
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.424);
+    color: #e6e6e6;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    width: 80%;
+    font-family: "SF";
+    cursor: pointer;
+    font-weight: bolder;
+}
+
+.simple-center-container {
+    display: flex;
+    /* Centers the element horizontally */
+    align-items: center;
+    /* Centers the element vertically, if needed */
+    /* Optional: Sets the height of the container to 100% of the viewport height */
+    flex-direction: column;
+}

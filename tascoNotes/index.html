@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Tasco</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="tasco.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="tasco.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="tasco.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="tasco.png">
+    <link rel="apple-touch-icon-precomposed" href="tasco.png">
+    <link rel="icon" type="image/png" href="tascoDesktop.png">
+    <link rel="stylesheet" href="./style.css">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: dark)">
+</head>
+
+<body>
+        <div class="welcome">
+            <div class="simple-center-container">
+                <h1 id="type" class="logo">tasco</h1>
+            </div>
+            <div class="icon">
+                <img src="note-text-svgrepo-com.svg" alt="Icon">
+            </div>
+            <div class="content">
+                <h1>Simplify Notes Taking</h1>
+                <p>Taking notes has never been easier before.<br>Now it's your turn!</p>
+            </div>
+            <div class="pagination">
+                <div class="active"></div>
+                <div></div>
+                <div></div>
+            </div>
+            <button style="margin-bottom: 10px;" class="button2" onclick="window.location.reload()">Restart Demo</button>
+            <button style="margin: 0;margin-bottom: 40px;" class="button" onclick="typeChange()">Get Started</button>
+           
+        </div>
+    <canvas id="neuro"></canvas>
+
+
+    <script type="x-shader/x-fragment" id="vertShader">
+        precision mediump float;
+    
+        varying vec2 vUv;
+        attribute vec2 a_position;
+    
+        void main() {
+            vUv = .5 * (a_position + 1.);
+            gl_Position = vec4(a_position, 0.0, 1.0);
+        }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragShader">
+        precision mediump float;
+    
+        varying vec2 vUv;
+        uniform float u_time;
+        uniform float u_ratio;
+        uniform vec2 u_pointer_position;
+        uniform float u_scroll_progress;
+    
+        vec2 rotate(vec2 uv, float th) {
+            return mat2(cos(th), sin(th), -sin(th), cos(th)) * uv;
+        }
+    
+        float neuro_shape(vec2 uv, float t, float p) {
+            vec2 sine_acc = vec2(0.);
+            vec2 res = vec2(0.);
+            float scale = 8.;
+    
+            for (int j = 0; j < 15; j++) {
+                uv = rotate(uv, 1.);
+                sine_acc = rotate(sine_acc, 1.);
+                vec2 layer = uv * scale + float(j) + sine_acc - t;
+                sine_acc += sin(layer);
+                res += (.5 + .5 * cos(layer)) / scale;
+                scale *= (1.2 - .07 * p);
+            }
+            return res.x + res.y;
+        }
+    
+        void main() {
+            vec2 uv = .5 * vUv;
+            uv.x *= u_ratio;
+    
+            vec2 pointer = vUv - u_pointer_position;
+            pointer.x *= u_ratio;
+            float p = clamp(length(pointer), 0., 1.);
+            p = .5 * pow(1. - p, 2.);
+    
+            float t = .001 * u_time;
+            vec3 color = vec3(0.);
+    
+            float noise = neuro_shape(uv, t, p);
+    
+            noise = 1.2 * pow(noise, 3.);
+            noise += pow(noise, 10.);
+            noise = max(.0, noise - .5);
+            noise *= (1. - length(vUv - .5));
+    
+            color = normalize(vec3(.2, .5 + .4 * cos(3. * u_scroll_progress), .5 + .5 * sin(3. * u_scroll_progress)));
+    
+            color = color * noise;
+    
+            gl_FragColor = vec4(color, noise);
+        }
+    </script>
+    <!-- partial -->
+    <script src="./script.js"></script>
+</body>
+
+</html>

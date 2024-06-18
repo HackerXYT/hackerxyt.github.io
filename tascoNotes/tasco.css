@@ -1,0 +1,56 @@
+@font-face {
+    font-family: 'SFLight';
+    src: url('SFProDisplay-Light.ttf') format('truetype');
+    /* Adjust path and format */
+}
+
+@font-face {
+    font-family: "SF";
+    src: url('SFUIText-Medium.ttf');
+}
+
+body {
+    background-color: #252525;
+    color: #d2d2d2;
+    font-family: "SF";
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    margin: 0;
+    align-items: flex-start;
+}
+
+.welcome {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    /* for Internet Explorer, Edge */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    padding: 30px;
+    align-items: center;
+    overflow-y: auto;
+    /* Change from 'visible' to 'auto' */
+    /* scroll-behavior: smooth; */
+    touch-action: auto;
+    justify-content: center;
+    /* Semi-transparent black overlay */
+    z-index: 998;
+    box-sizing: border-box;
+    /* Include padding in the element's total width and height */
+    box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+    color: white;
+    /* Initially off-screen to the left */
+    transition: transform 1s ease, opacity 1s ease, visibility 1s;
+    /* Transition for sliding effect, opacity, and visibility */
+}
+
+.logo {
+    position: absolute;
+    top: 10%;
+    /* Adjust as necessary to move the element up or down */
+    transform: translateX(-50%);
+}

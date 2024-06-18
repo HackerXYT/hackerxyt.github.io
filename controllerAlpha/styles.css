@@ -1,0 +1,157 @@
+@font-face {
+    font-family: "SF";
+    src: url('SFUIText-Medium.ttf');
+}
+
+:root {
+    --cursor: none;
+}
+
+body {
+    margin: 0;
+    font-family: 'SF';
+    background-color: #121212;
+    height: 100vh;
+    overflow: hidden;
+    cursor: var(--cursor);
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+}
+
+#lock {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    height: 100vh;
+    background-color: #121212;
+}
+
+#lock h1 {
+    color: #d2d2d2;
+    font-size: 24px;
+    margin-bottom: 8px;
+
+}
+
+#lock p {
+    font-size: 14px;
+    color: #8d969e;
+    margin-bottom: 32px;
+}
+
+.pin-input {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+
+.pin-input span {
+    width: 5px;
+    height: 5px;
+    margin: 0 4px;
+    background-color: #d2d2d2;
+    border-radius: 50%;
+    display: inline-block;
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.pin-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    justify-content: center;
+}
+
+.pin-pad button {
+    width: 64px;
+    height: 64px;
+    font-size: 24px;
+    background-color: #909090;
+    border: none;
+    color: #000;
+    border-radius: 50%;
+    cursor: var(--cursor);
+}
+
+.pin-pad button:active {
+    background-color: #888888;
+}
+
+.delete-button {
+    background-color: #d2d2d2;
+    color: #ffffff;
+}
+
+.version {
+    position: fixed;
+    bottom: 20px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: #8d969e;
+}
+
+.pin-pad .invisible-button {
+    background-color: transparent;
+    border: none;
+    pointer-events: none;
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    10% {
+        transform: translate(-10px, 0);
+    }
+
+    20% {
+        transform: translate(10px, 0);
+    }
+
+    30% {
+        transform: translate(-10px, 0);
+    }
+
+    40% {
+        transform: translate(10px, 0);
+    }
+
+    50% {
+        transform: translate(-10px, 0);
+    }
+
+    60% {
+        transform: translate(10px, 0);
+    }
+
+    70% {
+        transform: translate(-10px, 0);
+    }
+
+    80% {
+        transform: translate(10px, 0);
+    }
+
+    90% {
+        transform: translate(-10px, 0);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+.shake {
+    animation-name: shake;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+}
