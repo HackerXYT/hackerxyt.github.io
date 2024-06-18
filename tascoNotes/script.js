@@ -73,9 +73,9 @@ function initShader() {
         }
 
         // Add event listeners to prevent scroll
-        window.addEventListener('scroll', preventDefault, { passive: false });
-        window.addEventListener('wheel', preventDefault, { passive: false });
-        window.addEventListener('touchmove', preventDefault, { passive: false });
+        //window.addEventListener('scroll', preventDefault, { passive: false });
+        //window.addEventListener('wheel', preventDefault, { passive: false });
+        //window.addEventListener('touchmove', preventDefault, { passive: false });
         let uniformCount = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
         for (let i = 0; i < uniformCount; i++) {
             let uniformName = gl.getActiveUniform(program, i).name;
@@ -139,25 +139,202 @@ function setupEvents() {
     }
 }
 
-function preventDefault(e) {
-    e.preventDefault();
+function addPreventDefaultListeners() {
+    window.addEventListener('scroll', preventDefault, { passive: false });
+    window.addEventListener('wheel', preventDefault, { passive: false });
+    window.addEventListener('touchmove', preventDefault, { passive: false });
 }
 
-// Add event listeners to prevent scroll
-window.addEventListener('scroll', preventDefault, { passive: false });
-window.addEventListener('wheel', preventDefault, { passive: false });
-window.addEventListener('touchmove', preventDefault, { passive: false });
+// Function to remove event listeners
+function removePreventDefaultListeners() {
+    window.removeEventListener('scroll', preventDefault, { passive: false });
+    window.removeEventListener('wheel', preventDefault, { passive: false });
+    window.removeEventListener('touchmove', preventDefault, { passive: false });
+}
 
-let typeLG = 2
-let oldType = `<img src="tascoTransparent.png" style="width: 45px;height:45px;margin:0;">`;
-function typeChange() {
-    if(typeLG === 1) {
-        //make 2
-        oldType = document.getElementById("type").innerHTML
-        document.getElementById("type").innerHTML = "tasco"
-        typeLG = 2
+// Example preventDefault function to be used with event listeners
+function preventDefault(event) {
+    event.preventDefault();
+}
+
+addPreventDefaultListeners()
+
+// Add event listeners to prevent scroll
+//window.addEventListener('scroll', preventDefault, { passive: false });
+//window.addEventListener('wheel', preventDefault, { passive: false });
+//window.addEventListener('touchmove', preventDefault, { passive: false });
+
+document.body.addEventListener('touchstart', handleTouchStart, false);
+document.body.addEventListener('touchend', handleTouchEnd, false);
+
+let xDown = null;
+
+function handleTouchStart(evt) {
+    const firstTouch = evt.touches[0];
+    xDown = firstTouch.clientX;
+}
+
+function handleTouchEnd(evt) {
+    if (!xDown) {
+        return;
+    }
+
+    const xUp = evt.changedTouches[0].clientX;
+    const xDiff = xDown - xUp;
+
+    if (xDiff > 50) {
+        /* Swipe right to left detected */
+        console.log('Swiped right to left');
+        //alert('Swiped right to left');
+        let step = parseInt(document.getElementById("infoButton").getAttribute('p-info'))
+        if (step === 1) {
+
+            document.getElementById("content-page1").classList.remove("active")
+            setTimeout(function () {
+                document.getElementById("content-page2").style.display = "block"
+                document.getElementById("content-page1").style.display = "none"
+                document.getElementById("iconTop").src = "shieldUp.svg"
+                setTimeout(function () {
+                    document.getElementById("content-page2").classList.add("active")
+                    document.documentElement.style.setProperty('--page2-pos', '-100%');
+                }, 200)
+
+            }, 200)
+            document.getElementById("page1").classList.remove("active")
+            document.getElementById("page2").classList.add("active")
+            document.getElementById("infoButton").setAttribute('p-info', '2');
+        } else if (step === 2) {
+            document.getElementById("content-page2").classList.remove("active")
+            setTimeout(function () {
+                document.getElementById("content-page3").style.display = "block"
+                document.getElementById("content-page2").style.display = "none"
+                document.getElementById("iconTop").src = "simple-handshake.svg"
+                setTimeout(function () {
+                    document.getElementById("content-page3").classList.add("active")
+                }, 200)
+
+            }, 200)
+            document.getElementById("page2").classList.remove("active")
+            document.getElementById("page3").classList.add("active")
+            document.getElementById("infoButton").setAttribute('p-info', '3');
+            document.getElementById("infoButton").style.opacity = "1"
+
+        }
+    } else if (xDiff < 50) {
+        console.log('Swiped left to right');
+        //alert('Swiped left to right');
+    }
+
+    /* Reset values */
+    xDown = null;
+}
+
+//console.log("DEV MODE")
+//setTimeout(function() {
+//    loadNotes()
+//}, 800)
+function loadNotes() {
+    removePreventDefaultListeners()
+    document.documentElement.style.setProperty('--def-flow', 'auto');
+    document.getElementById("welcome").style.display = "none"
+    document.getElementById("mainContainer").style.display = ""
+    setTimeout(function () {
+        document.getElementById("simple-loading").style.display = "none"
+        document.getElementById("notes1cont").style.display = ""
+    }, 500)
+
+}
+
+if (localStorage.getItem("tascoNotesPrefs")) {
+    if (localStorage.getItem("tascoNotesPrefs") === "skipWelcome: true") {
+        loadNotes()
+    }
+}
+
+function goNext(button) {
+    let currentPInfo = button.getAttribute('p-info');
+    console.log('Current p-info:', currentPInfo);
+    // Calculate the new p-info value (for example, incrementing by 1)
+    let newPInfo = parseInt(currentPInfo) + 1;
+    // Set the new p-info value
+    //button.setAttribute('p-info', newPInfo);
+    // Log the new p-info value
+    console.log('New p-info:', newPInfo);
+    if (newPInfo === 2 || newPInfo === 3) {
+        return;
+    } else if (newPInfo === 4) {
+        console.log("Triggering because previous was", currentPInfo)
+        loadNotes()
+
+
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const interBubble = document.querySelector(".interactive");
+    let curX = 0;
+    let curY = 0;
+    let tgX = 0;
+    let tgY = 0;
+
+    function move() {
+        curX += (tgX - curX) / 20;
+        curY += (tgY - curY) / 20;
+        interBubble.style.transform = `translate(${Math.round(curX)}px, ${Math.round(
+            curY
+        )}px)`;
+        requestAnimationFrame(() => {
+            move();
+        });
+    }
+
+    window.addEventListener("mousemove", (event) => {
+        tgX = event.clientX;
+        tgY = event.clientY;
+    });
+
+    move();
+});
+
+function saveProgress() {
+    let currentProgress = localStorage.getItem("tascoNotesPrefs") //skipWelcome: true
+    if (currentProgress) {
+        if (currentProgress === "skipWelcome: true") {
+            localStorage.removeItem("tascoNotesPrefs")
+            alert("Automatic Welcome Screen Skip Disabled.")
+        }
     } else {
-        typeLG = 1
-        document.getElementById("type").innerHTML = oldType
+        localStorage.setItem("tascoNotesPrefs", "skipWelcome: true")
+        alert("Automatic Welcome Screen Skip Enabled.")
+    }
+}
+
+function loadBg() {
+    let currentProgress = localStorage.getItem("tascoNotesBg") //green: true
+    if (currentProgress) {
+        if (currentProgress === "green: true") {
+            document.getElementById("bggradient").style.display = "none"
+            document.getElementById("neuro").style.display = "block"
+        }
+    } else {
+        document.getElementById("bggradient").style.display = "block"
+        document.getElementById("neuro").style.display = "none"
+
+    }
+}
+loadBg()
+
+function changeBg() {
+    let currentProgress = localStorage.getItem("tascoNotesBg") //green: true
+    if (currentProgress) {
+        if (currentProgress === "green: true") {
+            document.getElementById("bggradient").style.display = "block"
+            document.getElementById("neuro").style.display = "none"
+            localStorage.removeItem("tascoNotesBg")
+        }
+    } else {
+        document.getElementById("bggradient").style.display = "none"
+        document.getElementById("neuro").style.display = "block"
+        localStorage.setItem("tascoNotesBg", "green: true")
     }
 }

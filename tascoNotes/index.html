@@ -18,27 +18,118 @@
 </head>
 
 <body>
-        <div class="welcome">
-            <div class="simple-center-container">
-                <h1 id="type" class="logo">tasco</h1>
-            </div>
-            <div class="icon">
-                <img src="note-text-svgrepo-com.svg" alt="Icon">
-            </div>
+    <div id="welcome" class="welcome">
+        <div class="simple-center-container">
+            <h1 id="type" class="logo"><img src="tascoTransparent.png" style="width: 30px;height:30px;margin:0;"></h1>
+        </div>
+        <div class="icon">
+            <img id="iconTop" src="note-text.svg" alt="Icon">
+        </div>
+        <span id="content-page1" class="active">
+
             <div class="content">
-                <h1>Simplify Notes Taking</h1>
+                <h1>Simplify Taking Notes</h1>
                 <p>Taking notes has never been easier before.<br>Now it's your turn!</p>
             </div>
-            <div class="pagination">
-                <div class="active"></div>
-                <div></div>
-                <div></div>
+        </span>
+        <span style="display: none;" id="content-page2">
+
+            <div class="content">
+                <h1>Safety First!</h1>
+                <p>Fast and secure data storage is here<br>with Cryptox hash encryption.</p>
             </div>
-            <button style="margin-bottom: 10px;" class="button2" onclick="window.location.reload()">Restart Demo</button>
-            <button style="margin: 0;margin-bottom: 40px;" class="button" onclick="typeChange()">Get Started</button>
-           
+        </span>
+        <span style="display: none;" id="content-page3">
+
+            <div class="content">
+                <h1>Friendly Interface</h1>
+                <p>Enjoy taking notes with the new Tasco interface.<br> Try it yourself!</p>
+            </div>
+        </span>
+
+        <div class="pagination">
+            <div id="page1" class="active"></div>
+            <div id="page2"></div>
+            <div id="page3"></div>
         </div>
-    <canvas id="neuro"></canvas>
+        <button style="margin-bottom: 40px;opacity: 0;" id="infoButton" p-info="1" class="button"
+            onclick="goNext(this)">Get Started</button>
+
+    </div>
+    <div id="mainContainer" class="notes" style="display: none;">
+        <div id="simple-loading" class="simple-center-container">
+            <h1 id="type" class="logo"><img src="tascoTransparent.png" style="width: 50px;height:50px;margin:0;"></h1>
+        </div>
+        <div style="display: none;" id="notes1cont" class="container">
+            <div class="header">Notes <span style="font-family: 'SFLight';font-size: 12px;font-weight: normal;">142 Notes</span></div>
+            <div class="search">
+                <input type="text" placeholder="Search">
+            </div>
+            <div class="section">
+                <div class="section-title">Favorites<span><img src="arrow-down.svg"></span></div>
+                <div class="note notetop">
+                    <div class="note-title" onclick="changeBg()">Stop using gradient backgrounds. Use these instead...</div>
+                    <div class="note-date">Mar 19, 2023</div>
+                </div>
+                <div class="note notebot">
+                    <div class="note-title">Build better habits with Habitify: A UI/UX case study</div>
+                    <div class="note-date">Jan 6, 2023</div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-title">Your Notes<span><img src="arrow-down.svg"></span></div>
+                <div class="note notetop">
+                    <div class="note-title">How to make your personal brand stand out online</div>
+                    <div class="note-date">Mar 15, 2023</div>
+                </div>
+                <div class="note">
+                    <div class="note-title">User Experience Design vs Product Design</div>
+                    <div class="note-date">Mar 2, 2023</div>
+                </div>
+                <div class="note">
+                    <div class="note-title">UI/UX Case Study: Design a cookbook app for people who are new to...</div>
+                    <div class="note-date">Feb 17, 2023</div>
+                </div>
+                <div class="note">
+                    <div class="note-title">Building a kick-ass Design Portfolio from Scratch</div>
+                    <div class="note-date">Jan 26, 2023</div>
+                </div>
+                <div onclick="window.location.reload()" class="note">
+                    <div class="note-title">Devs really search for a reload button in PWAs when it's right here!</div>
+                    <div class="note-date">Jul 21, 2024</div>
+                </div>
+                <div class="note notebot">
+                    <div class="note-title">Creating a social media application inside an existing..</div>
+                    <div class="note-date">Jan 26, 2023</div>
+                </div>
+            </div>
+            <div onclick="saveProgress()" class="add-note">+</div>
+        </div>
+        
+        
+
+    </div>
+    <div id="bggradient" class="gradient-bg">
+        <svg xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <filter id="goo">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
+                        result="goo" />
+                    <feBlend in="SourceGraphic" in2="goo" />
+                </filter>
+            </defs>
+        </svg>
+        <div class="gradients-container">
+            <div class="g1"></div>
+            <div class="g2"></div>
+            <div class="g3"></div>
+            <div class="g4"></div>
+            <div class="g5"></div>
+            <div class="interactive"></div>
+        </div>
+    </div>
+    <canvas style="display: none;" id="neuro"></canvas>
 
 
     <script type="x-shader/x-fragment" id="vertShader">
