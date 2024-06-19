@@ -611,7 +611,16 @@ function load(app) {
 			sessionStorage.setItem("EmitApp", "evox")
 			launchAppN("./oasa/")
 		} else {
-			createLocalNotification("An Error Occured", `You don't own the app '${app}'!`, `./appicons/Home.png`)
+			createLocalNotification("An Error Occured", `You don't own the app '${app}'!`, `./appicons/OASA.png`)
+			return;
+		}
+
+	}else if (app === "deluxe") {
+		if (localStorage.getItem("t50-username") === "papostol") {
+			sessionStorage.setItem("EmitApp", "evox")
+			launchAppN("../tascoNotes/")
+		} else {
+			createLocalNotification("An Error Occured", `You don't own the app '${app}'!`, `../tascoNotes/tasco.png`)
 			return;
 		}
 

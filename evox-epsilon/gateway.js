@@ -716,6 +716,7 @@ function setup() {
                 addElemApp("Evox Datacenter")
                 addElemApp("Home")
                 addElemApp("OASA")
+                addElemApp("Tasco Deluxe")
                 document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('dc')" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a>`
                 //
               }
@@ -2345,6 +2346,19 @@ function addElemApp(app) {
         </svg>20:30 - Unset</div>
     </div>
     <div id="tag-${app.split(' ')[0]}" class="tag ${app.split(' ')[0]}">${getAppType(app)}</div>
+    <span style='display: none' class="get-button-nx">OPEN</span>
+  </button>`
+  } else if (app === "Tasco Deluxe") {
+    let prevHTML = document.getElementById("app-cont").innerHTML;
+    document.getElementById("app-cont").innerHTML = `${prevHTML}<button onclick="getNOpenNX('deluxe', null , 'epsilon')" id="deluxe-nx" class="evox-app">
+    <img src="../tascoNotes/tasco.png" alt="App Icon">
+    <div class="info">
+      <div class="title">${app}</div>
+      <div id='timeUsed-deluxe' class="time"><svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="13px" height="13px" viewBox="0 0 24 24" fill="none">
+        <path d="M12 7V12L10.5 14.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>20:30 - Unset</div>
+    </div>
+    <div id="tag-deluxe" class="tag tasco">${getAppType('tasco')}</div>
     <span style='display: none' class="get-button-nx">OPEN</span>
   </button>`
   } else {

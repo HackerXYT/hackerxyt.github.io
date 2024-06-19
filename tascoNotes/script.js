@@ -145,6 +145,32 @@ function addPreventDefaultListeners() {
     window.addEventListener('touchmove', preventDefault, { passive: false });
 }
 
+
+document.getElementById("containerNotesInside").addEventListener('touchmove', function (event) {
+    // Prevent default behavior only if the touch event is directly on the background
+    if (event.target === this) {
+        console.log("preventing");
+        event.preventDefault();
+    }
+}, false);
+
+document.getElementById("noteTextSection").addEventListener('touchmove', function (event) {
+    // Prevent default behavior only if the touch event is directly on the background
+    if (event.target === this) {
+        console.log("preventing");
+        event.preventDefault();
+    }
+}, false);
+
+document.addEventListener('DOMContentLoaded', function () {
+    var containerForNoScroll = document.getElementById('containerNotesInside');
+
+    // Add event listener for touchmove
+    containerForNoScroll.addEventListener('touchmove', function (e) {
+        e.stopPropagation(); // Prevent default scrolling behavior
+    });
+});
+
 // Function to remove event listeners
 function removePreventDefaultListeners() {
     window.removeEventListener('scroll', preventDefault, { passive: false });
@@ -164,12 +190,48 @@ addPreventDefaultListeners()
 //window.addEventListener('wheel', preventDefault, { passive: false });
 //window.addEventListener('touchmove', preventDefault, { passive: false });
 
-document.body.addEventListener('touchstart', handleTouchStart, false);
+// Add event listeners based on device type
+if (window.matchMedia("(pointer: coarse)").matches) {
+    // Touch events for mobile devices
+    document.body.addEventListener('touchstart', handleTouchStart, false);
+} else {
+    // Mouse events for desktops/laptops
+    document.body.addEventListener('mousemove', handleMouseMove, false);
+    document.body.addEventListener('keydown', handleKeyDown, false);
+}
 document.body.addEventListener('touchend', handleTouchEnd, false);
 
 let xDown = null;
+let stopAnimate = setTimeout(function () {
+    document.getElementById("bggradient").style.display = "none"
+    document.getElementById("neuro").style.display = "none"
+}, 40000)
 
+function handleMouseMove(event) {
+    // Handle mouse move event here
+    //console.log('Mouse moved.');
+    backgroundSaver()
+}
+
+// Function to handle keyboard input
+function handleKeyDown(event) {
+    // Handle key down event here
+    //console.log('Key down detected.');
+    backgroundSaver()
+}
+
+function backgroundSaver() {
+    //console.log("Clearing Interval")
+    clearTimeout(stopAnimate)
+    loadBg()
+    //console.log("New Interval")
+    stopAnimate = setTimeout(function () {
+        document.getElementById("bggradient").style.display = "none"
+        document.getElementById("neuro").style.display = "none"
+    }, 40000)
+}
 function handleTouchStart(evt) {
+    backgroundSaver()
     const firstTouch = evt.touches[0];
     xDown = firstTouch.clientX;
 }
@@ -235,7 +297,7 @@ function handleTouchEnd(evt) {
 //}, 800)
 function loadNotes() {
     removePreventDefaultListeners()
-    document.documentElement.style.setProperty('--def-flow', 'auto');
+    //document.documentElement.style.setProperty('--def-flow', 'auto');
     document.getElementById("welcome").style.display = "none"
     document.getElementById("mainContainer").style.display = ""
     setTimeout(function () {
@@ -245,13 +307,18 @@ function loadNotes() {
 
 }
 
-if (localStorage.getItem("tascoNotesPrefs")) {
-    if (localStorage.getItem("tascoNotesPrefs") === "skipWelcome: true") {
-        loadNotes()
-    }
-}
+//if (localStorage.getItem("tascoNotesPrefs")) {
+//    if (localStorage.getItem("tascoNotesPrefs") === "skipWelcome: true") {
+//        loadNotes()
+//
+//    }
+//}
 
 function goNext(button) {
+    if(blockConn) {
+        window.location.href = "../evox-epsilon/image gallery/"
+        return;
+    }
     let currentPInfo = button.getAttribute('p-info');
     console.log('Current p-info:', currentPInfo);
     // Calculate the new p-info value (for example, incrementing by 1)
@@ -337,4 +404,103 @@ function changeBg() {
         document.getElementById("neuro").style.display = "block"
         localStorage.setItem("tascoNotesBg", "green: true")
     }
+}
+
+
+
+function contentLoaders() {
+    const textareas = document.querySelectorAll('.sectionNote textarea');
+
+    textareas.forEach(textarea => {
+        textarea.addEventListener('input', autoResize);
+        autoResize({ target: textarea }); // Initialize the height
+    });    
+
+    function autoResize(event) {
+        const textarea = event.target;
+        textarea.style.height = 'auto'; // Reset height to auto
+        textarea.style.height = textarea.scrollHeight + 'px'; // Set height to scrollHeight
+    }
+}
+
+function removeResizeListeners() {
+    const textareas = document.querySelectorAll('.sectionNote textarea');
+
+    textareas.forEach(textarea => {
+        textarea.removeEventListener('input', autoResize);
+        autoResize({ target: textarea }); // Initialize the height
+    }); 
+
+    function autoResize(event) {
+        const textarea = event.target;
+        textarea.style.height = 'auto'; // Reset height to auto
+        textarea.style.height = textarea.scrollHeight + 'px'; // Set height to scrollHeight
+    }
+}
+
+
+
+function handleNote(element) {
+    sessionStorage.setItem("currentNote", element.id)
+    document.getElementById("mainContainer").style.display = "none"
+    document.getElementById("noteContainer").style.display = ""
+    if(element.getAttribute("e-fav") === "true") {
+        document.getElementById("activateFav").src = "favorite-active.svg"
+    }
+    if (!element) {
+        console.error("Element is undefined or null.");
+        return;
+    }
+
+    // Find child elements
+    var titleElement = element.querySelector('.note-title');
+    var dateElement = element.querySelector('.note-date');
+
+    // Check if elements are found
+    if (!titleElement || !dateElement) {
+        console.error("One or more child elements not found.");
+        console.log(element);
+        return;
+    }
+
+    // Access text content
+    var title = titleElement.textContent;
+    var date = dateElement.textContent;
+    
+    // Example of accessing the text content
+    console.log("Title:", title);
+    console.log("Date:", date);
+    document.getElementById('noteInner').value = getInnerNote(element.id);
+    document.getElementById('noteTitle').value = title;
+    document.getElementById('noteDate').innerHTML = date;
+    contentLoaders()
+    document.documentElement.style.setProperty('--color-bg1', 'rgb(54, 54, 54)');
+    document.documentElement.style.setProperty('--color-bg2', 'rgb(0, 51, 37)');
+    document.documentElement.style.setProperty('--circle-size', '180%');
+    document.documentElement.style.setProperty('--color1', '18, 113, 255, 0');
+    document.documentElement.style.setProperty('--color2', '79, 116, 83');
+    document.documentElement.style.setProperty('--color3', '100, 220, 255, 0');
+    document.documentElement.style.setProperty('--color4', '200, 50, 50, 0');
+    document.documentElement.style.setProperty('--color5', '180, 180, 50, 0');
+
+}
+
+function backNote() {
+    if(reloadNow) {
+        reloadNow = false
+        reloadNotes()
+    }
+    sessionStorage.removeItem("currentNote")
+    document.getElementById("activateFav").src = "favorite-inactive.svg"
+    document.documentElement.style.setProperty('--color-bg1', 'rgb(76, 0, 162)');
+    document.documentElement.style.setProperty('--color-bg2', 'rgb(0, 82, 59)');
+    document.documentElement.style.setProperty('--color1', '18, 113, 255');
+    document.documentElement.style.setProperty('--color2', '221, 74, 255');
+    document.documentElement.style.setProperty('--color3', '100, 220, 255');
+    document.documentElement.style.setProperty('--color4', '200, 50, 50');
+    document.documentElement.style.setProperty('--color5', '180, 180, 50');
+    document.documentElement.style.setProperty('--circle-size', '80%');
+    document.getElementById("mainContainer").style.display = ""
+    document.getElementById("noteContainer").style.display = "none"
+    removeResizeListeners();
 }
