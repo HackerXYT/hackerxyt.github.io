@@ -634,3 +634,7 @@ textarea {
     -webkit-overflow-scrolling: touch;
     /* Enable momentum scrolling on iOS */
 }
+
+.resolving {
+    transition: transform 0.8s ease, opacity 0.3s ease-in-out, visibility 0.8s, filter 0.8s ease;
+}

@@ -86,6 +86,13 @@ function reloadNotes() {
                     let customClass = false;
                     console.log(noteNames.length)
                     document.getElementById("howmany").innerText = `${noteNames.length} Notes`
+                    if(noteNames.length === 0) {
+                        document.getElementById("notesNames").innerHTML = `<div class="note" style="border-radius:15px">
+                    <div class="note-title">No Notes Created!</div> <!--changeBg()-->
+                    <div class="note-date">Click the + to create one!</div>
+                    
+                </div>`
+                    }
                     if (noteNames.length === 1) {
                         customClass = true
                     }
@@ -99,6 +106,57 @@ function reloadNotes() {
                                 return response.json(); // Parse JSON data
                             })
                             .then(noteData => {
+                                console.log(noteData)
+                                if (noteData.message === "Note doesn't exist") {
+                                    console.error("Tried to access a note that doesn't exist.\nThis is probably a database error.")
+                                    console.error("Resolving Errors.")
+                                    const resolvingInt = setInterval(function () {
+                                        document.getElementById("snap").style.opacity = "1"
+                                        setTimeout(function () {
+                                            document.getElementById("snap").style.opacity = "0"
+                                        }, 500)
+                                    }, 500)
+                                    let milis = 0
+                                    const milisInt = setInterval(function () {
+                                        milis = milis + 500
+                                    }, 500)
+                                    fetch(`https://data.evoxs.xyz/tasco?method=deleteNote&username=${username}&noteId=${noteId}`)
+                                        .then(response => {
+                                            if (!response.ok) {
+                                                throw new Error('Network response was not ok');
+                                            }
+                                            return response.json(); // Parse JSON data
+                                        })
+                                        .then(fixRes => {
+                                            if (fixRes.message === "Done") {
+                                                if (milis < 3000) {
+                                                    console.log("Waiting.")
+                                                    const waitThis = 3000 - milis
+                                                    setTimeout(function () {
+                                                        console.log("Done!")
+                                                        reloadNotes()
+                                                        clearInterval(resolvingInt)
+                                                        clearInterval(milisInt)
+                                                    }, waitThis)
+                                                } else {
+                                                    console.log("Done! Is Ready.")
+                                                    reloadNotes()
+                                                    clearInterval(resolvingInt)
+                                                    clearInterval(milisInt)
+                                                }
+
+
+                                            } else {
+                                                alert("Oh, Snap!\nSomething Failed!", data)
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('There has been a problem with your fetch operation:', error);
+                                            alert("Oh Snap!\nSomething Failed!", error)
+                                        });
+
+                                    return;
+                                }
                                 if (data.favorites.includes(noteId)) {
                                     sessionStorage.setItem(noteId, JSON.stringify(noteData))
                                     const noteDiv = document.createElement('div');
