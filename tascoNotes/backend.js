@@ -69,8 +69,15 @@ function createNote() {
     }
 }
 
-function reloadNotes() {
+let lastResponse;
+setInterval(function () {
+    reloadNotes("intervaling.")
+}, 1500)
+function reloadNotes(int) {
     if (username && email && passwordEncrypted) {
+        if (!int) {
+            loadBg()
+        }
         fetch(`https://data.evoxs.xyz/tasco?method=getUserNotesInfo&username=${username}`)
             .then(response => {
                 if (!response.ok) {
@@ -79,6 +86,39 @@ function reloadNotes() {
                 return response.json(); // Parse JSON data
             })
             .then(data => {
+                console.log("the data:", data)
+
+                if (int) {
+                    if (JSON.stringify(lastResponse) === JSON.stringify(data)) {
+                        console.log("No changes")
+                        return;
+                    } else {
+
+                        checkForChanges(sessionStorage.getItem('currentNote'))
+                        console.log(`Auto reloading, because:`, lastResponse, data)
+                        lastResponse = data
+                    }
+                }
+                lastResponse = data
+                if (data.settings) {
+                    localStorage.setItem("userSettings", JSON.stringify(data.settings))
+                    if (data.settings.background === "default") {
+                        document.getElementById("bggradient").style.display = "block"
+                        document.getElementById("neuro").style.display = "none"
+                    } else if (data.settings.background === "evox") {
+                        document.getElementById("bggradient").style.display = "none"
+                        document.getElementById("neuro").style.display = "block"
+                    } else if (data.settings.background === "false") {
+                        document.getElementById("bggradient").style.display = "none"
+                        document.getElementById("neuro").style.display = "none"
+                    } else if (data.settings.background === "true") {
+                        document.getElementById("bggradient").style.display = "block"
+                        document.getElementById("neuro").style.display = "none"
+                    } else {
+                        document.getElementById("bggradient").style.display = "block"
+                        document.getElementById("neuro").style.display = "none"
+                    }
+                }
                 if (!data.message) {
                     const noteNames = data.names
                     document.getElementById("notesNames").innerHTML = ''
@@ -86,7 +126,10 @@ function reloadNotes() {
                     let customClass = false;
                     console.log(noteNames.length)
                     document.getElementById("howmany").innerText = `${noteNames.length} Notes`
-                    if(noteNames.length === 0) {
+                    if (noteNames.length === 1) {
+                        document.getElementById("howmany").innerText = `${noteNames.length} Note`
+                    }
+                    if (noteNames.length === 0) {
                         document.getElementById("notesNames").innerHTML = `<div class="note" style="border-radius:15px">
                     <div class="note-title">No Notes Created!</div> <!--changeBg()-->
                     <div class="note-date">Click the + to create one!</div>
@@ -236,7 +279,13 @@ function reloadNotes() {
                     });
 
                 } else {
-                    alert("Failed to reload. No userFolder.")
+                    document.getElementById("notesNames").innerHTML = `<div class="note" style="border-radius:15px">
+                    <div class="note-title">No Notes Created!</div> <!--changeBg()-->
+                    <div class="note-date">Click the + to create one!</div></div>`
+                    document.getElementById("howmany").innerText = `0 Notes`
+                    if (localStorage.getItem("skipTheYap") === "true") {
+                        alert("Failed to reload. No userFolder.")
+                    }
                 }
             })
             .catch(error => {
@@ -365,4 +414,67 @@ function favoriteCurrent() {
             });
     }
 
+}
+
+function userSettings(setting, set) {
+    fetch(`https://data.evoxs.xyz/tasco?method=settingsNotes&identifier=${setting}&newSet=${set}&username=${username}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // Parse JSON data
+        })
+        .then(data => {
+            console.log(data);
+            if (data.message === "Complete!") {
+                console.log("Success.")
+                reloadNotes()
+            } else {
+                alert("Something Failed!", data)
+            }
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+}
+
+function checkForChanges(whatIsTheId) {
+    if(!whatIsTheId) {
+        return;
+    }
+    fetch(`https://data.evoxs.xyz/tasco?method=getNoteById&username=${username}&noteId=${whatIsTheId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // Parse JSON data
+        })
+        .then(noteData => {
+            if (noteData.message === "Note doesn't exist") {
+                reloadNow = true
+                backNote()
+            } else {
+                if(noteData.content === document.getElementById("noteInner").value) {
+                    //content is the same
+                    console.log("Debug: content is the same")
+                } else {
+                    console.warn("Debug: content is not the same")
+                    document.getElementById("noteInner").value = noteData.content
+                    reloadNotes()
+                }
+                if(document.getElementById(`title-${whatIsTheId}`).innerText === noteData.title) {
+                    //title is the same
+                    console.log("Debug: title is the same")
+                } else {
+                    console.warn("Debug: title is not the same")
+                    document.getElementById('noteTitle').value = noteData.title;
+                    document.getElementById(`title-${whatIsTheId}`).innerText === noteData.title
+                    reloadNotes()
+                }
+            }
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+            alert("Oh Snap!\nSomething Failed!", error)
+        });
 }

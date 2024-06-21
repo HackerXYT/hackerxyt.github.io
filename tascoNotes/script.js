@@ -315,7 +315,7 @@ function loadNotes() {
 //}
 
 function goNext(button) {
-    if(blockConn) {
+    if (blockConn) {
         window.location.href = "../evox-epsilon/image gallery/"
         return;
     }
@@ -377,17 +377,24 @@ function saveProgress() {
 }
 
 function loadBg() {
-    let currentProgress = localStorage.getItem("tascoNotesBg") //green: true
-    if (currentProgress) {
-        if (currentProgress === "green: true") {
-            document.getElementById("bggradient").style.display = "none"
-            document.getElementById("neuro").style.display = "block"
-        }
+    const setting = askForBg()
+    if (setting === "default") {
+        document.getElementById("bggradient").style.display = "block"
+        document.getElementById("neuro").style.display = "none"
+    } else if (setting === "evox") {
+        document.getElementById("bggradient").style.display = "none"
+        document.getElementById("neuro").style.display = "block"
+    } else if (setting === "false") {
+        document.getElementById("bggradient").style.display = "none"
+        document.getElementById("neuro").style.display = "none"
+    } else if (setting === "true") {
+        document.getElementById("bggradient").style.display = "block"
+        document.getElementById("neuro").style.display = "none"
     } else {
         document.getElementById("bggradient").style.display = "block"
         document.getElementById("neuro").style.display = "none"
-
     }
+    console.log("Setting Given:", setting)
 }
 loadBg()
 
@@ -414,7 +421,7 @@ function contentLoaders() {
     textareas.forEach(textarea => {
         textarea.addEventListener('input', autoResize);
         autoResize({ target: textarea }); // Initialize the height
-    });    
+    });
 
     function autoResize(event) {
         const textarea = event.target;
@@ -429,7 +436,7 @@ function removeResizeListeners() {
     textareas.forEach(textarea => {
         textarea.removeEventListener('input', autoResize);
         autoResize({ target: textarea }); // Initialize the height
-    }); 
+    });
 
     function autoResize(event) {
         const textarea = event.target;
@@ -442,9 +449,10 @@ function removeResizeListeners() {
 
 function handleNote(element) {
     sessionStorage.setItem("currentNote", element.id)
+    checkForChanges(element.id)
     document.getElementById("mainContainer").style.display = "none"
     document.getElementById("noteContainer").style.display = ""
-    if(element.getAttribute("e-fav") === "true") {
+    if (element.getAttribute("e-fav") === "true") {
         document.getElementById("activateFav").src = "favorite-active.svg"
     }
     if (!element) {
@@ -466,7 +474,7 @@ function handleNote(element) {
     // Access text content
     var title = titleElement.textContent;
     var date = dateElement.textContent;
-    
+
     // Example of accessing the text content
     console.log("Title:", title);
     console.log("Date:", date);
@@ -486,7 +494,7 @@ function handleNote(element) {
 }
 
 function backNote() {
-    if(reloadNow) {
+    if (reloadNow) {
         reloadNow = false
         reloadNotes()
     }
@@ -503,4 +511,17 @@ function backNote() {
     document.getElementById("mainContainer").style.display = ""
     document.getElementById("noteContainer").style.display = "none"
     removeResizeListeners();
+}
+
+function askForBg() {
+    if (localStorage.getItem('userSettings')) {
+        const settings = JSON.parse(localStorage.getItem('userSettings'))
+        if (settings.background) {
+            return settings.background
+        } else {
+            return "default"
+        }
+    } else {
+        return "default"
+    }
 }

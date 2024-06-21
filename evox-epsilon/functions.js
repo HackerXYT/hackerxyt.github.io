@@ -606,7 +606,7 @@ function load(app) {
 			return;
 		}
 
-	}else if (app === "OASA") {
+	} else if (app === "OASA") {
 		if (localStorage.getItem("t50-username") === "papostol") {
 			sessionStorage.setItem("EmitApp", "evox")
 			launchAppN("./oasa/")
@@ -615,7 +615,7 @@ function load(app) {
 			return;
 		}
 
-	}else if (app === "deluxe") {
+	} else if (app === "deluxe") {
 		if (localStorage.getItem("t50-username") === "papostol") {
 			sessionStorage.setItem("EmitApp", "evox")
 			launchAppN("../tascoNotes/")
@@ -5748,6 +5748,20 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		</g>
 	</svg>
 </div>`
+	const sign_in_wevox_t = `<div onclick='$("#tasco_deluxe_info").fadeOut("fast", function () {$("#apps_using_evox").fadeIn("fast")});navigator("sign_in_wevox")' class="circle">
+
+	<svg xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+</div>`
 	const fullimage = `<div onclick="close_fullimage()" class="circle">
 
 	<svg xmlns="http://www.w3.org/2000/svg"
@@ -5855,6 +5869,9 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 
 	if (w === "sign_in_wevox_e") {
 		document.getElementById("navigator").innerHTML = sign_in_wevox_e
+	}
+	if (w === "sign_in_wevox_t") {
+		document.getElementById("navigator").innerHTML = sign_in_wevox_t
 	}
 	if (w === "fullimage") {
 		document.getElementById("navigator").innerHTML = fullimage
@@ -6362,7 +6379,80 @@ function app_use_info(app) {
 		$("#apps_using_evox").fadeOut("fast", function () {
 			$("#evox_gateway_info").fadeIn("fast")
 		})
+	} else if (app === "tasco") {
+		navigator('sign_in_wevox_t')
+		fetch(`https://data.evoxs.xyz/tasco?method=getUserNotesInfo&username=${localStorage.getItem("t50-username")}`)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				return response.json(); // Parse JSON data
+			})
+			.then(data => {
+				console.log("the data:", data)
+				if (data.message === "userFolder doesn't exist") {
+					document.getElementById("isUserFolder").innerHTML = 'false'
+				} else {
+					$("#tasco_bg").fadeIn("fast")
+					document.getElementById("howmanynotes").innerHTML = data.notes
+					document.getElementById("howmanyfavs").innerHTML = data.favorites.length
+					document.getElementById("isUserFolder").innerHTML = 'true'
+					if(data.settings) {
+						if (data.settings.background) {
+							document.getElementById("settingBg").innerHTML = data.settings.background
+						} else {
+							document.getElementById("settingBg").innerHTML = 'default'
+						}
+					}
+					
+
+				}
+			})
+			.catch(error => {
+				console.error('There has been a problem with your fetch operation:', error);
+				alert("Oh Snap!\nSomething Failed!", error)
+			});
+		$("#apps_using_evox").fadeOut("fast", function () {
+			$("#tasco_deluxe_info").fadeIn("fast")
+		})
 	}
+
+}
+
+function changeTascoBg() {
+	const currentSetting = document.getElementById("settingBg").innerHTML
+	let nextSetting;
+	let setItAs;
+	if(currentSetting === "default") {
+		nextSetting = "low-end"
+		setItAs = "evox"
+	} else if(currentSetting === "low-end") {
+		nextSetting = "false"
+		setItAs = "false"
+	} else if(currentSetting === "false") {
+		nextSetting = "default"
+		setItAs = "default"
+	}
+
+	fetch(`https://data.evoxs.xyz/tasco?method=settingsNotes&identifier=background&newSet=${setItAs}&username=${localStorage.getItem("t50-username")}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // Parse JSON data
+        })
+        .then(data => {
+            console.log(data);
+            if (data.message === "Complete!") {
+                console.log("Success.")
+                document.getElementById("settingBg").innerHTML = nextSetting
+            } else {
+                alert("Something Failed!", data)
+            }
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
 
 }
 

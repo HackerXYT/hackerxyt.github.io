@@ -146,7 +146,7 @@
                 script3.defer = true;
                 document.head.appendChild(script3);
 
-                
+
 
 
                 // Add more script tags for other JavaScript files as needed
@@ -1752,7 +1752,7 @@
                 <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Apps Using Evox®</h3>
                 <a onclick="app_use_info('tasco')" href="#" class="apple-button-withicon"><img
                         style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
-                        src="../tasco/tasco-app.png">Tasco
+                        src="tascoDesktop.png">Tasco Deluxe
                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path
                             d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
@@ -1808,6 +1808,30 @@
                 <div class="transparent-placeholder"></div>
             </div>
 
+            <div id="tasco_deluxe_info" style="display:none;overflow: hidden;">
+
+                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Tasco Deluxe</h3>
+                <div href="#" class="apple-button">
+                    Current Version
+                    <span>Deluxe Alpha</span>
+                </div>
+                <h4>Tasco Scheduled:</h4>
+                <p><i>Access via Tasco App</i>
+                </p>
+                <h4>Tasco Notes Info:</h4>
+                <p>userFolder: <span id="isUserFolder">false</span><br>
+                    Notes: <span id="howmanynotes">--</span><br>
+                    Favorites: <span id="howmanyfavs">--</span><br>
+                <div href="#" id="tasco_bg" onclick="changeTascoBg()" style="display: none;" class="apple-button">Animated Background
+                    <span id="settingBg">default</span>
+                </div>
+                </p>
+                <h4>Tasco Debts:</h4>
+                <p><i>Access via Tasco App</i>
+                </p>
+                <a class="apple-button" href="../tascoNotes/">Launch Tasco Deluxe Externally</a>
+                <div class="transparent-placeholder"></div>
+            </div>
             <div id="main_popup_settings">
 
 
@@ -3234,7 +3258,7 @@
         </div>
 
     </div>
-    
+
     <div id="logout_confirm" class="cookie" style="background-color: #311313;border: 1px solid #271414">
         <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24" fill="none">
             <path

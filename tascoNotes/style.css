@@ -422,17 +422,27 @@ body {
 
 .search input {
     width: 85%;
-    padding: 10px 20px;
+    padding: 10px 20px 10px 40px; /* Adjust left padding to make space for the icon */
     border-radius: 25px;
     border: none;
     background-color: #b0b0b077;
     color: rgb(255, 255, 255);
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .search input::placeholder {
-    color: rgba(255, 255, 255, 0.62);
+    color: #d4d4d4d7;
 }
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+}
+
 
 .sectionNote {
     /* top | left and right | bottom */
