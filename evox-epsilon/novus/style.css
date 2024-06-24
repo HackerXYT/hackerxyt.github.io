@@ -1,0 +1,226 @@
+@font-face {
+    font-family: "SF";
+    src: url('../SFUIText-Medium.ttf');
+}
+
+* {
+    touch-action: manipulation;
+    /* For modern browsers */
+    -webkit-tap-highlight-color: transparent;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "SF", sans-serif;
+    background-color: #121212;
+    color: white;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: manipulation;
+    overscroll-behavior-y: contain;
+    /* For newer browsers */
+    overscroll-behavior: contain;
+    font-size: medium;
+    /* For older browsers */
+}
+
+.navbar {
+    position: fixed;
+    /* Must remain relative */
+    left: 0;
+    top: 0;
+    height: 100vh;
+    /* Full viewport height */
+    /* 15% of the container's width */
+    width: 25%;
+    background-color: #191919;
+    display: flex;
+    flex-direction: column;
+    /* Aligns items vertically */
+    justify-content: flex-start;
+    /* Ensures equal spacing around items */
+    align-items: center;
+    /* Centers items horizontally */
+    box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 1s ease, opacity 1s ease, visibility 1s;
+}
+
+.container {
+    position: absolute;
+    top: 0;
+    left: 25%;
+    /* Width of the .navbar */
+    width: 75%;
+    min-height: 100vh;
+    /* Match the height of .navbar */
+    background-color: #0a0a0a;
+    /* Example background color */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.navbar img {
+    margin-top: 0;
+    max-width: 75%;
+}
+
+.navbar-item {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: #ffffff;
+    /* White text color */
+    text-align: left;
+    /* Aligns text to the left */
+    padding: 20px 20px;
+    /* Adds padding for better spacing */
+    text-decoration: none;
+    /* Removes underline from links */
+    width: 85%;
+    /* Full width of the sidebar */
+    position: relative;
+    display: flex;
+    align-items: center;
+    /* Center child elements vertically */
+    /* Required for pseudo-element positioning */
+    transition: 0.2s ease background-color;
+}
+
+.navbar-item svg,
+img {
+    margin-right: 8px;
+    /* Adjust the spacing between the icon and text as needed */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.navbar-item::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    height: 80%;
+    border-radius: 15px 2px 2px 15px;
+    width: 12.5px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+    /* Center the element */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.navbar-item.hover-effect::before {
+    background-color: #426cff;
+    /* Blue color on hover */
+}
+
+.navbar-item.hover-effect {
+    /* Changes background color on hover */
+    border-radius: 5px;
+    /* Adds rounded corners */
+}
+
+.navbar-item:hover::before {
+    /*background-color: #21a62500;
+     green color on hover */
+}
+
+.navbar-item:hover {
+    /*background-color: #232323;
+     Changes background color on hover */
+    /*border-radius: 5px;
+     Adds rounded corners */
+}
+
+/* Style for badges (like notification counts) */
+.badge {
+    background-color: #ff0000;
+    /* Red background for badges */
+    color: #ffffff;
+    /* White text color */
+    padding: 0;
+    /* Removes padding */
+    border-radius: 50%;
+    /* Makes the badge circular */
+    font-size: 12px;
+    /* Smaller font size */
+    margin-left: 10px;
+    /* Adds space between text and badge */
+    display: inline-block;
+    /* Ensures the element is inline-block */
+    text-align: center;
+    /* Centers the text horizontally */
+    width: 20px;
+    /* Fixed width for the badge */
+    height: 20px;
+    /* Fixed height for the badge */
+    line-height: 20px;
+    /* Matches the height for vertical centering */
+    vertical-align: middle;
+    /* Aligns the badge with the text */
+}
+
+.searchContainer {
+    position: relative;
+    display: inline-block;
+    height: 51px;
+    margin: 0;
+    width: 40%;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 15px; /* Adjust as per your design */
+    top: 50%;
+   
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+.searchInput {
+    font-family: "SF";
+    border-radius: 5px;
+    background-color: #3e3e3e00;
+    width: 85%;
+    border: 1px solid #3e3e3e;
+    color: #fff;
+    padding: 15px 30px;
+    padding-left: 50px; /* Adjust to accommodate the icon */
+    font-size: 16px;
+    border-radius: 8px;
+    outline: none;
+    margin: 0;
+}
+
+/* Optional: Styling for the search icon */
+.searchIcon i {
+    font-size: 18px; /* Adjust icon size */
+}
+
+.notificationIcon {
+    width: 51px;
+    height: 51px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+.notificationIcon svg {
+    height: auto;
+}
+
+.top-actions {
+    display: flex;
+    flex-direction: row;
+}
