@@ -105,7 +105,7 @@ function reload_chat(whoto) {
 
         try {
           const integrityCheck = JSON.parse(messages)
-        } catch {
+        } catch (error) {
           console.error("Possible Account Verification Error:", messages)
           return;
         }
@@ -316,7 +316,7 @@ function showchat(element) {//json id=Username
           .then(messages => {
             try {
               const integrityCheck = JSON.parse(messages)
-            } catch {
+            } catch (error) {
               console.error("Possible Account Verification Error:", messages)
               return;
             }
@@ -581,7 +581,7 @@ function preloadSFriends() {
       let user_requests_2;
       try {
         user_requests_2 = JSON.parse(data);
-      } catch {
+      } catch (error) {
         console.error("Secureline Ops Failed\nCannot decrypt:", data)
         if(data === "") {
           promptCryptoxSl()
