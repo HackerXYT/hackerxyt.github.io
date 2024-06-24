@@ -37,8 +37,8 @@ function send_message() {
             .then(messages => {
               try {
                 const integrityCheck = JSON.parse(messages)
-              } catch {
-                console.error("Possible Account Verification Error:", messages)
+              } catch (error) {
+                console.error("Possible Account Verification Error:", messages, error)
                 return;
               }
               console.log(messages)
