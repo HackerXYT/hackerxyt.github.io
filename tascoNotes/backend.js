@@ -190,7 +190,7 @@ function reloadNotes(int) {
 
 
                                             } else {
-                                                alert("Oh, Snap!\nSomething Failed!", data)
+                                                alert(`Oh, Snap!\nSomething Failed! ${data}`)
                                             }
                                         })
                                         .catch(error => {

@@ -264,7 +264,7 @@ function getStates1() {
     const url = 'https://developer-api.govee.com/v1/devices/state';
     const apiKey = localStorage.getItem("apiKey");  // Replace with your Govee API key
     const device = {
-        device: localStorage.getItem("bedID"),  // Replace with your Govee device ID
+        device: localStorage.getItem("wallID"),  // Replace with your Govee device ID
         model: 'H6141'  // Replace with your Govee device model
     };
     const requestUrl = `${url}?device=${device.device}&model=${device.model}`;
@@ -308,7 +308,7 @@ function getStates2() {
     const url = 'https://developer-api.govee.com/v1/devices/state';
     const apiKey = localStorage.getItem("apiKey");  // Replace with your Govee API key
     const device = {
-        device: localStorage.getItem("wallID"),  // Replace with your Govee device ID
+        device: localStorage.getItem("bedID"),  // Replace with your Govee device ID
         model: 'H6141'  // Replace with your Govee device model
     };
     const requestUrl = `${url}?device=${device.device}&model=${device.model}`;
