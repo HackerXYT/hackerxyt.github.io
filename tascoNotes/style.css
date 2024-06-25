@@ -580,17 +580,46 @@ body {
     margin-bottom: 10px;*/
 }
 
-.note:first-child {
+#notesFav .note {
+    border-radius: 0;
+}
+
+#notesFav .note:first-of-type {
     border-radius: 15px 15px 0 0;
 }
 
-.note:last-child {
+#notesFav .note:last-of-type {
     border-radius: 0 0 15px 15px;
 }
 
-.note:not(:first-child):not(:last-child) {
+#notesFav .note:only-child {
+    border-radius: 15px;
+}
+
+#notesFav .note {
     border-radius: 0;
 }
+
+#notesNames .note {
+    border-radius: 0;
+}
+
+#notesNames .note:first-of-type {
+    border-radius: 15px 15px 0 0;
+}
+
+#notesNames .note:last-of-type {
+    border-radius: 0 0 15px 15px;
+}
+
+#notesNames .note:only-child {
+    border-radius: 15px;
+}
+
+#notesNames .note {
+    border-radius: 0;
+}
+
 
 .notetop {
     border-radius: 15px 15px 0 0;

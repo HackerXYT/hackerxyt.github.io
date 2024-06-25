@@ -81,17 +81,21 @@
                         stroke="#d4d4d4d7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </div>
-            <div style="display: none" id="notesFav" class="section">
-                <div class="section-title">Favorites<span><img src="arrow-down.svg"></span></div>
-                <div class="note notetop" onclick="handleNote(this)">
-                    <div class="note-title">Stop using gradient backgrounds. Use these instead...</div>
-                    <!--changeBg()-->
-                    <div class="note-date">Mar 19, 2023</div>
+            <div id="notesFavDiv" style="display: none" class="section">
+                <div class="section-title">Favorites<span><img src="arrow-down.svg"></span>
                 </div>
-                <div class="note notebot" onclick="handleNote(this)">
-                    <div class="note-title">Build better habits with Habitify: A UI/UX case study</div>
-                    <div class="note-date">Jan 6, 2023</div>
+                <div id="notesFav">
+                    <div class="note notetop" onclick="handleNote(this)">
+                        <div class="note-title">Stop using gradient backgrounds. Use these instead...</div>
+                        <!--changeBg()-->
+                        <div class="note-date">Mar 19, 2023</div>
+                    </div>
+                    <div class="note notebot" onclick="handleNote(this)">
+                        <div class="note-title">Build better habits with Habitify: A UI/UX case study</div>
+                        <div class="note-date">Jan 6, 2023</div>
+                    </div>
                 </div>
+                
             </div>
             <div id="userNotes" class="section">
                 <div class="section-title">Your Notes<span><img src="arrow-down.svg"></span></div>

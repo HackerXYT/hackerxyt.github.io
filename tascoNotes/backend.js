@@ -122,7 +122,7 @@ function reloadNotes(int) {
                 if (!data.message) {
                     const noteNames = data.names
                     document.getElementById("notesNames").innerHTML = ''
-                    document.getElementById('notesFav').innerHTML = `<div class="section-title">Favorites<span><img src="arrow-down.svg"></span></div>`
+                    document.getElementById('notesFav').innerHTML = ``
                     let customClass = false;
                     console.log(noteNames.length)
                     document.getElementById("howmany").innerText = `${noteNames.length} Notes`
@@ -230,8 +230,9 @@ function reloadNotes(int) {
 
                                     // Append noteDiv to the element with id 'notesNames'
                                     const notesNamesElem = document.getElementById('notesFav');
+                                    const notesFavDiv = document.getElementById('notesFavDiv');
                                     if (notesNamesElem) {
-                                        notesNamesElem.style.display = ""
+                                        notesFavDiv.style.display = ""
                                         notesNamesElem.appendChild(noteDiv);
                                     } else {
                                         console.error('Element with id "notesNames" not found.');
