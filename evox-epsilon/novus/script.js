@@ -66,6 +66,8 @@ if (document.getElementById("navBar").offsetWidth > 269) {
     document.documentElement.style.setProperty('--appContWith', '90.5%');
     document.documentElement.style.setProperty('--horLine', '100%');
     document.documentElement.style.setProperty('--verLine', '192%');
+    document.documentElement.style.setProperty('--sideBarWidth', '-21%');
+    document.documentElement.style.setProperty('--sideDisplay', 'none');
 }
 
 function isElementInViewport(el) {
@@ -157,3 +159,62 @@ function changeAppSection(elem) {
     }
 
 }
+
+const draggableT = document.getElementById('navbar-tasco');
+const draggableA = document.getElementById('navbar-activity');
+const draggableM = document.getElementById('navbar-messages')
+const draggableS = document.getElementById('navbar-social');
+const draggableSS = document.getElementById('navbar-settings');
+const draggableU = document.getElementById('navbar-updates');
+const dropZone = document.getElementById('drop-zone');
+
+
+draggableT.addEventListener('dragstart', (event) => {
+    event.dataTransfer.setData('text/plain', event.target.id);
+    event.dataTransfer.effectAllowed = 'move';
+});
+draggableA.addEventListener('dragstart', (event) => {
+    event.dataTransfer.setData('text/plain', event.target.id);
+    event.dataTransfer.effectAllowed = 'move';
+});
+draggableM.addEventListener('dragstart', (event) => {
+    event.dataTransfer.setData('text/plain', event.target.id);
+    event.dataTransfer.effectAllowed = 'move';
+});
+draggableS.addEventListener('dragstart', (event) => {
+    event.dataTransfer.setData('text/plain', event.target.id);
+    event.dataTransfer.effectAllowed = 'move';
+});
+draggableSS.addEventListener('dragstart', (event) => {
+    event.dataTransfer.setData('text/plain', event.target.id);
+    event.dataTransfer.effectAllowed = 'move';
+});
+draggableU.addEventListener('dragstart', (event) => {
+    event.dataTransfer.setData('text/plain', event.target.id);
+    event.dataTransfer.effectAllowed = 'move';
+});
+dropZone.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+    dropZone.classList.add('drag-over');
+
+});
+dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('drag-over');
+});
+dropZone.addEventListener('drop', (event) => {
+    event.preventDefault();
+    const id = event.dataTransfer.getData('text/plain');
+    console.log(id)
+    //const draggableElement = document.getElementById(id);
+    //dropZone.appendChild(draggableElement);
+    dropZone.classList.remove('drag-over');
+    if(id === "navbar-tasco") {
+
+    }
+    if(id === "navbar-settings") {
+        console.log("hit")
+        document.getElementById("settings-side").style.display = "flex"
+    }
+    document.getElementById("drop-zone").style.display = "none"
+});

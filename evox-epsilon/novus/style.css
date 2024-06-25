@@ -10,12 +10,14 @@
 }
 
 :root {
-    --SearchWidth : 60%;
+    --SearchWidth: 60%;
     --appContWith: 60.5%;
     --horLine: 62%;
     --verLine: 62%;
     --setProfile: 3px;
     --navbarMargin: 5px;
+    --sideBarWidth: 38%;
+    --sideDisplay: flex;
 }
 
 * {
@@ -54,6 +56,7 @@ body {
 .fadeImg {
     transition: 0.5s ease-in-out opacity;
 }
+
 .navbar {
     overflow: hidden;
     position: fixed;
@@ -359,6 +362,7 @@ img {
     color: #ffffffa8;
     border-bottom: 2px solid #426bff9a;
 }
+
 .viewType.active {
     color: #fff;
     margin: 10px;
@@ -400,9 +404,12 @@ img {
 
 .account-info {
     font-size: 13px;
-    position: absolute; /* Position relative to .navbar */
-    bottom: var(--setProfile); /* Default to bottom of .navbar */
-    left: 50%; /* Center horizontally within .navbar */
+    position: absolute;
+    /* Position relative to .navbar */
+    bottom: var(--setProfile);
+    /* Default to bottom of .navbar */
+    left: 50%;
+    /* Center horizontally within .navbar */
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
@@ -415,30 +422,43 @@ img {
         bottom: env(safe-area-inset-bottom);
     }
 }
+
 .user-image {
-    width: 60px; /* Adjust size as needed */
-    height: 60px; /* Adjust size as needed */
-    border-radius: 50%; /* Makes the image circular */
-    overflow: hidden; /* Ensures the image stays within the circle */
-    background-size: cover; /* Ensures the image covers the entire container */
-    background-position: center; /* Center the background image */
-    background-repeat: no-repeat; /* Prevent background image from repeating */
+    width: 60px;
+    /* Adjust size as needed */
+    height: 60px;
+    /* Adjust size as needed */
+    border-radius: 50%;
+    /* Makes the image circular */
+    overflow: hidden;
+    /* Ensures the image stays within the circle */
+    background-size: cover;
+    /* Ensures the image covers the entire container */
+    background-position: center;
+    /* Center the background image */
+    background-repeat: no-repeat;
+    /* Prevent background image from repeating */
 }
 
 
 
 .info {
-    margin-left: 10px; /* Adjust spacing between image and text */
+    margin-left: 10px;
+    /* Adjust spacing between image and text */
 }
 
 .info p {
-    margin: 0; /* Remove default margin */
-    font-weight: bold; /* Example styling for username */
+    margin: 0;
+    /* Remove default margin */
+    font-weight: bold;
+    /* Example styling for username */
 }
 
 .info span {
-    font-style: italic; /* Example styling for role */
-    color: #666; /* Example color */
+    font-style: italic;
+    /* Example styling for role */
+    color: #666;
+    /* Example color */
 }
 
 .board {
@@ -455,7 +475,7 @@ img {
     justify-content: center;
     display: flex;
     flex-direction: column;
-    
+
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
@@ -473,10 +493,13 @@ img {
     justify-content: center;
     display: flex;
     flex-direction: column;
-    position: relative; /* Ensure relative positioning */
+    position: relative;
+    /* Ensure relative positioning */
     border-radius: 10px;
-    overflow: hidden; /* Ensures the image stays within the circle */
+    overflow: hidden;
+    /* Ensures the image stays within the circle */
 }
+
 .cardApp p {
     z-index: 999;
     color: #fff;
@@ -490,7 +513,8 @@ img {
     max-width: 200px;
     padding: 10px;
     height: auto;
-    border: 2px dashed #292929; /* Border style dotted */
+    border: 2px dashed #292929;
+    /* Border style dotted */
     border-radius: 20px;
 }
 
@@ -501,7 +525,8 @@ img {
     height: auto;
     justify-content: center;
     text-align: center;
-    border: 2px dashed #292929; /* Border style dotted */
+    border: 2px dashed #292929;
+    /* Border style dotted */
     border-radius: 20px;
 }
 
@@ -513,25 +538,131 @@ img {
     display: flex;
     flex-direction: row;
 }
+
 .cardApp .background {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-size: cover; /* Ensures the image covers the entire container */
-    background-position: center; /* Center the background image */
-    background-repeat: no-repeat; /* Prevent background image from repeating */
-    filter: blur(2px); /* Apply blur effect to the background image */
-    z-index: 1; /* Move the background behind other content */
+    background-size: cover;
+    /* Ensures the image covers the entire container */
+    background-position: center;
+    /* Center the background image */
+    background-repeat: no-repeat;
+    /* Prevent background image from repeating */
+    filter: blur(2px);
+    /* Apply blur effect to the background image */
+    z-index: 1;
+    /* Move the background behind other content */
     border-radius: 20px;
 }
 
 .cardApp::before {
     content: '';
     position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background: inherit;
     filter: blur(8px);
     z-index: 3;
+}
+
+.drag-over {
+    background-color: #292929;
+}
+
+.sideBar {
+    display: var(--sideDisplay);
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    z-index: 99;
+    width: var(--sideBarWidth);
+    overflow-x: hidden;
+    padding: 20px;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.sideBar h3 {
+    /* top | right | bottom | left */
+    width: auto;
+    padding: 150px 0 150px 0;
+    border: 2px dashed #292929;
+    /* Border style dotted */
+    border-radius: 20px;
+    transition: 0.3s ease-in-out background-color;
+}
+
+.sectionApps {
+    
+    display: none;
+    justify-content:flex-start;
+    /* Centers the element horizontally */
+    align-items: center;
+    /* Centers the element vertically, if needed */
+    height: 100vh;
+    /* Optional: Sets the height of the container to 100% of the viewport height */
+    flex-direction: column;
+}
+
+input[type=checkbox]{
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+
+label {
+	cursor: pointer;
+	text-indent: -9999px;
+	width: 100px;
+	height: 50px;
+	background: grey;
+	display: block;
+	border-radius: 100px;
+	position: relative;
+}
+
+label:after {
+	content: '';
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	width: 40px;
+	height: 40px;
+	background: #fff;
+	border-radius: 90px;
+	transition: 0.3s;
+}
+
+input:checked + label {
+	background: #bada55;
+}
+
+input:checked + label:after {
+	left: calc(100% - 5px);
+	transform: translateX(-100%);
+}
+
+label:active:after {
+	width: 90px;
+}
+
+.setting {
+    
+    padding: 20px;
+    background-color: #292929;
+    width: 80%;
+    flex-direction: row;
+}
+
+.setting label {
+    position: absolute;
+    right: 10%;
 }
