@@ -6381,7 +6381,7 @@ function app_use_info(app) {
 		})
 	} else if (app === "tasco") {
 		navigator('sign_in_wevox_t')
-		fetch(`https://data.evoxs.xyz/tasco?method=getUserNotesInfo&username=${localStorage.getItem("t50-username")}`)
+		fetch(`https://data.evoxs.xyz/tasco?method=getUserNotesInfo&username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 			.then(response => {
 				if (!response.ok) {
 					throw new Error('Network response was not ok');
