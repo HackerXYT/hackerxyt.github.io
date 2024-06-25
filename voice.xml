@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
-    <Say voice="woman">Computer Moved. Take Action.</Say>
+    <Say>
+      The desktop computer has been relocated within the main room.
+    </Say>
 </Response>
