@@ -590,7 +590,7 @@ img {
     box-sizing: border-box;
 }
 
-.sideBar h3 {
+#drop-zone {
     /* top | right | bottom | left */
     width: auto;
     padding: 150px 0 150px 0;
@@ -601,9 +601,9 @@ img {
 }
 
 .sectionApps {
-    
+
     display: none;
-    justify-content:flex-start;
+    justify-content: flex-start;
     /* Centers the element horizontally */
     align-items: center;
     /* Centers the element vertically, if needed */
@@ -612,50 +612,52 @@ img {
     flex-direction: column;
 }
 
-input[type=checkbox]{
-	height: 0;
-	width: 0;
-	visibility: hidden;
+input[type=checkbox] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
 }
 
 label {
-	cursor: pointer;
-	text-indent: -9999px;
-	width: 100px;
-	height: 50px;
-	background: grey;
-	display: block;
-	border-radius: 100px;
-	position: relative;
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 100px;
+    height: 50px;
+    background: grey;
+    display: block;
+    border-radius: 100px;
+    position: relative;
 }
+
+
 
 label:after {
-	content: '';
-	position: absolute;
-	top: 5px;
-	left: 5px;
-	width: 40px;
-	height: 40px;
-	background: #fff;
-	border-radius: 90px;
-	transition: 0.3s;
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s;
 }
 
-input:checked + label {
-	background: #bada55;
+input:checked+label {
+    background: #bada55;
 }
 
-input:checked + label:after {
-	left: calc(100% - 5px);
-	transform: translateX(-100%);
+input:checked+label:after {
+    left: calc(100% - 5px);
+    transform: translateX(-100%);
 }
 
 label:active:after {
-	width: 90px;
+    width: 90px;
 }
 
 .setting {
-    
+
     padding: 20px;
     background-color: #292929;
     width: 80%;
@@ -665,4 +667,427 @@ label:active:after {
 .setting label {
     position: absolute;
     right: 10%;
+}
+
+.messages-side-cont {
+    display: flex;
+    justify-content: center;
+    /* Centers the element horizontally */
+    align-items: center;
+    /* Centers the element vertically, if needed */
+    flex-direction: column;
+    /* Optional: Sets the height of the container to 100% of the viewport height */
+    width: 100%;
+}
+
+.parentP {
+    font-size: 22px;
+    font-family: "SFLight";
+}
+
+.list-user-info {
+    background-color: #191919;
+    position: relative;
+    display: inline-block;
+    position: relative;
+    margin: 10px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: 10px;
+    width: 100%;
+    min-width: 90%;
+   
+}
+
+.user-circle-sl {
+    color: #fff;
+    background-color: #000;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.activeUser {
+    box-shadow: 0 0 8px 1px #108c18b3;
+}
+
+.user-circle-sl img {
+    flex-shrink: 0;
+    /* Prevent image from stretching */
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.user-circle-sl p {
+    font-family: "SF-username";
+    color: #fff;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-size: 18px;
+    font-weight: bold;
+    align-self: flex-start;
+    /* Align to the left */
+}
+
+.user-email {
+    align-self: flex-start;
+    white-space: nowrap;
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+    /* Optional: Add some space between name and email */
+}
+
+.project-overview {
+    background-color: #1e1e1e00;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-width: 100%;
+}
+
+
+
+.overview-header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: #191919;
+    border-radius: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    width: 400px;
+}
+
+.overview-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    height: 80px;
+    border-radius: 2px 15px 15px 2px;
+    width: 8.5px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+    /* Center the element */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.overview-header::before {
+    background-color: #8c8c8c;
+    /* Blue color on hover */
+}
+
+.overview-header h2 {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.overview-details {
+    
+}
+
+.overview-details .detail-item {
+    font-family: "SFLight";
+    font-size: 15px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.overview-details .label {
+    margin-right: 10%;
+    align-items: flex-start;
+    font-weight: normal;
+}
+
+.vo {
+    position: absolute;
+    left: 40%;
+}
+
+.avatar {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 5px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border: #757575 solid 1px;
+}
+
+.team-chat h3 {
+    margin-top: 0;
+    font-size: 16px;
+
+}
+
+.team-chat {
+    width: 100%; /* Adjust as needed */
+    overflow-x: visible; /* or overflow: hidden; */
+}
+
+.chat-date {
+    font-family: "SFLight";
+    text-align: left;
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.chat-message {
+    display: flex;
+    margin-bottom: 10px;
+    flex-direction: column;
+}
+
+.chat-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.messagePack {
+    display: flex;
+    flex-direction: row;
+}
+
+.messagePackMe {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+}
+
+.messagePackMe .chat-avatar {
+    margin-left: 10px;
+}
+.message-content {
+    background-color: #191919;
+    border-radius: 5px;
+    padding: 10px;
+    width: auto;
+    max-width: 80%;
+}
+
+.message-content p {
+    margin: 5px 0;
+    
+}
+
+.message-content img {
+    margin: 0;
+    
+}
+
+.msgCont {
+    color: #6d6d6d;
+    font-family: "SFLight";
+    font-size: 15px;
+    align-items: left;
+    text-align: left;
+}
+
+.nameTopMsg {
+    
+    color: #d9d9d9;
+    font-family: "SF";
+    font-weight: lighter;
+    font-size: 17px;
+    align-items: left;
+    text-align: left;
+}
+
+.message-time {
+    text-align: left;
+    margin-top: 10px;
+    margin-left: 50px;
+    font-size: 12px;
+    color: #666666;
+    font-family: "SFLight";
+}
+
+.message-time-me {
+    text-align: right;
+    margin-top: 10px;
+    margin-right: 65px;
+    font-size: 12px;
+    color: #666666;
+    font-family: "SFLight";
+}
+
+.file-attachment {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.file-attachment img {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+
+.message-input {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.message-input input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #2a2a2a;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.message-input button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+.message-input button:hover {
+    background-color: #0056b3;
+}
+
+.attachment {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the start of the flex container (left side) */
+}
+
+.attachment .theRow {
+    display: flex; /* Nested flex container */
+    flex-direction: row; /* Items in theRow should be in a row */
+    align-items: center; /* Align items vertically in the center */
+}
+
+.attachment img {
+    width: 24px; /* Adjust the width of the PDF icon as needed */
+    height: 24px; /* Adjust the height of the PDF icon as needed */
+    margin-right: 10px; /* Space between icon and text */
+}
+
+.attachment .textWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.attachment p {
+    font-family: "SFLight";
+    font-size: 15px;
+    margin: 0; /* Remove default margin */
+    color: #9d9d9d;
+}
+
+.attachment span {
+    font-family: "SFLight";
+    font-size: 12px;
+    color: #4b4b4b;
+}
+.infoWrap {
+    flex-direction: column;
+    justify-content: left;
+    text-align: left;
+}
+
+
+.theRow .imgBox {
+    margin-left: 15px;
+    width: 20px;
+    height: 20px;
+    background-color: #2b2b2b;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.theRow .imgBoxLast {
+    width: 20px;
+    height: 20px;
+    background-color: #2b2b2b;
+    border-radius: 8px;
+    padding: 5px;
+    margin-left: 0;
+    margin-left: 0;
+}
+
+.bottom-actions {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    margin-left: 20px; /* Adjust margin as needed */
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+.msgInput {
+    position: relative; /* Ensure relative positioning for children */
+    float: left; /* Float the input container to the left */
+    width: calc(100% - 40px); /* Adjust width to accommodate margins and padding */
+}
+
+.msgInput input {
+    margin-left: 5px;
+    float: left;
+    width: 78%; /* Fill the entire width of parent container */
+    background-color: #0a0a0a;
+    color: #8c8c8c;
+    border: 1px solid #282828;
+    padding: 10px 20px 10px 45px; /* Adjust padding to make space for icon */
+    border-radius: 10px;
+    font-size: 17px;
+}
+
+.attach-icon {
+    margin-left: 7px;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+}
+
+.msgInput .sendImg {
+    float: right; /* Float the image to the right */
+    margin-right: 5px; /* Adjust margin as needed */
+    width: 30px;
+    height: 30px;
+    background-color: #2b2b2b;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.chat-messages {
+    max-height: 550px;
+    overflow-y: auto;
 }

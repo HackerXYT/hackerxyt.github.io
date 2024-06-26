@@ -148,11 +148,11 @@ function changeAppSection(elem) {
     div2.classList.remove("active")
     div3.classList.remove("active")
 
-    if(cha === 'mu') {
+    if (cha === 'mu') {
         div1.classList.add("active")
-    } else if(cha === 'ru') {
+    } else if (cha === 'ru') {
         div2.classList.add("active")
-    } else if(cha === 'tf') {
+    } else if (cha === 'tf') {
         div3.classList.add("active")
     } else {
         alert(`Error! ${cha} is not identified.`)
@@ -209,12 +209,23 @@ dropZone.addEventListener('drop', (event) => {
     //const draggableElement = document.getElementById(id);
     //dropZone.appendChild(draggableElement);
     dropZone.classList.remove('drag-over');
-    if(id === "navbar-tasco") {
-
+    let accepted = false;
+    if (id === "navbar-tasco") {
+        accepted = true
     }
-    if(id === "navbar-settings") {
+    if (id === "navbar-messages") {
+        accepted = true
+        document.getElementById("messages-side").style.display = "flex"
+    }
+    if (id === "navbar-settings") {
         console.log("hit")
         document.getElementById("settings-side").style.display = "flex"
     }
-    document.getElementById("drop-zone").style.display = "none"
+    if (accepted) {
+        document.getElementById("drop-zone").style.display = "none"
+    }
+
 });
+document.getElementById("messages-side").style.display = "flex"
+document.getElementById("drop-zone").style.display = "none"
+
