@@ -21,6 +21,18 @@
             srv = "https://data.evoxs.xyz"
             localStorage.setItem("currentSrv", "https://data.evoxs.xyz")
         }
+
+        var newScale = prompt("Enter a new initial scale value (e.g., 0.5, 1.0, 2.0):");
+
+        // Validate user input (you may want to add more validation)
+        if (newScale) {
+            // Update the viewport meta tag with the new initial scale value
+            var viewportMeta = document.getElementById('viewport-meta');
+            viewportMeta.setAttribute('content', `width=device-width, initial-scale=${newScale}, user-scalable=no`);
+        } else {
+            alert("Invalid input or canceled. No changes made.");
+        }
+
     </script>
 </head>
 
@@ -244,7 +256,7 @@
 
         </div>
         <div class="sideBar">
-            <h3 id="drop-zone">Drag N Drop</h3>
+            <h3 id="drop-zone">Drag Item To Multitask</h3>
             <div class="sectionApps" id="settings-side">
                 <h2>Settings</h2>
                 <div class="setting">
@@ -273,16 +285,17 @@
                         <div class="overview-header">
                             <div class="overview-details">
                                 <div class="detail-item">
-                                    <span class="label"><img src="calendar.svg">Timeline:</span> <span class="vo">Jan 3
+                                    <span class="label"><img src="calendar.svg">Timeline:</span> <span id="voCreation"
+                                        class="vo">Jan 3
                                         - Sept</span>
                                 </div>
                                 <div class="detail-item">
                                     <span class="label">
                                         <img src="group.svg">Team:
                                     </span>
-                                    <span class="vo"><img src="evox-logo-apple.png" alt="Avatar 1" class="avatar"> <img
-                                            style="margin-left: -13px;" src="dc.png" alt="Avatar 2"
-                                            class="avatar"></span>
+                                    <span class="vo"><img id="av1" src="evox-logo-apple.png" alt="Avatar 1"
+                                            class="avatar"> <img id="av2" style="margin-left: -13px;" src="dc.png"
+                                            alt="Avatar 2" class="avatar"></span>
                                 </div>
                                 <div class="detail-item">
                                     <span class="label"><img src="status.svg">Status:</span> <span class="vo">In
@@ -291,23 +304,24 @@
                             </div>
                         </div>
                         <div class="team-chat">
-                            <p style="text-align: left;margin-bottom: 2px;">Chat Name [Admin]</p>
-                            <div class="chat-date">Fri 29 July 2022</div>
+                            <p id="recipientName" style="text-align: left;margin-bottom: 2px;">Chat Name [Admin]</p>
+                            <div class="chat-date">Encrypted Chat</div>
                             <div class="parent-div">
-                            <div id="messages-container" class="chat-messages">
-                                <div class="chat-message">
-                                    <div class="messagePack">
-                                        <img src="evox-logo-apple.png" alt="Kristin Watson" class="chat-avatar">
-                                        <div class="message-content">
-                                            <p class="nameTopMsg">Kristin Watson</p>
-                                            <p class="msgCont">Hello Robert! We need more time for priority tasks. I'll
-                                                send two brief files
-                                                here. Attach yours too so we can continue with the Project.</p>
+                                <div id="messages-container" class="chat-messages">
+                                    <div class="chat-message">
+                                        <div class="messagePack">
+                                            <img src="evox-logo-apple.png" alt="Kristin Watson" class="chat-avatar">
+                                            <div class="message-content">
+                                                <p class="nameTopMsg">Kristin Watson</p>
+                                                <p class="msgCont">Hello Robert! We need more time for priority tasks.
+                                                    I'll
+                                                    send two brief files
+                                                    here. Attach yours too so we can continue with the Project.</p>
+                                            </div>
                                         </div>
+                                        <div class="message-time">11:00 AM</div>
                                     </div>
-                                    <div class="message-time">11:00 AM</div>
-                                </div>
-                                <!--<div class="chat-message">
+                                    <!--<div class="chat-message">
                                     <div class="messagePack">
                                         <img src="evox-logo-apple.png" alt="Kristin Watson" class="chat-avatar">
                                         <div class="message-content">
@@ -316,43 +330,43 @@
                                     </div>
                                     <div class="message-time">11:00 AM</div>
                                 </div>-->
-                                <div class="chat-message">
-                                    <div class="messagePack">
-                                        <img src="evox-logo-apple.png" alt="Kristin Watson" class="chat-avatar">
-                                        <div class="message-content">
-                                            <div class="attachment">
-                                                <div class="theRow">
-                                                    <img src="pdf.svg">
+                                    <div class="chat-message">
+                                        <div class="messagePack">
+                                            <img src="evox-logo-apple.png" alt="Kristin Watson" class="chat-avatar">
+                                            <div class="message-content">
+                                                <div class="attachment">
+                                                    <div class="theRow">
+                                                        <img src="pdf.svg">
 
-                                                    <div class="infoWrap">
-                                                        <p>New_Project</p>
-                                                        <span>PDF &#x2022; 1.9MB</span>
+                                                        <div class="infoWrap">
+                                                            <p>New_Project</p>
+                                                            <span>PDF &#x2022; 1.9MB</span>
+
+                                                        </div>
+                                                        <img class="imgBox" src="download.svg">
+                                                        <img class="imgBoxLast" style="" src="delete.svg">
 
                                                     </div>
-                                                    <img class="imgBox" src="download.svg">
-                                                    <img class="imgBoxLast" style="" src="delete.svg">
 
                                                 </div>
 
                                             </div>
+                                        </div>
+                                        <div class="message-time">11:00 AM</div>
+                                    </div>
+                                    <div class="chat-message">
+                                        <div class="messagePackMe">
+                                            <img src="dc.png" alt="Kristin Watson" class="chat-avatar">
+                                            <div class="message-content">
+                                                <p class="nameTopMsg">Me</p>
+                                                <p class="msgCont">Hello Robert!</p>
+                                            </div>
 
                                         </div>
                                     </div>
-                                    <div class="message-time">11:00 AM</div>
+                                    <div class="message-time-me">11:00 AM</div>
                                 </div>
-                                <div class="chat-message">
-                                    <div class="messagePackMe">
-                                        <img src="dc.png" alt="Kristin Watson" class="chat-avatar">
-                                        <div class="message-content">
-                                            <p class="nameTopMsg">Me</p>
-                                            <p class="msgCont">Hello Robert!</p>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="message-time-me">11:00 AM</div>
                             </div>
-                        </div>
 
                         </div>
                         <div class="bottom-actions">
@@ -362,7 +376,7 @@
                                 <img class="sendImg" src="send.svg">
                             </div>
 
-                            
+
                         </div>
                     </div>
                 </div>

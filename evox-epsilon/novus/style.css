@@ -1040,6 +1040,9 @@ label:active:after {
     margin-left: 0;
 }
 
+.theRow img {
+    border-radius: 8px;
+}
 .bottom-actions {
     position: absolute;
     bottom: 15px;

@@ -226,6 +226,5 @@ dropZone.addEventListener('drop', (event) => {
     }
 
 });
-document.getElementById("messages-side").style.display = "flex"
-document.getElementById("drop-zone").style.display = "none"
+
 
