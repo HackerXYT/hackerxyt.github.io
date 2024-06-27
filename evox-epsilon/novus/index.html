@@ -22,17 +22,7 @@
             localStorage.setItem("currentSrv", "https://data.evoxs.xyz")
         }
 
-        var newScale = prompt("Enter a new initial scale value (e.g., 0.5, 1.0, 2.0):");
-
-        // Validate user input (you may want to add more validation)
-        if (newScale) {
-            // Update the viewport meta tag with the new initial scale value
-            var viewportMeta = document.getElementById('viewport-meta');
-            viewportMeta.setAttribute('content', `width=device-width, initial-scale=${newScale}, user-scalable=no`);
-        } else {
-            alert("Invalid input or canceled. No changes made.");
-        }
-
+        
     </script>
 </head>
 
