@@ -1,0 +1,367 @@
+:root {
+  --body-color: 48 48 58;
+  
+  --font-color: 255 255 255;
+  --highlight-color: 0 0 0;
+  
+  --theme-background: 20 20 20;
+  
+  --theme-light: 0 0 0;
+  --theme-medium: 0 0 0;
+  --theme-dark: 0 0 0;
+}
+
+body {
+  background-color: rgb(var(--body-color));
+  margin: 0px;
+}
+
+body::-webkit-scrollbar {
+  width: 4px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: rgb(var(--theme-background));
+}
+
+body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, input, select, button, span, a, p {
+  color: rgb(var(--font-color));
+  font-family: "Noto Sans", sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0px;
+}
+
+button, a, input {  
+  outline: none;
+}
+
+.highlight {
+  color: rgb(var(--highlight-color));
+}
+
+.fancy-scrollbar::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+.fancy-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.fancy-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  height: 0px;
+  width: 0px;
+}
+
+#phone {
+  background-color: rgb(var(--theme-background));
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+  height: 851px;
+  width: 393px;  
+  margin: 100px auto;
+  position: relative;
+  overflow: hidden;
+}
+
+#main-wrapper {
+  height: 100%;
+  overflow: auto;
+}
+
+#main {
+  height: 100%;
+}
+
+#content {
+  padding: 1rem;
+}
+
+#links-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 0.75rem;
+}
+
+#links-container > a {
+  color: rgb(255 255 255 / 80%);
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+
+#links-container > a:is(:hover, :focus) {
+  text-decoration: underline; 
+}
+
+#header-container {
+  width: 100%;
+  position: relative;
+  margin-top: 1rem;
+}
+
+#logo {
+  display: flex;
+  width: 100%; 
+  border-radius: 0.5rem;
+  border-bottom-left-radius: 0.2rem;
+  border-bottom-right-radius: 0.2rem;
+}
+
+#user-menu-button {
+  height: 47%;
+  position: absolute;
+  right: 0rem;
+  bottom: 0rem;
+  background-color: transparent;
+  margin-right: 3.52%;
+  margin-bottom: 2.70%;
+  padding: 0rem;
+  border: none;
+  border-radius: 100%;
+}
+
+#user-menu-button > img {
+  display: flex;
+  height: 100%;
+  border-radius: inherit;
+}
+
+#search-container {
+  display: flex;
+  gap: 0.2rem;
+  margin-top: 0.2rem;  
+}
+
+#search-input-container > input,
+#search-container > button {
+  background-color: rgb(255 255 255 / 10%);
+  color: rgb(255 255 255 / 80%);
+  font-size: 1rem;
+  border: none;
+}
+
+#search-input-container:has(input:focus),
+#search-container > button:focus {
+  background-color: rgb(255 255 255 / 16%);
+}
+
+#search-container > button {
+  width: 3.5rem;
+  border-radius: 0.2rem;
+  cursor: pointer;
+}
+
+#search-container > #image-button {  
+  border-bottom-right-radius: 0.5rem;
+}
+
+#search-input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: rgb(255 255 255 / 10%);
+  padding-left: 1rem;
+  border-radius: 0.2rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+#search-input-container > img {
+  height: 1.5rem;
+}
+
+#search-input-container > input {
+  width: 100%;
+  height: 3.25rem;
+  background-color: transparent;
+  padding: 1rem;  
+  padding-left: 0rem;
+}
+
+#apps-container {
+  display: grid;
+  gap: 0.2rem;
+  grid-template-columns: repeat(2, 50%);  
+  margin: 3rem 0rem;
+}
+
+#apps-container > a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgb(255 255 255 / 10%);
+  padding: 1rem 0.75rem;
+  border-radius: 0.2rem;
+  text-decoration: none;
+}
+
+#apps-container > a > i {
+  height: 2rem; 
+  width: 2rem; 
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  line-height: 2rem; 
+  text-align: center;
+}
+
+#apps-container > a > .label {
+  width: calc(100% - 2.5rem);
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  overflow: hidden;
+}
+
+#apps-container > a > .label > :is(.name, .url) {
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#apps-container > a > .label > .name {
+  font-size: 0.8rem;
+}
+
+#apps-container > a > .label > .url {
+  font-size: 0.7rem;
+  color: rgb(255 255 255 / 50%);
+}
+
+#apps-container > a:is(:hover, :focus) {
+  background-color: rgb(255 255 255 / 16%);
+}
+
+#apps-container > a:first-child {
+  border-top-left-radius: 0.5rem;
+}
+
+#apps-container > a:nth-child(2) {  
+  color: rgb(255, 0, 0);
+  border-top-right-radius: 0.5rem;
+}
+
+#apps-container > a:nth-child(3) {  
+  color: rgb(28, 204, 91);
+}
+
+#apps-container > a:nth-child(4) {  
+  color: rgb(28, 147, 228);
+}
+
+#apps-container > a:nth-child(5) {  
+  color: rgb(242, 85, 90);
+}
+
+#apps-container > a:nth-child(7) {  
+  border-bottom-left-radius: 0.5rem;
+}
+
+#apps-container > a:last-child {
+  color: rgb(15, 118, 14);
+  border-bottom-right-radius: 0.5rem; 
+}
+
+#discover-container {
+  width: 100%;
+}
+
+#discover-toggles {
+  width: 80%;
+  display: flex; 
+  background-color: rgb(255 255 255 / 7.5%);
+  margin: auto;
+  border-radius: 0.5rem;
+}
+
+#discover-toggles > button {
+  flex-grow: 1;
+  background-color: transparent;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  outline: none;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+#discover-toggles > button:first-child {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  background-color: rgb(255 255 255 / 10%);
+}
+
+#discover-toggles > button:last-child {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+#discover-feed {
+  margin-top: 0.5rem;
+}
+
+.discover-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-decoration: none;
+}
+
+.discover-card > img {
+  width: 100%;
+  aspect-ratio: 1.6 / 1;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.discover-card > .discover-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  background-color: rgb(255 255 255 / 10%);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+.discover-card > .discover-card-info > .title {
+  font-size: 0.8rem;
+}
+
+.discover-card > .discover-card-info > .desc {
+  font-size: 0.7rem;
+  color: rgb(255 255 255 / 50%);
+}
+
+@media(max-width: 500px) {
+  body {
+    overflow: auto;  
+  }
+  
+  #phone {
+    height: 100vh;
+    display: flex;
+    width: 100%;
+    margin: 0px auto;
+  }
+  
+  #main-wrapper {
+    width: 100%;
+    flex-grow: 1;
+  }
+}
