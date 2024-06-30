@@ -11,11 +11,6 @@
   --theme-dark: 0 0 0;
 }
 
-@font-face {
-  font-family: "SF";
-  src: url('SFUIText-Medium.ttf');
-}
-
 body {
   background-color: rgb(var(--body-color));
   margin: 0px;
@@ -48,7 +43,7 @@ span,
 a,
 p {
   color: rgb(var(--font-color));
-  font-family: "SF";
+  font-family: "Noto Sans", sans-serif;
   font-size: 1rem;
   font-weight: 400;
   margin: 0px;
@@ -233,7 +228,7 @@ input {
 }
 
 #apps-container p {
-  font-family: "SF";
+  font-family: "Noto Sans", sans-serif;
   font-weight: bolder;
   text-shadow: rgba(0, 0, 0, 0.341) 0px 2px 5px;
 
@@ -373,19 +368,19 @@ input {
 
 @media(max-width: 500px) {
   body {
-    overflow: auto;
+      overflow: auto;
   }
 
   #phone {
-    height: 100vh;
-    display: flex;
-    width: 100%;
-    margin: 0px auto;
+      height: 100vh;
+      display: flex;
+      width: 100%;
+      margin: 0px auto;
   }
 
   #main-wrapper {
-    width: 100%;
-    flex-grow: 1;
+      width: 100%;
+      flex-grow: 1;
   }
 }
 
@@ -450,7 +445,7 @@ input {
 }
 
 .oasaBased .timeBox {
-  font-family: "SF";
+  font-family: "Noto Sans", sans-serif;
   width: 100%;
   text-align: left;
   background-color: #2f7552;
@@ -472,7 +467,7 @@ input {
 }
 
 .evoxBased .timeBox {
-  font-family: "SF";
+  font-family: "Noto Sans", sans-serif;
   width: 100%;
   text-align: left;
   background-color: #333;
