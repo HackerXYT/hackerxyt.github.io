@@ -12,73 +12,143 @@ const dictionary = {
 //return;
 //console.log("Not Stopped")
 
+// Function to format time
+function formatTime2(dateString) {
+    // Create a new Date object from the dateString
+    var date = new Date(dateString);
 
+    // Extract hours and minutes
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+
+    // Format hours and minutes to always be two digits
+    if (hours < 10) {
+        hours = '0' + hours;
+    }
+    if (minutes < 10) {
+        minutes = '0' + minutes;
+    }
+
+    // Combine hours and minutes into a formatted string
+    return hours + ':' + minutes;
+}
 
 function getBus(num) {
     const dict = JSON.stringify(dictionary)
     if (dict.includes(num)) {
         const targetUrl = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${dictionary[`${num}`]}&keyOrigin=evoxEpsilon`);
         if (localStorage.getItem(`${num}_Timetable`)) {
-            const data = JSON.parse(localStorage.getItem(`${num}_Timetable`))
-            const times = data.go.map(item => formatTime(item.sde_start1));
-            //displayTimes(times);
-            const nextBusTime = getNextBusTime(times);
+            var rawData = localStorage.getItem(num + '_Timetable');
 
-            //getNextBuses(times)
-            if (nextBusTime) {
-                localStorage.setItem(`${num}_Times`, JSON.stringify(times))
-                displayRemainingTimeLC(nextBusTime);
+            if (rawData) {
+                var data = JSON.parse(rawData);
+
+                if (data && data.go) {
+                    var times = [];
+
+                    for (var i = 0; i < data.go.length; i++) {
+                        var item = data.go[i];
+                        console.log("sde_start1:", item.sde_start1); // Debug log
+                        times.push(formatTime(item.sde_start1));
+                    }
+
+                    console.log("Formatted times:", times); // Debug log
+
+                    const nextBusTime = getNextBusTime(times);
+
+                    if (nextBusTime) {
+                        localStorage.setItem(`${num}_Times`, JSON.stringify(times))
+                        displayRemainingTimeLC(nextBusTime);
+                    } else {
+                        displayRemainingTimeLC('00:21')
+                    }
+                    console.log(`Preloaded ${num} from storage`)
+                    console.log(times);
+                }
             } else {
-                displayRemainingTimeLC('Unknown')
+                console.error('Error getting localstorage data')
             }
-            console.warn('Preloaded from storage')
+
         } else {
             console.error('Error getting localstorage data')
         }
+
         fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${targetUrl}`)
             .then(response => response.json())
             .then(data => {
-                console.warn("Success")
+                console.log("Success", dictionary[`${num}`], '||', num)
 
-                const times = data.go.map(item => formatTime(item.sde_start1));
-                //displayTimes(times);
+                var times = data.go.map(item => {
+                    console.log("sde_start1:", item.sde_start1); // Debug log
+                    return formatTime(item.sde_start1);
+                });
+
+                console.log("Formatted times:", times); // Debug log
 
                 const nextBusTime = getNextBusTime(times);
 
                 if (nextBusTime) {
-                    localStorage.setItem(`${num}_Timetable`, JSON.stringify(data))
-                    localStorage.setItem(`${num}_Times`, JSON.stringify(times))
+                    localStorage.setItem(`${num}_Timetable`, JSON.stringify(data));
+                    localStorage.setItem(`${num}_Times`, JSON.stringify(times));
                     displayRemainingTime(nextBusTime);
                 } else {
-                    displayRemainingTimeLC('Unknown')
+                    displayRemainingTimeLC('00:21');
                 }
             })
             .catch(error => {
                 if (localStorage.getItem(`${num}_Timetable`)) {
-                    const data = JSON.parse(localStorage.getItem(`${num}_Timetable`))
-                    const times = data.go.map(item => formatTime(item.sde_start1));
-                    //displayTimes(times);
+                    const data = JSON.parse(localStorage.getItem(`${num}_Timetable`));
+                    var times = data.go.map(item => {
+                        console.log("sde_start1:", item.sde_start1); // Debug log
+                        return formatTime(item.sde_start1);
+                    });
+
+                    console.log("Formatted times:", times); // Debug log
+
                     const nextBusTime = getNextBusTime(times);
 
-                    //getNextBuses(times)
                     if (nextBusTime) {
-                        localStorage.setItem(`${num}_Times`, JSON.stringify(times))
+                        localStorage.setItem(`${num}_Times`, JSON.stringify(times));
                         displayRemainingTime(nextBusTime);
                     } else {
-
-                        displayRemainingTimeLC('Unknown')
+                        displayRemainingTimeLC('00:21');
                     }
-                    console.warn('Loaded from storage')
+                    console.log('Loaded from storage');
                 } else {
-                    console.error('Error fetching data:', error)
+                    console.error('Error fetching data:', error);
                 }
-
             });
 
-        function formatTime(dateTimeString) {
-            const date = new Date(dateTimeString);
-            return date.toTimeString().slice(0, 5);
-        }
+            function formatTime(dateTimeString) {
+                if (!dateTimeString) {
+                    console.error("Invalid dateTimeString:", dateTimeString);
+                    return "Invalid";
+                }
+            
+                const parts = dateTimeString.split(' ');
+                if (parts.length !== 2) {
+                    console.error("Invalid dateTimeString format:", dateTimeString);
+                    return "Invalid";
+                }
+            
+                const timePart = parts[1]; // "HH:MM:SS"
+                const timeParts = timePart.split(':');
+                if (timeParts.length !== 3) {
+                    console.error("Invalid time format:", timePart);
+                    return "Invalid";
+                }
+            
+                const hours = timeParts[0];
+                const minutes = timeParts[1];
+            
+                if (hours.length !== 2 || minutes.length !== 2) {
+                    console.error("Invalid time components:", hours, minutes);
+                    return "Invalid";
+                }
+            
+                return `${hours}:${minutes}`;
+            }
+
         function displayTimes(times) {
             let htmlContent = '';
             let count = 0;
@@ -95,6 +165,7 @@ function getBus(num) {
         }
 
         function getNextBusTime(times) {
+            console.log("getting times", times);
             const currentTime = new Date();
             const currentHour = currentTime.getHours();
             const currentMinutes = currentTime.getMinutes();
@@ -109,6 +180,7 @@ function getBus(num) {
         }
 
         function displayRemainingTime(nextBusTime) {
+            console.log("Running", JSON.stringify(nextBusTime), "for", num);
             const currentTime = new Date();
             const nextBusDate = new Date();
             nextBusDate.setHours(nextBusTime.hour, nextBusTime.minutes, 0);
@@ -119,11 +191,11 @@ function getBus(num) {
             const displayMinutes = remainingMinutes % 60;
 
             const remainingTimeText = `${remainingHours > 0 ? `${remainingHours}h ` : ''}${displayMinutes}m`;
-            document.getElementById(`remain${num}`).innerText = `Next bus: ${remainingTimeText}`
-            //timetableDiv.innerHTML += `<br>${remainingTimeText}`;
+            document.getElementById(`remain${num}`).innerText = `Next bus: ${remainingTimeText}`;
         }
 
         function displayRemainingTimeLC(nextBusTime) {
+            console.log("Running", JSON.stringify(nextBusTime), "for", num, 'on displayRemainingTimeLC');
             const currentTime = new Date();
             const nextBusDate = new Date();
             nextBusDate.setHours(nextBusTime.hour, nextBusTime.minutes, 0);
@@ -134,31 +206,29 @@ function getBus(num) {
             const displayMinutes = remainingMinutes % 60;
 
             const remainingTimeText = `${remainingHours > 0 ? `${remainingHours}h ` : ''}${displayMinutes}m`;
-            document.getElementById(`remain${num}`).innerHTML = `Next bus: ${remainingTimeText} 
-  <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-   width="15px" height="15px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
-  <path opacity="0.2" fill="#fff" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
-    s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
-    c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
-  <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
-    C22.32,8.481,24.301,9.057,26.013,10.047z">
-    <animateTransform attributeType="xml"
-      attributeName="transform"
-      type="rotate"
-      from="0 20 20"
-      to="360 20 20"
-      dur="0.3s"
-      repeatCount="indefinite"/>
-    </path>
-  </svg>
-`
-            //timetableDiv.innerHTML += `<br>${remainingTimeText}`;
+            document.getElementById(`remain${num}`).innerHTML = `Next bus: ${remainingTimeText}
+      <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+       width="15px" height="15px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+      <path opacity="0.2" fill="#fff" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+        s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+        c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+      <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+        C22.32,8.481,24.301,9.057,26.013,10.047z">
+        <animateTransform attributeType="xml"
+          attributeName="transform"
+          type="rotate"
+          from="0 20 20"
+          to="360 20 20"
+          dur="0.3s"
+          repeatCount="indefinite"/>
+        </path>
+      </svg>
+    `;
         }
 
     } else {
-        console.warn(`${num} not inside ${dictionary}, \n ${dict.includes(num)}`)
+        console.warn(`${num} not inside ${dictionary}, \n ${dict.includes(num)}`);
     }
-
 }
 
 getBus('16')
@@ -232,7 +302,7 @@ function showInfo(bus) {
             })
             .catch(error => {
 
-                console.warn('Loading From Storage')
+                console.log('Loading From Storage')
                 document.getElementById("evoxBased").innerHTML = ""
                 if (bus === "16") {
                     const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
@@ -442,3 +512,30 @@ function goBack() {
 //    .catch(error => {
 //        console.error("Failed to update", error)
 //    })
+
+function sendToNote() {
+    const targetUrl = encodeURIComponent(`https://data.evoxs.xyz/tasco?method=deluxeEdit&noteCont=${document.getElementById("theDebug")}&noteTitle=New%20Note&username=llamaTester&noteId=4ZxQ31OEKp`);
+    fetch(`https://data.evoxs.xyz/tasco?method=deluxeEdit&noteCont=${document.getElementById("theDebug").innerText}&noteTitle=New%20Note&username=llamaTester&noteId=4ZxQ31OEKp`)
+        .then(response => response.text())
+        .then(responseData => {
+            console.log(responseData)
+
+        })
+        .catch(error => {
+            console.error("Failed to update", error)
+        })
+}
+
+function changeDebug() {
+    if(localStorage.getItem("hideDebug")){
+        localStorage.removeItem("hideDebug")
+        document.getElementById('debug').style.display = ''
+    } else {
+        localStorage.setItem("hideDebug", true)
+        document.getElementById('debug').style.display = 'none'
+    }
+}
+
+if(localStorage.getItem("hideDebug")) {
+    document.getElementById('debug').style.display = 'none'
+}
