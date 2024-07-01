@@ -444,8 +444,13 @@ function showchat(element, systemNotice) {//json id=Username
                                         const urlObject = new URL(message.content);
 
                                         const domain = urlObject.hostname;
-                                        const final = `https://logo.clearbit.com/${domain}`
-                                        pdfIcon.src = final
+                                        let final;
+                                        if (domain === 'chatgpt.com') {
+                                            final = `https://logo.clearbit.com/openai.com`
+                                        } else {
+                                            final = `https://logo.clearbit.com/${domain}`
+                                        }
+                                            pdfIcon.src = final
 
 
                                         // Create info wrap
@@ -730,9 +735,13 @@ function showchat(element, systemNotice) {//json id=Username
                                         const urlObject = new URL(message.content);
 
                                         const domain = urlObject.hostname;
-                                        const final = `https://logo.clearbit.com/${domain}`
-                                        pdfIcon.src = final
-
+                                        let final;
+                                        if (domain === 'chatgpt.com') {
+                                            final = `https://logo.clearbit.com/openai.com`
+                                        } else {
+                                            final = `https://logo.clearbit.com/${domain}`
+                                        }
+                                            pdfIcon.src = final
 
                                         // Create info wrap
                                         const infoWrap = document.createElement('div');
