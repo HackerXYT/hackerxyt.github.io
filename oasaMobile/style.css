@@ -10,7 +10,7 @@
   --theme-medium: 0 0 0;
   --theme-dark: 0 0 0;
   --isOldDevice: 0;
-  --isNewDevice: 0;
+  --isNewDevice: 5px;
 }
 
 body {
@@ -506,7 +506,7 @@ input {
   font-family: "Noto Sans", sans-serif;
   width: 95%;
   text-align: left;
-  background-color: #2f7552;
+  background-color: #2f755293;
   border-radius: 15px;
   font-size: large;
   padding: 20px;
@@ -559,4 +559,9 @@ input {
   padding: 10px;
   border-radius: 23px;
   width: 130px;
+}
+
+.timeBox p {
+  font-size: 14px;
+  color: #aeaeae;
 }
