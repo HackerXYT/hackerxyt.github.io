@@ -448,48 +448,48 @@ function getNextBusesPanagitsa(times) {
     const now = new Date();
     const currentTime = now.getHours() * 60 + now.getMinutes(); // Current time in minutes since midnight
 
-    const remainingTimes = times.map(time => {
+    const busTimes = times.map(time => {
         const [hours, minutes] = time.split(':').map(Number);
         const busTime = hours * 60 + minutes; // Bus time in minutes since midnight
         const diff = busTime - currentTime;
-        return diff >= 0 ? diff : diff + 24 * 60; // Adjust for next day if time is negative
-    }).filter(diff => diff >= 0); // Only keep times that are in the future
+        return {
+            time,
+            remainingTime: diff >= 0 ? diff : diff + 24 * 60 // Adjust for next day if time is negative
+        };
+    }).filter(bus => bus.remainingTime >= 0); // Only keep times that are in the future
 
-    remainingTimes.sort((a, b) => a - b); // Sort the times in ascending order
+    busTimes.sort((a, b) => a.remainingTime - b.remainingTime); // Sort the times in ascending order
 
     // Convert remaining times to the desired format
-    const nextBuses = remainingTimes.map(diff => `${diff}`);
-
-    const nextBusJson = nextBuses.slice(0, 5)
-    let thenewJson = []
-    nextBusJson.forEach(function (eachOne) {
-        //console.log(eachOne)
-        //const newNum = Number(eachOne) + 4 + "'"
-        //thenewJson.push(newNum)
-        console.log(`eachOne -> ${eachOne} > 60 => ${eachOne > 60}`)
-        if (eachOne > 60) {
-
-            let hours = Math.floor(eachOne / 60);
-            let remainingMinutes = eachOne % 60;
-            let finale;
+    const nextBuses = busTimes.slice(0, 7).map((bus, index) => {
+        const diff = bus.remainingTime;
+        let formattedRemainingTime;
+        if (diff > 60) {
+            let hours = Math.floor(diff / 60);
+            let remainingMinutes = diff % 60;
             if (hours === 1) {
-                finale = `${hours} ώρα, ${Number(remainingMinutes) + 4} λεπτά`
+                formattedRemainingTime = `${hours} ώρα, ${remainingMinutes + 4} λεπτά`;
             } else {
-                finale = `${hours} ώρες, ${Number(remainingMinutes) + 4} λεπτά`
+                formattedRemainingTime = `${hours} ώρες, ${remainingMinutes + 4} λεπτά`;
             }
-            //console.log(hours + " hours and " + remainingMinutes + " minutes");
-            thenewJson.push(finale)
         } else {
-            let finale;
-            if (eachOne === 1) {
-                finale = `${Number(eachOne) + 4} λεπτά`
-            } else {
-                finale = `${Number(eachOne) + 4} λεπτά`
-            }
-            thenewJson.push(finale)
+            formattedRemainingTime = `${diff + 4} λεπτά`;
         }
-    })
-    return thenewJson; // Return the next 5 buses
+
+        // Include the scheduled time for the first two entries
+        if (index < 2) {
+            return `${bus.time} - ${formattedRemainingTime}`;
+        } else {
+            return `${bus.time} - ${formattedRemainingTime}`;
+        }
+    });
+
+    // Log the original bus times
+    busTimes.slice(0, 5).forEach(bus => {
+        console.log(`Scheduled time: ${bus.time}`);
+    });
+
+    return nextBuses; // Return the next 5 buses
 }
 
 function goBack() {
