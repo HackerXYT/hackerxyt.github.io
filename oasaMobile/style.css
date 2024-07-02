@@ -9,7 +9,7 @@
   --theme-light: 0 0 0;
   --theme-medium: 0 0 0;
   --theme-dark: 0 0 0;
-  --isOldDevice: 5px;
+  --isOldDevice: 0;
   --isNewDevice: 0;
 }
 

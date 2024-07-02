@@ -529,13 +529,13 @@ function sendToNote() {
 function changeDebug() {
     if(localStorage.getItem("hideDebug")){
         localStorage.removeItem("hideDebug")
-        document.getElementById('debug').style.display = ''
+        document.getElementById('debug').style.display = 'none'
     } else {
         localStorage.setItem("hideDebug", true)
-        document.getElementById('debug').style.display = 'none'
+        document.getElementById('debug').style.display = ''
     }
 }
 
-if(localStorage.getItem("hideDebug")) {
+if(!localStorage.getItem("hideDebug")) {
     document.getElementById('debug').style.display = 'none'
 }
