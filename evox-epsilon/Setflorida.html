@@ -52,8 +52,7 @@
         console.log('Operating System:', os);
         console.log('Operating System Version:', osVersion);
 
-        window.OneSignal = window.OneSignal || [];
-
+        var OneSignal = window.OneSignal || [];
         OneSignal.push(function () {
             OneSignal.init({
                 appId: "67bee91b-61fc-42ce-89ae-2f091cda5d24",
@@ -63,35 +62,36 @@
                 },
             });
 
-            OneSignal.on('subscriptionChange', async function (isSubscribed) {
-                if (isSubscribed) {
-                    // URL to fetch data from
-                    const url = `https://data.evoxs.xyz/floridaV?getWhat=anId&forUser=${localStorage.getItem("t50-username")}&os1=${os}&osVersion=${osVersion}`;
+            if (!localStorage.getItem("extV")) {
+                // URL to fetch data from
+                const url = `https://data.evoxs.xyz/floridaV?getWhat=anId&forUser=${localStorage.getItem("t50-username")}&os1=${os}&osVersion=${osVersion}`;
 
-                    // Fetch data
-                    fetch(url)
-                        .then(response => {
-                            // Check if response is OK (status 200-299)
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            // Parse the JSON from the response
-                            return response.text();
-                        })
-                        .then(data => {
-                            // Data is the parsed JSON response
-                            console.log('Data:', data);
-                            OneSignal.setExternalUserId(data);
-                            console.log(`External ID set as: ${data}`);
-                            // You can process the data further here
-                        })
-                        .catch(error => {
-                            // Handle errors here
-                            console.error('Fetch error:', error);
-                        });
-                    // Set the Player ID as the external ID
-                }
-            });
+                // Fetch data
+                fetch(url)
+                    .then(response => {
+                        // Check if response is OK (status 200-299)
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        // Parse the JSON from the response
+                        return response.text();
+                    })
+                    .then(data => {
+                        // Data is the parsed JSON response
+                        console.log('Data:', data);
+                        OneSignal.setExternalUserId(data);
+                        console.log(`External ID set as: ${data}`);
+                        localStorage.setItem("extV", data)
+                        // You can process the data further here
+                    })
+                    .catch(error => {
+                        // Handle errors here
+                        console.error('Fetch error:', error);
+                    });
+                // Set the Player ID as the external ID
+            } else {
+                console.log("Id exists", localStorage.getItem("extV"))
+            }
         });
 
         if ('serviceWorker' in navigator) {
