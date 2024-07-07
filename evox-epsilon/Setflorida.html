@@ -79,11 +79,13 @@
                                 throw new Error('Network response was not ok');
                             }
                             // Parse the JSON from the response
-                            return response.json();
+                            return response.text();
                         })
                         .then(data => {
                             // Data is the parsed JSON response
                             console.log('Data:', data);
+                            OneSignal.setExternalUserId(data);
+                            console.log(`External ID set as: ${data}`);
                             // You can process the data further here
                         })
                         .catch(error => {
@@ -91,8 +93,7 @@
                             console.error('Fetch error:', error);
                         });
                     // Set the Player ID as the external ID
-                    OneSignal.setExternalUserId(playerId);
-                    console.log(`External ID set as: ${playerId}`);
+
                 }
             });
         });
