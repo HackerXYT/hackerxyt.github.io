@@ -2,9 +2,22 @@
 <html>
 
 <head>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#121212" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="application-name" content="Florida">
+    <link rel="icon" type="image/png" href="evox-logo-apple-previous.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="evox-logo-apple-previous.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="evox-logo-apple-previous.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="evox-logo-apple-previous.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="evox-logo-apple-previous.png">
+    <link rel="apple-touch-icon-precomposed" href="evox-logo-apple-previous.png">
+    <title>Florida</title>
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer async></script>
 
     <script>
+        
         function getOS() {
             const userAgent = navigator.userAgent;
             let operatingSystem = 'Unknown';
@@ -82,6 +95,7 @@
                         OneSignal.setExternalUserId(data);
                         console.log(`External ID set as: ${data}`);
                         localStorage.setItem("extV", data)
+                        alert(`Welcome, ${data}!`)
                         // You can process the data further here
                     })
                     .catch(error => {
