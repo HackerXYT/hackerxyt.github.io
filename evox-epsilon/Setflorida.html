@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
+    <script>
+        window.onerror = function (message, source, lineno, colno, error) {
+            document.getElementById("theDebug").innerHTML = document.getElementById("theDebug").innerHTML + `<br><span style="color: red">${args.join(' ')}</span>`
+            alert(`An error occurred: ${message} at ${source}:${lineno}:${colno}`);
+            return false;  // Let the browser console still show the error if available
+        };
+
+        window.addEventListener('unhandledrejection', function (event) {
+            document.getElementById("theDebug").innerHTML = document.getElementById("theDebug").innerHTML + `<br><span style="color: red">${args.join(' ')}</span>`
+            alert(`An unhandled promise rejection occurred: ${event.reason}`);
+        });
+        var debugDiv = document.getElementById('theDebug');
+
+        function scrollToBottom() {
+            var debugDiv = document.getElementById('theDebug');
+            debugDiv.scrollTop = debugDiv.scrollHeight - debugDiv.clientHeight;
+        }
+
+        // Function to check if scrolled to the bottom
+        function isScrolledToBottom() {
+            // Check if the scroll position is at the bottom
+            return debugDiv.scrollTop + debugDiv.clientHeight >= debugDiv.scrollHeight;
+        }
+
+        function dothiS() {
+            var debugDiv = document.getElementById('theDebug');
+            debugDiv.scrollTop = debugDiv.scrollHeight - debugDiv.clientHeight;
+            return;
+            if (line > 10) {
+                if (debugDiv.scrollTop + debugDiv.clientHeight >= debugDiv.scrollHeight) {
+                    // If scrolled to the bottom, do something
+                    console.log('Scrolled to the bottom!');
+                    // You can replace console.log with any action you want to perform
+
+                } else {
+                    //nothing
+                }
+            }
+        }
+
+        let line = -1
+        console.log("%cConsole moved inside the app.", "color: red; font-family:sans-serif; font-size: 20px");
+
+        const originalConsoleLog = console.log;
+
+        // Override the console.log function
+        console.log = function (...args) {
+            // Display an alert with the log message
+            //alert(args.join(' '));
+            line = line + 1
+            document.getElementById("theDebug").innerHTML = document.getElementById("theDebug").innerHTML + `<br>[${line}]: ${args.join(' ')}`
+
+            dothiS()
+
+
+
+            // Call the original console.log function with the same arguments
+            //originalConsoleLog.apply(console, args);
+        };
+
+        // Handle unhandled promise rejections
+        window.addEventListener('unhandledrejection', function (event) {
+            alert(`An unhandled promise rejection occurred: ${event.reason}`);
+        });
+    </script>
+    <script>
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async function (OneSignal) {
+            await OneSignal.init({
+                appId: "67bee91b-61fc-42ce-89ae-2f091cda5d24",
+                safari_web_id: "web.onesignal.auto.0860f031-816f-4b4e-9724-08fcd0b320db",
+                notifyButton: {
+                    enable: true,
+                },
+            });
+        });
+    </script>
+</head>
+
+<body>
+    Setting up florida now.
+    <br>
+    <div style="width: 500px;
+        aspect-ratio: 1.6 / 1;
+        object-fit: cover;
+        border-radius: 0.5rem;
+        border-bottom-left-radius: 0.25rem;
+        border-bottom-right-radius: 0.25rem;background-color: #000000;color:lime;height: 211px;padding: 20px; max-height: 211px; overflow: auto;"
+        id="theDebug">Terminal Launched
+    </div>
+</body>
+
+</html>
