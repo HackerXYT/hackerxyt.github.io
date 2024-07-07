@@ -92,7 +92,19 @@
                     .then(data => {
                         // Data is the parsed JSON response
                         console.log('Data:', data);
-                        OneSignal.setExternalUserId(data);
+                        try {
+                            OneSignal.setExternalUserId(data);
+                        } catch (error) {
+                            console.log("Fixing", error)
+                            try {
+                                OneSignalDeferred.setExternalUserId(data);
+                            } catch (er2) {
+                                console.error("Second Fix Failed", er2)
+                                alert(er2)
+                            }
+                            
+                        }
+                        
                         console.log(`External ID set as: ${data}`);
                         localStorage.setItem("extV", data)
                         alert(`Welcome, ${data}!`)
