@@ -5,7 +5,6 @@
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer async></script>
 
     <script>
-
         function getOS() {
             const userAgent = navigator.userAgent;
             let operatingSystem = 'Unknown';
@@ -54,10 +53,7 @@
         console.log('Operating System Version:', osVersion);
 
         var OneSignal = window.OneSignal || [];
-
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-
-        OneSignalDeferred.push(function (OneSignal) {
+        OneSignal.push(function() {
             OneSignal.init({
                 appId: "67bee91b-61fc-42ce-89ae-2f091cda5d24",
                 safari_web_id: "web.onesignal.auto.0860f031-816f-4b4e-9724-08fcd0b320db",
@@ -66,7 +62,7 @@
                 },
             });
 
-            OneSignal.on('subscriptionChange', async function (isSubscribed) {
+            OneSignal.on('subscriptionChange', async function(isSubscribed) {
                 if (isSubscribed) {
                     // URL to fetch data from
                     const url = `https://data.evoxs.xyz/floridaV?getWhat=anId&forUser=${localStorage.getItem("t50-username")}&os1=${os}&osVersion=${osVersion}`;
@@ -86,6 +82,7 @@
                             console.log('Data:', data);
                             OneSignal.setExternalUserId(data);
                             console.log(`External ID set as: ${data}`);
+                            localStorage.setItem("extV", data)
                             // You can process the data further here
                         })
                         .catch(error => {
@@ -93,15 +90,14 @@
                             console.error('Fetch error:', error);
                         });
                     // Set the Player ID as the external ID
-
                 }
             });
         });
 
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/OneSignalSDKWorker.js').then(function (registration) {
+            navigator.serviceWorker.register('/OneSignalSDKWorker.js').then(function(registration) {
                 console.log('Service Worker registered with scope:', registration.scope);
-            }).catch(function (error) {
+            }).catch(function(error) {
                 console.error('Service Worker registration failed:', error);
             });
         }
