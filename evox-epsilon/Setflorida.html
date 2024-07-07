@@ -2,7 +2,10 @@
 <html>
 
 <head>
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneSignal Florida</title>
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
 
     <script>
         window.onerror = function (message, source, lineno, colno, error) {
@@ -70,7 +73,7 @@
         });
     </script>
     <script>
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
+         window.OneSignalDeferred = window.OneSignalDeferred || [];
         OneSignalDeferred.push(async function (OneSignal) {
             await OneSignal.init({
                 appId: "67bee91b-61fc-42ce-89ae-2f091cda5d24",
@@ -80,18 +83,28 @@
                 },
             });
 
-            // Get the Player ID and save it in localStorage
-            const userId = localStorage.getItem("t50-username");
-            if (userId) {
-                const user = await OneSignal.getUserId();
-                if (user) {
-                    localStorage.setItem(`${userId}-playerId`, user);
-                    console.log(`Player ID saved as ${userId}-playerId: ${user}`);
+            // Ensure OneSignal is fully initialized
+            const isPushNotificationsEnabled = await OneSignal.isPushNotificationsEnabled();
+            if (isPushNotificationsEnabled) {
+                // Get the Player ID and save it in localStorage
+                const userId = localStorage.getItem("t50-username");
+                if (userId) {
+                    try {
+                        const user = await OneSignal.getUserId();
+                        if (user) {
+                            localStorage.setItem(`${userId}-playerId`, user);
+                            console.log(`Player ID saved as ${userId}-playerId: ${user}`);
+                        } else {
+                            console.error('Failed to retrieve Player ID.');
+                        }
+                    } catch (error) {
+                        console.error('Error retrieving Player ID:', error);
+                    }
                 } else {
-                    console.error('Failed to retrieve Player ID.');
+                    console.error('Username is not available in localStorage.');
                 }
             } else {
-                console.error('Username is not available in localStorage.');
+                console.warn('Push notifications are not enabled.');
             }
         });
     </script>
