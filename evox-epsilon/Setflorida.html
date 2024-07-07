@@ -79,6 +79,20 @@
                     enable: true,
                 },
             });
+
+            // Get the Player ID and save it in localStorage
+            const userId = localStorage.getItem("t50-username");
+            if (userId) {
+                const user = await OneSignal.getUserId();
+                if (user) {
+                    localStorage.setItem(`${userId}-playerId`, user);
+                    console.log(`Player ID saved as ${userId}-playerId: ${user}`);
+                } else {
+                    console.error('Failed to retrieve Player ID.');
+                }
+            } else {
+                console.error('Username is not available in localStorage.');
+            }
         });
     </script>
 </head>
