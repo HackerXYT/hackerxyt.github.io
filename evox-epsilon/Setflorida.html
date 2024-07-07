@@ -64,8 +64,9 @@
         }
 
         window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(async function (OneSignal) {
-            await OneSignal.init({
+
+        OneSignal.push(function () {
+            OneSignal.init({
                 appId: "67bee91b-61fc-42ce-89ae-2f091cda5d24",
                 safari_web_id: "web.onesignal.auto.0860f031-816f-4b4e-9724-08fcd0b320db",
                 notifyButton: {
@@ -73,9 +74,31 @@
                 },
             });
 
-            // Call the function to get and log the Player ID
-            getPlayerId(OneSignal);
+            OneSignal.getUserId().then(function (userId) {
+                console.log("User ID:", userId);
+                // Use the user ID as needed
+            }).catch(function (error) {
+                console.error("Error retrieving user ID:", error);
+            });
+
+            OneSignal.on('subscriptionChange', function (isSubscribed) {
+                console.log("The user's subscription state is now:", isSubscribed);
+                if (isSubscribed) {
+                    OneSignal.getUserId().then(function (userId) {
+                        console.log("User ID:", userId);
+                        // Handle new subscription
+                    });
+                }
+            });
         });
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/OneSignalSDKWorker.js').then(function (registration) {
+                console.log('Service Worker registered with scope:', registration.scope);
+            }).catch(function (error) {
+                console.error('Service Worker registration failed:', error);
+            });
+        }
     </script>
 </head>
 
