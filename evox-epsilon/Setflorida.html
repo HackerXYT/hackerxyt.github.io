@@ -2,9 +2,58 @@
 <html>
 
 <head>
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer async></script>
 
     <script>
+
+        function getOS() {
+            const userAgent = navigator.userAgent;
+            let operatingSystem = 'Unknown';
+
+            if (userAgent.includes('Windows NT')) {
+                operatingSystem = 'Windows';
+            } else if (userAgent.includes('Mac OS')) {
+                operatingSystem = 'macOS';
+            } else if (userAgent.includes('Linux')) {
+                operatingSystem = 'Linux';
+            } else if (userAgent.includes('Android')) {
+                operatingSystem = 'Android';
+            } else if (userAgent.includes('iOS')) {
+                operatingSystem = 'iOS';
+            }
+
+            return operatingSystem;
+        }
+
+        function getOSVersion() {
+            const userAgent = navigator.userAgent;
+            let osVersion = 'Unknown';
+
+            if (userAgent.includes('Windows NT')) {
+                osVersion = userAgent.split('Windows NT ')[1].split(';')[0];
+            } else if (userAgent.includes('Mac OS')) {
+                osVersion = userAgent.split('Mac OS ')[1].split(')')[0];
+            } else if (userAgent.includes('Linux')) {
+                osVersion = 'Linux'; // Linux doesn't typically have a version string in userAgent
+            } else if (userAgent.includes('Android')) {
+                osVersion = userAgent.split('Android ')[1].split(';')[0];
+            } else if (userAgent.includes('iPhone OS')) {
+                osVersion = userAgent.split('iPhone OS ')[1].split(' ')[0].replace(/_/g, '.');
+            } else if (userAgent.includes('iPad OS')) {
+                osVersion = userAgent.split('iPad OS ')[1].split(' ')[0].replace(/_/g, '.');
+            }
+
+            return osVersion;
+        }
+
+        // Example usage:
+        const os = getOS();
+        const osVersion = getOSVersion();
+
+        console.log('Operating System:', os);
+        console.log('Operating System Version:', osVersion);
+
+        var OneSignal = window.OneSignal || [];
 
         window.OneSignalDeferred = window.OneSignalDeferred || [];
 
@@ -17,20 +66,33 @@
                 },
             });
 
-            OneSignal.getUserId().then(function (userId) {
-                console.log("User ID:", userId);
-                // Use the user ID as needed
-            }).catch(function (error) {
-                console.error("Error retrieving user ID:", error);
-            });
-
-            OneSignal.on('subscriptionChange', function (isSubscribed) {
-                console.log("The user's subscription state is now:", isSubscribed);
+            OneSignal.on('subscriptionChange', async function (isSubscribed) {
                 if (isSubscribed) {
-                    OneSignal.getUserId().then(function (userId) {
-                        console.log("User ID:", userId);
-                        // Handle new subscription
-                    });
+                    // URL to fetch data from
+                    const url = `https://data.evoxs.xyz/floridaV?getWhat=anId&forUser=${localStorage.getItem("t50-username")}&os1=${os}&osVersion=${osVersion}`;
+
+                    // Fetch data
+                    fetch(url)
+                        .then(response => {
+                            // Check if response is OK (status 200-299)
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            // Parse the JSON from the response
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Data is the parsed JSON response
+                            console.log('Data:', data);
+                            // You can process the data further here
+                        })
+                        .catch(error => {
+                            // Handle errors here
+                            console.error('Fetch error:', error);
+                        });
+                    // Set the Player ID as the external ID
+                    OneSignal.setExternalUserId(playerId);
+                    console.log(`External ID set as: ${playerId}`);
                 }
             });
         });
