@@ -41,7 +41,9 @@ function floridaStart() {
             console.error('Service Worker Error', error);
         });
     } else {
-        console.log("Service Worker Is Not Supported")
+        const swN = 'serviceWorker' in navigator
+        const Pmn = 'PushManager' in window
+        console.log(`Service Worker Is Not Supported\nService Worker: ${swN}, Push Manager: ${Pmn}`)
     }
 }
 
