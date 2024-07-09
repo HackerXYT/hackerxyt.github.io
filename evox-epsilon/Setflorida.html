@@ -16,7 +16,7 @@
     <title>Florida</title>
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer async></script>
 
-    
+
 </head>
 
 <body>
@@ -24,7 +24,7 @@
     <br>
 </body>
 <script>
-        
+
     function getOS() {
         const userAgent = navigator.userAgent;
         let operatingSystem = 'Unknown';
@@ -82,48 +82,39 @@
             },
         });
 
-        if (!localStorage.getItem("extV")) {
-            // URL to fetch data from
-            const url = `https://data.evoxs.xyz/floridaV?getWhat=anId&forUser=${localStorage.getItem("t50-username")}&os1=${os}&osVersion=${osVersion}`;
+        OneSignal.on('subscriptionChange', function (isSubscribed) {
+            if (isSubscribed) {
+                OneSignal.getUserId(function (userId) {
+                    console.log("User's OneSignal ID:", userId);
+                });
+            }
+        });
 
-            // Fetch data
+        if (!localStorage.getItem("extV")) {
+            const url = `https://data.evoxs.xyz/floridaV?getWhat=anId&forUser=${localStorage.getItem("t50-username")}&os1=${os}&osVersion=${osVersion}`;
             fetch(url)
                 .then(response => {
-                    // Check if response is OK (status 200-299)
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
-                    // Parse the JSON from the response
                     return response.text();
                 })
                 .then(data => {
-                    // Data is the parsed JSON response
-                    console.log('Data:', data);
-                    try {
+                    console.log('Fetched data:', data);
+                    if (OneSignal && typeof OneSignal.setExternalUserId === 'function') {
                         OneSignal.setExternalUserId(data);
-                    } catch (error) {
-                        console.log("Fixing", error)
-                        try {
-                            OneSignalDeferred.setExternalUserId(data);
-                        } catch (er2) {
-                            console.error("Second Fix Failed", er2)
-                            alert(er2)
-                        }
-                        
+                        console.log(`External ID set as: ${data}`);
+                        localStorage.setItem("extV", data);
+                        alert(`Welcome, ${data}!`);
+                    } else {
+                        console.error("OneSignal.setExternalUserId is not available.");
                     }
-                    
-                    console.log(`External ID set as: ${data}`);
-                    localStorage.setItem("extV", data)
-                    alert(`Welcome, ${data}!`)
-                    // You can process the data further here
                 })
                 .catch(error => {
-                    // Handle errors here
                     console.error('Fetch error:', error);
                 });
-            // Set the Player ID as the external ID
         } else {
-            console.log("Id exists", localStorage.getItem("extV"))
+            console.log("Id exists", localStorage.getItem("extV"));
         }
     });
 
