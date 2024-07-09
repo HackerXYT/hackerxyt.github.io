@@ -1,6 +1,7 @@
 
 
 function floridaStart() {
+    console.log("Registering Service Worker")
     if ('serviceWorker' in navigator && 'PushManager' in window) {
         navigator.serviceWorker.register('/sw.js')
         .then(function(swReg) {
@@ -9,6 +10,7 @@ function floridaStart() {
             // Request permission for notifications
             return swReg.pushManager.getSubscription()
             .then(function(subscription) {
+                console.log("Subscribing")
                 if (!subscription) {
                     return swReg.pushManager.subscribe({
                         userVisibleOnly: true,

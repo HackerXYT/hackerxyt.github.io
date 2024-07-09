@@ -1670,7 +1670,55 @@
                 <a href="#" style="height: 50%" class="apple-button">Account Recovery<span>Set Up</span></a>
                 <p style="margin: 6px" class="user-email">If you forget your password, you have a few options to recover
                     your data.</p>
-                <a href="#" onclick="floridaStart()" style="height: 50%" class="apple-button">Push Notifications<span id="flrStat">Set Up</span></a>
+                <a href="#" onclick="floridaStart()" style="height: 50%" class="apple-button">Push Notifications<span
+                        id="flrStat">Set Up</span></a>
+                        <div id="console"></div>
+                <style>
+                    #console {
+                        background-color: #f0f0f0;
+                        padding: 10px;
+                        border: 1px solid #ccc;
+                        height: 100%;
+                        overflow-y: scroll;
+                        font-family: monospace;
+                    }
+                </style>
+                 <script>
+                    (function() {
+                const consoleDiv = document.getElementById('console');
+            
+                function appendMessage(type, args) {
+                    const message = document.createElement('div');
+                    message.className = type;
+                    message.textContent = `[${type.toUpperCase()}] ${Array.from(args).join(' ')}`;
+                    consoleDiv.appendChild(message);
+                    consoleDiv.scrollTop = consoleDiv.scrollHeight; // Auto-scroll to the bottom
+                }
+            
+                // Save original console methods
+                const originalLog = console.log;
+                const originalWarn = console.warn;
+                const originalError = console.error;
+            
+                // Override console.log
+                console.log = function(...args) {
+                    originalLog.apply(console, args);
+                    appendMessage('log', args);
+                };
+            
+                // Override console.warn
+                console.warn = function(...args) {
+                    originalWarn.apply(console, args);
+                    appendMessage('warn', args);
+                };
+            
+                // Override console.error
+                console.error = function(...args) {
+                    originalError.apply(console, args);
+                    appendMessage('error', args);
+                };
+            })();
+                </script>
                 <div class="transparent-placeholder"></div>
 
 
