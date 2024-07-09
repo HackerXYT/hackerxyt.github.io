@@ -16,123 +16,124 @@
     <title>Florida</title>
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer async></script>
 
-    <script>
-        
-        function getOS() {
-            const userAgent = navigator.userAgent;
-            let operatingSystem = 'Unknown';
-
-            if (userAgent.includes('Windows NT')) {
-                operatingSystem = 'Windows';
-            } else if (userAgent.includes('Mac OS')) {
-                operatingSystem = 'macOS';
-            } else if (userAgent.includes('Linux')) {
-                operatingSystem = 'Linux';
-            } else if (userAgent.includes('Android')) {
-                operatingSystem = 'Android';
-            } else if (userAgent.includes('iOS')) {
-                operatingSystem = 'iOS';
-            }
-
-            return operatingSystem;
-        }
-
-        function getOSVersion() {
-            const userAgent = navigator.userAgent;
-            let osVersion = 'Unknown';
-
-            if (userAgent.includes('Windows NT')) {
-                osVersion = userAgent.split('Windows NT ')[1].split(';')[0];
-            } else if (userAgent.includes('Mac OS')) {
-                osVersion = userAgent.split('Mac OS ')[1].split(')')[0];
-            } else if (userAgent.includes('Linux')) {
-                osVersion = 'Linux'; // Linux doesn't typically have a version string in userAgent
-            } else if (userAgent.includes('Android')) {
-                osVersion = userAgent.split('Android ')[1].split(';')[0];
-            } else if (userAgent.includes('iPhone OS')) {
-                osVersion = userAgent.split('iPhone OS ')[1].split(' ')[0].replace(/_/g, '.');
-            } else if (userAgent.includes('iPad OS')) {
-                osVersion = userAgent.split('iPad OS ')[1].split(' ')[0].replace(/_/g, '.');
-            }
-
-            return osVersion;
-        }
-
-        // Example usage:
-        const os = getOS();
-        const osVersion = getOSVersion();
-
-        console.log('Operating System:', os);
-        console.log('Operating System Version:', osVersion);
-
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(function (OneSignal) {
-            OneSignal.init({
-                appId: "67bee91b-61fc-42ce-89ae-2f091cda5d24",
-                safari_web_id: "web.onesignal.auto.0860f031-816f-4b4e-9724-08fcd0b320db",
-                notifyButton: {
-                    enable: true,
-                },
-            });
-
-            if (!localStorage.getItem("extV")) {
-                // URL to fetch data from
-                const url = `https://data.evoxs.xyz/floridaV?getWhat=anId&forUser=${localStorage.getItem("t50-username")}&os1=${os}&osVersion=${osVersion}`;
-
-                // Fetch data
-                fetch(url)
-                    .then(response => {
-                        // Check if response is OK (status 200-299)
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        // Parse the JSON from the response
-                        return response.text();
-                    })
-                    .then(data => {
-                        // Data is the parsed JSON response
-                        console.log('Data:', data);
-                        try {
-                            OneSignal.setExternalUserId(data);
-                        } catch (error) {
-                            console.log("Fixing", error)
-                            try {
-                                OneSignalDeferred.setExternalUserId(data);
-                            } catch (er2) {
-                                console.error("Second Fix Failed", er2)
-                                alert(er2)
-                            }
-                            
-                        }
-                        
-                        console.log(`External ID set as: ${data}`);
-                        localStorage.setItem("extV", data)
-                        alert(`Welcome, ${data}!`)
-                        // You can process the data further here
-                    })
-                    .catch(error => {
-                        // Handle errors here
-                        console.error('Fetch error:', error);
-                    });
-                // Set the Player ID as the external ID
-            } else {
-                console.log("Id exists", localStorage.getItem("extV"))
-            }
-        });
-
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/OneSignalSDKWorker.js').then(function (registration) {
-                console.log('Service Worker registered with scope:', registration.scope);
-            }).catch(function (error) {
-                console.error('Service Worker registration failed:', error);
-            });
-        }
-    </script>
+    
 </head>
 
 <body>
     Setting up florida now.
     <br>
 </body>
+<script>
+        
+    function getOS() {
+        const userAgent = navigator.userAgent;
+        let operatingSystem = 'Unknown';
+
+        if (userAgent.includes('Windows NT')) {
+            operatingSystem = 'Windows';
+        } else if (userAgent.includes('Mac OS')) {
+            operatingSystem = 'macOS';
+        } else if (userAgent.includes('Linux')) {
+            operatingSystem = 'Linux';
+        } else if (userAgent.includes('Android')) {
+            operatingSystem = 'Android';
+        } else if (userAgent.includes('iOS')) {
+            operatingSystem = 'iOS';
+        }
+
+        return operatingSystem;
+    }
+
+    function getOSVersion() {
+        const userAgent = navigator.userAgent;
+        let osVersion = 'Unknown';
+
+        if (userAgent.includes('Windows NT')) {
+            osVersion = userAgent.split('Windows NT ')[1].split(';')[0];
+        } else if (userAgent.includes('Mac OS')) {
+            osVersion = userAgent.split('Mac OS ')[1].split(')')[0];
+        } else if (userAgent.includes('Linux')) {
+            osVersion = 'Linux'; // Linux doesn't typically have a version string in userAgent
+        } else if (userAgent.includes('Android')) {
+            osVersion = userAgent.split('Android ')[1].split(';')[0];
+        } else if (userAgent.includes('iPhone OS')) {
+            osVersion = userAgent.split('iPhone OS ')[1].split(' ')[0].replace(/_/g, '.');
+        } else if (userAgent.includes('iPad OS')) {
+            osVersion = userAgent.split('iPad OS ')[1].split(' ')[0].replace(/_/g, '.');
+        }
+
+        return osVersion;
+    }
+
+    // Example usage:
+    const os = getOS();
+    const osVersion = getOSVersion();
+
+    console.log('Operating System:', os);
+    console.log('Operating System Version:', osVersion);
+
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(function (OneSignal) {
+        OneSignal.init({
+            appId: "67bee91b-61fc-42ce-89ae-2f091cda5d24",
+            safari_web_id: "web.onesignal.auto.0860f031-816f-4b4e-9724-08fcd0b320db",
+            notifyButton: {
+                enable: true,
+            },
+        });
+
+        if (!localStorage.getItem("extV")) {
+            // URL to fetch data from
+            const url = `https://data.evoxs.xyz/floridaV?getWhat=anId&forUser=${localStorage.getItem("t50-username")}&os1=${os}&osVersion=${osVersion}`;
+
+            // Fetch data
+            fetch(url)
+                .then(response => {
+                    // Check if response is OK (status 200-299)
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // Parse the JSON from the response
+                    return response.text();
+                })
+                .then(data => {
+                    // Data is the parsed JSON response
+                    console.log('Data:', data);
+                    try {
+                        OneSignal.setExternalUserId(data);
+                    } catch (error) {
+                        console.log("Fixing", error)
+                        try {
+                            OneSignalDeferred.setExternalUserId(data);
+                        } catch (er2) {
+                            console.error("Second Fix Failed", er2)
+                            alert(er2)
+                        }
+                        
+                    }
+                    
+                    console.log(`External ID set as: ${data}`);
+                    localStorage.setItem("extV", data)
+                    alert(`Welcome, ${data}!`)
+                    // You can process the data further here
+                })
+                .catch(error => {
+                    // Handle errors here
+                    console.error('Fetch error:', error);
+                });
+            // Set the Player ID as the external ID
+        } else {
+            console.log("Id exists", localStorage.getItem("extV"))
+        }
+    });
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/OneSignalSDKWorker.js').then(function (registration) {
+            console.log('Service Worker registered with scope:', registration.scope);
+        }).catch(function (error) {
+            console.error('Service Worker registration failed:', error);
+        });
+    }
+</script>
 
 </html>
