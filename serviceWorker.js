@@ -2,7 +2,7 @@ self.addEventListener('push', function(event) {
     const data = event.data.json();
     self.registration.showNotification(data.title, {
         body: data.body,
-        icon: 'dc.png' // Optional: Add the path to an icon
+        icon: 'evox-logo-apple.png' // Optional: Add the path to an icon
     });
 });
 
