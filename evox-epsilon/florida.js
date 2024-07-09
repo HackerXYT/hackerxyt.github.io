@@ -40,6 +40,8 @@ function floridaStart() {
         .catch(function(error) {
             console.error('Service Worker Error', error);
         });
+    } else {
+        console.log("Service Worker Is Not Supported")
     }
 }
 
