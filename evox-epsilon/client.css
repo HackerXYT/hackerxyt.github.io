@@ -3538,3 +3538,34 @@ div .Home {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.floridaCont {
+  opacity: 0;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateY(50%);
+  /* Initially off-screen to the left */
+  transition: transform 1s ease, opacity 1s ease, visibility 1s;
+  /* Transition for sliding effect, opacity, and visibility */
+}
+
+.floridaCont.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateX(0);
+  /* Slide the popup into view */
+}
+
+#launchFlorida {
+  width: 100%;
+  height: 100%;
+  border: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  touch-action: manipulation;
+  overflow: hidden;
+}

@@ -1672,55 +1672,8 @@
                     your data.</p>
                 <a href="#" onclick="floridaStart()" style="height: 50%" class="apple-button">Push Notifications<span
                         id="flrStat">Set Up</span></a>
-                        <div id="console"></div>
-                <style>
-                    #console {
-                        background-color: #f0f0f0;
-                        padding: 10px;
-                        border: 1px solid #ccc;
-                        color:#000;
-                        width: 100%;
-                        height: 250px;
-                        overflow-y: scroll;
-                        font-family: monospace;
-                    }
-                </style>
-                 <script>
-                    (function() {
-                const consoleDiv = document.getElementById('console');
-            
-                function appendMessage(type, args) {
-                    const message = document.createElement('div');
-                    message.className = type;
-                    message.textContent = `[${type.toUpperCase()}] ${Array.from(args).join(' ')}`;
-                    consoleDiv.appendChild(message);
-                    consoleDiv.scrollTop = consoleDiv.scrollHeight; // Auto-scroll to the bottom
-                }
-            
-                // Save original console methods
-                const originalLog = console.log;
-                const originalWarn = console.warn;
-                const originalError = console.error;
-            
-                // Override console.log
-                console.log = function(...args) {
-                    originalLog.apply(console, args);
-                    appendMessage('log', args);
-                };
-            
-                // Override console.warn
-                console.warn = function(...args) {
-                    originalWarn.apply(console, args);
-                    appendMessage('warn', args);
-                };
-            
-                // Override console.error
-                console.error = function(...args) {
-                    originalError.apply(console, args);
-                    appendMessage('error', args);
-                };
-            })();
-                </script>
+                
+                 
                 <div class="transparent-placeholder"></div>
 
 
@@ -3388,6 +3341,18 @@
     <div id="iframeContainer">
         <iframe id="launchApp" style="display:none;background: radial-gradient(circle, #282828, #000000)"
             src="PreloadApp.html"></iframe>
+    </div>
+    <div class="floridaCont" id="launchFloridaCont" style="position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: hidden;
+    z-index: 999999;
+    -webkit-overflow-scrolling: touch;
+    /* For iOS Safari */">
+        <iframe id="launchFlorida"
+            src="florida/index.html"></iframe>
     </div>
 
     <style>

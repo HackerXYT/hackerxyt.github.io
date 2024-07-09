@@ -132,6 +132,7 @@ if (localStorage.getItem("extV")) {
                 document.getElementById("buttons").style.display = "none"
                 document.getElementById("subbed").style.display = ""
                 document.getElementById("spanUsername").innerHTML = localStorage.getItem("t50-username")
+                document.getElementById("deviceId").innerHTML = localStorage.getItem("extV")
             })
             .catch(function (error) {
                 console.error('Service Worker Error', error);
@@ -269,4 +270,75 @@ function urlBase64ToUint8Array(base64String) {
         outputArray[i] = rawData.charCodeAt(i);
     }
     return outputArray;
+}
+
+function openSetup() {
+    document.getElementById("recentsTab").classList.remove("active")
+    document.getElementById("setupTab").classList.add("active")
+    document.getElementById("intro").style.display = ""
+    document.getElementById("recents").style.display = "none"
+}
+
+function openRecents() {
+    document.getElementById("recentsTab").classList.add("active")
+    document.getElementById("setupTab").classList.remove("active")
+    document.getElementById("intro").style.display = "none"
+    document.getElementById("buttons").style.display = "none"
+    document.getElementById("recents").style.display = ""
+    fetch('https://florida.evoxs.xyz/recents', {
+        method: 'POST',
+        body: JSON.stringify({
+            'deviceId': localStorage.getItem("extV"),
+            'username': localStorage.getItem("t50-username")
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(function (response) {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json(); // Assuming the response is JSON
+    }).then(function (data) {
+        // Assuming 'value' is a key in the response JSON
+        if(!data) {
+            return;
+        }
+        const final = JSON.parse(data.value)
+        console.log(final)
+        console.log(final.username)
+        document.getElementById('recents').innerHTML = ""
+        final.notifications.forEach(notif => {
+            console.log(notif)
+            const payload = JSON.parse(notif.payload)
+            let theNoti = document.getElementById('recents');
+
+            // Create a new div element
+            let newDiv = document.createElement('div');
+            newDiv.className = 'notification';
+
+            // Create h4 and p elements
+            let h4 = document.createElement('h4');
+            h4.textContent = payload.title;
+
+            let p = document.createElement('p');
+            p.textContent = payload.body;
+
+            // Append h4 and p to the new div
+            newDiv.appendChild(h4);
+            newDiv.appendChild(p);
+
+            // Append the new div to the element with id "theNoti"
+            theNoti.appendChild(newDiv);
+        });
+        // Now you can use 'value' as needed
+
+        // Send JSON response with 'value' and status 200
+    }).catch(function (error) {
+        console.error('Error reading recents:', error);
+    });
+}
+
+function goBack() {
+    sessionStorage.setItem("exitFl", true)
 }
