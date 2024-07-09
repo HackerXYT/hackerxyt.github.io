@@ -3,7 +3,7 @@
 function floridaStart() {
     console.log("Registering Service Worker")
     if ('serviceWorker' in navigator && 'PushManager' in window) {
-        navigator.serviceWorker.register('/serviceWorker.js')
+        navigator.serviceWorker.register('/sw.js')
         .then(function(swReg) {
             console.log('Service Worker is registered', swReg);
     

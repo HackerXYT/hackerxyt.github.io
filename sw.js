@@ -1,1 +1,14 @@
-importScripts("https://cdn.pushalert.co/sw-55868_2.js");
+self.addEventListener('push', function(event) {
+    const data = event.data.json();
+    self.registration.showNotification(data.title, {
+        body: data.body,
+        icon: 'evox-logo-apple.png' // Optional: Add the path to an icon
+    });
+});
+
+self.addEventListener('notificationclick', function(event) {
+    event.notification.close();
+    event.waitUntil(
+        clients.openWindow('https://evoxs.xyz/evox-epsilon/')
+    );
+});
