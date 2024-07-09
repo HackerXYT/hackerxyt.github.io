@@ -72,6 +72,9 @@
     console.log('Operating System:', os);
     console.log('Operating System Version:', osVersion);
 
+    window.OneSignal = window.OneSignal || [];
+
+
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(function (OneSignal) {
         OneSignal.init({
@@ -81,6 +84,23 @@
                 enable: true,
             },
         });
+
+        OneSignal.push(function() {
+  OneSignal.isPushNotificationsEnabled().then(function(isEnabled) {
+    if (isEnabled) {
+      OneSignal.getUserId().then(function(subscriptionId) {
+        if (subscriptionId) {
+          // Proceed with updating subscription
+        } else {
+          console.error('Subscription ID is not defined.');
+        }
+      });
+    } else {
+      console.error('Push notifications are not enabled.');
+    }
+  });
+});
+
 
         OneSignal.on('subscriptionChange', function (isSubscribed) {
             if (isSubscribed) {
