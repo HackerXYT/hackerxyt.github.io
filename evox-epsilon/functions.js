@@ -215,7 +215,7 @@ function switchNAV(element) {
 
 	} else {
 		$("#appUP").fadeOut("fast", function () {
-			document.getElementById("appUP").innerHTML = `Epsilon 4.0`
+			document.getElementById("appUP").innerHTML = `Epsilon 4.0.2 • Florida 0.1`
 			$("#appUP").fadeIn("fast")
 		})
 

@@ -14,3 +14,7 @@ function floridaStart() {
         }
     })
 }
+
+if(localStorage.getItem("extV")) {
+    document.getElementById("flrStat").innerHTML = "Active"
+}
