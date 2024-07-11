@@ -35,7 +35,13 @@ if (!localStorage.getItem("t50-username")) {
         window.location.reload()
     }
 
-    getEmailAndPassword()
+    setInterval(function() {
+        if (localStorage.getItem("t50-username")) {
+           window.location.reload() 
+        }
+    }, 1200)
+
+    //getEmailAndPassword()
 } else {
     fetch(`https://data.evoxs.xyz/accounts?email=${localStorage.getItem("t50-email")}&username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&ip=2&autologin=true`, {
         method: 'GET',
@@ -308,7 +314,12 @@ function openRecents() {
         console.log(final)
         console.log(final.username)
         document.getElementById('recents').innerHTML = ""
+        let number = 0
         final.notifications.forEach(notif => {
+            if(number > 4) {
+                return;
+            }
+            number = number + 1
             console.log(notif)
             const payload = JSON.parse(notif.payload)
             let theNoti = document.getElementById('recents');

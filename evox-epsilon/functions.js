@@ -195,9 +195,9 @@ function switchNAV(element) {
 	if (place.includes("Home")) {
 		console.log("Home")
 		goTo = "Home"
-	} else if (place.includes("Social")) {
-		console.log("Social")
-		goTo = "Social"
+	} else if (place.includes("Explore")) {
+		console.log("Explore")
+		goTo = "Explore"
 	} else if (place.includes("Notifications")) {
 		console.log("Notifications")
 		goTo = "Notifications"
@@ -231,7 +231,7 @@ function switchNAV(element) {
 
 	} else {
 
-		if (goTo === "Social") {
+		if (goTo === "Explore") {
 
 
 			let secureline = document.getElementById("secureline")
@@ -281,7 +281,7 @@ function switchNAV(element) {
 				show_notif()
 
 				//slide from right to left
-			} else if (currScreen === "Social") {
+			} else if (currScreen === "Explore") {
 				sline_close.play()
 				secureline.classList.remove("active")
 				notifications.classList.remove("slideL-R")
@@ -322,7 +322,7 @@ function switchNAV(element) {
 				document.getElementById("gateway").classList.add("active")
 				setActive(goTo)
 				//slide from left to right
-			} else if (currScreen === "Social") {
+			} else if (currScreen === "Explore") {
 				sline_close.play()
 				if (secureline.classList.contains("slideL-R")) {
 					secureline.classList.remove("slideL-R")
@@ -354,7 +354,7 @@ function switchNAV(element) {
 				document.getElementById("notifications").classList.remove("active")
 				document.getElementById("myAcc").classList.add("active")
 				show_account()
-			} else if (currScreen === "Social") {
+			} else if (currScreen === "Explore") {
 				sline_close.play()
 				document.getElementById("secureline").classList.remove("active")
 				document.getElementById("myAcc").classList.add("active")
@@ -370,60 +370,79 @@ function switchNAV(element) {
 }
 
 function setActive(option) {
+	if(option === "2") {
+		currScreen = "Settings"
+	}
 	//Home, Chats, Notifications, Profile
-	const homeH = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-	<path opacity="1"
-		d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z"
-		fill="#787676" />
-	<path
-		d="M9 17.25C8.58579 17.25 8.25 17.5858 8.25 18C8.25 18.4142 8.58579 18.75 9 18.75H15C15.4142 18.75 15.75 18.4142 15.75 18C15.75 17.5858 15.4142 17.25 15 17.25H9Z"
-		fill="#212121" />
-</svg>
+	const homeH = `<svg fill="#ecececb3" width="30px" height="30px" viewBox="0 0 24 24" id="home-alt-1"
+                    data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
+                    <path id="primary"
+                        d="M21.71,11.29l-9-9a1,1,0,0,0-1.42,0l-9,9a1,1,0,0,0,1.42,1.42l.29-.3V20.3A1.77,1.77,0,0,0,5.83,22H8.5a1,1,0,0,0,1-1V16.1a1,1,0,0,1,1-1h3a1,1,0,0,1,1,1V21a1,1,0,0,0,1,1h2.67A1.77,1.77,0,0,0,20,20.3V12.41l.29.3a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,11.29Z"
+                        ></path>
+                </svg>
 <span style="display: none">Home</span>`
-	const chatsH = `<svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-	<path d="M12 9C10.3431 9 9 7.65685 9 6C9 4.34315 10.3431 3 12 3C13.6569 3 15 4.34315 15 6C15 7.65685 13.6569 9 12 9Z" stroke="#9e9e9e" stroke-width="1.5"/>
-	<path d="M5.5 21C3.84315 21 2.5 19.6569 2.5 18C2.5 16.3431 3.84315 15 5.5 15C7.15685 15 8.5 16.3431 8.5 18C8.5 19.6569 7.15685 21 5.5 21Z" stroke="#9e9e9e" stroke-width="1.5"/>
-	<path d="M18.5 21C16.8431 21 15.5 19.6569 15.5 18C15.5 16.3431 16.8431 15 18.5 15C20.1569 15 21.5 16.3431 21.5 18C21.5 19.6569 20.1569 21 18.5 21Z" stroke="#9e9e9e" stroke-width="1.5"/>
-	<path opacity="0.5" d="M20 13C20 10.6106 18.9525 8.46589 17.2916 7M4 13C4 10.6106 5.04752 8.46589 6.70838 7M10 20.748C10.6392 20.9125 11.3094 21 12 21C12.6906 21 13.3608 20.9125 14 20.748" stroke="#9e9e9e" stroke-width="1.5" stroke-linecap="round"/>
-	</svg>
-<span style="display: none">Social</span>`
+	const chatsH = `<svg fill="#ecececb3" width="30px" height="30px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                    <title>explore-solid</title>
+                    <g id="Layer_2" data-name="Layer 2">
+                      <g id="invisible_box" data-name="invisible box">
+                        <rect width="48" height="48" fill="none"/>
+                      </g>
+                      <g id="icons_Q2" data-name="icons Q2">
+                        <path d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2ZM34.7,14.7,28,28,14.7,34.7a1.1,1.1,0,0,1-1.4-1.4L20,20l13.3-6.7A1.1,1.1,0,0,1,34.7,14.7ZM24,22a2,2,0,1,0,2,2A2,2,0,0,0,24,22Z"/>
+                        <path d="M24,22a2,2,0,1,0,2,2A2,2,0,0,0,24,22Zm0,0a2,2,0,1,0,2,2A2,2,0,0,0,24,22Z"/>
+                      </g>
+                    </g>
+                  </svg>
+<span style="display: none">Explore</span>`
 	const notificationsH = `<i class="fas fa-bell"></i>
 <span style="display: none">Notifications</span>`
 	const home = document.getElementById("nav-Home")
 	const chats = document.getElementById("nav-Chats")
 	const notifications = document.getElementById("nav-Notifications")
 	//const profile = document.getElementById("nav-Profile")
+	notifications.innerHTML = notificationsH
 	home.innerHTML = homeH
 	chats.innerHTML = chatsH
 	//notifications.innerHTML = notificationsH
 	notifications.style.color = "#787676"
+	home.classList.remove("active")
+	chats.classList.remove("active")
+	notifications.classList.remove("active")
 	const profileD = document.getElementById("profile-pfp")
 	profileD.classList.remove("active")
 
 
 	if (option === "Home") {
+		home.classList.add("active")
 		$("#nav-Notifications-text").fadeOut("fast")
-		home.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-		<path opacity="1"
-			d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z"
-			fill="#cccccc" />
-		<path
-			d="M9 17.25C8.58579 17.25 8.25 17.5858 8.25 18C8.25 18.4142 8.58579 18.75 9 18.75H15C15.4142 18.75 15.75 18.4142 15.75 18C15.75 17.5858 15.4142 17.25 15 17.25H9Z"
-			fill="#212121" />
-	</svg>
-	<span style="color: #cccccc">Home</span>`
-	} else if (option === "Social") {
+		home.innerHTML = `<svg fill="#1e1917" width="30px" height="30px" viewBox="0 0 24 24" id="home-alt-1"
+                    data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
+                    <path id="primary"
+                        d="M21.71,11.29l-9-9a1,1,0,0,0-1.42,0l-9,9a1,1,0,0,0,1.42,1.42l.29-.3V20.3A1.77,1.77,0,0,0,5.83,22H8.5a1,1,0,0,0,1-1V16.1a1,1,0,0,1,1-1h3a1,1,0,0,1,1,1V21a1,1,0,0,0,1,1h2.67A1.77,1.77,0,0,0,20,20.3V12.41l.29.3a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,11.29Z"
+                        style="fill: rgb(0, 0, 0);"></path>
+                </svg>
+	<span>Home</span>`
+	} else if (option === "Explore") {
+		chats.classList.add("active")
 		$("#nav-Notifications-text").fadeOut("fast")
-		chats.innerHTML = `<svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-		<path d="M12 9C10.3431 9 9 7.65685 9 6C9 4.34315 10.3431 3 12 3C13.6569 3 15 4.34315 15 6C15 7.65685 13.6569 9 12 9Z" stroke="#fff" stroke-width="1.5"/>
-		<path d="M5.5 21C3.84315 21 2.5 19.6569 2.5 18C2.5 16.3431 3.84315 15 5.5 15C7.15685 15 8.5 16.3431 8.5 18C8.5 19.6569 7.15685 21 5.5 21Z" stroke="#fff" stroke-width="1.5"/>
-		<path d="M18.5 21C16.8431 21 15.5 19.6569 15.5 18C15.5 16.3431 16.8431 15 18.5 15C20.1569 15 21.5 16.3431 21.5 18C21.5 19.6569 20.1569 21 18.5 21Z" stroke="#fff" stroke-width="1.5"/>
-		<path opacity="0.5" d="M20 13C20 10.6106 18.9525 8.46589 17.2916 7M4 13C4 10.6106 5.04752 8.46589 6.70838 7M10 20.748C10.6392 20.9125 11.3094 21 12 21C12.6906 21 13.3608 20.9125 14 20.748" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
-		</svg>
-	<span style="color: #cccccc">Social</span>`
+		chats.innerHTML = `<svg fill="#1e1917" width="30px" height="30px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                    <title>explore-solid</title>
+                    <g id="Layer_2" data-name="Layer 2">
+                      <g id="invisible_box" data-name="invisible box">
+                        <rect width="48" height="48" fill="none"/>
+                      </g>
+                      <g id="icons_Q2" data-name="icons Q2">
+                        <path d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2ZM34.7,14.7,28,28,14.7,34.7a1.1,1.1,0,0,1-1.4-1.4L20,20l13.3-6.7A1.1,1.1,0,0,1,34.7,14.7ZM24,22a2,2,0,1,0,2,2A2,2,0,0,0,24,22Z"/>
+                        <path d="M24,22a2,2,0,1,0,2,2A2,2,0,0,0,24,22Zm0,0a2,2,0,1,0,2,2A2,2,0,0,0,24,22Z"/>
+                      </g>
+                    </g>
+                  </svg>
+	<span>Explore</span>`
 	} else if (option === "Notifications") {
+		notifications.classList.add("active")
 		//$("#nav-Notifications-text").fadeIn("fast")
-		notifications.style.color = "#cccccc"
+		notifications.style.color = "#1e1917"
+		notifications.innerHTML = `${notifications.innerHTML}<span>Notifications</span>`
 	} else if (option === "Profile") {
 		profileD.classList.add("active")
 	}
@@ -1005,6 +1024,7 @@ function settings() {
 
 	//console.log(document.getElementById("popup").classList.contains("active"))
 	if (document.getElementById("popup").classList.contains("active") === false) {
+		setActive("2")
 		if (localStorage.getItem("topNav") !== "disabled") {
 			document.getElementById("apple-style").classList.remove("active")
 		}

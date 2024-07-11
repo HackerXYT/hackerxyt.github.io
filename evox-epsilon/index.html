@@ -29,13 +29,13 @@
         }
         // Override the global error handler
         window.onerror = function (message, source, lineno, colno, error) {
-            alert(`An error occurred: ${message} at ${source}:${lineno}:${colno}`);
+            //alert(`An error occurred: ${message} at ${source}:${lineno}:${colno}`);
             return false;  // Let the browser console still show the error if available
         };
 
         // Handle unhandled promise rejections
         window.addEventListener('unhandledrejection', function (event) {
-            alert(`An unhandled promise rejection occurred: ${event.reason}`);
+            //alert(`An unhandled promise rejection occurred: ${event.reason}`);
         });
     </script>
     <meta name="theme-color" content="#2c2c2c" media="(prefers-color-scheme: light)">
@@ -236,7 +236,7 @@
     <div id="background">
 
         <!--<div class="background" id="bgimaget" style="background-image: url('evox-bg.jpg');background-size: cover;background-position: center;filter: blur(5px);"></div>-->
-        <div id="bgimaget" class="background" style="background: radial-gradient(circle, #080b2a, #121212)"></div>
+        <div id="bgimaget" class="background" style="background: radial-gradient(circle, #121212, #121212)"></div>
         <!--<div class="background"></div>-->
     </div>
 
@@ -1672,8 +1672,8 @@
                     your data.</p>
                 <a href="#" onclick="floridaStart()" style="height: 50%" class="apple-button">Push Notifications<span
                         id="flrStat">Set Up</span></a>
-                
-                 
+
+
                 <div class="transparent-placeholder"></div>
 
 
@@ -2142,6 +2142,7 @@
                             d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                             fill="#666" />
                     </svg></a>
+                    
 
 
 
@@ -3036,38 +3037,35 @@
     </button>
     <div class="parent-popup-container">
         <div id="navbar" class="navbar">
-            <div id="nav-Home" onclick="switchNAV(this)" class="nav-item">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-                    <path opacity="1"
-                        d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z"
-                        fill="#cccccc" />
-                    <path
-                        d="M9 17.25C8.58579 17.25 8.25 17.5858 8.25 18C8.25 18.4142 8.58579 18.75 9 18.75H15C15.4142 18.75 15.75 18.4142 15.75 18C15.75 17.5858 15.4142 17.25 15 17.25H9Z"
-                        fill="#000" />
+            <div id="nav-Home" onclick="switchNAV(this)" class="nav-item active">
+                <svg fill="#1e1917" width="30px" height="30px" viewBox="0 0 24 24" id="home-alt-1"
+                    data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color">
+                    <path id="primary"
+                        d="M21.71,11.29l-9-9a1,1,0,0,0-1.42,0l-9,9a1,1,0,0,0,1.42,1.42l.29-.3V20.3A1.77,1.77,0,0,0,5.83,22H8.5a1,1,0,0,0,1-1V16.1a1,1,0,0,1,1-1h3a1,1,0,0,1,1,1V21a1,1,0,0,0,1,1h2.67A1.77,1.77,0,0,0,20,20.3V12.41l.29.3a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,11.29Z"
+                        style="fill: rgb(0, 0, 0);"></path>
                 </svg>
-                <span style="color: #9e9e9e;">Home</span>
+                <span>Home</span>
             </div>
             <div id="nav-Chats" onclick="switchNAV(this)" class="nav-item">
 
-                <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M12 9C10.3431 9 9 7.65685 9 6C9 4.34315 10.3431 3 12 3C13.6569 3 15 4.34315 15 6C15 7.65685 13.6569 9 12 9Z"
-                        stroke="#9e9e9e" stroke-width="1.5" />
-                    <path
-                        d="M5.5 21C3.84315 21 2.5 19.6569 2.5 18C2.5 16.3431 3.84315 15 5.5 15C7.15685 15 8.5 16.3431 8.5 18C8.5 19.6569 7.15685 21 5.5 21Z"
-                        stroke="#9e9e9e" stroke-width="1.5" />
-                    <path
-                        d="M18.5 21C16.8431 21 15.5 19.6569 15.5 18C15.5 16.3431 16.8431 15 18.5 15C20.1569 15 21.5 16.3431 21.5 18C21.5 19.6569 20.1569 21 18.5 21Z"
-                        stroke="#9e9e9e" stroke-width="1.5" />
-                    <path opacity="0.5"
-                        d="M20 13C20 10.6106 18.9525 8.46589 17.2916 7M4 13C4 10.6106 5.04752 8.46589 6.70838 7M10 20.748C10.6392 20.9125 11.3094 21 12 21C12.6906 21 13.3608 20.9125 14 20.748"
-                        stroke="#9e9e9e" stroke-width="1.5" stroke-linecap="round" />
-                </svg>
-                <span style="display: none">Social</span>
+                <svg fill="#9e9e9e" width="30px" height="30px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                    <title>explore-solid</title>
+                    <g id="Layer_2" data-name="Layer 2">
+                      <g id="invisible_box" data-name="invisible box">
+                        <rect width="48" height="48" fill="none"/>
+                      </g>
+                      <g id="icons_Q2" data-name="icons Q2">
+                        <path d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2ZM34.7,14.7,28,28,14.7,34.7a1.1,1.1,0,0,1-1.4-1.4L20,20l13.3-6.7A1.1,1.1,0,0,1,34.7,14.7ZM24,22a2,2,0,1,0,2,2A2,2,0,0,0,24,22Z"/>
+                        <path d="M24,22a2,2,0,1,0,2,2A2,2,0,0,0,24,22Zm0,0a2,2,0,1,0,2,2A2,2,0,0,0,24,22Z"/>
+                      </g>
+                    </g>
+                  </svg>
+                
+                <span style="display: none">Explore</span>
             </div>
-            <div id="navigator" class="nav-item settings">
+            <div id="navigator"  class="nav-item settings noBg">
                 <div onclick="settings();this.classList.add('rotate')" class="circle">
-                    <svg id="rotateIcon" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px"
+                    <svg id="rotateIcon" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
                         viewBox="0 0 28 28" fill="none">
                         <path
                             d="M19.9818 21.6364L21.7093 22.3948C22.0671 22.5518 22.4849 22.4657 22.7517 22.1799C23.9944 20.8492 24.9198 19.2536 25.4586 17.5131C25.5748 17.1376 25.441 16.7296 25.1251 16.4965L23.5988 15.3698C23.1628 15.0489 22.9 14.5403 22.9 13.9994C22.9 13.4586 23.1628 12.95 23.5978 12.6297L25.1228 11.5035C25.4386 11.2703 25.5723 10.8623 25.4561 10.487C24.9172 8.74611 23.9912 7.1504 22.7478 5.81991C22.4807 5.53405 22.0626 5.44818 21.7048 5.60568L19.9843 6.36294C19.769 6.45838 19.5385 6.507 19.3055 6.50663C18.4387 6.50572 17.7116 5.85221 17.617 4.98937L17.4079 3.11017C17.3643 2.71823 17.077 2.39734 16.6928 2.31149C15.8128 2.11485 14.9147 2.01047 14.0131 2.00006C13.0891 2.01071 12.19 2.11504 11.3089 2.31138C10.9245 2.39704 10.637 2.71803 10.5933 3.11017L10.3844 4.98794C10.3244 5.52527 10.0133 6.00264 9.54617 6.27415C9.07696 6.54881 8.50793 6.58168 8.01296 6.36404L6.29276 5.60691C5.93492 5.44941 5.51684 5.53528 5.24971 5.82114C4.00637 7.15163 3.08038 8.74734 2.54142 10.4882C2.42513 10.8638 2.55914 11.272 2.87529 11.5051L4.40162 12.6306C4.83721 12.9512 5.09414 13.4598 5.09414 14.0007C5.09414 14.5415 4.83721 15.0501 4.40219 15.3703L2.8749 16.4977C2.55922 16.7307 2.42533 17.1384 2.54122 17.5137C3.07924 19.2561 4.00474 20.8536 5.24806 22.1859C5.51493 22.4718 5.93281 22.558 6.29071 22.4009L8.01859 21.6424C8.51117 21.4269 9.07783 21.4586 9.54452 21.7281C10.0112 21.9976 10.3225 22.4731 10.3834 23.0093L10.5908 24.8855C10.6336 25.273 10.9148 25.5917 11.2933 25.682C13.0725 26.1061 14.9263 26.1061 16.7055 25.682C17.084 25.5917 17.3651 25.273 17.408 24.8855L17.6157 23.0066C17.675 22.4693 17.9729 21.9924 18.44 21.7219C18.9071 21.4515 19.4876 21.4197 19.9818 21.6364ZM14 18C11.7909 18 10 16.2091 10 14C10 11.7909 11.7909 10 14 10C16.2091 10 18 11.7909 18 14C18 16.2091 16.2091 18 14 18Z"
@@ -3079,7 +3077,7 @@
                 <i class="fas fa-bell"></i>
                 <span id="nav-Notifications-text" style="display: none">Notifications</span>
             </div>
-            <div id="nav-Profile" onclick="switchNAV(this)" class="nav-item">
+            <div id="nav-Profile" onclick="switchNAV(this)" class="nav-item noBg">
                 <img id="profile-pfp" src="reloading-pfp.gif" alt="Profile" class="profile-icon">
             </div>
         </div>
@@ -3351,8 +3349,7 @@
     z-index: 999999;
     -webkit-overflow-scrolling: touch;
     /* For iOS Safari */">
-        <iframe id="launchFlorida"
-            src="florida/index.html"></iframe>
+        <iframe id="launchFlorida" src="florida/index.html"></iframe>
     </div>
 
     <style>
