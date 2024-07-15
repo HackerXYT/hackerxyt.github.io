@@ -1033,7 +1033,7 @@ function settings() {
 
 		settings_open.play()
 		//document.body.style.overflow = 'hidden';
-		document.getElementById("gateway").style.overflow = "hidden"
+		//document.getElementById("gateway").style.overflow = "hidden" removed from epsilon to prevent unable to scroll in gateway after opening settings 
 		//navigator("settings_tonexus")
 		$("#dots").fadeOut("slow")
 		$("#profile").fadeOut("slow")
@@ -1046,7 +1046,7 @@ function settings() {
 			}, 500); // Adjust the timing as needed
 		}
 		if (document.getElementById("animatedButton_chats").style.display === "block") {
-			document.getElementById("gateway").style.overflow = "hidden"
+			//document.getElementById("gateway").style.overflow = "hidden" removed from epsilon to prevent unable to scroll in gateway after opening settings 
 			var animatedButton2 = document.getElementById("animatedButton_chats");
 			animatedButton2.style.opacity = "0";
 			animatedButton2.style.transform = "translateY(20px)";
