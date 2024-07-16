@@ -329,15 +329,21 @@ input {
 
 #apps-container>a:nth-child(3) {
   color: rgb(28, 204, 91);
-  border-bottom-left-radius: 0.5rem;
+  /*border-bottom-left-radius: 0.5rem;*/
 }
 
 #apps-container>a:nth-child(4) {
   color: rgb(28, 147, 228);
-  border-bottom-right-radius: 0.5rem;
+  /*border-bottom-right-radius: 0.5rem;*/
 }
 
 #apps-container>a:nth-child(5) {
+  border-bottom-left-radius: 0.5rem;
+  color: rgb(242, 85, 90);
+}
+
+#apps-container>a:nth-child(6) {
+  border-bottom-right-radius: 0.5rem;
   color: rgb(242, 85, 90);
 }
 
