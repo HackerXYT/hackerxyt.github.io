@@ -248,6 +248,7 @@ getBus('828')
 getBus('049')
 let currentInt;
 function showInfo(bus, isInt) {
+    document.getElementById("main-wrapper").style.overflow = 'hidden'
     if (!document.getElementById("popIt").classList.contains("active") && isInt) {
         console.log(`Resolved Interval Bug [info: busReq: ${bus}, stoppedBy: classList]`)
         return;
@@ -698,6 +699,7 @@ function getNextBusesPanagitsa(times) {
 }
 
 function goBack() {
+    document.getElementById("main-wrapper").style.overflow = 'auto'
     document.getElementById("popIt").classList.remove("active")
     sessionStorage.removeItem("currentWatch")
     try {
