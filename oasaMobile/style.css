@@ -4,7 +4,7 @@
   --font-color: 255 255 255;
   --highlight-color: 0 0 0;
 
-  --theme-background: 20 20 20;
+  --theme-background: 28 27 30;
 
   --theme-light: 0 0 0;
   --theme-medium: 0 0 0;
@@ -45,7 +45,7 @@ span,
 a,
 p {
   color: rgb(var(--font-color));
-  font-family: "Noto Sans", sans-serif;
+  font-family: "SF";
   font-size: 1rem;
   font-weight: 400;
   margin: 0px;
@@ -154,30 +154,29 @@ input {
 
 #search-container {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-top: 0.2rem;
+  gap: 0.2rem;
+  margin-top: 0.2rem;  
+}
+
+#search-input-container > input,
+#search-container > button {
+  background-color: rgb(var(--theme-medium));
+  color: rgb(255 255 255 / 80%);
+  font-size: 1rem;
+  border: none;
+}
+
+#search-container > button {
+  width: 3.5rem;
   border-radius: 0.2rem;
-  overflow: hidden;
+  cursor: pointer;
 }
 
-#search-container svg {
-  margin: auto;
+#search-container > #image-button {  
+  border-bottom-right-radius: 0.5rem;
 }
 
 
-#search-container input {
-  margin-right: 5px;
-}
-
-#search-container .buttonLast {
-  margin-left: 5px;
-}
-
-#search-container .buttonLeft {
-  justify-content: right;
-  margin-left: 5px;
-}
 
 #search-input-container {
   display: flex;
@@ -198,11 +197,10 @@ input {
 
 #search-input-container:has(input:focus),
 #search-container>button:focus {
-  background-color: rgb(255 255 255 / 16%);
+  background-color: rgba(255, 255, 255, 0.088);
 }
 
 #mic-button {
-  margin-left: 5px;
   border-radius: 0.2rem;
 }
 
@@ -286,7 +284,7 @@ input {
 
 #apps-container p {
   font-family: "Noto Sans", sans-serif;
-  font-weight: bolder;
+  font-weight: bold;
   text-shadow: rgba(0, 0, 0, 0.341) 0px 2px 5px;
 
 }
@@ -317,7 +315,7 @@ input {
 }
 
 #apps-container>a:is(:hover, :focus) {
-  background-color: rgb(255 255 255 / 16%);
+  background-color: rgba(255, 255, 255, 0.088);
 }
 
 #apps-container>a:first-child {
@@ -331,10 +329,12 @@ input {
 
 #apps-container>a:nth-child(3) {
   color: rgb(28, 204, 91);
+  border-bottom-left-radius: 0.5rem;
 }
 
 #apps-container>a:nth-child(4) {
   color: rgb(28, 147, 228);
+  border-bottom-right-radius: 0.5rem;
 }
 
 #apps-container>a:nth-child(5) {
@@ -453,12 +453,12 @@ input {
 }
 
 .popup {
-  font-family: "Noto Sans", sans-serif;
+  font-family: "SF";
   scrollbar-width: none;
   -ms-overflow-style: none;
   /* for Internet Explorer, Edge */
   position: fixed;
-  top: 0;
+  top: 40px;
   left: 0;
   width: 100%;
   height: 100%;
@@ -470,20 +470,22 @@ input {
   scroll-behavior: smooth;
   touch-action: auto;
   justify-content: center;
-  background: rgb(24, 24, 24);
+  background: rgb(0, 0, 0);
   /* Semi-transparent black overlay */
   z-index: 998;
   box-sizing: border-box;
   /* Include padding in the element's total width and height */
   box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
   color: white;
-  opacity: 0;
+  opacity: 0.1;
   /* Initially hidden */
   visibility: hidden;
   /* Initially hidden */
-  transform: translateY(50%);
+  transform: translateY(100%);
   /* Initially off-screen to the left */
-  transition: transform 1s ease, opacity 1s ease, visibility 1s;
+  transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out;
+
+  border-radius: 2rem;
   /* Transition for sliding effect, opacity, and visibility */
 }
 
@@ -503,7 +505,6 @@ input {
 }
 
 .oasaBased .timeBox {
-  font-family: "Noto Sans", sans-serif;
   width: 95%;
   text-align: left;
   background-color: #2f755293;
@@ -525,7 +526,6 @@ input {
 }
 
 .evoxBased .timeBox {
-  font-family: "Noto Sans", sans-serif;
   width: 95%;
   text-align: left;
   background-color: #333;
@@ -554,7 +554,7 @@ input {
   justify-content: center;
   text-align: center;
   position: absolute;
-  bottom: 20px;
+  bottom: 60px;
   background-color: #8b8b8b;
   padding: 10px;
   border-radius: 23px;
@@ -564,4 +564,19 @@ input {
 .timeBox p {
   font-size: 14px;
   color: #aeaeae;
+}
+
+.grabbable {
+  position: absolute;
+  background-color: #333;
+  height: 5px;
+  width: 30%;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 1rem;
+}
+
+.grabbable:active {
+  cursor: grabbing;
 }

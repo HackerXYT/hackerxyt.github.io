@@ -610,6 +610,7 @@ function getNextBuses(times) {
 
     busTimes.sort((a, b) => a.remainingTime - b.remainingTime); // Sort the times in ascending order
 
+    let recon = false
     // Convert remaining times to the desired format
     const nextBuses = busTimes.slice(0, 7).map((bus, index) => {
         const diff = bus.remainingTime;
@@ -622,16 +623,19 @@ function getNextBuses(times) {
             } else {
                 formattedRemainingTime = `${hours} ώρες, ${remainingMinutes} λεπτά`;
             }
+            if (hours >= 1) {
+                recon = true
+            }
         } else {
             formattedRemainingTime = `${diff} λεπτά`;
         }
 
-        // Include the scheduled time for the first two entries
-        if (index < 2) {
-            return `${bus.time} - ${formattedRemainingTime}`;
+        if (recon) {
+            return `${bus.time}`;
         } else {
             return `${bus.time} - ${formattedRemainingTime}`;
         }
+
     });
 
     // Log the original bus times
@@ -657,9 +661,10 @@ function getNextBusesPanagitsa(times) {
     }).filter(bus => bus.remainingTime >= 0); // Only keep times that are in the future
 
     busTimes.sort((a, b) => a.remainingTime - b.remainingTime); // Sort the times in ascending order
-
+    let recon2 = false
     // Convert remaining times to the desired format
     const nextBuses = busTimes.slice(0, 7).map((bus, index) => {
+
         const diff = bus.remainingTime;
         let formattedRemainingTime;
         if (diff > 60) {
@@ -670,13 +675,15 @@ function getNextBusesPanagitsa(times) {
             } else {
                 formattedRemainingTime = `${hours} ώρες, ${remainingMinutes + 4} λεπτά`;
             }
+            if (hours >= 1) {
+                recon2 = true
+            }
         } else {
             formattedRemainingTime = `${diff + 4} λεπτά`;
         }
 
-        // Include the scheduled time for the first two entries
-        if (index < 2) {
-            return `${bus.time} - ${formattedRemainingTime}`;
+        if (recon2) {
+            return `${bus.time}`;
         } else {
             return `${bus.time} - ${formattedRemainingTime}`;
         }
@@ -768,3 +775,69 @@ document.addEventListener("DOMContentLoaded", function () {
         getBus('049')
     }, 25000)
 })
+
+document.addEventListener('DOMContentLoaded', function() {
+    const popIt = document.getElementById('popIt');
+    const grab = document.getElementById('grab');
+
+    let startY, startTop;
+    const threshold = 40; // Threshold in pixels from the top where dragging upwards is allowed
+
+    grab.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        startY = touch.clientY;
+        startTop = parseInt(window.getComputedStyle(popIt).top, 10);
+        document.addEventListener('touchmove', moveDiv);
+        document.addEventListener('touchend', stopMoveDiv);
+    });
+
+    function moveDiv(e) {
+        const touch = e.touches[0];
+        const deltaY = touch.clientY - startY;
+        
+        // Calculate the new top position
+        let newTop = startTop + deltaY;
+
+        // Restrict movement downwards only
+        if (newTop > startTop) {
+            popIt.style.top = newTop + 'px';
+        } else if (newTop < startTop && startTop >= threshold) {
+            // Allow movement upwards only if above threshold
+            popIt.style.top = newTop + 'px';
+        }
+    }
+
+    function stopMoveDiv() {
+        var elementId = "popIt";
+        var isOutsideViewport = isElementOutsideViewport(elementId);
+        
+        if (isOutsideViewport) {
+            console.log("Element with ID '" + elementId + "' is outside the viewport.");
+        } else {
+            console.log("Element with ID '" + elementId + "' is inside the viewport.");
+        }
+        document.removeEventListener('touchmove', moveDiv);
+        document.removeEventListener('touchend', stopMoveDiv);
+    }
+});
+
+
+function isElementOutsideViewport(elementId) {
+    var element = document.getElementById(elementId);
+    
+    if (!element) {
+        console.warn("Element with ID '" + elementId + "' not found.");
+        return false;
+    }
+    
+    var rect = element.getBoundingClientRect();
+    var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    
+    // Check if the element is outside the viewport
+    if (rect.bottom < 0 || rect.top > viewportHeight || rect.right < 0 || rect.left > viewportWidth) {
+        return true;
+    }
+    
+    return false;
+}
