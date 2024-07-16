@@ -12,7 +12,8 @@ const dictionary = {
     "16": "1076",
     "831": "874",
     "828": "1400",
-    "049": "819"
+    "049": "819",
+    "904": "1015"
 }
 
 let count1;
@@ -248,6 +249,7 @@ getBus('828')
 getBus('049')
 let currentInt;
 function showInfo(bus, isInt) {
+    disableOverflow()
     document.getElementById("main-wrapper").style.overflow = 'hidden'
     if (!document.getElementById("popIt").classList.contains("active") && isInt) {
         console.log(`Resolved Interval Bug [info: busReq: ${bus}, stoppedBy: classList]`)
@@ -699,6 +701,7 @@ function getNextBusesPanagitsa(times) {
 }
 
 function goBack() {
+    enableOverflow()
     document.getElementById("main-wrapper").style.overflow = 'auto'
     document.getElementById("popIt").classList.remove("active")
     sessionStorage.removeItem("currentWatch")
@@ -882,4 +885,36 @@ function inform() {
         }
         
     }, 2100)
+}
+
+function disableOverflow() {
+    // Select the element by ID
+    var element = document.getElementById("phone");
+
+    // Check if the element exists
+    if (element) {
+        // Disable overflow for the element itself
+        element.style.overflow = "hidden";
+
+        // Disable overflow for all child elements inside the element
+        var allDescendants = element.getElementsByTagName("*");
+        for (var i = 0; i < allDescendants.length; i++) {
+            allDescendants[i].style.overflow = "hidden";
+        }
+    } else {
+        console.warn("Element with ID '" + 'phone' + "' not found.");
+    }
+}
+
+function enableOverflow() {
+    var phoneDiv = document.getElementById("phone");
+
+    // Restore the original overflow property value for the div itself
+    phoneDiv.style.overflow = phoneDiv.dataset.originalOverflow || "";
+
+    // Restore the original overflow property values for all child elements
+    var allDescendants = phoneDiv.getElementsByTagName("*");
+    for (var i = 0; i < allDescendants.length; i++) {
+        allDescendants[i].style.overflow = allDescendants[i].dataset.originalOverflow || "";
+    }
 }
