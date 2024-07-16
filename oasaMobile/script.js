@@ -778,68 +778,108 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 25000)
 })
 
-document.addEventListener('DOMContentLoaded', function() {
-    const popIt = document.getElementById('popIt');
-    const grab = document.getElementById('grab');
+console.log("stopped")
+const popIt = document.getElementById('popIt');
+const grab = document.getElementById('grab');
 
-    let startY, startTop;
-    const threshold = 40; // Threshold in pixels from the top where dragging upwards is allowed
+let startY, startTop;
+const threshold = 10; // Threshold in pixels from the top where dragging upwards is allowed
 
-    grab.addEventListener('touchstart', function(e) {
-        const touch = e.touches[0];
-        startY = touch.clientY;
-        startTop = parseInt(window.getComputedStyle(popIt).top, 10);
-        document.addEventListener('touchmove', moveDiv);
-        document.addEventListener('touchend', stopMoveDiv);
-    });
-
-    function moveDiv(e) {
-        const touch = e.touches[0];
-        const deltaY = touch.clientY - startY;
-        
-        // Calculate the new top position
-        let newTop = startTop + deltaY;
-
-        // Restrict movement downwards only
-        if (newTop > startTop) {
-            popIt.style.top = newTop + 'px';
-        } else if (newTop < startTop && startTop >= threshold) {
-            // Allow movement upwards only if above threshold
-            popIt.style.top = newTop + 'px';
-        }
-    }
-
-    function stopMoveDiv() {
-        var elementId = "popIt";
-        var isOutsideViewport = isElementOutsideViewport(elementId);
-        
-        if (isOutsideViewport) {
-            console.log("Element with ID '" + elementId + "' is outside the viewport.");
-        } else {
-            console.log("Element with ID '" + elementId + "' is inside the viewport.");
-        }
-        document.removeEventListener('touchmove', moveDiv);
-        document.removeEventListener('touchend', stopMoveDiv);
-    }
+grab.addEventListener('touchstart', function (e) {
+    const touch = e.touches[0];
+    startY = touch.clientY;
+    startTop = parseInt(window.getComputedStyle(popIt).top, 10);
+    document.addEventListener('touchmove', moveDiv);
+    document.addEventListener('touchend', stopMoveDiv);
 });
 
+function moveDiv(e) {
+    const touch = e.touches[0];
+    const deltaY = touch.clientY - startY;
+
+    // Calculate the new top position
+    let newTop = startTop + deltaY;
+
+    // Restrict movement downwards only
+    if(informed === "waiting") {
+        informed = 'done'
+        document.getElementById("grab").style.backgroundColor = "#333"
+    }
+    if (newTop < 40) {
+        return;
+    }
+    if (newTop > 369) {
+        goBack()
+        setTimeout(function () {
+            popIt.style.top = '';
+        }, 500)
+    }
+    if (newTop > startTop) {
+        popIt.style.top = newTop + 'px';
+    } else if (newTop < startTop && startTop >= threshold) {
+        // Allow movement upwards only if above threshold
+        popIt.style.top = newTop + 'px';
+    }
+}
+
+function stopMoveDiv() {
+
+    document.removeEventListener('touchmove', moveDiv);
+    document.removeEventListener('touchend', stopMoveDiv);
+
+    const elementId = "popIt";
+    const isOutsideViewport = isElementOutsideViewport(elementId);
+
+    if (isOutsideViewport) {
+        console.log("Element with ID '" + elementId + "' is outside the viewport.");
+
+        goBack()
+        setTimeout(function () {
+            popIt.style.top = '';
+        }, 500)
+
+    } else {
+        console.log("Element with ID '" + elementId + "' is inside the viewport.");
+    }
+}
 
 function isElementOutsideViewport(elementId) {
-    var element = document.getElementById(elementId);
-    
+    const element = document.getElementById(elementId);
+
     if (!element) {
         console.warn("Element with ID '" + elementId + "' not found.");
         return false;
     }
-    
-    var rect = element.getBoundingClientRect();
-    var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
-    var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-    
+
+    const rect = element.getBoundingClientRect();
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
     // Check if the element is outside the viewport
-    if (rect.bottom < 0 || rect.top > viewportHeight || rect.right < 0 || rect.left > viewportWidth) {
-        return true;
-    }
-    
-    return false;
+    return rect.bottom < 0 || rect.top > viewportHeight || rect.right < 0 || rect.left > viewportWidth;
+}
+
+
+let informed = 'unready';
+function inform() {
+    informed = 'waiting'
+    document.getElementById("grab").style.backgroundColor = "#ff0000"
+    setTimeout(function () {
+        document.getElementById("grab").style.backgroundColor = "#333"
+    }, 1100)
+    const grabint = setInterval(function () {
+        console.log("Info Interval")
+        if(informed === "unready" || informed === 'waiting') {
+            console.log("running default")
+            document.getElementById("grab").style.backgroundColor = "#ff0000"
+            setTimeout(function () {
+                document.getElementById("grab").style.backgroundColor = "#333"
+            }, 1100)
+        } else {
+            console.log("bypassing")
+            clearInterval(grabint)
+            return;
+        }
+        
+    }, 2100)
 }

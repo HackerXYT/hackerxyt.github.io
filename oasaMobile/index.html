@@ -80,7 +80,7 @@
 
 
             // Call the original console.log function with the same arguments
-            //originalConsoleLog.apply(console, args);
+            originalConsoleLog.apply(console, args);
         };
 
         // Handle unhandled promise rejections
@@ -237,8 +237,8 @@
 
         </div>
 
-        <div class="parentBack">
-            <div onclick="goBack()" class="goBack">
+        <div class="parentBack" style="opacity: 0;">
+            <div onclick="inform()" class="goBack"> <!--onclick="goBack()"-->
                 Return
             </div>
         </div>
