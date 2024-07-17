@@ -263,6 +263,19 @@ function showInfo(bus, isInt) {
         console.log(`Resolved Interval Bug [info: busReq: ${bus}, stoppedBy: currentWatch]`)
         return;
     }
+
+    if (bus === "16") {
+        document.getElementById("Businfo").innerHTML = `Ε.Ω.Α:<br>3-8 λεπτά από αφετηρία`
+        document.getElementById("Businfo").style.opacity = '1'
+    }
+    if (bus === "831") {
+        document.getElementById("Businfo").innerHTML = `Ε.Ω.Α:<br>9-15 λεπτά από αφετηρία<br>[Αφετ.]->[Εθν. Αντιστάσεως]`
+        document.getElementById("Businfo").style.opacity = '1'
+    }
+    if (bus === "420") {
+        document.getElementById("Businfo").innerHTML = `Ε.Ω.Α:<br>~11 λεπτά από αφετηρία<br>[Αφετ.]->[Εθν. Αντιστάσεως]`
+        document.getElementById("Businfo").style.opacity = '1'
+    }
     document.getElementById("popIt").classList.add("active")
     document.getElementById("whatBus").innerHTML = bus
     document.getElementById("16defTime").style.display = "none"
@@ -642,9 +655,9 @@ function showInfo(bus, isInt) {
             timeBox.className = 'timeBox';
 
             let textNode;
-            if(bus === "420") {
+            if (bus === "420") {
                 textNode = document.createTextNode('Πειραιάς');
-            } else if(bus === "831") {
+            } else if (bus === "831") {
                 textNode = document.createTextNode('Πειραιάς');
             } else {
                 textNode = document.createTextNode('Transition');
@@ -784,6 +797,8 @@ function getNextBusesPanagitsa(times) {
 }
 
 function goBack() {
+    document.getElementById("Businfo").innerHTML = `⛳`
+    document.getElementById("Businfo").style.opacity = '0'
     enableOverflow()
     document.getElementById("main-wrapper").style.overflow = 'auto'
     document.getElementById("904live1").style.display = 'none'
@@ -892,7 +907,7 @@ function moveDiv(e) {
     let newTop = startTop + deltaY;
 
     // Restrict movement downwards only
-    if(informed === "waiting") {
+    if (informed === "waiting") {
         informed = 'done'
         document.getElementById("grab").style.backgroundColor = "#333"
     }
@@ -960,7 +975,7 @@ function inform() {
     }, 1100)
     const grabint = setInterval(function () {
         console.log("Info Interval")
-        if(informed === "unready" || informed === 'waiting') {
+        if (informed === "unready" || informed === 'waiting') {
             console.log("running default")
             document.getElementById("grab").style.backgroundColor = "#ff0000"
             setTimeout(function () {
@@ -971,7 +986,7 @@ function inform() {
             clearInterval(grabint)
             return;
         }
-        
+
     }, 2100)
 }
 

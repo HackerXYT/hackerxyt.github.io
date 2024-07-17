@@ -174,7 +174,7 @@
                         <a href="#" onclick="showInfo('16')">
                             <p>16<span class="invisible-number">&nbsp;</span></p>
                             <div class="label">
-                                <span class="name">Καμίνια</span>
+                                <span class="name">Ρέντης</span>
                                 <span id="remain16" class="url">Loading..</span>
                             </div>
                         </a>
@@ -215,11 +215,18 @@
                         </a>
 
                     </div>
+                    <div class="discover-container">
+                        <div id="discover-toggles2">
+                            <button type="button">Terminal</button>
+                            <!--<button onclick="document.getElementById('debug').style.display = 'none'"
+                                type="button">$tempVoHide</button>-->
+                        </div>
+                    </div>
                     <div id="debug" class="discover-container">
                         <div id="discover-toggles">
                             <button type="button">Terminal</button>
-                            <button onclick="document.getElementById('debug').style.display = 'none'"
-                                type="button">$tempVoHide</button>
+                            <!--<button onclick="document.getElementById('debug').style.display = 'none'"
+                                type="button">$tempVoHide</button>-->
                         </div>
                         <div id="discover-feed">
                             <a href="#" class="discover-card">
@@ -244,11 +251,14 @@
         </div>
     </div>
     <div id="popIt" class="popup">
-        <div id="grab" class="grabbable"></div>
+            <div id="grab" class="grabbable"></div>
+        
         <h3 style="text-align: center;">Λεωφορείο: <span id="whatBus"></span></h3>
         <div id="oasaBased" class="oasaBased">
             <div id="16defTime" class="timeBox">
                 Παναγίτσα<span id="based">Loading..</span>
+                <br>
+                <p>Ρέντης - Πειραιάς</p>
             </div>
             <div id="904live1" class="timeBox">
                 Κοραή<span id="based904">Loading..</span>
@@ -269,6 +279,8 @@
         <div id="evoxBased" class="evoxBased">
 
         </div>
+        <p id="Businfo" style="font-size: 1rem;font-weight: lighter;text-align: center;position: fixed;bottom: 40px;left: 50%;white-space: nowrap;
+  transform: translateX(-50%);opacity: 0;transition: opacity 1s ease-out;">Bus Info</p>
 
         <div class="parentBack" style="opacity: 0;">
             <div onclick="inform()" class="goBack"> <!--onclick="goBack()"-->
