@@ -1100,8 +1100,8 @@ function fl_stopMoveDiv() {
     }
 }
 
-console.log("Debug Active!")
-florida()
+//console.log("Debug Active!")
+//florida()
 
 function setup_begin() {
     console.log("Attaching Florida..")
