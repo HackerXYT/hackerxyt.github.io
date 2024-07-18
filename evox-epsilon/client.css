@@ -249,6 +249,7 @@ body {
   overscroll-behavior: contain;
   font-size: medium;
   /* For older browsers */
+  
 }
 
 body {
@@ -1751,7 +1752,7 @@ a {
   /* Include padding in the element's total width and height */
   box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
   color: white;
-  opacity: 0;
+  opacity: 1;
   /* Initially hidden */
   visibility: hidden;
   /* Initially hidden */
