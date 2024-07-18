@@ -88,7 +88,7 @@ function getBus(num) {
         fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${targetUrl}`)
             .then(response => response.json())
             .then(data => {
-                if(!come && !go) {
+                if (!come && !go) {
                     console.log(data)
                     return;
                 } else {
@@ -1269,11 +1269,30 @@ function start() {
                     })
                         .then(data => {
                             console.log("Florida Response", data)
-                            if(data.message === "Complete") {
+                            if (data.message === "Complete") {
                                 localStorage.setItem("extVOASA", data.id)
-                                $("#setupPage").fadeOut(function() {
+                                $("#setupPage").fadeOut(function () {
                                     $("#homePage").fadeIn("fast")
                                     floridaAttached()
+                                    sessionStorage.setItem("privileges", "florida")
+                                    document.getElementById("profilePic").src = `reloading-pfp.gif`;
+                                    document.getElementById('profileUsername').innerText = localStorage.getItem("t50-username")
+                                    document.getElementById('profileEmail').innerText = localStorage.getItem("t50-email")
+
+                                    const url = `${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${localStorage.getItem("t50-username")}`;
+                                    fetch(url)
+                                        .then(response => response.text())
+                                        .then(data => {
+                                            if (data.indexOf("base64") === -1) {
+                                                // If it doesn't contain "base64", add the prefix
+                                                data = "data:image/jpeg;base64," + data;
+                                            }
+                                            document.getElementById("profilePic").src = `${data}`;
+                                            sessionStorage.setItem("pfp", data)
+                                        })
+                                        .catch(error => {
+                                            console.error(error);
+                                        });
                                 })
                             }
 
@@ -1399,7 +1418,7 @@ function createOASA() {
 }
 
 function floridaAttached() {
-    if(localStorage.getItem('extVOASA')) {
+    if (localStorage.getItem('extVOASA')) {
         document.getElementById("personalInf").classList.remove("disabled")
         document.getElementById("recentNotif").classList.remove("disabled")
         document.getElementById("setupNotif").classList.add("disabled")
