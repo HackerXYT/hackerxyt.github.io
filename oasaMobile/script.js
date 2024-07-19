@@ -909,6 +909,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     sessionStorage.setItem("pfp", data)
                 })
                 .catch(error => {
+                    document.getElementById("profilePic").src = `snap.png`;
                     console.error(error);
                 });
         }
@@ -1291,6 +1292,7 @@ function start() {
                                             sessionStorage.setItem("pfp", data)
                                         })
                                         .catch(error => {
+                                            document.getElementById("profilePic").src = `snap.png`;
                                             console.error(error);
                                         });
                                 })
