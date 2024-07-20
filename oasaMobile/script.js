@@ -1105,38 +1105,125 @@ function fl_stopMoveDiv() {
 //florida()
 
 function setup_begin() {
+    if (localStorage.getItem("extVOASA")) {
+        console.log("Florida already attached!")
+        return;
+    }
     console.log("Attaching Florida..")
-    setTimeout(function () {
-
-        document.getElementById("floridaCont").classList.remove("active")
-        document.getElementById("phone").style.transform = "scale(1)"
+    if ('serviceWorker' in navigator) {
+        console.log("Service Worker Located")
         setTimeout(function () {
-            document.getElementById("floridaCont").style.backgroundColor = `#242426`
-            $("#homePage").fadeOut("fast", function () {
-                document.getElementById("floridaCont").classList.add("active")
-                document.getElementById("phone").style.transform = "scale(0.97)"
-                floridaCont.style.top = '';
 
-                $("#setupPage").fadeIn("fast", function () {
-                    if (sessionStorage.getItem("privileges") === "florida") {
-                        console.log("Is upper user")
-                        //case1
-                        $("#case1").fadeIn("fast", function () {
+            document.getElementById("floridaCont").classList.remove("active")
+            document.getElementById("phone").style.transform = "scale(1)"
+            setTimeout(function () {
+                document.getElementById("floridaCont").style.backgroundColor = `#242426`
+                $("#homePage").fadeOut("fast", function () {
+                    document.getElementById("floridaCont").classList.add("active")
+                    document.getElementById("phone").style.transform = "scale(0.97)"
+                    floridaCont.style.top = '';
 
-                        })
-                    } else {
-                        console.log("Is anon user")
-                        //case2
-                        $("#case2").fadeIn("fast", function () {
+                    $("#setupPage").fadeIn("fast", function () {
+                        if (sessionStorage.getItem("privileges") === "florida") {
+                            console.log("Is upper user")
+                            //case1
+                            $("#case1").fadeIn("fast", function () {
 
-                        })
-                    }
+                            })
+                        } else {
+                            console.log("Is anon user")
+                            //case2
+                            $("#case2").fadeIn("fast", function () {
+
+                            })
+                        }
+                    })
                 })
-            })
 
-        }, 550)
+            }, 550)
 
-    }, 400)
+        }, 400)
+    } else {
+        console.warn("Browser doesnt support Florida")
+        let clientType;
+        let isApple;
+        let isWindows;
+        let isAndroid;
+        if(os.includes("macOS")) {
+            isApple = true
+            isWindows = false
+            if (window.navigator.standalone) {
+                // The website is running as a PWA (fullscreen iOS bookmark)
+                console.log('Running as PWA');
+                clientType = 'PWA' 
+
+                //document.getElementById("errorLog").innerHTML = `PWA`
+            } else {
+                // The website is running in the default Safari browser
+                console.log('Running in Safari');
+                clientType = 'Safari' 
+                //document.getElementById("errorLog").innerHTML = `Safari`
+                //document.getElementById("errorLog").innerHTML = `serviceWorker: ${'serviceWorker' in navigator}<br>PushManager: ${'PushManager' in window}`
+            }
+        } else if(os.includes("Windows")) {
+            isApple = false 
+            isWindows = true
+            document.getElementById("resolveErrors").style.display = "none"
+        } else {
+            isApple = false
+            isAndroid = true
+            isWindows = false
+            document.getElementById("resolveErrors").style.display = "none"
+        }
+
+        
+
+        setTimeout(function () {
+
+            document.getElementById("floridaCont").classList.remove("active")
+            document.getElementById("phone").style.transform = "scale(1)"
+            setTimeout(function () {
+                document.getElementById("floridaCont").style.backgroundColor = `#242426`
+                $("#homePage").fadeOut("fast", function () {
+                    document.getElementById("floridaCont").classList.add("active")
+                    document.getElementById("phone").style.transform = "scale(0.97)"
+                    floridaCont.style.top = '';
+
+                    $("#setupPage").fadeIn("fast", function () {
+                        $("#informError").fadeIn("fast", function () {
+
+                            
+                            if(isApple) {
+                                if(clientType === 'Safari') {
+                                    document.getElementById("IOS1").style.display = ""
+                                } else if(clientType === "PWA") {
+                                    if(!window.location.href.includes("https")) {
+                                        document.getElementById("IOS2").style.display = ""
+                                    }
+                                }
+                            } else {
+                                document.getElementById("resolveErrors").style.display = "none"
+                            }
+                        })
+                        //if (sessionStorage.getItem("privileges") === "florida") {
+                        //    console.log("Is upper user")
+                        //    //case1
+                        //    
+                        //} else {
+                        //    console.log("Is anon user")
+                        //    //case2
+                        //    $("#case2").fadeIn("fast", function () {
+                        //
+                        //    })
+                        //}
+                    })
+                })
+
+            }, 550)
+
+        }, 400)
+    }
+
 }
 
 function getOS() {
@@ -1182,6 +1269,7 @@ function getOSVersion() {
 // Example usage:
 const os = getOS();
 const osVersion = getOSVersion();
+//alert(`OS: ${os}, Version: ${osVersion}`)
 
 if (localStorage.getItem("extVOASA")) {
     if ('serviceWorker' in navigator && 'PushManager' in window) {

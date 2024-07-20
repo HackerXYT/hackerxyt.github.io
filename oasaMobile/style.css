@@ -737,7 +737,6 @@ input {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  height: 100vh; /* Adjust this as needed */
 }
 #setupPage img{
   margin-top: 110px;
@@ -754,11 +753,19 @@ input {
   font-size: 2rem;
 }
 
+#informError h1 {
+  font-size: 2rem;
+}
+
 #case2 p {
   font-size: 1.1rem;
 }
 
 #case1 p {
+  font-size: 1.1rem;
+}
+
+#informError p {
   font-size: 1.1rem;
 }
 
@@ -809,4 +816,8 @@ input {
 .bell-icon {
 	height: 100px;
 	width: 100px;
+}
+
+#setupPage div {
+  overflow: none;
 }
