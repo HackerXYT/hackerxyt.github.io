@@ -28,12 +28,12 @@
                 console.log("Bypassing")
             }
 
-            alert(`An error occurred: ${message} at ${source}:${lineno}:${colno}`);
+            //alert(`An error occurred: ${message} at ${source}:${lineno}:${colno}`);
             return false;  // Let the browser console still show the error if available
         };
 
         window.addEventListener('unhandledrejection', function (event) {
-            alert(`An unhandled promise rejection occurred: ${event.reason}`);
+            //alert(`An unhandled promise rejection occurred: ${event.reason}`);
         });
         var debugDiv = document.getElementById('theDebug');
 
