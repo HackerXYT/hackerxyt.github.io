@@ -421,7 +421,7 @@ function setActive(option) {
                         d="M21.71,11.29l-9-9a1,1,0,0,0-1.42,0l-9,9a1,1,0,0,0,1.42,1.42l.29-.3V20.3A1.77,1.77,0,0,0,5.83,22H8.5a1,1,0,0,0,1-1V16.1a1,1,0,0,1,1-1h3a1,1,0,0,1,1,1V21a1,1,0,0,0,1,1h2.67A1.77,1.77,0,0,0,20,20.3V12.41l.29.3a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,11.29Z"
                         style="fill: rgb(0, 0, 0);"></path>
                 </svg>
-	<span>Home</span>`
+	<span style="display: none">Home</span>`
 	} else if (option === "Explore") {
 		chats.classList.add("active")
 		$("#nav-Notifications-text").fadeOut("fast")
@@ -437,12 +437,12 @@ function setActive(option) {
                       </g>
                     </g>
                   </svg>
-	<span>Explore</span>`
+	<span style="display: none">Explore</span>`
 	} else if (option === "Notifications") {
 		notifications.classList.add("active")
 		//$("#nav-Notifications-text").fadeIn("fast")
 		notifications.style.color = "#1e1917"
-		notifications.innerHTML = `${notifications.innerHTML}<span>Notifications</span>`
+		notifications.innerHTML = `${notifications.innerHTML}<span style="display: none">Notifications</span>`
 	} else if (option === "Profile") {
 		profileD.classList.add("active")
 	}

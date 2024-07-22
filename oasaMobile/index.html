@@ -83,14 +83,20 @@
             // Display an alert with the log message
             //alert(args.join(' '));
             line = line + 1
-            document.getElementById("theDebug").innerHTML = document.getElementById("theDebug").innerHTML + `<br>[${line}]: ${args.join(' ')}`
+            originalConsoleLog.apply(console, args);
+            try {
+                document.getElementById("theDebug").innerHTML = document.getElementById("theDebug").innerHTML + `<br>[${line}]: ${args.join(' ')}`
+            } catch (error) {
+                return;
+            }
+
 
             dothiS()
 
 
 
             // Call the original console.log function with the same arguments
-            originalConsoleLog.apply(console, args);
+            
         };
 
         // Handle unhandled promise rejections
@@ -440,9 +446,11 @@
             <div style="display: none;" id="informError">
                 <img src="error-handling-svgrepo-com.svg">
                 <h1 style="font-weight: bold;">Λυπούμαστε</h1>
-                <p>Το πρόγραμμα περιήγησής σας δεν υποστηρίζεται απο το Florida<br><span style="font-size: 13px;color: #333" id="errorLog"></span></p>
+                <p>Το πρόγραμμα περιήγησής σας δεν υποστηρίζεται απο το Florida<br><span
+                        style="font-size: 13px;color: #333" id="errorLog"></span></p>
                 <div class="actionBot" style="text-align:center;">
-                    <svg id="resolveErrors" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="-0.24 0 60.776 60.776">
+                    <svg id="resolveErrors" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px"
+                        viewBox="-0.24 0 60.776 60.776">
                         <g id="Group_15" data-name="Group 15" transform="translate(-370.218 -429.187)">
                             <rect id="Rectangle_16" data-name="Rectangle 16" width="38.312" height="12.726"
                                 transform="matrix(0.707, -0.707, 0.707, 0.707, 381.709, 468.995)" fill="#a9afbb" />
@@ -508,18 +516,22 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;">
-                    <span id="IOS1" style="display: none;">
-                        Για να επιλύσετε το πρόβλημα, πατήστε το εικονίδιο <img src="images__1_-removebg-preview.png" width="10px" height="10px" style="width: 20px;height: 20px;margin:0;margin-bottom:-5px;"> στο κάτω μέρος της οθόνης και στη συνέχεια επιλέξτε 'Add to Home Screen'.
-                    </span>
-                    <span id="IOS2" style="display: none;">
-                        Για να επιλύσετε το πρόβλημα, συνδεθείτε στο Evox χρησιμοποιώντας ασφαλή σύνδεση. Αλλάξτε τη διεύθυνση ιστού από http σε https και φορτώστε ξανά τη σελίδα.
-                    </span>
-                    <span id="Windows" style="display: none;">
+                        <span id="IOS1" style="display: none;">
+                            Για να επιλύσετε το πρόβλημα, πατήστε το εικονίδιο <img
+                                src="images__1_-removebg-preview.png" width="10px" height="10px"
+                                style="width: 20px;height: 20px;margin:0;margin-bottom:-5px;"> στο κάτω μέρος της οθόνης
+                            και στη συνέχεια επιλέξτε 'Add to Home Screen'.
+                        </span>
+                        <span id="IOS2" style="display: none;">
+                            Για να επιλύσετε το πρόβλημα, συνδεθείτε στο Evox χρησιμοποιώντας ασφαλή σύνδεση. Αλλάξτε τη
+                            διεύθυνση ιστού από http σε https και φορτώστε ξανά τη σελίδα.
+                        </span>
+                        <span id="Windows" style="display: none;">
 
-                    </span>
-                    <span id="Android" style="display: none;">
+                        </span>
+                        <span id="Android" style="display: none;">
 
-                    </span>
+                        </span>
                     </p>
                 </div>
             </div>
@@ -943,7 +955,7 @@
         </div>
 
         <div id="loggedInPages" style="display: none;">
-            
+
         </div>
 
 

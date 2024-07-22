@@ -88,11 +88,12 @@ function getBus(num) {
         fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${targetUrl}`)
             .then(response => response.json())
             .then(data => {
-                if (!come && !go) {
+                console.log("The data:", data)
+                if (!data.come && !data.go) {
                     console.log(data)
                     return;
                 } else {
-                    console.log("Come and go for ", bus, "\n", data)
+                    console.log("Come and go for ", num, "\n", data)
                 }
                 document.getElementById("netStats").innerHTML = onlineSvg
                 console.log("Success", dictionary[`${num}`], '||', num)

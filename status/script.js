@@ -57,7 +57,7 @@ fetch('https://data.evoxs.xyz/profiles')
         document.getElementById("profiles").innerText = "Outage"
     });
 
-    fetch('https://data.evoxs.xyz/social')
+fetch('https://data.evoxs.xyz/social')
     .then(function (response) {
         if (!response.ok) {
             throw new Error('HTTP error! status: ' + response.status);
@@ -77,27 +77,20 @@ fetch('https://data.evoxs.xyz/profiles')
         document.getElementById("social").innerText = "Outage"
     });
 
-    fetch('https://florida.evoxs.xyz/')
+fetch('https://florida.evoxs.xyz/', { mode: 'no-cors' })
     .then(function (response) {
-        if (!response.ok) {
-            throw new Error('HTTP error! status: ' + response.status);
-        }
-        return response.text();
-    })
-    .then(function (data) {
-        // Log the data
+        console.log('Request was successful, but response body is not accessible in no-cors mode.');
         document.getElementById("florida").classList.add("ok")
         document.getElementById("florida").innerText = "Operational"
-        console.log(data);
     })
     .catch(function (error) {
-        // Handle any errors that occurred during the fetch
         console.error('Error fetching data:', error);
         document.getElementById("florida").classList.add("outage")
         document.getElementById("florida").innerText = "Outage"
     });
 
-    fetch('https://data.evoxs.xyz/tasco')
+
+fetch('https://data.evoxs.xyz/tasco')
     .then(function (response) {
         if (!response.ok) {
             throw new Error('HTTP error! status: ' + response.status);
@@ -117,7 +110,7 @@ fetch('https://data.evoxs.xyz/profiles')
         document.getElementById("tasco").innerText = "Outage"
     });
 
-    fetch('https://data.evoxs.xyz/secureline')
+fetch('https://data.evoxs.xyz/secureline')
     .then(function (response) {
         if (!response.ok) {
             throw new Error('HTTP error! status: ' + response.status);
@@ -137,7 +130,7 @@ fetch('https://data.evoxs.xyz/profiles')
         document.getElementById("secureline").innerText = "Outage"
     });
 
-    fetch('https://data.evoxs.xyz/cryptox')
+fetch('https://data.evoxs.xyz/cryptox')
     .then(function (response) {
         if (!response.ok) {
             throw new Error('HTTP error! status: ' + response.status);
@@ -157,7 +150,7 @@ fetch('https://data.evoxs.xyz/profiles')
         document.getElementById("cryptox").innerText = "Outage"
     });
 
-    fetch('https://data.evoxs.xyz/authip')
+fetch('https://data.evoxs.xyz/authip')
     .then(function (response) {
         if (!response.ok) {
             throw new Error('HTTP error! status: ' + response.status);
@@ -177,7 +170,7 @@ fetch('https://data.evoxs.xyz/profiles')
         document.getElementById("authips").innerText = "Outage"
     });
 
-    fetch('https://data.evoxs.xyz/notifications')
+fetch('https://data.evoxs.xyz/notifications')
     .then(function (response) {
         if (!response.ok) {
             throw new Error('HTTP error! status: ' + response.status);
@@ -197,22 +190,21 @@ fetch('https://data.evoxs.xyz/profiles')
         document.getElementById("notifications").innerText = "Outage"
     });
 
-    fetch('https://admin.evoxs.xyz/')
+
+fetch('https://data.evoxs.xyz/proxy?targetUrl=http://localhost:9090', { mode: 'no-cors' })
     .then(function (response) {
-        if (!response.ok) {
-            throw new Error('HTTP error! status: ' + response.status);
+        if (response.type === 'opaque' || response.ok) {
+            console.log('URL is reachable');
+            document.getElementById("admin").classList.add("ok")
+            document.getElementById("admin").innerText = "Operational"
+        } else {
+            console.log('URL is not reachable');
+            document.getElementById("admin").classList.add("outage")
+            document.getElementById("admin").innerText = "Outage"
         }
-        return response.text();
-    })
-    .then(function (data) {
-        // Log the data
-        document.getElementById("admin").classList.add("ok")
-        document.getElementById("admin").innerText = "Operational"
-        console.log(data);
     })
     .catch(function (error) {
-        // Handle any errors that occurred during the fetch
-        console.error('Error fetching data:', error);
+        console.error('Error fetching URL:', error);
         document.getElementById("admin").classList.add("outage")
         document.getElementById("admin").innerText = "Outage"
     });
