@@ -808,7 +808,7 @@ function goBack() {
     document.getElementById("Businfo").innerHTML = `⛳`
     document.getElementById("Businfo").style.opacity = '0'
     enableOverflow()
-    document.getElementById("main-wrapper").style.overflow = 'auto'
+    //document.getElementById("main-wrapper").style.overflow = 'auto'
     document.getElementById("904live1").style.display = 'none'
     document.getElementById("popIt").classList.remove("active")
     sessionStorage.removeItem("currentWatch")
@@ -871,7 +871,7 @@ function changeDebug() {
     } else {
         localStorage.setItem("hideDebug", true)
         document.getElementById('debug').style.display = ''
-        document.documentElement.style.overflow = '';
+        //document.documentElement.style.overflow = '';
     }
 }
 
@@ -1090,7 +1090,7 @@ function fl_stopMoveDiv() {
     if (isOutsideViewport) {
         console.log("Element with ID '" + elementId + "' is outside the viewport.");
 
-        document.getElementById("main-wrapper").style.overflow = 'auto'
+        //document.getElementById("main-wrapper").style.overflow = 'auto'
         document.getElementById("floridaCont").classList.remove("active")
         document.getElementById("phone").style.transform = "scale(1)"
         setTimeout(function () {
