@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Evox Status</title>
+  <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+<meta content='width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1' name='viewport' /><link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<header class='siteHeader'>
+
+  <div class='container'>
+    <p class='siteHeader__title'>Evox Status</p>
+  </div>
+</header>
+
+<div class='container'>
+
+  <section style="display: none;" class='ongoingIssues'>
+    <a href='/issue/ccc9a970-98dc-4f10-afa5-d822d511172d' class='issueBanner issueBanner--monitoring'>
+      <p class='issueBanner__state'>Monitoring</p>
+      <h2>Network Connectivity Issues</h2>
+      <p class='issueBanner__time'>last updated <time id="time"></time></p>
+    </a>
+  </section>
+
+  <section class='serviceGroup'>
+    <ul class='serviceList serviceGroup__list'>
+      <li class='serviceList__item'>
+        <p class='serviceList__status'><span id="accounts">Loading</span></p>
+        <p class='serviceList__name'>
+          Accounts Database
+        </p>
+      </li>
+      <li class='serviceList__item'>
+        <p class='serviceList__status'><span id="profiles">Loading</span></p>
+        <p class='serviceList__name'>
+          Profiles Database
+        </p>
+      </li>
+      <li class='serviceList__item'>
+        <p class='serviceList__status'><span id="social">Loading</span></p>
+        <p class='serviceList__name'>
+          Social Database
+        </p>
+      </li>
+            <li class='serviceList__item'>
+        <p class='serviceList__status'><span id="florida">Loading</span></p>
+        <p class='serviceList__name'>
+          Florida
+        </p>
+      </li>
+      <li class='serviceList__item'>
+        <p class='serviceList__status'><span id="tasco">Loading</span></p>
+        <p class='serviceList__name'>
+          Tasco
+        </p>
+      </li>
+      <li class='serviceList__item'>
+        <p class='serviceList__status'><span id="secureline">Loading</span></p>
+        <p class='serviceList__name'>
+          Secureline
+        </p>
+      </li>
+      <li class='serviceList__item'>
+        <p class='serviceList__status'><span id="cryptox">Loading</span></p>
+        <p class='serviceList__name'>
+          Cryptox
+        </p>
+      </li>
+      <li class='serviceList__item'>
+        <p class='serviceList__status'><span id="authips">Loading</span></p>
+        <p class='serviceList__name'>
+          Authorization Systems
+        </p>
+      </li>
+      <li class='serviceList__item'>
+        <p class='serviceList__status'><span id="notifications">Loading</span></p>
+        <p class='serviceList__name'>
+          Notifications
+        </p>
+      </li>
+      <li class='serviceList__item'>
+        <p class='serviceList__status'><span id="admin">Loading</span></p>
+        <p class='serviceList__name'>
+          Admin Panel
+        </p>
+      </li>
+    </ul>
+  </section>
+</div>
+
+<footer class='siteFooter'>
+  <div class='container'>
+  </div>
+</footer>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>
