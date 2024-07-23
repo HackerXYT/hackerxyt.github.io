@@ -1229,14 +1229,22 @@ function setup_begin() {
 
                             if (isApple) {
                                 if (clientType === 'Safari') {
-                                    document.getElementById("IOS1").style.display = ""
+                                    if (!window.location.href.includes("https")) {
+                                        document.getElementById("IOS2").style.display = ""
+                                    } else {
+                                        document.getElementById("IOS1").style.display = ""
+                                    }
+
                                 } else if (clientType === "PWA") {
                                     if (!window.location.href.includes("https")) {
                                         document.getElementById("IOS2").style.display = ""
                                     }
                                 }
                             } else {
-                                document.getElementById("resolveErrors").style.display = "none"
+                                if (!window.location.href.includes("https")) {
+                                    document.getElementById("IOS2").style.display = ""
+                                }
+                                //document.getElementById("resolveErrors").style.display = "none"
                             }
                         })
                         //if (sessionStorage.getItem("privileges") === "florida") {
