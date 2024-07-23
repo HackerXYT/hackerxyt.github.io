@@ -96,7 +96,7 @@
 
 
             // Call the original console.log function with the same arguments
-            
+
         };
 
         // Handle unhandled promise rejections
@@ -273,20 +273,24 @@
             </div>
             <div class="buttonsContainer">
                 <div onclick="showPersonal()" class="option disabled" id="personalInf">
-                    <img src="personal.png"><span>Προσωπικές πληροφορίες</span><div style="margin-left: auto;margin-right: 10px;" id="changingICON"><svg style="margin-left: 0;margin-right: 0;" xmlns="http://www.w3.org/2000/svg"
-                        width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#fff" />
-                    </svg></div>
+                    <img src="personal.png"><span>Προσωπικές πληροφορίες</span>
+                    <div style="margin-left: auto;margin-right: 10px;" id="changingICON"><svg
+                            style="margin-left: 0;margin-right: 0;" xmlns="http://www.w3.org/2000/svg" width="20px"
+                            height="20px" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                                fill="#fff" />
+                        </svg></div>
                 </div>
                 <div onclick="showRecents()" class="option disabled" id="recentNotif">
-                    <img src="recent.png"><span id="recentsInfo">Πρόσφατα</span><div style="margin-left: auto;margin-right: 10px;" id="changingICON2"><svg style="margin-left: 0;margin-right: 0;" xmlns="http://www.w3.org/2000/svg" width="20px"
-                        height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#fff" />
-                    </svg></div>
+                    <img src="recent.png"><span id="recentsInfo">Πρόσφατα</span>
+                    <div style="margin-left: auto;margin-right: 10px;" id="changingICON2"><svg
+                            style="margin-left: 0;margin-right: 0;" xmlns="http://www.w3.org/2000/svg" width="20px"
+                            height="20px" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                                fill="#fff" />
+                        </svg></div>
                 </div>
                 <div onclick="setup_begin()" class="option" id="setupNotif">
                     <img src="setup.png"><span>Ρύθμιση Ειδοποιήσεων</span><svg xmlns="http://www.w3.org/2000/svg"
@@ -308,29 +312,35 @@
             </div>
         </div>
         <div id="personal" class="sliding">
-            <div onclick="returnToHome()" class="back"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                <path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#fff"/>
+            <div onclick="returnToHome()" class="back"><svg xmlns="http://www.w3.org/2000/svg" width="25px"
+                    height="25px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                        fill="#fff" />
                 </svg><u>Πίσω</u></div>
             <h3 style="text-align: center;font-size: 14px;">Προσωπικές πληροφορίες</h3>
             <div class="profileContainer">
-                <img id="personalImg" src="cbimage.png"
-                    alt="Profile Picture" class="profileImage">
-                    <div onclick="changeProfile()" class="profileEmail" style="color: rgb(16, 122, 204);font-size: 15px;" id="profileUplInfo">Επεξεργασία</div>
+                <img id="personalImg" src="cbimage.png" alt="Profile Picture" class="profileImage">
+                <div onclick="changeProfile()" class="profileEmail" style="color: rgb(16, 122, 204);font-size: 15px;"
+                    id="profileUplInfo">Επεξεργασία</div>
             </div>
             <div class="buttonsContainer">
                 <div class="option">
-                    <span>Όνομα</span><vo id="userTheName" style="margin-right: 0;">{name}</vo><svg style="margin-left: 0" xmlns="http://www.w3.org/2000/svg"
-                        width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <span>Όνομα</span>
+                    <vo id="userTheName" style="margin-right: 0;">{name}</vo><svg style="margin-left: 0"
+                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path
                             d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                             fill="#8b8b8b" />
                     </svg>
                 </div>
                 <div class="option">
-                    <span>Όνομα Χρήστη</span><vo id="usernameOnly">{username}</vo>
+                    <span>Όνομα Χρήστη</span>
+                    <vo id="usernameOnly">{username}</vo>
                 </div>
                 <div class="option">
-                    <span>Τροποποίηση Ειδοποιήσεων</span><vo>Ενεργές</vo>
+                    <span>Τροποποίηση Ειδοποιήσεων</span>
+                    <vo>Ενεργές</vo>
                 </div>
 
             </div>
@@ -343,23 +353,28 @@
             </div>
         </div>
         <div id="recents" class="sliding">
-            <div onclick="returnToHome2()" class="back"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                <path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#fff"/>
+            <div onclick="returnToHome2()" class="back"><svg xmlns="http://www.w3.org/2000/svg" width="25px"
+                    height="25px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                        fill="#fff" />
                 </svg><u>Πίσω</u></div>
             <h3 style="text-align: center;">Πρόσφατα</h3>
             <div style="margin-top: 20px;" id="recentsContainer" class="buttonsContainer">
                 <div class="option">
-                    <span>Αυτό είναι ένα κομμάτι</span><vo style="margin-right: 0;">{name}</vo><svg style="margin-left: 0" xmlns="http://www.w3.org/2000/svg"
-                        width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <span>Αυτό είναι ένα κομμάτι</span>
+                    <vo style="margin-right: 0;">{name}</vo><svg style="margin-left: 0"
+                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path
                             d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                             fill="#8b8b8b" />
                     </svg>
-            </div>
+                </div>
 
-            
-        </div>
-            <p>Οι ειδοποιήσεις παραπάνω είναι συνδεδεμένες με το αναγνωριστικό της συσκευής σας. Μόνο οι ειδοποιήσεις που έχετε λάβει σε αυτήν τη συσκευή εμφανίζονται εδώ.</p>
+
+            </div>
+            <p>Οι ειδοποιήσεις παραπάνω είναι συνδεδεμένες με το αναγνωριστικό της συσκευής σας. Μόνο οι ειδοποιήσεις
+                που έχετε λάβει σε αυτήν τη συσκευή εμφανίζονται εδώ.</p>
             <div class="devices">
 
             </div>
@@ -1020,45 +1035,45 @@
 
 
     </div>
-    <div id="popIt" class="popup">
-        <div id="grab" class="grabbable"></div>
+        <div id="popIt" class="popup">gfdg
+            <div id="grab" class="grabbable"></div>
 
-        <h3 style="text-align: center;">Λεωφορείο: <span id="whatBus"></span></h3>
-        <div id="oasaBased" class="oasaBased">
-            <div id="16defTime" class="timeBox">
-                Παναγίτσα<span id="based">Loading..</span>
-                <br>
-                <p>Ρέντης - Πειραιάς</p>
+            <h3 style="text-align: center;">Λεωφορείο: <span id="whatBus"></span></h3>
+            <div id="oasaBased" class="oasaBased">
+                <div id="16defTime" class="timeBox">
+                    Παναγίτσα<span id="based">Loading..</span>
+                    <br>
+                    <p>Ρέντης - Πειραιάς</p>
+                </div>
+                <div id="904live1" class="timeBox">
+                    Κοραή<span id="based904">Loading..</span>
+                    <br>
+                    <p>Πλ. Καραϊσκάκη - Φρεαττύδα</p>
+                </div>
+                <div id="049live1" class="timeBox">
+                    Κεράνης<span id="based049">Loading..</span>
+                    <br>
+                    <p>Ομόνοια - Πειραιάς</p>
+                </div>
+                <div id="049live2" class="timeBox">
+                    Δημοτικό Θέατρο<span id="based049Dhm">Loading..</span>
+                    <br>
+                    <p>Πειραιάς - Ομόνοια</p>
+                </div>
             </div>
-            <div id="904live1" class="timeBox">
-                Κοραή<span id="based904">Loading..</span>
-                <br>
-                <p>Πλ. Καραϊσκάκη - Φρεαττύδα</p>
-            </div>
-            <div id="049live1" class="timeBox">
-                Κεράνης<span id="based049">Loading..</span>
-                <br>
-                <p>Ομόνοια - Πειραιάς</p>
-            </div>
-            <div id="049live2" class="timeBox">
-                Δημοτικό Θέατρο<span id="based049Dhm">Loading..</span>
-                <br>
-                <p>Πειραιάς - Ομόνοια</p>
-            </div>
-        </div>
-        <div id="evoxBased" class="evoxBased">
+            <div id="evoxBased" class="evoxBased">
 
-        </div>
-        <p id="Businfo" style="font-size: 1rem;font-weight: lighter;text-align: center;position: fixed;bottom: 40px;left: 50%;white-space: nowrap;
+            </div>
+            <p id="Businfo" style="font-size: 1rem;font-weight: lighter;text-align: center;position: fixed;bottom: 40px;left: 50%;white-space: nowrap;
   transform: translateX(-50%);opacity: 0;transition: opacity 1s ease-out;">Bus Info</p>
 
-        <div class="parentBack" style="opacity: 0;">
-            <div onclick="inform()" class="goBack"> <!--onclick="goBack()"-->
-                Return
+            <div class="parentBack" style="opacity: 0;">
+                <div onclick="inform()" class="goBack"> <!--onclick="goBack()"-->
+                    Return
+                </div>
             </div>
-        </div>
 
-    </div>
+        </div>
     <div id="popIt2" class="popup">
         <h3 style="text-align: center;">Debug:</h3>
         <p style="font-size: 17px;gap:10px;

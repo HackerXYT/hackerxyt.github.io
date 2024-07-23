@@ -16,6 +16,7 @@
 html {
   touch-action: manipulation;
 }
+
 body {
   background-color: rgb(var(--body-color));
   margin: 0px;
@@ -160,24 +161,24 @@ input {
 #search-container {
   display: flex;
   gap: 0.2rem;
-  margin-top: 0.2rem;  
+  margin-top: 0.2rem;
 }
 
-#search-input-container > input,
-#search-container > button {
+#search-input-container>input,
+#search-container>button {
   background-color: rgb(var(--theme-medium));
   color: rgb(255 255 255 / 80%);
   font-size: 1rem;
   border: none;
 }
 
-#search-container > button {
+#search-container>button {
   width: 3.5rem;
   border-radius: 0.2rem;
   cursor: pointer;
 }
 
-#search-container > #image-button {  
+#search-container>#image-button {
   border-bottom-right-radius: 0.5rem;
 }
 
@@ -469,19 +470,19 @@ input {
 
 @media(max-width: 500px) {
   body {
-      overflow: auto;
+    overflow: auto;
   }
 
   #phone {
-      height: 100vh;
-      display: flex;
-      width: 100%;
-      margin: 0px auto;
+    height: 100vh;
+    display: flex;
+    width: 100%;
+    margin: 0px auto;
   }
 
   #main-wrapper {
-      width: 100%;
-      flex-grow: 1;
+    width: 100%;
+    flex-grow: 1;
   }
 }
 
@@ -513,7 +514,7 @@ input {
   touch-action: auto;
   justify-content: center;
   background: rgb(13, 11, 15);
-  
+
   /* Semi-transparent black overlay */
   z-index: 998;
   box-sizing: border-box;
@@ -532,6 +533,13 @@ input {
   border-top-right-radius: 2rem;
   /* Transition for sliding effect, opacity, and visibility */
   overflow: hidden;
+}
+
+@media(min-width: 500px) {
+
+
+  
+
 }
 
 .popup.active {
@@ -573,17 +581,22 @@ input {
 
 
 .evoxBased .timeBox {
-  
+
   width: 95%;
   text-align: left;
   background-color: #333;
   font-size: large;
   padding: 20px;
-  margin: 0; /* Ensure no margin */
-  margin-left: 10px; /* Apply specific margin left */
-  margin-right: 10px; /* Apply specific margin right */
-  border: none; /* Remove any borders */
-  box-shadow: none; /* Remove any box shadows */
+  margin: 0;
+  /* Ensure no margin */
+  margin-left: 10px;
+  /* Apply specific margin left */
+  margin-right: 10px;
+  /* Apply specific margin right */
+  border: none;
+  /* Remove any borders */
+  box-shadow: none;
+  /* Remove any box shadows */
   border-radius: 0;
 }
 
@@ -648,12 +661,18 @@ input {
 .grabbable::before {
   content: "";
   position: absolute;
-  top: -20px; /* Extend clickable area upwards */
-  left: -20px; /* Extend clickable area to the left */
-  right: -20px; /* Extend clickable area to the right */
-  bottom: -30px; /* Extend clickable area downwards */
-  background: transparent; /* Ensure it's transparent */
-  cursor: pointer; /* Make sure the cursor changes */
+  top: -20px;
+  /* Extend clickable area upwards */
+  left: -20px;
+  /* Extend clickable area to the left */
+  right: -20px;
+  /* Extend clickable area to the right */
+  bottom: -30px;
+  /* Extend clickable area downwards */
+  background: transparent;
+  /* Ensure it's transparent */
+  cursor: pointer;
+  /* Make sure the cursor changes */
 }
 
 .grabbable:active {
@@ -664,27 +683,32 @@ input {
   text-align: center;
   padding: 20px;
 }
+
 .profileImage {
   border-radius: 50%;
   width: 95px;
   height: 95px;
   object-fit: cover;
 }
+
 .profileName {
   font-size: 24px;
   font-weight: bold;
   margin-top: 10px;
 }
+
 .profileEmail {
   font-size: 18px;
   color: gray;
   margin-top: 5px;
 }
+
 .buttonsContainer {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
+
 .buttonsContainer .option {
   background-color: #242426;
   border-radius: 0;
@@ -701,7 +725,8 @@ input {
 
 .option vo {
   margin-left: auto;
-  margin-right: 10px; /* Adjust the spacing as needed */
+  margin-right: 10px;
+  /* Adjust the spacing as needed */
   font-weight: lighter;
   color: #8b8b8b;
 }
@@ -750,7 +775,8 @@ input {
   align-items: center;
   text-align: center;
 }
-#setupPage img{
+
+#setupPage img {
   margin-top: 110px;
   border-radius: 1rem;
   width: 110px;
@@ -761,6 +787,7 @@ input {
 #case2 h1 {
   font-size: 2rem;
 }
+
 #case1 h1 {
   font-size: 2rem;
 }
@@ -787,7 +814,7 @@ input {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  text-align:center;
+  text-align: center;
 }
 
 .welcomeButton {
@@ -802,32 +829,39 @@ input {
 }
 
 .notification {
-	padding: 0.5rem;
-	color: #fff;
-	border-bottom: 1px dotted #e0e0e0;
+  padding: 0.5rem;
+  color: #fff;
+  border-bottom: 1px dotted #e0e0e0;
 }
 
 .notification:last-child {
-	border-bottom: none;
+  border-bottom: none;
 }
-.bell-icon, .circles, .blobulus, .all-notifications {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%,-50%);
-	cursor: pointer;
+
+.bell-icon,
+.circles,
+.blobulus,
+.all-notifications {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
 }
+
 .circles {
-	height: 190px;
-	width: 190px;
+  height: 190px;
+  width: 190px;
 }
+
 .blobulus {
-	height: 300px;
-	width: 300px;
+  height: 300px;
+  width: 300px;
 }
+
 .bell-icon {
-	height: 100px;
-	width: 100px;
+  height: 100px;
+  width: 100px;
 }
 
 #setupPage div {
@@ -835,7 +869,7 @@ input {
 }
 
 .sliding {
-  
+
   font-family: "SF";
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -850,7 +884,7 @@ input {
   overflow-y: auto;
   /* Change from 'visible' to 'auto' */
   scroll-behavior: smooth;
-  justify-content: center; 
+  justify-content: center;
   /* Semi-transparent black overlay */
   z-index: 998;
   box-sizing: border-box;
@@ -886,10 +920,13 @@ input {
   left: 0;
   display: flex;
   align-items: center;
-  font-size: 16px; /* Adjust as necessary */
-  color: white; /* Assuming you want the text color to be white */
+  font-size: 16px;
+  /* Adjust as necessary */
+  color: white;
+  /* Assuming you want the text color to be white */
 }
 
 .back svg {
-  margin-right: 0; /* Adjust the spacing between icon and text */
+  margin-right: 0;
+  /* Adjust the spacing between icon and text */
 }

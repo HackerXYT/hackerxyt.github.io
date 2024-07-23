@@ -1330,6 +1330,13 @@ if (localStorage.getItem("extVOASA")) {
             .catch(function (error) {
                 console.error('Service Worker Error', error);
             });
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').then(registration => {
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }).catch(error => {
+                console.log('ServiceWorker registration failed: ', error);
+            });
+        });
     }
 }
 
@@ -1784,12 +1791,12 @@ const myDiv = document.getElementById('recents');
 let touchStartX = 0;
 let touchEndX = 0;
 
-myDiv.addEventListener('touchstart', function(event) {
+myDiv.addEventListener('touchstart', function (event) {
     const touch = event.touches[0];
     touchStartX = touch.clientX;
 });
 
-myDiv.addEventListener('touchend', function(event) {
+myDiv.addEventListener('touchend', function (event) {
     const touch = event.changedTouches[0];
     touchEndX = touch.clientX;
     handleSwipeGesture();
@@ -1812,12 +1819,12 @@ const myDiv2 = document.getElementById('personal');
 let touchStartX2 = 0;
 let touchEndX2 = 0;
 
-myDiv2.addEventListener('touchstart', function(event) {
+myDiv2.addEventListener('touchstart', function (event) {
     const touch = event.touches[0];
     touchStartX2 = touch.clientX;
 });
 
-myDiv2.addEventListener('touchend', function(event) {
+myDiv2.addEventListener('touchend', function (event) {
     const touch = event.changedTouches[0];
     touchEndX2 = touch.clientX;
     handleSwipeGesture2();
@@ -1834,4 +1841,41 @@ function handleSwipeGesture2() {
     // else if (swipeDistance < -swipeThreshold) {
     //    console.log('Swiped left!');
     //}
+}
+
+function deleteElementById(elementId) {
+    // Find the element by its id
+    const element = document.getElementById(elementId);
+
+    // If the element exists, remove it
+    if (element) {
+        element.remove();
+    } else {
+        console.log(`Element with id "${elementId}" not found.`);
+    }
+}
+
+function isComputer() {
+    const userAgent = navigator.userAgent;
+
+    // Regular expressions for different types of devices
+    const mobileRegex = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    const tabletRegex = /Tablet|iPad/i;
+
+    // Check for mobile or tablet
+    const isMobile = mobileRegex.test(userAgent);
+    const isTablet = tabletRegex.test(userAgent);
+
+    // If it's not mobile and not tablet, it's likely a computer
+    return !isMobile && !isTablet;
+}
+
+// Usage example
+if (isComputer()) {
+
+    console.log("This device is a computer.");
+    //const theElemP1 = document.getElementById("popIt").innerHTML
+    //deleteElementById("myElementId");
+    //const phone = document.getElementById("phone")
+    //phone.innerHTML = `${phone.innerHTML}<div id="popIt" class="popup">${theElemP1}</div>`
 }
