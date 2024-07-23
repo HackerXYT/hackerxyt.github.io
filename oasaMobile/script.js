@@ -1341,6 +1341,36 @@ if (localStorage.getItem("extVOASA")) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/sw.js').then(registration => {
                 console.log('ServiceWorker registration successful with scope: ', registration.scope);
+
+                registration.onupdatefound = () => {
+                    const installingWorker = registration.installing;
+
+                    installingWorker.onstatechange = () => {
+                        if (installingWorker.state === 'installed') {
+                            if (navigator.serviceWorker.controller) {
+                                // A new update is available
+                                console.log('New or updated content is available.');
+                                // Notify the user to refresh the page
+                                if (confirm('New version available. Refresh to update?')) {
+                                    window.location.reload();
+                                }
+                            } else {
+                                // Content is cached for offline use
+                                console.log('Content is cached for offline use.');
+                            }
+                        }
+                    };
+                };
+
+                // Optionally handle update directly if already controlling the page
+                if (navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.controller.onstatechange = () => {
+                        if (navigator.serviceWorker.controller.state === 'activated') {
+                            console.log('Service Worker has been activated.');
+                        }
+                    };
+                }
+
             }).catch(error => {
                 console.log('ServiceWorker registration failed: ', error);
             });
