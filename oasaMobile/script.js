@@ -1559,7 +1559,7 @@ floridaAttached()
 
 let oldHTML;
 function showPersonal() {
-    if (localStorage.getItem("extV")) {
+    if (localStorage.getItem("extVOASA")) {
         oldHTML = document.getElementById("changingICON").innerHTML
         document.getElementById("changingICON").innerHTML = `<svg style="margin-left: 0;margin-right: 0;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
        width="15px" height="15px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
@@ -1613,7 +1613,7 @@ function showPersonal() {
 
 
     } else {
-        console.log("External V:", localStorage.getItem("extV"))
+        console.log("External V:", localStorage.getItem("extVOASA"))
     }
 }
 
@@ -1643,7 +1643,7 @@ function truncateString(str) {
 let oldHTML2;
 let skipLoad;
 function showRecents() {
-    if (localStorage.getItem("extV")) {
+    if (localStorage.getItem("extVOASA")) {
         document.getElementById("floridaCont").style.overflow = "hidden"
         oldHTML2 = document.getElementById("changingICON2").innerHTML
         document.getElementById("changingICON2").innerHTML = `<svg style="margin-left: 0;margin-right: 0;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -1685,7 +1685,7 @@ function showRecents() {
         fetch('https://florida.evoxs.xyz/recents', {
             method: 'POST',
             body: JSON.stringify({
-                'deviceId': localStorage.getItem("extV"),
+                'deviceId': localStorage.getItem("extVOASA"),
                 'username': localStorage.getItem("t50-username")
             }),
             headers: {
@@ -1773,7 +1773,7 @@ function showRecents() {
 
 
     } else {
-        console.log("External V:", localStorage.getItem("extV"))
+        console.log("External V:", localStorage.getItem("extVOASA"))
     }
 }
 
