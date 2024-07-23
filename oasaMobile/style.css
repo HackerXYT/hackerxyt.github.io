@@ -97,7 +97,7 @@ input {
 
 #main-wrapper {
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
 }
 
 #main {
@@ -470,7 +470,7 @@ input {
 
 @media(max-width: 500px) {
   body {
-    overflow: auto;
+    overflow: hidden;
   }
 
   #phone {

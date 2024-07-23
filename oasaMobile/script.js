@@ -1097,7 +1097,7 @@ function fl_moveDiv(e) {
         return;
     }
     if (newTop > 120) {
-        document.getElementById("main-wrapper").style.overflow = 'auto'
+        //document.getElementById("main-wrapper").style.overflow = 'auto'
         document.getElementById("floridaCont").classList.remove("active")
         document.getElementById("phone").style.transform = "scale(1)"
         setTimeout(function () {
