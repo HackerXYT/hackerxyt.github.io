@@ -24,6 +24,27 @@ let count2;
 //return;
 //console.log("Not Stopped")
 
+
+// Disable scroll on touch devices
+function preventDefault(e) {
+    e.preventDefault();
+}
+
+// Disable scroll
+function disableScroll() {
+    window.addEventListener('scroll', preventDefault, { passive: false });
+    window.addEventListener('touchmove', preventDefault, { passive: false });
+}
+
+// Enable scroll
+function enableScroll() {
+    window.removeEventListener('scroll', preventDefault, { passive: false });
+    window.removeEventListener('touchmove', preventDefault, { passive: false });
+}
+
+// Call disableScroll() to disable scrolling
+disableScroll();
+
 // Function to format time
 function formatTime2(dateString) {
     // Create a new Date object from the dateString
@@ -899,9 +920,11 @@ function changeDebug() {
     if (localStorage.getItem("showDebug")) {
         localStorage.removeItem("showDebug")
         document.getElementById('debug').style.display = 'none'
+        disableScroll();
     } else {
         localStorage.setItem("showDebug", true)
         document.getElementById('debug').style.display = ''
+        enableScroll()
         //document.documentElement.style.overflow = '';
     }
 }
@@ -910,6 +933,7 @@ if (!localStorage.getItem("showDebug")) {
     document.getElementById('debug').style.display = 'none'
     //document.documentElement.style.overflow = 'hidden';
 } else {
+    enableScroll()
     document.getElementById('debug').style.display = ''
 }
 
@@ -1964,4 +1988,229 @@ function updateNew() {
 
         }, 800)
     }, 800)
+}
+
+const scrollToClose = document.getElementById('popIt');
+let touchStartYS = 0;
+let touchEndYS = 0;
+
+scrollToClose.addEventListener('touchstart', function (event) {
+    const touch = event.touches[0];
+    touchStartYS = touch.clientY;
+    console.log('Touch Start Y:', touchStartYS); // Debug log
+});
+
+scrollToClose.addEventListener('touchend', function (event) {
+    const touch = event.changedTouches[0];
+    touchEndYS = touch.clientY;
+    console.log('Touch End Y:', touchEndYS); // Debug log
+    handleSwipeGestureView();
+});
+
+function handleSwipeGestureView() {
+    const swipeThreshold = 150; // Minimum distance to consider it a swipe
+    const swipeDistance = touchEndYS - touchStartYS;
+    console.log('Swipe Distance:', swipeDistance); // Debug log
+
+    if (swipeDistance > swipeThreshold) {
+        console.log('Swiped down!');
+        goBack()
+    } else {
+        console.log('Swipe too short or swiped up.');
+    }
+}
+
+if (localStorage.getItem("t50-username") && localStorage.getItem("16_Times") || localStorage.getItem("isNewOasa") === "false") {
+    console.log("User is not new")
+} else {
+    document.getElementById("phone").style.transform = "scale(0.98)"
+    document.getElementById("homePage").style.display = "none"
+    document.getElementById("newUser").style.display = ""
+    document.getElementById("grabFlorida").style.display = 'none'
+    document.getElementById("floridaCont").classList.add("active")
+}
+
+function dismissSetup() {
+    localStorage.setItem("isNewOasa", 'false')
+    localStorage.setItem("hasDismissedSetup", 'true')
+    document.getElementById("floridaCont").classList.remove("active")
+    document.getElementById("phone").style.transform = "scale(1)"
+    setTimeout(function () {
+        document.getElementById("homePage").style.display = ""
+        document.getElementById("newUser").style.display = "none"
+        document.getElementById("grabFlorida").style.display = ''
+    }, 800)
+
+}
+
+function startSetup() {
+    document.getElementById("phone").style.transform = "scale(0.96)"
+    document.getElementById("step2").classList.add("active")
+}
+
+function goBackToSetup(step) {
+    if (step === "1") {
+        document.getElementById("phone").style.transform = "scale(0.98)"
+        document.getElementById("step2").classList.remove("active")
+    }
+}
+
+function disableElementById(id) {
+
+    document.getElementById(id).classList.add('disabled');
+}
+
+function enableElementById(id) {
+    document.getElementById(id).classList.remove('disabled');
+}
+
+function checkBoxThis(element) {
+    const cMaxValue = element.getAttribute('c-max');
+    console.log(cMaxValue)
+    if (document.getElementById(`vo${cMaxValue}`).innerHTML.includes(`Unchecked`)) {
+        document.getElementById(`vo${cMaxValue}`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24">
+                        <g>
+                            <path fill="none" d="M0 0h24v24H0z"/>
+                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z" fill="#fff"/>
+                        </g>
+                    </svg>`
+        //make it checked
+        if (cMaxValue === "2") {
+            checkBoxCmax('3', 'onlyCheck')
+            checkBoxCmax('4', 'onlyCheck')
+            disableElementById('voc3')
+            disableElementById('voc4')
+        }
+        if (cMaxValue === "4") {
+            checkBoxCmax('3', 'onlyCheck')
+            checkBoxCmax('2', 'onlyCheck')
+            disableElementById('voc3')
+            disableElementById('voc2')
+        }
+        if (cMaxValue === "1") {
+            $("#preventContinue").fadeIn("fast")
+        }
+    } else {
+        document.getElementById(`vo${cMaxValue}`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24">
+                        <g>
+                            <path fill="none" d="M0 0h24v24H0z"/>
+                            <circle cx="12" cy="12" r="10" fill="#fff"/>
+                            <!--Unchecked-->
+                        </g>
+                    </svg>`
+        if (cMaxValue === "2") {
+            checkBoxCmax('3')
+            checkBoxCmax('4')
+            enableElementById('voc3')
+            enableElementById('voc4')
+        }
+
+        if (cMaxValue === "4") {
+            checkBoxCmax('3')
+            checkBoxCmax('2')
+            enableElementById('voc3')
+            enableElementById('voc2')
+        }
+
+        if (cMaxValue === "1") {
+            $("#preventContinue").fadeOut("fast")
+        }
+    }
+    console.log("Will access", `vo${cMaxValue}`)
+
+
+}
+
+function checkBoxCmax(cMaxValue, bypass) {
+    if (bypass === "onlyCheck") {
+        document.getElementById(`vo${cMaxValue}`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24">
+                        <g>
+                            <path fill="none" d="M0 0h24v24H0z"/>
+                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z" fill="#fff"/>
+                        </g>
+                    </svg>`
+        return;
+    }
+    if (document.getElementById(`vo${cMaxValue}`).innerHTML.includes(`Unchecked`)) {
+        document.getElementById(`vo${cMaxValue}`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24">
+                        <g>
+                            <path fill="none" d="M0 0h24v24H0z"/>
+                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z" fill="#fff"/>
+                        </g>
+                    </svg>`
+        //make it checked
+    } else {
+        document.getElementById(`vo${cMaxValue}`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24">
+                        <g>
+                            <path fill="none" d="M0 0h24v24H0z"/>
+                            <circle cx="12" cy="12" r="10" fill="#fff"/>
+                            <!--Unchecked-->
+                        </g>
+                    </svg>`
+    }
+}
+
+function continueSetup() {
+    const askedServices = []
+    let vo1 = document.getElementById("vo1").innerHTML
+    let vo2 = document.getElementById("vo2").innerHTML
+    let vo3 = document.getElementById("vo3").innerHTML
+    let vo4 = document.getElementById("vo4").innerHTML
+    let vo5 = document.getElementById("vo5").innerHTML
+    if (vo1.includes("Unchecked")) {
+        console.log("Setup cancelled")
+        return;
+    } else {
+        askedServices.push("oasa")
+        if (!vo2.includes("Unchecked")) {
+            askedServices.push("florida")
+        }
+        if (!vo3.includes("Unchecked")) {
+            askedServices.push("evox")
+        }
+        if (!vo4.includes("Unchecked")) {
+            askedServices.push("offline")
+        }
+        if (!vo5.includes("Unchecked")) {
+            askedServices.push("devmode")
+        }
+        console.log(askedServices)
+        console.log(`askedServ: ${askedServices}\nt/f: ${askedServices.includes('oasa')}`)
+        //continue;
+        if (askedServices.includes('devmode')) {
+            localStorage.setItem("showDebug", true)
+            document.getElementById('debug').style.display = ''
+        }
+        if (askedServices.includes('florida')) {
+            document.getElementById("step2").classList.remove("active")
+
+            setup_begin()
+            setTimeout(function () {
+                document.getElementById("newUser").style.display = 'none'
+                setTimeout(function () {
+                    document.getElementById("grabFlorida").style.display = ''
+                }, 800)
+            }, 800)
+            return;
+        }
+        if (askedServices.includes('oasa')) {
+            console.log("will only do oasa")
+            localStorage.setItem("isNewOasa", 'false')
+            document.getElementById("floridaCont").classList.remove("active")
+            document.getElementById("phone").style.transform = "scale(1)"
+            setTimeout(function () {
+                document.getElementById("homePage").style.display = ""
+                document.getElementById("newUser").style.display = "none"
+                document.getElementById("grabFlorida").style.display = ''
+                document.getElementById("step2").classList.remove("active")
+            }, 800)
+        } else {
+            console.log(`askedServ: ${askedServices}\nt/f: ${askedServices.includes('oasa')}`)
+        }
+
+        
+        
+        
+    }
+
 }
