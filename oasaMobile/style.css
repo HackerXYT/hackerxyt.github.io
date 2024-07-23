@@ -930,3 +930,32 @@ input {
   margin-right: 0;
   /* Adjust the spacing between icon and text */
 }
+
+.updateAvailable button {
+  border: 0;
+}
+.updateAvailable button:focus {
+  border: none;
+  outline: 0 !important;
+  outline-style: none;
+}
+
+.updateAvailable {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #3c3c41;
+  border-radius: 50%;
+  padding: 10px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+}
+
+.updateAvailable svg {
+  transition: transform 0.5s ease; /* Smooth transition */
+}

@@ -41,7 +41,8 @@ const CACHE_STATIC = [
     '/oasaMobile/error-handling-svgrepo-com.svg',
     '/oasaMobile/SFUIText-Medium.ttf',
     '/oasaMobile/snap.png',
-    '/oasaMobile/warning-alert-svgrepo-com.svg'
+    '/oasaMobile/warning-alert-svgrepo-com.svg',
+    '/oasaMobile/offline.html'
 ];
 const CACHE_APP = [
     '/oasaMobile/script.js'
@@ -101,7 +102,7 @@ self.addEventListener('install', event => {
           }
           return networkResponse;
         }).catch(() => {
-          return caches.match('/offline.html'); // Serve offline page if network fails
+          return caches.match('/oasaMobile/offline.html'); // Serve offline page if network fails
         });
       })
     );
