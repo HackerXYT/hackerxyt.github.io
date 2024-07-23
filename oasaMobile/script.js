@@ -1908,3 +1908,14 @@ if (isComputer()) {
     //const phone = document.getElementById("phone")
     //phone.innerHTML = `${phone.innerHTML}<div id="popIt" class="popup">${theElemP1}</div>`
 }
+
+function updateServiceWorkerCache() {
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({
+        action: 'UPDATE_CACHE'
+      });
+    } else {
+      console.log('No active service worker found.');
+    }
+  }
+  
