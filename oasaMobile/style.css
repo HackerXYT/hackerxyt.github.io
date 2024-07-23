@@ -13,8 +13,13 @@
   --isNewDevice: 5px;
 }
 
-html {
+html, body {
+  -webkit-user-select: none; /* Disable text selection */
+  -webkit-touch-callout: none; /* Disable callout, e.g., tap and hold effects */
   touch-action: manipulation;
+}
+* {
+  touch-action: manipulation; /* Prevent double-tap zoom */
 }
 
 body {
