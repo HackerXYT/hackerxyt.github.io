@@ -17,6 +17,12 @@ const CACHE_NAME = 'oasa-cache-v1';
 const CACHE_VERSION = 'v1'; // Change this version string when updating the cache
 
 const urlsToCache = [
+
+];
+
+const STATIC_CACHE_NAME = 'static-cache-v1';
+const APP_CACHE_NAME = 'app-cache-v1';
+const CACHE_STATIC = [
     '/oasaMobile/',
     '/oasaMobile/index.html',
     '/oasaMobile/style.css',
@@ -29,6 +35,7 @@ const urlsToCache = [
     '/oasaMobile/reloading-pfp.gif',
     '/oasaMobile/evox-logo-dark.png',
     '/oasaMobile/jquery-3.7.1.js',
+    '/oasaMobile/script.js',
     '/oasaMobile/c027bec07c2dc08b9df60921dfd539bd.jpg',
     '/oasaMobile/cbimage.png',
     '/oasaMobile/error-handling-svgrepo-com.svg',
@@ -36,56 +43,65 @@ const urlsToCache = [
     '/oasaMobile/snap.png',
     '/oasaMobile/warning-alert-svgrepo-com.svg'
 ];
+const CACHE_APP = [
+    '/oasaMobile/script.js'
+];
 
+// Install event: Cache static and app resources
 self.addEventListener('install', event => {
-    self.skipWaiting(); // Activate the new service worker immediately
     event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-            console.log('Opened cache and adding resources');
-            return cache.addAll(urlsToCache);
-        })
-    );
-});
-
-// Activate event: Clean up old caches and immediately claim clients
-self.addEventListener('activate', event => {
-    const currentCaches = [CACHE_NAME];
-    event.waitUntil(
-        caches.keys().then(cacheNames => {
-            return Promise.all(
-                cacheNames.map(cacheName => {
-                    if (!currentCaches.includes(cacheName)) {
-                        console.log('Deleting old cache:', cacheName);
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
+        Promise.all([
+            caches.open(STATIC_CACHE_NAME),
+            caches.open(APP_CACHE_NAME)
+        ]).then(([staticCache, appCache]) => {
+            console.log('Caches opened and resources added.');
+            return Promise.all([
+                staticCache.addAll(CACHE_STATIC),
+                appCache.addAll(CACHE_APP)
+            ]);
         }).then(() => {
-            return self.clients.claim(); // Take control of all clients immediately
+            return self.skipWaiting(); // Activate the new service worker immediately
         })
     );
 });
 
-// Fetch event: Serve cached content when offline, update cache with new responses
+// Activate event: Clean up old caches and claim clients
+self.addEventListener('activate', event => {
+    event.waitUntil(
+        Promise.all([
+            self.clients.claim(), // Take control of all clients immediately
+            caches.keys().then(cacheNames => {
+                return Promise.all(
+                    cacheNames.map(cacheName => {
+                        if (cacheName !== STATIC_CACHE_NAME && cacheName !== APP_CACHE_NAME) {
+                            console.log('Deleting old cache:', cacheName);
+                            return caches.delete(cacheName);
+                        }
+                    })
+                );
+            })
+        ])
+    );
+});
+
+// Fetch event: Serve cached content when offline and update cache with network responses
 self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request).then(response => {
             if (response) {
-                // Return cached response
-                return response;
+                return response; // Cache hit - return the cached response
             }
 
-            // Fetch from network and cache it
+            // Fetch from the network and update the cache
             return fetch(event.request).then(networkResponse => {
                 if (networkResponse && networkResponse.status === 200) {
-                    caches.open(CACHE_NAME).then(cache => {
+                    caches.open(STATIC_CACHE_NAME).then(cache => {
                         cache.put(event.request, networkResponse.clone());
                     });
                 }
                 return networkResponse;
             }).catch(() => {
-                // If network request fails, serve offline fallback
-                return caches.match('/offline.html');
+                return caches.match('/offline.html'); // Serve offline page if network fails
             });
         })
     );
