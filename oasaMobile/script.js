@@ -1928,14 +1928,16 @@ function rotateElement() {
     // Check if the element exists
     if (element) {
         // Get the current rotation angle
-        const currentRotation = element.style.transform.match(/rotate\((\d+)deg\)/);
+        const currentRotationMatch = element.style.transform.match(/rotate\((\d+)deg\)/);
 
-        // Set the new rotation angle
-        let newRotation = 0;
-        if (currentRotation) {
-            // Increment the current rotation by 45 degrees
-            newRotation = parseInt(currentRotation[1]) + 365;
+        // Initialize current rotation to 0 if not set
+        let currentRotation = 0;
+        if (currentRotationMatch) {
+            currentRotation = parseInt(currentRotationMatch[1], 10);
         }
+
+        // Increment the current rotation by 45 degrees
+        let newRotation = currentRotation + 365;
 
         // Apply the new rotation to the element
         element.style.transform = `rotate(${newRotation}deg)`;
@@ -1958,8 +1960,8 @@ function updateNew() {
                 window.location.reload()
 
 
-            }, 1200)
+            }, 800)
 
-        }, 1200)
-    }, 1200)
+        }, 800)
+    }, 800)
 }
