@@ -13,9 +13,13 @@
   --isNewDevice: 5px;
 }
 
+html {
+  touch-action: manipulation;
+}
 body {
   background-color: rgb(var(--body-color));
   margin: 0px;
+  touch-action: manipulation;
 }
 
 body::-webkit-scrollbar {
@@ -504,7 +508,6 @@ input {
   display: block;
   padding: 30px;
   align-items: center;
-  overflow-y: auto;
   /* Change from 'visible' to 'auto' */
   scroll-behavior: smooth;
   touch-action: auto;
@@ -528,6 +531,7 @@ input {
   border-top-left-radius: 2rem;
   border-top-right-radius: 2rem;
   /* Transition for sliding effect, opacity, and visibility */
+  overflow: hidden;
 }
 
 .popup.active {
@@ -687,14 +691,25 @@ input {
   width: 100%;
   height: 50px;
   display: flex;
-  flex-direction: row;
-  align-items: center; /* This will vertically center the img and the span */
+  align-items: center;
   transition: background-color 0.4s ease-in-out;
+}
+
+.option span {
+  margin-left: 15px;
+}
+
+.option vo {
+  margin-left: auto;
+  margin-right: 10px; /* Adjust the spacing as needed */
+  font-weight: lighter;
+  color: #8b8b8b;
 }
 
 .buttonsContainer .option:hover {
   background-color: #3d3d3d;
 }
+
 #floridaCont p {
   margin-top: 10px;
   color: gray;
@@ -713,13 +728,10 @@ input {
 }
 
 .option svg {
-  margin-left: auto; /* Ensure the SVG stays on the far right */
+  margin-left: auto;
   margin-right: 10px;
 }
 
-.option span {
-  margin-left: 15px;
-}
 
 .buttonsContainer .option:first-child {
   border-top-left-radius: 1rem;
@@ -820,4 +832,64 @@ input {
 
 #setupPage div {
   overflow: none;
+}
+
+.sliding {
+  
+  font-family: "SF";
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* for Internet Explorer, Edge */
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  align-items: center;
+  overflow-y: auto;
+  /* Change from 'visible' to 'auto' */
+  scroll-behavior: smooth;
+  justify-content: center; 
+  /* Semi-transparent black overlay */
+  z-index: 998;
+  box-sizing: border-box;
+  /* Include padding in the element's total width and height */
+  color: white;
+  opacity: 1;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateX(100%);
+  /* Initially off-screen to the left */
+  transition: transform 0.6s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out;
+  background: rgb(13, 11, 15);
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  /* Transition for sliding effect, opacity, and visibility */
+  padding: 30px;
+}
+
+
+.sliding.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateX(0);
+  /* Slide the popup into view */
+}
+
+.back {
+  position: relative;
+  top: 21px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  font-size: 16px; /* Adjust as necessary */
+  color: white; /* Assuming you want the text color to be white */
+}
+
+.back svg {
+  margin-right: 0; /* Adjust the spacing between icon and text */
 }

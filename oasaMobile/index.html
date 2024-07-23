@@ -264,7 +264,7 @@
 
 
         <div id="homePage">
-            <h3 style="text-align: center;">Ειδοποιήσεις<br><span style="font-size: small;">Evox</span></h3>
+            <h3 style="text-align: center;">Ειδοποιήσεις</h3>
             <div class="profileContainer">
                 <img src="https://i.pinimg.com/736x/c0/27/be/c027bec07c2dc08b9df60921dfd539bd.jpg" id="profilePic"
                     alt="Profile Picture" class="profileImage">
@@ -272,21 +272,21 @@
                 <div class="profileEmail" id="profileEmail">guest@evoxs.xyz</div>
             </div>
             <div class="buttonsContainer">
-                <div class="option disabled" id="personalInf">
-                    <img src="personal.png"><span>Προσωπικές πληροφορίες</span><svg xmlns="http://www.w3.org/2000/svg"
+                <div onclick="showPersonal()" class="option disabled" id="personalInf">
+                    <img src="personal.png"><span>Προσωπικές πληροφορίες</span><div style="margin-left: auto;margin-right: 10px;" id="changingICON"><svg style="margin-left: 0;margin-right: 0;" xmlns="http://www.w3.org/2000/svg"
                         width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path
                             d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                             fill="#fff" />
-                    </svg>
+                    </svg></div>
                 </div>
-                <div class="option disabled" id="recentNotif">
-                    <img src="recent.png"><span>Πρόσφατα</span><svg xmlns="http://www.w3.org/2000/svg" width="20px"
+                <div onclick="showRecents()" class="option disabled" id="recentNotif">
+                    <img src="recent.png"><span id="recentsInfo">Πρόσφατα</span><div style="margin-left: auto;margin-right: 10px;" id="changingICON2"><svg style="margin-left: 0;margin-right: 0;" xmlns="http://www.w3.org/2000/svg" width="20px"
                         height="20px" viewBox="0 0 24 24" fill="none">
                         <path
                             d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                             fill="#fff" />
-                    </svg>
+                    </svg></div>
                 </div>
                 <div onclick="setup_begin()" class="option" id="setupNotif">
                     <img src="setup.png"><span>Ρύθμιση Ειδοποιήσεων</span><svg xmlns="http://www.w3.org/2000/svg"
@@ -300,6 +300,66 @@
             </div>
             <p>Οι ειδοποιήσεις βοηθούν τους χρήστες να ενημερώνονται για ερχόμενα λεωφορεία χωρίς να χρειάζεται να έχουν
                 την εφαρμογή ανοιχτή.</p>
+            <div class="devices">
+
+            </div>
+            <div class="recentNotifications">
+
+            </div>
+        </div>
+        <div id="personal" class="sliding">
+            <div onclick="returnToHome()" class="back"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                <path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#fff"/>
+                </svg><u>Πίσω</u></div>
+            <h3 style="text-align: center;font-size: 14px;">Προσωπικές πληροφορίες</h3>
+            <div class="profileContainer">
+                <img id="personalImg" src="cbimage.png"
+                    alt="Profile Picture" class="profileImage">
+                    <div onclick="changeProfile()" class="profileEmail" style="color: rgb(16, 122, 204);font-size: 15px;" id="profileUplInfo">Επεξεργασία</div>
+            </div>
+            <div class="buttonsContainer">
+                <div class="option">
+                    <span>Όνομα</span><vo id="userTheName" style="margin-right: 0;">{name}</vo><svg style="margin-left: 0" xmlns="http://www.w3.org/2000/svg"
+                        width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#8b8b8b" />
+                    </svg>
+                </div>
+                <div class="option">
+                    <span>Όνομα Χρήστη</span><vo id="usernameOnly">{username}</vo>
+                </div>
+                <div class="option">
+                    <span>Τροποποίηση Ειδοποιήσεων</span><vo>Ενεργές</vo>
+                </div>
+
+            </div>
+            <p>Περισσότερες ρυθμίσεις που αφορούν τον λογαριασμό σας μπορούν να επεξεργαστούν στο Evox Nexus.</p>
+            <div class="devices">
+
+            </div>
+            <div class="recentNotifications">
+
+            </div>
+        </div>
+        <div id="recents" class="sliding">
+            <div onclick="returnToHome2()" class="back"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                <path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#fff"/>
+                </svg><u>Πίσω</u></div>
+            <h3 style="text-align: center;">Πρόσφατα</h3>
+            <div style="margin-top: 20px;" id="recentsContainer" class="buttonsContainer">
+                <div class="option">
+                    <span>Αυτό είναι ένα κομμάτι</span><vo style="margin-right: 0;">{name}</vo><svg style="margin-left: 0" xmlns="http://www.w3.org/2000/svg"
+                        width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#8b8b8b" />
+                    </svg>
+            </div>
+
+            
+        </div>
+            <p>Οι ειδοποιήσεις παραπάνω είναι συνδεδεμένες με το αναγνωριστικό της συσκευής σας. Μόνο οι ειδοποιήσεις που έχετε λάβει σε αυτήν τη συσκευή εμφανίζονται εδώ.</p>
             <div class="devices">
 
             </div>

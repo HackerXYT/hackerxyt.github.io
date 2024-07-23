@@ -46,6 +46,7 @@ function formatTime2(dateString) {
 }
 
 function getBus(num) {
+    console.log("Get Bus NUM", num)
     const dict = JSON.stringify(dictionary)
     if (dict.includes(num)) {
         const targetUrl = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${dictionary[`${num}`]}&keyOrigin=evoxEpsilon`);
@@ -72,7 +73,14 @@ function getBus(num) {
                         localStorage.setItem(`${num}_Times`, JSON.stringify(times))
                         displayRemainingTimeLC(nextBusTime);
                     } else {
-                        displayRemainingTimeLC('00:21')
+                        console.log("nextBusTime Unavailable For", num)
+                        const theLcBackup = JSON.parse(localStorage.getItem(`${num}_Timetable`))
+                        var timesLC = theLcBackup.go.map(item => {
+                            //console.log("sde_start1:", item.sde_start1); // Debug log
+                            return formatTime(item.sde_start1);
+                        });
+                        const nextBusTime = getNextBusTime(timesLC);
+                        displayRemainingTimeLC(nextBusTime, 'noLoadIndicator')
                     }
                     console.log(`Preloaded ${num} from storage`)
                     console.log(times);
@@ -112,7 +120,15 @@ function getBus(num) {
                     localStorage.setItem(`${num}_Times`, JSON.stringify(times));
                     displayRemainingTime(nextBusTime);
                 } else {
-                    displayRemainingTimeLC('00:21');
+                    //displayRemainingTimeLC('00:21');
+                    console.log("nextBusTime Unavailable For", num)
+                    const theLcBackup = JSON.parse(localStorage.getItem(`${num}_Timetable`))
+                    var timesLC = theLcBackup.go.map(item => {
+                        //console.log("sde_start1:", item.sde_start1); // Debug log
+                        return formatTime(item.sde_start1);
+                    });
+                    const nextBusTime = getNextBusTime(timesLC);
+                    displayRemainingTimeLC(nextBusTime, 'noLoadIndicator')
                 }
             })
             .catch(error => {
@@ -129,10 +145,19 @@ function getBus(num) {
                     const nextBusTime = getNextBusTime(times);
 
                     if (nextBusTime) {
+                        console.log(`Next bus time available for ${num}, JSON:\n${nextBusTime}`)
                         localStorage.setItem(`${num}_Times`, JSON.stringify(times));
                         displayRemainingTime(nextBusTime);
                     } else {
-                        displayRemainingTimeLC('00:21');
+                        //displayRemainingTimeLC('00:21');
+                        console.log("nextBusTime Unavailable For", num)
+                        const theLcBackup = JSON.parse(localStorage.getItem(`${num}_Timetable`))
+                        var timesLC = theLcBackup.go.map(item => {
+                            //console.log("sde_start1:", item.sde_start1); // Debug log
+                            return formatTime(item.sde_start1);
+                        });
+                        const nextBusTime = getNextBusTime(timesLC);
+                        displayRemainingTimeLC(nextBusTime, 'noLoadIndicator')
                     }
                     console.log('Loaded from storage');
                 } else {
@@ -215,7 +240,7 @@ function getBus(num) {
             document.getElementById(`remain${num}`).innerText = `Next bus: ${remainingTimeText}`;
         }
 
-        function displayRemainingTimeLC(nextBusTime) {
+        function displayRemainingTimeLC(nextBusTime, noLoadIndicator) {
             console.log("Running", JSON.stringify(nextBusTime), "for", num, 'on displayRemainingTimeLC');
             const currentTime = new Date();
             const nextBusDate = new Date();
@@ -227,7 +252,11 @@ function getBus(num) {
             const displayMinutes = remainingMinutes % 60;
 
             const remainingTimeText = `${remainingHours > 0 ? `${remainingHours}h ` : ''}${displayMinutes}m`;
-            document.getElementById(`remain${num}`).innerHTML = `Next bus: ${remainingTimeText}
+            if (noLoadIndicator) {
+
+                document.getElementById(`remain${num}`).innerHTML = `Next bus: ${remainingTimeText}`;
+            } else {
+                document.getElementById(`remain${num}`).innerHTML = `Next bus: ${remainingTimeText}
       <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
        width="15px" height="15px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
       <path opacity="0.2" fill="#fff" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
@@ -245,6 +274,8 @@ function getBus(num) {
         </path>
       </svg>
     `;
+            }
+
         }
 
     } else {
@@ -867,10 +898,10 @@ function sendToNote() {
 function changeDebug() {
     if (localStorage.getItem("hideDebug")) {
         localStorage.removeItem("hideDebug")
-        document.getElementById('debug').style.display = 'none'
+        document.getElementById('debug').style.display = ''
     } else {
         localStorage.setItem("hideDebug", true)
-        document.getElementById('debug').style.display = ''
+        document.getElementById('debug').style.display = 'none'
         //document.documentElement.style.overflow = '';
     }
 }
@@ -878,6 +909,8 @@ function changeDebug() {
 if (!localStorage.getItem("hideDebug")) {
     document.getElementById('debug').style.display = 'none'
     document.documentElement.style.overflow = 'hidden';
+} else {
+    document.getElementById('debug').style.display = ''
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -1150,24 +1183,24 @@ function setup_begin() {
         let isApple;
         let isWindows;
         let isAndroid;
-        if(os.includes("macOS")) {
+        if (os.includes("macOS")) {
             isApple = true
             isWindows = false
             if (window.navigator.standalone) {
                 // The website is running as a PWA (fullscreen iOS bookmark)
                 console.log('Running as PWA');
-                clientType = 'PWA' 
+                clientType = 'PWA'
 
                 //document.getElementById("errorLog").innerHTML = `PWA`
             } else {
                 // The website is running in the default Safari browser
                 console.log('Running in Safari');
-                clientType = 'Safari' 
+                clientType = 'Safari'
                 //document.getElementById("errorLog").innerHTML = `Safari`
                 //document.getElementById("errorLog").innerHTML = `serviceWorker: ${'serviceWorker' in navigator}<br>PushManager: ${'PushManager' in window}`
             }
-        } else if(os.includes("Windows")) {
-            isApple = false 
+        } else if (os.includes("Windows")) {
+            isApple = false
             isWindows = true
             document.getElementById("resolveErrors").style.display = "none"
         } else {
@@ -1177,7 +1210,7 @@ function setup_begin() {
             document.getElementById("resolveErrors").style.display = "none"
         }
 
-        
+
 
         setTimeout(function () {
 
@@ -1193,12 +1226,12 @@ function setup_begin() {
                     $("#setupPage").fadeIn("fast", function () {
                         $("#informError").fadeIn("fast", function () {
 
-                            
-                            if(isApple) {
-                                if(clientType === 'Safari') {
+
+                            if (isApple) {
+                                if (clientType === 'Safari') {
                                     document.getElementById("IOS1").style.display = ""
-                                } else if(clientType === "PWA") {
-                                    if(!window.location.href.includes("https")) {
+                                } else if (clientType === "PWA") {
+                                    if (!window.location.href.includes("https")) {
                                         document.getElementById("IOS2").style.display = ""
                                     }
                                 }
@@ -1516,3 +1549,285 @@ function floridaAttached() {
     }
 }
 floridaAttached()
+
+let oldHTML;
+function showPersonal() {
+    if (localStorage.getItem("extV")) {
+        oldHTML = document.getElementById("changingICON").innerHTML
+        document.getElementById("changingICON").innerHTML = `<svg style="margin-left: 0;margin-right: 0;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+       width="15px" height="15px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+      <path opacity="0.2" fill="#fff" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+        s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+        c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+      <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+        C22.32,8.481,24.301,9.057,26.013,10.047z">
+        <animateTransform attributeType="xml"
+          attributeName="transform"
+          type="rotate"
+          from="0 20 20"
+          to="360 20 20"
+          dur="0.3s"
+          repeatCount="indefinite"/>
+        </path>
+      </svg>`
+
+        document.getElementById("usernameOnly").innerText = localStorage.getItem("t50-username")
+        if (localStorage.getItem("oasa-name")) {
+            document.getElementById("userTheName").innerText = localStorage.getItem("oasa-name")
+        } else {
+            document.getElementById("userTheName").innerText = localStorage.getItem("t50-username")
+        }
+
+        if (document.getElementById("profilePic").src.includes("reloading-pfp.gif")) {
+            console.log("Profile Picture Is Still Loading, Waiting Until Response")
+            document.getElementById("personalImg").src = "reloading-pfp.gif"
+            const pfpInt = setInterval(function () {
+                if (document.getElementById("profilePic").src.includes("reloading-pfp.gif")) {
+                    console.log("profile is loading")
+                    return;
+                } else {
+                    console.log('Profile loaded')
+                    document.getElementById("personalImg").src = document.getElementById("profilePic").src
+                    document.getElementById("personal").classList.add('active')
+                    clearInterval(pfpInt)
+                }
+            }, 100)
+            setTimeout(function () {
+                document.getElementById("personal").classList.add('active')
+            }, 2000)
+        } else if (document.getElementById("personalImg").src === "cbimage.png") {
+            console.log("Default Image Is Set")
+        } else {
+            document.getElementById("personalImg").src = document.getElementById("profilePic").src
+            setTimeout(function () {
+                document.getElementById("personal").classList.add('active')
+            }, 400)
+        }
+
+
+    }
+}
+
+function returnToHome() {
+    document.getElementById("floridaCont").style.overflow = "hidden"
+    document.getElementById('personal').classList.remove('active')
+    document.getElementById("changingICON").innerHTML = oldHTML
+}
+
+
+function changeProfile() {
+    document.getElementById("profileUplInfo").innerText = "Μη Διαθέσιμο"
+    const oldCol = document.getElementById("profileUplInfo").style.color
+    document.getElementById("profileUplInfo").style.color = "red"
+    setTimeout(function () {
+        document.getElementById("profileUplInfo").style.color = oldCol
+        document.getElementById("profileUplInfo").innerText = "Επεξεργασία"
+    }, 1500)
+}
+function truncateString(str) {
+    if (str.length > 28) {
+        return str.substring(0, 28) + '..';
+    }
+    return str;
+}
+
+let oldHTML2;
+let skipLoad;
+function showRecents() {
+    if (localStorage.getItem("extV")) {
+        document.getElementById("floridaCont").style.overflow = "hidden"
+        oldHTML2 = document.getElementById("changingICON2").innerHTML
+        document.getElementById("changingICON2").innerHTML = `<svg style="margin-left: 0;margin-right: 0;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+       width="15px" height="15px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+      <path opacity="0.2" fill="#fff" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+        s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+        c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+      <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+        C22.32,8.481,24.301,9.057,26.013,10.047z">
+        <animateTransform attributeType="xml"
+          attributeName="transform"
+          type="rotate"
+          from="0 20 20"
+          to="360 20 20"
+          dur="0.3s"
+          repeatCount="indefinite"/>
+        </path>
+      </svg>`
+
+        document.getElementById('recentsContainer').innerHTML = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+       width="15px" height="15px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+      <path opacity="0.2" fill="#fff" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+        s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+        c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+      <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+        C22.32,8.481,24.301,9.057,26.013,10.047z">
+        <animateTransform attributeType="xml"
+          attributeName="transform"
+          type="rotate"
+          from="0 20 20"
+          to="360 20 20"
+          dur="0.3s"
+          repeatCount="indefinite"/>
+        </path>
+      </svg>`
+        skipLoad = setTimeout(function () {
+            document.getElementById("recents").classList.add('active')
+        }, 1500)
+        fetch('https://florida.evoxs.xyz/recents', {
+            method: 'POST',
+            body: JSON.stringify({
+                'deviceId': localStorage.getItem("extV"),
+                'username': localStorage.getItem("t50-username")
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(function (response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // Assuming the response is JSON
+        }).then(function (data) {
+            // Assuming 'value' is a key in the response JSON
+            if (!data) {
+                return;
+            }
+            document.getElementById("recentsInfo").innerHTML = `Πρόσφατα`
+            const final = JSON.parse(data.value)
+            console.log(final)
+            console.log(final.username)
+            document.getElementById('recentsContainer').innerHTML = ""
+            let number = 0
+            if (JSON.stringify(final.notifications) === '[]') {
+                console.warn("No Notifications!")
+                document.getElementById('recentsContainer').innerHTML = `<div class="option">
+                <span>Καμία Ειδοποιήση</span></div>`
+                document.getElementById("recents").classList.add('active')
+                return;
+            }
+            final.notifications.forEach(notif => {
+                if (number > 10) {
+                    return;
+                }
+                number = number + 1
+                console.log(notif)
+                const payload = JSON.parse(notif.payload)
+                let theNoti = document.getElementById('recentsContainer');
+
+
+                // Create a new div element
+                let newDiv = document.createElement('div');
+                newDiv.className = 'option';
+
+                let span;
+                if (payload.title === "Gateway") {
+                    span = document.createElement('img');
+                    span.src = 'https://evoxs.xyz/notifications_assets/Gateway.png';
+                } else if (payload.title === "Novus") {
+                    span = document.createElement('img');
+                    span.src = 'https://evoxs.xyz/notifications_assets/Notice.png';
+                } else if (payload.title === "Notice") {
+                    span = document.createElement('img');
+                    span.src = 'https://evoxs.xyz/notifications_assets/Error.png';
+                } else if (payload.title === "Welcome back") {
+                    span = document.createElement('img');
+                    span.src = 'https://evoxs.xyz/notifications_assets/Gateway.png';
+                } else {
+                    span = document.createElement('span');
+                    span.textContent = payload.title;
+                }
+
+
+                // Create h4 and p elements
+                let vo = document.createElement('vo');
+                vo.textContent = truncateString(payload.body);
+
+
+
+                // Append h4 and p to the new div
+                newDiv.appendChild(span);
+                newDiv.appendChild(vo);
+
+                // Append the new div to the element with id "theNoti"
+                theNoti.appendChild(newDiv);
+            });
+            document.getElementById("recents").classList.add('active')
+        }).catch(error => {
+            document.getElementById("netStats").innerHTML = offlineSvg
+            clearTimeout(skipLoad)
+            document.getElementById("changingICON2").innerHTML = `<img src='snap.png' style='width:20px;height:20px'>`
+            document.getElementById("recentsInfo").innerHTML = `Διακομιστής&nbsp;μη&nbsp;προσβάσιμος`
+            setTimeout(function () {
+                document.getElementById("recentsInfo").innerHTML = `Πρόσφατα`
+            }, 10000)
+        });
+
+
+    }
+}
+
+function returnToHome2() {
+    document.getElementById('recents').classList.remove('active')
+    document.getElementById("changingICON2").innerHTML = oldHTML2
+    try {
+        clearInterval(skipLoad)
+    } catch (error) {
+        console.log("Ignoring Interval Error")
+    }
+}
+
+const myDiv = document.getElementById('recents');
+let touchStartX = 0;
+let touchEndX = 0;
+
+myDiv.addEventListener('touchstart', function(event) {
+    const touch = event.touches[0];
+    touchStartX = touch.clientX;
+});
+
+myDiv.addEventListener('touchend', function(event) {
+    const touch = event.changedTouches[0];
+    touchEndX = touch.clientX;
+    handleSwipeGesture();
+});
+
+function handleSwipeGesture() {
+    const swipeThreshold = 30; // Minimum distance to consider it a swipe
+    const swipeDistance = touchEndX - touchStartX;
+
+    if (swipeDistance > swipeThreshold) {
+        console.log('Swiped right!');
+        returnToHome2()
+    }
+    // else if (swipeDistance < -swipeThreshold) {
+    //    console.log('Swiped left!');
+    //}
+}
+
+const myDiv2 = document.getElementById('personal');
+let touchStartX2 = 0;
+let touchEndX2 = 0;
+
+myDiv2.addEventListener('touchstart', function(event) {
+    const touch = event.touches[0];
+    touchStartX2 = touch.clientX;
+});
+
+myDiv2.addEventListener('touchend', function(event) {
+    const touch = event.changedTouches[0];
+    touchEndX2 = touch.clientX;
+    handleSwipeGesture2();
+});
+
+function handleSwipeGesture2() {
+    const swipeThreshold = 30; // Minimum distance to consider it a swipe
+    const swipeDistance = touchEndX2 - touchStartX2;
+
+    if (swipeDistance > swipeThreshold) {
+        console.log('Swiped right!');
+        returnToHome()
+    }
+    // else if (swipeDistance < -swipeThreshold) {
+    //    console.log('Swiped left!');
+    //}
+}
