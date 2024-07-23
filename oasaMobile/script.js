@@ -1605,6 +1605,8 @@ function showPersonal() {
         }
 
 
+    } else {
+        console.log("External V:", localStorage.getItem("extV"))
     }
 }
 
@@ -1763,6 +1765,8 @@ function showRecents() {
         });
 
 
+    } else {
+        console.log("External V:", localStorage.getItem("extV"))
     }
 }
 
