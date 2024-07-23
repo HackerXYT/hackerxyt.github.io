@@ -896,19 +896,19 @@ function sendToNote() {
 }
 
 function changeDebug() {
-    if (localStorage.getItem("hideDebug")) {
-        localStorage.removeItem("hideDebug")
-        document.getElementById('debug').style.display = ''
-    } else {
-        localStorage.setItem("hideDebug", true)
+    if (localStorage.getItem("showDebug")) {
+        localStorage.removeItem("showDebug")
         document.getElementById('debug').style.display = 'none'
+    } else {
+        localStorage.setItem("showDebug", true)
+        document.getElementById('debug').style.display = ''
         //document.documentElement.style.overflow = '';
     }
 }
 
-if (!localStorage.getItem("hideDebug")) {
+if (!localStorage.getItem("showDebug")) {
     document.getElementById('debug').style.display = 'none'
-    document.documentElement.style.overflow = 'hidden';
+    //document.documentElement.style.overflow = 'hidden';
 } else {
     document.getElementById('debug').style.display = ''
 }
