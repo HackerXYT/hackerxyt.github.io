@@ -21,6 +21,7 @@
 
 
     <script>
+        var currentBuild = "0.4"
         window.onerror = function (message, source, lineno, colno, error) {
             try {
                 document.getElementById("theDebug").innerHTML = document.getElementById("theDebug").innerHTML + `<br><span style="color: red">${args.join(' ')}</span>`
@@ -146,7 +147,7 @@
                         getBus('049')
                         getBus('904')
                         getBus('420')" href="#">@reload</a>
-                        <a onclick="updateServiceWorkerCache();this.innerHTML = 'updating..';setTimeout(function(){this.innerHTML = 'reloading..';window.location.reload();}, 1200)//document.getElementById('theDebug').innerHTML = 'Terminal Restarted'"
+                        <a id='updatemanual' onclick="updateServiceWorkerCache();this.innerHTML = 'updating..';setTimeout(function(){this.innerHTML = 'reloading..';window.location.reload();}, 1200)//document.getElementById('theDebug').innerHTML = 'Terminal Restarted'"
                             href="#">update</a>
                     </div>
                     <div id="header-container">

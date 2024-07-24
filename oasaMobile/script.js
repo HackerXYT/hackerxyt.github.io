@@ -1,9 +1,10 @@
-var currentBuild = "0.1"
+
+sessionStorage.setItem("currentBuild", currentBuild)
 
 fetch(`../oasaBuild.evox`)
     .then(response => response.json())
     .then(data => {
-        if(data.buildNumber > currentBuild) {
+        if (data.buildNumber > currentBuild) {
             $("#updateAvailable").fadeIn("fast")
         }
 
@@ -11,15 +12,27 @@ fetch(`../oasaBuild.evox`)
     .catch(error => {
         console.error("Failed to check for updates")
     })
+if(sessionStorage.getItem("pfp") && sessionStorage.getItem("pfp").includes('<!DOCTYPE html>')) {
+    console.log(`PFP: DOCTYPE 404`)
+    sessionStorage.removeItem("pfp")
+}
+if (sessionStorage.getItem("updateSuccess")) {
+    document.getElementById("updatemanual").innerHTML = `<span style="color: green">updated!</span>`
+    sessionStorage.removeItem("updateSuccess")
+    setTimeout(function () {
+        document.getElementById("updatemanual").innerHTML = `update`
+    }, 1500)
+
+}
 
 let srv = localStorage.getItem("currentSrv") || 'https://data.evoxs.xyz'
 const timetableDiv = document.getElementById('timetable');
 
-const offlineSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="15px" height="15px" viewBox="0 0 16 16">
+var offlineSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="15px" height="15px" viewBox="0 0 16 16">
                                 <path d="m 13 1 c -0.554688 0 -1 0.445312 -1 1 v 7.269531 c 0.148438 0.089844 0.289062 0.191407 0.414062 0.316407 l 0.414063 0.414062 h 0.34375 l 0.414063 -0.414062 c 0.375 -0.375 0.882812 -0.585938 1.414062 -0.585938 v -7 c 0 -0.554688 -0.445312 -1 -1 -1 z m -4 3 c -0.554688 0 -1 0.445312 -1 1 v 9 c 0 0.554688 0.445312 1 1 1 h 0.007812 c 0 -0.515625 0.191407 -1.027344 0.578126 -1.414062 l 0.414062 -0.414063 v -0.34375 l -0.414062 -0.414063 c -0.773438 -0.773437 -0.773438 -2.054687 0 -2.828124 c 0.375 -0.375 0.882812 -0.585938 1.414062 -0.585938 v -4 c 0 -0.554688 -0.445312 -1 -1 -1 z m -4 3 c -0.554688 0 -1 0.445312 -1 1 v 6 c 0 0.554688 0.445312 1 1 1 h 1 c 0.554688 0 1 -0.445312 1 -1 v -6 c 0 -0.554688 -0.445312 -1 -1 -1 z m -4 3 c -0.554688 0 -1 0.445312 -1 1 v 3 c 0 0.554688 0.445312 1 1 1 h 1 c 0.554688 0 1 -0.445312 1 -1 v -3 c 0 -0.554688 -0.445312 -1 -1 -1 z m 0 0" fill="#fff" />
                                 <path d="m 11 10 c -0.265625 0 -0.519531 0.105469 -0.707031 0.292969 c -0.390625 0.390625 -0.390625 1.023437 0 1.414062 l 1.292969 1.292969 l -1.292969 1.292969 c -0.390625 0.390625 -0.390625 1.023437 0 1.414062 s 1.023437 0.390625 1.414062 0 l 1.292969 -1.292969 l 1.292969 1.292969 c 0.390625 0.390625 1.023437 0.390625 1.414062 0 s 0.390625 -1.023437 0 -1.414062 l -1.292969 -1.292969 l 1.292969 -1.292969 c 0.390625 -0.390625 0.390625 -1.023437 0 -1.414062 c -0.1875 -0.1875 -0.441406 -0.292969 -0.707031 -0.292969 s -0.519531 0.105469 -0.707031 0.292969 l -1.292969 1.292969 l -1.292969 -1.292969 c -0.1875 -0.1875 -0.441406 -0.292969 -0.707031 -0.292969 z m 0 0" fill="#f00" />
                             </svg>`
-const onlineSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="15px" height="15px" viewBox="0 0 16 16">
+var onlineSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="15px" height="15px" viewBox="0 0 16 16">
                                 <path d="m 13 1 c -0.554688 0 -1 0.445312 -1 1 v 12 c 0 0.554688 0.445312 1 1 1 h 1 c 0.554688 0 1 -0.445312 1 -1 v -12 c 0 -0.554688 -0.445312 -1 -1 -1 z m -4 3 c -0.554688 0 -1 0.445312 -1 1 v 9 c 0 0.554688 0.445312 1 1 1 h 1 c 0.554688 0 1 -0.445312 1 -1 v -9 c 0 -0.554688 -0.445312 -1 -1 -1 z m -4 3 c -0.554688 0 -1 0.445312 -1 1 v 6 c 0 0.554688 0.445312 1 1 1 h 1 c 0.554688 0 1 -0.445312 1 -1 v -6 c 0 -0.554688 -0.445312 -1 -1 -1 z m -4 3 c -0.554688 0 -1 0.445312 -1 1 v 3 c 0 0.554688 0.445312 1 1 1 h 1 c 0.554688 0 1 -0.445312 1 -1 v -3 c 0 -0.554688 -0.445312 -1 -1 -1 z m 0 0" fill="#fff" />
                             </svg>`
 
@@ -966,13 +979,17 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("profilePic").src = `reloading-pfp.gif`;
         document.getElementById('profileUsername').innerText = localStorage.getItem("t50-username")
         document.getElementById('profileEmail').innerText = localStorage.getItem("t50-email")
-        if (sessionStorage.getItem("pfp")) {
+        if (sessionStorage.getItem("pfp") && sessionStorage.getItem("pfp") !== "2") {
             document.getElementById("profilePic").src = sessionStorage.getItem("pfp");
         } else {
             const url = `${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${localStorage.getItem("t50-username")}`;
             fetch(url)
                 .then(response => response.text())
                 .then(data => {
+                    if(data.includes("<!DOCTYPE html>")) {
+                        document.getElementById("profilePic").src = `snap.png`;
+                        return;
+                    }
                     if (data.indexOf("base64") === -1) {
                         // If it doesn't contain "base64", add the prefix
                         data = "data:image/jpeg;base64," + data;
@@ -1989,6 +2006,7 @@ function updateNew() {
         setTimeout(function () {
             updateServiceWorkerCache()
             rotateElement()
+            sessionStorage.setItem("updateSuccess", true)
             document.getElementById("updateAvailable").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24" fill="none">
 <circle cx="12" cy="12" r="9" fill="#2A4157" fill-opacity="0.24"/>
 <path d="M12 21C14.0822 21 16.1 20.278 17.7095 18.9571C19.3191 17.6362 20.4209 15.798 20.8271 13.7558C21.2333 11.7136 20.9188 9.59376 19.9373 7.75743C18.9558 5.9211 17.3679 4.48191 15.4442 3.68508C13.5205 2.88826 11.38 2.78311 9.38744 3.38754C7.3949 3.99197 5.67358 5.26858 4.51677 6.99987C3.35997 8.73115 2.83925 10.81 3.04334 12.8822C3.24743 14.9543 4.1637 16.8916 5.63604 18.364" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
