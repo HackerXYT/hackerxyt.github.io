@@ -2269,7 +2269,7 @@ function openFullScreen() {
         let text = fullDebugElement.innerHTML;
         text = text.replace(/Service Worker/g, '<span style="color: red">Service Worker</span>');
         text = text.replace(/Copyright © Evox 2024/g, '<span style="color: lime">Copyright © Evox 2024</span>');
-        
+
         const regex = /\[(\d+)\]/g;
         text = text.replace(regex, function (match, p1) {
             return '<span class="highlight">[' + p1 + ']</span>';
@@ -2278,3 +2278,42 @@ function openFullScreen() {
     }, 1000)
     scrollToBottom2()
 }
+
+document.getElementById('receiveEnter').addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        let cleanedLoc = window.location.href.replace(/#/g, '');
+
+        const url = `${cleanedLoc}${document.getElementById('receiveEnter').value}`;
+
+        // Perform the fetch request
+        fetch(url)
+            .then(response => {
+                // Check if the response status is 404
+                if (response.status === 404) {
+                    document.getElementById('receiveEnter').value = ''
+                    document.getElementById('receiveEnter').placeholder = 'Η σελίδα δεν βρέθηκε.'
+                    setTimeout(function () {
+                        document.getElementById('receiveEnter').placeholder = 'Αναζητήστε στο Evox'
+                    }, 8000)
+                    console.log('Resource not found (404)');
+                } else {
+                    window.location.href = `${cleanedLoc}${document.getElementById('receiveEnter').value}`
+                    document.getElementById('receiveEnter').value = ''
+                    console.log('Response status:', response.status);
+                }
+
+                // You can also handle other status codes or the response body here if needed
+                return response.json(); // Assuming the response is in JSON format
+            })
+            .then(data => {
+                // Handle the data from the response if needed
+                console.log('Response data:', data);
+            })
+            .catch(error => {
+                // Handle any errors that occurred during the fetch
+                console.error('Fetch error:', error);
+            });
+
+        // You can add more actions here
+    }
+});
