@@ -1010,3 +1010,57 @@ input {
 .updateAvailable svg {
   transition: transform 0.5s ease; /* Smooth transition */
 }
+
+.notificationBox {
+  position: absolute;
+  background-color: #3c3c41;
+  padding: 20px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  border-radius: 25px;
+  width: 90%;
+  height: auto;
+  left: 50%;
+  top: 50%;  /* Add this line to center vertically */
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+}
+
+.notificationBox h3{
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.actionButton{
+  min-width: 250px;
+  font-size: 20px;
+  margin-top: 20px;
+  background-color: #ffffff59;
+  color: #fff;
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  border-radius: 15px;
+  height: auto;
+  font-family: "SF";
+  transition: transform 0.2s ease-out, background-color 0.2s ease-out, color 0.2s ease-out;
+}
+
+.actionButton.active{
+  font-size: 20px;
+  margin-top: 20px;
+  background-color: #ffffff;
+  color: #000;
+  transform: scale(1.05);
+}
+
+#fullDebug span.highlight {
+  color: lime; /* Change this to the desired color */
+  font-family: monospace;
+}

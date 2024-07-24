@@ -12,7 +12,7 @@ fetch(`../oasaBuild.evox`)
     .catch(error => {
         console.error("Failed to check for updates")
     })
-if(sessionStorage.getItem("pfp") && sessionStorage.getItem("pfp").includes('<!DOCTYPE html>')) {
+if (sessionStorage.getItem("pfp") && sessionStorage.getItem("pfp").includes('<!DOCTYPE html>')) {
     console.log(`PFP: DOCTYPE 404`)
     sessionStorage.removeItem("pfp")
 }
@@ -986,7 +986,7 @@ document.addEventListener("DOMContentLoaded", function () {
             fetch(url)
                 .then(response => response.text())
                 .then(data => {
-                    if(data.includes("<!DOCTYPE html>")) {
+                    if (data.includes("<!DOCTYPE html>")) {
                         document.getElementById("profilePic").src = `snap.png`;
                         return;
                     }
@@ -2245,4 +2245,36 @@ function continueSetup() {
 
     }
 
+}
+
+function scrollToBottom2() {
+    try {
+        var debugDiv = document.getElementById('fullDebug');
+        debugDiv.scrollTop = debugDiv.scrollHeight - debugDiv.clientHeight;
+    } catch (error) {
+        console.log("Scroll Failed")
+    }
+
+}
+
+let debug2Int;
+
+function openFullScreen() {
+    document.getElementById("popIt2").classList.add("active")
+    document.getElementById("fullDebug").innerHTML = document.getElementById("theDebug").innerHTML
+
+    debug2Int = setInterval(function () {
+        document.getElementById("fullDebug").innerHTML = document.getElementById("theDebug").innerHTML
+        const fullDebugElement = document.getElementById('fullDebug');
+        let text = fullDebugElement.innerHTML;
+        text = text.replace(/Service Worker/g, '<span style="color: red">Service Worker</span>');
+        text = text.replace(/Copyright © Evox 2024/g, '<span style="color: lime">Copyright © Evox 2024</span>');
+        
+        const regex = /\[(\d+)\]/g;
+        text = text.replace(regex, function (match, p1) {
+            return '<span class="highlight">[' + p1 + ']</span>';
+        });
+        fullDebugElement.innerHTML = text;
+    }, 1000)
+    scrollToBottom2()
 }
