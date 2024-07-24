@@ -1,3 +1,17 @@
+var currentBuild = "0.1"
+
+fetch(`../oasaBuild.evox`)
+    .then(response => response.json())
+    .then(data => {
+        if(data.buildNumber > currentBuild) {
+            $("#updateAvailable").fadeIn("fast")
+        }
+
+    })
+    .catch(error => {
+        console.error("Failed to check for updates")
+    })
+
 let srv = localStorage.getItem("currentSrv") || 'https://data.evoxs.xyz'
 const timetableDiv = document.getElementById('timetable');
 
@@ -258,7 +272,7 @@ function getBus(num) {
             const displayMinutes = remainingMinutes % 60;
 
             const remainingTimeText = `${remainingHours > 0 ? `${remainingHours}h ` : ''}${displayMinutes}m`;
-            document.getElementById(`remain${num}`).innerText = `Next bus: ${remainingTimeText}`;
+            document.getElementById(`remain${num}`).innerText = `Επόμενο: ${remainingTimeText}`;
         }
 
         function displayRemainingTimeLC(nextBusTime, noLoadIndicator) {
@@ -275,9 +289,9 @@ function getBus(num) {
             const remainingTimeText = `${remainingHours > 0 ? `${remainingHours}h ` : ''}${displayMinutes}m`;
             if (noLoadIndicator) {
 
-                document.getElementById(`remain${num}`).innerHTML = `Next bus: ${remainingTimeText}`;
+                document.getElementById(`remain${num}`).innerHTML = `Επόμενο: ${remainingTimeText}`;
             } else {
-                document.getElementById(`remain${num}`).innerHTML = `Next bus: ${remainingTimeText}
+                document.getElementById(`remain${num}`).innerHTML = `Επόμενο: ${remainingTimeText}
       <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
        width="15px" height="15px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
       <path opacity="0.2" fill="#fff" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
@@ -2208,9 +2222,9 @@ function continueSetup() {
             console.log(`askedServ: ${askedServices}\nt/f: ${askedServices.includes('oasa')}`)
         }
 
-        
-        
-        
+
+
+
     }
 
 }
