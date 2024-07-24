@@ -2268,6 +2268,7 @@ function openFullScreen() {
         const fullDebugElement = document.getElementById('fullDebug');
         let text = fullDebugElement.innerHTML;
         text = text.replace(/Service Worker/g, '<span style="color: red">Service Worker</span>');
+        text = text.replace(/ServiceWorker/g, '<span style="color: red">ServiceWorker</span>');
         text = text.replace(/Copyright © Evox 2024/g, '<span style="color: lime">Copyright © Evox 2024</span>');
 
         const regex = /\[(\d+)\]/g;
