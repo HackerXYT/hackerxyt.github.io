@@ -1,0 +1,108 @@
+/* Add some basic styling */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 8px;
+    margin-bottom: 10px;
+    background: #f9f9f9;
+}
+
+input {
+    padding: 10px;
+    width: 90%;
+}
+
+button {
+    padding: 10px;
+    width: 9%;
+}
+
+html,
+body {
+    background-color: #121212;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+    overflow: hidden;
+}
+
+.centered-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* Added to ensure text alignment */
+    height: 100vh;
+    width: 100%;
+    color: #c4cbd2;
+    touch-action: manipulation;
+}
+
+.centered-text img {
+    width: 80%;
+    transition: transform 0.8s ease, opacity 0.8s ease, visibility 0.8s;
+}
+
+.playerTop {
+    
+
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    position: fixed;
+    top: 0;
+}
+
+.playerTop img {
+    width: 30%;
+}
+
+.playerTop .info {
+    display: flex;
+    flex-direction: column;
+}
+
+.playerTop .info h2,p {
+    margin: 0;
+}
+
+.playerTop .info h2 {
+    margin-top: 20px;
+}
+
+.playerBot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #c4cbd2;
+    touch-action: manipulation;
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: -80px;
+}
+
+.playerBot img {
+    width: 30%;
+}
+
+.playerBot .info {
+    display: flex;
+    flex-direction: column;
+}
+
+.playerBot .info h2,p {
+    margin: 0;
+}
+
+.playerBot .info p {
+    margin-bottom: 40px;
+}

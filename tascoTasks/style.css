@@ -1,0 +1,303 @@
+body,
+html {
+    -webkit-user-select: none;
+    /* Disable text selection */
+    -webkit-touch-callout: none;
+    /* Disable callout, e.g., tap and hold effects */
+    touch-action: manipulation;
+    height: 100%;
+    /* Ensure the height is 100% */
+    background-color: #111111;
+    margin: 0px;
+    color: #fdfdfd;
+    font-family: "Noto Sans", sans-serif;
+    cursor: none;
+}
+
+body::-webkit-scrollbar {
+    width: 4px;
+}
+.testing {
+    background-color: transparent;
+    height: 40px;
+}
+.home {
+    padding: 25px;
+}
+
+.head {
+    margin: 0;
+    font-style:normal;
+    font-weight: normal;
+    color: #5f5b74;
+}
+
+.nameHead {
+    color: #fdfdfd;
+}
+
+.motd {
+    margin: 0;
+    margin-top: 10px;
+    margin-right: 50%;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.boxes {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.boxes .vertical {
+    padding-left: 20px;
+    padding-right: 20px;
+    font-weight: 700;
+    color: #090712;
+    background-color: #dbd4fe;
+    width: 110px;
+    height: 200px;
+    border-radius: 20px;
+    box-shadow: #dbd4fe75 0 0 50px 3px;
+}
+
+.boxes .vertical img {
+    width: 50px;
+    height: 50px;
+    margin-top: 20px;
+    margin-bottom: 60px;
+}
+
+.boxes .vertical p {
+    font-size: 15px;
+    margin: 0;
+}
+
+.boxes .vertical span {
+    font-size: 13px;
+    font-weight: lighter;
+    margin: 0;
+}
+
+.horizontalColumn {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.horizontalColumn .horizontal {
+    display: flex;
+    flex-direction: row;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-weight: 700;
+    color: #090712;
+    background-color: #e2fcf9;
+    width: 130px;
+    height: 95px;
+    border-radius: 20px;
+    box-shadow: #e2fcf973 0 0 50px 3px;
+}
+
+.horizontalColumn img {
+    width: 50px;
+    height: 50px;
+    margin: auto;
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+.horizontalColumn .horizontal .text {
+    flex-direction: column;
+    margin: 0;
+    margin-top: 25px;
+}
+
+.horizontalColumn .horizontal .text p {
+    font-size: 15px;
+    margin: 0;
+}
+
+.horizontalColumn .horizontal .text span {
+    font-size: 13px;
+    font-weight: lighter;
+    margin: 0;
+}
+
+.ongoing {
+    
+    margin-top: 30px;
+}
+
+.ongoing h3 {
+    font-size: 20px;
+    font-weight: 650;
+}
+
+.ongoing h3 span {
+    color: #e9ece3;
+    font-weight: 350;
+    margin-top: 5.5px;
+    float: right;
+    margin-left: auto;
+    font-size: 13px;
+}
+
+.cardsContainer {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+.card {
+    margin-bottom: 10px;
+    border: #2e2e2e 2px;
+    padding: 20px; /* space between the content and the border */
+    box-sizing: border-box; /* include padding and border in the element's total size */
+    border-style: solid;
+    width: 95%;
+    height: 180px;
+    background-color: #232323;
+    border-radius: 20px;
+}
+
+.card .rowTop {
+    display: flex;
+    flex-direction: row;
+}
+
+.rowTop .priority {
+    font-size: 13px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #f84646;
+    border-radius: 50px;
+}
+
+.rowTop .priority.high {
+    background-color: #f84646;
+}
+
+.rowTop .priority.medium {
+    background-color: #d18d00;
+}
+
+.rowTop .priority.low {
+    background-color: #00d115;
+}
+
+.rowTop span {
+    margin-left: auto;
+    float: right;
+    color: #b6b6b6;
+    margin-top: 3px;
+    flex-direction: row-reverse;
+}
+
+.info .taskName {
+    font-size: 18px;
+    font-weight: 650;
+    margin-bottom: 10px;
+}
+
+.clockTime {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px; /* Adjust spacing between the icon and text if needed */
+    vertical-align: middle;
+}
+
+.taskTime {
+    display: flex;
+    align-items: center;
+    
+}
+
+.taskTime span {
+    font-size: 15px;
+    color: #8e8e8e;
+}
+
+.additional {
+    display: flex;
+    align-items: center;
+}
+
+.additional span {
+    font-size: 14px;
+    color: #8e8e8e;
+    margin-top: 20px;
+}
+
+.additional span vo {
+    color: #fff;
+}
+
+.navbarFill {
+    width: 100%;
+    height: 80px;
+    background-color: transparent;
+}
+
+.navbar {
+    position: fixed;
+    width: 100%;
+    height: 80px;
+    background-color: #232323;
+    bottom: 0;
+    box-shadow: #000000cd 0 0 90px 33px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box; /* include padding and border in the element's total size */
+    align-items: center;
+    position: fixed;
+    padding: 10px 20px;
+}
+
+.navbar .item {
+    margin-top: 15px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.navbar .rounded {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    border-radius: 50%;
+    background-color: #fee4c1;
+    color: #000;
+    font-size: 35px;
+}
+
+.navbar .item img {
+    margin: 0;
+    height: 30px;
+    color: #8e8e8e;
+    stroke: #8e8e8e;
+}
+
+.navbar .item span {
+    font-size: 12px;
+    color: #8e8e8e;
+}
+
+.navbar .item.active span {
+    color: #7efa8a;
+}
