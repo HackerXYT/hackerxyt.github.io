@@ -11,15 +11,14 @@ html {
     margin: 0px;
     color: #fdfdfd;
     font-family: "Noto Sans", sans-serif;
-    cursor: none;
 }
 
 body::-webkit-scrollbar {
     width: 4px;
 }
 .testing {
-    background-color: transparent;
-    height: 40px;
+    /*background-color: transparent;
+    height: 40px;*/
 }
 .home {
     padding: 25px;
@@ -258,6 +257,7 @@ body::-webkit-scrollbar {
     align-items: center;
     position: fixed;
     padding: 10px 20px;
+    padding-bottom: 25px;
 }
 
 .navbar .item {
