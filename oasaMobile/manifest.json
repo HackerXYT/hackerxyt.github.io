@@ -1,0 +1,62 @@
+{
+    "name": "Oasa Reloaded",
+    "display": "fullscreen",
+    "display_override": [
+        "fullscreen"
+    ],
+    "short_name": "voasa",
+    "categories": [
+        "games",
+        "entertainment"
+    ],
+    "start_url": "https://evoxs.xyz/oasaMobile/index.html",
+    "scope": "https://evoxs.xyz/oasaMobile/index.html",
+    "description": "A reloaded version of OASA, now on Evox!",
+    "background_color": "#000000",
+    "theme_color": "#000000",
+    "edge_side_panel": {
+        "preferred_width": 445
+    },
+    "handle_links": "auto",
+    "id": "evox-epsilon-oasa",
+    "launch_handler": {
+        "client_mode": [
+            "focus-existing",
+            "auto"
+        ]
+    },
+    "orientation": "any",
+    "dir": "auto",
+    "lang": "en",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "https://evoxs.xyz/oasaMobile/apple.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "https://evoxs.xyz/oasaMobile/apple.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "https://evoxs.xyz/evox-epsilon/epsilon2old.png",
+            "sizes": "3000x1840",
+            "type": "image/png",
+            "platform": "wide",
+            "label": "Horizontal screenshot of epsilon"
+        },
+        {
+            "src": "https://evoxs.xyz/evox-epsilon/evox-logo-apple.png",
+            "sizes": "1024x1024",
+            "type": "image/png",
+            "platform": "wide",
+            "label": "Evox Epsilon Logo"
+        }
+    ]
+}
