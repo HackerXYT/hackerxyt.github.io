@@ -1,0 +1,62 @@
+{
+    "username": "papostol",
+    "tasks": {
+        "daily": {
+            "monday": [
+                {
+                    "title": "Schema Validation",
+                    "timeStart": "10:00",
+                    "timeEnd": "12:00",
+                    "users": ["twentysix", "papostol"]
+                },
+                
+                {
+                    "title": "Evoxing",
+                    "timeStart": "13:00",
+                    "timeEnd": "15:00",
+                    "users": ["papostol", "Oykas", "Moretti"]
+                },
+                {
+                    "title": "brake",
+                    "timeStart": "16:00",
+                    "timeEnd": "19:00"
+                }
+            ],
+            "tuesday": [
+                {
+                    "title": "Hello world!",
+                    "timeStart": "10:00",
+                    "timeEnd": "20:00",
+                    "users": ["papostol"]
+                },
+                {
+                    "title": "Hello world!",
+                    "timeStart": "10:00",
+                    "timeEnd": "20:00",
+                    "users": ["papostol"]
+                }
+            ],
+            "sunday": [
+                {
+                    "title": "Schema Validation",
+                    "timeStart": "10:00",
+                    "timeEnd": "12:00",
+                    "users": ["papostol"]
+                },
+                
+                {
+                    "title": "Coding",
+                    "timeStart": "13:00",
+                    "timeEnd": "15:00",
+                    "users": ["papostol", "Oykas", "Moretti"]
+                },
+                {
+                    "title": "brake",
+                    "timeStart": "16:00",
+                    "timeEnd": "19:00",
+                    "users": ["papostol"]
+                }
+            ]
+        }
+    }
+}

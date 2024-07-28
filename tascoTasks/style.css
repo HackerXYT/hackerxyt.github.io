@@ -16,26 +16,28 @@ html {
 body::-webkit-scrollbar {
     width: 4px;
 }
+
 .testing {
     /*background-color: transparent;
     height: 40px;*/
 }
+
 .home {
     padding: 25px;
 }
 
-.head {
+.home .head {
     margin: 0;
-    font-style:normal;
+    font-style: normal;
     font-weight: normal;
-    color: #5f5b74;
+    color: #909090;
 }
 
-.nameHead {
+.home .nameHead {
     color: #fdfdfd;
 }
 
-.motd {
+.home .motd {
     margin: 0;
     margin-top: 10px;
     margin-right: 50%;
@@ -126,7 +128,7 @@ body::-webkit-scrollbar {
 }
 
 .ongoing {
-    
+
     margin-top: 30px;
 }
 
@@ -150,11 +152,14 @@ body::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
 }
+
 .card {
     margin-bottom: 10px;
     border: #2e2e2e 2px;
-    padding: 20px; /* space between the content and the border */
-    box-sizing: border-box; /* include padding and border in the element's total size */
+    padding: 20px;
+    /* space between the content and the border */
+    box-sizing: border-box;
+    /* include padding and border in the element's total size */
     border-style: solid;
     width: 95%;
     height: 180px;
@@ -206,14 +211,15 @@ body::-webkit-scrollbar {
 .clockTime {
     width: 20px;
     height: 20px;
-    margin-right: 5px; /* Adjust spacing between the icon and text if needed */
+    margin-right: 5px;
+    /* Adjust spacing between the icon and text if needed */
     vertical-align: middle;
 }
 
 .taskTime {
     display: flex;
     align-items: center;
-    
+
 }
 
 .taskTime span {
@@ -253,17 +259,17 @@ body::-webkit-scrollbar {
     border-top-right-radius: 20px;
     display: flex;
     justify-content: space-between;
-    box-sizing: border-box; /* include padding and border in the element's total size */
+    box-sizing: border-box;
+    /* include padding and border in the element's total size */
     align-items: center;
     position: fixed;
     padding: 10px 20px;
     padding-bottom: 25px;
+    z-index: 999;
 }
 
 .navbar .item {
     margin-top: 15px;
-    width: 40px;
-    height: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -271,7 +277,26 @@ body::-webkit-scrollbar {
     cursor: pointer;
     position: relative;
 }
+.navbar .item vo {
+    display: block;
+}
 
+.navbar .item span {
+    display: none;
+}
+
+.navbar .item.active svg {
+    color: #7efa8a;
+    stroke: #7efa8a;
+}
+
+.navbar .item.active vo {
+    display: none;
+}
+
+.navbar .item.active span {
+    display: block;
+}
 .navbar .rounded {
     width: 50px;
     height: 50px;
@@ -300,4 +325,354 @@ body::-webkit-scrollbar {
 
 .navbar .item.active span {
     color: #7efa8a;
+}
+
+.tasks {
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 25px;
+}
+
+
+.tasks .head {
+    margin: 0;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 25px;
+    color: #f9f9f9;
+    margin-right: 5px;
+    /* Adjust spacing between the icon and text if needed */
+    vertical-align: middle;
+}
+
+.tasks .nameHead {
+    color: #fdfdfd;
+}
+
+.tasks .motd {
+    margin: 0;
+    margin-top: 10px;
+    margin-right: 50%;
+    font-size: 35px;
+    font-weight: 700;
+}
+
+.topRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.typeChange {
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.type1 {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 7px;
+    background-color: #ffddb1;
+    color: #262626;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.type2 {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 7px;
+    
+    background-color: #262626;
+    color: #fdfdfd;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.calendar {
+    margin-top: 20px;
+}
+
+.dayContainer {
+    margin-left: -25px;
+    width: 120%;
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* Firefox */
+
+}
+
+.dayContainer::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+}
+
+.day {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+}
+
+.day .name {
+    font-size: 15px;
+    color: #8e8e8e;
+    margin-bottom: 5px;
+
+}
+
+
+.day .circle {
+    font-weight: 700;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    background-color: #1e1e1ea3;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    padding: 10px;
+    background-color: #2e2e2e;
+}
+
+.day .circle.active {
+    color: #130907;
+    background-color: #f5e6a2;
+}
+
+
+/*End of calendar top*/
+.line {
+    margin-left: -60px;
+    margin-top: 10px;
+    background-color: #1e1e1ea3;
+    width: 200vw;
+    height: 2px;
+}
+
+.currentPage {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.currentPage .fullSchedule {
+    font-size: 15px;
+    color: #8e8e8e;
+}
+
+.dayTasks {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+
+.singleDayContainer {
+    margin-top: 35px;
+    display: flex;
+    flex-direction: row;
+}
+
+.singleDayContainer:first-child {
+    margin-top: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.dayCircleCont {
+    margin-top: 60px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    vertical-align: middle;
+}
+
+.dayCircleCont span {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 5px;
+}
+
+.dayCircle {
+    font-weight: 700;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    background-color: #1e1e1ea3;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    padding: 10px;
+    background-color: #2e2e2e;
+    
+}
+
+.dayCircle.active {
+    background-color: #2e2e2eb1;
+    border: 1px solid;
+}
+
+.scheduled {
+    margin-left: 20px;
+    width: 100%;
+}
+
+.scheduleRec {
+    margin-left: -10px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.circleSCH {
+    flex-shrink: 0; /* Prevent shrinking */
+    width: 10px;
+    height: 10px;
+    background-color: #e0f8f8; /* Light color for the circle */
+    border-radius: 50%;
+    display: inline-block; /* Ensures the circle takes up only the space it needs */
+}
+
+.lineSCH {
+    flex-grow: 1; /* Allow the line to grow to fill the remaining space */
+    width: 160vw; /* Adjust the length of the line */
+    height: 1px; /* Adjust the thickness of the line */
+    background-color: #fff; /* White color for the line */
+}
+
+.taskCard {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 270px;
+    height: auto;
+    margin-top: 0;
+    margin-top: 20px;
+    box-sizing: border-box;
+    /* include padding and border in the element's total size */
+    padding: 20px;
+    padding-bottom: 10px;
+    background-color: #8e8e8e19;
+    /* Semi-transparent background to see the lines */
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Parallax background effect */
+.taskCard::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(40deg,
+            #2e2e2e 0,
+            #2e2e2e 1px,
+            transparent 1px,
+            transparent 5px);
+    z-index: -1;
+    animation: parallaxScroll 10s linear infinite;
+}
+
+/* White line on the left */
+.taskCard::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background-color: white;
+    z-index: 0;
+}
+
+.taskCard span {
+    font-size: 15px;
+    color: #8e8e8e;
+    margin: 0;
+}
+
+.taskCard p {
+    margin: 0;
+    margin-top: 5px;
+    font-size: 18px;
+    color: #ffffff;
+}
+.userIcons {
+    margin-top: 10px;
+}
+.userPfp {
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    border: 1.5px solid #000;
+    box-shadow: #2d04ff49 0 0 8px 1px;
+}
+
+.userPfp.multi {
+    margin-left: -15px;
+}
+
+.taskCardBrake {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 270px;
+    height: auto;
+    margin-top: 0;
+    margin-top: 20px;
+    box-sizing: border-box;
+    /* include padding and border in the element's total size */
+    padding: 20px;
+    /* Semi-transparent background to see the lines */
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Parallax background effect */
+.taskCardBrake::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(40deg,
+            #2e2e2e 0,
+            #2e2e2e 1px,
+            transparent 1px,
+            transparent 7px);
+    z-index: -1;
+    animation: parallaxScroll 10s linear infinite;
+}
+
+.taskCardBrake span {
+    font-size: 15px;
+    color: #8e8e8e;
+    margin: 0;
+}
+
+.taskCardBrake p {
+    margin: 0;
+    margin-top: 5px;
+    font-size: 18px;
+    color: #ffffff;
 }
