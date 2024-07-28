@@ -22,6 +22,41 @@
     <meta name="theme-color" content="#1C1B1E" media="(prefers-color-scheme: dark)">
     <meta name="application-name" content="OASA">
 </head>
+<script>
+    window.onerror = function (message, source, lineno, colno, error) {
+        alert(`An error occurred: ${message} at ${source}:${lineno}:${colno}`);
+        return false;  // Let the browser console still show the error if available
+    };
+    window.addEventListener('unhandledrejection', function (event) {
+        alert(`An unhandled promise rejection occurred: ${event.reason}`);
+    });
+
+    let line = -1
+    const originalConsoleLog = console.log;
+    console.log = function (...args) {
+        // Display an alert with the log message
+        //alert(args.join(' '));
+        line = line + 1
+        originalConsoleLog.apply(console, args);
+        if (localStorage.getItem("tscBdebug")) {
+            try {
+                alert(`[${line}]: ${args.join(' ')}`)
+                //document.getElementById("theDebug").innerHTML = document.getElementById("theDebug").innerHTML + `<br>[${line}]: ${args.join(' ')}`
+            } catch (error) {
+                return;
+            }
+        }
+
+
+
+
+
+
+        // Call the original console.log function with the same arguments
+
+    };
+
+</script>
 
 <body>
     <!--<div class="testing"></div>-->
@@ -204,170 +239,7 @@
 
 
                 <div id="dayTasks" class="dayTasks">
-                    <div class="singleDayContainer">
-                        <div class="dayCircleCont">
-                            <span>Tue</span>
-                            <div class="dayCircle active">
-                                16
-                            </div>
-                        </div>
-                        <div class="scheduled">
-                            <span class="fullSchedule">
-                                <!--The time the user's schedule starts and the time it ends-->
-                                10:00 AM - 07:00 PM
-                            </span>
-                            <div class="scheduleRec">
-                                <div class="circleSCH"></div>
-                                <div class="lineSCH"></div>
-                            </div>
-                            <div class="taskCard">
-                                <!-- Content of the taskCard -->
-                                <span>10:00 AM - 04:00 PM</span>
-                                <p>Evox App Wireframe</p>
-                                <div class="userIcons">
-                                    <img src="tasco.png" class="userPfp">
-                                    <img src="evox-logo-apple.png" class="userPfp multi">
-                                    <img src="tasco.png" class="userPfp multi">
-                                </div>
-                            </div>
-                            <div class="taskCardBrake">
-                                <!-- Content of the taskCard -->
-                                <span>Brake</span>
-                                <p>10:00 AM - 04:00 PM</p>
-                            </div>
 
-                        </div>
-                    </div>
-
-                    <div class="singleDayContainer">
-                        <div class="dayCircleCont">
-                            <span>Tue</span>
-                            <div class="dayCircle">
-                                17
-                            </div>
-                        </div>
-                        <div class="scheduled">
-                            <span class="fullSchedule">
-                                <!--The time the user's schedule starts and the time it ends-->
-                                10:00 AM - 07:00 PM
-                            </span>
-                            <div class="scheduleRec">
-                                <div class="circleSCH"></div>
-                                <div class="lineSCH"></div>
-                            </div>
-                            <div class="taskCard">
-                                <!-- Content of the taskCard -->
-                                <span>10:00 AM - 04:00 PM</span>
-                                <p>Evox App Wireframe</p>
-                                <div class="userIcons">
-                                    <img src="tasco.png" class="userPfp">
-                                    <img src="evox-logo-apple.png" class="userPfp multi">
-                                    <img src="tasco.png" class="userPfp multi">
-                                </div>
-                            </div>
-                            <div class="taskCardBrake">
-                                <!-- Content of the taskCard -->
-                                <span>Brake</span>
-                                <p>10:00 AM - 04:00 PM</p>
-
-                            </div>
-                            <div class="taskCard">
-                                <!-- Content of the taskCard -->
-                                <span>10:00 AM - 04:00 PM</span>
-                                <p>Evox App Wireframe</p>
-                                <div class="userIcons">
-                                    <img src="tasco.png" class="userPfp">
-                                    <img src="evox-logo-apple.png" class="userPfp multi">
-                                    <img src="tasco.png" class="userPfp multi">
-                                </div>
-                            </div>
-                            <div class="taskCard">
-                                <!-- Content of the taskCard -->
-                                <span>10:00 AM - 04:00 PM</span>
-                                <p>Evox App Wireframe</p>
-                                <div class="userIcons">
-                                    <img src="tasco.png" class="userPfp">
-                                    <img src="evox-logo-apple.png" class="userPfp multi">
-                                    <img src="tasco.png" class="userPfp multi">
-                                </div>
-                            </div>
-                            <div class="taskCard">
-                                <!-- Content of the taskCard -->
-                                <span>10:00 AM - 04:00 PM</span>
-                                <p>Evox App Wireframe</p>
-                                <div class="userIcons">
-                                    <img src="tasco.png" class="userPfp">
-                                    <img src="evox-logo-apple.png" class="userPfp multi">
-                                    <img src="tasco.png" class="userPfp multi">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="singleDayContainer">
-                        <div class="dayCircleCont">
-                            <span>Tue</span>
-                            <div class="dayCircle">
-                                17
-                            </div>
-                        </div>
-                        <div class="scheduled">
-                            <span class="fullSchedule">
-                                <!--The time the user's schedule starts and the time it ends-->
-                                10:00 AM - 07:00 PM
-                            </span>
-                            <div class="scheduleRec">
-                                <div class="circleSCH"></div>
-                                <div class="lineSCH"></div>
-                            </div>
-                            <div class="taskCard">
-                                <!-- Content of the taskCard -->
-                                <span>10:00 AM - 04:00 PM</span>
-                                <p>Evox App Wireframe</p>
-                                <div class="userIcons">
-                                    <img src="tasco.png" class="userPfp">
-                                    <img src="evox-logo-apple.png" class="userPfp multi">
-                                    <img src="tasco.png" class="userPfp multi">
-                                </div>
-                            </div>
-                            <div class="taskCardBrake">
-                                <!-- Content of the taskCard -->
-                                <span>Brake</span>
-                                <p>10:00 AM - 04:00 PM</p>
-
-                            </div>
-                            <div class="taskCard">
-                                <!-- Content of the taskCard -->
-                                <span>10:00 AM - 04:00 PM</span>
-                                <p>Evox App Wireframe</p>
-                                <div class="userIcons">
-                                    <img src="tasco.png" class="userPfp">
-                                    <img src="evox-logo-apple.png" class="userPfp multi">
-                                    <img src="tasco.png" class="userPfp multi">
-                                </div>
-                            </div>
-                            <div class="taskCard">
-                                <!-- Content of the taskCard -->
-                                <span>10:00 AM - 04:00 PM</span>
-                                <p>Evox App Wireframe</p>
-                                <div class="userIcons">
-                                    <img src="tasco.png" class="userPfp">
-                                    <img src="evox-logo-apple.png" class="userPfp multi">
-                                    <img src="tasco.png" class="userPfp multi">
-                                </div>
-                            </div>
-                            <div class="taskCard">
-                                <!-- Content of the taskCard -->
-                                <span>10:00 AM - 04:00 PM</span>
-                                <p>Evox App Wireframe</p>
-                                <div class="userIcons">
-                                    <img src="tasco.png" class="userPfp">
-                                    <img src="evox-logo-apple.png" class="userPfp multi">
-                                    <img src="tasco.png" class="userPfp multi">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                 </div>
 
@@ -410,7 +282,7 @@
             <span>&#x2022;</span>
             <vo>&nbsp;</vo>
         </div>
-        <div class="rounded">
+        <div onclick="window.location.reload()" class="rounded">
             +
         </div>
         <div id="nav-notif" class="item">
@@ -429,7 +301,7 @@
             <span>&#x2022;</span>
             <vo>&nbsp;</vo>
         </div>
-        <div class="item">
+        <div onclick="enableDisableDebug()" class="item">
             <img src="user.svg">
             <vo>&nbsp;</vo>
         </div>

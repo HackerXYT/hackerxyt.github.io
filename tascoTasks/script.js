@@ -52,7 +52,7 @@ function goTo(place) {
                 } else {
                     console.error('dayContainer or targetElement not found.');
                 }
-                console.log("scrolled to", `dayDiv${date.getDate()}${date.toLocaleString('en-US', { weekday: 'short' })}`)
+                console.log("scrolled to", `#dayDiv${date.getDate()}${date.toLocaleString('en-US', { weekday: 'short' })}`)
             }
 
             const dayName = document.createElement('span');
@@ -180,383 +180,243 @@ function getTaskTimeRange(tasks) {
 
 
 function loadDay(day, dayNum, month) {
-    console.log(`dayname: ${day}, daynum: ${dayNum}, month: ${month}`) //dayname: Sun, daynum: 28, month: undefined
+    console.log(`Triggered data:\ndayname: ${day}, daynum: ${dayNum}, month: ${month}`) //dayname: Sun, daynum: 28, month: undefined
     const dayFull = shortDayToFullLowercase(day);
-    fetch(`${localStorage.getItem("t50-username")}.tasco`)
-        .then(response => response.json())
-        .then(data => {
-            console.log("The data:", data)
-            if (data.username === localStorage.getItem("t50-username")) {
-                if (data.tasks.daily[dayFull]) {
-                    console.log("day found", data.tasks.daily[dayFull])
-                    const match = data.tasks.daily[dayFull]
-                    document.getElementById("dayTasks").innerHTML = ''
-                    const container = document.getElementById('dayTasks');
 
-                    // Create singleDayContainer div
-                    const singleDayContainer = document.createElement('div');
-                    singleDayContainer.className = 'singleDayContainer';
-
-                    // Create dayCircleCont div
-                    const dayCircleCont = document.createElement('div');
-                    dayCircleCont.className = 'dayCircleCont';
-
-                    // Create and append the span for the day
-                    const daySpan = document.createElement('span');
-                    daySpan.textContent = day; //Tue
-                    dayCircleCont.appendChild(daySpan);
-
-                    // Create and append the dayCircle div
-                    const dayCircle = document.createElement('div');
-                    dayCircle.className = 'dayCircle active';
-                    dayCircle.textContent = dayNum;//16
-                    dayCircleCont.appendChild(dayCircle);
-
-                    // Append dayCircleCont to singleDayContainer
-                    singleDayContainer.appendChild(dayCircleCont);
-
-                    // Create scheduled div
-                    const scheduled = document.createElement('div');
-                    scheduled.className = 'scheduled';
-
-                    // Create and append fullSchedule span
-                    const fullSchedule = document.createElement('span');
-                    fullSchedule.className = 'fullSchedule';
-                    console.log("Will do", data.tasks.daily[dayFull])
-                    const timeRange = getTaskTimeRange(data.tasks.daily[dayFull]);
-                    console.log(timeRange)
-                    fullSchedule.textContent = timeRange;
-                    scheduled.appendChild(fullSchedule);
-
-                    // Create and append scheduleRec div
-                    const scheduleRec = document.createElement('div');
-                    scheduleRec.className = 'scheduleRec';
-
-                    const circleSCH = document.createElement('div');
-                    circleSCH.className = 'circleSCH';
-                    scheduleRec.appendChild(circleSCH);
-
-                    const lineSCH = document.createElement('div');
-                    lineSCH.className = 'lineSCH';
-                    scheduleRec.appendChild(lineSCH);
-
-                    scheduled.appendChild(scheduleRec);
-
-
-
-                    // Create and append userIcons div
-
-
-                    //
-
-                    match.forEach(task => {
-                        if (task.title === "brake") {
-                            // Create and append taskCardBrake div
-                            const taskCardBrake = document.createElement('div');
-                            taskCardBrake.className = 'taskCardBrake';
-
-                            const brakeSpan = document.createElement('span');
-                            brakeSpan.textContent = 'Brake';
-                            taskCardBrake.appendChild(brakeSpan);
-
-                            const brakeTime = document.createElement('p');
-                            brakeTime.textContent = `${formatTime(task.timeStart)} - ${formatTime(task.timeEnd)}`;
-                            taskCardBrake.appendChild(brakeTime);
-
-                            scheduled.appendChild(taskCardBrake);
-                            return;
-                        }
-                        const userIcons = document.createElement('div');
-                        userIcons.className = 'userIcons';
-                        let count = 0;
-                        task.users.forEach(user => {
-
-
-
-                            const userPfp1 = document.createElement('img');
-                            const url = `https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
-                            userPfp1.src = '../oasaMobile/reloading-pfp.gif';
-                            if(sessionStorage.getItem(`pfp${user}`)) {
-                                userPfp1.src = sessionStorage.getItem(`pfp${user}`);
-                            } else {
-                                fetch(url)
-                                .then(response => response.text())
-                                .then(data => {
-                                    if (data.includes("<!DOCTYPE html>")) {
-                                        document.getElementById("profilePic").src = `../oasaMobile/snap.png`;
-                                        return;
-                                    }
-                                    if (data.indexOf("base64") === -1) {
-                                        // If it doesn't contain "base64", add the prefix
-                                        data = "data:image/jpeg;base64," + data;
-                                    }
-                                    userPfp1.src = data;
-                                    sessionStorage.setItem(`pfp${user}`, data)
-                                })
-                                .catch(error => {
-                                    userPfp1.src = `../oasaMobile/snap.png`;
-                                    console.error(error);
-                                });
-                            }
-                            
-                            
-                            if (count > 0) {
-                                userPfp1.className = 'userPfp multi';
-                            } else {
-                                userPfp1.className = 'userPfp';
-                            }
-
-                            userIcons.appendChild(userPfp1);
-                            count++
-                        })
-
-
-                        // Create and append taskCard div
-                        const taskCard = document.createElement('div');
-                        taskCard.className = 'taskCard';
-
-                        const taskTimeSpan = document.createElement('span');
-                        taskTimeSpan.textContent = `${formatTime(task.timeStart)} - ${formatTime(task.timeEnd)}`;
-                        taskCard.appendChild(taskTimeSpan);
-
-                        const taskDescription = document.createElement('p');
-                        taskDescription.textContent = task.title;
-                        taskCard.appendChild(taskDescription);
-                        taskCard.appendChild(userIcons);
-                        scheduled.appendChild(taskCard);
-                    });
-
-
-
-
-                    // Append scheduled div to singleDayContainer
-                    singleDayContainer.appendChild(scheduled);
-
-                    // Append singleDayContainer to the container element
-                    container.appendChild(singleDayContainer);
-                } else {
-                    console.log("not found", data.tasks.daily[dayFull])
-                    document.getElementById("dayTasks").innerHTML = '<h3>Day not created!</h3>'
-                }
-            }
-        })
-        .catch(error => {
-            //alert("json failed to load")
-            const data = {
-                "username": "papostol",
-                "tasks": {
-                    "daily": {
-                        "monday": [
-                            {
-                                "title": "Schema Validation",
-                                "timeStart": "10:00",
-                                "timeEnd": "12:00",
-                                "users": ["twentysix", "papostol"]
-                            },
-                            
-                            {
-                                "title": "Evoxing",
-                                "timeStart": "13:00",
-                                "timeEnd": "15:00",
-                                "users": ["papostol", "Oykas", "Moretti"]
-                            },
-                            {
-                                "title": "brake",
-                                "timeStart": "16:00",
-                                "timeEnd": "19:00"
-                            }
-                        ],
-                        "tuesday": [
-                            {
-                                "title": "Hello world!",
-                                "timeStart": "10:00",
-                                "timeEnd": "20:00",
-                                "users": ["papostol"]
-                            },
-                            {
-                                "title": "Hello world!",
-                                "timeStart": "10:00",
-                                "timeEnd": "20:00",
-                                "users": ["papostol"]
-                            }
-                        ],
-                        "sunday": [
-                            {
-                                "title": "Schema Validation",
-                                "timeStart": "10:00",
-                                "timeEnd": "12:00",
-                                "users": ["papostol"]
-                            },
-                            
-                            {
-                                "title": "Coding",
-                                "timeStart": "13:00",
-                                "timeEnd": "15:00",
-                                "users": ["papostol", "Oykas", "Moretti"]
-                            },
-                            {
-                                "title": "brake",
-                                "timeStart": "16:00",
-                                "timeEnd": "19:00",
-                                "users": ["papostol"]
-                            }
-                        ]
+    const data = {
+        "username": "papostol",
+        "tasks": {
+            "daily": {
+                "monday": [
+                    {
+                        "title": "Schema Validation",
+                        "timeStart": "10:00",
+                        "timeEnd": "12:00",
+                        "users": ["twentysix", "papostol"]
+                    },
+                    
+                    {
+                        "title": "Evoxing",
+                        "timeStart": "13:00",
+                        "timeEnd": "15:00",
+                        "users": ["papostol", "Oykas", "Moretti"]
+                    },
+                    {
+                        "title": "brake",
+                        "timeStart": "16:00",
+                        "timeEnd": "19:00"
                     }
-                }
+                ],
+                "tuesday": [
+                    {
+                        "title": "Hello world!",
+                        "timeStart": "10:00",
+                        "timeEnd": "20:00",
+                        "users": ["papostol"]
+                    },
+                    {
+                        "title": "Hello world!",
+                        "timeStart": "10:00",
+                        "timeEnd": "20:00",
+                        "users": ["papostol"]
+                    }
+                ],
+                "sunday": [
+                    {
+                        "title": "Schema Validation",
+                        "timeStart": "10:00",
+                        "timeEnd": "12:00",
+                        "users": ["papostol"]
+                    },
+                    
+                    {
+                        "title": "Coding",
+                        "timeStart": "13:00",
+                        "timeEnd": "15:00",
+                        "users": ["papostol", "Oykas", "Moretti"]
+                    },
+                    {
+                        "title": "brake",
+                        "timeStart": "16:00",
+                        "timeEnd": "19:00",
+                        "users": ["papostol"]
+                    }
+                ]
             }
-            console.log("The data:", data)
-            if (data.username === localStorage.getItem("t50-username")) {
-                if (data.tasks.daily[dayFull]) {
-                    console.log("day found", data.tasks.daily[dayFull])
-                    const match = data.tasks.daily[dayFull]
-                    document.getElementById("dayTasks").innerHTML = ''
-                    const container = document.getElementById('dayTasks');
+        }
+    }
+    console.log("User data [PREVIEW]:\n", JSON.stringify(data))
+    //if (data.username === localStorage.getItem("t50-username")) {
+        if (data.tasks.daily[dayFull]) {
+            console.log(`Found day ${dayFull} inside:\n`, JSON.stringify(data.tasks.daily[dayFull]))
+            const match = data.tasks.daily[dayFull]
+            document.getElementById("dayTasks").innerHTML = ''
+            const container = document.getElementById('dayTasks');
 
-                    // Create singleDayContainer div
-                    const singleDayContainer = document.createElement('div');
-                    singleDayContainer.className = 'singleDayContainer';
+            // Create singleDayContainer div
+            const singleDayContainer = document.createElement('div');
+            singleDayContainer.className = 'singleDayContainer';
 
-                    // Create dayCircleCont div
-                    const dayCircleCont = document.createElement('div');
-                    dayCircleCont.className = 'dayCircleCont';
+            // Create dayCircleCont div
+            const dayCircleCont = document.createElement('div');
+            dayCircleCont.className = 'dayCircleCont';
 
-                    // Create and append the span for the day
-                    const daySpan = document.createElement('span');
-                    daySpan.textContent = day; //Tue
-                    dayCircleCont.appendChild(daySpan);
+            // Create and append the span for the day
+            const daySpan = document.createElement('span');
+            daySpan.textContent = day; //Tue
+            dayCircleCont.appendChild(daySpan);
 
-                    // Create and append the dayCircle div
-                    const dayCircle = document.createElement('div');
-                    dayCircle.className = 'dayCircle active';
-                    dayCircle.textContent = dayNum;//16
-                    dayCircleCont.appendChild(dayCircle);
+            // Create and append the dayCircle div
+            const dayCircle = document.createElement('div');
+            dayCircle.className = 'dayCircle active';
+            dayCircle.textContent = dayNum;//16
+            dayCircleCont.appendChild(dayCircle);
 
-                    // Append dayCircleCont to singleDayContainer
-                    singleDayContainer.appendChild(dayCircleCont);
+            // Append dayCircleCont to singleDayContainer
+            singleDayContainer.appendChild(dayCircleCont);
 
-                    // Create scheduled div
-                    const scheduled = document.createElement('div');
-                    scheduled.className = 'scheduled';
+            // Create scheduled div
+            const scheduled = document.createElement('div');
+            scheduled.className = 'scheduled';
 
-                    // Create and append fullSchedule span
-                    const fullSchedule = document.createElement('span');
-                    fullSchedule.className = 'fullSchedule';
-                    console.log("Will do", data.tasks.daily[dayFull])
-                    const timeRange = getTaskTimeRange(data.tasks.daily[dayFull]);
-                    console.log(timeRange)
-                    fullSchedule.textContent = timeRange;
-                    scheduled.appendChild(fullSchedule);
+            // Create and append fullSchedule span
+            const fullSchedule = document.createElement('span');
+            fullSchedule.className = 'fullSchedule';
+            console.log(`Will use ${day} as ${dayFull} with base set as:\n`, JSON.stringify(data.tasks.daily[dayFull]))
+            const timeRange = getTaskTimeRange(data.tasks.daily[dayFull]);
+            console.log(`Working hours for ${dayFull} :\n`, timeRange)
+            fullSchedule.textContent = timeRange;
+            scheduled.appendChild(fullSchedule);
 
-                    // Create and append scheduleRec div
-                    const scheduleRec = document.createElement('div');
-                    scheduleRec.className = 'scheduleRec';
+            // Create and append scheduleRec div
+            const scheduleRec = document.createElement('div');
+            scheduleRec.className = 'scheduleRec';
 
-                    const circleSCH = document.createElement('div');
-                    circleSCH.className = 'circleSCH';
-                    scheduleRec.appendChild(circleSCH);
+            const circleSCH = document.createElement('div');
+            circleSCH.className = 'circleSCH';
+            scheduleRec.appendChild(circleSCH);
 
-                    const lineSCH = document.createElement('div');
-                    lineSCH.className = 'lineSCH';
-                    scheduleRec.appendChild(lineSCH);
+            const lineSCH = document.createElement('div');
+            lineSCH.className = 'lineSCH';
+            scheduleRec.appendChild(lineSCH);
 
-                    scheduled.appendChild(scheduleRec);
-
-
-
-                    // Create and append userIcons div
-
-
-                    //
-
-                    match.forEach(task => {
-                        if (task.title === "brake") {
-                            // Create and append taskCardBrake div
-                            const taskCardBrake = document.createElement('div');
-                            taskCardBrake.className = 'taskCardBrake';
-
-                            const brakeSpan = document.createElement('span');
-                            brakeSpan.textContent = 'Brake';
-                            taskCardBrake.appendChild(brakeSpan);
-
-                            const brakeTime = document.createElement('p');
-                            brakeTime.textContent = `${formatTime(task.timeStart)} - ${formatTime(task.timeEnd)}`;
-                            taskCardBrake.appendChild(brakeTime);
-
-                            scheduled.appendChild(taskCardBrake);
-                            return;
-                        }
-                        const userIcons = document.createElement('div');
-                        userIcons.className = 'userIcons';
-                        let count = 0;
-                        task.users.forEach(user => {
+            scheduled.appendChild(scheduleRec);
 
 
 
-                            const userPfp1 = document.createElement('img');
-                            const url = `https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
-                            userPfp1.src = '../oasaMobile/reloading-pfp.gif';
-                            if(sessionStorage.getItem(`pfp${user}`)) {
-                                userPfp1.src = sessionStorage.getItem(`pfp${user}`);
-                            } else {
-                                fetch(url)
-                                .then(response => response.text())
-                                .then(data => {
-                                    if (data.includes("<!DOCTYPE html>")) {
-                                        document.getElementById("profilePic").src = `../oasaMobile/snap.png`;
-                                        return;
-                                    }
-                                    if (data.indexOf("base64") === -1) {
-                                        // If it doesn't contain "base64", add the prefix
-                                        data = "data:image/jpeg;base64," + data;
-                                    }
-                                    userPfp1.src = data;
-                                    sessionStorage.setItem(`pfp${user}`, data)
-                                })
-                                .catch(error => {
-                                    userPfp1.src = `../oasaMobile/snap.png`;
-                                    console.error(error);
-                                });
+            // Create and append userIcons div
+
+
+            //
+
+            match.forEach(task => {
+                if (task.title === "brake") {
+                    // Create and append taskCardBrake div
+                    const taskCardBrake = document.createElement('div');
+                    taskCardBrake.className = 'taskCardBrake';
+
+                    const brakeSpan = document.createElement('span');
+                    brakeSpan.textContent = 'Brake';
+                    taskCardBrake.appendChild(brakeSpan);
+
+                    const brakeTime = document.createElement('p');
+                    brakeTime.textContent = `${formatTime(task.timeStart)} - ${formatTime(task.timeEnd)}`;
+                    taskCardBrake.appendChild(brakeTime);
+
+                    scheduled.appendChild(taskCardBrake);
+                    return;
+                }
+                const userIcons = document.createElement('div');
+                userIcons.className = 'userIcons';
+                let count = 0;
+                task.users.forEach(user => {
+
+
+
+                    const userPfp1 = document.createElement('img');
+                    const url = `https://data.evoxs.xyz/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${user}`;
+                    userPfp1.src = '../oasaMobile/reloading-pfp.gif';
+                    if(sessionStorage.getItem(`pfp${user}`)) {
+                        userPfp1.src = sessionStorage.getItem(`pfp${user}`);
+                    } else {
+                        fetch(url)
+                        .then(response => response.text())
+                        .then(data => {
+                            if (data.includes("<!DOCTYPE html>")) {
+                                document.getElementById("profilePic").src = `../oasaMobile/snap.png`;
+                                return;
                             }
-                            
-                            
-                            if (count > 0) {
-                                userPfp1.className = 'userPfp multi';
-                            } else {
-                                userPfp1.className = 'userPfp';
+                            if (data.indexOf("base64") === -1) {
+                                // If it doesn't contain "base64", add the prefix
+                                data = "data:image/jpeg;base64," + data;
                             }
-
-                            userIcons.appendChild(userPfp1);
-                            count++
+                            userPfp1.src = data;
+                            sessionStorage.setItem(`pfp${user}`, data)
                         })
+                        .catch(error => {
+                            userPfp1.src = `../oasaMobile/snap.png`;
+                            console.error(error);
+                        });
+                    }
+                    
+                    
+                    if (count > 0) {
+                        userPfp1.className = 'userPfp multi';
+                    } else {
+                        userPfp1.className = 'userPfp';
+                    }
+
+                    userIcons.appendChild(userPfp1);
+                    count++
+                })
 
 
-                        // Create and append taskCard div
-                        const taskCard = document.createElement('div');
-                        taskCard.className = 'taskCard';
+                // Create and append taskCard div
+                const taskCard = document.createElement('div');
+                taskCard.className = 'taskCard';
 
-                        const taskTimeSpan = document.createElement('span');
-                        taskTimeSpan.textContent = `${formatTime(task.timeStart)} - ${formatTime(task.timeEnd)}`;
-                        taskCard.appendChild(taskTimeSpan);
+                const taskTimeSpan = document.createElement('span');
+                taskTimeSpan.textContent = `${formatTime(task.timeStart)} - ${formatTime(task.timeEnd)}`;
+                taskCard.appendChild(taskTimeSpan);
 
-                        const taskDescription = document.createElement('p');
-                        taskDescription.textContent = task.title;
-                        taskCard.appendChild(taskDescription);
-                        taskCard.appendChild(userIcons);
-                        scheduled.appendChild(taskCard);
-                    });
-
-
+                const taskDescription = document.createElement('p');
+                taskDescription.textContent = task.title;
+                taskCard.appendChild(taskDescription);
+                taskCard.appendChild(userIcons);
+                scheduled.appendChild(taskCard);
+            });
 
 
-                    // Append scheduled div to singleDayContainer
-                    singleDayContainer.appendChild(scheduled);
 
-                    // Append singleDayContainer to the container element
-                    container.appendChild(singleDayContainer);
-                } else {
-                    console.log("not found", data.tasks.daily[dayFull])
-                    document.getElementById("dayTasks").innerHTML = '<h3>Day not created!</h3>'
-                }
-            }
-        })
+
+            // Append scheduled div to singleDayContainer
+            singleDayContainer.appendChild(scheduled);
+
+            // Append singleDayContainer to the container element
+            container.appendChild(singleDayContainer);
+        } else {
+            console.log("User day data couldn't be found inside:\n", JSON.stringify(data.tasks.daily),`\nFor instance, returned value was:\n`, JSON.stringify(data.tasks.daily[dayFull]))
+            document.getElementById("dayTasks").innerHTML = '<h3>Day not created!</h3>'
+        }
+    //}
+    //fetch(`./${localStorage.getItem("t50-username")}.tasco`)
+    //    .then(response => response.json())
+    //    .then(data => {
+    //        
+    //    })
+    //    .catch(error => {
+    //        //alert("json failed to load")
+    //        
+    //        
+    //    })
+}
+
+function enableDisableDebug() {
+    if(localStorage.getItem("tscBdebug")) {
+        localStorage.removeItem("tscBdebug")
+        alert("Debug is now disabled.")
+    } else {
+        localStorage.setItem("tscBdebug", true)
+        alert("Debug is now enabled.")
+    }
 }
