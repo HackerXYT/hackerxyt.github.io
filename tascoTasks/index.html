@@ -18,8 +18,8 @@
     <link rel="apple-touch-icon" sizes="76x76" href="tasco.png">
     <link rel="apple-touch-icon-precomposed" href="tasco.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#121212" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#1C1B1E" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#111111" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)">
     <meta name="application-name" content="OASA">
 </head>
 <script>
@@ -92,7 +92,7 @@
         </div>
         <div class="ongoing">
             <h3>Ongoing<span>See All</span></h3>
-            <div class="cardsContainer">
+            <div id="cardsContainer" class="cardsContainer">
                 <div class="card">
                     <div class="rowTop">
                         <div class="priority high">
@@ -282,10 +282,10 @@
             <span>&#x2022;</span>
             <vo>&nbsp;</vo>
         </div>
-        <div onclick="window.location.reload()" class="rounded">
+        <div onclick="create()" class="rounded">
             +
         </div>
-        <div id="nav-notif" class="item">
+        <div onclick="window.location.reload()" id="nav-notif" class="item">
             <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" stroke="#8e8e8e"
                 xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -306,6 +306,71 @@
             <vo>&nbsp;</vo>
         </div>
 
+    </div>
+    <div id="creationCont" class="popup">
+        <div id="grab" class="grabbable"></div>
+        <h3>Create new task</h3>
+        <div class="inputTask">
+            <span>Title</span>
+            <input placeholder="Enter a title for your task." class="taskInput">
+        </div>
+        <div class="organize">
+            Container<div class="organizeCont"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                    viewBox="0 0 16 16" fill="none">
+                    <path fill="#62bda9" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
+                </svg>Evox App</div>
+        </div>
+        <div class="organizeLine"></div>
+        <div class="due">
+            Due Date
+            <div class="dateCont">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12Z"
+                        stroke="#e53636" stroke-width="1.5" />
+                    <path d="M7 4V2.5" stroke="#e53636" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M17 4V2.5" stroke="#e53636" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M2.5 9H21.5" stroke="#e53636" stroke-width="1.5" stroke-linecap="round" />
+                    <path
+                        d="M18 17C18 17.5523 17.5523 18 17 18C16.4477 18 16 17.5523 16 17C16 16.4477 16.4477 16 17 16C17.5523 16 18 16.4477 18 17Z"
+                        fill="#e53636" />
+                    <path
+                        d="M18 13C18 13.5523 17.5523 14 17 14C16.4477 14 16 13.5523 16 13C16 12.4477 16.4477 12 17 12C17.5523 12 18 12.4477 18 13Z"
+                        fill="#e53636" />
+                    <path
+                        d="M13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C12.5523 16 13 16.4477 13 17Z"
+                        fill="#e53636" />
+                    <path
+                        d="M13 13C13 13.5523 12.5523 14 12 14C11.4477 14 11 13.5523 11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13Z"
+                        fill="#e53636" />
+                    <path
+                        d="M8 17C8 17.5523 7.55228 18 7 18C6.44772 18 6 17.5523 6 17C6 16.4477 6.44772 16 7 16C7.55228 16 8 16.4477 8 17Z"
+                        fill="#e53636" />
+                    <path
+                        d="M8 13C8 13.5523 7.55228 14 7 14C6.44772 14 6 13.5523 6 13C6 12.4477 6.44772 12 7 12C7.55228 12 8 12.4477 8 13Z"
+                        fill="#e53636" />
+                </svg>
+                Today
+            </div>
+        </div>
+        <div class="organizeLine"></div>
+        <div class="users">
+            Attendees
+            <div class="usersCont">
+                <div class="userIcons">
+                    <img id="selfPfp" src="tasco.png" class="userPfp">
+                    <img id="addBtn" onclick="document.getElementById('addBtn').classList.toggle('multi')" src="add.png" class="userPfp multi">
+                </div>
+            </div>
+        </div>
+        <div class="advancedBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                <path d="M5.70711 9.71069C5.31658 10.1012 5.31658 10.7344 5.70711 11.1249L10.5993 16.0123C11.3805 16.7927 12.6463 16.7924 13.4271 16.0117L18.3174 11.1213C18.708 10.7308 18.708 10.0976 18.3174 9.70708C17.9269 9.31655 17.2937 9.31655 16.9032 9.70708L12.7176 13.8927C12.3271 14.2833 11.6939 14.2832 11.3034 13.8927L7.12132 9.71069C6.7308 9.32016 6.09763 9.32016 5.70711 9.71069Z" fill="#5e63d3"/>
+                </svg> Advanced settings
+        </div>
+        <div class="doneBtn">
+            Done
+        </div>
     </div>
 </body>
 <script src="script.js"></script>

@@ -7,14 +7,20 @@
                     "title": "Schema Validation",
                     "timeStart": "10:00",
                     "timeEnd": "12:00",
-                    "users": ["twentysix", "papostol"]
+                    "users": [
+                        "twentysix",
+                        "papostol"
+                    ]
                 },
-                
                 {
                     "title": "Evoxing",
                     "timeStart": "13:00",
                     "timeEnd": "15:00",
-                    "users": ["papostol", "Oykas", "Moretti"]
+                    "users": [
+                        "papostol",
+                        "Oykas",
+                        "Moretti"
+                    ]
                 },
                 {
                     "title": "brake",
@@ -27,13 +33,17 @@
                     "title": "Hello world!",
                     "timeStart": "10:00",
                     "timeEnd": "20:00",
-                    "users": ["papostol"]
+                    "users": [
+                        "papostol"
+                    ]
                 },
                 {
                     "title": "Hello world!",
                     "timeStart": "10:00",
                     "timeEnd": "20:00",
-                    "users": ["papostol"]
+                    "users": [
+                        "papostol"
+                    ]
                 }
             ],
             "sunday": [
@@ -41,22 +51,99 @@
                     "title": "Schema Validation",
                     "timeStart": "10:00",
                     "timeEnd": "12:00",
-                    "users": ["papostol"]
+                    "users": [
+                        "papostol"
+                    ]
                 },
-                
+                {
+                    "title": "Running",
+                    "timeStart": "21:00",
+                    "timeEnd": "23:00",
+                    "users": [
+                        "papostol",
+                        "Kyriakos"
+                    ]
+                },
+                {
+                    "title": "Yoga",
+                    "timeStart": "14:00",
+                    "timeEnd": "18:00",
+                    "users": [
+                        "papostol"
+                    ]
+                },
                 {
                     "title": "Coding",
                     "timeStart": "13:00",
                     "timeEnd": "15:00",
-                    "users": ["papostol", "Oykas", "Moretti"]
+                    "users": [
+                        "papostol",
+                        "Oykas",
+                        "Moretti"
+                    ]
                 },
                 {
                     "title": "brake",
                     "timeStart": "16:00",
                     "timeEnd": "19:00",
-                    "users": ["papostol"]
+                    "users": [
+                        "papostol"
+                    ]
+                }
+            ]
+        },
+        "specific": {
+            "29/07/2024": [
+                {
+                    "title": "Specific",
+                    "timeStart": "15:00",
+                    "timeEnd": "16:00",
+                    "users": [
+                        "papostol",
+                        "Oykas",
+                        "Moretti"
+                    ]
+                }
+            ],
+            "31/07/2024": [
+                {
+                    "title": "Nothing",
+                    "timeStart": "15:00",
+                    "timeEnd": "16:00",
+                    "users": [
+                        "papostol"
+                    ]
                 }
             ]
         }
-    }
+    },
+    "ongoing": [
+        {
+            "title": "Nothing",
+            "timeStart": "15:00",
+            "timeEnd": "16:00",
+            "dueTo": "08/14/2024",
+            "priority": "medium",
+            "completed": "80%",
+            "users": [
+                "papostol"
+            ]
+        },
+        {
+            "title": "Crlf schema delta",
+            "timeStart": "19:00",
+            "timeEnd": "21:00",
+            "dueTo": "08/18/2024",
+            "priority": "high",
+            "completed": "10%",
+            "users": [
+                "papostol", "Oykas"
+            ]
+        }
+    ],
+    "categories": [
+        {
+            "yes": "s"
+        }
+    ]
 }
