@@ -1,18 +1,46 @@
 let currentDay;
 let tasco;
-fetch(`./${localStorage.getItem("t50-username")}.tasco`)
-    .then(response => response.json())
-    .then(data => {
-        tasco = data
-        loadHome()
-    })
-    .catch(error => {
-        //alert("json failed to load")
-        tasco = {
-            'message': "Failed to resolve .tasco"
+//fetch(`https://data.evoxs.xyz/tasco${localStorage.getItem("t50-username")}.tasco`)
+//    .then(response => response.json())
+//    .then(data => {
+//        tasco = data
+//        loadHome()
+//    })
+//    .catch(error => {
+//        //alert("json failed to load")
+//        tasco = {
+//            'message': "Failed to resolve .tasco"
+//        }
+//
+//    })
+if (localStorage.getItem("t50-username") && localStorage.getItem("t50pswd") && localStorage.getItem("t50-email")) {
+    fetch(`https://data.evoxs.xyz/tasco`, {
+        method: "POST",
+        body: JSON.stringify({
+            username: localStorage.getItem("t50-username"),
+            password: atob(localStorage.getItem("t50pswd")),
+            email: localStorage.getItem("t50-email"),
+            options: "get.tasco",
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
         }
+    }).then(response => response.json())
+        .then(data => {
+            tasco = data
+            loadHome()
+        })
+        .catch(error => {
+            //alert("json failed to load")
+            tasco = {
+                'message': "Failed to resolve .tasco"
+            }
 
-    })
+        })
+} else {
+    alert("Can't get access to Tasco. Please Login.")
+    window.location.href = '/evox-epsilon/image gallery'
+}
 function parseDate(dateStr) {
     const [month, day, year] = dateStr.split('/');
     return new Date(`${year}-${month}-${day}`);
@@ -375,7 +403,7 @@ function loadDay(day, dayNum, month, year, merge) {
     const data = tasco
 
     if (!data || !data.tasks || !data.tasks.daily) {
-        alert(`Data structure is not as expected\nDebug:\nUsername: ${localStorage.getItem("t50-username")}\n\nAre you logged in?`);
+        console.warn(`Data structure is not as expected\nDebug:\nUsername: ${localStorage.getItem("t50-username")}\n\nAre you logged in?`);
         return;
     }
     console.log("User data [PREVIEW]:\n", JSON.stringify(data))
@@ -511,7 +539,12 @@ function loadDay(day, dayNum, month, year, merge) {
                                 data = "data:image/jpeg;base64," + data;
                             }
                             userPfp1.src = data;
-                            sessionStorage.setItem(`pfp${user}`, data)
+                            //try {
+                            //    sessionStorage.setItem(`pfp${user}`, data)
+                            //} catch (error){
+                            //    console.warn("Client has no space left on profiles storage!")
+                            //}
+
                         })
                         .catch(error => {
                             userPfp1.src = `../oasaMobile/snap.png`;
@@ -522,7 +555,7 @@ function loadDay(day, dayNum, month, year, merge) {
 
                 if (count > 0) {
                     userPfp1.className = 'userPfp multi';
-                    userPfp1.onclick = function() {
+                    userPfp1.onclick = function () {
                         this.classList.toggle("multi")
                     }
                 } else {
@@ -617,7 +650,7 @@ function moveDiv(e) {
         informed = 'done'
         document.getElementById("grab").style.backgroundColor = "#333"
     }
-    if (newTop < 275) {
+    if (newTop < 220) {
         console.warn(newTop)
         return;
     }
@@ -715,10 +748,90 @@ if (sessionStorage.getItem(`pfp${localStorage.getItem("t50-username")}`)) {
                 data = "data:image/jpeg;base64," + data;
             }
             attendeesElem.src = data;
-            sessionStorage.setItem(`pfp${user}`, data)
+            //try {
+            //    sessionStorage.setItem(`pfp${user}`, data)
+            //} catch (error){
+            //    console.warn("Client has no space left on profiles storage!")
+            //}
         })
         .catch(error => {
             attendeesElem.src = `../oasaMobile/snap.png`;
             console.error(error);
         });
+}
+function changePriority() {
+    const imgElem = document.getElementById("priorityImg")
+    const priorityElem = document.getElementById("priority")
+    const priorityJson = ['low', 'med', 'high'] //sorted
+    if (imgElem.src.includes("low")) {
+        imgElem.src = 'med.svg'
+        priorityElem.innerText = 'Medium'
+    } else if (imgElem.src.includes("med")) {
+        imgElem.src = 'high.svg'
+        priorityElem.innerText = 'High'
+    } else if (imgElem.src.includes("high")) {
+        imgElem.src = 'low.svg'
+        priorityElem.innerText = 'Low'
+    }
+}
+function addTask() {
+    console.log("Running")
+    const container = document.getElementById("container")
+    const title = document.getElementById("taskTitle")
+    const duedate = document.getElementById("duedate")
+    const priority = document.getElementById("priority")
+    const imgElem = document.getElementById("priorityImg")
+    const priorityElem = document.getElementById("priority")
+
+    if (container.innerText === 'Ongoing') {
+        //will create .tasco for container Ongoing
+        if (title.value && title.value !== "") {
+            const taskJson = {
+                "title": title.value,
+                "timeStart": "15:00",
+                "timeEnd": "16:00",
+                "dueTo": new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
+                "priority": priority.innerText.toLowerCase(),
+                "completed": "0%",
+                "users": [
+                    "papostol"
+                ]
+            }
+            console.log("This is it", taskJson)
+            fetch(`https://data.evoxs.xyz/tasco`, {
+                method: "POST",
+                body: JSON.stringify({
+                    username: localStorage.getItem("t50-username"),
+                    password: atob(localStorage.getItem("t50pswd")),
+                    email: localStorage.getItem("t50-email"),
+                    options: "set.tasco.ongoing",
+                    data: taskJson
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            }).then(response => response.json())
+                .then(data => {
+                    console.log("tasco returned:", data)
+                    tasco = data
+                    closeCreate()
+                    loadHome()
+                    title.value = ''
+                    imgElem.src = 'low.svg'
+                    priorityElem.innerText = 'Low'
+                })
+                .catch(error => {
+                    //alert("json failed to load")
+                    tasco = {
+                        'message': "Failed to resolve .tasco"
+                    }
+
+                })
+
+        } else {
+            console.error("Fill out the title!")
+        }
+    } else {
+        console.warn('unknown container')
+    }
 }

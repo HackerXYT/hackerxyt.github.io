@@ -212,7 +212,7 @@ body::-webkit-scrollbar {
 }
 
 .rowTop .priority.low {
-    background-color: #00d115;
+    background-color: #009c10;
 }
 
 .rowTop span {
@@ -721,7 +721,7 @@ body::-webkit-scrollbar {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 65%;
+    height: 75%;
     /*calc(100% - 40px);*/
     display: block;
     padding: 30px;
@@ -888,6 +888,34 @@ body::-webkit-scrollbar {
 }
 
 .due .dateCont svg {
+    margin-right: 5px;
+}
+
+.priorityadd {
+    color: #8e8e8e;
+    margin-top: 18px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.priorityadd .dateCont {
+    display: flex;
+    align-items: center;
+    /* Aligns items vertically in the center */
+    margin-left: auto;
+    background-color: #e3e3e3;
+    border-radius: 50px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+    color: #1c1c1c;
+    vertical-align: middle;
+}
+
+.priorityadd .dateCont img {
     margin-right: 5px;
 }
 
