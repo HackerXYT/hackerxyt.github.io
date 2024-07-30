@@ -659,6 +659,7 @@ body::-webkit-scrollbar {
     border: 1.5px solid #000;
     box-shadow: #2d04ff49 0 0 8px 1px;
     transition: margin 0.5s ease-in-out;
+    margin-left: 5px;
 }
 
 .userPfp.multi {
