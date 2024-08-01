@@ -1131,7 +1131,7 @@ function enableOverflow() {
 }
 
 function florida() {
-    document.getElementById("phone").style.transform = "scale(0.97)"
+    document.getElementById("phone").style.transform = "scale(0.95)"
     document.getElementById("floridaCont").classList.add("active")
     document.getElementById("main-wrapper").style.overflow = 'hidden'
 }
@@ -1219,7 +1219,7 @@ function setup_begin() {
                 document.getElementById("floridaCont").style.backgroundColor = `#242426`
                 $("#homePage").fadeOut("fast", function () {
                     document.getElementById("floridaCont").classList.add("active")
-                    document.getElementById("phone").style.transform = "scale(0.97)"
+                    document.getElementById("phone").style.transform = "scale(0.95)"
                     floridaCont.style.top = '';
 
                     $("#setupPage").fadeIn("fast", function () {
@@ -1285,7 +1285,7 @@ function setup_begin() {
                 document.getElementById("floridaCont").style.backgroundColor = `#242426`
                 $("#homePage").fadeOut("fast", function () {
                     document.getElementById("floridaCont").classList.add("active")
-                    document.getElementById("phone").style.transform = "scale(0.97)"
+                    document.getElementById("phone").style.transform = "scale(0.95)"
                     floridaCont.style.top = '';
 
                     $("#setupPage").fadeIn("fast", function () {
@@ -1555,7 +1555,7 @@ function continueFlo(isAnon) {
             document.getElementById("floridaCont").style.backgroundColor = `#000`
             $("#homePage").fadeOut("fast", function () {
                 document.getElementById("floridaCont").classList.add("active")
-                document.getElementById("phone").style.transform = "scale(0.97)"
+                document.getElementById("phone").style.transform = "scale(0.95)"
                 floridaCont.style.top = '';
 
                 $("#loginForm").fadeOut("fast", function () {
@@ -1621,7 +1621,7 @@ function createOASA() {
                         document.getElementById("floridaCont").style.backgroundColor = `#000`
                         $("#homePage").fadeOut("fast", function () {
                             document.getElementById("floridaCont").classList.add("active")
-                            document.getElementById("phone").style.transform = "scale(0.97)"
+                            document.getElementById("phone").style.transform = "scale(0.95)"
                             floridaCont.style.top = '';
 
                             $("#loginForm").fadeOut("fast", function () {
@@ -1634,7 +1634,7 @@ function createOASA() {
                     }, 550)
                 }, 500)
             } else {
-                document.getElementById("registerBt").innerHTML = `Δοκιμάστε άλλο όνομα χρήστη`
+                document.getElementById("registerBt").innerHTML = `Δοκιμάστε άλλο όνομα χρήστη.`
             }
 
         }).catch(error => {
