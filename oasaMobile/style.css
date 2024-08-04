@@ -982,6 +982,7 @@ input {
   /* Adjust the spacing between icon and text */
 }
 
+
 .updateAvailable button {
   border: 0;
 }
@@ -1063,4 +1064,14 @@ input {
 #fullDebug span.highlight {
   color: lime; /* Change this to the desired color */
   font-family: monospace;
+}
+
+vo input {
+  background-color: transparent;
+  float: right;
+  width: auto;
+  border: none;
+  box-shadow: none;
+  text-align: right;
+  margin-right: 15px;
 }

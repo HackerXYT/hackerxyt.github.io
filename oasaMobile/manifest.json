@@ -1,10 +1,7 @@
 {
     "name": "Oasa Reloaded",
-    "display": "fullscreen",
-    "display_override": [
-        "fullscreen"
-    ],
-    "short_name": "voasa",
+    "display": "standalone",
+    "short_name": "oasa",
     "categories": [
         "games",
         "entertainment"
@@ -27,7 +24,7 @@
     },
     "orientation": "any",
     "dir": "auto",
-    "lang": "en",
+    "lang": "gr",
     "prefer_related_applications": false,
     "icons": [
         {

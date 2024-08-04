@@ -1675,7 +1675,17 @@ function showPersonal() {
 
         document.getElementById("usernameOnly").innerText = localStorage.getItem("t50-username")
         if (localStorage.getItem("oasa-name")) {
-            document.getElementById("userTheName").innerText = localStorage.getItem("oasa-name")
+            const theVal = JSON.parse(localStorage.getItem("oasa-name"))
+            if(theVal.first) {
+                document.getElementById("userTheName").innerText = theVal.first
+            }
+            if(theVal.last) {
+                if(theVal.first){
+                    document.getElementById("userTheName").innerText = `${theVal.first} ${theVal.last}`
+                } else {
+                    document.getElementById("userTheName").innerText = localStorage.getItem("t50-username")
+                }
+            }
         } else {
             document.getElementById("userTheName").innerText = localStorage.getItem("t50-username")
         }
@@ -1716,6 +1726,169 @@ function returnToHome() {
     document.getElementById("floridaCont").style.overflow = "hidden"
     document.getElementById('personal').classList.remove('active')
     document.getElementById("changingICON").innerHTML = oldHTML
+}
+
+function changeName() {
+    const inputName = document.getElementById('nameInput');
+
+    // Add an event listener to the input element
+    inputName.addEventListener('input', function (event) {
+        // This function will be called whenever the input value changes
+        const theLocal = localStorage.getItem("oasa-name")
+        if(theLocal) {
+            const json = {
+                'first': event.target.value,
+                'last': JSON.parse(theLocal).last
+            }
+            localStorage.setItem("oasa-name", JSON.stringify(json))
+        } else {
+            const json = {
+                'first': event.target.value
+            }
+            localStorage.setItem("oasa-name", JSON.stringify(json))
+        }
+        console.log('Input value:', event.target.value);
+    });
+
+    const inputLast = document.getElementById('lastInput');
+
+    // Add an event listener to the input element
+    inputLast.addEventListener('input', function (event) {
+        // This function will be called whenever the input value changes
+        const theLocal = localStorage.getItem("oasa-name")
+        if(theLocal) {
+            const json = {
+                'first': JSON.parse(theLocal).first,
+                'last': event.target.value
+            }
+            localStorage.setItem("oasa-name", JSON.stringify(json))
+        } else {
+            const json = {
+                'last': event.target.value
+            }
+            localStorage.setItem("oasa-name", JSON.stringify(json))
+        }
+        console.log('Input value:', event.target.value);
+    });
+    if (localStorage.getItem("oasa-name")) {
+        //Name exists
+        const theVal = JSON.parse(localStorage.getItem("oasa-name"))
+        if(theVal.first) {
+            document.getElementById("nameInput").value = theVal.first
+        }
+        if(theVal.last) {
+            if(theVal.first){
+                document.getElementById("nameInput").value = theVal.first
+                document.getElementById("lastInput").value = theVal.last
+            } else {
+                console.error('Needed parts arent filled')
+                document.getElementById("lastInput").value = theVal.last
+                //document.getElementById("userTheName").innerText = localStorage.getItem("t50-username")
+            }
+        }
+    } else {
+        //Name = username [doesnt exist]
+        //document.getElementById("userTheName").innerText = localStorage.getItem("t50-username")
+    }
+
+    document.getElementById("nameEdit").classList.add("active")
+}
+
+function returnToPersonal() {
+    document.getElementById("nameEdit").classList.remove("active")
+    if (localStorage.getItem("oasa-name")) {
+        const theVal = JSON.parse(localStorage.getItem("oasa-name"))
+        if(theVal.first) {
+            document.getElementById("userTheName").innerText = theVal.first
+        }
+        if(theVal.last) {
+            if(theVal.first){
+                document.getElementById("userTheName").innerText = `${theVal.first} ${theVal.last}`
+            } else {
+                document.getElementById("userTheName").innerText = localStorage.getItem("t50-username")
+            }
+        }
+    } else {
+        document.getElementById("userTheName").innerText = localStorage.getItem("t50-username")
+    }
+}
+
+function toggleFlorida() {
+    const flstats = localStorage.getItem("OasaFloridaStatus")
+    if(flstats) {
+        if(flstats === 'disabled') {
+            reSub()
+        } else if(flstats === "enabled") {
+            tempUnsub()
+        }
+    } else {
+        tempUnsub()
+    }
+    document.getElementById("flstats").innerHTML = `<svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+   width="15px" height="15px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+  <path opacity="0.2" fill="#fff" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+    s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+    c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+  <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+    C22.32,8.481,24.301,9.057,26.013,10.047z">
+    <animateTransform attributeType="xml"
+      attributeName="transform"
+      type="rotate"
+      from="0 20 20"
+      to="360 20 20"
+      dur="0.3s"
+      repeatCount="indefinite"/>
+    </path>
+  </svg>`
+}
+
+async function tempUnsub() {
+    try {
+        const serviceWorkerRegistration = await navigator.serviceWorker.ready;
+        const subscription = await serviceWorkerRegistration.pushManager.getSubscription();
+        
+        if (subscription) {
+            // Store the subscription object in localStorage (or indexedDB)
+            localStorage.setItem('OASApushSubscription', JSON.stringify(subscription.toJSON()));
+            // Unsubscribe from push notifications
+            await subscription.unsubscribe();
+            console.log('Push notifications have been temporarily disabled.');
+            localStorage.setItem("OasaFloridaStatus", "disabled")
+            document.getElementById("flstats").innerText = 'Ανενεργές'
+        } else {
+            document.getElementById("flstats").innerText = 'Σφάλμα!'
+            console.log('No push subscription found.');
+        }
+    } catch (error) {
+        console.error('Error during temporary unsubscribe:', error);
+    }
+}
+
+async function reSub() {
+    try {
+        const storedSubscription = localStorage.getItem('OASApushSubscription');
+        
+        if (storedSubscription) {
+            const parsedSubscription = JSON.parse(storedSubscription);
+            const serviceWorkerRegistration = await navigator.serviceWorker.ready;
+            
+            // Resubscribe using the stored subscription object
+            const newSubscription = await serviceWorkerRegistration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array(parsedSubscription.keys.p256dh)
+            });
+            
+            // Update localStorage (or indexedDB) with the new subscription if needed
+            localStorage.setItem('OASApushSubscription', JSON.stringify(newSubscription.toJSON()));
+            console.log('Push notifications have been re-enabled.');
+            localStorage.setItem("OasaFloridaStatus", "enabled")
+            document.getElementById("flstats").innerText = 'Ενεργές'
+        } else {
+            console.log('No stored subscription found. Cannot re-enable notifications.');
+        }
+    } catch (error) {
+        console.error('Error during re-subscribe:', error);
+    }
 }
 
 
@@ -1798,6 +1971,13 @@ function showRecents() {
             }
             document.getElementById("recentsInfo").innerHTML = `Πρόσφατα`
             const final = JSON.parse(data.value)
+            if(!final) {
+                console.warn("No Notifications!")
+                document.getElementById('recentsContainer').innerHTML = `<div class="option">
+                <span>Καμία Ειδοποιήση</span></div>`
+                document.getElementById("recents").classList.add('active')
+                return;
+            }
             console.log(final)
             console.log(final.username)
             document.getElementById('recentsContainer').innerHTML = ""
@@ -1857,6 +2037,7 @@ function showRecents() {
             });
             document.getElementById("recents").classList.add('active')
         }).catch(error => {
+            console.error("an error occured:", error)
             document.getElementById("netStats").innerHTML = offlineSvg
             clearTimeout(skipLoad)
             document.getElementById("changingICON2").innerHTML = `<img src='snap.png' style='width:20px;height:20px'>`
@@ -2328,4 +2509,5 @@ document.getElementById('receiveEnter').addEventListener('keydown', function (ev
         // You can add more actions here
     }
 });
+
 
