@@ -1,6 +1,6 @@
 
 sessionStorage.setItem("currentBuild", currentBuild)
-
+let currentBus;
 fetch(`../oasaBuild.evox`)
     .then(response => response.json())
     .then(data => {
@@ -349,6 +349,7 @@ getBus('904')
 getBus('420')
 let currentInt;
 function showInfo(bus, isInt) {
+    currentBus = bus
     document.getElementById("904live1").style.display = 'none'
     disableOverflow()
     document.getElementById("main-wrapper").style.overflow = 'hidden'
@@ -410,6 +411,9 @@ function showInfo(bus, isInt) {
             // Create the main div element with the class 'timeBox'
             var timeBox = document.createElement('div');
             timeBox.className = 'timeBox';
+            timeBox.onclick = function () {
+                handleTimeBoxClick(this)
+            }
 
             // Create the text node for the Greek text 'Παναγίτσα'
             var textNode = document.createTextNode('Παναγίτσα');
@@ -419,10 +423,16 @@ function showInfo(bus, isInt) {
 
             // Create the span element and set its content to '10m'
             var span = document.createElement('span');
-            span.textContent = remainTime;
+            span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
 
             // Append the span element to the main div element
             timeBox.appendChild(span);
+
+            var optDiv = document.createElement('div');
+            optDiv.style.display = 'none'
+            optDiv.style.height = 'auto'
+            timeBox.appendChild(optDiv);
+
 
             // Optionally, append the timeBox to the body or another element in the DOM
             document.getElementById("evoxBased").appendChild(timeBox);
@@ -456,6 +466,9 @@ function showInfo(bus, isInt) {
                         // Create the main div element with the class 'timeBox'
                         var timeBox = document.createElement('div');
                         timeBox.className = 'timeBox';
+                        timeBox.onclick = function () {
+                            handleTimeBoxClick(this)
+                        }
 
                         // Create the text node for the Greek text 'Παναγίτσα'
                         var textNode = document.createTextNode('Παναγίτσα');
@@ -465,10 +478,14 @@ function showInfo(bus, isInt) {
 
                         // Create the span element and set its content to '10m'
                         var span = document.createElement('span');
-                        span.textContent = remainTime;
+                        span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
 
                         // Append the span element to the main div element
                         timeBox.appendChild(span);
+                        var optDiv = document.createElement('div');
+                        optDiv.style.display = 'none'
+                        optDiv.style.height = 'auto'
+                        timeBox.appendChild(optDiv);
 
                         // Optionally, append the timeBox to the body or another element in the DOM
                         document.getElementById("evoxBased").appendChild(timeBox);
@@ -501,6 +518,9 @@ function showInfo(bus, isInt) {
                         // Create the main div element with the class 'timeBox'
                         var timeBox = document.createElement('div');
                         timeBox.className = 'timeBox';
+                        timeBox.onclick = function () {
+                            handleTimeBoxClick(this)
+                        }
 
                         var textNode = document.createTextNode('Πειραιάς');
 
@@ -509,10 +529,14 @@ function showInfo(bus, isInt) {
 
                         // Create the span element and set its content to '10m'
                         var span = document.createElement('span');
-                        span.textContent = remainTime;
+                        span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
 
                         // Append the span element to the main div element
                         timeBox.appendChild(span);
+                        var optDiv = document.createElement('div');
+                        optDiv.style.display = 'none'
+                        optDiv.style.height = 'auto'
+                        timeBox.appendChild(optDiv);
 
                         // Optionally, append the timeBox to the body or another element in the DOM
                         document.getElementById("evoxBased").appendChild(timeBox);
@@ -529,6 +553,9 @@ function showInfo(bus, isInt) {
                         // Create the main div element with the class 'timeBox'
                         var timeBox = document.createElement('div');
                         timeBox.className = 'timeBox';
+                        timeBox.onclick = function () {
+                            handleTimeBoxClick(this)
+                        }
 
                         var textNode = document.createTextNode('Transition');
 
@@ -537,10 +564,14 @@ function showInfo(bus, isInt) {
 
                         // Create the span element and set its content to '10m'
                         var span = document.createElement('span');
-                        span.textContent = remainTime;
+                        span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
 
                         // Append the span element to the main div element
                         timeBox.appendChild(span);
+                        var optDiv = document.createElement('div');
+                        optDiv.style.display = 'none'
+                        optDiv.style.height = 'auto'
+                        timeBox.appendChild(optDiv);
 
                         // Optionally, append the timeBox to the body or another element in the DOM
                         document.getElementById("evoxBased").appendChild(timeBox);
@@ -650,6 +681,12 @@ function showInfo(bus, isInt) {
             // Create the main div element with the class 'timeBox'
             var timeBox = document.createElement('div');
             timeBox.className = 'timeBox';
+            timeBox.onclick = function () {
+                handleTimeBoxClick(this)
+            }
+            timeBox.onclick = function () {
+                handleTimeBoxClick(this)
+            }
 
             var textNode = document.createTextNode('Πειραιάς');
 
@@ -658,10 +695,14 @@ function showInfo(bus, isInt) {
 
             // Create the span element and set its content to '10m'
             var span = document.createElement('span');
-            span.textContent = remainTime;
+            span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
 
             // Append the span element to the main div element
             timeBox.appendChild(span);
+            var optDiv = document.createElement('div');
+            optDiv.style.display = 'none'
+            optDiv.style.height = 'auto'
+            timeBox.appendChild(optDiv);
 
             // Optionally, append the timeBox to the body or another element in the DOM
             document.getElementById("evoxBased").appendChild(timeBox);
@@ -720,20 +761,27 @@ function showInfo(bus, isInt) {
             // Create the main div element with the class 'timeBox'
             var timeBox = document.createElement('div');
             timeBox.className = 'timeBox';
+            timeBox.onclick = function () {
+                handleTimeBoxClick(this)
+            }
 
-            var textNode = document.createTextNode('Πλ. Καραϊσκάκη');
+            var textNode = document.createTextNode('Καραϊσκάκη');
 
             // Append the text node to the main div element
             timeBox.appendChild(textNode);
 
             // Create the span element and set its content to '10m'
             var span = document.createElement('span');
-            span.textContent = remainTime;
+            span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
 
             // Append the span element to the main div element
             timeBox.appendChild(span);
             timeBox.style.fontSize = "16px";
 
+            var optDiv = document.createElement('div');
+            optDiv.style.display = 'none'
+            optDiv.style.height = 'auto'
+            timeBox.appendChild(optDiv);
             // Optionally, append the timeBox to the body or another element in the DOM
             document.getElementById("evoxBased").appendChild(timeBox);
 
@@ -750,6 +798,9 @@ function showInfo(bus, isInt) {
             // Create the main div element with the class 'timeBox'
             var timeBox = document.createElement('div');
             timeBox.className = 'timeBox';
+            timeBox.onclick = function () {
+                handleTimeBoxClick(this)
+            }
 
             let textNode;
             if (bus === "420") {
@@ -765,10 +816,14 @@ function showInfo(bus, isInt) {
 
             // Create the span element and set its content to '10m'
             var span = document.createElement('span');
-            span.textContent = remainTime;
+            span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
 
             // Append the span element to the main div element
             timeBox.appendChild(span);
+            var optDiv = document.createElement('div');
+            optDiv.style.display = 'none'
+            optDiv.style.height = 'auto'
+            timeBox.appendChild(optDiv);
 
             // Optionally, append the timeBox to the body or another element in the DOM
             document.getElementById("evoxBased").appendChild(timeBox);
@@ -987,8 +1042,34 @@ document.addEventListener("DOMContentLoaded", function () {
     if (localStorage.getItem("t50-username")) {
         sessionStorage.setItem("privileges", "florida")
         document.getElementById("profilePic").src = `reloading-pfp.gif`;
-        document.getElementById('profileUsername').innerText = localStorage.getItem("t50-username")
-        document.getElementById('profileEmail').innerText = localStorage.getItem("t50-email")
+        if (localStorage.getItem("oasa-name")) {
+            console.log("Running autostart placeholders func")
+            const theVal = JSON.parse(localStorage.getItem("oasa-name"))
+            if (theVal.first) {
+                document.getElementById('profileEmail').innerText = theVal.first
+            }
+            if (theVal.last) {
+                if (theVal.first) {
+                    document.getElementById("profileEmail").innerText = `${theVal.first} ${theVal.last}`
+                } else {
+                    document.getElementById("profileEmail").innerText = localStorage.getItem("t50-username")
+                }
+            }
+
+
+            document.getElementById('profileUsername').innerText = localStorage.getItem("t50-username")
+            if (!theVal.first && !theVal.last) {
+                console.log("both first and last are null")
+                document.getElementById('profileUsername').innerText = localStorage.getItem("t50-username")
+                document.getElementById('profileEmail').innerText = localStorage.getItem("t50-email")
+            }
+        } else {
+            console.log("No full name given")
+            document.getElementById('profileUsername').innerText = localStorage.getItem("t50-username")
+            document.getElementById('profileEmail').innerText = localStorage.getItem("t50-email")
+        }
+
+
         if (sessionStorage.getItem("pfp") && sessionStorage.getItem("pfp") !== "2") {
             document.getElementById("profilePic").src = sessionStorage.getItem("pfp");
         } else {
@@ -1676,15 +1757,19 @@ function showPersonal() {
         document.getElementById("usernameOnly").innerText = localStorage.getItem("t50-username")
         if (localStorage.getItem("oasa-name")) {
             const theVal = JSON.parse(localStorage.getItem("oasa-name"))
-            if(theVal.first) {
+            if (theVal.first) {
                 document.getElementById("userTheName").innerText = theVal.first
             }
-            if(theVal.last) {
-                if(theVal.first){
+            if (theVal.last) {
+                if (theVal.first) {
                     document.getElementById("userTheName").innerText = `${theVal.first} ${theVal.last}`
                 } else {
                     document.getElementById("userTheName").innerText = localStorage.getItem("t50-username")
                 }
+            }
+
+            if (!theVal.first && !theVal.last) {
+                document.getElementById("userTheName").innerText = localStorage.getItem("t50-username")
             }
         } else {
             document.getElementById("userTheName").innerText = localStorage.getItem("t50-username")
@@ -1735,13 +1820,24 @@ function changeName() {
     inputName.addEventListener('input', function (event) {
         // This function will be called whenever the input value changes
         const theLocal = localStorage.getItem("oasa-name")
-        if(theLocal) {
+        if (theLocal) {
+            if (event.target.value === '') {
+                const json = {
+                    'first': null,
+                    'last': JSON.parse(theLocal).last
+                }
+                localStorage.setItem("oasa-name", JSON.stringify(json))
+                return;
+            }
             const json = {
                 'first': event.target.value,
                 'last': JSON.parse(theLocal).last
             }
             localStorage.setItem("oasa-name", JSON.stringify(json))
         } else {
+            if (event.target.value === '') {
+                return;
+            }
             const json = {
                 'first': event.target.value
             }
@@ -1756,13 +1852,24 @@ function changeName() {
     inputLast.addEventListener('input', function (event) {
         // This function will be called whenever the input value changes
         const theLocal = localStorage.getItem("oasa-name")
-        if(theLocal) {
+        if (theLocal) {
+            if (event.target.value === '') {
+                const json = {
+                    'first': JSON.parse(theLocal).first,
+                    'last': null
+                }
+                localStorage.setItem("oasa-name", JSON.stringify(json))
+                return;
+            }
             const json = {
                 'first': JSON.parse(theLocal).first,
                 'last': event.target.value
             }
             localStorage.setItem("oasa-name", JSON.stringify(json))
         } else {
+            if (event.target.value === '') {
+                return;
+            }
             const json = {
                 'last': event.target.value
             }
@@ -1773,11 +1880,11 @@ function changeName() {
     if (localStorage.getItem("oasa-name")) {
         //Name exists
         const theVal = JSON.parse(localStorage.getItem("oasa-name"))
-        if(theVal.first) {
+        if (theVal.first) {
             document.getElementById("nameInput").value = theVal.first
         }
-        if(theVal.last) {
-            if(theVal.first){
+        if (theVal.last) {
+            if (theVal.first) {
                 document.getElementById("nameInput").value = theVal.first
                 document.getElementById("lastInput").value = theVal.last
             } else {
@@ -1798,27 +1905,58 @@ function returnToPersonal() {
     document.getElementById("nameEdit").classList.remove("active")
     if (localStorage.getItem("oasa-name")) {
         const theVal = JSON.parse(localStorage.getItem("oasa-name"))
-        if(theVal.first) {
+        if (theVal.first) {
             document.getElementById("userTheName").innerText = theVal.first
         }
-        if(theVal.last) {
-            if(theVal.first){
+        if (theVal.last) {
+            if (theVal.first) {
                 document.getElementById("userTheName").innerText = `${theVal.first} ${theVal.last}`
             } else {
                 document.getElementById("userTheName").innerText = localStorage.getItem("t50-username")
             }
         }
+
+        if (!theVal.first && !theVal.last) {
+            document.getElementById("userTheName").innerText = localStorage.getItem("t50-username")
+        }
     } else {
         document.getElementById("userTheName").innerText = localStorage.getItem("t50-username")
+    }
+
+
+    if (localStorage.getItem("oasa-name")) {
+        const theVal = JSON.parse(localStorage.getItem("oasa-name"))
+        if (theVal.first) {
+            document.getElementById('profileEmail').innerText = theVal.first
+        }
+        if (theVal.last) {
+            if (theVal.first) {
+                document.getElementById("profileEmail").innerText = `${theVal.first} ${theVal.last}`
+            } else {
+                document.getElementById("profileEmail").innerText = localStorage.getItem("t50-username")
+            }
+        }
+
+        document.getElementById('profileUsername').innerText = localStorage.getItem("t50-username")
+
+        if (!theVal.first && !theVal.last) {
+            console.log("both first and last are null")
+            document.getElementById('profileUsername').innerText = localStorage.getItem("t50-username")
+            document.getElementById('profileEmail').innerText = localStorage.getItem("t50-email")
+        }
+    } else {
+        console.log("No full name given")
+        document.getElementById('profileUsername').innerText = localStorage.getItem("t50-username")
+        document.getElementById('profileEmail').innerText = localStorage.getItem("t50-email")
     }
 }
 
 function toggleFlorida() {
     const flstats = localStorage.getItem("OasaFloridaStatus")
-    if(flstats) {
-        if(flstats === 'disabled') {
+    if (flstats) {
+        if (flstats === 'disabled') {
             reSub()
-        } else if(flstats === "enabled") {
+        } else if (flstats === "enabled") {
             tempUnsub()
         }
     } else {
@@ -1846,7 +1984,7 @@ async function tempUnsub() {
     try {
         const serviceWorkerRegistration = await navigator.serviceWorker.ready;
         const subscription = await serviceWorkerRegistration.pushManager.getSubscription();
-        
+
         if (subscription) {
             // Store the subscription object in localStorage (or indexedDB)
             localStorage.setItem('OASApushSubscription', JSON.stringify(subscription.toJSON()));
@@ -1867,17 +2005,17 @@ async function tempUnsub() {
 async function reSub() {
     try {
         const storedSubscription = localStorage.getItem('OASApushSubscription');
-        
+
         if (storedSubscription) {
             const parsedSubscription = JSON.parse(storedSubscription);
             const serviceWorkerRegistration = await navigator.serviceWorker.ready;
-            
+
             // Resubscribe using the stored subscription object
             const newSubscription = await serviceWorkerRegistration.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey: urlBase64ToUint8Array(parsedSubscription.keys.p256dh)
             });
-            
+
             // Update localStorage (or indexedDB) with the new subscription if needed
             localStorage.setItem('OASApushSubscription', JSON.stringify(newSubscription.toJSON()));
             console.log('Push notifications have been re-enabled.');
@@ -1971,7 +2109,7 @@ function showRecents() {
             }
             document.getElementById("recentsInfo").innerHTML = `Πρόσφατα`
             const final = JSON.parse(data.value)
-            if(!final) {
+            if (!final) {
                 console.warn("No Notifications!")
                 document.getElementById('recentsContainer').innerHTML = `<div class="option">
                 <span>Καμία Ειδοποιήση</span></div>`
@@ -2018,7 +2156,7 @@ function showRecents() {
                     span.src = 'https://evoxs.xyz/notifications_assets/Gateway.png';
                 } else {
                     span = document.createElement('span');
-                    span.textContent = payload.title;
+                    span.innerHTML = payload.title + `<img src="arrow-down.svg" width="25px" height="25px">`;
                 }
 
 
@@ -2510,4 +2648,109 @@ document.getElementById('receiveEnter').addEventListener('keydown', function (ev
     }
 });
 
+let numstartto = 0; // Initialize the variable numstartto
+let jsonForBTNIndex = {}; // Initialize the JSON object to store elements by ID
+let reShown;//?
+function handleTimeBoxClick(element, bypass) {
+    if (bypass) {
+        const theElem = document.getElementById(`global${element.id}`);
+        if (!theElem) {
+            console.error("Element not found for ID:", `global${element.id}`);
+            return;
+        }
 
+        // Remove active class
+        theElem.classList.remove("thisisActive");
+
+        const imgElement = theElem.querySelector('img');
+        if (imgElement) {
+            // Rotate the img element by 0 degrees
+            imgElement.style.transform = 'rotate(0deg)';
+        }
+
+        const optDiv = theElem.querySelector('div');
+        if (optDiv) {
+            optDiv.style.opacity = '0';
+        }
+
+        theElem.style.height = '65px';
+        return;
+    }
+
+    if (element.classList.contains("thisisActive")) {
+        // Do nothing if the element is already active
+
+        // Remove active class
+        element.classList.remove("thisisActive");
+
+        const imgElement = element.querySelector('img');
+        if (imgElement) {
+            // Rotate the img element by 0 degrees
+            imgElement.style.transform = 'rotate(0deg)';
+        }
+
+        const optDiv = element.querySelector('div');
+        if (optDiv) {
+
+            optDiv.style.opacity = '0';
+            setTimeout(function () {
+                optDiv.innerHTML = ''
+            }, 800)
+
+        }
+
+        element.style.height = '65px';
+        element.style.backgroundColor = '#333'
+        if(reShown === true) {
+            document.getElementById("Businfo").style.opacity = '1'
+            reShown = false
+        }
+        return;
+    }
+
+    numstartto++; // Increment the global variable
+
+    // Assign a new ID to the element
+    element.id = `globalelmt${numstartto}`;
+
+    // Store the element in the JSON object
+    jsonForBTNIndex[`elmt${numstartto}`] = element;
+    console.log(jsonForBTNIndex);
+
+    const optDiv = element.querySelector('div');
+    if (optDiv) {
+        optDiv.style.opacity = '0';
+        optDiv.style.display = 'block';
+        setTimeout(() => {
+            optDiv.style.opacity = '1';
+        }, 100);
+
+        optDiv.innerHTML = `
+            <p style="margin-top: 10px;">Επιλέξτε πότε θα θέλατε να ενημερωθείτε για το λεωφορείο ${currentBus}:</p>
+            <div onclick="this.classList.toggle('active')" class="actionButton online">
+                Αφετηρία
+            </div>
+            <div id='elmt${numstartto}' onclick="this.classList.toggle('active')" class="actionButton">
+                Ακύρωση
+            </div>
+        `;
+    }
+
+    element.classList.add("thisisActive");
+
+    const imgElement = element.querySelector('img');
+    if (imgElement) {
+        // Rotate the img element by 180 degrees
+        imgElement.style.transform = 'rotate(180deg)';
+    }
+    element.style.backgroundColor = '#232323'
+    if (document.getElementById("Businfo").style.opacity === '1') {
+        document.getElementById("Businfo").style.opacity = '0'
+        reShown = true
+    } else {
+        reShown = false
+        console.log("the opacity is already set to 0")
+    }
+
+    element.style.height = '200px';
+}

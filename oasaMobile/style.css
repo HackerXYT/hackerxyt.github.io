@@ -592,28 +592,33 @@ input {
 
 
 .evoxBased .timeBox {
-
   width: 95%;
   text-align: left;
   background-color: #333;
   font-size: large;
   padding: 20px;
   margin: 0;
-  /* Ensure no margin */
   margin-left: 10px;
-  /* Apply specific margin left */
   margin-right: 10px;
-  /* Apply specific margin right */
   border: none;
-  /* Remove any borders */
   box-shadow: none;
-  /* Remove any box shadows */
   border-radius: 0;
+  height: 65px; /* Initial height with px */
+  transition: height 0.9s ease-in-out, transform 0.6s ease, opacity 0.7s ease-in-out, background-color 0.7s ease-in-out; 
 }
 
 .evoxBased .timeBox span {
   text-align: right;
   float: right;
+}
+
+.evoxBased .timeBox div {
+  transition: height 0.7s ease-in-out, transform 0.6s ease, opacity 0.7s ease-in-out; 
+}
+
+.evoxBased .timeBox img {
+  vertical-align: middle;
+  transition: transform 0.6s ease, opacity 0.7s ease-in-out; 
 }
 
 .evoxBased .timeBox:first-child {
@@ -1015,6 +1020,7 @@ input {
 .notificationBox {
   position: absolute;
   background-color: #3c3c41;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
   padding: 20px;
   align-items: center;
   text-align: center;
@@ -1035,8 +1041,7 @@ input {
 }
 
 .actionButton{
-  min-width: 250px;
-  font-size: 20px;
+  font-size: 16px;
   margin-top: 20px;
   background-color: #ffffff59;
   color: #fff;
@@ -1053,12 +1058,38 @@ input {
   transition: transform 0.2s ease-out, background-color 0.2s ease-out, color 0.2s ease-out;
 }
 
+.actionButton.online{
+  font-size: 16px;
+  margin-top: 20px;
+  background-color: #7944fd;
+  color: #fff;
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  border-radius: 15px;
+  height: auto;
+  font-family: "SF";
+  transition: transform 0.2s ease-out, background-color 0.2s ease-out, color 0.2s ease-out;
+}
+
+.actionButton.online.active{
+  font-size: 16px;
+  margin-top: 20px;
+  background-color: #fff;
+  color: #000;
+  transform: scale(1.03);
+}
+
 .actionButton.active{
-  font-size: 20px;
+  font-size: 16px;
   margin-top: 20px;
   background-color: #ffffff;
   color: #000;
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 
 #fullDebug span.highlight {
