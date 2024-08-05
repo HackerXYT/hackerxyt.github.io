@@ -1219,6 +1219,10 @@ function florida() {
 }
 
 function loadActive() {
+    if(!localStorage.getItem("t50-username")) {
+        console.log("<spans style='color: red'>Cancelled active schedo check due to lcstorage username being null!</span>")
+        return;
+    }
     fetch(`https://florida.evoxs.xyz/activeSchedo?username=${localStorage.getItem("t50-username")}`)
         .then(response => response.json())
         .then(data => {
