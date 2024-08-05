@@ -6,8 +6,9 @@
     <title>OASA</title>
     <meta charset="UTF-8">
     <link rel="manifest" href="manifest.json">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
     <!--<link rel="apple-touch-startup-image" href="iphone-se-640x1136.png"
         media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)">
     <link rel="apple-touch-startup-image" href="iphone-6-750x1334.png"
@@ -22,7 +23,7 @@
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 1)">
     <link rel="apple-touch-startup-image" href="ipad-retina-1536x2048.png"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)">-->
-        <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="iphone-xr-1242x2688.png">
+    <!--    <link rel="apple-touch-startup-image" media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="iphone-xr-1242x2688.png">
     <link rel="apple-touch-startup-image" media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="iphone-xr-1242x2688.png">
     <link rel="apple-touch-startup-image" media="screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="iphone-xr-1242x2688.png">
     <link rel="apple-touch-startup-image" media="screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" href="iphone-xr-1242x2688.png">
@@ -59,8 +60,14 @@
     <link rel="apple-touch-startup-image" media="screen and (device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="ipad-768x1024.png">
     <link rel="apple-touch-startup-image" media="screen and (device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="ipad-768x1024.png">
     <link rel="apple-touch-startup-image" media="screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="ipad-768x1024.pngg">
-    <link rel="apple-touch-startup-image" media="screen and (device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="ipad-768x1024.png">
+    <link rel="apple-touch-startup-image" media="screen and (device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="ipad-768x1024.png">-->
 
+    <script defer src="https://unpkg.com/pwacompat" crossorigin="anonymous"></script>
+    <style>
+        link[rel="manifest"] {
+            --pwacompat-splash-font: 24px monospace;
+        }
+    </style>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="default.css">
     <link rel="icon" type="image/png" href="apple.png">
@@ -474,7 +481,8 @@
 
             </div>
             <p>Το όνομά σας μπορεί να χρησιμοποιηθεί ως τρόπος βελτίωσης της εμπειρίας του χρήστη.<br>Δεν θα
-                κοινοποιήσουμε το όνομά σας εκτός εάν μας το επιτρέψετε.<br><span style="font-size: 10px;color: red">dev note: section local only for only</span></p>
+                κοινοποιήσουμε το όνομά σας εκτός εάν μας το επιτρέψετε.<br><span style="font-size: 10px;color: red">dev
+                    note: section local only for only</span></p>
             <div class="devices">
 
             </div>
