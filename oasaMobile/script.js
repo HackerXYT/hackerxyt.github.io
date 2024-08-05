@@ -1215,6 +1215,101 @@ function florida() {
     document.getElementById("phone").style.transform = "scale(0.95)"
     document.getElementById("floridaCont").classList.add("active")
     document.getElementById("main-wrapper").style.overflow = 'hidden'
+    loadActive()
+}
+
+function loadActive() {
+    fetch(`https://florida.evoxs.xyz/activeSchedo?username=${localStorage.getItem("t50-username")}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            if (data.length === 0) {
+                console.log("No Active Schedos")
+                const container = document.getElementById("pendingContainer")
+                container.innerHTML = ''
+                document.getElementById("pendingNotifications").style.display = 'none'
+            } else {
+                document.getElementById("pendingNotifications").style.display = ''
+                console.log("Active schedos found")
+                const filteredData = data.filter(item => item.id === localStorage.getItem("extVOASA"));
+                console.log("data ready")
+                console.log(filteredData)
+                const container = document.getElementById("pendingContainer")
+                container.innerHTML = ''
+                if(filteredData.length === 0) {
+                    document.getElementById("pendingNotifications").style.display = 'none'
+                    return;
+                }
+                filteredData.forEach(schedoNotification => {
+                    const pendingDiv = document.createElement('div');
+                    pendingDiv.className = 'pending';
+
+                    const heading = document.createElement('h2');
+                    heading.textContent = schedoNotification.bus;
+
+                    const span = document.createElement('span');
+                    if (schedoNotification.type === 'transition') {
+                        span.textContent = `Αφετηρία: ${schedoNotification.time}`;
+                    } else {
+                        span.textContent = `Σφάλμα! [${schedoNotification.type}]`;
+                    }
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.style.marginLeft = 'auto';
+                    buttonContainer.style.marginRight = '10px';
+
+                    const button = document.createElement('button');
+                    button.className = 'declineButton';
+                    button.textContent = 'Ακύρωση';
+                    button.onclick = function () {
+                        const valueToDelete = schedoNotification
+                        console.log("Will delete", valueToDelete)
+                        const timeNode = `${valueToDelete.date}/${valueToDelete.time}`
+                        const bus = valueToDelete.bus
+                        const id = valueToDelete.id
+                        const evoxJson2 = {
+                            'username': localStorage.getItem("t50-username"),
+                            'timenode': timeNode,
+                            'bus': bus,
+                            'deviceId': id
+                        }
+                        console.log("now pinging")
+                        fetch('https://florida.evoxs.xyz/deleteByNode', {
+                            method: 'POST',
+                            body: JSON.stringify(evoxJson2),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }).then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.text();
+                        })
+                            .then(data => {
+                                loadActive()
+                                console.log(data)
+                            }).catch(error => {
+                                document.getElementById("registerBt").innerHTML = `Failed`
+                                console.error('Fetch error:', error);
+                            });
+
+                    }
+
+                    buttonContainer.appendChild(button);
+                    pendingDiv.appendChild(heading);
+                    pendingDiv.appendChild(span);
+                    pendingDiv.appendChild(buttonContainer);
+
+                    container.appendChild(pendingDiv);
+
+                })
+
+            }
+
+        })
+        .catch(error => {
+            console.error("Failed to check for updates")
+        })
 }
 
 const floridaPop = document.getElementById('floridaCont');
@@ -2156,7 +2251,7 @@ function showRecents() {
                     span.src = 'https://evoxs.xyz/notifications_assets/Gateway.png';
                 } else {
                     span = document.createElement('span');
-                    span.innerHTML = payload.title + `<img src="arrow-down.svg" width="25px" height="25px">`;
+                    span.innerHTML = payload.title;
                 }
 
 
@@ -2701,7 +2796,7 @@ function handleTimeBoxClick(element, bypass) {
 
         element.style.height = '65px';
         element.style.backgroundColor = '#333'
-        if(reShown === true) {
+        if (reShown === true) {
             document.getElementById("Businfo").style.opacity = '1'
             reShown = false
         }
@@ -2725,9 +2820,14 @@ function handleTimeBoxClick(element, bypass) {
             optDiv.style.opacity = '1';
         }, 100);
 
+        const timetable = element.querySelector('span');
+        let cleanedString = timetable.innerHTML.replace(/<img[^>]*>/g, '');
+        console.log(cleanedString);
+
+
         optDiv.innerHTML = `
             <p style="margin-top: 10px;">Επιλέξτε πότε θα θέλατε να ενημερωθείτε για το λεωφορείο ${currentBus}:</p>
-            <div onclick="this.classList.toggle('active')" class="actionButton online">
+            <div onclick="this.classList.toggle('active');attachSchedo(this)" data-t="${cleanedString}" class="actionButton online">
                 Αφετηρία
             </div>
             <div id='elmt${numstartto}' onclick="this.classList.toggle('active')" class="actionButton">
@@ -2753,4 +2853,59 @@ function handleTimeBoxClick(element, bypass) {
     }
 
     element.style.height = '200px';
+}
+
+function convertTransition(transition) {
+    // Regular expression to match Type 1 format: time - duration
+    const type1Pattern = /^(\d{2}:\d{2}) - \d+ λεπτά$/;
+
+    // Check if the transition matches Type 1 format
+    const match = transition.match(type1Pattern);
+    if (match) {
+        // Extract the time part from the match
+        return match[1];
+    } else {
+        // If it's not Type 1, return the original value
+        return transition;
+    }
+}
+
+function attachSchedo(element) {
+    console.log("Attaching schedo")
+    if (!localStorage.getItem("extVOASA")) {
+        alert("Για να χρησιμοποιήσετε τις ειδοποιήσεις, πρέπει πρώτα να συνδεθείτε και να τις ενεργοποιήσετε.\nΓια να ξεκινήσετε, πηγαίνετε στις ρυθμίσεις ειδοποιήσεων.")
+    }
+    const dataTValue = element.getAttribute('data-t');
+
+    // Log the value to the console
+    console.log('datat', dataTValue);
+
+    const evoxJson = {
+        'username': localStorage.getItem("t50-username"),
+        'extv': localStorage.getItem("extVOASA"),
+        'type': "transition",
+        'bus': currentBus,
+        "transition": convertTransition(dataTValue)
+    }
+
+    console.log(evoxJson)
+    fetch('https://florida.evoxs.xyz/oasaSchedo', {
+        method: 'POST',
+        body: JSON.stringify(evoxJson),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+        .then(data => {
+            console.log("Florida Response", data)
+
+
+        }).catch(error => {
+            console.error('Fetch error:', error);
+        });
 }

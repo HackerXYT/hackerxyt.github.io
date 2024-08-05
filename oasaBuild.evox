@@ -1,4 +1,4 @@
 {
-    "buildNumber": "0.70",
-    "date": "31 July 2024 / Add handling for time crashes (11:55PM-12:05AM)"
+    "buildNumber": "0.80",
+    "date": "6 August 2024/ Added support for transition type notifications! Known bugs: 16 transition or panagitsa not stable"
 }
