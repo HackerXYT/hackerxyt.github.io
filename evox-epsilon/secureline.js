@@ -3,8 +3,10 @@ document.getElementById("message_input").addEventListener("keypress", function (
     send_message()
   }
 });
+sessionStorage.removeItem("lastChatInter")
 
 function send_message() {
+  rotateElement()
   sender = localStorage.getItem("t50-username")
   recipient = sessionStorage.getItem("current_sline")
   message = document.getElementById("message_input")
@@ -161,7 +163,7 @@ function reload_chat(whoto) {
           console.error("JSON data or messages array is undefined.");
         }
       })
-  }, 1000)
+  }, 2000)
 }
 
 function return_main_chats() {
@@ -257,7 +259,7 @@ function showchat(element) {//json id=Username
         console.log('Swiped from left to right');
         // Run your desired function here
         //alert('Swiped from left to right');
-        return_main_chats()
+        //return_main_chats()
       }
     }
   }

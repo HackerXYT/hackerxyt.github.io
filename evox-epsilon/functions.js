@@ -371,7 +371,8 @@ function switchNAV(element) {
 
 function setActive(option) {
 	if(option === "2") {
-		currScreen = "Settings"
+		return;
+		//currScreen = "Settings"
 	}
 	//Home, Chats, Notifications, Profile
 	const homeH = `<svg fill="#ecececb3" width="30px" height="30px" viewBox="0 0 24 24" id="home-alt-1"
@@ -1690,7 +1691,7 @@ function show_social() {
 			</svg>`
 			})
 
-		}, 500)
+		}, 200)
 	})
 	//$("#main_popup_settings").fadeOut("fast", function () {
 	//	$("#evox_social").fadeIn("fast")
@@ -3176,7 +3177,7 @@ function return_to_options(where) {
 				// Change the id attribute to "secureline-username"
 				element.id = "secureline-username";
 			} else {
-				console.error('Element with id starting with "secureline-" not found');
+				//console.error('Element with id starting with "secureline-" not found');
 			}
 			$("#user-friend").fadeOut("fast", function () {
 				$("#friends").fadeIn("fast")
@@ -5279,14 +5280,14 @@ function cryptox(no) {
 function notifications_options() {
 	navigator("notifications_main")
 	console.log("Clicked!")
-	$("#main_settings").fadeOut("fast", function () {
+	$("#main_popup_settings").fadeOut("fast", function () {
 		$("#notifications_options").fadeIn("fast")
 	})
 }
 
 function notif_goback() {
 	$("#notifications_options").fadeOut("fast", function () {
-		$("#main_settings").fadeIn("fast")
+		$("#main_popup_settings").fadeIn("fast")
 	})
 }
 function getNShow(element) {
@@ -5976,7 +5977,7 @@ function scrollToTop(divId) {
 	if (div) {
 		div.scrollTop = 0;
 	} else {
-		console.error("Element with ID '" + divId + "' not found.");
+		//console.error("Element with ID '" + divId + "' not found.");
 	}
 }
 
@@ -7590,7 +7591,7 @@ function showSlineGrid() {
 		</svg>`
 			})
 
-		}, 500)
+		}, 200)
 	})
 
 
@@ -7720,4 +7721,45 @@ try {
 	document.timeline.targetFPS = 90;
 } catch (error) {
 	console.error(`FPS Setting Failed To Load. Error: ${error}`)
+}
+
+function rotateElement() {
+    // Get the element by its ID
+    const element = document.getElementById('sendSvg');
+
+    // Check if the element exists
+    if (element) {
+        // Get the current rotation angle
+        const currentRotationMatch = element.style.transform.match(/rotate\((\d+)deg\)/);
+
+        // Initialize current rotation to 0 if not set
+        let currentRotation = 0;
+        if (currentRotationMatch) {
+            currentRotation = parseInt(currentRotationMatch[1], 10);
+        }
+
+        // Increment the current rotation by 45 degrees
+        let newRotation = currentRotation + 410;
+
+        // Apply the new rotation to the element
+        element.style.transform = `rotate(${newRotation}deg)`;
+    }
+	setTimeout(function() {
+		if (element) {
+			// Get the current rotation angle
+			const currentRotationMatch = element.style.transform.match(/rotate\((\d+)deg\)/);
+	
+			// Initialize current rotation to 0 if not set
+			let currentRotation = 0;
+			if (currentRotationMatch) {
+				currentRotation = parseInt(currentRotationMatch[1], 10);
+			}
+	
+			// Increment the current rotation by 45 degrees
+			let newRotation = currentRotation - 410;
+	
+			// Apply the new rotation to the element
+			element.style.transform = `rotate(${newRotation}deg)`;
+		}
+	}, 900)
 }

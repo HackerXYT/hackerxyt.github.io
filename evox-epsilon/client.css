@@ -82,6 +82,9 @@ html {
   /* Slide the popup into view */
 }
 
+
+
+
 .nav-item {
   display: flex;
   flex-direction: row;
@@ -132,8 +135,7 @@ html {
 
 
 .nav-item.active i,
-.nav-item.active img {
-}
+.nav-item.active img {}
 
 .nav-item img.profile-icon {
   width: 45px;
@@ -249,7 +251,7 @@ body {
   overscroll-behavior: contain;
   font-size: medium;
   /* For older browsers */
-  
+
 }
 
 body {
@@ -538,7 +540,7 @@ img {
   /* scroll-behavior: smooth; */
   touch-action: auto;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.723);
   /* Semi-transparent black overlay */
   z-index: 998;
   box-sizing: border-box;
@@ -564,7 +566,7 @@ img {
 
     margin: auto;
     margin-top: 10px;
-    box-shadow: 0 0 40px 5px rgba(123, 73, 221, 0.25);
+    box-shadow: 0 0 40px 5px rgba(255, 52, 52, 0.188);
   }
 
   .parent-popup-container {
@@ -1854,41 +1856,47 @@ a {
 }
 
 .sline-actions {
-  overflow-y: auto;
-  max-height: 80%;
-  position: relative;
-  /* Make sure the container is positioned */
+  max-height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative; /* Ensure the container is positioned */
+  display: flex;
+  justify-content: center; /* Center children horizontally */
+  align-items: flex-start; /* Align children to the bottom */
 }
 
 .message-container {
+  top: -80px;
+  height: 750px;
+  max-height: 750px;
+  overflow: auto; /* or overflow-y: auto; */
   -webkit-user-select: text;
   -ms-user-select: text;
   user-select: text;
-
-  margin-bottom: 50px;
-  /* Adjust this value to create space for the input */
-  max-height: 73%;
-  overflow-y: auto;
+  width: 85%;
   display: flex;
   flex-direction: column;
   position: relative;
-  /* Make sure the container is positioned */
 }
+
+
+
 
 .bottom-actions {
   display: flex;
   flex-direction: row;
-  /*background-color: #000;*/
-  /*background: black;*/
-  height: 55px;
-  bottom: 0;
+  align-items: center;
+  justify-content: center;
   position: fixed;
-  left: 0;
-  width: 100%;
-  padding: 15px 12 0;
-  /* Add some padding to the bottom actions */
+  left: 50%; /* Center on X-axis */
+  transform: translateX(-50%); /* Offset by 50% of the element's width */
+  bottom: 17px; /* Position at the bottom with a 10px margin */
+  padding: 5px;
+  background-color: #202d35;
+  border-radius: 35px;
+  width: 78%;
   z-index: 1;
-  /* Ensure the input container appears above messages */
 }
 
 .svg-icon {
@@ -1902,55 +1910,85 @@ a {
 .message,
 .message-me {
   display: inline-flex;
-  /* Change to inline-flex */
   margin-top: 15px;
   margin-bottom: 15px;
-  background-color: #333;
+  background-color: #3e4649;
   color: #fff;
-  padding: 15px 30px;
+  padding: 15px 20px;
   font-size: 16px;
   border-radius: 52px;
   outline: none;
+  overflow-wrap: break-word;
   word-wrap: break-word;
+  word-break: break-all; /* Breaks words or URLs at any character to prevent overflow */
+  white-space: pre-wrap;
 }
 
 .message-me {
+  background-color: #0070d8;
   max-width: 50%;
   margin-top: 0;
   margin-left: auto;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 20px;
 }
 
 .message {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 0;
   margin-right: auto;
   max-width: 50%;
 }
 
 
 .apple-input-sl {
-  position: relative;
-  bottom: 10px;
-  background-color: #333;
+  font-family: "SF";
+  background-color: transparent;
   /* Your desired background color */
   border: none;
   color: #fff;
-  padding: 15px 30px;
-  padding-left: 20px;
-  /*Adjust this value to add space on the left */
+  /*padding: 15px 30px;
+  Adjust this value to add space on the left */
+  padding-left: 10px;
   font-size: 16px;
   border-radius: 25px;
   cursor: pointer;
   text-decoration: none;
   transition: background-color 0.3s ease;
   margin: 4px;
+  margin-left: 0;
   width: 85%;
   outline: none;
 }
 
 .send_message_btn {
-  background-color: #302585;
+  flex-shrink: 0;
+  object-fit: cover;
+  margin-right: 3px;
+  background-color: #0071d9;
   border-radius: 50%;
-  padding: 10px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transition: background-color 0.3s ease;
+  overflow: hidden; /* Ensure the SVG doesn't overflow the circle */
+}
+
+.send_message_btn svg {
+  width: 50px;
+  height: 50px;
+  object-fit: contain; /* Ensures the SVG maintains its aspect ratio */
+  /* Adjust as needed to fit within the circle */
+  height: 50%;
+  /* Adjust as needed to fit within the circle */
+  /* Change the color of the SVG icon if necessary */
+  transition: transform 0.5s ease-in-out;
 }
 
 /*@media only screen and (max-width: 768px) {
@@ -1963,6 +2001,18 @@ a {
   display: flex;
   align-items: center;
 }
+
+/*.user-container-sl::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px; 
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  pointer-events: none;
+}*/
+
 
 .user-circle-sl {
 
@@ -2812,9 +2862,9 @@ a {
     border-top-right-radius: 35px;
   }*/
 
-  .bottom-actions {
+  /*.bottom-actions {
     padding: 10px 0 15px;
-  }
+  }*/
 
   .foryou {
     height: 290px;
@@ -2838,7 +2888,6 @@ a {
 .truncated-text {
   max-width: 310px;
   /* Adjust this width as needed */
-  overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -3594,4 +3643,134 @@ div .Home {
   overflow: hidden;
   touch-action: manipulation;
   overflow: hidden;
+}
+
+@media only screen and (min-width: 769px) {
+
+  /* devices with a minimum width of 769px or more (assumed to be PCs) */
+  .navbar {
+    position: fixed;
+    left: 35px;
+    height: 90%;
+    border-radius: 20px;
+    width: 100px;
+    background-color: #24201e;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px 0;
+    box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    transform: translateX(-150%);
+    transition: transform 0.7s ease, opacity 0.5s ease, visibility 0.5s;
+    z-index: 998;
+  }
+
+  .navbar.active {
+    opacity: 1;
+    /* Show the popup */
+    visibility: visible;
+    /* Show the popup */
+    transform: translateX(-50%);
+    /* Slide the popup into view */
+  }
+
+  .adjustH3 {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+  }
+
+  .apple-button-withicon {
+    width: 50%;
+  }
+
+  #evox_social {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #add_friends {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .secureline {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #private_chat {
+    width: 769px;
+  }
+
+  .adjustCont {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #pswd_secure {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #ipv4-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .truncated-text {
+    width: 100%;
+  }
+
+  #cryptox_info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #notifications_options {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+}
+.centeredItemsGlobal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute; /* Position relative to the parent container */
+  bottom: 0; /* Align it to the bottom of the parent */
+  left: 50%; /* Center horizontally in the parent */
+  transform: translateX(-50%); /* Offset by 50% of the element's width */
+  width: 100%; /* Make it span the width of the parent */
+}
+
+#private_chat {
+  overflow-y: hidden;
+}
+
+
+
+#message_input::placeholder {
+  color: #80878f;
 }

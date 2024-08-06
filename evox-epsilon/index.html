@@ -865,7 +865,7 @@
     </div>
 
     <div id="notifications" class="slideL-R" style="opacity: 0;">
-        <h3>Notifications</h3>
+        <h3 class="adjustH3">Notifications</h3>
         <div onclick="notif_options()" id="more_options_notif"
             style="right:50px;top:50px;position: absolute;display: none;"
             style="position: fixed; display: flex; align-items: center; justify-content: center; cursor: pointer; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
@@ -1127,7 +1127,7 @@
 
 
         <div id="chats" class="hide">
-            <h3>Messages</h3>
+            <h3 class="adjustH3">Messages</h3>
             <div onclick="getFriends('disablep')" style="right:50px;top:50px;position: absolute;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -1145,20 +1145,22 @@
     </div>
 
     </div>
-    <div id="private_chat" class="popupsl">
-        <div class="user-container-sl">
-            <a onclick="return_main_chats()"><svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
-                    viewBox="0 0 24 24" fill="none">
-                    <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#fff" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                </svg></a>
 
-            <div id="sline_prive" class="user-circle-sl">
-                <img id="secureline-img-chat" src="./t50-img.png" alt="User Image">
-                <p id="chat-username">SecureLine</p>
+    <div class="adjustCont">
+        <div id="private_chat" class="popupsl">
+            <div class="user-container-sl">
+                <a onclick="return_main_chats()"><svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                        viewBox="0 0 24 24" fill="none">
+                        <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#fff" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg></a>
+
+                <div id="sline_prive" class="user-circle-sl">
+                    <img id="secureline-img-chat" src="./t50-img.png" alt="User Image">
+                    <p id="chat-username">SecureLine</p>
+                </div>
             </div>
-        </div>
-        <div onclick="options()" id="info" style="position: fixed;
+            <div onclick="options()" id="info" style="position: fixed;
         top: 47px;
         right: 20px;
         width: 30px;
@@ -1169,22 +1171,22 @@
         justify-content: center;
         cursor: pointer;
         text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
-            <!--onclick="fix()" id="stuck"-->
-            <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
-            <!-- You can customize the icon or text inside the button -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
-                <path
-                    d="M12 17.75C12.4142 17.75 12.75 17.4142 12.75 17V11C12.75 10.5858 12.4142 10.25 12 10.25C11.5858 10.25 11.25 10.5858 11.25 11V17C11.25 17.4142 11.5858 17.75 12 17.75Z"
-                    fill="#fff" />
-                <path
-                    d="M12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z"
-                    fill="#fff" />
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75Z"
-                    fill="#fff" />
-            </svg>
-        </div>
-        <div id="info" style="position: fixed;
+                <!--onclick="fix()" id="stuck"-->
+                <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+                <!-- You can customize the icon or text inside the button -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M12 17.75C12.4142 17.75 12.75 17.4142 12.75 17V11C12.75 10.5858 12.4142 10.25 12 10.25C11.5858 10.25 11.25 10.5858 11.25 11V17C11.25 17.4142 11.5858 17.75 12 17.75Z"
+                        fill="#fff" />
+                    <path
+                        d="M12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z"
+                        fill="#fff" />
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75Z"
+                        fill="#fff" />
+                </svg>
+            </div>
+            <div id="info" style="position: fixed;
         top: 47px;
         right: 50px;
         width: 30px;
@@ -1195,49 +1197,34 @@
         justify-content: center;
         cursor: pointer;
         text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
-            <!--onclick="fix()" id="stuck"-->
-            <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
-            <!-- You can customize the icon or text inside the button -->
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px"
-                height="22px" viewBox="0 0 15 15" version="1.1">
-                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <g id="Dribbble-Light-Preview" transform="translate(-103.000000, -7321.000000)" fill="#fff">
-                        <g id="icons" transform="translate(56.000000, 160.000000)">
-                            <path
-                                d="M61.7302966,7173.99596 C61.2672966,7175.40296 59.4532966,7176.10496 58.1572966,7175.98796 C56.3872966,7175.82796 54.4612966,7174.88896 52.9992966,7173.85496 C50.8502966,7172.33496 48.8372966,7169.98396 47.6642966,7167.48896 C46.8352966,7165.72596 46.6492966,7163.55796 47.8822966,7161.95096 C48.3382966,7161.35696 48.8312966,7161.03996 49.5722966,7161.00296 C50.6002966,7160.95296 50.7442966,7161.54096 51.0972966,7162.45696 C51.3602966,7163.14196 51.7112966,7163.84096 51.9072966,7164.55096 C52.2742966,7165.87596 50.9912966,7165.93096 50.8292966,7167.01396 C50.7282966,7167.69696 51.5562966,7168.61296 51.9302966,7169.09996 C52.6632966,7170.05396 53.5442966,7170.87696 54.5382966,7171.50296 C55.1072966,7171.86196 56.0262966,7172.50896 56.6782966,7172.15196 C57.6822966,7171.60196 57.5872966,7169.90896 58.9912966,7170.48196 C59.7182966,7170.77796 60.4222966,7171.20496 61.1162966,7171.57896 C62.1892966,7172.15596 62.1392966,7172.75396 61.7302966,7173.99596 C61.4242966,7174.92396 62.0362966,7173.06796 61.7302966,7173.99596"
-                                id="call-[#192]">
+                <!--onclick="fix()" id="stuck"-->
+                <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+                <!-- You can customize the icon or text inside the button -->
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px"
+                    height="22px" viewBox="0 0 15 15" version="1.1">
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="Dribbble-Light-Preview" transform="translate(-103.000000, -7321.000000)" fill="#fff">
+                            <g id="icons" transform="translate(56.000000, 160.000000)">
+                                <path
+                                    d="M61.7302966,7173.99596 C61.2672966,7175.40296 59.4532966,7176.10496 58.1572966,7175.98796 C56.3872966,7175.82796 54.4612966,7174.88896 52.9992966,7173.85496 C50.8502966,7172.33496 48.8372966,7169.98396 47.6642966,7167.48896 C46.8352966,7165.72596 46.6492966,7163.55796 47.8822966,7161.95096 C48.3382966,7161.35696 48.8312966,7161.03996 49.5722966,7161.00296 C50.6002966,7160.95296 50.7442966,7161.54096 51.0972966,7162.45696 C51.3602966,7163.14196 51.7112966,7163.84096 51.9072966,7164.55096 C52.2742966,7165.87596 50.9912966,7165.93096 50.8292966,7167.01396 C50.7282966,7167.69696 51.5562966,7168.61296 51.9302966,7169.09996 C52.6632966,7170.05396 53.5442966,7170.87696 54.5382966,7171.50296 C55.1072966,7171.86196 56.0262966,7172.50896 56.6782966,7172.15196 C57.6822966,7171.60196 57.5872966,7169.90896 58.9912966,7170.48196 C59.7182966,7170.77796 60.4222966,7171.20496 61.1162966,7171.57896 C62.1892966,7172.15596 62.1392966,7172.75396 61.7302966,7173.99596 C61.4242966,7174.92396 62.0362966,7173.06796 61.7302966,7173.99596"
+                                    id="call-[#192]">
 
-                            </path>
+                                </path>
+                            </g>
                         </g>
                     </g>
-                </g>
-            </svg>
-        </div>
-
-        <div id="actions" class="sline-actions">
-            <div id="messages-container" class="message-container">
-                <div class="message">What's up papostol</div><!--message sent by other user-->
-                <div class="message-me">What's up holder</div><!--message sent by me-->
-                <div class="message-me">New Evox App Here!</div>
-
-                <div class="message">Yeah, i see! Pretty Good!</div>
-                <div class="message-me">Yes! I Added new features for more security</div>
-
-                <div class="message">That's great, i love that encoding thing</div>
-                <div class="message-me">Me too! It's perfect!</div>
-                <div class="message-me">Are you ready?</div>
-                <div class="message">Yes! Let's see what's coming next from Evox®!</div>
-                <div class="message-me">Many new services! That's the only thing i'm going to tell you. The rest will
-                    remain for you to see.</div>
-                <div class="message">Yes! Let's see what's coming next from Evox®!</div>
-                <div class="message">Yes! Let's see what's coming next from Evox®!</div>
-                <div class="message">Yes! Let's see what's coming next from Evox®!</div>
-                <div class="message">Yes! Let's see what's coming next from Evox®!</div>
-
+                </svg>
             </div>
-            <div class="bottom-actions">
-                <input id="message_input" placeholder="Enter your message" autocomplete="off" class="apple-input-sl">
-                <!--<a onclick="attach_file_click()">
+
+            <div id="actions" class="sline-actions centeredItemsGlobal" style="overflow: auto">
+                <div id="messages-container" class="message-container">
+                    <div class="message">What's up papostol</div><!--message sent by other user-->
+                    <div class="message-me">What's up holder</div><!--message sent by me-->
+
+                </div>
+                
+                
+                <!--LOOK UP <a onclick="attach_file_click()">
                     <div id="attFile" style="position: fixed; bottom: 2%; right: 14%;">
                         <svg width="35px" height="35px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                             fill="none">
@@ -1247,22 +1234,32 @@
                         </svg>
                     </div>
                 </a>-->
-                <a class="send_message_btn" onclick="send_message()">
-                    <div style="position: relative;">
-                        <svg width="35px" height="35px" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z"
-                                stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </div>
-                </a>
             </div>
+            <div class="centeredItemsGlobal">
+                <div class="bottom-actions">
+                    <a href="#" style="width: 50px;height:50px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24" fill="none">
+                            <path opacity="0.93" d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.37 14.35L14.15 16.57C13.61 17.11 12.91 17.37 12.21 17.37C11.51 17.37 10.8 17.1 10.27 16.57C9.75 16.05 9.46 15.36 9.46 14.63C9.46 13.9 9.75 13.2 10.27 12.69L11.68 11.28C11.97 10.99 12.45 10.99 12.74 11.28C13.03 11.57 13.03 12.05 12.74 12.34L11.33 13.75C11.09 13.99 10.96 14.3 10.96 14.63C10.96 14.96 11.09 15.28 11.33 15.51C11.82 16 12.61 16 13.1 15.51L15.32 13.29C16.59 12.02 16.59 9.96 15.32 8.69C14.05 7.42 11.99 7.42 10.72 8.69L8.3 11.11C7.79 11.62 7.51 12.29 7.51 13C7.51 13.71 7.79 14.39 8.3 14.89C8.59 15.18 8.59 15.66 8.3 15.95C8.01 16.24 7.53 16.24 7.24 15.95C6.44 15.18 6 14.13 6 13.01C6 11.89 6.43 10.84 7.22 10.05L9.64 7.63C11.49 5.78 14.51 5.78 16.36 7.63C18.22 9.48 18.22 12.5 16.37 14.35Z" fill="#fff"/>
+                            </svg>
+                    </a>
+                    <input id="message_input" placeholder="Type something..." autocomplete="off"
+                        class="apple-input-sl">
+                    <!--attach goes here-->
+                    <a class="send_message_btn" onclick="send_message()">
+                            <svg id="sendSvg" width="35px" height="35px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z"
+                                    stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                    </a>
+                </div>
+            </div>
+
+
+
+
         </div>
-
-
-
-
     </div>
     <div id="options_box" class="boxin" style="display: none;">
 
@@ -1842,6 +1839,7 @@
 
                 <!-- Content of the popup -->
                 <h2 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Settings</h2>
+                
                 <div id="user-info" class="user-info">
                     <div class="user-circle">
                         <img id="usr-img" src="reloading-pfp.gif" alt="User Image">
@@ -1878,6 +1876,8 @@
 
                 </div>
 
+                <div class="adjustCont">
+
                 <h3 style="margin-bottom: 7px;">App Overview</h3>
                 <div style="display:none" class="app-manage">
                     <img src="EvoxNotes.png" alt="Image" class="app-small">Notes:&nbsp;
@@ -1909,6 +1909,7 @@
                 </div>
 
                 <h3 style="margin-bottom: 4px;">Account</h3>
+                
                 <a onclick="pswd_secure()" href="#" class="apple-button">Authentication & Security<svg
                         xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path
@@ -1945,6 +1946,7 @@
                 </svg></a>-->
 
 
+                
                 <a id="evox_store" onclick="store()" href="#" class="apple-button-withicon"><img
                         style="width: auto; height: 30px;margin-right: 10px;border-radius: 7px;"
                         src="./icons/apps.svg">App
@@ -1964,6 +1966,7 @@
                             d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                             fill="#666"></path>
                     </svg></a>
+                </div>
 
                 <!--<h3 style="margin-bottom: 4px;">Client</h3>
             <a href="#" onclick="logoff()" style="color:#eb2424" class="apple-button">Log Out <span><svg id="logoutsvg"
@@ -2065,6 +2068,366 @@
 
             </div>
 
+            <div id="notifications_options" style="display:none">
+
+                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Notifications</h3>
+                <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
+                    Florida</h5><!--& Gateway-->
+                <p style="margin: 6px" class="user-email">FLORIDA (Push Notifications)</p>
+                <a onclick="getNShow(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="evox-logo-apple.png">
+                    Gateway<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                        fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg>
+                </a>
+                <a onclick="getNShow(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="../tasco/tasco-app.png">
+                    Tasco
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+                <a onclick="getNShow(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="./secureline/sline.png">
+                    Secureline
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+                <a onclick="getNShow(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="../notifications_assets/Cryptox.png">
+                    Cryptox
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+                <p style="margin: 6px" class="user-email"><b>Florida</b> notifications allow you to get notified about
+                    Evox Updates even when you are not using the Gateway.
+                </p>
+    
+    
+                <!--Gateway notifications-->
+                <!--<p style="margin: 6px;margin-top: 12px" class="user-email">GATEWAY</p>
+                <a onclick="getNShowNexus(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="evox-logo-apple.png">
+                    Gateway<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                        fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg>
+                </a>
+                <a onclick="getNShowNexus(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="../tasco/tasco-app.png">
+                    Tasco
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+                <a onclick="getNShowNexus(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="./secureline/sline.png">
+                    Secureline
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+                <a onclick="getNShowNexus(this)" href="#" class="apple-button-withicon"><img
+                        style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                        src="../notifications_assets/Cryptox.png">
+                    Cryptox
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#666" />
+                    </svg></a>
+    
+                <div class="transparent-placeholder" style="height: 200px"></div>-->
+                <p style="margin: 6px;margin-top: 12px" class="user-email">FLORIDA OPTIONS</p>
+                <!--loadflrdinf() --><a href="#" onclick="registerFlorida()" class="apple-button">Get Florida Info<svg
+                        id="flrd_svg" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
+                        width="20px" height="20px">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
+                            <animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
+                                repeatCount="indefinite" />
+                            <animate attributeName="stroke-dashoffset" values="0, -200;-200, -900" dur="2s"
+                                repeatCount="indefinite" />
+                        </circle>
+                    </svg></a>
+    
+                <a href="#" id="hide_after_clear" onclick="clearflrd()" class="apple-button">Clear Florida Database
+                    ⚠️<svg id="flrdclear_svg" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
+                        width="20px" height="20px">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
+                            <animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
+                                repeatCount="indefinite" />
+                            <animate attributeName="stroke-dashoffset" values="0, -200;-200, -900" dur="2s"
+                                repeatCount="indefinite" />
+                        </circle>
+                    </svg></a>
+                <p style="margin: 6px;margin-top: 12px">Status: <span id="showinternalLogs">Florida Disabled By
+                        Evox</span></p>
+                <a href="#" style="display: none;" id="restart_after_flrdclear" onclick="restart()"
+                    class="apple-button">Restart<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                        viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M4.39502 12.0014C4.39544 12.4156 4.73156 12.751 5.14577 12.7506C5.55998 12.7502 5.89544 12.4141 5.89502 11.9999L4.39502 12.0014ZM6.28902 8.1116L6.91916 8.51834L6.91952 8.51777L6.28902 8.1116ZM9.33502 5.5336L9.0396 4.84424L9.03866 4.84464L9.33502 5.5336ZM13.256 5.1336L13.4085 4.39927L13.4062 4.39878L13.256 5.1336ZM16.73 7.0506L16.1901 7.57114L16.1907 7.57175L16.73 7.0506ZM17.7142 10.2078C17.8286 10.6059 18.2441 10.8358 18.6422 10.7214C19.0403 10.607 19.2703 10.1915 19.1558 9.79342L17.7142 10.2078ZM17.7091 9.81196C17.6049 10.2129 17.8455 10.6223 18.2464 10.7265C18.6473 10.8307 19.0567 10.5901 19.1609 10.1892L17.7091 9.81196ZM19.8709 7.45725C19.9751 7.05635 19.7346 6.6469 19.3337 6.54272C18.9328 6.43853 18.5233 6.67906 18.4191 7.07996L19.8709 7.45725ZM18.2353 10.7235C18.6345 10.8338 19.0476 10.5996 19.1579 10.2004C19.2683 9.80111 19.034 9.38802 18.6348 9.2777L18.2353 10.7235ZM15.9858 8.5457C15.5865 8.43537 15.1734 8.66959 15.0631 9.06884C14.9528 9.46809 15.187 9.88119 15.5863 9.99151L15.9858 8.5457ZM19.895 11.9999C19.8946 11.5856 19.5585 11.2502 19.1443 11.2506C18.7301 11.251 18.3946 11.5871 18.395 12.0014L19.895 11.9999ZM18.001 15.8896L17.3709 15.4829L17.3705 15.4834L18.001 15.8896ZM14.955 18.4676L15.2505 19.157L15.2514 19.1566L14.955 18.4676ZM11.034 18.8676L10.8815 19.6019L10.8839 19.6024L11.034 18.8676ZM7.56002 16.9506L8.09997 16.4301L8.09938 16.4295L7.56002 16.9506ZM6.57584 13.7934C6.46141 13.3953 6.04593 13.1654 5.64784 13.2798C5.24974 13.3942 5.01978 13.8097 5.13421 14.2078L6.57584 13.7934ZM6.58091 14.1892C6.6851 13.7884 6.44457 13.3789 6.04367 13.2747C5.64277 13.1705 5.23332 13.4111 5.12914 13.812L6.58091 14.1892ZM4.41914 16.544C4.31495 16.9449 4.55548 17.3543 4.95638 17.4585C5.35727 17.5627 5.76672 17.3221 5.87091 16.9212L4.41914 16.544ZM6.05478 13.2777C5.65553 13.1674 5.24244 13.4016 5.13212 13.8008C5.02179 14.2001 5.25601 14.6132 5.65526 14.7235L6.05478 13.2777ZM8.30426 15.4555C8.70351 15.5658 9.11661 15.3316 9.22693 14.9324C9.33726 14.5331 9.10304 14.12 8.70378 14.0097L8.30426 15.4555ZM5.89502 11.9999C5.89379 10.7649 6.24943 9.55591 6.91916 8.51834L5.65889 7.70487C4.83239 8.98532 4.3935 10.4773 4.39502 12.0014L5.89502 11.9999ZM6.91952 8.51777C7.57513 7.50005 8.51931 6.70094 9.63139 6.22256L9.03866 4.84464C7.65253 5.4409 6.47568 6.43693 5.65852 7.70544L6.91952 8.51777ZM9.63045 6.22297C10.7258 5.75356 11.9383 5.62986 13.1059 5.86842L13.4062 4.39878C11.9392 4.09906 10.4158 4.25448 9.0396 4.84424L9.63045 6.22297ZM13.1035 5.86793C14.2803 6.11232 15.3559 6.7059 16.1901 7.57114L17.27 6.53006C16.2264 5.44761 14.8807 4.70502 13.4085 4.39927L13.1035 5.86793ZM16.1907 7.57175C16.9065 8.31258 17.4296 9.21772 17.7142 10.2078L19.1558 9.79342C18.8035 8.5675 18.1557 7.44675 17.2694 6.52945L16.1907 7.57175ZM19.1609 10.1892L19.8709 7.45725L18.4191 7.07996L17.7091 9.81196L19.1609 10.1892ZM18.6348 9.2777L15.9858 8.5457L15.5863 9.99151L18.2353 10.7235L18.6348 9.2777ZM18.395 12.0014C18.3963 13.2363 18.0406 14.4453 17.3709 15.4829L18.6312 16.2963C19.4577 15.0159 19.8965 13.5239 19.895 11.9999L18.395 12.0014ZM17.3705 15.4834C16.7149 16.5012 15.7707 17.3003 14.6587 17.7786L15.2514 19.1566C16.6375 18.5603 17.8144 17.5643 18.6315 16.2958L17.3705 15.4834ZM14.6596 17.7782C13.5643 18.2476 12.3517 18.3713 11.1842 18.1328L10.8839 19.6024C12.3508 19.9021 13.8743 19.7467 15.2505 19.157L14.6596 17.7782ZM11.1865 18.1333C10.0098 17.8889 8.93411 17.2953 8.09997 16.4301L7.02008 17.4711C8.06363 18.5536 9.40936 19.2962 10.8815 19.6019L11.1865 18.1333ZM8.09938 16.4295C7.38355 15.6886 6.86042 14.7835 6.57584 13.7934L5.13421 14.2078C5.48658 15.4337 6.13433 16.5545 7.02067 17.4718L8.09938 16.4295ZM5.12914 13.812L4.41914 16.544L5.87091 16.9212L6.58091 14.1892L5.12914 13.812ZM5.65526 14.7235L8.30426 15.4555L8.70378 14.0097L6.05478 13.2777L5.65526 14.7235Z"
+                            fill="#fff" />
+                    </svg></a>
+    
+                <div class="transparent-placeholder"></div>
+    
+    
+    
+            </div>
+            <div id="cryptox-florida" style="display:none;overflow: auto;" class="adjustCont">
+    
+                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Cryptox Notifications</h3>
+                <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
+                    Florida</h5>
+                <p style="margin: 6px" class="user-email">OPERATIONS</p>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Key & IV Refresh
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Cryptox Activation<label
+                        style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" type="checkbox" checked="false">
+                        <span></span>
+                    </label></div>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Cryptox Deactivation<label
+                        style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" type="checkbox" checked="false">
+                        <span></span>
+                    </label></div>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Cryptox Recommendations<label
+                        style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" type="checkbox" checked="false">
+                        <span></span>
+                    </label></div>
+    
+                <p style="margin: 6px" class="user-email">Customize your <b>Cryptox notifications</b> for when you're
+                    offline, tailoring exactly what updates you want to receive.<br><br><i>Note that this is a preview
+                        and changes will not be saved in the server.</i>
+                </p>
+                <div class="transparent-placeholder"></div>
+    
+    
+    
+            </div>
+            <div id="secureline-florida" style="display:none;overflow: auto;" class="adjustCont">
+    
+                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Secureline Notifications</h3>
+                <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
+                    Florida</h5>
+                <p style="margin: 6px" class="user-email">CHATS</p>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Chat Creation
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Chat Wipe<label
+                        style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" type="checkbox" checked="false">
+                        <span></span>
+                    </label></div>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">New Message<label
+                        style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" type="checkbox" checked="false">
+                        <span></span>
+                    </label></div>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Message Removal<label
+                        style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" type="checkbox" checked="false">
+                        <span></span>
+                    </label></div>
+    
+                <p style="margin: 6px" class="user-email">Customize your <b>Secureline notifications</b> for when you're
+                    offline, tailoring exactly what updates you want to receive.<br><br><i>Note that this is a preview
+                        and changes will not be saved in the server.</i>
+                </p>
+                <div class="transparent-placeholder"></div>
+    
+    
+    
+            </div>
+            <div id="tasco-florida" style="display:none;overflow: auto;" class="adjustCont">
+    
+                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Tasco Notifications</h3>
+                <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
+                    Florida</h5>
+                <p style="margin: 6px" class="user-email">TASKS</p>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Personalized task completion
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Scheduled Tasks Reminder<label
+                        style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" type="checkbox" checked="false">
+                        <span></span>
+                    </label></div>
+                <p style="margin: 6px" class="user-email">QUICK NOTES</p>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Quick note creation
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Quick note deletion
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <p style="margin: 6px" class="user-email">DEBTS</p>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Inactive Debt Reminder
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="" style="height: 50%" class="apple-button notif">Debt Deadline Reminder
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications()" type="checkbox" checked="false">
+                        <span></span>
+                    </label>
+                </div>
+    
+                <p style="margin: 6px" class="user-email">Customize your <b>Tasco notifications</b> for when you're
+                    offline, tailoring exactly what updates you want to receive.<br><br><i>Note that this is a preview
+                        and changes will not be saved in the server.</i>
+                </p>
+                <div class="transparent-placeholder"></div>
+    
+    
+    
+            </div>
+            <div id="gateway-florida" style="display:none;overflow: auto;" class="adjustCont">
+    
+                <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Gateway Notifications</h3>
+                <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
+                    Florida</h5>
+                <p style="margin: 6px" class="user-email">ACCOUNT CHANGES</p>
+                <div href="#" id="login_notifs" style="height: 50%" class="apple-button notif">Login to account
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications('1', this)" id="p1" type="checkbox" checked>
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="username_change_notifs" style="height: 50%" class="apple-button notif">Username
+                    modifications<label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications('2', this)" id="p2" type="checkbox" checked>
+                        <span></span>
+                    </label></div>
+                <div href="#" id="email_change_notifs" style="height: 50%" class="apple-button notif">Email
+                    modifications<label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications('3', this)" id="p3" type="checkbox" checked>
+                        <span></span>
+                    </label></div>
+                <div href="#" id="2FA_change_notifs" style="height: 50%" class="apple-button notif">2FA modifications
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications('4', this)" id="p4" type="checkbox" checked>
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="IP_change_notifs" style="height: 50%" class="apple-button notif">IP modifications
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications('5', this)" id="p5" type="checkbox" checked>
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">Password
+                    modifications
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications('6', this)" id="p6" type="checkbox" checked>
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="pfp_notifs" style="height: 50%" class="apple-button notif">Profile picture
+                    modifications
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications('14', this)" id="p14" type="checkbox" checked>
+                        <span></span>
+                    </label>
+                </div>
+                <p style="margin: 6px" class="user-email">SOCIAL</p>
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New friend
+                    requests
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications('7', this)" id="p7" type="checkbox" checked>
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New friends
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications('8', this)" id="p8" type="checkbox" checked>
+                        <span></span>
+                    </label>
+                </div>
+    
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">Friend's online
+                    status
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications('9', this)" id="p9" type="checkbox" checked>
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New Evox user
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications('10', this)" id="p10" type="checkbox" checked>
+                        <span></span>
+                    </label>
+                </div>
+                <p style="margin: 6px" class="user-email">EVOX</p>
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New app
+                    purchase
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications('11', this)" id="p11" type="checkbox" checked>
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">Weather in your
+                    area
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications('12', this)" id="p12" type="checkbox">
+                        <span></span>
+                    </label>
+                </div>
+                <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New app release
+                    <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
+                        <input onclick="optimizeNotifications('13', this)" id="p13" type="checkbox" checked>
+                        <span></span>
+                    </label>
+                </div>
+    
+                <p style="margin: 6px" class="user-email">Customize your <b>Gateway notifications</b> for when you're
+                    offline, tailoring exactly what updates you want to receive.
+                </p>
+                <div class="transparent-placeholder"></div>
+    
+    
+    
+            </div>
+
         </div>
     </div>
     <div id="myAcc" class="slideL-R">
@@ -2074,7 +2437,7 @@
                 <source src="" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <h3 style="margin-top: 10px;margin-bottom: 18.72px;">Your Profile</h3>
+            <h3 style="margin-top: 10px;margin-bottom: 18.72px;" class="adjustH3">Your Profile</h3>
             <div style="margin: 0 auto;
         position: relative;width: 90px;height:90px;" class="user-circle">
 
@@ -2142,7 +2505,7 @@
                             d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                             fill="#666" />
                     </svg></a>
-                    
+
 
 
 
@@ -2346,365 +2709,7 @@
             <!--Show added friends-->
 
         </div>
-        <div id="notifications_options" style="display:none">
-
-            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Notifications</h3>
-            <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
-                Florida</h5><!--& Gateway-->
-            <p style="margin: 6px" class="user-email">FLORIDA (Push Notifications)</p>
-            <a onclick="getNShow(this)" href="#" class="apple-button-withicon"><img
-                    style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
-                    src="evox-logo-apple.png">
-                Gateway<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                    fill="none">
-                    <path
-                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                        fill="#666" />
-                </svg>
-            </a>
-            <a onclick="getNShow(this)" href="#" class="apple-button-withicon"><img
-                    style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
-                    src="../tasco/tasco-app.png">
-                Tasco
-                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                        fill="#666" />
-                </svg></a>
-            <a onclick="getNShow(this)" href="#" class="apple-button-withicon"><img
-                    style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
-                    src="./secureline/sline.png">
-                Secureline
-                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                        fill="#666" />
-                </svg></a>
-            <a onclick="getNShow(this)" href="#" class="apple-button-withicon"><img
-                    style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
-                    src="../notifications_assets/Cryptox.png">
-                Cryptox
-                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                        fill="#666" />
-                </svg></a>
-            <p style="margin: 6px" class="user-email"><b>Florida</b> notifications allow you to get notified about
-                Evox Updates even when you are not using the Gateway.
-            </p>
-
-
-            <!--Gateway notifications-->
-            <!--<p style="margin: 6px;margin-top: 12px" class="user-email">GATEWAY</p>
-            <a onclick="getNShowNexus(this)" href="#" class="apple-button-withicon"><img
-                    style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
-                    src="evox-logo-apple.png">
-                Gateway<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                    fill="none">
-                    <path
-                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                        fill="#666" />
-                </svg>
-            </a>
-            <a onclick="getNShowNexus(this)" href="#" class="apple-button-withicon"><img
-                    style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
-                    src="../tasco/tasco-app.png">
-                Tasco
-                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                        fill="#666" />
-                </svg></a>
-            <a onclick="getNShowNexus(this)" href="#" class="apple-button-withicon"><img
-                    style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
-                    src="./secureline/sline.png">
-                Secureline
-                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                        fill="#666" />
-                </svg></a>
-            <a onclick="getNShowNexus(this)" href="#" class="apple-button-withicon"><img
-                    style="width: auto; height: 40px;margin-right: 10px;border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
-                    src="../notifications_assets/Cryptox.png">
-                Cryptox
-                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                        fill="#666" />
-                </svg></a>
-
-            <div class="transparent-placeholder" style="height: 200px"></div>-->
-            <p style="margin: 6px;margin-top: 12px" class="user-email">FLORIDA OPTIONS</p>
-            <!--loadflrdinf() --><a href="#" onclick="registerFlorida()" class="apple-button">Get Florida Info<svg
-                    id="flrd_svg" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
-                    width="20px" height="20px">
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
-                        <animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
-                            repeatCount="indefinite" />
-                        <animate attributeName="stroke-dashoffset" values="0, -200;-200, -900" dur="2s"
-                            repeatCount="indefinite" />
-                    </circle>
-                </svg></a>
-
-            <a href="#" id="hide_after_clear" onclick="clearflrd()" class="apple-button">Clear Florida Database
-                ⚠️<svg id="flrdclear_svg" style="display:none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
-                    width="20px" height="20px">
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
-                        <animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
-                            repeatCount="indefinite" />
-                        <animate attributeName="stroke-dashoffset" values="0, -200;-200, -900" dur="2s"
-                            repeatCount="indefinite" />
-                    </circle>
-                </svg></a>
-            <p style="margin: 6px;margin-top: 12px">Status: <span id="showinternalLogs">Florida Disabled By
-                    Evox</span></p>
-            <a href="#" style="display: none;" id="restart_after_flrdclear" onclick="restart()"
-                class="apple-button">Restart<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
-                    viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M4.39502 12.0014C4.39544 12.4156 4.73156 12.751 5.14577 12.7506C5.55998 12.7502 5.89544 12.4141 5.89502 11.9999L4.39502 12.0014ZM6.28902 8.1116L6.91916 8.51834L6.91952 8.51777L6.28902 8.1116ZM9.33502 5.5336L9.0396 4.84424L9.03866 4.84464L9.33502 5.5336ZM13.256 5.1336L13.4085 4.39927L13.4062 4.39878L13.256 5.1336ZM16.73 7.0506L16.1901 7.57114L16.1907 7.57175L16.73 7.0506ZM17.7142 10.2078C17.8286 10.6059 18.2441 10.8358 18.6422 10.7214C19.0403 10.607 19.2703 10.1915 19.1558 9.79342L17.7142 10.2078ZM17.7091 9.81196C17.6049 10.2129 17.8455 10.6223 18.2464 10.7265C18.6473 10.8307 19.0567 10.5901 19.1609 10.1892L17.7091 9.81196ZM19.8709 7.45725C19.9751 7.05635 19.7346 6.6469 19.3337 6.54272C18.9328 6.43853 18.5233 6.67906 18.4191 7.07996L19.8709 7.45725ZM18.2353 10.7235C18.6345 10.8338 19.0476 10.5996 19.1579 10.2004C19.2683 9.80111 19.034 9.38802 18.6348 9.2777L18.2353 10.7235ZM15.9858 8.5457C15.5865 8.43537 15.1734 8.66959 15.0631 9.06884C14.9528 9.46809 15.187 9.88119 15.5863 9.99151L15.9858 8.5457ZM19.895 11.9999C19.8946 11.5856 19.5585 11.2502 19.1443 11.2506C18.7301 11.251 18.3946 11.5871 18.395 12.0014L19.895 11.9999ZM18.001 15.8896L17.3709 15.4829L17.3705 15.4834L18.001 15.8896ZM14.955 18.4676L15.2505 19.157L15.2514 19.1566L14.955 18.4676ZM11.034 18.8676L10.8815 19.6019L10.8839 19.6024L11.034 18.8676ZM7.56002 16.9506L8.09997 16.4301L8.09938 16.4295L7.56002 16.9506ZM6.57584 13.7934C6.46141 13.3953 6.04593 13.1654 5.64784 13.2798C5.24974 13.3942 5.01978 13.8097 5.13421 14.2078L6.57584 13.7934ZM6.58091 14.1892C6.6851 13.7884 6.44457 13.3789 6.04367 13.2747C5.64277 13.1705 5.23332 13.4111 5.12914 13.812L6.58091 14.1892ZM4.41914 16.544C4.31495 16.9449 4.55548 17.3543 4.95638 17.4585C5.35727 17.5627 5.76672 17.3221 5.87091 16.9212L4.41914 16.544ZM6.05478 13.2777C5.65553 13.1674 5.24244 13.4016 5.13212 13.8008C5.02179 14.2001 5.25601 14.6132 5.65526 14.7235L6.05478 13.2777ZM8.30426 15.4555C8.70351 15.5658 9.11661 15.3316 9.22693 14.9324C9.33726 14.5331 9.10304 14.12 8.70378 14.0097L8.30426 15.4555ZM5.89502 11.9999C5.89379 10.7649 6.24943 9.55591 6.91916 8.51834L5.65889 7.70487C4.83239 8.98532 4.3935 10.4773 4.39502 12.0014L5.89502 11.9999ZM6.91952 8.51777C7.57513 7.50005 8.51931 6.70094 9.63139 6.22256L9.03866 4.84464C7.65253 5.4409 6.47568 6.43693 5.65852 7.70544L6.91952 8.51777ZM9.63045 6.22297C10.7258 5.75356 11.9383 5.62986 13.1059 5.86842L13.4062 4.39878C11.9392 4.09906 10.4158 4.25448 9.0396 4.84424L9.63045 6.22297ZM13.1035 5.86793C14.2803 6.11232 15.3559 6.7059 16.1901 7.57114L17.27 6.53006C16.2264 5.44761 14.8807 4.70502 13.4085 4.39927L13.1035 5.86793ZM16.1907 7.57175C16.9065 8.31258 17.4296 9.21772 17.7142 10.2078L19.1558 9.79342C18.8035 8.5675 18.1557 7.44675 17.2694 6.52945L16.1907 7.57175ZM19.1609 10.1892L19.8709 7.45725L18.4191 7.07996L17.7091 9.81196L19.1609 10.1892ZM18.6348 9.2777L15.9858 8.5457L15.5863 9.99151L18.2353 10.7235L18.6348 9.2777ZM18.395 12.0014C18.3963 13.2363 18.0406 14.4453 17.3709 15.4829L18.6312 16.2963C19.4577 15.0159 19.8965 13.5239 19.895 11.9999L18.395 12.0014ZM17.3705 15.4834C16.7149 16.5012 15.7707 17.3003 14.6587 17.7786L15.2514 19.1566C16.6375 18.5603 17.8144 17.5643 18.6315 16.2958L17.3705 15.4834ZM14.6596 17.7782C13.5643 18.2476 12.3517 18.3713 11.1842 18.1328L10.8839 19.6024C12.3508 19.9021 13.8743 19.7467 15.2505 19.157L14.6596 17.7782ZM11.1865 18.1333C10.0098 17.8889 8.93411 17.2953 8.09997 16.4301L7.02008 17.4711C8.06363 18.5536 9.40936 19.2962 10.8815 19.6019L11.1865 18.1333ZM8.09938 16.4295C7.38355 15.6886 6.86042 14.7835 6.57584 13.7934L5.13421 14.2078C5.48658 15.4337 6.13433 16.5545 7.02067 17.4718L8.09938 16.4295ZM5.12914 13.812L4.41914 16.544L5.87091 16.9212L6.58091 14.1892L5.12914 13.812ZM5.65526 14.7235L8.30426 15.4555L8.70378 14.0097L6.05478 13.2777L5.65526 14.7235Z"
-                        fill="#fff" />
-                </svg></a>
-
-            <div class="transparent-placeholder"></div>
-
-
-
-        </div>
-        <div id="cryptox-florida" style="display:none;overflow: auto;">
-
-            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Cryptox Notifications</h3>
-            <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
-                Florida</h5>
-            <p style="margin: 6px" class="user-email">OPERATIONS</p>
-            <div href="#" id="" style="height: 50%" class="apple-button notif">Key & IV Refresh
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications()" type="checkbox" checked="false">
-                    <span></span>
-                </label>
-            </div>
-            <div href="#" id="" style="height: 50%" class="apple-button notif">Cryptox Activation<label
-                    style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications()" type="checkbox" checked="false">
-                    <span></span>
-                </label></div>
-            <div href="#" id="" style="height: 50%" class="apple-button notif">Cryptox Deactivation<label
-                    style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications()" type="checkbox" checked="false">
-                    <span></span>
-                </label></div>
-            <div href="#" id="" style="height: 50%" class="apple-button notif">Cryptox Recommendations<label
-                    style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications()" type="checkbox" checked="false">
-                    <span></span>
-                </label></div>
-
-            <p style="margin: 6px" class="user-email">Customize your <b>Cryptox notifications</b> for when you're
-                offline, tailoring exactly what updates you want to receive.<br><br><i>Note that this is a preview
-                    and changes will not be saved in the server.</i>
-            </p>
-            <div class="transparent-placeholder"></div>
-
-
-
-        </div>
-        <div id="secureline-florida" style="display:none;overflow: auto;">
-
-            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Secureline Notifications</h3>
-            <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
-                Florida</h5>
-            <p style="margin: 6px" class="user-email">CHATS</p>
-            <div href="#" id="" style="height: 50%" class="apple-button notif">Chat Creation
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications()" type="checkbox" checked="false">
-                    <span></span>
-                </label>
-            </div>
-            <div href="#" id="" style="height: 50%" class="apple-button notif">Chat Wipe<label
-                    style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications()" type="checkbox" checked="false">
-                    <span></span>
-                </label></div>
-            <div href="#" id="" style="height: 50%" class="apple-button notif">New Message<label
-                    style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications()" type="checkbox" checked="false">
-                    <span></span>
-                </label></div>
-            <div href="#" id="" style="height: 50%" class="apple-button notif">Message Removal<label
-                    style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications()" type="checkbox" checked="false">
-                    <span></span>
-                </label></div>
-
-            <p style="margin: 6px" class="user-email">Customize your <b>Secureline notifications</b> for when you're
-                offline, tailoring exactly what updates you want to receive.<br><br><i>Note that this is a preview
-                    and changes will not be saved in the server.</i>
-            </p>
-            <div class="transparent-placeholder"></div>
-
-
-
-        </div>
-        <div id="tasco-florida" style="display:none;overflow: auto;">
-
-            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Tasco Notifications</h3>
-            <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
-                Florida</h5>
-            <p style="margin: 6px" class="user-email">TASKS</p>
-            <div href="#" id="" style="height: 50%" class="apple-button notif">Personalized task completion
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications()" type="checkbox" checked="false">
-                    <span></span>
-                </label>
-            </div>
-            <div href="#" id="" style="height: 50%" class="apple-button notif">Scheduled Tasks Reminder<label
-                    style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications()" type="checkbox" checked="false">
-                    <span></span>
-                </label></div>
-            <p style="margin: 6px" class="user-email">QUICK NOTES</p>
-            <div href="#" id="" style="height: 50%" class="apple-button notif">Quick note creation
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications()" type="checkbox" checked="false">
-                    <span></span>
-                </label>
-            </div>
-            <div href="#" id="" style="height: 50%" class="apple-button notif">Quick note deletion
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications()" type="checkbox" checked="false">
-                    <span></span>
-                </label>
-            </div>
-            <p style="margin: 6px" class="user-email">DEBTS</p>
-            <div href="#" id="" style="height: 50%" class="apple-button notif">Inactive Debt Reminder
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications()" type="checkbox" checked="false">
-                    <span></span>
-                </label>
-            </div>
-            <div href="#" id="" style="height: 50%" class="apple-button notif">Debt Deadline Reminder
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications()" type="checkbox" checked="false">
-                    <span></span>
-                </label>
-            </div>
-
-            <p style="margin: 6px" class="user-email">Customize your <b>Tasco notifications</b> for when you're
-                offline, tailoring exactly what updates you want to receive.<br><br><i>Note that this is a preview
-                    and changes will not be saved in the server.</i>
-            </p>
-            <div class="transparent-placeholder"></div>
-
-
-
-        </div>
-        <div id="gateway-florida" style="display:none;overflow: auto;">
-
-            <h3 style="text-align: center;margin-top: 10px;margin-bottom: 2px;">Gateway Notifications</h3>
-            <h5 style="text-align: center;margin-top: 0;margin-bottom: 18.72px;font-weight:lighter;font-size: 14px;">
-                Florida</h5>
-            <p style="margin: 6px" class="user-email">ACCOUNT CHANGES</p>
-            <div href="#" id="login_notifs" style="height: 50%" class="apple-button notif">Login to account
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications('1', this)" id="p1" type="checkbox" checked>
-                    <span></span>
-                </label>
-            </div>
-            <div href="#" id="username_change_notifs" style="height: 50%" class="apple-button notif">Username
-                modifications<label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications('2', this)" id="p2" type="checkbox" checked>
-                    <span></span>
-                </label></div>
-            <div href="#" id="email_change_notifs" style="height: 50%" class="apple-button notif">Email
-                modifications<label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications('3', this)" id="p3" type="checkbox" checked>
-                    <span></span>
-                </label></div>
-            <div href="#" id="2FA_change_notifs" style="height: 50%" class="apple-button notif">2FA modifications
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications('4', this)" id="p4" type="checkbox" checked>
-                    <span></span>
-                </label>
-            </div>
-            <div href="#" id="IP_change_notifs" style="height: 50%" class="apple-button notif">IP modifications
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications('5', this)" id="p5" type="checkbox" checked>
-                    <span></span>
-                </label>
-            </div>
-            <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">Password
-                modifications
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications('6', this)" id="p6" type="checkbox" checked>
-                    <span></span>
-                </label>
-            </div>
-            <div href="#" id="pfp_notifs" style="height: 50%" class="apple-button notif">Profile picture
-                modifications
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications('14', this)" id="p14" type="checkbox" checked>
-                    <span></span>
-                </label>
-            </div>
-            <p style="margin: 6px" class="user-email">SOCIAL</p>
-            <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New friend
-                requests
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications('7', this)" id="p7" type="checkbox" checked>
-                    <span></span>
-                </label>
-            </div>
-            <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New friends
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications('8', this)" id="p8" type="checkbox" checked>
-                    <span></span>
-                </label>
-            </div>
-
-            <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">Friend's online
-                status
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications('9', this)" id="p9" type="checkbox" checked>
-                    <span></span>
-                </label>
-            </div>
-            <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New Evox user
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications('10', this)" id="p10" type="checkbox" checked>
-                    <span></span>
-                </label>
-            </div>
-            <p style="margin: 6px" class="user-email">EVOX</p>
-            <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New app
-                purchase
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications('11', this)" id="p11" type="checkbox" checked>
-                    <span></span>
-                </label>
-            </div>
-            <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">Weather in your
-                area
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications('12', this)" id="p12" type="checkbox">
-                    <span></span>
-                </label>
-            </div>
-            <div href="#" id="password_change_notifs" style="height: 50%" class="apple-button notif">New app release
-                <label style="position: absolute;top: 50%;right: 20px;" class="toggle">
-                    <input onclick="optimizeNotifications('13', this)" id="p13" type="checkbox" checked>
-                    <span></span>
-                </label>
-            </div>
-
-            <p style="margin: 6px" class="user-email">Customize your <b>Gateway notifications</b> for when you're
-                offline, tailoring exactly what updates you want to receive.
-            </p>
-            <div class="transparent-placeholder"></div>
-
-
-
-        </div>
+        <!--Notification Management-->
 
         <div id="username_email_icon_show" style="display:none">
 
@@ -3051,19 +3056,20 @@
                 <svg fill="#9e9e9e" width="30px" height="30px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                     <title>explore-solid</title>
                     <g id="Layer_2" data-name="Layer 2">
-                      <g id="invisible_box" data-name="invisible box">
-                        <rect width="48" height="48" fill="none"/>
-                      </g>
-                      <g id="icons_Q2" data-name="icons Q2">
-                        <path d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2ZM34.7,14.7,28,28,14.7,34.7a1.1,1.1,0,0,1-1.4-1.4L20,20l13.3-6.7A1.1,1.1,0,0,1,34.7,14.7ZM24,22a2,2,0,1,0,2,2A2,2,0,0,0,24,22Z"/>
-                        <path d="M24,22a2,2,0,1,0,2,2A2,2,0,0,0,24,22Zm0,0a2,2,0,1,0,2,2A2,2,0,0,0,24,22Z"/>
-                      </g>
+                        <g id="invisible_box" data-name="invisible box">
+                            <rect width="48" height="48" fill="none" />
+                        </g>
+                        <g id="icons_Q2" data-name="icons Q2">
+                            <path
+                                d="M24,2A22,22,0,1,0,46,24,21.9,21.9,0,0,0,24,2ZM34.7,14.7,28,28,14.7,34.7a1.1,1.1,0,0,1-1.4-1.4L20,20l13.3-6.7A1.1,1.1,0,0,1,34.7,14.7ZM24,22a2,2,0,1,0,2,2A2,2,0,0,0,24,22Z" />
+                            <path d="M24,22a2,2,0,1,0,2,2A2,2,0,0,0,24,22Zm0,0a2,2,0,1,0,2,2A2,2,0,0,0,24,22Z" />
+                        </g>
                     </g>
-                  </svg>
-                
+                </svg>
+
                 <span style="display: none">Explore</span>
             </div>
-            <div id="navigator"  class="nav-item settings noBg">
+            <div id="navigator" class="nav-item settings noBg">
                 <div onclick="settings();this.classList.add('rotate')" class="circle">
                     <svg id="rotateIcon" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
                         viewBox="0 0 28 28" fill="none">
