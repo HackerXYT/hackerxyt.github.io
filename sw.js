@@ -49,7 +49,9 @@ const CACHE_STATIC = [
   '/oasaMobile/iphone-x-1125x2436.png',
   '/oasaMobile/iphone-xr-1242x2688.png',
   '/oasaMobile/ipad-768x1024.png',
-  '/oasaMobile/ipad-retina-1536x2048.png'
+  '/oasaMobile/ipad-retina-1536x2048.png',
+  '/oasaMobile/manifest.json',
+  '/oasaMobile/arrow-down.svg'
 ];
 const CACHE_APP = [
   '/oasaMobile/script.js'

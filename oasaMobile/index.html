@@ -61,11 +61,10 @@
     <link rel="apple-touch-startup-image" media="screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="ipad-768x1024.pngg">
     <link rel="apple-touch-startup-image" media="screen and (device-width: 744px) and (device-height: 1133px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="ipad-768x1024.png">-->
 
-    <script defer src="https://unpkg.com/pwacompat" crossorigin="anonymous"></script>
+    <script defer src="pwacompat.min.js" crossorigin="anonymous"></script>
     <style>
         link[rel="manifest"] {
             --pwacompat-splash-font: 24px "Noto Sans", sans-serif;
-            --pwacompat-splash-text: "Skibidi";
         }
     </style>
     <link rel="stylesheet" href="style.css">
@@ -83,7 +82,7 @@
 
 
     <script>
-        var currentBuild = "0.81"
+        var currentBuild = "0.85"
         console.log(`%cCurrent Build: ${currentBuild}`, "color: green; font-family:sans-serif; font-size: 25px");
         window.onerror = function (message, source, lineno, colno, error) {
             try {
@@ -174,6 +173,25 @@
         console.log("%cThanks for using Evox ❤️❤️", "color: red; font-family:sans-serif;font-weight: bolder; font-size: 14px");
 
 
+
+
+        // Save the original setInterval function
+        const originalSetInterval = window.setInterval;
+
+        // Create a custom setInterval function
+        window.setInterval = function (callback, delay, ...args) {
+            // Wrapper function that checks for focus before running the callback
+            function customCallback() {
+                if (document.hasFocus()) {
+                    callback(...args);  // Execute the callback if the window is focused
+                } else {
+                    console.log(`Window doesn't have focus; skipping callback. ${callback}`);
+                }
+            }
+
+            // Call the original setInterval with the custom callback
+            return originalSetInterval(customCallback, delay);
+        };
 
 
 
@@ -309,12 +327,11 @@
                     </div>
                     <div id="debug" class="discover-container" style="display: none;">
                         <div id="discover-toggles">
-                            <button type="button">Τερματικό</button>
-                            <!--<button onclick="document.getElementById('debug').style.display = 'none'"
-                                type="button">$tempVoHide</button>-->
+                            <button id="terminalbutton" type="button">Τερματικό</button>
+                            <button id="devicebutton" onclick="showDeviceDiscover()" type="button">Συσκευή</button>
                         </div>
                         <div id="discover-feed">
-                            <a href="#" class="discover-card">
+                            <a id="discover-a" href="#" class="discover-card">
                                 <div onclick="scrollToBottom();openFullScreen()"
                                     style="width: 100%;
                                 aspect-ratio: 1.6 / 1;
@@ -360,6 +377,23 @@
                                         των δοκιμών. Αν είστε κανονικός χρήστης, πατήστε στο εικονίδιο της αναζήτησης
                                         για να το κρύψετε.</p>
                                 </div>
+                            </a>
+                            <a id="discover-b" style="display: none;" href="#" class="discover-card">
+                                <div
+                                    style="width: 100%;
+                                aspect-ratio: 1.6 / 1;
+                                object-fit: cover;
+                                border-radius: 0.5rem;
+                                border-bottom-left-radius: 0.25rem;
+                                border-bottom-right-radius: 0.25rem;background-color: transparent;border: 2px solid #333; color:lime;height: 211px;padding: 20px; max-height: 211px; overflow: auto;font-family: 'Noto Sans', sans-serif;
+  font-weight: bold;
+  text-shadow: rgba(0, 0, 0, 0.341) 0px 2px 5px;">
+                                <p id="discover-b-info">Device Id: <span></span><br>
+                                    option2: <br>
+                                    option3:
+                                </p>
+                                </div>
+                                
                             </a>
                         </div>
                     </div>
@@ -481,7 +515,10 @@
 
             </div>
             <p>Το όνομά σας μπορεί να χρησιμοποιηθεί ως τρόπος βελτίωσης της εμπειρίας του χρήστη.<br>Δεν θα
-                κοινοποιήσουμε το όνομά σας εκτός εάν μας το επιτρέψετε.<br><span style="font-size: 10px;color: red">σημείωση: οι μεταβλητές ονομάτων δεν αποθηκεύονται στον διακομιστή (<0.81).</span></p>
+                κοινοποιήσουμε το όνομά σας εκτός εάν μας το επιτρέψετε.<br><span
+                    style="font-size: 10px;color: red">σημείωση: οι μεταβλητές ονομάτων δεν αποθηκεύονται στον
+                    διακομιστή (<0.85).< /span>
+            </p>
             <div class="devices">
 
             </div>

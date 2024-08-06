@@ -588,7 +588,9 @@ function showInfo(bus, isInt) {
                     }
                     console.log("Interval Countdown:", countThis1)
                 }, 1000)
-                currentInt = setInterval(function () {
+                currentInt = 
+                
+                (function () {
                     showInfo(bus, 'interval')
                 }, 25000)
 
@@ -2912,4 +2914,30 @@ function attachSchedo(element) {
         }).catch(error => {
             console.error('Fetch error:', error);
         });
+}
+
+function showDeviceDiscover() {
+    const innera = document.getElementById("discover-a")
+    const innerb = document.getElementById("discover-b")
+    const infob = document.getElementById("discover-b-info")
+    const terminalBT = document.getElementById("terminalbutton")
+    const deviceBT = document.getElementById("devicebutton")
+    console.log(innera.style.display)
+    if(innera.style.display !== "none") {
+        console.log('Will show B')
+        innerb.style.display = "flex"
+        innera.style.display = "none"
+        //will show B
+        const revert = terminalBT.style.backgroundColor
+        terminalBT.style.backgroundColor = "transparent"
+        deviceBT.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+        infob.innerHTML = `
+        currentBuild: ${sessionStorage.getItem("currentBuild")}<br><br>Device ID (extV): ${localStorage.getItem("extVOASA")}<br><br>ServiceWorker in window: ${'serviceWorker' in navigator}<br><br>hasDismissedSetup: ${localStorage.getItem("hasDismissedSetup")}<br><br>privileges: ${sessionStorage.getItem("privileges")}<br><br>hasLocalPfp: ${sessionStorage.getItem("pfp") === true}<br><br>__pwacompat_manifest: <br><span style="color: yellow">${sessionStorage.getItem('__pwacompat_manifest')}</span>`
+    } else {
+        console.log("Will show A")
+        innerb.style.display = "none"
+        innera.style.display = "flex"
+        terminalBT.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+        deviceBT.style.backgroundColor = "transparent";
+    }
 }
