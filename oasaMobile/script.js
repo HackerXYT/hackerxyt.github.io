@@ -2726,7 +2726,7 @@ document.getElementById('receiveEnter').addEventListener('keydown', function (ev
                     setTimeout(function () {
                         document.getElementById('receiveEnter').placeholder = 'Αναζητήστε στο Evox'
                     }, 8000)
-                    console.log('Resource not found (404)');
+                    console.log('Resource not found [${url}] (404)');
                 } else {
                     window.location.href = `${cleanedLoc}${document.getElementById('receiveEnter').value}`
                     document.getElementById('receiveEnter').value = ''
