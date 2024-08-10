@@ -19,7 +19,7 @@ const inputElement = document.getElementById('mhCode');
 // Check if the input element exists
 if (inputElement) {
     // Add event listener for the keydown event
-    inputElement.addEventListener('keydown', function(event) {
+    inputElement.addEventListener('keydown', function (event) {
         // Check if the pressed key is Enter (key code 13)
         if (event.key === 'Enter') {
             // Prevent the default action (e.g., form submission)
@@ -34,7 +34,7 @@ const inputElement2 = document.getElementById('mhUsername');
 // Check if the input element exists
 if (inputElement2) {
     // Add event listener for the keydown event
-    inputElement2.addEventListener('keydown', function(event) {
+    inputElement2.addEventListener('keydown', function (event) {
         // Check if the pressed key is Enter (key code 13)
         if (event.key === 'Enter') {
             // Prevent the default action (e.g., form submission)
@@ -84,10 +84,10 @@ function loginNow() {
                 localStorage.setItem("t50-email", accJson.email)
                 localStorage.setItem("t50-username", accJson.username)
                 localStorage.setItem("t50pswd", btoa(accJson.password))
-                setTimeout(function() {
+                setTimeout(function () {
                     window.location.reload()
                 }, 800)
-                
+
             }
 
         })
@@ -154,7 +154,7 @@ if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
                     alert("far you go..")
                     localStorage.clear()
                     window.location.reload()
-    
+
                 }
                 document.getElementById("me").src = "notyetloaded.gif";
                 fetch(`http://192.168.1.126:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${localStorage.getItem("t50-username")}`)
@@ -177,34 +177,34 @@ if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
                         console.error(error);
                         reject(error);
                     });
-    
+
             }).catch(error => {
                 // Handle errors
                 alert('Profile Picture Failed To Load:', error)
                 console.error('Error:', error);
             });
-            fetch(`http://192.168.1.126:4000/images-database?method=getTypes&password=${atob(localStorage.getItem("t50pswd"))}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json', // Modify this based on your API's requirements
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    types = data
-                    localStorage.setItem("types", JSON.stringify(data))
-                    loadStories()
-                }).catch(error => {
-                    // Handle errors
-                    alert(error);
-                    console.error('Error:', error);
-                });
+        fetch(`http://192.168.1.126:4000/images-database?method=getTypes&password=${atob(localStorage.getItem("t50pswd"))}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json', // Modify this based on your API's requirements
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                types = data
+                localStorage.setItem("types", JSON.stringify(data))
+                loadStories()
+            }).catch(error => {
+                // Handle errors
+                alert(error);
+                console.error('Error:', error);
+            });
     } else {
         loadStories()
         console.log("The user is offline.");
     }
-    
-    
+
+
 }
 
 function openDatabase() {
@@ -436,11 +436,19 @@ function begin() {
     })
         .then(response => response.json())
         .then(data => {
+            localStorage.setItem("imgDbInfo", JSON.stringify(data))
             info = data
             dbload()
         }).catch(error => {
             // Handle errors
-            alert(error);
+            //alert(error);
+            if (localStorage.getItem("imgDbInfo")) {
+                const data = JSON.parse(localStorage.getItem("imgDbInfo"))
+                info = data
+                dbload()
+            } else {
+                alert("Could not get database info. No local values are saved!")
+            }
             console.error('Error:', error);
         });
     const aloco = ['0', '1', '2', '3', '4', '5']
@@ -483,6 +491,7 @@ function filter(vv, element) {
     })
         .then(response => response.json())
         .then(data => {
+            localStorage.setItem(`getByType${what}`, JSON.stringify(data))
             const aloco = ['0', '1', '2', '3', '4', '5']
             aloco.forEach((op) => {
                 document.getElementById(`op${op}`).classList.remove("active")
@@ -600,7 +609,127 @@ function filter(vv, element) {
             }
         }).catch(error => {
             // Handle errors
-            alert(error);
+            //alert(error);
+            if (localStorage.getItem(`getByType${what}`)) {
+                const data = JSON.parse(localStorage.getItem(`getByType${what}`))
+                const aloco = ['0', '1', '2', '3', '4', '5']
+                aloco.forEach((op) => {
+                    document.getElementById(`op${op}`).classList.remove("active")
+                });
+                element.classList.add("active")
+                const numberOfValues = data.length;
+                //const numberOfValues = 50
+
+                data.sort((a, b) => {
+                    // Extract the numeric part of the filenames
+                    let numA = parseInt(a.match(/\d+/)[0]);
+                    let numB = parseInt(b.match(/\d+/)[0]);
+
+                    // Compare the numeric parts
+                    return numA - numB;
+                });
+
+                const container = document.getElementById("images-container");
+                container.innerHTML = ""; // Clear the container once before the loop
+
+                //setTimeout(function () {
+                //    const transparent = document.createElement("div");
+                //    transparent.className = "transparent-placeholder";
+                //    container.appendChild(transparent);
+                //}, 800);
+                data.forEach(value => {
+                    let number = value.match(/\d+/)[0];
+                    ////console.log("num:", number);
+
+                    // Create and append the transparent placeholder
+
+
+                    // Create and append the image element
+                    const div = document.createElement("div");
+                    div.className = `image`;
+                    div.id = `item${number}`;
+
+                    const img = document.createElement("img");
+                    img.alt = `Image ${number}`;
+                    img.id = `img${number}`;
+                    img.src = "searching_users.gif";
+                    const imageName = `image${number}.png`;
+                    // Attempt to load the image from IndexedDB
+                    loadImageFromIndexedDB(`image${number}.png`).then(imageSrc => {
+                        console.log("Image Found! Loading From IndexedDB");
+                        img.src = imageSrc; // Set image source to Blob URL from IndexedDB
+                    }).catch(error => {
+                        console.log("Image not found in IndexedDB, loading from network", error);
+
+                        // Fallback to network URL
+                        img.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+
+                        // Fetch and cache the image
+                        fetch(img.src).then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.blob(); // Get the image as a Blob
+                        }).then(blob => {
+                            // Cache the image in IndexedDB
+                            cacheImage(URL.createObjectURL(blob), `image${number}.png`);
+                        }).catch(fetchError => {
+                            console.error('Error fetching or caching image:', fetchError);
+                        });
+                    })
+                    img.onclick = function () {
+                        selected = number
+                    }
+
+                    const vo = document.createElement("vo");
+                    vo.innerHTML = `<svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M11.993 5.09691C11.0387 4.25883 9.78328 3.75 8.40796 3.75C5.42122 3.75 3 6.1497 3 9.10988C3 10.473 3.50639 11.7242 4.35199 12.67L12 20.25L19.4216 12.8944L19.641 12.6631C20.4866 11.7172 21 10.473 21 9.10988C21 6.1497 18.5788 3.75 15.592 3.75C14.2167 3.75 12.9613 4.25883 12.007 5.09692L12 5.08998L11.993 5.09691ZM12 7.09938L12.0549 7.14755L12.9079 6.30208L12.9968 6.22399C13.6868 5.61806 14.5932 5.25 15.592 5.25C17.763 5.25 19.5 6.99073 19.5 9.10988C19.5 10.0813 19.1385 10.9674 18.5363 11.6481L18.3492 11.8453L12 18.1381L5.44274 11.6391C4.85393 10.9658 4.5 10.0809 4.5 9.10988C4.5 6.99073 6.23699 5.25 8.40796 5.25C9.40675 5.25 10.3132 5.61806 11.0032 6.22398L11.0921 6.30203L11.9452 7.14752L12 7.09938Z"
+                            fill="#fff" />
+                    </svg>`
+                    vo.onclick = function () {
+                        alert("Clicked!")
+                    }
+
+                    if (info) {
+                        const imageKey = `image${number}.png`;
+                        const imageInfo = info[imageKey];
+
+                        if (imageInfo && imageInfo.favorite === true) {
+                            vo.style.display = 'block'; // Adjust the display style as needed
+                        } else {
+                            console.log(`image${number}.png -> ${imageInfo ? imageInfo.favorite : 'undefined'}`);
+                        }
+                    } else {
+                        console.error("info is undefined or null", info);
+                    }
+
+
+                    div.appendChild(img);
+                    div.appendChild(vo)
+                    container.appendChild(div);
+
+                    function setItemHeight(imgId, itemId) {
+                        const img = document.getElementById(imgId);
+                        if (img) { // Check if the image element exists
+                            img.onload = function () {
+                                const height = img.offsetHeight;
+                                document.getElementById(itemId).style.height = `${height}px`;
+                            };
+                        } else {
+                            console.error(`Image with id ${imgId} not found.`);
+                        }
+                    }
+
+                });
+
+
+                if (numberOfValues === 0) {
+                    console.log("No images loaded", `http://192.168.1.126:4000/images-database?method=getByType&password=[atob]&format=${what}`);
+                }
+            } else {
+                alert("Unable to load, you are offline!")
+            }
             console.error('Error:', error);
         });
 }
@@ -628,7 +757,7 @@ function loadStories() {
         })
             .then(response => response.json())
             .then(data => {
-                localStorage.setItem(`type${type}`, data)
+                localStorage.setItem(`type${type}`, JSON.stringify(data))
 
                 const iconPfp = getRandomValue(data);
                 let number = iconPfp.match(/\d+/)[0];
@@ -730,7 +859,7 @@ function loadStories() {
                         imageElement.onload();
                     }
                 } else {
-                    alert("Tried to handle error but localStorage didn't cooperate", error)
+                    alert("Tried to handle error but localStorage didn't cooperate.\nTry connecting to the internet first.\n", error)
                 }
                 console.error('Handling Error:', error);
             });
