@@ -137,66 +137,74 @@ if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
 
 } else {
     begin()
-    fetch(`http://192.168.1.126:4000/images/checkOwnerShip?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json', // Modify this based on your API's requirements
-        }
-    })
-        .then(response => response.text())
-        .then(data => {
-            //console.log(data)
-            if (data === "Accepted") {
-                console.log("All ok")
-            } else {
-                alert("far you go..")
-                localStorage.clear()
-                window.location.reload()
-
+    if (navigator.onLine) {
+        console.log("The user is online.");
+        fetch(`http://192.168.1.126:4000/images/checkOwnerShip?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json', // Modify this based on your API's requirements
             }
-            document.getElementById("me").src = "notyetloaded.gif";
-            fetch(`http://192.168.1.126:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${localStorage.getItem("t50-username")}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(profileimage => {
-                    if (profileimage.indexOf("base64") === -1) {
-                        ////console.log("Fixing Base64");
-                        profileimage = "data:image/jpeg;base64," + profileimage;
-                    }
-                    // Resolve with profile image
-                    document.getElementById("me").src = profileimage
-                })
-                .catch(error => {
-                    console.error("Cannot set src for", username);
-                    console.error(error);
-                    reject(error);
+        })
+            .then(response => response.text())
+            .then(data => {
+                //console.log(data)
+                if (data === "Accepted") {
+                    console.log("All ok")
+                } else {
+                    alert("far you go..")
+                    localStorage.clear()
+                    window.location.reload()
+    
+                }
+                document.getElementById("me").src = "notyetloaded.gif";
+                fetch(`http://192.168.1.126:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${localStorage.getItem("t50-username")}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(profileimage => {
+                        if (profileimage.indexOf("base64") === -1) {
+                            ////console.log("Fixing Base64");
+                            profileimage = "data:image/jpeg;base64," + profileimage;
+                        }
+                        // Resolve with profile image
+                        document.getElementById("me").src = profileimage
+                    })
+                    .catch(error => {
+                        console.error("Cannot set src for", username);
+                        console.error(error);
+                        reject(error);
+                    });
+    
+            }).catch(error => {
+                // Handle errors
+                alert('Profile Picture Failed To Load:', error)
+                console.error('Error:', error);
+            });
+            fetch(`http://192.168.1.126:4000/images-database?method=getTypes&password=${atob(localStorage.getItem("t50pswd"))}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json', // Modify this based on your API's requirements
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    types = data
+                    localStorage.setItem("types", JSON.stringify(data))
+                    loadStories()
+                }).catch(error => {
+                    // Handle errors
+                    alert(error);
+                    console.error('Error:', error);
                 });
-
-        }).catch(error => {
-            // Handle errors
-            alert('Profile Picture Failed To Load:', error)
-            console.error('Error:', error);
-        });
-    fetch(`http://192.168.1.126:4000/images-database?method=getTypes&password=${atob(localStorage.getItem("t50pswd"))}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json', // Modify this based on your API's requirements
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            types = data
-            localStorage.setItem("types", JSON.stringify(data))
-            loadStories()
-        }).catch(error => {
-            // Handle errors
-            alert(error);
-            console.error('Error:', error);
-        });
+    } else {
+        loadStories()
+        console.log("The user is offline.");
+    }
+    
+    
 }
 
 function openDatabase() {
