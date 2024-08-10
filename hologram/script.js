@@ -219,7 +219,6 @@ function begin() {
     document.getElementById(`op0`).classList.add("active")
 }
 
-begin()
 
 function filter(vv, element) {
     document.getElementById("images-container").innerHTML = `Loading.. <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -373,6 +372,7 @@ fetch(`http://192.168.1.126:4000/images-database?method=getTypes&password=${atob
         console.error('Error:', error);
     });
 
+//begin()
 
 
 let start = 0
