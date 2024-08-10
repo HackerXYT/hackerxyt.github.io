@@ -24,13 +24,13 @@
             <p style="text-align: center;">You need a compatible Evox Account to use this service.</p>
             <input class="otpInput" id="mhUsername" type="text" name="username" placeholder="Evox username">
             <input class="otpInput" id="mhCode" type="text" placeholder="One time code">
-            <button class="otpButton" onclick="loginNow()">Grant Access</button>
+            <button class="otpButton" onclick="loginNow()">Get Access</button>
         </div>
         <div style="display: none;" id="error">
             <h2>Verification failed.</h2>
             <p id="notiText" style="text-align: center;">Your account is not compatible with Hologram</p>
             <button onclick="retryLogin()" class="otpButton">Retry Verification</button>
-            <button class="otpButton" href="../evox-epsilon/">Go To Epsilon</button>
+            <button class="otpButton" onclick="window.location.href = '../evox-epsilon/'">Go To Epsilon</button>
         </div>
     </div>
     <div id="mainContainer" class="container">
