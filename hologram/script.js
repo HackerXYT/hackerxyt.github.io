@@ -439,6 +439,7 @@ function dbload() {
             } else {
                 fullSc()
             }
+            document.getElementById("footer").style.display = ""
 
             ////console.log("Ready");
         })
@@ -486,6 +487,7 @@ function begin() {
 
 
 function filter(vv, element) {
+    document.getElementById("footer").style.display = "none"
     document.getElementById("images-container").innerHTML = `Loading.. <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                width="15px" height="15px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
               <path opacity="0.2" fill="#fff" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
