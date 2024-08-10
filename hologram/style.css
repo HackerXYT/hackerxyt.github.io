@@ -25,13 +25,12 @@ body {
 .stories {
     width: 100%;
     display: flex;
-    justify-content: flex-start;
     /* Align items to the start */
     align-items: center;
     overflow-x: auto;
+    overflow-y: hidden;
     /* Prevent horizontal scrolling for the container */
 }
-
 .stories .user {
     display: flex;
     position: relative;
@@ -45,9 +44,9 @@ body {
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    /* Prevent shrinking */
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
+    position: relative; /* Ensure positioning for the pseudo-element */
 }
 
 .stories::-webkit-scrollbar {
@@ -61,12 +60,36 @@ body {
 
 .stories .user.me {
     background: transparent;
-    border: rgb(0, 136, 255) 1.7px dashed;
+    border: none; /* Remove the border to use the pseudo-element for the effect */
+    position: relative; /* Ensure positioning for the pseudo-element */
+}
+
+.stories .user.me::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 1.7px dashed rgb(0, 136, 255);
+    box-sizing: border-box;
+    animation: rotateBorder 10s linear infinite;
+}
+
+@keyframes rotateBorder {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .stories .user span {
     margin-bottom: auto;
 }
+
 
 .stories img {
     background: #04061a;
@@ -389,7 +412,7 @@ body {
     scroll-behavior: smooth;
     touch-action: auto;
     justify-content: center;
-    background: rgba(13, 11, 15, 0.537);
+    background: rgb(0, 0, 0);
 
     /* Semi-transparent black overlay */
     z-index: 998;
@@ -410,6 +433,49 @@ body {
     /* Transition for sliding effect, opacity, and visibility */
     overflow: hidden;
 }
+.topIndicators {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 100%;
+    padding: 0 10px; /* Optional: Add padding to prevent touching the edges */
+    box-sizing: border-box; /* Ensure padding is included in the width calculation */
+}
+
+.progress-container {
+    flex: 1; /* Make each progress bar take equal space */
+    height: 4px; /* Height of each progress bar */
+    background-color: #2d2d2d; /* Background color of the progress container */
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 1px; /* Small margin to create space between progress bars */
+    position: relative;
+}
+
+.progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #ffffff; /* Color of the progress bar */
+    width: 0%; /* Start with 0 width */
+    border-radius: 1px;
+}
+
+.progress-bar.active {
+    animation: progress-animation 5s linear;
+}
+
+@keyframes progress-animation {
+    from {
+        width: 0%;
+    }
+    to {
+        width: 100%;
+    }
+}
 
 .imgF.active {
     opacity: 1;
@@ -424,4 +490,22 @@ body {
     width: 100%;
     height: 100%;
     object-fit:cover;
+}
+
+.bottomIndicators {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.circle {
+    background: rgba(45, 45, 45, 0.782); /* Transparent black background */
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
