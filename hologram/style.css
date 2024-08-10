@@ -30,11 +30,11 @@ body {
     display: flex;
     position: relative;
     margin-right: 10px;
-    background: -webkit-linear-gradient(left top, crimson 0%, #f90 100%);
-    width: 60px;
-    height: 60px;
+    background: -webkit-linear-gradient(left top, rgb(255, 5, 5) 0%, rgb(255, 89, 0) 100%);
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    padding: 1px;
+    padding: 3px;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -48,12 +48,15 @@ body {
   }
 
 .stories .user.new {
-    background: -webkit-linear-gradient(left top, rgb(120, 220, 20) 0%, #f90 100%);
+    background: -webkit-linear-gradient(left top, rgb(5, 255, 18) 0%, rgb(115, 0, 255) 100%);
 }
 
 .stories .user.me {
     background: transparent;
-    border: #f90 1.7px dashed;
+    border: rgb(0, 136, 255) 1.7px dashed;
+}
+.stories .user span {
+    margin-bottom: auto;
 }
 
 .stories img {
@@ -97,6 +100,7 @@ body {
     border: #22c55e 0.7px solid;
     cursor: pointer;
     transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, border 0.5s ease-in-out;
+    text-transform: capitalize;
 }
 
 .filter .option:hover {

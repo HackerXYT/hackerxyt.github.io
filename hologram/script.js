@@ -180,7 +180,7 @@ function dbload() {
 
 
             if (numberOfValues === 0) {
-                console.log("No images loaded");
+                console.log("No images loaded", `http://192.168.1.126:4000/images-database?password=[atob]&method=getIDs`);
             }
 
             ////console.log("Ready");
@@ -244,7 +244,7 @@ function filter(vv, element) {
     //} else {
     //    return;
     //}
-    what = element.innerText
+    what = element.innerText.toLowerCase()
     fetch(`http://192.168.1.126:4000/images-database?method=getByType&password=${atob(localStorage.getItem("t50pswd"))}&format=${what}`, {
         method: 'GET',
         headers: {
@@ -342,7 +342,7 @@ function filter(vv, element) {
 
 
             if (numberOfValues === 0) {
-                console.log("No images loaded");
+                console.log("No images loaded", `http://192.168.1.126:4000/images-database?method=getByType&password=[atob]&format=${what}`);
             }
         }).catch(error => {
             // Handle errors
@@ -420,3 +420,10 @@ function loadStories() {
 
 }
 
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('hologram.js').then(function(registration) {
+        console.log('Service Worker registered with scope:', registration.scope);
+    }).catch(function(error) {
+        console.log('Service Worker registration failed:', error);
+    });
+}
