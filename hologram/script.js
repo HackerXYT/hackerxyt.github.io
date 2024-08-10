@@ -51,7 +51,7 @@ function loginNow() {
     if (document.getElementById("mhCode").value === '') {
         return;
     }
-    fetch(`http://192.168.1.126:4000/otp?method=hologram&username=${document.getElementById("mhUsername").value}&code=${document.getElementById("mhCode").value}`)
+    fetch(`${srv}/otp?method=hologram&username=${document.getElementById("mhUsername").value}&code=${document.getElementById("mhCode").value}`)
         .then(response => response.text())
         .then(data => {
             console.log(data)
@@ -95,6 +95,26 @@ function loginNow() {
             console.error(error);
         });
 }
+function onlineMode() {
+    if (localStorage.getItem("online-mode") === "true") {
+        const root = document.documentElement;
+        root.style.setProperty('--con-type', 'var(--con-type-offline)');
+        localStorage.removeItem("online-mode")
+        localStorage.setItem("srv", "http://192.168.1.126:4000")
+        setTimeout(function() {
+            window.location.reload()
+        }, 800)
+        
+    } else {
+        const root = document.documentElement;
+        root.style.setProperty('--con-type', 'var(--con-type-online)');
+        localStorage.setItem("online-mode", "true")
+        localStorage.setItem("srv", "https://data.evoxs.xyz")
+        setTimeout(function() {
+            window.location.reload()
+        }, 800)
+    }
+}
 if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
     function getep() {
         // Prompt for email
@@ -136,10 +156,14 @@ if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
     //getep()
 
 } else {
+    if (localStorage.getItem("online-mode") === "true") {
+        const root = document.documentElement;
+        root.style.setProperty('--con-type', 'var(--con-type-online)');
+    }
     begin()
     if (navigator.onLine) {
         console.log("The user is online.");
-        fetch(`http://192.168.1.126:4000/images/checkOwnerShip?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}`, {
+        fetch(`${srv}/images/checkOwnerShip?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -157,7 +181,7 @@ if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
 
                 }
                 document.getElementById("me").src = "notyetloaded.gif";
-                fetch(`http://192.168.1.126:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${localStorage.getItem("t50-username")}`)
+                fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${localStorage.getItem("t50-username")}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -183,7 +207,7 @@ if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
                 alert('Profile Picture Failed To Load:', error)
                 console.error('Error:', error);
             });
-        fetch(`http://192.168.1.126:4000/images-database?method=getTypes&password=${atob(localStorage.getItem("t50pswd"))}`, {
+        fetch(`${srv}/images-database?method=getTypes&password=${atob(localStorage.getItem("t50pswd"))}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -288,7 +312,7 @@ function loadImageFromIndexedDB(imageName) {
 
 
 function dbload() {
-    fetch(`http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&method=getIDs`, {
+    fetch(`${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&method=getIDs`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -344,7 +368,7 @@ function dbload() {
                     console.log("Image not found in IndexedDB, loading from network", error);
 
                     // Fallback to network URL
-                    img.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                    img.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
 
                     // Fetch and cache the image
                     fetch(img.src).then(response => {
@@ -361,7 +385,7 @@ function dbload() {
                         console.error('Error fetching or caching image:', fetchError);
                     });
                 })
-                //img.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                //img.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
 
                 img.onclick = function () {
                     selected = number
@@ -411,7 +435,7 @@ function dbload() {
 
 
             if (numberOfValues === 0) {
-                console.log("No images loaded", `http://192.168.1.126:4000/images-database?password=[atob]&method=getIDs`);
+                console.log("No images loaded", `${srv}/images-database?password=[atob]&method=getIDs`);
             } else {
                 fullSc()
             }
@@ -430,7 +454,7 @@ function dbload() {
 //
 
 function begin() {
-    fetch(`http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&method=getInfo`, {
+    fetch(`${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&method=getInfo`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -485,7 +509,7 @@ function filter(vv, element) {
     //    return;
     //}
     what = element.innerText.toLowerCase()
-    fetch(`http://192.168.1.126:4000/images-database?method=getByType&password=${atob(localStorage.getItem("t50pswd"))}&format=${what}`, {
+    fetch(`${srv}/images-database?method=getByType&password=${atob(localStorage.getItem("t50pswd"))}&format=${what}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -544,7 +568,7 @@ function filter(vv, element) {
                     console.log("Image not found in IndexedDB, loading from network", error);
 
                     // Fallback to network URL
-                    img.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                    img.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
 
                     // Fetch and cache the image
                     fetch(img.src).then(response => {
@@ -607,7 +631,7 @@ function filter(vv, element) {
 
 
             if (numberOfValues === 0) {
-                console.log("No images loaded", `http://192.168.1.126:4000/images-database?method=getByType&password=[atob]&format=${what}`);
+                console.log("No images loaded", `${srv}/images-database?method=getByType&password=[atob]&format=${what}`);
             } else {
                 fullSc()
             }
@@ -666,7 +690,7 @@ function filter(vv, element) {
                         console.log("Image not found in IndexedDB, loading from network", error);
 
                         // Fallback to network URL
-                        img.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                        img.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
 
                         // Fetch and cache the image
                         fetch(img.src).then(response => {
@@ -729,7 +753,7 @@ function filter(vv, element) {
 
 
                 if (numberOfValues === 0) {
-                    console.log("No images loaded", `http://192.168.1.126:4000/images-database?method=getByType&password=[atob]&format=${what}`);
+                    console.log("No images loaded", `${srv}/images-database?method=getByType&password=[atob]&format=${what}`);
                 } else {
                     fullSc()
                 }
@@ -755,7 +779,7 @@ function loadStories() {
     console.log(types)
     types.forEach((type) => {
 
-        fetch(`http://192.168.1.126:4000/images-database?method=getByType&password=${atob(localStorage.getItem("t50pswd"))}&format=${type}`, {
+        fetch(`${srv}/images-database?method=getByType&password=${atob(localStorage.getItem("t50pswd"))}&format=${type}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -771,10 +795,10 @@ function loadStories() {
                 document.getElementById(`op${start}`).innerText = `${type}`
 
                 const imageElement = document.getElementById(`u${start}`);
-                imageElement.onclick = function() {
+                imageElement.onclick = function () {
                     showStory(type)
                 }
-                //imageElement.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                //imageElement.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
                 imageElement.src = "searching_users.gif";
                 const imageName = `image${number}.png`;
                 // Attempt to load the image from IndexedDB
@@ -786,7 +810,7 @@ function loadStories() {
                     console.log("Image not found in IndexedDB, loading from network", error);
 
                     // Fallback to network URL
-                    imageElement.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                    imageElement.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
 
                     // Fetch and cache the image
                     fetch(imageElement.src).then(response => {
@@ -827,7 +851,7 @@ function loadStories() {
                     document.getElementById(`op${start}`).innerText = `${type}`
 
                     const imageElement = document.getElementById(`u${start}`);
-                    //imageElement.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                    //imageElement.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
                     imageElement.src = "searching_users.gif";
                     const imageName = `image${number}.png`;
                     // Attempt to load the image from IndexedDB
@@ -838,7 +862,7 @@ function loadStories() {
                         console.log("Image not found in IndexedDB, loading from network", error);
 
                         // Fallback to network URL
-                        imageElement.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                        imageElement.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
 
                         // Fetch and cache the image
                         fetch(imageElement.src).then(response => {
@@ -1008,75 +1032,128 @@ function fullScs() {
 }
 
 let stInt;
-    function init(data) {
-        document.getElementById("imgf").classList.add('active');
+function init(data) {
+    document.getElementById("imgf").classList.add('active');
 
-        const numberOfValues = data.length;
-        data.sort((a, b) => {
-            let numA = parseInt(a.match(/\d+/)[0]);
-            let numB = parseInt(b.match(/\d+/)[0]);
-            return numA - numB;
+    const numberOfValues = data.length;
+    data.sort((a, b) => {
+        let numA = parseInt(a.match(/\d+/)[0]);
+        let numB = parseInt(b.match(/\d+/)[0]);
+        return numA - numB;
+    });
+
+    const storyJson = {
+        "image": {}
+    };
+
+    let count = 0;
+    let promises = data.map(value => {
+        console.log(`Working on ${value}`);
+        let number = value.match(/\d+/)[0];
+
+        return loadImageFromIndexedDB(`image${number}.png`).then(imageSrc => {
+            console.log("Image Found! Loading From IndexedDB");
+            count++;
+            const nameJ = `img${count}`;
+            storyJson.image[nameJ] = imageSrc; // Add property to 'image' object
+
+        }).catch(error => {
+            console.log("Image not found in IndexedDB, will not load from network", error);
         });
+    });
 
-        const storyJson = {
-            "image": {}
-        };
-
-        let count = 0;
-        let promises = data.map(value => {
-            console.log(`Working on ${value}`);
-            let number = value.match(/\d+/)[0];
-
-            return loadImageFromIndexedDB(`image${number}.png`).then(imageSrc => {
-                console.log("Image Found! Loading From IndexedDB");
-                count++;
-                const nameJ = `img${count}`;
-                storyJson.image[nameJ] = imageSrc; // Add property to 'image' object
-
-            }).catch(error => {
-                console.log("Image not found in IndexedDB, will not load from network", error);
-            });
-        });
-
-        // Wait for all images to be processed
-        return Promise.all(promises).then(() => {
-            console.log(storyJson);
-            console.log(`Vox has: ${numberOfValues} images to show\nVox has worked on ${count} images and placed them in a json format.\nNow vox will create the elements needed.`)
-            const container = document.getElementById('topIndicators');
-            container.innerHTML = ''
-            // Loop to create and append elements
-            let externalCount = 0
-            for (let i = 0; i < numberOfValues; i++) {
-                externalCount = externalCount + 1
-                // Create a new progress container
-                const progressContainer = document.createElement('div');
-                progressContainer.className = 'progress-container';
-                progressContainer.setAttribute("data-c", externalCount)
-                progressContainer.id = `cont${externalCount}`
-                // Create a new progress bar
-                const progressBar = document.createElement('div');
-                progressBar.className = 'progress-bar'; // or remove 'active' class as needed
-                if (externalCount === 1) {
-                    console.log(`${externalCount} is 1`)
-                    progressBar.classList.add("active")
-                }
-                progressBar.id = `bar${externalCount}`
-
-                // Append progress bar to progress container
-                progressContainer.appendChild(progressBar);
-
-                // Append progress container to wrapper
-                container.appendChild(progressContainer);
+    // Wait for all images to be processed
+    return Promise.all(promises).then(() => {
+        console.log(storyJson);
+        console.log(`Vox has: ${numberOfValues} images to show\nVox has worked on ${count} images and placed them in a json format.\nNow vox will create the elements needed.`)
+        const container = document.getElementById('topIndicators');
+        container.innerHTML = ''
+        // Loop to create and append elements
+        let externalCount = 0
+        for (let i = 0; i < numberOfValues; i++) {
+            externalCount = externalCount + 1
+            // Create a new progress container
+            const progressContainer = document.createElement('div');
+            progressContainer.className = 'progress-container';
+            progressContainer.setAttribute("data-c", externalCount)
+            progressContainer.id = `cont${externalCount}`
+            // Create a new progress bar
+            const progressBar = document.createElement('div');
+            progressBar.className = 'progress-bar'; // or remove 'active' class as needed
+            if (externalCount === 1) {
+                console.log(`${externalCount} is 1`)
+                progressBar.classList.add("active")
             }
-            let currentStory = 1
-            let stopNow = false
+            progressBar.id = `bar${externalCount}`
+
+            // Append progress bar to progress container
+            progressContainer.appendChild(progressBar);
+
+            // Append progress container to wrapper
+            container.appendChild(progressContainer);
+        }
+        let currentStory = 1
+        let stopNow = false
+        document.getElementById("imgFS").src = storyJson.image[`img${currentStory}`]
+        if (numberOfValues === 1) {
+            stopNow = true
+        }
+
+        stInt = setInterval(function () {
+
+            if (stopNow === true) {
+                document.getElementById("imgf").classList.remove('active');
+                currentStory = 0
+                clearInterval(stInt)
+                stopNow = false
+                return;
+            }
+            currentStory++
+            if (currentStory !== 1) {
+                document.getElementById(`cont${currentStory - 1}`).style.backgroundColor = '#ffffff'
+            }
             document.getElementById("imgFS").src = storyJson.image[`img${currentStory}`]
+            document.getElementById(`bar${currentStory}`).classList.add("active")
+            if (currentStory + 1 > numberOfValues) {
+                console.log("Next story will be empty, preparing cancel")
+                stopNow = true
+            }
+            if (numberOfValues === 1) {
+                stopNow = true
+            }
+        }, 5000)
+        document.getElementById("favorite").addEventListener('click', (event) => {
+            document.getElementById("imgf").classList.remove('active');
+            currentStory = 0
+            clearInterval(stInt)
+            stopNow = false
+            return;
+        })
+        document.getElementById("imgf").addEventListener('click', (event) => {
+            clearInterval(stInt)
+            document.getElementById(`cont${currentStory}`).style.backgroundColor = '#ffffff'
+            if (stopNow === true) {
+                document.getElementById("imgf").classList.remove('active');
+                currentStory = 0
+                clearInterval(stInt)
+                stopNow = false
+                return;
+            }
+            currentStory++
+            if (currentStory !== 1) {
+                document.getElementById(`cont${currentStory - 1}`).style.backgroundColor = '#ffffff'
+            }
+            document.getElementById("imgFS").src = storyJson.image[`img${currentStory}`]
+            document.getElementById(`bar${currentStory}`).classList.add("active")
+            if (currentStory + 1 > numberOfValues) {
+                console.log("Next story will be empty, preparing cancel")
+                stopNow = true
+            }
             if (numberOfValues === 1) {
                 stopNow = true
             }
 
             stInt = setInterval(function () {
-
                 if (stopNow === true) {
                     document.getElementById("imgf").classList.remove('active');
                     currentStory = 0
@@ -1098,87 +1175,34 @@ let stInt;
                     stopNow = true
                 }
             }, 5000)
-            document.getElementById("favorite").addEventListener('click', (event) => {
-                document.getElementById("imgf").classList.remove('active');
-                currentStory = 0
-                clearInterval(stInt)
-                stopNow = false
-                return;
-            })
-            document.getElementById("imgf").addEventListener('click', (event) => {
-                clearInterval(stInt)
-                document.getElementById(`cont${currentStory}`).style.backgroundColor = '#ffffff'
-                if (stopNow === true) {
-                    document.getElementById("imgf").classList.remove('active');
-                    currentStory = 0
-                    clearInterval(stInt)
-                    stopNow = false
-                    return;
-                }
-                currentStory++
-                if (currentStory !== 1) {
-                    document.getElementById(`cont${currentStory - 1}`).style.backgroundColor = '#ffffff'
-                }
-                document.getElementById("imgFS").src = storyJson.image[`img${currentStory}`]
-                document.getElementById(`bar${currentStory}`).classList.add("active")
-                if (currentStory + 1 > numberOfValues) {
-                    console.log("Next story will be empty, preparing cancel")
-                    stopNow = true
-                }
-                if (numberOfValues === 1) {
-                    stopNow = true
-                }
-
-                stInt = setInterval(function () {
-                    if (stopNow === true) {
-                        document.getElementById("imgf").classList.remove('active');
-                        currentStory = 0
-                        clearInterval(stInt)
-                        stopNow = false
-                        return;
-                    }
-                    currentStory++
-                    if (currentStory !== 1) {
-                        document.getElementById(`cont${currentStory - 1}`).style.backgroundColor = '#ffffff'
-                    }
-                    document.getElementById("imgFS").src = storyJson.image[`img${currentStory}`]
-                    document.getElementById(`bar${currentStory}`).classList.add("active")
-                    if (currentStory + 1 > numberOfValues) {
-                        console.log("Next story will be empty, preparing cancel")
-                        stopNow = true
-                    }
-                    if (numberOfValues === 1) {
-                        stopNow = true
-                    }
-                }, 5000)
-            });
-            // Perform additional actions here
-            console.log("All images have been processed");
-            // Example: Call another function or perform another action
-            performAdditionalActions(storyJson);
         });
-    }
-    function showStory(what) {
+        // Perform additional actions here
+        console.log("All images have been processed");
+        // Example: Call another function or perform another action
+        performAdditionalActions(storyJson);
+    });
+}
+function showStory(what) {
 
-        fetch(`http://192.168.1.126:4000/images-database?method=getByType&password=${atob(localStorage.getItem("t50pswd"))}&format=${what}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Received data");
-                localStorage.setItem(`getByType${what}`, JSON.stringify(data));
-                init(data)
+    fetch(`${srv}/images-database?method=getByType&password=${atob(localStorage.getItem("t50pswd"))}&format=${what}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Received data");
+            localStorage.setItem(`getByType${what}`, JSON.stringify(data));
+            init(data)
 
-            }).catch(error => {
-                init(JSON.parse(localStorage.getItem(`getByType${what}`)))
-                console.error("Error fetching data:", error);
-            });
-    }
+        }).catch(error => {
+            init(JSON.parse(localStorage.getItem(`getByType${what}`)))
+            console.error("Error fetching data:", error);
+        });
+}
 
-    function performAdditionalActions(storyJson) {
-        console.log("Additional actions with storyJson:", storyJson);
-        //external actions
-    }
+function performAdditionalActions(storyJson) {
+    console.log("Additional actions with storyJson:", storyJson);
+    //external actions
+}

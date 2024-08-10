@@ -15,6 +15,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <title>Hologram</title>
+    <script defer>
+        let srv;
+        if(localStorage.getItem("srv")) {
+            srv = localStorage.getItem("srv")
+        } else {
+            srv = 'http://192.168.1.126:4000'
+        }
+    </script>
 </head>
 
 <body>
@@ -39,22 +47,22 @@
                 style="vertical-align: middle;width: 20px;height: 20px;"></h2>
         <div class="stories">
 
-            <div class="user me">
+            <div onclick="onlineMode()" class="user me">
                 <img id="me" src="searching_users.gif">
             </div>
             <div class="user new">
                 <img id="u1" src="searching_users.gif">
             </div>
-            <div class="user">
+            <div class="user new2">
                 <img id="u2" src="searching_users.gif">
             </div>
-            <div class="user">
+            <div class="user new3">
                 <img id="u3" src="searching_users.gif">
             </div>
-            <div class="user">
+            <div class="user new4">
                 <img id="u4" src="searching_users.gif">
             </div>
-            <div class="user">
+            <div class="user new">
                 <img id="u5" src="searching_users.gif">
             </div>
 
@@ -112,6 +120,7 @@
                 <img src="dc.png">
             </div>
         </div>
+        <footer style="font-size: xx-small;padding: 10px;">online mode: <code style="color: rgb(255, 0, 0)">red</code><br>offline mode [local]: <code style="color: rgb(0, 136, 255)">blue</code></footer>
         <!-- Fullscreen Zoom Container -->
         <div class="fullscreen-zoom" id="fullscreen-zoom">
             <div class="fullscreen-zoom-overlay" id="fullscreen-overlay"></div>

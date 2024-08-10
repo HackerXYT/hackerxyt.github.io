@@ -12,6 +12,11 @@ body {
     padding: 0;
     /* Remove default padding */
 }
+:root {
+    --con-type-online: rgb(255, 0, 0);
+    --con-type-offline: rgb(0, 136, 255);
+    --con-type: var(--con-type-offline)
+}
 
 .container {
     width: 100%;
@@ -58,6 +63,18 @@ body {
     background: -webkit-linear-gradient(left top, rgb(5, 255, 18) 0%, rgb(115, 0, 255) 100%);
 }
 
+.stories .user.new2 {
+    background: -webkit-linear-gradient(left top, rgb(193, 5, 255) 0%, rgb(255, 0, 72) 100%);
+}
+
+.stories .user.new3 {
+    background: -webkit-linear-gradient(left top, rgb(176, 255, 5) 0%, rgb(255, 0, 0) 100%);
+}
+
+.stories .user.new4 {
+    background: -webkit-linear-gradient(left top, rgb(5, 255, 226) 0%, rgb(255, 170, 0) 100%);
+}
+
 .stories .user.me {
     background: transparent;
     border: none; /* Remove the border to use the pseudo-element for the effect */
@@ -72,7 +89,7 @@ body {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 1.7px dashed rgb(0, 136, 255);
+    border: 1.7px dashed var(--con-type);
     box-sizing: border-box;
     animation: rotateBorder 10s linear infinite;
 }
