@@ -208,6 +208,70 @@ body {
     }
 }
 
+/* Existing styles for gallery and images */
+
+.fullscreen-zoom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    overflow: hidden;
+    transition: background-color 0.8s ease-in-out;
+}
+
+.fullscreen-zoom-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.775);
+}
+
+.fullscreen-zoom-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+.fullscreen-zoom-content img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Animation styles */
+.image {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.zooming {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    transition: transform 0.5s ease, top 0.5s ease, left 0.5s ease;
+    z-index: 999; /* Ensure it's above other content */
+}
+
+.fullscreen-zoom.active {
+    display: flex;
+}
+
+.fullscreen-zoom.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
 .popup {
     font-family: "SF";
@@ -304,4 +368,60 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+}
+
+
+.imgF {
+    font-family: "SF";
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    /* for Internet Explorer, Edge */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    /* Change from 'visible' to 'auto' */
+    scroll-behavior: smooth;
+    touch-action: auto;
+    justify-content: center;
+    background: rgba(13, 11, 15, 0.537);
+
+    /* Semi-transparent black overlay */
+    z-index: 998;
+    box-sizing: border-box;
+    /* Include padding in the element's total width and height */
+    box-shadow: 0 0 10px rgba(20, 20, 20, 0.628);
+    color: white;
+    opacity: 1;
+    /* Initially hidden */
+    visibility: hidden;
+    /* Initially hidden */
+    transform: translateX(120%);
+    /* Initially off-screen to the left */
+    transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out;
+
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    /* Transition for sliding effect, opacity, and visibility */
+    overflow: hidden;
+}
+
+.imgF.active {
+    opacity: 1;
+    /* Show the popup */
+    visibility: visible;
+    /* Show the popup */
+    transform: translateX(0);
+    /* Slide the popup into view */
+}
+
+.imgF img {
+    width: 100%;
+    height: 100%;
+    object-fit:cover;
 }

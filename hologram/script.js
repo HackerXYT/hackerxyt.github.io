@@ -1,6 +1,6 @@
 let selected = null;
 let info = null;
-
+let mode = "b"
 function retryLogin() {
     document.getElementById("mhUsername").value = ''
     document.getElementById("mhCode").value = ''
@@ -412,6 +412,8 @@ function dbload() {
 
             if (numberOfValues === 0) {
                 console.log("No images loaded", `http://192.168.1.126:4000/images-database?password=[atob]&method=getIDs`);
+            } else {
+                fullSc()
             }
 
             ////console.log("Ready");
@@ -606,6 +608,8 @@ function filter(vv, element) {
 
             if (numberOfValues === 0) {
                 console.log("No images loaded", `http://192.168.1.126:4000/images-database?method=getByType&password=[atob]&format=${what}`);
+            } else {
+                fullSc()
             }
         }).catch(error => {
             // Handle errors
@@ -726,6 +730,8 @@ function filter(vv, element) {
 
                 if (numberOfValues === 0) {
                     console.log("No images loaded", `http://192.168.1.126:4000/images-database?method=getByType&password=[atob]&format=${what}`);
+                } else {
+                    fullSc()
                 }
             } else {
                 alert("Unable to load, you are offline!")
@@ -772,6 +778,7 @@ function loadStories() {
                 loadImageFromIndexedDB(`image${number}.png`).then(imageSrc => {
                     console.log("Image Found! Loading From IndexedDB");
                     imageElement.src = imageSrc; // Set image source to Blob URL from IndexedDB
+                    imageElement.alt = type
                 }).catch(error => {
                     console.log("Image not found in IndexedDB, loading from network", error);
 
@@ -894,3 +901,105 @@ if ('serviceWorker' in navigator) {
 //        console.log('Error getting service worker registrations:', error);
 //    });
 //}
+
+function fullSc() {
+    const galleryImages = document.querySelectorAll('.image img');
+    const fullscreenZoom = document.getElementById('fullscreen-zoom');
+    const fullscreenOverlay = document.getElementById('fullscreen-overlay');
+    const zoomedImage = document.getElementById('zoomed-image');
+
+    function openFullscreenZoom(img, clickX, clickY) {
+        // Create a clone of the clicked image
+        const clonedImage = img.cloneNode();
+        clonedImage.classList.add('zooming');
+        document.body.appendChild(clonedImage);
+
+        // Get bounding rectangle of the image
+        const rect = img.getBoundingClientRect();
+        const imgX = rect.left;
+        const imgY = rect.top;
+        const imgWidth = rect.width;
+        const imgHeight = rect.height;
+
+        // Calculate click position relative to the image
+        const clickXRelative = clickX - imgX;
+        const clickYRelative = clickY - imgY;
+
+        // Set the initial position and size of the cloned image
+        clonedImage.style.top = `${imgY}px`;
+        clonedImage.style.left = `${imgX}px`;
+        clonedImage.style.width = `${imgWidth}px`;
+        clonedImage.style.height = `${imgHeight}px`;
+
+        // Trigger reflow to apply the initial styles
+        requestAnimationFrame(() => {
+            clonedImage.style.transform = `translate(${clickXRelative}px, ${clickYRelative}px) scale(2)`;
+            clonedImage.style.top = '50%'; // Move to center
+            clonedImage.style.left = '50%'; // Move to center
+            clonedImage.style.transform = `translate(-50%, -50%) scale(2)`; // Center and scale
+        });
+
+        // Show fullscreen container after animation
+        setTimeout(() => {
+            fullscreenZoom.classList.add('active');
+            zoomedImage.src = img.src;
+            document.body.removeChild(clonedImage); // Remove cloned image
+        }, 400); // Match with animation duration
+    }
+
+    function closeFullscreenZoom() {
+        fullscreenZoom.classList.add('fade-out');
+        setTimeout(() => {
+            fullscreenZoom.classList.remove('active', 'fade-out');
+            zoomedImage.src = ''; // Clear the image source
+        }, 300); // Match with transition duration
+    }
+
+    galleryImages.forEach(img => {
+        img.addEventListener('click', (event) => {
+            const clickX = event.clientX;
+            const clickY = event.clientY;
+            openFullscreenZoom(img, clickX, clickY);
+        });
+    });
+
+    zoomedImage.addEventListener('click', closeFullscreenZoom);
+
+    // Optional: Close fullscreen zoom when pressing 'Escape' key
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeFullscreenZoom();
+        }
+    });
+}
+
+function fullScs() {
+    const galleryImages = document.querySelectorAll('.image img');
+    const fullscreenZoom = document.getElementById('fullscreen-zoom');
+    const fullscreenOverlay = document.getElementById('fullscreen-overlay');
+    const zoomedImage = document.getElementById('zoomed-image');
+
+
+    galleryImages.forEach(img => {
+        img.addEventListener('click', (event) => {
+            // Get the image element that was clicked
+            const clickedImg = event.target;
+
+            // Obtain the source of the image
+            const imgSrc = clickedImg.src;
+
+            // Log the image source to the console
+            console.log('Image source:', imgSrc);
+
+            // Update the src of the imgFS element with the clicked image's src
+            document.getElementById("imgFS").src = imgSrc;
+
+            // Add the 'active' class to the imgF element
+            document.getElementById("imgf").classList.add("active");
+
+            // Optionally open a fullscreen zoom (assuming openFullscreenZoom function exists)
+            // openFullscreenZoom(clickedImg);
+        });
+    });
+
+}
