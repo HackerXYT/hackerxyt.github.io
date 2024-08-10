@@ -46,9 +46,11 @@ if (inputElement2) {
 }
 function loginNow() {
     if (document.getElementById("mhUsername").value === '') {
+        alert("Username is empty!")
         return;
     }
     if (document.getElementById("mhCode").value === '') {
+        alert("Code is empty!")
         return;
     }
     fetch(`${srv}/otp?method=hologram&username=${document.getElementById("mhUsername").value}&code=${document.getElementById("mhCode").value}`)
@@ -92,6 +94,7 @@ function loginNow() {
 
         })
         .catch(error => {
+            alert("An error occured!",error)
             console.error(error);
         });
 }
