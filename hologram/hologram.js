@@ -1,17 +1,34 @@
-self.addEventListener('fetch', function(event) {
-    if (event.request.destination === 'image') {
-        event.respondWith(
-            caches.match(event.request).then(function(response) {
-                return response || fetch(event.request).then(function(response) {
-                    return caches.open('images-cache').then(function(cache) {
-                        cache.put(event.request, response.clone());
-                        return response;
-                    });
-                });
-            })
-        );
-    }
-});
+//self.addEventListener('fetch', function(event) {
+//    if (event.request.destination === 'image') {
+//        event.respondWith(
+//            caches.match(event.request).then(function(cachedResponse) {
+//                if (cachedResponse) {
+//                    return cachedResponse; // Cache hit - return the cached response
+//                }
+//
+//                // Fetch from the network
+//                return fetch(event.request).then(function(networkResponse) {
+//                    // Check if the response is valid and cloneable before using
+//                    if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+//                        return networkResponse;
+//                    }
+//
+//                    // Clone the response for caching
+//                    const responseClone = networkResponse.clone();
+//
+//                    caches.open('images-cache').then(function(cache) {
+//                        cache.put(event.request, responseClone);
+//                    });
+//
+//                    return networkResponse;
+//                });
+//            }).catch(function() {
+//                // If both cache and network fail, try to serve a fallback image
+//                return caches.match('/hologram/nexusEpsilon.png');
+//            })
+//        );
+//    }
+//});
 
 
 const STATIC_CACHE_NAME = 'static-cache-v1';
@@ -33,7 +50,9 @@ const CACHE_STATIC = [
   '/hologram/script.js',
   '/hologram/SFUIText-Medium.ttf',
   '/hologram/searching_users.gif',
-  '/hologram/sline.png'
+  '/hologram/sline.png',
+  '/hologram/hologramW.png',
+  '/hologram/arrow-down.svg'
 ];
 const CACHE_APP = [
   '/hologram/script.js'

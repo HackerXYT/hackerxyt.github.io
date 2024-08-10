@@ -5769,6 +5769,20 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		</g>
 	</svg>
 </div>`
+const otp_info = `<div onclick='$("#otp_info").fadeOut("fast", function () {$("#apps_using_evox").fadeIn("fast")});navigator("sign_in_wevox")' class="circle">
+
+	<svg xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
+		id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+		<g>
+			<g>
+				<path xmlns="http://www.w3.org/2000/svg"
+					d="M256,0C114.837,0,0,114.837,0,256s114.837,256,256,256s256-114.837,256-256S397.163,0,256,0z M384,277.333H179.499    l48.917,48.917c8.341,8.341,8.341,21.824,0,30.165c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251    l-85.333-85.333c-1.963-1.963-3.52-4.309-4.608-6.933c-2.155-5.205-2.155-11.093,0-16.299c1.088-2.624,2.645-4.971,4.608-6.933    l85.333-85.333c8.341-8.341,21.824-8.341,30.165,0s8.341,21.824,0,30.165l-48.917,48.917H384c11.776,0,21.333,9.557,21.333,21.333    S395.776,277.333,384,277.333z">
+				</path>
+			</g>
+		</g>
+	</svg>
+</div>`
 	const sign_in_wevox_t = `<div onclick='$("#tasco_deluxe_info").fadeOut("fast", function () {$("#apps_using_evox").fadeIn("fast")});navigator("sign_in_wevox")' class="circle">
 
 	<svg xmlns="http://www.w3.org/2000/svg"
@@ -5909,6 +5923,9 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 	}
 	if (w === "securelineGrid") {
 		document.getElementById("navigator").innerHTML = securelineGrid
+	}
+	if (w === "otp_info") {
+		document.getElementById("navigator").innerHTML = otp_info
 	}
 
 
@@ -6435,6 +6452,12 @@ function app_use_info(app) {
 			});
 		$("#apps_using_evox").fadeOut("fast", function () {
 			$("#tasco_deluxe_info").fadeIn("fast")
+		})
+	} else if (app === "otp_info") {
+		loadOTP()
+		navigator('otp_info')
+		$("#apps_using_evox").fadeOut("fast", function () {
+			$("#otp_info").fadeIn("fast")
 		})
 	}
 
@@ -7762,4 +7785,61 @@ function rotateElement() {
 			element.style.transform = `rotate(${newRotation}deg)`;
 		}
 	}, 900)
+}
+
+function loadOTP() {
+	document.getElementById("otpCurrent").innerHTML = `
+                <svg width="25px" height="25px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                    y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                    <path fill="#fff"
+                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                    </path>
+                </svg>`
+	fetch(`${srv}/otp?method=get&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+	.then(response => response.text())
+	.then(data => {
+		if(data !== "Denied") {
+			document.getElementById("otpCurrent").innerText = data
+		}
+
+	})
+	.catch(error => {
+		console.error(error);
+	});
+}
+
+function createOTP() {
+	if(document.getElementById("otpCurrent").innerText === "None") {
+		fetch(`${srv}/otp?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+		.then(response => response.text())
+		.then(data => {
+			if(data !== "Denied") {
+				document.getElementById("otpCurrent").innerText = data
+				setTimeout(function() {
+					loadOTP()
+				  }, 60000)
+			}
+
+		})
+		.catch(error => {
+			console.error(error);
+		});
+	}
+	
+}
+
+function refreshOTP() {
+	fetch(`${srv}/otp?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+	.then(response => response.text())
+	.then(data => {
+		if(data !== "Denied") {
+			document.getElementById("otpCurrent").innerText = data
+		}
+
+	})
+	.catch(error => {
+		console.error(error);
+	});
 }

@@ -1,6 +1,100 @@
 let selected = null;
 let info = null;
 
+function retryLogin() {
+    document.getElementById("mhUsername").value = ''
+    document.getElementById("mhCode").value = ''
+    document.getElementById("loginDiv").classList.remove("active")
+    document.getElementById("mainContainer").style.transform = "scale(1)"
+    setTimeout(function () {
+        document.getElementById("main").style.display = ""
+        document.getElementById("notiText").style.display = "none"
+        document.getElementById("error").style.display = "none"
+        document.getElementById("loginDiv").classList.add("active")
+        document.getElementById("mainContainer").style.transform = "scale(0.98)"
+    }, 500)
+}
+const inputElement = document.getElementById('mhCode');
+
+// Check if the input element exists
+if (inputElement) {
+    // Add event listener for the keydown event
+    inputElement.addEventListener('keydown', function(event) {
+        // Check if the pressed key is Enter (key code 13)
+        if (event.key === 'Enter') {
+            // Prevent the default action (e.g., form submission)
+            event.preventDefault();
+            // Call the function
+            loginNow()
+        }
+    });
+}
+const inputElement2 = document.getElementById('mhUsername');
+
+// Check if the input element exists
+if (inputElement2) {
+    // Add event listener for the keydown event
+    inputElement2.addEventListener('keydown', function(event) {
+        // Check if the pressed key is Enter (key code 13)
+        if (event.key === 'Enter') {
+            // Prevent the default action (e.g., form submission)
+            event.preventDefault();
+            // Call the function
+            loginNow()
+        }
+    });
+}
+function loginNow() {
+    if (document.getElementById("mhUsername").value === '') {
+        return;
+    }
+    if (document.getElementById("mhCode").value === '') {
+        return;
+    }
+    fetch(`http://192.168.1.126:4000/otp?method=hologram&username=${document.getElementById("mhUsername").value}&code=${document.getElementById("mhCode").value}`)
+        .then(response => response.text())
+        .then(data => {
+            console.log(data)
+            if (data === "Limited") {
+                document.getElementById("loginDiv").classList.remove("active")
+                document.getElementById("mainContainer").style.transform = "scale(1)"
+                setTimeout(function () {
+                    document.getElementById("main").style.display = "none"
+                    document.getElementById("notiText").style.display = ""
+                    document.getElementById("error").style.display = ""
+                    document.getElementById("notiText").innerText = "Your account is not compatible with Hologram"
+                    document.getElementById("loginDiv").classList.add("active")
+                    document.getElementById("mainContainer").style.transform = "scale(0.98)"
+                }, 500)
+            } else if (data === "No") {
+                document.getElementById("loginDiv").classList.remove("active")
+                document.getElementById("mainContainer").style.transform = "scale(1)"
+                setTimeout(function () {
+                    document.getElementById("main").style.display = "none"
+                    document.getElementById("notiText").style.display = ""
+                    document.getElementById("error").style.display = ""
+                    document.getElementById("notiText").innerText = "The code you provided is incorrect or expired."
+                    document.getElementById("loginDiv").classList.add("active")
+                    document.getElementById("mainContainer").style.transform = "scale(0.98)"
+                }, 500)
+            } else {
+                document.getElementById("loginDiv").classList.remove("active")
+                document.getElementById("mainContainer").style.transform = "scale(1)"
+                const accJson = JSON.parse(data)
+                localStorage.setItem("t50-email", accJson.email)
+                localStorage.setItem("t50-username", accJson.username)
+                localStorage.setItem("t50pswd", btoa(accJson.password))
+                setTimeout(function() {
+                    window.location.reload()
+                }, 800)
+                
+            }
+
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
 if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
     function getep() {
         // Prompt for email
@@ -37,54 +131,152 @@ if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
         window.location.reload()
     }
 
-    getep()
+    document.getElementById("mainContainer").style.transform = "scale(0.98)"
+    document.getElementById("loginDiv").classList.add("active")
+    //getep()
 
+} else {
+    begin()
+    fetch(`http://192.168.1.126:4000/images/checkOwnerShip?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json', // Modify this based on your API's requirements
+        }
+    })
+        .then(response => response.text())
+        .then(data => {
+            //console.log(data)
+            if (data === "Accepted") {
+                console.log("All ok")
+            } else {
+                alert("far you go..")
+                localStorage.clear()
+                window.location.reload()
+
+            }
+            document.getElementById("me").src = "notyetloaded.gif";
+            fetch(`http://192.168.1.126:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${localStorage.getItem("t50-username")}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(profileimage => {
+                    if (profileimage.indexOf("base64") === -1) {
+                        ////console.log("Fixing Base64");
+                        profileimage = "data:image/jpeg;base64," + profileimage;
+                    }
+                    // Resolve with profile image
+                    document.getElementById("me").src = profileimage
+                })
+                .catch(error => {
+                    console.error("Cannot set src for", username);
+                    console.error(error);
+                    reject(error);
+                });
+
+        }).catch(error => {
+            // Handle errors
+            alert('Profile Picture Failed To Load:', error)
+            console.error('Error:', error);
+        });
+    fetch(`http://192.168.1.126:4000/images-database?method=getTypes&password=${atob(localStorage.getItem("t50pswd"))}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json', // Modify this based on your API's requirements
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            types = data
+            localStorage.setItem("types", JSON.stringify(data))
+            loadStories()
+        }).catch(error => {
+            // Handle errors
+            alert(error);
+            console.error('Error:', error);
+        });
 }
 
-fetch(`http://192.168.1.126:4000/images/checkOwnerShip?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}`, {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json', // Modify this based on your API's requirements
-    }
-})
-    .then(response => response.text())
-    .then(data => {
-        //console.log(data)
-        if (data === "Accepted") {
-            console.log("All ok")
-        } else {
-            alert("far you go..")
-            localStorage.clear()
-            window.location.reload()
+function openDatabase() {
+    return new Promise((resolve, reject) => {
+        const dbRequest = indexedDB.open('imagesDB', 1); // Ensure the version is correct (1 in this case)
 
-        }
+        dbRequest.onupgradeneeded = function (event) {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains('images')) {
+                db.createObjectStore('images', { keyPath: 'name' });
+            }
+        };
 
-        fetch(`http://192.168.1.126:4000/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${localStorage.getItem("t50-username")}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.text();
-            })
-            .then(profileimage => {
-                if (profileimage.indexOf("base64") === -1) {
-                    ////console.log("Fixing Base64");
-                    profileimage = "data:image/jpeg;base64," + profileimage;
-                }
-                // Resolve with profile image
-                document.getElementById("me").src = profileimage
-            })
-            .catch(error => {
-                console.error("Cannot set src for", username);
-                console.error(error);
-                reject(error);
-            });
+        dbRequest.onsuccess = function (event) {
+            resolve(event.target.result);
+        };
 
-    }).catch(error => {
-        // Handle errors
-        alert(error)
-        console.error('Error:', error);
+        dbRequest.onerror = function (event) {
+            reject('Failed to open IndexedDB:', event.target.errorCode);
+        };
     });
+}
+
+async function fetchImageAndSaveToIndexedDB(imageUrl) {
+    const response = await fetch(imageUrl);
+    const blob = await response.blob();
+    return blob;
+}
+async function saveImageToIndexedDB(imageBlob, imageName) {
+    const dbRequest = indexedDB.open('imagesDB', 1);
+
+    dbRequest.onupgradeneeded = function (event) {
+        const db = event.target.result;
+        db.createObjectStore('images', { keyPath: 'name' });
+    };
+
+    dbRequest.onsuccess = function (event) {
+        const db = event.target.result;
+        const transaction = db.transaction(['images'], 'readwrite');
+        const store = transaction.objectStore('images');
+        store.put({ name: imageName, blob: imageBlob });
+    };
+
+    dbRequest.onerror = function (event) {
+        console.error('Error opening IndexedDB:', event.target.errorCode);
+    };
+}
+
+async function cacheImage(imageUrl, imageName) {
+    const imageBlob = await fetchImageAndSaveToIndexedDB(imageUrl);
+    await saveImageToIndexedDB(imageBlob, imageName);
+}
+
+function loadImageFromIndexedDB(imageName) {
+    return new Promise((resolve, reject) => {
+        openDatabase().then(db => {
+            const transaction = db.transaction(['images'], 'readonly');
+            const store = transaction.objectStore('images');
+            const getRequest = store.get(imageName);
+
+            getRequest.onsuccess = function (event) {
+                const record = event.target.result;
+                if (record) {
+                    const url = URL.createObjectURL(record.blob);
+                    resolve(url); // Return the Blob URL
+                } else {
+                    reject('Image not found in IndexedDB');
+                }
+            };
+
+            getRequest.onerror = function () {
+                reject('Failed to retrieve the image from IndexedDB');
+            };
+        }).catch(error => {
+            reject(error);
+        });
+    });
+}
+
+
 
 
 function dbload() {
@@ -128,10 +320,41 @@ function dbload() {
                 div.className = `image`;
                 div.id = `item${number}`;
 
+                // Create an img element
                 const img = document.createElement("img");
                 img.alt = `Image ${number}`;
                 img.id = `img${number}`;
-                img.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+
+                // Set initial placeholder src
+                img.src = "searching_users.gif";
+                const imageName = `image${number}.png`;
+                // Attempt to load the image from IndexedDB
+                loadImageFromIndexedDB(`image${number}.png`).then(imageSrc => {
+                    console.log("Image Found! Loading From IndexedDB");
+                    img.src = imageSrc; // Set image source to Blob URL from IndexedDB
+                }).catch(error => {
+                    console.log("Image not found in IndexedDB, loading from network", error);
+
+                    // Fallback to network URL
+                    img.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+
+                    // Fetch and cache the image
+                    fetch(img.src).then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.blob(); // Get the image as a Blob
+                    }).then(blob => {
+                        // Cache the image in IndexedDB
+                        cacheImage(URL.createObjectURL(blob), `image${number}.png`);
+                        const blobUrl = URL.createObjectURL(blob); // Create a Blob URL
+                        img.src = blobUrl
+                    }).catch(fetchError => {
+                        console.error('Error fetching or caching image:', fetchError);
+                    });
+                })
+                //img.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+
                 img.onclick = function () {
                     selected = number
                 }
@@ -292,7 +515,31 @@ function filter(vv, element) {
                 const img = document.createElement("img");
                 img.alt = `Image ${number}`;
                 img.id = `img${number}`;
-                img.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                img.src = "searching_users.gif";
+                const imageName = `image${number}.png`;
+                // Attempt to load the image from IndexedDB
+                loadImageFromIndexedDB(`image${number}.png`).then(imageSrc => {
+                    console.log("Image Found! Loading From IndexedDB");
+                    img.src = imageSrc; // Set image source to Blob URL from IndexedDB
+                }).catch(error => {
+                    console.log("Image not found in IndexedDB, loading from network", error);
+
+                    // Fallback to network URL
+                    img.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+
+                    // Fetch and cache the image
+                    fetch(img.src).then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.blob(); // Get the image as a Blob
+                    }).then(blob => {
+                        // Cache the image in IndexedDB
+                        cacheImage(URL.createObjectURL(blob), `image${number}.png`);
+                    }).catch(fetchError => {
+                        console.error('Error fetching or caching image:', fetchError);
+                    });
+                })
                 img.onclick = function () {
                     selected = number
                 }
@@ -355,24 +602,9 @@ function getRandomValue(arr) {
 }
 let types = [];
 
-fetch(`http://192.168.1.126:4000/images-database?method=getTypes&password=${atob(localStorage.getItem("t50pswd"))}`, {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json', // Modify this based on your API's requirements
-    }
-})
-    .then(response => response.json())
-    .then(data => {
-        types = data
-        localStorage.setItem("types", JSON.stringify(data))
-        loadStories()
-    }).catch(error => {
-        // Handle errors
-        alert(error);
-        console.error('Error:', error);
-    });
 
-//begin()
+
+//
 
 
 let start = 0
@@ -388,6 +620,7 @@ function loadStories() {
         })
             .then(response => response.json())
             .then(data => {
+                localStorage.setItem(`type${type}`, data)
 
                 const iconPfp = getRandomValue(data);
                 let number = iconPfp.match(/\d+/)[0];
@@ -395,7 +628,32 @@ function loadStories() {
                 document.getElementById(`op${start}`).innerText = `${type}`
 
                 const imageElement = document.getElementById(`u${start}`);
-                imageElement.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                //imageElement.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                imageElement.src = "searching_users.gif";
+                const imageName = `image${number}.png`;
+                // Attempt to load the image from IndexedDB
+                loadImageFromIndexedDB(`image${number}.png`).then(imageSrc => {
+                    console.log("Image Found! Loading From IndexedDB");
+                    imageElement.src = imageSrc; // Set image source to Blob URL from IndexedDB
+                }).catch(error => {
+                    console.log("Image not found in IndexedDB, loading from network", error);
+
+                    // Fallback to network URL
+                    imageElement.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+
+                    // Fetch and cache the image
+                    fetch(imageElement.src).then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.blob(); // Get the image as a Blob
+                    }).then(blob => {
+                        // Cache the image in IndexedDB
+                        cacheImage(URL.createObjectURL(blob), `image${number}.png`);
+                    }).catch(fetchError => {
+                        console.error('Error fetching or caching image:', fetchError);
+                    });
+                })
                 imageElement.style.display = 'flex'
                 imageElement.style.opacity = '1'
 
@@ -413,17 +671,89 @@ function loadStories() {
                 }
             }).catch(error => {
                 // Handle errors
-                alert(error);
-                console.error('Error:', error);
+                //alert(error);
+                if (localStorage.getItem(`type${type}`)) {
+                    const data = JSON.parse(localStorage.getItem(`type${type}`))
+                    const iconPfp = getRandomValue(data);
+                    let number = iconPfp.match(/\d+/)[0];
+                    start = start + 1;
+                    document.getElementById(`op${start}`).innerText = `${type}`
+
+                    const imageElement = document.getElementById(`u${start}`);
+                    //imageElement.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                    imageElement.src = "searching_users.gif";
+                    const imageName = `image${number}.png`;
+                    // Attempt to load the image from IndexedDB
+                    loadImageFromIndexedDB(`image${number}.png`).then(imageSrc => {
+                        console.log("Image Found! Loading From IndexedDB");
+                        imageElement.src = imageSrc; // Set image source to Blob URL from IndexedDB
+                    }).catch(error => {
+                        console.log("Image not found in IndexedDB, loading from network", error);
+
+                        // Fallback to network URL
+                        imageElement.src = `http://192.168.1.126:4000/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+
+                        // Fetch and cache the image
+                        fetch(imageElement.src).then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.blob(); // Get the image as a Blob
+                        }).then(blob => {
+                            // Cache the image in IndexedDB
+                            cacheImage(URL.createObjectURL(blob), `image${number}.png`);
+                        }).catch(fetchError => {
+                            console.error('Error fetching or caching image:', fetchError);
+                        });
+                    })
+                    imageElement.style.display = 'flex'
+                    imageElement.style.opacity = '1'
+
+                    imageElement.onload = function () {
+                        console.log('Image has fully loaded');
+                        // Set the styles to display and make the image fully opaque
+                        imageElement.style.display = 'flex';
+                        imageElement.style.opacity = '1';
+                    };
+
+                    // In case the image is already cached and `onload` doesn’t fire,
+                    // you might want to trigger it manually
+                    if (imageElement.complete) {
+                        imageElement.onload();
+                    }
+                } else {
+                    alert("Tried to handle error but localStorage didn't cooperate", error)
+                }
+                console.error('Handling Error:', error);
             });
     });
 
 }
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('hologram.js').then(function(registration) {
+    navigator.serviceWorker.register('hologram.js').then(function (registration) {
         console.log('Service Worker registered with scope:', registration.scope);
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.log('Service Worker registration failed:', error);
     });
 }
+
+//if ('serviceWorker' in navigator) {
+//    // First, get all service worker registrations
+//    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+//        // Loop through each registration and unregister it
+//        registrations.forEach(function (registration) {
+//            registration.unregister().then(function (success) {
+//                if (success) {
+//                    console.log('Service Worker unregistered successfully.');
+//                } else {
+//                    console.log('Service Worker failed to unregister.');
+//                }
+//            }).catch(function (error) {
+//                console.log('Service Worker unregistration failed:', error);
+//            });
+//        });
+//    }).catch(function (error) {
+//        console.log('Error getting service worker registrations:', error);
+//    });
+//}

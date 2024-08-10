@@ -18,8 +18,24 @@
 </head>
 
 <body>
-    <div class="container">
-        <h2 class="title" style="margin-top: 0;"><img src="hologramW.png" height="15px"><img src='arrow-down.svg'
+    <div class="popup" id="loginDiv">
+        <div id="main">
+            <h2>Welcome to Hologram!</h2>
+            <p style="text-align: center;">You need a compatible Evox Account to use this service.</p>
+            <input class="otpInput" id="mhUsername" type="text" name="username" placeholder="Evox username">
+            <input class="otpInput" id="mhCode" type="text" placeholder="One time code">
+            <button class="otpButton" onclick="loginNow()">Grant Access</button>
+        </div>
+        <div style="display: none;" id="error">
+            <h2>Verification failed.</h2>
+            <p id="notiText" style="text-align: center;">Your account is not compatible with Hologram</p>
+            <button onclick="retryLogin()" class="otpButton">Retry Verification</button>
+            <button class="otpButton" href="../evox-epsilon/">Go To Epsilon</button>
+        </div>
+    </div>
+    <div id="mainContainer" class="container">
+        <h2 class="title" style="margin-top: 0;"><img src="hologramW.png" height="15px"><img
+                onclick="alert('App Will Reload');window.location.reload()" src='arrow-down.svg'
                 style="vertical-align: middle;width: 20px;height: 20px;"></h2>
         <div class="stories">
 
