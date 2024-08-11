@@ -40,9 +40,31 @@ if (inputElement2) {
             // Prevent the default action (e.g., form submission)
             event.preventDefault();
             // Call the function
-            loginNow()
+            reqOtp()
         }
     });
+}
+function reqOtp() {
+    if (document.getElementById("mhUsername").value === '') {
+        alert("Username is empty!")
+        return;
+    }
+    fetch(`${srv}/otp?username=${document.getElementById("mhUsername").value}&method=request`)
+        .then(response => response.text())
+        .then(data => {
+            if(data === 'Done') {
+                document.getElementById("otpReq").style.display = 'none'
+                setTimeout(function() {
+                    document.getElementById("otpReq").style.display = ''
+                }, 10000)
+            } else {
+                alert(`Error ${data}`)
+            }
+        })
+        .catch(error => {
+            alert("An error occured!",error)
+            console.error(error);
+        });
 }
 function loginNow() {
     if (document.getElementById("mhUsername").value === '') {
