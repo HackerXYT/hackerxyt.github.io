@@ -116,7 +116,7 @@ function loginNow() {
 
         })
         .catch(error => {
-            alert("An error occured!",error)
+            alert(`An error occured! ${error}`)
             console.error(error);
         });
 }
