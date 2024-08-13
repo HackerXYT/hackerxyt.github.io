@@ -9,8 +9,8 @@
     "start_url": "https://evoxs.xyz/oasaMobile/index.html",
     "scope": "https://evoxs.xyz/oasaMobile/index.html",
     "description": "A reloaded version of OASA, now on Evox!",
-    "background_color": "#121212",
-    "theme_color": "#121212",
+    "background_color": "#151515",
+    "theme_color": "#151515",
     "edge_side_panel": {
         "preferred_width": 445
     },
