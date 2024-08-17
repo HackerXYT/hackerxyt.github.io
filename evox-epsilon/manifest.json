@@ -2,7 +2,7 @@
   "name": "Evox Epsilon",
   "short_name": "Epsilon",
   "id": "evx-epsilon",
-  "start_url": "/?source=pwa",
+  "start_url": "/evox-epsilon/?source=pwa",
   "background_color": "#2c2c2c",
   "display": "standalone",
   "display_override": ["tabbed"],
