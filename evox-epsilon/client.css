@@ -3870,6 +3870,10 @@ input:-webkit-autofill {
 
 }
 
+.glass.login {
+  transition: transform 1.4s ease-in-out, opacity 1s ease-in-out, visibility 1s ease-in-out, padding-bottom 1s ease-in-out;
+}
+
 .glass.active {
   opacity: 1;
   /* Show the popup */
