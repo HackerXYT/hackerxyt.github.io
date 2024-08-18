@@ -3,7 +3,7 @@
   "short_name": "Epsilon",
   "id": "evx-epsilon",
   "start_url": "/evox-epsilon/?source=pwa",
-  "background_color": "#2c2c2c",
+  "background_color": "#000",
   "display": "standalone",
   "display_override": ["tabbed"],
   "tab_strip": {
@@ -14,7 +14,7 @@
   "orientation": "portrait",
   "dir": "ltr",
   "scope": "/evox-epsilon/",
-  "theme_color": "#2c2c2c",
+  "theme_color": "#000",
   "lang": "en-US",
   "categories": [
     "entertainment",

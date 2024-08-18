@@ -51,6 +51,7 @@ html {
 
 
 
+
 .navbar {
   position: fixed;
   bottom: 25px;
@@ -235,35 +236,13 @@ body {
   margin: 0;
   padding: 0;
   font-family: "SF", sans-serif;
-  background-color: #121212;
+  background-color: #000;
   color: white;
-  -webkit-user-select: none;
-  /* Safari */
-  -ms-user-select: none;
-  /* IE 10 and IE 11 */
   user-select: none;
   /* Standard syntax */
   overflow: hidden;
-  overscroll-behavior: none;
-  touch-action: manipulation;
-  overscroll-behavior-y: contain;
-  /* For newer browsers */
-  overscroll-behavior: contain;
+  /* Allow scrolling */
   font-size: medium;
-  /* For older browsers */
-
-}
-
-body {
-  font-family: "SF";
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  background: #000000;
-
-  position: fixed;
-  width: 100%;
-
 }
 
 body.disabled {
@@ -295,10 +274,7 @@ img {
 }
 
 .container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -307,6 +283,7 @@ img {
   background-color: transparent;
   border-radius: 10px;
   transition: filter 0.5s ease-in-out;
+
 }
 
 .logo {
@@ -1860,17 +1837,21 @@ a {
   width: 100%;
   margin: 0;
   padding: 0;
-  position: relative; /* Ensure the container is positioned */
+  position: relative;
+  /* Ensure the container is positioned */
   display: flex;
-  justify-content: center; /* Center children horizontally */
-  align-items: flex-start; /* Align children to the bottom */
+  justify-content: center;
+  /* Center children horizontally */
+  align-items: flex-start;
+  /* Align children to the bottom */
 }
 
 .message-container {
   top: -80px;
   height: 750px;
   max-height: 750px;
-  overflow: auto; /* or overflow-y: auto; */
+  overflow: auto;
+  /* or overflow-y: auto; */
   -webkit-user-select: text;
   -ms-user-select: text;
   user-select: text;
@@ -1889,9 +1870,12 @@ a {
   align-items: center;
   justify-content: center;
   position: fixed;
-  left: 50%; /* Center on X-axis */
-  transform: translateX(-50%); /* Offset by 50% of the element's width */
-  bottom: 17px; /* Position at the bottom with a 10px margin */
+  left: 50%;
+  /* Center on X-axis */
+  transform: translateX(-50%);
+  /* Offset by 50% of the element's width */
+  bottom: 17px;
+  /* Position at the bottom with a 10px margin */
   padding: 5px;
   background-color: #202d35;
   border-radius: 35px;
@@ -1920,7 +1904,8 @@ a {
   outline: none;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  word-break: break-all; /* Breaks words or URLs at any character to prevent overflow */
+  word-break: break-all;
+  /* Breaks words or URLs at any character to prevent overflow */
   white-space: pre-wrap;
 }
 
@@ -1977,13 +1962,15 @@ a {
   justify-content: center;
   align-items: center;
   transition: background-color 0.3s ease;
-  overflow: hidden; /* Ensure the SVG doesn't overflow the circle */
+  overflow: hidden;
+  /* Ensure the SVG doesn't overflow the circle */
 }
 
 .send_message_btn svg {
   width: 50px;
   height: 50px;
-  object-fit: contain; /* Ensures the SVG maintains its aspect ratio */
+  object-fit: contain;
+  /* Ensures the SVG maintains its aspect ratio */
   /* Adjust as needed to fit within the circle */
   height: 50%;
   /* Adjust as needed to fit within the circle */
@@ -3753,16 +3740,22 @@ div .Home {
   }
 
 }
+
 .centeredItemsGlobal {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute; /* Position relative to the parent container */
-  bottom: 0; /* Align it to the bottom of the parent */
-  left: 50%; /* Center horizontally in the parent */
-  transform: translateX(-50%); /* Offset by 50% of the element's width */
-  width: 100%; /* Make it span the width of the parent */
+  position: absolute;
+  /* Position relative to the parent container */
+  bottom: 0;
+  /* Align it to the bottom of the parent */
+  left: 50%;
+  /* Center horizontally in the parent */
+  transform: translateX(-50%);
+  /* Offset by 50% of the element's width */
+  width: 100%;
+  /* Make it span the width of the parent */
 }
 
 #private_chat {
@@ -3773,4 +3766,271 @@ div .Home {
 
 #message_input::placeholder {
   color: #80878f;
+}
+
+.bottomINVENT {
+  font-family: "SF";
+  position: fixed;
+  /* Fixes the element relative to the viewport */
+  bottom: 2px;
+  /* Aligns it to the bottom of the viewport */
+  left: 0;
+  /* Optionally align it to the left */
+  width: 100%;
+  /* Optionally make it span the full width of the viewport */
+  z-index: 1000;
+  /* Ensure it is above other elements */
+}
+
+/* Other styles */
+.loginINVENT {
+  position: relative;
+}
+
+/*.loginINVENT img {
+  width: 50%;
+  position: fixed;
+  top: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999; 
+  opacity: 0.7;
+  object-fit: cover;
+  transition: top 1s ease-in-out, left 1s ease-in-out, transform 1s ease-in-out;
+}*/
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  -webkit-text-fill-color: #fff !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.loginINVENT img {
+  width: 50%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  opacity: 0.8;
+  object-fit: cover;
+  transition: top 1s ease-in-out, left 1s ease-in-out, transform 1s ease-in-out;
+}
+
+.glass h2 {
+  margin: 0;
+  font-size: 30px;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+.glass p {
+  margin: 0;
+  font-size: 20px;
+  color: #777a80;
+}
+
+.glass {
+  width: auto;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  opacity: 0;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateY(150%);
+  transition: transform 1s ease-in-out, opacity 1s ease-in-out, visibility 1s ease-in-out, padding-bottom 1s ease-in-out;
+
+}
+
+.glass.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateY(0);
+  /* Slide the popup into view */
+}
+
+.glass.head {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  width: auto;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 2px;
+  border-radius: 50px;
+  background-color: rgba(24, 24, 26, 0.5);
+  /* Semi-transparent background */
+  backdrop-filter: blur(10px);
+  /* Adjust the blur amount as needed */
+  -webkit-backdrop-filter: blur(10px);
+  /* For Safari */
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.glass.options {
+  margin-top: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  padding: 20px;
+  width: auto;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 2px;
+  border-radius: 50px;
+  background-color: #18181a;
+}
+
+.glass p {
+  margin: 0;
+  font-size: 15px;
+  color: #777a80;
+  margin-bottom: 8px;
+}
+
+
+.inv-button {
+  width: 100%;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border-radius: 50px;
+}
+
+.inv-button.create {
+  margin-bottom: 5px;
+  background-color: #000000;
+  color: #6693fd;
+}
+
+.inv-button.login {
+  background-color: #101012;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.inv-button.creds {
+
+  display: flex;
+  align-items: center;
+  border: 2px solid #1f1f212b;
+  border-radius: 50px;
+  overflow: hidden;
+  width: 80%;
+  height: auto;
+  padding: 15px;
+
+  background-color: rgba(24, 24, 26, 0.805);
+  /* Semi-transparent background */
+  backdrop-filter: blur(10px);
+  /* Adjust the blur amount as needed */
+  -webkit-backdrop-filter: blur(10px);
+  margin-bottom: 5px;
+  padding: 20px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 50px;
+}
+
+.inv-button.creds .icon {
+  padding: 10px;
+  color: #888;
+  font-size: 16px;
+  margin-left: 5px;
+  margin-right: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.inv-button.creds input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  padding: 10px;
+  flex: 1;
+  font-size: 16px;
+  margin: 0;
+  color: #fff;
+}
+
+.inv-button.creds input::placeholder {
+  color: #aaa;
+}
+.glass.login {
+  border: 2px solid #1f1f212b;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  width: auto;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 2px;
+  border-radius: 50px;
+  background-color: rgba(24, 24, 26, 0.5);
+  /* Semi-transparent background */
+  backdrop-filter: blur(10px);
+  /* Adjust the blur amount as needed */
+  -webkit-backdrop-filter: blur(10px);
+  /* For Safari */
+  padding-top: 30px;
+  padding-bottom: 30px;
+  display: none;
+}
+
+.glass.login p {
+  color: #fff;
+  font-size: 23px;
+  margin-bottom: 14px;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.glass.login .aligned {
+  position: absolute;
+  top: 27px;
+  left: 27px;
+}
+
+.boxesContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.boxPut {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  margin-left: 5px;
+  border-radius: 25px;
+  background-color: rgba(24, 24, 26, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 5px;
+}
+
+.boxPut input {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 24px;
+  text-align: center;
+  color: #fff;
+}
+
+#stuck {
+  opacity: 0;
 }

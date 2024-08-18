@@ -25,61 +25,61 @@
 //var notice_s = new Audio("./ui-sounds/notice.mp3")
 sessionStorage.removeItem("place")
 
-let voxHTML = document.getElementById("VOXhtml").innerHTML
-let currentHTML = localStorage.getItem("voxHTML")
-if (currentHTML) {
-	if (currentHTML !== voxHTML) {
-		localStorage.setItem('voxHTML', voxHTML)
-		const message = "Updating.."
-		const oldhtml = document.getElementById("notification").innerHTML
-		var notification = document.getElementById('notification');
-		if (notification.className.includes("show")) {
-			notification.classList.remove('show');
-			setTimeout(function () {
-				document.getElementById("notification").innerHTML = message
-				notification.classList.add('show');
-				setTimeout(function () {
-					notification.classList.remove('show');
-				}, 2500);
-			}, 500)
-		} else {
-			document.getElementById("notification").innerHTML = message
-			notification.classList.add('show');
-			setTimeout(function () {
-				notification.classList.remove('show');
-			}, 2500);
-		}
-		setTimeout(function () {
-			document.getElementById("notification").innerHTML = oldhtml
-		}, 3000)
-	} else {
-		console.log("Updated To Latest")
-	}
-} else {
-	localStorage.setItem('voxHTML', voxHTML)
-	const message = "Updating.."
-	const oldhtml = document.getElementById("notification").innerHTML
-	var notification = document.getElementById('notification');
-	if (notification.className.includes("show")) {
-		notification.classList.remove('show');
-		setTimeout(function () {
-			document.getElementById("notification").innerHTML = message
-			notification.classList.add('show');
-			setTimeout(function () {
-				notification.classList.remove('show');
-			}, 2500);
-		}, 500)
-	} else {
-		document.getElementById("notification").innerHTML = message
-		notification.classList.add('show');
-		setTimeout(function () {
-			notification.classList.remove('show');
-		}, 2500);
-	}
-	setTimeout(function () {
-		document.getElementById("notification").innerHTML = oldhtml
-	}, 3000)
-}
+//let voxHTML = document.getElementById("VOXhtml").innerHTML
+//let currentHTML = localStorage.getItem("voxHTML")
+//if (currentHTML) {
+//	if (currentHTML !== voxHTML) {
+//		localStorage.setItem('voxHTML', voxHTML)
+//		const message = "Updating.."
+//		const oldhtml = document.getElementById("notification").innerHTML
+//		var notification = document.getElementById('notification');
+//		if (notification.className.includes("show")) {
+//			notification.classList.remove('show');
+//			setTimeout(function () {
+//				document.getElementById("notification").innerHTML = message
+//				notification.classList.add('show');
+//				setTimeout(function () {
+//					notification.classList.remove('show');
+//				}, 2500);
+//			}, 500)
+//		} else {
+//			document.getElementById("notification").innerHTML = message
+//			notification.classList.add('show');
+//			setTimeout(function () {
+//				notification.classList.remove('show');
+//			}, 2500);
+//		}
+//		setTimeout(function () {
+//			document.getElementById("notification").innerHTML = oldhtml
+//		}, 3000)
+//	} else {
+//		console.log("Updated To Latest")
+//	}
+//} else {
+//	localStorage.setItem('voxHTML', voxHTML)
+//	const message = "Updating.."
+//	const oldhtml = document.getElementById("notification").innerHTML
+//	var notification = document.getElementById('notification');
+//	if (notification.className.includes("show")) {
+//		notification.classList.remove('show');
+//		setTimeout(function () {
+//			document.getElementById("notification").innerHTML = message
+//			notification.classList.add('show');
+//			setTimeout(function () {
+//				notification.classList.remove('show');
+//			}, 2500);
+//		}, 500)
+//	} else {
+//		document.getElementById("notification").innerHTML = message
+//		notification.classList.add('show');
+//		setTimeout(function () {
+//			notification.classList.remove('show');
+//		}, 2500);
+//	}
+//	setTimeout(function () {
+//		document.getElementById("notification").innerHTML = oldhtml
+//	}, 3000)
+//}
 var account_show = new Howl({
 	src: ['./ui-sounds/qa_start_old.mp3'],
 	volume: 1
