@@ -6849,7 +6849,7 @@ function startUnlock() {
 		setTimeout(function () {
 			$("#lockscreen").fadeOut("fast")
 			setup()
-			login_ok.play()
+			//login_ok.play()
 		}, 1500)
 	} else if (sessionStorage.getItem("unl") === "3") {
 		console.log("Unlock Now!")

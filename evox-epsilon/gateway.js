@@ -1516,11 +1516,6 @@ function verifycode() {
 }
 
 function login() {
-  try {
-    login_ok.play()
-  } catch (error) {
-    console.error("Sound can't play", error)
-  }
 
   let email = document.getElementById("email").value
   let password = document.getElementById("password").value
@@ -2470,8 +2465,24 @@ function restartCarouselCount() {
   carouselaInt = setInterval(nextSlide, 5000);
 }
 
-function beginLogin() {
+var welcomeToEvox = new Howl({
+	src: ['./welcomeToEvox.mp3'],
+	volume: 1
+});
 
+var successLogin = new Howl({
+	src: ['./success.mp3'],
+	volume: 1
+});
+
+var startup = new Howl({
+	src: ['./startup.mp3'],
+	volume: 1
+});
+
+
+function beginLogin() {
+  startup.play()
   document.getElementById("epsilonLogoLogin").style.top = "200px"
   document.getElementById("epsilonLogoLogin").style.transform = "translateX(-50%)"
 
@@ -2480,6 +2491,7 @@ function beginLogin() {
   setTimeout(function () {
     document.getElementById("formLogin").style.display = 'flex'
     setTimeout(function () {
+      
       document.getElementById("formLogin").classList.add('active')
       //document.getElementById("formLogin").style.paddingBottom = "100px"
     }, 50)
@@ -2716,6 +2728,7 @@ function startLogin() {
             "password": password
           }
           sessionStorage.setItem("ACCOUNT_DATA", JSON.stringify(jsondata))
+          welcomeToEvox.play()
 
           document.getElementById("formLogin").classList.remove('active')
           setTimeout(function () {
@@ -2734,6 +2747,7 @@ function startLogin() {
           return;
         }
         if (data.includes("Credentials Correct")) {
+          successLogin.play()
           if (data.includes("Email")) {
             var emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g;
 
@@ -2883,6 +2897,7 @@ function on2FAComplete() {
     })
     .then(data => {
       if (data === "Complete") {
+        successLogin.play()
         var wind = new URL(window.location.href);
         var ext = wind.searchParams.get("id");
         if (ext) {
@@ -2938,6 +2953,7 @@ function on2FAComplete() {
         $("#container").fadeOut("fast")
         setup()
       } else if (data === "Exists") {
+        successLogin.play()
         document.getElementById("form2FA").classList.remove('active')
         setTimeout(function () {
           document.getElementById("form2FA").style.display = 'none'
