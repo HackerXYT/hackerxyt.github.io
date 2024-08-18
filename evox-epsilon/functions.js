@@ -215,7 +215,7 @@ function switchNAV(element) {
 
 	} else {
 		$("#appUP").fadeOut("fast", function () {
-			document.getElementById("appUP").innerHTML = `Epsilon 4.0.2 • Florida 0.1`
+			document.getElementById("appUP").innerHTML = `Epsilon 5.0.0 [G] • Florida 0.1`
 			$("#appUP").fadeIn("fast")
 		})
 
@@ -560,145 +560,113 @@ let whichOneActive = null
 let timeActive = 0
 let activeInterval;
 
-function load(app) {
-	let notes = localStorage.getItem("notes-owned")
-	let images = localStorage.getItem("images-owned")
-	let chatvia = localStorage.getItem("chatvia-owned")
-	if (app === "notes") {
-		if (notes === "true") {
-			//window.location.href = "./Notes/"
-			sessionStorage.setItem("EmitApp", "evox")
-			launchAppN("./Notes/")
-		} else {
-			log("App Not Owned!", "red")
-			createLocalNotification("Error!", `App '${app}' Is Not Owned By ${localStorage.getItem("t50-username")}`)
-			return;
-		}
-	} else if (app === "images") {
-		if (images === "true") {
-			if (localStorage.getItem("t50-autologin") === "true") {
-				localStorage.setItem("img-app-username", localStorage.getItem("t50-username"))
-				localStorage.setItem("rem-email", localStorage.getItem("t50-email"))
-				localStorage.setItem("img-app-email", localStorage.getItem("t50-email"))
-			}
-			sessionStorage.setItem("EmitApp", "images")
-			launchAppN("./image gallery/")
-		} else {
-			log("App Not Owned!", "red")
-			createLocalNotification("Error!", `App '${app}' Is Not Owned By ${localStorage.getItem("t50-username")}`)
-			return;
-		}
-	} else if (app === "chatvia") {
-		if (chatvia === "true") {
-			sessionStorage.setItem("EmitApp", "chatvia")
-			launchAppN("./customize/")
-			//window.location.href = "./customize/"
-		} else {
-			log("App Not Owned!", "red")
-			return;
-		}
-	} else if (app === "transports") {
-		if (localStorage.getItem("t50-username") === "papostol") {
-			//window.location.href = "./gmp/gmaps.html"
-			sessionStorage.setItem("EmitApp", "mti")
-			launchAppN("./gmp/gmaps.html")
-			//window.location.href = "/secondConcept/"
-		}
-	} else if (app === "emails") {
-		//window.location.href = "./mails/"
-		sessionStorage.setItem("EmitApp", "evox")
-		launchAppN("./mails/")
-	} else if (app === "tasco") {
-		sessionStorage.setItem("EmitApp", "tasco")
-		launchAppN("../tasco/")
-		//window.location.href = `../tasco/`
-	} else if (app === "secureline") {
-		//window.location.href = `./secureline/`
-		sessionStorage.setItem("EmitApp", "evox")
-		launchAppN("./secureline/")
+function load(app, isCustom, dir) {
+	// Retrieve ownership information from localStorage
+	let notes = localStorage.getItem("notes-owned");
+	let images = localStorage.getItem("images-owned");
+	let chatvia = localStorage.getItem("chatvia-owned");
+	let username = localStorage.getItem("t50-username");
 
-	} else if (app === "dc" || app === "Evox") {
-		sessionStorage.setItem("EmitApp", "evox")
-		launchAppN("../DC/")
-	} else if (app === "Home") {
-		if (localStorage.getItem("t50-username") === "papostol") {
-			sessionStorage.setItem("EmitApp", "evox")
-			launchAppN("./Home/")
-		} else {
-			createLocalNotification("An Error Occured", `You don't own the app '${app}'!`, `./appicons/Home.png`)
-			return;
-		}
+	sessionStorage.removeItem("extRun");
 
-	} else if (app === "OASA") {
-		if (localStorage.getItem("t50-username") === "papostol") {
-			sessionStorage.setItem("EmitApp", "evox")
-			launchAppN("./oasa/")
-		} else {
-			createLocalNotification("An Error Occured", `You don't own the app '${app}'!`, `./appicons/OASA.png`)
-			return;
-		}
-
-	} else if (app === "deluxe") {
-		if (localStorage.getItem("t50-username") === "papostol") {
-			sessionStorage.setItem("EmitApp", "evox")
-			launchAppN("../tascoNotes/")
-		} else {
-			createLocalNotification("An Error Occured", `You don't own the app '${app}'!`, `../tascoNotes/tasco.png`)
-			return;
-		}
-
-	}
-	else {
-		createLocalNotification("An Error Occured", `'${app}' is not owned or doesn't exist!`)
+	// Ensure that the username is available
+	if (!username) {
+		console.error("Username not found in localStorage.");
+		createLocalNotification("Error!", "Username not found.");
 		return;
 	}
-	whichOneActive = app
-	activeInterval = setInterval(function () {
-		timeActive = timeActive + 1
-	}, 1000)
-	const appFrame = setInterval(function () {
-		if (sessionStorage.getItem("extRun") === "back") {
 
-			console.log("Hiding App Frame User Returned To Gateway")
-			clearInterval(activeInterval)
-			activeInterval = null
-			if (localStorage.getItem(`${whichOneActive}_timeUsed`)) {
-				const current = JSON.parse(localStorage.getItem(`${whichOneActive}_timeUsed`))
-				const newPlayTime = Number(current.playtime) + Number(timeActive)
-				console.log(`Total Play Time For ${whichOneActive} Is ${newPlayTime} sec`)
-				const thePlayJson = {
-					"playtime": newPlayTime,
-					"app": current.app
-				}
-				localStorage.setItem(`${whichOneActive}_timeUsed`, JSON.stringify(thePlayJson))
-			} else {
+	// App configuration
+	const appConfig = {
+		notes: { owned: notes === "true", path: "./Notes/" },
+		images: { owned: images === "true", path: "./image gallery/" },
+		chatvia: { owned: chatvia === "true", path: "./customize/" },
+		transports: { owned: username === "papostol", path: "./gmp/gmaps.html" },
+		emails: { owned: true, path: "./mails/" },
+		tasco: { owned: true, path: "../tasco/" },
+		secureline: { owned: true, path: "./secureline/" },
+		dc: { owned: true, path: "../DC/" },
+		Home: { owned: username === "papostol", path: "./Home/" },
+		OASA: { owned: username === "papostol", path: "./oasa/" },
+		deluxe: { owned: username === "papostol", path: "../tascoNotes/" }
+	};
 
-				const thePlayJson = {
-					"playtime": timeActive,
-					"app": whichOneActive
-				}
-				localStorage.setItem(`${whichOneActive}_timeUsed`, JSON.stringify(thePlayJson))
-				console.log(`Fresh Play Time For ${whichOneActive} Is ${timeActive} sec`)
+	// Handle the case where the app is not in the configuration
+	if (appConfig[app]) {
+		if (appConfig[app].owned) {
+			sessionStorage.setItem("EmitApp", app === "images" ? "images" : "evox");
+
+			// Special handling for 'images' app
+			if (app === "images" && localStorage.getItem("t50-autologin") === "true") {
+				localStorage.setItem("img-app-username", username);
+				localStorage.setItem("rem-email", localStorage.getItem("t50-email"));
+				localStorage.setItem("img-app-email", localStorage.getItem("t50-email"));
 			}
-			timeActive = 0
-			document.getElementById("launchApp").src = "PreloadApp.html"
-			$("#launchApp").fadeOut("slow")
 
-			$("#iframeContainer").fadeOut("slow", function () {
-				document.getElementById("navbar").classList.add("active")
-				//if (localStorage.getItem("topNav") !== "disabled") {
-				//	document.getElementById("apple-style").classList.add("active")
-				//}
-			})
-			attachedApps.forEach(function (appName) {
-				const playTime = howMuchPlay(appName)
-				document.getElementById(`playTime-${appName}`).innerText = playTime
-				console.log("Setting new playTime for", appName, playTime)
-			});
-			sessionStorage.removeItem("extRun")
-			clearInterval(appFrame)
+			launchAppN(appConfig[app].path);
+		} else {
+			log("App Not Owned!", "red");
+			createLocalNotification("Error!", `App '${app}' is not owned by ${username}`);
 		}
-	}, 100)
+	} else if (isCustom && dir) {
+		// Handle custom directories
+		sessionStorage.setItem("EmitApp", "evox");
+		sessionStorage.removeItem("extRun");
+		launchAppN(dir);
+	} else {
+		// Handle unknown apps or missing information
+		console.warn(`'${app}' is not owned or doesn't exist! ${isCustom}, ${dir}`);
+		if (!localStorage.getItem("customApps")) {
+			createLocalNotification("An Error Occurred", `'${app}' is not owned or doesn't exist!`);
+		}
+
+	}
+
+	// Handle app activity tracking
+	whichOneActive = app;
+	activeInterval = setInterval(() => {
+		timeActive += 1;
+	}, 1000);
+
+	const appFrame = setInterval(() => {
+		if (sessionStorage.getItem("extRun") === "back" ||
+			(document.getElementById("launchApp").contentWindow.location.href.includes("PreloadApp.html") && timeActive > 2)) {
+
+			console.log("Hiding App Frame User Returned To Gateway");
+			clearInterval(activeInterval);
+			activeInterval = null;
+
+			let playTimeData = localStorage.getItem(`${whichOneActive}_timeUsed`);
+			if (playTimeData) {
+				const current = JSON.parse(playTimeData);
+				const newPlayTime = Number(current.playtime) + Number(timeActive);
+				console.log(`Total Play Time For ${whichOneActive} Is ${newPlayTime} sec`);
+				localStorage.setItem(`${whichOneActive}_timeUsed`, JSON.stringify({ playtime: newPlayTime, app: current.app }));
+			} else {
+				console.log(`Fresh Play Time For ${whichOneActive} Is ${timeActive} sec`);
+				localStorage.setItem(`${whichOneActive}_timeUsed`, JSON.stringify({ playtime: timeActive, app: whichOneActive }));
+			}
+
+			timeActive = 0;
+			document.getElementById("launchApp").src = "PreloadApp.html";
+			$("#launchApp").fadeOut("slow");
+
+			$("#iframeContainer").fadeOut("slow", () => {
+				document.getElementById("navbar").classList.add("active");
+			});
+
+			attachedApps.forEach(appName => {
+				const playTime = howMuchPlay(appName);
+				document.getElementById(`playTime-${appName}`).innerText = playTime;
+				console.log("Setting new playTime for", appName, playTime);
+			});
+
+			sessionStorage.removeItem("extRun");
+			clearInterval(appFrame);
+		} else {
+			console.log(`Current: ${document.getElementById("launchApp").contentWindow.location.href}`);
+		}
+	}, 100);
 }
 
 function launchAppN(app) {
@@ -1164,6 +1132,8 @@ function close_popup() {
 			return response.text();
 		})
 		.then(data => {
+			//return;
+			//THIS IS TO CHECK FOR NEW NOTIFS
 			console.log("Fetching Notifications")
 			if (data === `{"notifications":[]}` || data === "No notifications!") {
 				console.log("No Notifications")
@@ -1176,16 +1146,17 @@ function close_popup() {
 					const notifNum = Number(localNotif)
 					if (notifNum < numNotifications) {
 						var animatedButton = document.getElementById("animatedButton_notif");
-						animatedButton.classList.add("fadeInOut")
-						animatedButton.style.display = "block";
-						animatedButton.innerHTML = `<svg id="notif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px" height="25px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
-            <path stroke="#fff" stroke-width="2" class="clr-i-outline--badged clr-i-outline-path-1--badged" d="M18,34.28A2.67,2.67,0,0,0,20.58,32H15.32A2.67,2.67,0,0,0,18,34.28Z"/><path class="clr-i-outline--badged clr-i-outline-path-2--badged" d="M32.51,27.83A14.4,14.4,0,0,1,30,24.9a12.63,12.63,0,0,1-1.35-4.81V15.15a10.92,10.92,0,0,0-.16-1.79,7.44,7.44,0,0,1-2.24-.84,8.89,8.89,0,0,1,.4,2.64v4.94a14.24,14.24,0,0,0,1.65,5.85,16.17,16.17,0,0,0,2.44,3H5.13a16.17,16.17,0,0,0,2.44-3,14.24,14.24,0,0,0,1.65-5.85V15.15A8.8,8.8,0,0,1,18,6.31a8.61,8.61,0,0,1,4.76,1.44A7.49,7.49,0,0,1,22.5,6c0-.21,0-.42,0-.63a10.58,10.58,0,0,0-3.32-1V3.11a1.33,1.33,0,1,0-2.67,0V4.42A10.81,10.81,0,0,0,7.21,15.15v4.94A12.63,12.63,0,0,1,5.86,24.9a14.4,14.4,0,0,1-2.47,2.93,1,1,0,0,0-.34.75v1.36a1,1,0,0,0,1,1h27.8a1,1,0,0,0,1-1V28.58A1,1,0,0,0,32.51,27.83Z"/><circle class="clr-i-outline--badged clr-i-outline-path-1--badged clr-i-badge" cx="30" cy="6" r="5"/>
-            <rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
-        </svg>`
-						setTimeout(function () {
-							animatedButton.style.opacity = "1";
-							animatedButton.style.transform = "translateY(0)";
-						}, 100);
+						//animatedButton.classList.add("fadeInOut")
+						//animatedButton.style.display = "block";
+						//animatedButton.innerHTML = `<svg id="notif" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px" height="25px" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
+            //<path stroke="#fff" stroke-width="2" class="clr-i-outline--badged clr-i-outline-path-1--badged" d="M18,34.28A2.67,2.67,0,0,0,20.58,32H15.32A2.67,2.67,0,0,0,18,34.28Z"/><path class="clr-i-outline--badged clr-i-outline-path-2--badged" d="M32.51,27.83A14.4,14.4,0,0,1,30,24.9a12.63,12.63,0,0,1-1.35-4.81V15.15a10.92,10.92,0,0,0-.16-1.79,7.44,7.44,0,0,1-2.24-.84,8.89,8.89,0,0,1,.4,2.64v4.94a14.24,14.24,0,0,0,1.65,5.85,16.17,16.17,0,0,0,2.44,3H5.13a16.17,16.17,0,0,0,2.44-3,14.24,14.24,0,0,0,1.65-5.85V15.15A8.8,8.8,0,0,1,18,6.31a8.61,8.61,0,0,1,4.76,1.44A7.49,7.49,0,0,1,22.5,6c0-.21,0-.42,0-.63a10.58,10.58,0,0,0-3.32-1V3.11a1.33,1.33,0,1,0-2.67,0V4.42A10.81,10.81,0,0,0,7.21,15.15v4.94A12.63,12.63,0,0,1,5.86,24.9a14.4,14.4,0,0,1-2.47,2.93,1,1,0,0,0-.34.75v1.36a1,1,0,0,0,1,1h27.8a1,1,0,0,0,1-1V28.58A1,1,0,0,0,32.51,27.83Z"/><circle class="clr-i-outline--badged clr-i-outline-path-1--badged clr-i-badge" cx="30" cy="6" r="5"/>
+            //<rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
+        //</svg>`
+						//setTimeout(function () {
+						//	animatedButton.style.opacity = "1";
+						//	animatedButton.style.transform = "translateY(0)";
+						//}, 100);
+						createLocalNotification("Gateway", "You have new notifications")
 					} else {
 						console.log("No new notifications")
 					}
@@ -5157,12 +5128,45 @@ function getNOpen(app, view) {
 }
 
 
-function getNOpenNX(app, view, version) {
+function getNOpenNX(app, view, version, isNewType, appName) {
 	if (sessionStorage.getItem("block_interactions") === "true") {
 		createLocalNotification("Gateway", 'Sorry. Servers Are Offline')
 		return;
 	}
+	if (isNewType === 'customApp') {
+		const getCC = JSON.parse(localStorage.getItem("customApps"))
+		const appVal = getCC[appName]
+		console.log(getCC)
+		console.log(appVal)
+		var oldHTML = document.getElementById("app-cont").innerHTML
+		var TriggeredButton = document.getElementById(`${app}-nx`);
+		$("#app-cont").fadeOut("slow", function () {
+			document.getElementById("app-cont").innerHTML = `<button class="evox-app">` + TriggeredButton.innerHTML + `</div>`
+			document.getElementById(`timeUsed-${app}`).innerHTML = `Loading.. <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            x="0px" y="0px" width="16px" height="16px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+            xml:space="preserve">
+            <path fill="#fff"
+                d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25"
+                    to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+            </path>
+        </svg>`
+			document.getElementById(`tag-${app}`).style.display = "none"
+			$("#app-cont").fadeIn("slow", function () {
+				setTimeout(function () {
+					load(appVal.name, 'custom', appVal.dir)
+					setTimeout(function () {
+						$("#app-cont").fadeOut("slow", function () {
+							document.getElementById("app-cont").innerHTML = oldHTML
+							$("#app-cont").fadeIn("slow", function () {
 
+							})
+						})
+					}, 1500)
+				}, 500)
+			})
+		})
+	}
 	if (version === "epsilon") {
 		var oldHTML = document.getElementById("app-cont").innerHTML
 		var TriggeredButton = document.getElementById(`${app}-nx`);
@@ -8022,7 +8026,8 @@ async function getFaviconUrl(pageUrl) {
 			// Return the href attribute of the favicon link
 			return faviconLink.href;
 		} else {
-			throw new Error('Favicon not found');
+			return 'Not found';
+			//throw new Error('Favicon not found');
 		}
 	} catch (error) {
 		console.error('Error fetching favicon:', error);
@@ -8054,7 +8059,28 @@ function addAppCustom() {
 				if (appName !== "") {
 					const pageUrl = url; // Replace with the URL of the page you want to fetch
 					getFaviconUrl(pageUrl).then(faviconUrl => {
-						console.log('Favicon URL:', faviconUrl);
+						// Define the substring to remove
+						let substringToRemove = 'evox-epsilon/';
+
+						// Find the index of the substring
+						let index = faviconUrl.indexOf(substringToRemove);
+						let result;
+						// Extract everything after the substring
+						if (index !== -1) {
+							// Add the length of the substring to the index to remove it as well
+							result = faviconUrl.slice(index + substringToRemove.length);
+							console.log(result); // Output: 'sline.png'
+						} else {
+							console.log('Substring not found in the URL.');
+						}
+						let favURL;
+						if (faviconUrl === 'Not found') {
+							favURL = `${cleanedLoc}evox-logo-apple.png`
+						} else {
+							favURL = `${url}/${result}`
+						}
+
+						console.log('Favicon URL:', favURL);
 						if (localStorage.getItem("customApps")) {
 							let prevJson = JSON.parse(localStorage.getItem("customApps")) || {};
 							const customAppJson = {
@@ -8062,8 +8088,8 @@ function addAppCustom() {
 									'name': appName,
 									'dir': dir,
 									'verified': true,
-									'icon': faviconUrl,
-									'type': 'tasco'
+									'icon': favURL,
+									'type': 'Epsilon'
 								}
 							};
 							prevJson = { ...prevJson, ...customAppJson };
@@ -8075,17 +8101,17 @@ function addAppCustom() {
 									'name': appName,
 									'dir': dir,
 									'verified': true,
-									'icon': faviconUrl,
-									'type': 'tasco'
+									'icon': favURL,
+									'type': 'Epsilon'
 								}
 							}
 							localStorage.setItem("customApps", JSON.stringify(customAppJson))
 							addElemApp(customAppJson[appName], 'true')
 						}
 						closeCreate()
-						
+
 					});
-					
+
 
 				}
 				document.getElementById('appURLAdd').value = ''
@@ -8141,4 +8167,138 @@ function enableScrolling() {
 	window.removeEventListener('wheel', preventDefaultScroll);
 	window.removeEventListener('touchmove', preventDefaultScroll);
 	window.removeEventListener('keydown', preventDefaultForScrollKeys);
+}
+
+function optimize(appName, elem) {
+	if (sessionStorage.getItem("block_interactions") === "true") {
+		createLocalNotification("Gateway", 'Sorry. Servers Are Offline')
+		return;
+	}
+	var getButton = elem;
+	var oldInner = getButton.innerHTML;
+
+	getButton.style.height = "17px"
+	getButton.style.width = "30px"
+	//height: 17px; width: 30px
+
+
+	getButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="55%" height="55%">
+	<circle cx="50" cy="50" r="45" fill="none" stroke="#fff" stroke-width="10">
+		<animate attributeName="stroke-dasharray" values="0, 200;200, 0" dur="2s"
+			repeatCount="indefinite" />
+		<animate attributeName="stroke-dashoffset" values="0, -200;-200, -900" dur="2s"
+			repeatCount="indefinite" />
+	</circle>
+</svg>`;
+	const localVal = JSON.parse(localStorage.getItem("customApps"))
+	const appValue = localVal[appName]
+	setTimeout(function () {
+
+		if (oldInner === "OPTIMIZE") {
+			//return_to_options('evox_store'); navigator('settings_tonexus')
+			//close_popup()
+			//load(app)
+			document.getElementById("customizeApp").classList.add('active')
+			document.getElementById("customizeApp").innerHTML = `<div style="
+    text-align: center; 
+    margin-top: 20px; 
+    padding: 20px; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    background-color: #fff; 
+    max-width: 600px; 
+    margin-left: auto; 
+    margin-right: auto; 
+    font-family: Arial, sans-serif;
+    color: #666;
+">
+    <h3 style="
+        color: #333; 
+        margin-bottom: 15px; 
+        font-size: 24px;
+        font-weight: normal;
+    ">App Name: ${appName}</h3>
+    <p style="
+        line-height: 1.6; 
+        font-size: 16px; 
+        margin: 0;
+    ">
+        Directory: ${appValue.dir}<br>
+        Icon: <img src="${appValue.icon}" width="25px" height="25px" style="
+            vertical-align: middle; 
+            border-radius: 50%; 
+            margin: 0 5px;
+        " alt="App Icon"><br>
+        [${appValue.icon}]<br>
+        App Type: ${appValue.type}<br>
+        Endpoints Verified: ${appValue.verified}
+    </p>
+</div><button onclick='deleteCustomApp("${appName}")' style="margin-top: 15px;
+        background-color: #ff0000; /* Bootstrap primary color */
+        color: white; 
+        border: none; 
+        border-radius: 5px; 
+        padding: 10px 20px; 
+        font-size: 16px; 
+        cursor: pointer; 
+        transition: background-color 0.3s, transform 0.2s;
+        font-family: Arial, sans-serif;
+        outline: none;
+    " 
+    onmouseover="this.style.backgroundColor='#9b3030';" 
+    onmouseout="this.style.backgroundColor='#ff0000';"
+    onmousedown="this.style.transform='scale(0.98)';"
+    onmouseup="this.style.transform='scale(1)';"
+	ontouchstart="this.style.transform='scale(0.98)';"
+    ontouchend="this.style.transform='scale(1)';">
+        Delete
+    </button>
+	 <button onclick="document.getElementById('customizeApp').classList.remove('active')" style="margin-top: 15px;
+        background-color: #007BFF; /* Modern blue color */
+        color: white; 
+        border: none; 
+        border-radius: 5px; 
+        padding: 10px 20px; 
+        font-size: 16px; 
+        cursor: pointer; 
+        transition: background-color 0.3s, transform 0.2s;
+        font-family: Arial, sans-serif;
+        outline: none;
+    " 
+    onmouseover="this.style.backgroundColor='#0056b3';" 
+    onmouseout="this.style.backgroundColor='#007BFF';"
+    onmousedown="this.style.transform='scale(0.98)';"
+    onmouseup="this.style.transform='scale(1)';"
+    ontouchstart="this.style.transform='scale(0.98)';"
+    ontouchend="this.style.transform='scale(1)';">
+        Go Back
+    </button>`
+			getButton.style.height = "auto"
+			getButton.style.width = "auto"
+			//height: 17px; width: 30px
+			getButton.innerHTML = oldInner;
+			return;
+		}
+		getButton.style.height = "auto"
+		getButton.style.width = "auto"
+		//height: 17px; width: 30px
+		getButton.innerHTML = oldInner;
+		shake_me(`${appName}-get`)
+		notice("Access Denied")
+	}, 1500)
+}
+
+function deleteCustomApp(appN) {
+	const localVal = JSON.parse(localStorage.getItem("customApps"))
+	const appValue = localVal[appN]
+	console.log("Deleting", appValue)
+	if(localVal) {
+		delete localVal[appN];
+		localStorage.setItem("customApps", JSON.stringify(localVal))
+		document.getElementById("customizeApp").classList.remove('active')
+		setTimeout(function() {
+			window.location.reload()
+		}, 1000)
+	}
+	
 }

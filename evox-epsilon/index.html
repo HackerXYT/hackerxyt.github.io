@@ -768,9 +768,11 @@
                             <div class="carousel-dot" onclick="moveToSlide(4)"></div>
                         </div>
                     </div>
-                    <p style="position: absolute; bottom: -40px; margin: 0; color: white; text-align: left; width: 100%;" class="pc-hide">
+                    <p style="position: absolute; bottom: -40px; margin: 0; color: white; text-align: left; width: 100%;"
+                        class="pc-hide">
                         Your Apps
-                        <span onclick="addApp()" style="position: absolute; right: 0;background-color: #0083fe;padding:5px 10px;border-radius: 50%;">+</span>
+                        <span onclick="addApp()"
+                            style="position: absolute; right: 0;background-color: #0083fe;padding:5px 10px;border-radius: 50%;">+</span>
                     </p>
                 </div>
                 <div id="app-cont" style="margin-top: 40px;">
@@ -1929,6 +1931,12 @@
                     Datacenter Dashboard
                     <span onclick="getNOpen('dc')" id="dc-get" class="get-button">GET</span>
                 </div>
+                <div id="customAppsStore" style="display: none;">
+                    <p style="margin: 10px;margin-top: 20px;" class="user-email">CUSTOM APPS</p>
+                    <div id="customAppsList">
+                        
+                    </div>
+                </div>
                 <div class="transparent-placeholder"></div>
 
 
@@ -2097,11 +2105,11 @@
             <div id="evox_gateway_info" style="display:none;overflow: hidden;">
 
                 <h3 style="text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Evox® Gateway</h3>
-                <img src="evoxEpsilonStable.png"
+                <img src="epsilon-assets/apple-splash-1136-640.png"
                     style="display: block; margin: 20px auto; max-width: 500px; border-radius: 20px;width:100%">
                 <div href="#" class="apple-button">
                     Current Version
-                    <span>EeV4.0.2 [B]</span>
+                    <span>Epsilon 5.0.0 [G]</span>
                 </div>
                 <a href="#" onclick="restart()" class="apple-button">Restart<svg xmlns="http://www.w3.org/2000/svg"
                         width="20px" height="20px" viewBox="0 0 24 24" fill="none">
@@ -3538,22 +3546,29 @@
     </div>
 
     <div class="notification-container" id="notification">
-        <p id="notification-title"><svg xmlns="http://www.w3.org/2000/svg" fill="#fad836" width="25px" height="25px" viewBox="0 0 32 32" version="1.1">
-            <title>notice1</title>
-            <path d="M15.5 3c-7.456 0-13.5 6.044-13.5 13.5s6.044 13.5 13.5 13.5 13.5-6.044 13.5-13.5-6.044-13.5-13.5-13.5zM15.5 27c-5.799 0-10.5-4.701-10.5-10.5s4.701-10.5 10.5-10.5 10.5 4.701 10.5 10.5-4.701 10.5-10.5 10.5zM15.5 10c-0.828 0-1.5 0.671-1.5 1.5v5.062c0 0.828 0.672 1.5 1.5 1.5s1.5-0.672 1.5-1.5v-5.062c0-0.829-0.672-1.5-1.5-1.5zM15.5 20c-0.828 0-1.5 0.672-1.5 1.5s0.672 1.5 1.5 1.5 1.5-0.672 1.5-1.5-0.672-1.5-1.5-1.5z"/>
-            </svg><vo id="titleType">Notice</vo>
-            <svg onclick="document.getElementById('notification').classList.remove('show');" style="cursor: pointer;" class="close-notice" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+        <p id="notification-title"><svg xmlns="http://www.w3.org/2000/svg" fill="#fad836" width="25px" height="25px"
+                viewBox="0 0 32 32" version="1.1">
+                <title>notice1</title>
+                <path
+                    d="M15.5 3c-7.456 0-13.5 6.044-13.5 13.5s6.044 13.5 13.5 13.5 13.5-6.044 13.5-13.5-6.044-13.5-13.5-13.5zM15.5 27c-5.799 0-10.5-4.701-10.5-10.5s4.701-10.5 10.5-10.5 10.5 4.701 10.5 10.5-4.701 10.5-10.5 10.5zM15.5 10c-0.828 0-1.5 0.671-1.5 1.5v5.062c0 0.828 0.672 1.5 1.5 1.5s1.5-0.672 1.5-1.5v-5.062c0-0.829-0.672-1.5-1.5-1.5zM15.5 20c-0.828 0-1.5 0.672-1.5 1.5s0.672 1.5 1.5 1.5 1.5-0.672 1.5-1.5-0.672-1.5-1.5-1.5z" />
+            </svg>
+            <vo id="titleType">Notice</vo>
+            <svg onclick="document.getElementById('notification').classList.remove('show');" style="cursor: pointer;"
+                class="close-notice" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                fill="none">
                 <g clip-path="url(#clip0_429_11083)">
-                <path d="M7 7.00006L17 17.0001M7 17.0001L17 7.00006" stroke="#292929" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7 7.00006L17 17.0001M7 17.0001L17 7.00006" stroke="#292929" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
                 </g>
                 <defs>
-                <clipPath id="clip0_429_11083">
-                <rect width="24" height="24" fill="white"/>
-                </clipPath>
+                    <clipPath id="clip0_429_11083">
+                        <rect width="24" height="24" fill="white" />
+                    </clipPath>
                 </defs>
-                </svg></p>
+            </svg>
+        </p>
         <span id="notification-span">Datacenter change is coming soon!<br>Prepare for downtimes..</span>
-        
+
     </div>
     <div id="loading-div-text">
         <div id="loading-text" class="loading-text-default">
@@ -3646,13 +3661,15 @@
             Container<div class="organizeCont"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
                     viewBox="0 0 16 16" fill="none">
                     <path fill="#62bda9" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
-                </svg><vox id="containerApp">Epsilon</vox></div>
+                </svg>
+                <vox id="containerApp">Epsilon</vox>
+            </div>
         </div>
-        
+
         <div class="organizeLine"></div>
         <div class="priorityadd">
             Type
-            <div class="dateCont" >
+            <div class="dateCont">
                 <vox id="priority">Productivity</vox>
             </div>
         </div>
@@ -3692,6 +3709,12 @@
                 <!--<span class="user-status"></span>-->
 
             </div>
+
+        </div>
+    </div>
+    <div id="customizeApp" class="popup" style="background-color: #000;justify-content: center;align-items: center;display: flex;flex-direction: column;">
+        <div style="text-align: center; margin-top: 20px;">
+            <h3>App Name</h3>
 
         </div>
     </div>

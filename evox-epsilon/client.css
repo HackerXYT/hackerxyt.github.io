@@ -3412,6 +3412,11 @@ form {
   font-size: 14px;
   margin-top: 30px;
   margin-right: 15px;
+  font-size: small;
+  color: #9b8b4c;
+  font-family: "SF";
+  font-weight: lighter;
+  background-color: #e1f59f;
 }
 
 .get-button-nx {

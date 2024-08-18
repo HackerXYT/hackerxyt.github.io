@@ -1,4 +1,5 @@
 let srv = "https://data.evoxs.xyz"
+document.startViewTransition(() => updateDOM());
 let selfLoginLoad = false
 function loadSelfLogin() {
   if (localStorage.getItem("t50-email")) {
@@ -718,6 +719,21 @@ function setup() {
                 addElemApp("Home")
                 addElemApp("OASA")
                 addElemApp("Tasco Deluxe")
+                if(localStorage.getItem("customApps")) {
+                  document.getElementById("customAppsStore").style.display = ''
+                  const lcVl = JSON.parse(localStorage.getItem("customApps"))
+                  Object.entries(lcVl).forEach(([key, value]) => {
+                    document.getElementById("customAppsList").innerHTML = `${document.getElementById("customAppsList").innerHTML}<div id="${key}-appst" href="#" class="apple-button-withicon storeApp"><img
+                                style="width: auto; height: 40px; margin-right: 10px; border-radius: 7px;box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);"
+                                src="${value.icon}">
+                            ${value.name}
+                            <span onclick="optimize('${key}', this)" id="${key}-get" class="get-button">OPTIMIZE</span>
+                        </div>`
+                    console.log(`Key: ${key}`);
+                    console.log(`Value:`, value);
+                    addElemApp(value, 'true')
+                  });
+                }
                 document.getElementById("apps").innerHTML = `${document.getElementById("apps").innerHTML}<a onclick="load('dc')" href="#loadapp-dc"><img id="dc-enabled" src="evox-logo-apple.png" class="app"></img></a>`
                 //
               }
@@ -2353,10 +2369,10 @@ let attachedApps = []
 function addElemApp(app, custom) {
   if(custom === "true" && app) {
     let prevHTML = document.getElementById("app-cont").innerHTML;
-    document.getElementById("app-cont").innerHTML = `${prevHTML}<button onclick="getNOpenNX('${app.name.split(' ')[0]}', null , 'epsilon', 'customApp', ${app})" id="${app.name.split(' ')[0]}-nx" class="evox-app">
+    document.getElementById("app-cont").innerHTML = `${prevHTML}<button onclick="getNOpenNX('${app.name.split(' ')[0]}', null , 'epsilon', 'customApp', '${app.name}')" id="${app.name.split(' ')[0]}-nx" class="evox-app">
     <img src="${app.icon}" alt="Ext App Icon">
     <div class="info">
-      <div class="title">${app.name.split(' ')[0]}</div>
+      <div class="title">${app.name}</div>
       <div id='timeUsed-${app.name.split(' ')[0]}' class="time"><svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="13px" height="13px" viewBox="0 0 24 24" fill="none">
         <path d="M12 7V12L10.5 14.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg><vo id='playTime-${app.name}'>${howMuchPlay(app.name)}</vo></div>
@@ -2410,6 +2426,8 @@ function getAppType(app) {
     return 'Management'
   } else if (app === "Home") {
     return 'Security'
+  } else if (app === "Epsilon") {
+    return 'Epsilon'
   } else {
     return 'External'
   }
