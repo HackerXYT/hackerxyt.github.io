@@ -522,7 +522,6 @@ img {
   z-index: 998;
   box-sizing: border-box;
   /* Include padding in the element's total width and height */
-  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
   color: white;
   opacity: 0;
   /* Initially hidden */
@@ -611,7 +610,6 @@ img {
   z-index: 999;
   box-sizing: border-box;
   /* Include padding in the element's total width and height */
-  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
   color: white;
   opacity: 0;
   /* Initially hidden */
@@ -961,7 +959,7 @@ a {
 .gateway {
   overflow: hidden;
   touch-action: none;
-  transition: filter 1s ease-in;
+  transition: filter 1s ease-in, transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
 #lockscreen {
@@ -1643,25 +1641,53 @@ a {
   /* Initially hidden below the page */
   left: 50%;
   transform: translateX(-50%);
-  text-align: center;
-  background-color: #4c0202;
+  background-color: #121212;
   color: #fff;
-  width: auto;
-  padding: 10px 20px;
-  border-radius: 95px;
+  width: 85%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   opacity: 0;
   transition: opacity 0.3s ease, bottom 0.5s ease;
   /* Add transition for bottom */
   z-index: 9999;
   font-family: Arial;
+  padding-left: 50px; 
+  font-family: "SF";
+}
+
+.notification-container p{
+  margin: 0;
+  font-size: 20px;
+  margin-left: -25px; 
+  display: flex;
+  align-items: center;
+  color: #fad836;
+}
+
+.notification-container p svg{
+  margin-right: 2px;
+}
+
+.notification-container span{
+  font-size: 15px;
+  margin: 0;
+  
 }
 
 
 /* Animation for showing notification */
 .notification-container.show {
   opacity: 1;
-  bottom: 150px;
+  bottom: 100px;
+}
+
+.notification-container .close-notice {
+  margin-left: auto;
+  margin-right: 15px;
+  background-color: #fad836;
+  border-radius: 5px;
 }
 
 .carousel-container {
@@ -1729,7 +1755,6 @@ a {
   z-index: 999;
   box-sizing: border-box;
   /* Include padding in the element's total width and height */
-  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
   color: white;
   opacity: 1;
   /* Initially hidden */
@@ -1770,7 +1795,6 @@ a {
   z-index: 999;
   box-sizing: border-box;
   /* Include padding in the element's total width and height */
-  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
   color: white;
   opacity: 0;
   /* Initially hidden */
@@ -1811,7 +1835,6 @@ a {
   z-index: 999;
   box-sizing: border-box;
   /* Include padding in the element's total width and height */
-  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
   color: white;
   opacity: 0;
   /* Initially hidden */
@@ -2059,7 +2082,6 @@ a {
   z-index: 999;
   box-sizing: border-box;
   /* Include padding in the element's total width and height */
-  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
   color: white;
   /* Initially hidden */
   /* Initially hidden */
@@ -2568,7 +2590,6 @@ a {
   /* Semi-transparent black overlay */
   box-sizing: border-box;
   /* Include padding in the element's total width and height */
-  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
   color: white;
   opacity: 0;
   /* Initially hidden */
@@ -2608,7 +2629,6 @@ a {
   /* Semi-transparent black overlay */
   box-sizing: border-box;
   /* Include padding in the element's total width and height */
-  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
   color: white;
   opacity: 0;
   /* Initially hidden */
@@ -3490,6 +3510,7 @@ form {
   left: 50%;
   transform: translateX(-50%);
   display: flex;
+  margin-bottom: 5px;
 }
 
 .carousel-dot {
@@ -4033,4 +4054,269 @@ input:-webkit-autofill {
 
 #stuck {
   opacity: 0;
+}
+
+.popupAppCreation {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* for Internet Explorer, Edge */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  /*calc(100% - 40px);*/
+  display: block;
+  padding: 30px;
+  align-items: center;
+  /* Change from 'visible' to 'auto' */
+  scroll-behavior: smooth;
+  touch-action: auto;
+  justify-content: center;
+  background: #111111;
+
+  /* Semi-transparent black overlay */
+  z-index: 1000;
+  box-sizing: border-box;
+  /* Include padding in the element's total width and height */
+  box-shadow: 0 0 20px #2a2a2a;
+  color: white;
+  opacity: 1;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateY(120%);
+  /* Initially off-screen to the left */
+  transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out;
+
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  /* Transition for sliding effect, opacity, and visibility */
+  overflow: hidden;
+}
+
+
+.popupAppCreation.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateX(0);
+  /* Slide the popup into view */
+}
+
+.grabbable {
+  position: absolute;
+  background-color: #333;
+  height: 5px;
+  width: 30%;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 1rem;
+  transition: background-color 1s ease-out;
+  z-index: 999;
+
+}
+
+
+.grabbable::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  /* Extend clickable area upwards */
+  left: -20px;
+  /* Extend clickable area to the left */
+  right: -20px;
+  /* Extend clickable area to the right */
+  bottom: -30px;
+  /* Extend clickable area downwards */
+  background: transparent;
+  /* Ensure it's transparent */
+  cursor: pointer;
+  /* Make sure the cursor changes */
+}
+
+.grabbable:active {
+  cursor: grabbing;
+}
+
+.inputTask {
+
+  font-family: "Noto Sans", sans-serif;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputTask span {
+  font-family: "Noto Sans", sans-serif;
+  float: left;
+  font-size: 18px;
+  color: #8e8e8e;
+  margin-right: auto;
+  margin-bottom: 5px;
+}
+
+.inputTask .taskInput {
+  font-family: "Noto Sans", sans-serif;
+  color: #fff;
+  font-size: 17px;
+  background-color: #111111;
+  border-radius: 10px;
+  padding: 15px;
+  width: 93%;
+  outline: none;
+  border: 1px solid #8e8e8e;
+}
+
+.organize {
+  color: #8e8e8e;
+  margin-top: 18px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.organizeLine {
+  margin-top: 15px;
+  width: 100%;
+  background-color: #8e8e8e;
+  height: 1px;
+}
+
+.organize .organizeCont {
+  display: flex;
+  align-items: center;
+  /* Aligns items vertically in the center */
+  margin-left: auto;
+  background-color: #d1d1d1;
+  border-radius: 50px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-sizing: border-box;
+  color: #000;
+  vertical-align: middle;
+}
+
+.organize .organizeCont svg {
+  margin-right: 3px;
+}
+
+.due {
+  color: #8e8e8e;
+  margin-top: 18px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.due .dateCont {
+  display: flex;
+  align-items: center;
+  /* Aligns items vertically in the center */
+  margin-left: auto;
+  background-color: #f7c0c0;
+  border-radius: 50px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  box-sizing: border-box;
+  color: #e53636;
+  vertical-align: middle;
+}
+
+.due .dateCont svg {
+  margin-right: 5px;
+}
+
+.priorityadd {
+  color: #8e8e8e;
+  margin-top: 18px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.priorityadd .dateCont {
+  display: flex;
+  align-items: center;
+  /* Aligns items vertically in the center */
+  margin-left: auto;
+  background-color: #e3e3e3;
+  border-radius: 50px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  box-sizing: border-box;
+  color: #1c1c1c;
+  vertical-align: middle;
+}
+
+.priorityadd .dateCont img {
+  margin-right: 5px;
+}
+
+.users {
+  color: #8e8e8e;
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.usersCont {
+  flex-direction: row;
+}
+
+.advancedBtn {
+  margin-top: 10px;
+  color: #5e63d3;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.doneBtn {
+  margin-top: 10px;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  width: 90%;
+  background-color: #5e63d3;
+  color: #fff;
+  border-radius: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.usersCont {
+  flex-direction: row;
+}
+
+.userIcons {
+  margin-top: 10px;
+}
+
+.userPfp {
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  border: 1.5px solid #000;
+  box-shadow: #2d04ff49 0 0 8px 1px;
+  transition: margin 0.5s ease-in-out;
+  margin-left: 5px;
+}
+
+.userPfp.multi {
+  margin-left: -15px;
 }

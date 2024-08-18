@@ -370,7 +370,7 @@ function switchNAV(element) {
 }
 
 function setActive(option) {
-	if(option === "2") {
+	if (option === "2") {
 		return;
 		//currScreen = "Settings"
 	}
@@ -556,6 +556,9 @@ function custombg() {
 
 }
 
+let whichOneActive = null
+let timeActive = 0
+let activeInterval;
 
 function load(app) {
 	let notes = localStorage.getItem("notes-owned")
@@ -649,18 +652,49 @@ function load(app) {
 		createLocalNotification("An Error Occured", `'${app}' is not owned or doesn't exist!`)
 		return;
 	}
+	whichOneActive = app
+	activeInterval = setInterval(function () {
+		timeActive = timeActive + 1
+	}, 1000)
 	const appFrame = setInterval(function () {
 		if (sessionStorage.getItem("extRun") === "back") {
+
 			console.log("Hiding App Frame User Returned To Gateway")
+			clearInterval(activeInterval)
+			activeInterval = null
+			if (localStorage.getItem(`${whichOneActive}_timeUsed`)) {
+				const current = JSON.parse(localStorage.getItem(`${whichOneActive}_timeUsed`))
+				const newPlayTime = Number(current.playtime) + Number(timeActive)
+				console.log(`Total Play Time For ${whichOneActive} Is ${newPlayTime} sec`)
+				const thePlayJson = {
+					"playtime": newPlayTime,
+					"app": current.app
+				}
+				localStorage.setItem(`${whichOneActive}_timeUsed`, JSON.stringify(thePlayJson))
+			} else {
+
+				const thePlayJson = {
+					"playtime": timeActive,
+					"app": whichOneActive
+				}
+				localStorage.setItem(`${whichOneActive}_timeUsed`, JSON.stringify(thePlayJson))
+				console.log(`Fresh Play Time For ${whichOneActive} Is ${timeActive} sec`)
+			}
+			timeActive = 0
 			document.getElementById("launchApp").src = "PreloadApp.html"
 			$("#launchApp").fadeOut("slow")
 
 			$("#iframeContainer").fadeOut("slow", function () {
 				document.getElementById("navbar").classList.add("active")
-				if (localStorage.getItem("topNav") !== "disabled") {
-					document.getElementById("apple-style").classList.add("active")
-				}
+				//if (localStorage.getItem("topNav") !== "disabled") {
+				//	document.getElementById("apple-style").classList.add("active")
+				//}
 			})
+			attachedApps.forEach(function (appName) {
+				const playTime = howMuchPlay(appName)
+				document.getElementById(`playTime-${appName}`).innerText = playTime
+				console.log("Setting new playTime for", appName, playTime)
+			});
 			sessionStorage.removeItem("extRun")
 			clearInterval(appFrame)
 		}
@@ -674,9 +708,9 @@ function launchAppN(app) {
 	$("#iframeContainer").fadeIn("slow")
 	$("#launchApp").fadeIn("slow", function () {
 		document.getElementById("navbar").classList.remove("active")
-		if (localStorage.getItem("topNav") !== "disabled") {
-			document.getElementById("apple-style").classList.remove("active")
-		}
+		//if (localStorage.getItem("topNav") !== "disabled") {
+		//	document.getElementById("apple-style").classList.remove("active")
+		//}
 	})
 }
 
@@ -858,9 +892,9 @@ function uielements() {
 	console.log(notes, images, chatvia)
 	//$("#navbar").fadeIn("fast")
 	document.getElementById("navbar").classList.add("active")
-	if (localStorage.getItem("topNav") !== "disabled") {
-		document.getElementById("apple-style").classList.add("active")
-	}
+	//if (localStorage.getItem("topNav") !== "disabled") {
+	//	document.getElementById("apple-style").classList.add("active")
+	//}
 	$("#navigator").fadeIn("slow")
 	//$("#settings").fadeIn("slow")
 	//$("#vox").fadeIn("slow")
@@ -1026,9 +1060,9 @@ function settings() {
 	//console.log(document.getElementById("popup").classList.contains("active"))
 	if (document.getElementById("popup").classList.contains("active") === false) {
 		setActive("2")
-		if (localStorage.getItem("topNav") !== "disabled") {
-			document.getElementById("apple-style").classList.remove("active")
-		}
+		//if (localStorage.getItem("topNav") !== "disabled") {
+		//	document.getElementById("apple-style").classList.remove("active")
+		//}
 		return_to_options("reset")
 
 
@@ -1067,9 +1101,9 @@ function settings() {
 			//document.body.style.overflow = 'hidden';
 		}, 100)
 	} else if (document.getElementById("popup").classList.contains("active")) {
-		if (localStorage.getItem("topNav") !== "disabled") {
-			document.getElementById("apple-style").classList.add("active")
-		}
+		//if (localStorage.getItem("topNav") !== "disabled") {
+		//	document.getElementById("apple-style").classList.add("active")
+		//}
 
 
 		//$("#navigator").fadeOut("fast")
@@ -1226,7 +1260,7 @@ function restart() {
 	$("#settings").fadeOut("fast")
 	$("#gateway").fadeOut("fast", function () {
 		document.getElementById("navbar").classList.remove("active")
-		document.getElementById("apple-style").classList.remove("active")
+		//document.getElementById("apple-style").classList.remove("active")
 		//$("#bottom-logo").fadeOut("fast", function () {
 		setTimeout(function () {
 			window.location.reload()
@@ -5769,7 +5803,7 @@ version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 		</g>
 	</svg>
 </div>`
-const otp_info = `<div onclick='$("#otp_info").fadeOut("fast", function () {$("#apps_using_evox").fadeIn("fast")});navigator("sign_in_wevox")' class="circle">
+	const otp_info = `<div onclick='$("#otp_info").fadeOut("fast", function () {$("#apps_using_evox").fadeIn("fast")});navigator("sign_in_wevox")' class="circle">
 
 	<svg xmlns="http://www.w3.org/2000/svg"
 		xmlns:xlink="http://www.w3.org/1999/xlink" fill="#212121" height="24px" width="24px" version="1.1"
@@ -6435,14 +6469,14 @@ function app_use_info(app) {
 					document.getElementById("howmanynotes").innerHTML = data.notes
 					document.getElementById("howmanyfavs").innerHTML = data.favorites.length
 					document.getElementById("isUserFolder").innerHTML = 'true'
-					if(data.settings) {
+					if (data.settings) {
 						if (data.settings.background) {
 							document.getElementById("settingBg").innerHTML = data.settings.background
 						} else {
 							document.getElementById("settingBg").innerHTML = 'default'
 						}
 					}
-					
+
 
 				}
 			})
@@ -6467,36 +6501,36 @@ function changeTascoBg() {
 	const currentSetting = document.getElementById("settingBg").innerHTML
 	let nextSetting;
 	let setItAs;
-	if(currentSetting === "default") {
+	if (currentSetting === "default") {
 		nextSetting = "low-end"
 		setItAs = "evox"
-	} else if(currentSetting === "low-end") {
+	} else if (currentSetting === "low-end") {
 		nextSetting = "false"
 		setItAs = "false"
-	} else if(currentSetting === "false") {
+	} else if (currentSetting === "false") {
 		nextSetting = "default"
 		setItAs = "default"
 	}
 
 	fetch(`https://data.evoxs.xyz/tasco?method=settingsNotes&identifier=background&newSet=${setItAs}&username=${localStorage.getItem("t50-username")}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json(); // Parse JSON data
-        })
-        .then(data => {
-            console.log(data);
-            if (data.message === "Complete!") {
-                console.log("Success.")
-                document.getElementById("settingBg").innerHTML = nextSetting
-            } else {
-                alert("Something Failed!", data)
-            }
-        })
-        .catch(error => {
-            console.error('There has been a problem with your fetch operation:', error);
-        });
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return response.json(); // Parse JSON data
+		})
+		.then(data => {
+			console.log(data);
+			if (data.message === "Complete!") {
+				console.log("Success.")
+				document.getElementById("settingBg").innerHTML = nextSetting
+			} else {
+				alert("Something Failed!", data)
+			}
+		})
+		.catch(error => {
+			console.error('There has been a problem with your fetch operation:', error);
+		});
 
 }
 
@@ -7747,40 +7781,40 @@ try {
 }
 
 function rotateElement() {
-    // Get the element by its ID
-    const element = document.getElementById('sendSvg');
+	// Get the element by its ID
+	const element = document.getElementById('sendSvg');
 
-    // Check if the element exists
-    if (element) {
-        // Get the current rotation angle
-        const currentRotationMatch = element.style.transform.match(/rotate\((\d+)deg\)/);
+	// Check if the element exists
+	if (element) {
+		// Get the current rotation angle
+		const currentRotationMatch = element.style.transform.match(/rotate\((\d+)deg\)/);
 
-        // Initialize current rotation to 0 if not set
-        let currentRotation = 0;
-        if (currentRotationMatch) {
-            currentRotation = parseInt(currentRotationMatch[1], 10);
-        }
+		// Initialize current rotation to 0 if not set
+		let currentRotation = 0;
+		if (currentRotationMatch) {
+			currentRotation = parseInt(currentRotationMatch[1], 10);
+		}
 
-        // Increment the current rotation by 45 degrees
-        let newRotation = currentRotation + 410;
+		// Increment the current rotation by 45 degrees
+		let newRotation = currentRotation + 410;
 
-        // Apply the new rotation to the element
-        element.style.transform = `rotate(${newRotation}deg)`;
-    }
-	setTimeout(function() {
+		// Apply the new rotation to the element
+		element.style.transform = `rotate(${newRotation}deg)`;
+	}
+	setTimeout(function () {
 		if (element) {
 			// Get the current rotation angle
 			const currentRotationMatch = element.style.transform.match(/rotate\((\d+)deg\)/);
-	
+
 			// Initialize current rotation to 0 if not set
 			let currentRotation = 0;
 			if (currentRotationMatch) {
 				currentRotation = parseInt(currentRotationMatch[1], 10);
 			}
-	
+
 			// Increment the current rotation by 45 degrees
 			let newRotation = currentRotation - 410;
-	
+
 			// Apply the new rotation to the element
 			element.style.transform = `rotate(${newRotation}deg)`;
 		}
@@ -7798,48 +7832,313 @@ function loadOTP() {
                     </path>
                 </svg>`
 	fetch(`${srv}/otp?method=get&username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
-	.then(response => response.text())
-	.then(data => {
-		if(data !== "Denied") {
-			document.getElementById("otpCurrent").innerText = data
-		}
-
-	})
-	.catch(error => {
-		console.error(error);
-	});
-}
-
-function createOTP() {
-	if(document.getElementById("otpCurrent").innerText === "None") {
-		fetch(`${srv}/otp?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
 		.then(response => response.text())
 		.then(data => {
-			if(data !== "Denied") {
+			if (data !== "Denied") {
 				document.getElementById("otpCurrent").innerText = data
-				setTimeout(function() {
-					loadOTP()
-				  }, 60000)
 			}
 
 		})
 		.catch(error => {
 			console.error(error);
 		});
+}
+
+function createOTP() {
+	if (document.getElementById("otpCurrent").innerText === "None") {
+		fetch(`${srv}/otp?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+			.then(response => response.text())
+			.then(data => {
+				if (data !== "Denied") {
+					document.getElementById("otpCurrent").innerText = data
+					setTimeout(function () {
+						loadOTP()
+					}, 60000)
+				}
+
+			})
+			.catch(error => {
+				console.error(error);
+			});
 	}
-	
+
 }
 
 function refreshOTP() {
 	fetch(`${srv}/otp?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
-	.then(response => response.text())
-	.then(data => {
-		if(data !== "Denied") {
-			document.getElementById("otpCurrent").innerText = data
+		.then(response => response.text())
+		.then(data => {
+			if (data !== "Denied") {
+				document.getElementById("otpCurrent").innerText = data
+			}
+
+		})
+		.catch(error => {
+			console.error(error);
+		});
+}
+
+function addApp() {
+	document.getElementById("creationCont").classList.add("active")
+
+	document.getElementById("gateway").style.transform = 'scale(0.97)'
+	document.getElementById("gateway").style.opacity = '0.3'
+	document.body.style.overflow = 'hidden'
+	disableScrolling()
+}
+
+const popItCreat = document.getElementById('creationCont');
+const grab = document.getElementById('grab');
+
+let startY, startTop;
+const threshold = 10; // Threshold in pixels from the top where dragging upwards is allowed
+
+grab.addEventListener('touchstart', function (e) {
+	const touch = e.touches[0];
+	startY = touch.clientY;
+	startTop = parseInt(window.getComputedStyle(popItCreat).top, 10);
+	document.addEventListener('touchmove', moveDiv);
+	document.addEventListener('touchend', stopMoveDiv);
+});
+
+let informed;
+
+function moveDiv(e) {
+	const touch = e.touches[0];
+	const deltaY = touch.clientY - startY;
+
+	// Calculate the new top position
+	let newTop = startTop + deltaY;
+
+	// Restrict movement downwards only
+	if (informed === "waiting") {
+		informed = 'done'
+		document.getElementById("grab").style.backgroundColor = "#333"
+	}
+	if (newTop < 220) {
+		console.warn(newTop)
+		return;
+	}
+	if (newTop > 390) {
+		console.warn("will quit", newTop)
+		closeCreate()
+		setTimeout(function () {
+			popItCreat.style.top = '';
+		}, 500)
+	} else {
+		console.warn("relocation", newTop)
+	}
+	if (newTop > startTop) {
+		popItCreat.style.top = newTop + 'px';
+	} else if (newTop < startTop && startTop >= threshold) {
+		// Allow movement upwards only if above threshold
+		popItCreat.style.top = newTop + 'px';
+	}
+}
+
+function stopMoveDiv() {
+
+	document.removeEventListener('touchmove', moveDiv);
+	document.removeEventListener('touchend', stopMoveDiv);
+
+	const elementId = "creationCont";
+	const isOutsideViewport = isElementOutsideViewport(elementId);
+
+	if (isOutsideViewport) {
+		console.log("Element with ID '" + elementId + "' is outside the viewport.");
+
+		console.warn("will quit")
+		closeCreate()
+		setTimeout(function () {
+			popItCreat.style.top = '';
+		}, 500)
+
+	} else {
+		console.log("Element with ID '" + elementId + "' is inside the viewport.");
+	}
+}
+
+function isElementOutsideViewport(elementId) {
+	const element = document.getElementById(elementId);
+
+	if (!element) {
+		console.warn("Element with ID '" + elementId + "' not found.");
+		return false;
+	}
+
+	const rect = element.getBoundingClientRect();
+	const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+	const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+	// Check if the element is outside the viewport
+	return rect.bottom < 0 || rect.top > viewportHeight || rect.right < 0 || rect.left > viewportWidth;
+}
+
+function closeCreate() {
+	enableScrolling()
+
+	document.getElementById("gateway").style.transform = 'scale(1)'
+	document.getElementById("gateway").style.opacity = '1'
+	document.body.style.overflow = ''
+
+	document.getElementById("creationCont").classList.remove("active")
+}
+
+function changePriority() {
+	const imgElem = document.getElementById("priorityImg")
+	const priorityElem = document.getElementById("priority")
+	const priorityJson = ['low', 'med', 'high'] //sorted
+	if (imgElem.src.includes("low")) {
+		imgElem.src = 'med.svg'
+		priorityElem.innerText = 'Medium'
+	} else if (imgElem.src.includes("med")) {
+		imgElem.src = 'high.svg'
+		priorityElem.innerText = 'High'
+	} else if (imgElem.src.includes("high")) {
+		imgElem.src = 'low.svg'
+		priorityElem.innerText = 'Low'
+	}
+}
+
+async function getFaviconUrl(pageUrl) {
+	try {
+		// Fetch the HTML content of the page
+		const response = await fetch(pageUrl);
+		if (!response.ok) {
+			throw new Error('Network response was not ok');
 		}
 
-	})
-	.catch(error => {
-		console.error(error);
-	});
+		// Get the text content of the page
+		const html = await response.text();
+
+		// Create a new DOMParser to parse the HTML
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(html, 'text/html');
+
+		// Find the favicon link
+		const faviconLink = doc.querySelector('link[rel="icon"], link[rel="shortcut icon"]');
+
+		if (faviconLink) {
+			// Return the href attribute of the favicon link
+			return faviconLink.href;
+		} else {
+			throw new Error('Favicon not found');
+		}
+	} catch (error) {
+		console.error('Error fetching favicon:', error);
+		return null;
+	}
+}
+
+function addAppCustom() {
+	console.log("Running")
+	const appName = document.getElementById("appNameAdd").value
+	const dir = document.getElementById("appURLAdd").value
+	let cleanedLoc = window.location.href.replace(/#/g, '');
+
+	const url = `${cleanedLoc}${dir}`;
+
+	// Perform the fetch request
+	fetch(url)
+		.then(response => {
+			// Check if the response status is 404
+			if (response.status === 404) {
+				document.getElementById('appURLAdd').value = ''
+				document.getElementById('appURLAdd').placeholder = 'Directory Not Found'
+				setTimeout(function () {
+					document.getElementById('appURLAdd').placeholder = 'App directory'
+				}, 8000)
+				console.log(`Resource not found [${url}] (404)`);
+			} else {
+				//window.location.href = `${cleanedLoc}${document.getElementById('appURLAdd').value}`
+				if (appName !== "") {
+					const pageUrl = url; // Replace with the URL of the page you want to fetch
+					getFaviconUrl(pageUrl).then(faviconUrl => {
+						console.log('Favicon URL:', faviconUrl);
+						if (localStorage.getItem("customApps")) {
+							let prevJson = JSON.parse(localStorage.getItem("customApps")) || {};
+							const customAppJson = {
+								[appName]: {
+									'name': appName,
+									'dir': dir,
+									'verified': true,
+									'icon': faviconUrl,
+									'type': 'tasco'
+								}
+							};
+							prevJson = { ...prevJson, ...customAppJson };
+							localStorage.setItem("customApps", JSON.stringify(prevJson));
+							addElemApp(customAppJson[appName], 'true')
+						} else {
+							const customAppJson = {
+								[appName]: {
+									'name': appName,
+									'dir': dir,
+									'verified': true,
+									'icon': faviconUrl,
+									'type': 'tasco'
+								}
+							}
+							localStorage.setItem("customApps", JSON.stringify(customAppJson))
+							addElemApp(customAppJson[appName], 'true')
+						}
+						closeCreate()
+						
+					});
+					
+
+				}
+				document.getElementById('appURLAdd').value = ''
+				console.log('Response status:', response.status);
+			}
+
+			// You can also handle other status codes or the response body here if needed
+			return response.text(); // Assuming the response is in JSON format
+		})
+		.then(data => {
+			// Handle the data from the response if needed
+			console.log('Response data:', data);
+		})
+		.catch(error => {
+			// Handle any errors that occurred during the fetch
+			console.error('Fetch error:', error);
+		});
+
+}
+
+function disableScrolling() {
+	window.addEventListener('scroll', preventDefaultScroll, { passive: false });
+	window.addEventListener('wheel', preventDefaultScroll, { passive: false });
+	window.addEventListener('touchmove', preventDefaultScroll, { passive: false });
+	window.addEventListener('keydown', preventDefaultForScrollKeys, { passive: false });
+}
+
+function preventDefaultScroll(event) {
+	event.preventDefault();
+}
+
+function preventDefaultForScrollKeys(event) {
+	// Add keycodes for keys you want to disable
+	switch (event.keyCode) {
+		case 37: // left arrow
+		case 38: // up arrow
+		case 39: // right arrow
+		case 40: // down arrow
+		case 32: // spacebar
+		case 33: // page up
+		case 34: // page down
+		case 35: // end
+		case 36: // home
+			event.preventDefault();
+			break;
+		default:
+			break;
+	}
+}
+
+function enableScrolling() {
+	window.removeEventListener('scroll', preventDefaultScroll);
+	window.removeEventListener('wheel', preventDefaultScroll);
+	window.removeEventListener('touchmove', preventDefaultScroll);
+	window.removeEventListener('keydown', preventDefaultForScrollKeys);
 }

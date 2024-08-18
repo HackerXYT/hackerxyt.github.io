@@ -4,27 +4,27 @@
 <head>
     <script>
         function notice(message) {
-            const oldhtml = document.getElementById("notification").innerHTML
+            const oldhtml = document.getElementById("notification-span").innerHTML
             var notification = document.getElementById('notification');
             if (notification.className.includes("show")) {
                 console.log("Notification Is Shown")
                 notification.classList.remove('show');
                 setTimeout(function () {
-                    document.getElementById("notification").innerHTML = message
+                    document.getElementById("notification-span").innerHTML = message
                     notification.classList.add('show');
                     setTimeout(function () {
                         notification.classList.remove('show');
                     }, 2500);
                 }, 500)
             } else {
-                document.getElementById("notification").innerHTML = message
+                document.getElementById("notification-span").innerHTML = message
                 notification.classList.add('show');
                 setTimeout(function () {
                     notification.classList.remove('show');
                 }, 2500);
             }
             setTimeout(function () {
-                document.getElementById("notification").innerHTML = oldhtml
+                document.getElementById("notification-span").innerHTML = oldhtml
             }, 3000)
         }
         // Override the global error handler
@@ -750,7 +750,7 @@
                 </div>
 
                 <div class="parent-popup-container pc-only"
-                    style="position: relative; width: 90%;height: auto;max-height: 230px;">
+                    style="position: relative; width: 100%;height: auto;max-height: 230px;">
                     <div id="carouselHandler" class="carousela">
                         <div class="carousel-images">
                             <img src="nexusEpsilon.png" alt="Image 1">
@@ -768,7 +768,10 @@
                             <div class="carousel-dot" onclick="moveToSlide(4)"></div>
                         </div>
                     </div>
-                    <p style="position: absolute; bottom: -40px; margin: 0; color: white;" class="pc-hide">Your Apps</p>
+                    <p style="position: absolute; bottom: -40px; margin: 0; color: white; text-align: left; width: 100%;" class="pc-hide">
+                        Your Apps
+                        <span onclick="addApp()" style="position: absolute; right: 0;background-color: #0083fe;padding:5px 10px;border-radius: 50%;">+</span>
+                    </p>
                 </div>
                 <div id="app-cont" style="margin-top: 40px;">
                     <p class="pc-show">Your Apps</p>
@@ -3535,7 +3538,22 @@
     </div>
 
     <div class="notification-container" id="notification">
-        Datacenter change is coming soon!<br>Prepare for downtimes..
+        <p id="notification-title"><svg xmlns="http://www.w3.org/2000/svg" fill="#fad836" width="25px" height="25px" viewBox="0 0 32 32" version="1.1">
+            <title>notice1</title>
+            <path d="M15.5 3c-7.456 0-13.5 6.044-13.5 13.5s6.044 13.5 13.5 13.5 13.5-6.044 13.5-13.5-6.044-13.5-13.5-13.5zM15.5 27c-5.799 0-10.5-4.701-10.5-10.5s4.701-10.5 10.5-10.5 10.5 4.701 10.5 10.5-4.701 10.5-10.5 10.5zM15.5 10c-0.828 0-1.5 0.671-1.5 1.5v5.062c0 0.828 0.672 1.5 1.5 1.5s1.5-0.672 1.5-1.5v-5.062c0-0.829-0.672-1.5-1.5-1.5zM15.5 20c-0.828 0-1.5 0.672-1.5 1.5s0.672 1.5 1.5 1.5 1.5-0.672 1.5-1.5-0.672-1.5-1.5-1.5z"/>
+            </svg><vo id="titleType">Notice</vo>
+            <svg onclick="document.getElementById('notification').classList.remove('show');" style="cursor: pointer;" class="close-notice" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                <g clip-path="url(#clip0_429_11083)">
+                <path d="M7 7.00006L17 17.0001M7 17.0001L17 7.00006" stroke="#292929" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_429_11083">
+                <rect width="24" height="24" fill="white"/>
+                </clipPath>
+                </defs>
+                </svg></p>
+        <span id="notification-span">Datacenter change is coming soon!<br>Prepare for downtimes..</span>
+        
     </div>
     <div id="loading-div-text">
         <div id="loading-text" class="loading-text-default">
@@ -3611,6 +3629,37 @@
             <button onclick="cancelCryptox()" class="buttons__decline">No&nbsp;thanks</button>
         </div>
 
+    </div>
+
+    <div id="creationCont" class="popupAppCreation">
+        <div id="grab" class="grabbable"></div>
+        <h3>Add A Custom App</h3>
+        <div class="inputTask">
+            <span>Name</span>
+            <input id="appNameAdd" placeholder="App display name" class="taskInput">
+        </div>
+        <div class="inputTask" style="margin-top: 5px;">
+            <span>Locator</span>
+            <input id="appURLAdd" placeholder="App directory" class="taskInput">
+        </div>
+        <div class="organize">
+            Container<div class="organizeCont"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                    viewBox="0 0 16 16" fill="none">
+                    <path fill="#62bda9" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
+                </svg><vox id="containerApp">Epsilon</vox></div>
+        </div>
+        
+        <div class="organizeLine"></div>
+        <div class="priorityadd">
+            Type
+            <div class="dateCont" >
+                <vox id="priority">Productivity</vox>
+            </div>
+        </div>
+
+        <div style="cursor: pointer;margin-top: 10px;" onclick="addAppCustom()" class="doneBtn">
+            Done
+        </div>
     </div>
 
     <div id="logout_confirm" class="cookie" style="background-color: #311313;border: 1px solid #271414">
@@ -3742,11 +3791,11 @@
         </div>
     </div>
 
-    <div class="parent-notification-container">
+    <!--<div class="parent-notification-container">
         <div onclick="hideME()" id="apple-style" class="apple-style">
             <span id="appUP">Epsilon 4.0.2 • Florida 0.1</span>
         </div>
-    </div>
+    </div>-->
     <noscript>
         <div class="parent-notification-container">
             <div class="apple-style active">
