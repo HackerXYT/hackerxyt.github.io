@@ -1,29 +1,29 @@
 {
   "name": "Evox Epsilon",
-  "short_name": "Epsilon",
+  "short_name": "Beta",
   "id": "evx-epsilon",
-  "start_url": "/evox-epsilon/",
+  "start_url": "/evox-epsilon-beta/",
   "background_color": "#000",
   "display": "standalone",
   "display_override": ["tabbed"],
   "tab_strip": {
     "new_tab_button": {
-      "url": "/evox-epsilon/"
+      "url": "/evox-epsilon-beta/"
     }
   },
   "orientation": "portrait",
   "dir": "ltr",
-  "scope": "/evox-epsilon/",
+  "scope": "/evox-epsilon-beta/",
   "theme_color": "#000",
   "lang": "en-US",
   "categories": [
     "entertainment",
     "lifestyle"
   ],
-  "description": "Evox Gateway: A versatile application serving as a central hub for accessing Evox apps like Tasco and Images, along with features for managing tasks, secure galleries, encrypted chats, and more. Your all-in-one solution for streamlined organization and secure communication.",
+  "description": "Nexus: A versatile application serving as a central hub for accessing Evox apps like Tasco and Images, along with features for managing tasks, secure galleries, encrypted chats, and more. Your all-in-one solution for streamlined organization and secure communication.",
   "related_applications": [{
       "platform": "webapp",
-      "url": "https://evoxs.xyz/evox-epsilon/manifest.json"
+      "url": "https://evoxs.xyz/evox-epsilon-beta/manifest.json"
     }
   ],
   "icons": [
