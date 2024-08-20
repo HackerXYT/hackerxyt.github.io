@@ -1,0 +1,1096 @@
+@font-face {
+    font-family: "SF";
+    src: url('../SFUIText-Medium.ttf');
+}
+
+@font-face {
+    font-family: 'SFLight';
+    src: url('../internal/SFProDisplay-Light.ttf') format('truetype');
+    /* Adjust path and format */
+}
+
+:root {
+    --SearchWidth: 60%;
+    --appContWith: 60.5%;
+    --horLine: 62%;
+    --verLine: 62%;
+    --setProfile: 3px;
+    --navbarMargin: 5px;
+    --sideBarWidth: 38%;
+    --sideDisplay: flex;
+}
+
+* {
+    touch-action: manipulation;
+    /* For modern browsers */
+    -webkit-tap-highlight-color: transparent;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    font-family: "SF", sans-serif;
+    background-color: #121212;
+    color: white;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: manipulation;
+    overscroll-behavior-y: contain;
+    /* For newer browsers */
+    overscroll-behavior: contain;
+    font-size: medium;
+    /* For older browsers */
+}
+
+.fadeImg {
+    transition: 0.5s ease-in-out opacity;
+}
+
+.navbar {
+    overflow: hidden;
+    position: fixed;
+    /* Must remain relative */
+    left: 0;
+    top: 0;
+    height: 100vh;
+    /* Full viewport height */
+    /* 15% of the container's width */
+    width: 25%;
+    background-color: #191919;
+    display: flex;
+    flex-direction: column;
+    /* Aligns items vertically */
+    justify-content: flex-start;
+    /* Ensures equal spacing around items */
+    align-items: center;
+    /* Centers items horizontally */
+    box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 1s ease, opacity 1s ease, visibility 1s;
+}
+
+.container {
+    overflow-x: hidden;
+    position: absolute;
+    top: 0;
+    left: 25%;
+    /* Width of the .navbar */
+    width: 75%;
+    min-height: 100vh;
+    /* Match the height of .navbar */
+    background-color: #0a0a0a;
+    /* Example background color */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.navbar img {
+    margin-top: 0;
+    max-width: 75%;
+}
+
+
+
+.navbar-item {
+    margin-top: var(--navbarMargin);
+    margin-bottom: 5px;
+    color: #ffffff;
+    /* White text color */
+    text-align: left;
+    /* Aligns text to the left */
+    padding: 20px 20px;
+    /* Adds padding for better spacing */
+    text-decoration: none;
+    /* Removes underline from links */
+    width: 85%;
+    /* Full width of the sidebar */
+    position: relative;
+    display: flex;
+    align-items: center;
+    /* Center child elements vertically */
+    /* Required for pseudo-element positioning */
+    transition: 0.2s ease background-color;
+}
+
+.navbar-item svg,
+img {
+    margin-right: 8px;
+    /* Adjust the spacing between the icon and text as needed */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.navbar-item::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    height: 80%;
+    border-radius: 15px 2px 2px 15px;
+    width: 12.5px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+    /* Center the element */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.navbar-item.hover-effect::before {
+    background-color: #426cff;
+    /* Blue color on hover */
+}
+
+.navbar-item.hover-effect {
+    /* Changes background color on hover */
+    border-radius: 5px;
+    /* Adds rounded corners */
+}
+
+.navbar-item:hover::before {
+    /*background-color: #21a62500;
+     green color on hover */
+}
+
+/*.navbar-item:hover {
+    background-color: #232323;
+     Changes background color on hover */
+/*border-radius: 5px;
+     Adds rounded corners
+} */
+
+/* Style for badges (like notification counts) */
+.badge {
+    background-color: #ff0000;
+    /* Red background for badges */
+    color: #ffffff;
+    /* White text color */
+    padding: 0;
+    /* Removes padding */
+    border-radius: 50%;
+    /* Makes the badge circular */
+    font-size: 12px;
+    /* Smaller font size */
+    margin-left: 10px;
+    /* Adds space between text and badge */
+    display: inline-block;
+    /* Ensures the element is inline-block */
+    text-align: center;
+    /* Centers the text horizontally */
+    width: 20px;
+    /* Fixed width for the badge */
+    height: 20px;
+    /* Fixed height for the badge */
+    line-height: 20px;
+    /* Matches the height for vertical centering */
+    vertical-align: middle;
+    /* Aligns the badge with the text */
+}
+
+.searchContainer {
+    position: relative;
+    height: 51px;
+    margin: 0;
+    width: calc(var(--SearchWidth) - 50px);
+    /* Adjust to leave space for the notification icon */
+    display: flex;
+    align-items: center;
+}
+
+.searchInput {
+    font-family: "SF";
+    border-radius: 5px;
+    background-color: #3e3e3e00;
+    width: 100%;
+    border: 1px solid #3e3e3e;
+    color: #fff;
+    padding: 15px 50px 15px 50px;
+    /* Adjust to accommodate the icon */
+    font-size: 16px;
+    border-radius: 8px;
+    outline: none;
+    margin: 0;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+.notificationIcon {
+    width: 50px;
+    height: 50px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    /* Adjust to control the spacing between elements */
+}
+
+.notificationIcon svg {
+    height: auto;
+}
+
+.top-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* Ensure items are aligned */
+}
+
+.Horline {
+    margin-top: 25px;
+    width: var(--horLine);
+    border-bottom: 1px solid #3e3e3e;
+}
+
+.Verline {
+    width: 1px;
+    /* Adjust the width as needed */
+    height: 100vh;
+    /* Full viewport height */
+    background-color: #3e3e3e;
+    /* Change to the desired color */
+    position: absolute;
+    top: 0;
+    left: var(--verLine);
+    /* Adjust position to place it as needed */
+}
+
+.appContainer {
+    position: absolute;
+    height: 85%;
+    width: var(--appContWith);
+}
+
+.appContainer h2 {
+    font-family: 'SFLight';
+}
+
+.navigation {
+    color: #7e7e7e;
+    margin-top: 20px;
+}
+
+.navItem {
+    opacity: 0.5;
+    font-size: 15px;
+}
+
+.navItem.middle {
+    margin-left: 5px;
+}
+
+.navItem svg {
+    margin-right: 8px;
+    /* Adjust the spacing between the icon and text as needed */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.appsHeader {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* Center align items vertically */
+    padding: 10px;
+    /* Optional: for spacing */
+}
+
+.appsHeader .Addbutton {
+    margin-left: auto;
+    margin-right: 25px;
+    /* Adjust this value to move the button more to the left */
+}
+
+.Addbutton button {
+    font-family: 'SF';
+    background-color: #426cff;
+    border: none;
+    color: #fff;
+    padding: 10px 10px;
+    font-size: 15px;
+    border-radius: 12.5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.7s ease;
+    text-wrap: wrap;
+}
+
+.Addbutton button svg {
+    margin-right: 4px;
+    /* Adjust the spacing between the icon and text as needed */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.views {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    /* Center align items vertically */
+    padding: 10px;
+    /* Optional: for spacing */
+}
+
+.viewType {
+    color: #5a5a5a;
+    margin: 10px;
+    font-family: "SF";
+    border-bottom: 2px solid #426bff00;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.4s ease-in-out border-bottom, 0.4s ease-in-out color;
+}
+
+.viewType:hover {
+    color: #ffffffa8;
+    border-bottom: 2px solid #426bff9a;
+}
+
+.viewType.active {
+    color: #fff;
+    margin: 10px;
+    font-family: "SF";
+    border-bottom: 2px solid #426cff;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+
+.views .actions {
+    margin-left: auto;
+    margin-right: 25px;
+    /* Adjust this value to move the button more to the left */
+}
+
+
+.views .actions button {
+    font-family: 'SF';
+    background-color: #1e1e1e;
+    border: none;
+    color: #cdcdcd;
+    padding: 10px 10px;
+    font-size: 15px;
+    border-radius: 12.5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.7s ease;
+    text-wrap: wrap;
+    margin-left: 5px;
+}
+
+.views .actions button svg {
+    margin-right: 4px;
+    /* Adjust the spacing between the icon and text as needed */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.account-info {
+    font-size: 13px;
+    position: absolute;
+    /* Position relative to .navbar */
+    bottom: var(--setProfile);
+    /* Default to bottom of .navbar */
+    left: 50%;
+    /* Center horizontally within .navbar */
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Adjust position based on safe area insets for newer devices */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .account-info {
+        bottom: env(safe-area-inset-bottom);
+    }
+}
+
+.user-image {
+    width: 60px;
+    /* Adjust size as needed */
+    height: 60px;
+    /* Adjust size as needed */
+    border-radius: 50%;
+    /* Makes the image circular */
+    overflow: hidden;
+    /* Ensures the image stays within the circle */
+    background-size: cover;
+    /* Ensures the image covers the entire container */
+    background-position: center;
+    /* Center the background image */
+    background-repeat: no-repeat;
+    /* Prevent background image from repeating */
+}
+
+
+
+.info {
+    margin-left: 10px;
+    /* Adjust spacing between image and text */
+}
+
+.info p {
+    margin: 0;
+    /* Remove default margin */
+    font-weight: bold;
+    /* Example styling for username */
+}
+
+.info span {
+    font-style: italic;
+    /* Example styling for role */
+    color: #666;
+    /* Example color */
+}
+
+.board {
+    display: flex;
+    flex-direction: row;
+    padding-left: 10px;
+}
+
+.cardType {
+    width: 200px;
+    height: 50px;
+    font-family: "SF";
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.type1 {
+    background-color: #fd8d4d;
+}
+
+.cardApp {
+    margin-top: 10px;
+    width: 200px;
+    height: 200px;
+    font-family: "SF";
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    /* Ensure relative positioning */
+    border-radius: 10px;
+    overflow: hidden;
+    /* Ensures the image stays within the circle */
+}
+
+.cardApp p {
+    z-index: 999;
+    color: #fff;
+    text-shadow: rgba(0, 0, 0, 1) 0px 2px 5px;
+
+
+}
+
+.cardsCont {
+    margin: 10px;
+    max-width: 200px;
+    padding: 10px;
+    height: auto;
+    border: 2px dashed #292929;
+    /* Border style dotted */
+    border-radius: 20px;
+}
+
+.cardsContR {
+    margin: 10px;
+    max-width: auto;
+    padding: 10px;
+    height: auto;
+    justify-content: center;
+    text-align: center;
+    border: 2px dashed #292929;
+    /* Border style dotted */
+    border-radius: 20px;
+}
+
+.more {
+    margin: 10px;
+}
+
+.rows {
+    display: flex;
+    flex-direction: row;
+}
+
+.cardApp .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    /* Ensures the image covers the entire container */
+    background-position: center;
+    /* Center the background image */
+    background-repeat: no-repeat;
+    /* Prevent background image from repeating */
+    filter: blur(2px);
+    /* Apply blur effect to the background image */
+    z-index: 1;
+    /* Move the background behind other content */
+    border-radius: 20px;
+}
+
+.cardApp::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: inherit;
+    filter: blur(8px);
+    z-index: 3;
+}
+
+.drag-over {
+    background-color: #292929;
+}
+
+.sideBar {
+    display: var(--sideDisplay);
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    z-index: 99;
+    width: var(--sideBarWidth);
+    overflow-x: hidden;
+    padding: 20px;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+#drop-zone {
+    /* top | right | bottom | left */
+    width: auto;
+    padding: 150px 0 150px 0;
+    border: 2px dashed #292929;
+    /* Border style dotted */
+    border-radius: 20px;
+    transition: 0.3s ease-in-out background-color;
+}
+
+.sectionApps {
+
+    display: none;
+    justify-content: flex-start;
+    /* Centers the element horizontally */
+    align-items: center;
+    /* Centers the element vertically, if needed */
+    height: 100vh;
+    /* Optional: Sets the height of the container to 100% of the viewport height */
+    flex-direction: column;
+}
+
+input[type=checkbox] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 100px;
+    height: 50px;
+    background: grey;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+}
+
+
+
+label:after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border-radius: 90px;
+    transition: 0.3s;
+}
+
+input:checked+label {
+    background: #bada55;
+}
+
+input:checked+label:after {
+    left: calc(100% - 5px);
+    transform: translateX(-100%);
+}
+
+label:active:after {
+    width: 90px;
+}
+
+.setting {
+
+    padding: 20px;
+    background-color: #292929;
+    width: 80%;
+    flex-direction: row;
+}
+
+.setting label {
+    position: absolute;
+    right: 10%;
+}
+
+.messages-side-cont {
+    display: flex;
+    justify-content: center;
+    /* Centers the element horizontally */
+    align-items: center;
+    /* Centers the element vertically, if needed */
+    flex-direction: column;
+    /* Optional: Sets the height of the container to 100% of the viewport height */
+    width: 100%;
+}
+
+.parentP {
+    font-size: 22px;
+    font-family: "SFLight";
+}
+
+.list-user-info {
+    background-color: #191919;
+    position: relative;
+    display: inline-block;
+    position: relative;
+    margin: 10px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: 10px;
+    width: 100%;
+    min-width: 90%;
+   
+}
+
+.user-circle-sl {
+    color: #fff;
+    background-color: #000;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.activeUser {
+    box-shadow: 0 0 8px 1px #108c18b3;
+}
+
+.user-circle-sl img {
+    flex-shrink: 0;
+    /* Prevent image from stretching */
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.user-circle-sl p {
+    font-family: "SF-username";
+    color: #fff;
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-size: 18px;
+    font-weight: bold;
+    align-self: flex-start;
+    /* Align to the left */
+}
+
+.user-email {
+    align-self: flex-start;
+    white-space: nowrap;
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+    /* Optional: Add some space between name and email */
+}
+
+.project-overview {
+    background-color: #1e1e1e00;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-width: 100%;
+}
+
+
+
+.overview-header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: #191919;
+    border-radius: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    width: 400px;
+}
+
+.overview-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    height: 80px;
+    border-radius: 2px 15px 15px 2px;
+    width: 8.5px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+    /* Center the element */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.overview-header::before {
+    background-color: #8c8c8c;
+    /* Blue color on hover */
+}
+
+.overview-header h2 {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.overview-details {
+    
+}
+
+.overview-details .detail-item {
+    font-family: "SFLight";
+    font-size: 15px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.overview-details .label {
+    margin-right: 10%;
+    align-items: flex-start;
+    font-weight: normal;
+}
+
+.vo {
+    position: absolute;
+    left: 40%;
+}
+
+.avatar {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 5px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border: #757575 solid 1px;
+}
+
+.team-chat h3 {
+    margin-top: 0;
+    font-size: 16px;
+
+}
+
+.team-chat {
+    width: 100%; /* Adjust as needed */
+    overflow-x: visible; /* or overflow: hidden; */
+}
+
+.chat-date {
+    font-family: "SFLight";
+    text-align: left;
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.chat-message {
+    display: flex;
+    margin-bottom: 10px;
+    flex-direction: column;
+}
+
+.chat-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.messagePack {
+    display: flex;
+    flex-direction: row;
+}
+
+.messagePackMe {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+}
+
+.messagePackMe .chat-avatar {
+    margin-left: 10px;
+}
+.message-content {
+    background-color: #191919;
+    border-radius: 5px;
+    padding: 10px;
+    width: auto;
+    max-width: 80%;
+}
+
+.message-content p {
+    margin: 5px 0;
+    
+}
+
+.message-content img {
+    margin: 0;
+    
+}
+
+.msgCont {
+    color: #6d6d6d;
+    font-family: "SFLight";
+    font-size: 15px;
+    align-items: left;
+    text-align: left;
+}
+
+.nameTopMsg {
+    
+    color: #d9d9d9;
+    font-family: "SF";
+    font-weight: lighter;
+    font-size: 17px;
+    align-items: left;
+    text-align: left;
+}
+
+.message-time {
+    text-align: left;
+    margin-top: 10px;
+    margin-left: 50px;
+    font-size: 12px;
+    color: #666666;
+    font-family: "SFLight";
+}
+
+.message-time-me {
+    text-align: right;
+    margin-top: 10px;
+    margin-right: 65px;
+    font-size: 12px;
+    color: #666666;
+    font-family: "SFLight";
+}
+
+.file-attachment {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.file-attachment img {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+}
+
+.message-input {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.message-input input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #2a2a2a;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.message-input button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+.message-input button:hover {
+    background-color: #0056b3;
+}
+
+.attachment {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the start of the flex container (left side) */
+}
+
+.attachment .theRow {
+    display: flex; /* Nested flex container */
+    flex-direction: row; /* Items in theRow should be in a row */
+    align-items: center; /* Align items vertically in the center */
+}
+
+.attachment img {
+    width: 24px; /* Adjust the width of the PDF icon as needed */
+    height: 24px; /* Adjust the height of the PDF icon as needed */
+    margin-right: 10px; /* Space between icon and text */
+}
+
+.attachment .textWrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.attachment p {
+    font-family: "SFLight";
+    font-size: 15px;
+    margin: 0; /* Remove default margin */
+    color: #9d9d9d;
+}
+
+.attachment span {
+    font-family: "SFLight";
+    font-size: 12px;
+    color: #4b4b4b;
+}
+.infoWrap {
+    flex-direction: column;
+    justify-content: left;
+    text-align: left;
+}
+
+
+.theRow .imgBox {
+    margin-left: 15px;
+    width: 20px;
+    height: 20px;
+    background-color: #2b2b2b;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.theRow .imgBoxLast {
+    width: 20px;
+    height: 20px;
+    background-color: #2b2b2b;
+    border-radius: 8px;
+    padding: 5px;
+    margin-left: 0;
+    margin-left: 0;
+}
+
+.theRow img {
+    border-radius: 8px;
+}
+.bottom-actions {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    margin-left: 20px; /* Adjust margin as needed */
+    box-sizing: border-box;
+    z-index: 1000;
+}
+
+.msgInput {
+    position: relative; /* Ensure relative positioning for children */
+    float: left; /* Float the input container to the left */
+    width: calc(100% - 40px); /* Adjust width to accommodate margins and padding */
+}
+
+.msgInput input {
+    margin-left: 5px;
+    float: left;
+    width: 78%; /* Fill the entire width of parent container */
+    background-color: #0a0a0a;
+    color: #8c8c8c;
+    border: 1px solid #282828;
+    padding: 10px 20px 10px 45px; /* Adjust padding to make space for icon */
+    border-radius: 10px;
+    font-size: 17px;
+}
+
+.attach-icon {
+    margin-left: 7px;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+}
+
+.msgInput .sendImg {
+    float: right; /* Float the image to the right */
+    margin-right: 5px; /* Adjust margin as needed */
+    width: 30px;
+    height: 30px;
+    background-color: #2b2b2b;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.chat-messages {
+    max-height: 550px;
+    overflow-y: auto;
+}

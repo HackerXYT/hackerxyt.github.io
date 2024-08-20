@@ -1027,6 +1027,7 @@ function settings() {
 
 	//console.log(document.getElementById("popup").classList.contains("active"))
 	if (document.getElementById("popup").classList.contains("active") === false) {
+		//document.getElementById("navbar").classList.remove("active")
 		setActive("2")
 		//if (localStorage.getItem("topNav") !== "disabled") {
 		//	document.getElementById("apple-style").classList.remove("active")
@@ -1041,6 +1042,7 @@ function settings() {
 		$("#dots").fadeOut("slow")
 		$("#profile").fadeOut("slow")
 		if (document.getElementById("animatedButton_notif").style.display === "block") {
+			
 			var animatedButton = document.getElementById("animatedButton_notif");
 			animatedButton.style.opacity = "0";
 			animatedButton.style.transform = "translateY(20px)";
@@ -1069,6 +1071,7 @@ function settings() {
 			//document.body.style.overflow = 'hidden';
 		}, 100)
 	} else if (document.getElementById("popup").classList.contains("active")) {
+		//document.getElementById("navbar").classList.add("active")
 		//if (localStorage.getItem("topNav") !== "disabled") {
 		//	document.getElementById("apple-style").classList.add("active")
 		//}
@@ -6234,8 +6237,8 @@ function loadPFP(username, idsuffix) {
 			console.log("Retrieved data:", data);
 			const imgElement = document.getElementById(`${username}${idsuffix}`);
 			if (!imgElement) {
-				console.error(`Element with id ${username}${idsuffix} not found.`);
-				console.log("Retrying..")
+				//console.error(`Element with id ${username}${idsuffix} not found.`);
+				//console.log("Retrying..")
 				loadPFP(username, idsuffix)
 				return;
 			}
@@ -6416,6 +6419,7 @@ function clearflrd() {
 function app_use_info(app) {
 	document.getElementById('gateway').style.filter = 'blur(50px)'
 	if (app === "gateway") {
+		document.getElementById("currentServerSpan").innerText = srv
 		navigator('sign_in_wevox_e')
 		const repoOwner = 'HackerXYT'; // Replace 'owner' with the GitHub username or organization name
 		const repoName = 'hackerxyt.github.io'; // Replace 'repository' with the name of the GitHub repository

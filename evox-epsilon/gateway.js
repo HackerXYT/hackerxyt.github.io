@@ -1,5 +1,6 @@
 let srv = "https://data.evoxs.xyz"
-document.startViewTransition(() => updateDOM());
+
+//document.startViewTransition(() => updateDOM());
 let selfLoginLoad = false
 function loadSelfLogin() {
   if (localStorage.getItem("t50-email")) {
@@ -56,6 +57,16 @@ if (localStorage.getItem("currentSrv")) {
 } else {
   localStorage.setItem("currentSrv", "https://data.evoxs.xyz")
   srv = "https://data.evoxs.xyz"
+}
+
+if(!window.location.href.includes("https")) {
+  if(window.location.href.includes("192")) {
+    if(!srv.includes("40:")) {
+      alert("Welcome to Dev Mode, Switching to local bridge")
+      localStorage.setItem("currentSrv", "http://192.168.1.40:4000")
+      srv = "http://192.168.1.40:4000"
+    }
+  }
 }
 
 
@@ -832,7 +843,7 @@ function docready(merge) {
   let pswd = atob(acc)
   let username = localStorage.getItem("t50-username")
 
-
+  //alert("Welcome")
   const urlParams = new URLSearchParams(window.location.search);
 
   if (urlParams.has('merge') && !merge && !username) {
@@ -866,6 +877,7 @@ function docready(merge) {
 
 
   if (loggedin != null && autologin === "true") {
+    //alert("Logged in")
     var wind = new URL(window.location.href);
     var ext = wind.searchParams.get("id");
     var rel = wind.searchParams.get("switch");
@@ -1219,11 +1231,13 @@ function docready(merge) {
     })
     return;
   }
-  $("#loading-div-text").fadeIn("slow", function () {
+  //alert("Div text")
     $("#stuck").fadeOut("slow")
     setTimeout(function () {
+      //alert("div text out INTERVAL")
       $("#loading-div-text").fadeOut("slow", function () {
         //document.getElementById("loading-text").innerHTML = `Connecting<span id="dots"></span>`
+        //alert("div text out")
         fetch(`${srv}/accounts`)
           .then(response => {
             if (!response.ok) {
@@ -1232,6 +1246,7 @@ function docready(merge) {
             return response.text();
           })
           .then(data => {
+            //alert("oNLINE")
             $("#loading-bar").fadeOut("slow")
             if (data === "T50 Database Online" && sessionStorage.getItem("skipped") !== "yes") {
               console.log('%c' + "Server Online!", `color: green; font-size: 16px; font-weight: normal;`)
@@ -1245,7 +1260,7 @@ function docready(merge) {
                 setTimeout(function () {
                   document.getElementById("optionsVox").classList.add('active')
                 }, 100)
-                console.log("Hit. [DEBUG]")
+                //alert("Hit. [DEBUG]")
                 //setTimeout(function() {
                 //  $("#bggradient").fadeIn("slow")
                 //}, 3000)
@@ -1258,6 +1273,7 @@ function docready(merge) {
             }
           })
           .catch(error => {
+            //alert("Offline?")
             custombg()
             fadeElement("nosignal", 10); // You can adjust the speed here (lower value for faster fading)
             $("#stuck").fadeOut("fast")
@@ -1336,7 +1352,6 @@ function docready(merge) {
       })
     }, 0)
 
-  })
 }
 
 

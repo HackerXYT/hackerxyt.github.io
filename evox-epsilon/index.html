@@ -27,16 +27,44 @@
                 document.getElementById("notification-span").innerHTML = oldhtml
             }, 3000)
         }
+        let successLoad = false;
         // Override the global error handler
         window.onerror = function (message, source, lineno, colno, error) {
             //alert(`An error occurred: ${message} at ${source}:${lineno}:${colno}`);
+            if(successLoad === false) {
+                notice(`An error occurred: ${message} at ${source}:${lineno}:${colno}`)
+            }
             return false;  // Let the browser console still show the error if available
         };
 
         // Handle unhandled promise rejections
         window.addEventListener('unhandledrejection', function (event) {
+            if(successLoad === false) {
+                notice(`An error occurred: ${message} at ${source}:${lineno}:${colno}`)
+            }
             //alert(`An unhandled promise rejection occurred: ${event.reason}`);
         });
+
+        const originalConsoleLog = console.log;
+
+        // Override the console.log function
+        console.log = function (...args) {
+            // Display an alert with the log message
+            //alert(args.join(' '));
+            originalConsoleLog.apply(console, args);
+            //try {
+            //    alert(`${args.join(' ')}`)
+            //} catch (error) {
+            //    return;
+            //}
+
+
+
+
+
+            // Call the original console.log function with the same arguments
+
+        };
     </script>
     <meta charset="UTF-8">
     <title>Evox Gateway</title>
@@ -1462,19 +1490,21 @@
 
     <div class="adjustCont">
         <div id="private_chat" class="popupsl">
-            <div class="user-container-sl">
-                <a onclick="return_main_chats()"><svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
-                        viewBox="0 0 24 24" fill="none">
-                        <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#fff" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg></a>
 
-                <div id="sline_prive" class="user-circle-sl">
-                    <img id="secureline-img-chat" src="./t50-img.png" alt="User Image">
-                    <p id="chat-username">SecureLine</p>
+            <div class="top-actions">
+                <div class="user-container-sl">
+                    <a onclick="return_main_chats()"><svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#fff" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg></a>
+
+                    <div id="sline_prive" class="user-circle-sl">
+                        <img id="secureline-img-chat" src="./t50-img.png" alt="User Image">
+                        <p id="chat-username">SecureLine</p>
+                    </div>
                 </div>
-            </div>
-            <div onclick="options()" id="info" style="position: fixed;
+                <div onclick="options()" id="info" style="position: fixed;
         top: 47px;
         right: 20px;
         width: 30px;
@@ -1485,22 +1515,22 @@
         justify-content: center;
         cursor: pointer;
         text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
-                <!--onclick="fix()" id="stuck"-->
-                <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
-                <!-- You can customize the icon or text inside the button -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M12 17.75C12.4142 17.75 12.75 17.4142 12.75 17V11C12.75 10.5858 12.4142 10.25 12 10.25C11.5858 10.25 11.25 10.5858 11.25 11V17C11.25 17.4142 11.5858 17.75 12 17.75Z"
-                        fill="#fff" />
-                    <path
-                        d="M12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z"
-                        fill="#fff" />
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75Z"
-                        fill="#fff" />
-                </svg>
-            </div>
-            <div id="info" style="position: fixed;
+                    <!--onclick="fix()" id="stuck"-->
+                    <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+                    <!-- You can customize the icon or text inside the button -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M12 17.75C12.4142 17.75 12.75 17.4142 12.75 17V11C12.75 10.5858 12.4142 10.25 12 10.25C11.5858 10.25 11.25 10.5858 11.25 11V17C11.25 17.4142 11.5858 17.75 12 17.75Z"
+                            fill="#fff" />
+                        <path
+                            d="M12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z"
+                            fill="#fff" />
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75Z"
+                            fill="#fff" />
+                    </svg>
+                </div>
+                <div id="info" style="position: fixed;
         top: 47px;
         right: 50px;
         width: 30px;
@@ -1511,31 +1541,36 @@
         justify-content: center;
         cursor: pointer;
         text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
-                <!--onclick="fix()" id="stuck"-->
-                <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
-                <!-- You can customize the icon or text inside the button -->
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px"
-                    height="22px" viewBox="0 0 15 15" version="1.1">
-                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <g id="Dribbble-Light-Preview" transform="translate(-103.000000, -7321.000000)" fill="#fff">
-                            <g id="icons" transform="translate(56.000000, 160.000000)">
-                                <path
-                                    d="M61.7302966,7173.99596 C61.2672966,7175.40296 59.4532966,7176.10496 58.1572966,7175.98796 C56.3872966,7175.82796 54.4612966,7174.88896 52.9992966,7173.85496 C50.8502966,7172.33496 48.8372966,7169.98396 47.6642966,7167.48896 C46.8352966,7165.72596 46.6492966,7163.55796 47.8822966,7161.95096 C48.3382966,7161.35696 48.8312966,7161.03996 49.5722966,7161.00296 C50.6002966,7160.95296 50.7442966,7161.54096 51.0972966,7162.45696 C51.3602966,7163.14196 51.7112966,7163.84096 51.9072966,7164.55096 C52.2742966,7165.87596 50.9912966,7165.93096 50.8292966,7167.01396 C50.7282966,7167.69696 51.5562966,7168.61296 51.9302966,7169.09996 C52.6632966,7170.05396 53.5442966,7170.87696 54.5382966,7171.50296 C55.1072966,7171.86196 56.0262966,7172.50896 56.6782966,7172.15196 C57.6822966,7171.60196 57.5872966,7169.90896 58.9912966,7170.48196 C59.7182966,7170.77796 60.4222966,7171.20496 61.1162966,7171.57896 C62.1892966,7172.15596 62.1392966,7172.75396 61.7302966,7173.99596 C61.4242966,7174.92396 62.0362966,7173.06796 61.7302966,7173.99596"
-                                    id="call-[#192]">
+                    <!--onclick="fix()" id="stuck"-->
+                    <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+                    <!-- You can customize the icon or text inside the button -->
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px"
+                        height="22px" viewBox="0 0 15 15" version="1.1">
+                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Dribbble-Light-Preview" transform="translate(-103.000000, -7321.000000)" fill="#fff">
+                                <g id="icons" transform="translate(56.000000, 160.000000)">
+                                    <path
+                                        d="M61.7302966,7173.99596 C61.2672966,7175.40296 59.4532966,7176.10496 58.1572966,7175.98796 C56.3872966,7175.82796 54.4612966,7174.88896 52.9992966,7173.85496 C50.8502966,7172.33496 48.8372966,7169.98396 47.6642966,7167.48896 C46.8352966,7165.72596 46.6492966,7163.55796 47.8822966,7161.95096 C48.3382966,7161.35696 48.8312966,7161.03996 49.5722966,7161.00296 C50.6002966,7160.95296 50.7442966,7161.54096 51.0972966,7162.45696 C51.3602966,7163.14196 51.7112966,7163.84096 51.9072966,7164.55096 C52.2742966,7165.87596 50.9912966,7165.93096 50.8292966,7167.01396 C50.7282966,7167.69696 51.5562966,7168.61296 51.9302966,7169.09996 C52.6632966,7170.05396 53.5442966,7170.87696 54.5382966,7171.50296 C55.1072966,7171.86196 56.0262966,7172.50896 56.6782966,7172.15196 C57.6822966,7171.60196 57.5872966,7169.90896 58.9912966,7170.48196 C59.7182966,7170.77796 60.4222966,7171.20496 61.1162966,7171.57896 C62.1892966,7172.15596 62.1392966,7172.75396 61.7302966,7173.99596 C61.4242966,7174.92396 62.0362966,7173.06796 61.7302966,7173.99596"
+                                        id="call-[#192]">
 
-                                </path>
+                                    </path>
+                                </g>
                             </g>
                         </g>
-                    </g>
-                </svg>
+                    </svg>
+                </div>
             </div>
 
-            <div id="actions" class="sline-actions centeredItemsGlobal" style="overflow: auto">
+            <div class="messages">
                 <div id="messages-container" class="message-container">
                     <div class="message">What's up papostol</div><!--message sent by other user-->
                     <div class="message-me">What's up holder</div><!--message sent by me-->
 
                 </div>
+            </div>
+
+            <div id="actions" class="sline-actions centeredItemsGlobal" style="overflow: auto">
+
 
 
                 <!--LOOK UP <a onclick="attach_file_click()">
@@ -1934,7 +1969,7 @@
                 <div id="customAppsStore" style="display: none;">
                     <p style="margin: 10px;margin-top: 20px;" class="user-email">CUSTOM APPS</p>
                     <div id="customAppsList">
-                        
+
                     </div>
                 </div>
                 <div class="transparent-placeholder"></div>
@@ -2117,6 +2152,7 @@
                             d="M4.39502 12.0014C4.39544 12.4156 4.73156 12.751 5.14577 12.7506C5.55998 12.7502 5.89544 12.4141 5.89502 11.9999L4.39502 12.0014ZM6.28902 8.1116L6.91916 8.51834L6.91952 8.51777L6.28902 8.1116ZM9.33502 5.5336L9.0396 4.84424L9.03866 4.84464L9.33502 5.5336ZM13.256 5.1336L13.4085 4.39927L13.4062 4.39878L13.256 5.1336ZM16.73 7.0506L16.1901 7.57114L16.1907 7.57175L16.73 7.0506ZM17.7142 10.2078C17.8286 10.6059 18.2441 10.8358 18.6422 10.7214C19.0403 10.607 19.2703 10.1915 19.1558 9.79342L17.7142 10.2078ZM17.7091 9.81196C17.6049 10.2129 17.8455 10.6223 18.2464 10.7265C18.6473 10.8307 19.0567 10.5901 19.1609 10.1892L17.7091 9.81196ZM19.8709 7.45725C19.9751 7.05635 19.7346 6.6469 19.3337 6.54272C18.9328 6.43853 18.5233 6.67906 18.4191 7.07996L19.8709 7.45725ZM18.2353 10.7235C18.6345 10.8338 19.0476 10.5996 19.1579 10.2004C19.2683 9.80111 19.034 9.38802 18.6348 9.2777L18.2353 10.7235ZM15.9858 8.5457C15.5865 8.43537 15.1734 8.66959 15.0631 9.06884C14.9528 9.46809 15.187 9.88119 15.5863 9.99151L15.9858 8.5457ZM19.895 11.9999C19.8946 11.5856 19.5585 11.2502 19.1443 11.2506C18.7301 11.251 18.3946 11.5871 18.395 12.0014L19.895 11.9999ZM18.001 15.8896L17.3709 15.4829L17.3705 15.4834L18.001 15.8896ZM14.955 18.4676L15.2505 19.157L15.2514 19.1566L14.955 18.4676ZM11.034 18.8676L10.8815 19.6019L10.8839 19.6024L11.034 18.8676ZM7.56002 16.9506L8.09997 16.4301L8.09938 16.4295L7.56002 16.9506ZM6.57584 13.7934C6.46141 13.3953 6.04593 13.1654 5.64784 13.2798C5.24974 13.3942 5.01978 13.8097 5.13421 14.2078L6.57584 13.7934ZM6.58091 14.1892C6.6851 13.7884 6.44457 13.3789 6.04367 13.2747C5.64277 13.1705 5.23332 13.4111 5.12914 13.812L6.58091 14.1892ZM4.41914 16.544C4.31495 16.9449 4.55548 17.3543 4.95638 17.4585C5.35727 17.5627 5.76672 17.3221 5.87091 16.9212L4.41914 16.544ZM6.05478 13.2777C5.65553 13.1674 5.24244 13.4016 5.13212 13.8008C5.02179 14.2001 5.25601 14.6132 5.65526 14.7235L6.05478 13.2777ZM8.30426 15.4555C8.70351 15.5658 9.11661 15.3316 9.22693 14.9324C9.33726 14.5331 9.10304 14.12 8.70378 14.0097L8.30426 15.4555ZM5.89502 11.9999C5.89379 10.7649 6.24943 9.55591 6.91916 8.51834L5.65889 7.70487C4.83239 8.98532 4.3935 10.4773 4.39502 12.0014L5.89502 11.9999ZM6.91952 8.51777C7.57513 7.50005 8.51931 6.70094 9.63139 6.22256L9.03866 4.84464C7.65253 5.4409 6.47568 6.43693 5.65852 7.70544L6.91952 8.51777ZM9.63045 6.22297C10.7258 5.75356 11.9383 5.62986 13.1059 5.86842L13.4062 4.39878C11.9392 4.09906 10.4158 4.25448 9.0396 4.84424L9.63045 6.22297ZM13.1035 5.86793C14.2803 6.11232 15.3559 6.7059 16.1901 7.57114L17.27 6.53006C16.2264 5.44761 14.8807 4.70502 13.4085 4.39927L13.1035 5.86793ZM16.1907 7.57175C16.9065 8.31258 17.4296 9.21772 17.7142 10.2078L19.1558 9.79342C18.8035 8.5675 18.1557 7.44675 17.2694 6.52945L16.1907 7.57175ZM19.1609 10.1892L19.8709 7.45725L18.4191 7.07996L17.7091 9.81196L19.1609 10.1892ZM18.6348 9.2777L15.9858 8.5457L15.5863 9.99151L18.2353 10.7235L18.6348 9.2777ZM18.395 12.0014C18.3963 13.2363 18.0406 14.4453 17.3709 15.4829L18.6312 16.2963C19.4577 15.0159 19.8965 13.5239 19.895 11.9999L18.395 12.0014ZM17.3705 15.4834C16.7149 16.5012 15.7707 17.3003 14.6587 17.7786L15.2514 19.1566C16.6375 18.5603 17.8144 17.5643 18.6315 16.2958L17.3705 15.4834ZM14.6596 17.7782C13.5643 18.2476 12.3517 18.3713 11.1842 18.1328L10.8839 19.6024C12.3508 19.9021 13.8743 19.7467 15.2505 19.157L14.6596 17.7782ZM11.1865 18.1333C10.0098 17.8889 8.93411 17.2953 8.09997 16.4301L7.02008 17.4711C8.06363 18.5536 9.40936 19.2962 10.8815 19.6019L11.1865 18.1333ZM8.09938 16.4295C7.38355 15.6886 6.86042 14.7835 6.57584 13.7934L5.13421 14.2078C5.48658 15.4337 6.13433 16.5545 7.02067 17.4718L8.09938 16.4295ZM5.12914 13.812L4.41914 16.544L5.87091 16.9212L6.58091 14.1892L5.12914 13.812ZM5.65526 14.7235L8.30426 15.4555L8.70378 14.0097L6.05478 13.2777L5.65526 14.7235Z"
                             fill="#fff" />
                     </svg></a>
+                <a href="#" class="apple-button">Server<span id="currentServerSpan"></span></a>
                 <p style="padding-left: 10px" class="">Latest Gateway Update:</p>
                 <div class="user-info-default">
                     <div class="user-circle">
@@ -3443,6 +3479,7 @@
                 <img id="profile-pfp" src="reloading-pfp.gif" alt="Profile" class="profile-icon">
             </div>
         </div>
+        
     </div>
 
 
@@ -3572,9 +3609,18 @@
     </div>
     <div id="loading-div-text">
         <div id="loading-text" class="loading-text-default">
-            <div class="loader">
-                <div class="tile"></div>
-            </div>
+            <!--Vox Epsilon Logo-->
+           
+
+            <img id="logoImg" src="EvoxEPSILON.png" alt="image" style="width: 200px; /* Use a fixed width to avoid percentage confusion */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 999;
+            opacity: 1;
+            object-fit: cover;
+            transition: top 1s ease-in-out, left 1s ease-in-out, transform 1s ease-in-out;">
 
         </div>
     </div>
@@ -3712,7 +3758,8 @@
 
         </div>
     </div>
-    <div id="customizeApp" class="popup" style="background-color: #000;justify-content: center;align-items: center;display: flex;flex-direction: column;">
+    <div id="customizeApp" class="popup"
+        style="background-color: #000;justify-content: center;align-items: center;display: flex;flex-direction: column;">
         <div style="text-align: center; margin-top: 20px;">
             <h3>App Name</h3>
 
@@ -3955,5 +4002,199 @@
 <script src="./colors.js"></script>
 <!-- <script src="script.js"></script>
 <script src="new.js"></script>-->
+<script>
+    // Helper function to format date and time
+    function formatDate(date) {
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const pad = (num) => num.toString().padStart(2, "0");
+        const day = pad(date.getDate());
+        const month = months[date.getMonth()];
+        const hours = pad(date.getHours() % 12 || 12);
+        const minutes = pad(date.getMinutes());
+        const ampm = date.getHours() < 12 ? "AM" : "PM";
+        return `${day} ${month} &#x2022; ${hours}:${minutes} ${ampm}`;
+    }
+
+    function processMessage(data, element) {
+        const creationDate = new Date(data);
+        const todayMonth = new Date().getMonth();
+        const creationMonth = creationDate.getMonth();
+        const creationDay = creationDate.getDate();
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        if (data === "Chat Doesn't Exist") {
+            document.getElementById("messages-container").innerHTML = `
+            <p class='centered-text'>Chat Hasn't Been Created.
+            <button style="margin-top: 20px" id="submit" onclick="create_chat()" class="transparent-button">Create Chat</button></p>`;
+            return;
+        }
+
+        console.log("Creation:", data);
+        const creationText = `${months[creationMonth]} ${creationDay} - ${months[todayMonth]}`;
+
+        console.log("Getting Existing Chat");
+        fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}&password=${atob(localStorage.getItem("t50pswd"))}`)
+            .then(response => response.ok ? response.text() : Promise.reject(`HTTP error! Status: ${response.status}`))
+            .then(text => {
+                try {
+                    const data = JSON.parse(text);
+                    if (!data || !data.messages) throw new Error("Invalid data format");
+
+                    const container = document.getElementById("messages-container");
+                    container.innerHTML = "";
+
+                    data.messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)).forEach(message => {
+                        const messageContainer = document.createElement("div");
+                        messageContainer.className = "chat-message";
+
+                        const messagePack = document.createElement("div");
+                        messagePack.className = message.sender === localStorage.getItem("t50-username") ? "messagePackMe" : "messagePack";
+
+                        const avatar = document.createElement("img");
+                        avatar.className = "chat-avatar";
+                        //avatar.style.display = 'none'
+                        avatar.src = message.sender === localStorage.getItem("t50-username") ? "evox-logo-apple.png" : pfp.src;
+                        avatar.alt = message.sender;
+
+                        const content = document.createElement("div");
+                        content.className = "message-content";
+
+                        const timestamp = document.createElement("div");
+                        timestamp.className = message.sender === localStorage.getItem("t50-username") ? "message-time-me" : "message-time";
+                        timestamp.innerHTML = formatDate(new Date(message.timestamp));
+
+                        if (message.content.includes("http") || message.content.includes("https")) {
+                            const attachment = document.createElement("div");
+                            attachment.className = "attachment";
+
+                            const attachRow = document.createElement("div");
+                            attachRow.className = "theRow";
+
+                            const attachIcon = document.createElement("img");
+                            attachIcon.src = "./novus/attach.svg";
+
+                            const url = new URL(message.content);
+                            const logoUrl = `https://logo.clearbit.com/${url.hostname}`;
+                            attachIcon.src = logoUrl;
+
+                            const infoWrap = document.createElement("div");
+                            infoWrap.className = "infoWrap";
+
+                            const fileName = message.content.split("/").pop().replace(/\.[^.]+$/, "");
+                            const fileType = /\.(pdf|png|jpg|webp|gif|mp4)$/i.exec(message.content)?.[1] || "URL";
+                            const fileIcon = fileType === "URL" ? "./novus/attach.svg" : `./novus/${fileType}.svg`;
+                            if (fileType === "png" || fileType === "jpg") {
+                                attachIcon.src = message.content;
+                            } else {
+                                attachIcon.src = fileIcon;
+                            }
+
+
+                            const fileTypeInfo = document.createElement("span");
+                            fileTypeInfo.innerHTML = `${fileType.toUpperCase()} &#x2022; unkMB`;
+
+                            infoWrap.innerHTML = `<p>${url.hostname}</p>`;
+                            infoWrap.appendChild(fileTypeInfo);
+
+                            attachRow.appendChild(attachIcon);
+                            attachRow.appendChild(infoWrap);
+
+                            const openButton = document.createElement("img");
+                            openButton.src = "./novus/open.svg";
+                            openButton.className = "imgBox";
+                            openButton.onclick = () => createAndClickHiddenLink(message.content);
+
+                            const downloadButton = document.createElement("img");
+                            downloadButton.src = "./novus/download.svg";
+                            downloadButton.className = "imgBoxLast";
+                            downloadButton.onclick = () => downloadFileDirectly(message.content, fileName);
+
+                            attachRow.appendChild(openButton);
+                            attachRow.appendChild(downloadButton);
+
+                            attachment.appendChild(attachRow);
+                            content.appendChild(attachment);
+                        } else {
+                            const name = document.createElement("p");
+                            name.className = "nameTopMsg";
+                            name.style.display = 'none'
+                            name.textContent = message.sender;
+
+                            const msgContent = document.createElement("p");
+                            msgContent.className = "msgCont";
+                            msgContent.textContent = message.content;
+
+                            content.appendChild(name);
+                            content.appendChild(msgContent);
+                        }
+
+                        messagePack.appendChild(avatar);
+                        messagePack.appendChild(content);
+                        messageContainer.appendChild(messagePack);
+                        messageContainer.appendChild(timestamp);
+
+                        container.appendChild(messageContainer);
+                        const chatdiv = document.getElementById("messages-container");
+                        chatdiv.scrollTop = chatdiv.scrollHeight;
+                    });
+                } catch (error) {
+                    console.error("Error parsing messages:", error);
+                }
+            })
+            .catch(error => console.error("Fetch error:", error));
+    }
+    function createAndClickHiddenLink(url) {
+        // Create a new <a> element
+        var link = document.createElement('a');
+
+        // Set the href attribute to the provided URL
+        link.href = url;
+
+        // Set target attribute to '_blank' to open in a new tab
+        link.target = '_blank';
+
+        // Hide the link using CSS (optional)
+        link.style.display = 'none';
+
+        // Append the link to the document body
+        document.body.appendChild(link);
+
+        // Simulate a click on the link
+        link.click();
+
+        // Remove the link from the DOM (optional)
+        document.body.removeChild(link);
+    }
+
+    async function downloadFileDirectly(url, filename) {
+        try {
+            // Fetch the file data
+            const response = await fetch(url);
+            const blob = await response.blob();
+
+            // Create a URL for the file blob
+            const blobUrl = URL.createObjectURL(blob);
+
+            // Create a link element
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = filename;
+
+            // Append the link to the body
+            document.body.appendChild(link);
+
+            // Programmatically click the link to trigger the download
+            link.click();
+
+            // Clean up: remove the link and revoke the URL object
+            document.body.removeChild(link);
+            URL.revokeObjectURL(blobUrl);
+
+        } catch (error) {
+            console.error('Error downloading file:', error);
+            // Handle error as needed
+        }
+    }
+</script>
 
 </html>

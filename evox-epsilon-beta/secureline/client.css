@@ -1,0 +1,906 @@
+@font-face {
+  font-family: "SF";
+  src: url('../SFUIText-Medium.ttf');
+}
+
+@font-face {
+  font-family: "SF-username";
+  src: url('SF-Pro-Text-Heavy.otf');
+}
+
+/* For webkit-based browsers */
+/* Hide scrollbar */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* For other browsers */
+/* Hide scrollbar */
+/* You might need to prefix for other browsers as well */
+/* This is for Firefox */
+
+
+
+body {
+  overflow: hidden;
+  scrollbar-width: none;
+  font-family: "SF";
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100vh;
+  background: #000000;
+
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+img {
+  user-drag: none;
+  /* Disable dragging */
+  user-select: none;
+  /* Disable selection */
+  -moz-user-select: none;
+  /* Firefox support */
+
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  filter: blur(10px);
+}
+
+.container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: transparent;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.logo {
+  width: 185px;
+  height: 185px;
+  position: absolute;
+  top: -195px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+::placeholder {
+  color: #c4cbd2;
+}
+
+.input-box {
+  font-family: "SF";
+  width: 250px;
+  height: 40px;
+  border: none;
+  border-radius: 3px;
+  outline: none;
+  background-color: rgba(194, 194, 194, 0.181);
+  margin: 10px 0;
+  padding: 10px;
+  color: #fff;
+  font-size: 16px;
+  transition: background-color 1s;
+}
+
+
+.transparent-button {
+  font-family: "SF";
+  width: 250px;
+  height: 40px;
+  border: 2px solid #662c2c;
+  border-radius: 13px;
+  background: transparent;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.bottom-logo {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  height: 102px;
+}
+
+#check-group {
+  animation: 0.32s ease-in-out 1.03s check-group;
+  transform-origin: center;
+}
+
+#check-group #check {
+  animation: 0.34s cubic-bezier(0.65, 0, 1, 1) 0.8s forwards check;
+  stroke-dasharray: 0, 75px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#check-group #outline {
+  animation: 0.38s ease-in outline;
+  transform: rotate(0deg);
+  transform-origin: center;
+}
+
+#check-group #white-circle {
+  animation: 0.35s ease-in 0.35s forwards circle;
+  transform: none;
+  transform-origin: center;
+}
+
+@keyframes outline {
+  from {
+    stroke-dasharray: 0, 345.576px;
+  }
+
+  to {
+    stroke-dasharray: 345.576px, 345.576px;
+  }
+}
+
+@keyframes circle {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(0);
+  }
+}
+
+@keyframes check {
+  from {
+    stroke-dasharray: 0, 75px;
+  }
+
+  to {
+    stroke-dasharray: 75px, 75px;
+  }
+}
+
+@keyframes check-group {
+  from {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.09);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+.centered-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #c4cbd2;
+}
+
+.settings-button {
+  position: fixed;
+  top: 30px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.popup {
+  flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent black overlay */
+  z-index: 999;
+  padding: 20px;
+  box-sizing: border-box;
+  /* Include padding in the element's total width and height */
+  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+  display: none;
+  color: white;
+  transition: filter 0.5s ease-in-out;
+}
+
+.boxin {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  padding: 30px;
+  align-items: center;
+  overflow: auto;
+  /* Change from 'visible' to 'auto' */
+  scroll-behavior: smooth;
+  touch-action: auto;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent black overlay */
+  z-index: 999;
+  box-sizing: border-box;
+  /* Include padding in the element's total width and height */
+  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+  color: white;
+  opacity: 0;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateX(-100%);
+  /* Initially off-screen to the left */
+  transition: transform 0.5s ease, opacity 0.5s ease, visibility 0.5s;
+  transition: filter 0.8s ease-in-out;
+  /* Transition for sliding effect, opacity, and visibility */
+}
+
+.confirm {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  display: block;
+  padding: 30px;
+  align-items: center;
+  overflow: auto;
+  /* Change from 'visible' to 'auto' */
+  scroll-behavior: smooth;
+  touch-action: auto;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent black overlay */
+  z-index: 999;
+  box-sizing: border-box;
+  /* Include padding in the element's total width and height */
+  box-shadow: 0 0 10px rgba(20, 20, 20, 0.42);
+  color: white;
+  opacity: 0;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateY(200%);
+  /* Initially off-screen to the left */
+  transition: transform 0.8s ease, opacity 0.8s ease, visibility 0.8s;
+  /* Transition for sliding effect, opacity, and visibility */
+}
+
+
+.confirm.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateX(0);
+  /* Slide the popup into view */
+}
+
+
+.boxin.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateX(0);
+  /* Slide the popup into view */
+}
+
+@-webkit-keyframes checkmark {
+  0% {
+    stroke-dashoffset: 100px
+  }
+
+  100% {
+    stroke-dashoffset: 200px
+  }
+}
+
+@-ms-keyframes checkmark {
+  0% {
+    stroke-dashoffset: 100px
+  }
+
+  100% {
+    stroke-dashoffset: 200px
+  }
+}
+
+@keyframes checkmark {
+  0% {
+    stroke-dashoffset: 100px
+  }
+
+  100% {
+    stroke-dashoffset: 0px
+  }
+}
+
+@-webkit-keyframes checkmark-circle {
+  0% {
+    stroke-dashoffset: 480px
+  }
+
+  100% {
+    stroke-dashoffset: 960px;
+
+  }
+}
+
+@-ms-keyframes checkmark-circle {
+  0% {
+    stroke-dashoffset: 240px
+  }
+
+  100% {
+    stroke-dashoffset: 480px
+  }
+}
+
+@keyframes checkmark-circle {
+  0% {
+    stroke-dashoffset: 480px
+  }
+
+  100% {
+    stroke-dashoffset: 960px
+  }
+}
+
+@keyframes colored-circle {
+  0% {
+    opacity: 0
+  }
+
+  100% {
+    opacity: 100
+  }
+}
+
+.popup-close {
+  position: fixed;
+  top: 30px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(-10px, 0);
+  }
+
+  20% {
+    transform: translate(10px, 0);
+  }
+
+  30% {
+    transform: translate(-10px, 0);
+  }
+
+  40% {
+    transform: translate(10px, 0);
+  }
+
+  50% {
+    transform: translate(-10px, 0);
+  }
+
+  60% {
+    transform: translate(10px, 0);
+  }
+
+  70% {
+    transform: translate(-10px, 0);
+  }
+
+  80% {
+    transform: translate(10px, 0);
+  }
+
+  90% {
+    transform: translate(-10px, 0);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.shake {
+  animation-name: shake;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+}
+
+a {
+  text-decoration: none;
+}
+
+.enabled {
+  color: green;
+}
+
+.disabled {
+  color: red;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-label {
+  margin-left: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.checkbox-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #333;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.checkbox-input:checked {
+  background-color: #af4c4c;
+  border-color: #af4c4c;
+}
+
+.checkbox-input:checked::before {
+  content: "\2713";
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  color: white;
+}
+
+.app {
+  margin: 5px;
+  width: 70px;
+  height: 70px;
+  border: none;
+  border-radius: 12px;
+  outline: none;
+}
+
+.app-small {
+  margin: 5px;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 9px;
+  outline: none;
+  margin-right: 10px;
+}
+
+.disabledapp {
+  opacity: 0.5;
+  /* Adjust the opacity value as needed */
+  margin: 5px;
+  width: 70px;
+  height: 70px;
+  border: none;
+  border-radius: 12px;
+  outline: none;
+}
+
+.user-info {
+  background: radial-gradient(circle, #400000, #000000);
+  border-radius: 7.5px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.list-user-info {
+  position: relative;
+  display: inline-block;
+  position: relative;
+  margin: 5px;
+  background: none;
+  border-radius: 7.5px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.c-avatar__status {
+  width: 25px;
+  height: 25px;
+  background: #99CC00;
+  border: 2px solid white;
+  position: absolute;
+  bottom: 2%;
+  right: 2%;
+  border-radius: 100%;
+}
+
+.user-container {
+  display: flex;
+  align-items: center;
+}
+
+.user-circle {
+  color: #fff;
+  background-color: #000;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.user-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.user-circle p {
+  font-family: "SF-username";
+  color: #fff;
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.user-email {
+  font-size: 14px;
+  color: #666;
+}
+
+.app-manage {
+  display: flex;
+  align-items: center;
+}
+
+.gateway {
+  transition: filter 0.5s ease-in-out;
+}
+
+.rad-label {
+  display: flex;
+  align-items: center;
+
+  border-radius: 100px;
+  padding: 14px 16px;
+  margin: 10px 0;
+
+  cursor: pointer;
+  transition: .3s;
+}
+
+.rad-label:hover,
+.rad-label:focus-within {
+  background: hsla(0, 0%, 80%, .14);
+}
+
+.rad-input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  z-index: -1;
+}
+
+.rad-design {
+  width: 22px;
+  height: 22px;
+  border-radius: 100px;
+
+  background: linear-gradient(to right bottom, hsl(2, 72%, 39%), hsl(335, 97%, 62%));
+  position: relative;
+}
+
+.rad-design::before {
+  content: '';
+
+  display: inline-block;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+
+  background: hsl(0, 0%, 90%);
+  transform: scale(1.1);
+  transition: .3s;
+}
+
+.rad-input:checked+.rad-design::before {
+  transform: scale(0);
+}
+
+.rad-text {
+  color: hsl(0, 0%, 60%);
+  margin-left: 14px;
+  letter-spacing: 3px;
+  text-transform: capitalize;
+  font-size: 18px;
+  font-weight: 900;
+
+  transition: .3s;
+}
+
+.rad-input:checked~.rad-text {
+  color: hsl(0, 0%, 40%);
+}
+
+.apple-button {
+  background-color: #333;
+  border: none;
+  color: #fff;
+  padding: 15px 30px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  margin: 6px;
+  width: 80%;
+}
+
+.parent-list-container {
+  position: relative;
+}
+
+.apple-button-list {
+  position: absolute;
+  top: 6px;
+  /* Adjust as needed */
+  right: 6px;
+  /* Adjust as needed */
+  background-color: #3333339b;
+  border: none;
+  color: #fff;
+  padding: 10px 30px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.apple-input {
+  position: fixed;
+  bottom: 10px;
+  background-color: #333;
+  /* Your desired background color */
+  border: none;
+  color: #fff;
+  padding: 15px 30px;
+  padding-left: 20px;
+  /* Adjust this value to add space on the left */
+  font-size: 16px;
+  border-radius: 52px;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  margin: 4px;
+  width: 100%;
+  max-width: 86%;
+  outline: none;
+}
+
+/* Media query for mobile devices */
+@media only screen and (max-width: 768px) {
+  .apple-input {
+    width: 66%;
+  }
+}
+
+
+.sline-actions {
+  overflow-y: auto;
+  max-height: 80%;
+  position: relative;
+  /* Make sure the container is positioned */
+}
+
+.message-container {
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+
+  margin-bottom: 50px;
+  /* Adjust this value to create space for the input */
+  max-height: 73%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  /* Make sure the container is positioned */
+}
+
+.bottom-actions {
+  display: flex;
+  flex-direction: row;
+  background-color: #000;
+  background: black;
+  height: 2%;
+  bottom: 2%;
+  position: fixed;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  /* Add some padding to the bottom actions */
+  z-index: 1;
+  /* Ensure the input container appears above messages */
+}
+
+.svg-icon {
+  position: absolute;
+  left: -30px; /* Adjust this value based on your preference */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.message,
+.message-me {
+  display: inline-flex;
+  /* Change to inline-flex */
+  margin-top: 15px;
+  margin-bottom: 15px;
+  background-color: #333;
+  color: #fff;
+  padding: 15px 30px;
+  font-size: 16px;
+  border-radius: 52px;
+  outline: none;
+  word-wrap: break-word;
+}
+
+.message-me {
+  max-width: 50%;
+  margin-top: 0;
+  margin-left: auto;
+}
+
+.message {
+  margin-right: auto;
+  max-width: 50%;
+}
+
+
+
+
+
+.input-container {
+  position: relative;
+}
+
+.input-container .search-icon {
+  position: absolute;
+  left: 25px;
+  /* Adjust the left position to place the SVG where you want */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.input-container .go-icon {
+  position: absolute;
+  right: 25px;
+  /* Adjust the left position to place the SVG where you want */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.apple-input:hover {
+  background-color: #555;
+}
+
+.apple-button svg {
+  position: absolute;
+  right: 10%;
+}
+
+/* Media query for devices with a minimum width of 769px (assumed to be non-PC devices) */
+@media only screen and (min-width: 769px) {
+
+  /* Hide the .apple-button svg on devices with a minimum width of 769px or more (assumed to be PCs) */
+  .apple-button svg {
+    display: none;
+  }
+}
+
+.apple-button span {
+  position: absolute;
+  right: 17%;
+}
+
+.apple-button:hover {
+  background-color: #555;
+}
+
+#usr-img-opt {
+  cursor: pointer;
+}
+
+#upload-box {
+  display: none;
+}
+
+.animated-gradient {
+  background: repeating-linear-gradient(to right, #2a2884 0%, rgb(0, 0, 0) 50%, #2a2884 100%);
+  width: 100%;
+  background-size: 200% auto;
+  background-position: 0 100%;
+  animation: gradient 2s infinite;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}

@@ -478,6 +478,7 @@ img {
   }
 
   .parent-sline-container {
+    overflow-x: hidden;
     display: flex;
     justify-content: center;
     /* Centers the element horizontally */
@@ -1870,22 +1871,44 @@ a {
 }
 
 .message-container {
-  top: -80px;
-  height: 750px;
-  max-height: 750px;
+  height: auto;
+  max-height: 705px;
   overflow: auto;
+  overflow-x: hidden;
   /* or overflow-y: auto; */
   -webkit-user-select: text;
   -ms-user-select: text;
   user-select: text;
-  width: 85%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
+  border-radius: 20px;
 }
 
+.top-actions {
+  flex-shrink: 0;
+  /* Other styles as needed */
+}
 
+/* The message area should grow to fill the available space */
+.messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  /* Other styles as needed */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* Position relative to the parent container */
+  
+}
 
+/* Ensure the bottom actions are at the bottom */
+.bottom-actions {
+  flex-shrink: 0;
+  /* Other styles as needed */
+}
 
 .bottom-actions {
   display: flex;
@@ -4328,4 +4351,236 @@ input:-webkit-autofill {
 
 .userPfp.multi {
   margin-left: -15px;
+}
+
+#chats {
+  overflow-x: hidden;
+}
+
+
+
+/*Novus Archive*/
+
+.chat-message {
+  display: flex;
+  margin-bottom: 10px;
+  flex-direction: column;
+}
+
+.chat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.messagePack {
+  display: flex;
+  flex-direction: row;
+}
+
+.messagePackMe {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+
+.messagePackMe .chat-avatar {
+  margin-left: 10px;
+}
+.message-content {
+  background-color: #191919;
+  border-radius: 5px;
+  padding: 10px;
+  width: auto;
+}
+
+.message-content p {
+  margin: 5px 0;
+  
+}
+
+.message-content img {
+  margin: 0;
+  
+}
+
+.msgCont {
+  color: #6d6d6d;
+  font-family: "SFLight";
+  font-size: 15px;
+  align-items: left;
+  text-align: left;
+}
+
+.nameTopMsg {
+  
+  color: #d9d9d9;
+  font-family: "SF";
+  font-weight: lighter;
+  font-size: 17px;
+  align-items: left;
+  text-align: left;
+}
+
+.message-time {
+  text-align: left;
+  margin-top: 10px;
+  margin-left: 50px;
+  font-size: 12px;
+  color: #666666;
+  font-family: "SFLight";
+}
+
+.message-time-me {
+  text-align: right;
+  margin-top: 10px;
+  margin-right: 65px;
+  font-size: 12px;
+  color: #666666;
+  font-family: "SFLight";
+}
+
+.file-attachment {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.file-attachment img {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+}
+
+.message-input {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.message-input input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #2a2a2a;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.message-input button {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.message-input button:hover {
+  background-color: #0056b3;
+}
+
+.attachment {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the start of the flex container (left side) */
+}
+
+.attachment .theRow {
+  display: flex; /* Nested flex container */
+  flex-direction: row; /* Items in theRow should be in a row */
+  align-items: center; /* Align items vertically in the center */
+}
+
+.attachment img {
+  width: 24px; /* Adjust the width of the PDF icon as needed */
+  height: 24px; /* Adjust the height of the PDF icon as needed */
+  margin-right: 10px; /* Space between icon and text */
+}
+
+.attachment .textWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.attachment p {
+  font-family: "SFLight";
+  font-size: 15px;
+  margin: 0; /* Remove default margin */
+  color: #9d9d9d;
+}
+
+.attachment span {
+  font-family: "SFLight";
+  font-size: 12px;
+  color: #4b4b4b;
+}
+.infoWrap {
+  flex-direction: column;
+  justify-content: left;
+  text-align: left;
+}
+
+
+.theRow .imgBox {
+  margin-left: 15px;
+  width: 20px;
+  height: 20px;
+  background-color: #2b2b2b;
+  border-radius: 8px;
+  padding: 5px;
+}
+
+.theRow .imgBoxLast {
+  width: 20px;
+  height: 20px;
+  background-color: #2b2b2b;
+  border-radius: 8px;
+  padding: 5px;
+  margin-left: 0;
+  margin-left: 0;
+}
+
+.theRow img {
+  border-radius: 8px;
+}
+
+.msgInput {
+  position: relative; /* Ensure relative positioning for children */
+  float: left; /* Float the input container to the left */
+  width: calc(100% - 40px); /* Adjust width to accommodate margins and padding */
+}
+
+.msgInput input {
+  margin-left: 5px;
+  float: left;
+  width: 78%; /* Fill the entire width of parent container */
+  background-color: #0a0a0a;
+  color: #8c8c8c;
+  border: 1px solid #282828;
+  padding: 10px 20px 10px 45px; /* Adjust padding to make space for icon */
+  border-radius: 10px;
+  font-size: 17px;
+}
+
+.attach-icon {
+  margin-left: 7px;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+}
+
+.msgInput .sendImg {
+  float: right; /* Float the image to the right */
+  margin-right: 5px; /* Adjust margin as needed */
+  width: 30px;
+  height: 30px;
+  background-color: #2b2b2b;
+  border-radius: 8px;
+  padding: 5px;
 }

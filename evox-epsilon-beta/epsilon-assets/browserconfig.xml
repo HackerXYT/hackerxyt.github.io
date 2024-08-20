@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+    <msapplication>
+        <tile>
+            <square70x70logo src="/evox-epsilon/epsilon-assets/mstile-70x70.png?v=epsilon"/>
+            <square150x150logo src="/evox-epsilon/epsilon-assets/mstile-150x150.png?v=epsilon"/>
+            <square310x310logo src="/evox-epsilon/epsilon-assets/mstile-310x310.png?v=epsilon"/>
+            <wide310x150logo src="/evox-epsilon/epsilon-assets/mstile-310x150.png?v=epsilon"/>
+            <TileColor>#ffffff</TileColor>
+        </tile>
+    </msapplication>
+</browserconfig>

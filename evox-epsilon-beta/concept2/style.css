@@ -1,0 +1,194 @@
+:root {
+    --body-color: #222222;
+
+    --font-color: 255 255 255;
+    --highlight-color: 0 0 0;
+
+    --theme-background: 20 20 20;
+
+    --theme-light: 0 0 0;
+    --theme-medium: 0 0 0;
+    --theme-dark: 0 0 0;
+    --isOldDevice: 0;
+    --isNewDevice: 5px;
+}
+
+body {
+    font-family: "Noto Sans", sans-serif;
+    background-color: var(--body-color);
+    margin: 0px;
+}
+
+.home {
+    color: rgb(var(--font-color));
+    font-family: "Noto Sans", sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+.home h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.home .circle {
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: #a8d5db;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home .quickActions {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.quickActions .oneCircle {
+
+    display: flex;
+    flex-direction: column;
+    font-size: small;
+}
+
+.oneCircle p {
+    margin-top: 8px;
+    color: #7c7c7c;
+}
+
+.catalog {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+.person {
+    display: flex;
+    flex-direction: row;
+    width: 97%;
+    background-color: #333333;
+    height: auto;
+    border-radius: 20px;
+    border: #383838 solid 2px;
+    padding: 5px 0;
+    margin-top: 5px;
+    margin-bottom: 3px;
+}
+
+.pfp {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    margin: 5px 10px;
+}
+
+.pfp img {
+    border-radius: 50%;
+    overflow: hidden;
+
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.icon {
+    position: absolute;
+    bottom: -2.5px;
+    right: -2.5px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #333333;
+    /* Adjust the background color as needed */
+    border: 2.5px solid #333333;
+    /* Change color and size as needed */
+    box-sizing: border-box;
+}
+
+.icon img {
+    width: 100%; /* or any desired width */
+    height: auto; /* maintains aspect ratio */
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.person .name {
+    font-size: 1rem;
+}
+
+.pRow {
+    display: flex;
+    flex-direction: row;
+}
+
+.pCol {
+    margin-left: -5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.person .preview {
+    font-size: 0.8rem;
+}
+
+.name {
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 0;
+    margin-top: 15px;
+}
+
+.preview {
+    color: #bababa;
+    margin: 0;
+    margin-top: 4px;
+    margin-left: 17px;
+}
+
+.navBar {
+    background-color: #333;
+    position: fixed;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav {
+    background-color: #333;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 20px;
+    width: 65;
+    height: 29;
+}
+
+.nav svg {
+    padding-top: 5px;
+}
+
+.nav.active {
+    background-color: #9ad4dd;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 20px;
+}

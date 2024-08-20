@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Approximate Location</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="maps.css" />
+</head>
+
+<body id="bodys">
+    <h1>Current Location: <span id="curloc"></span></h1>
+    <h1>Activity: <span id="activity"></span></h1>
+    <div id="map-container">
+        <div id="map"></div>
+        <img style="user-drag: none; user-select: none;" id="bottom-logo" src="footer-in2.png" alt="Another Logo"
+            class="bottom-logo">
+    </div>
+    <div onclick="goback()" id="back" style="position: fixed;
+	top: 30px;
+	right: 50px;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+			<svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+        <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#b2b2b2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+	</div>
+	<div onclick="restart()" style="position: fixed;
+	top: 30px;
+	right: 10px;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;"> <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+			<!-- You can customize the icon or text inside the button --><svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24">
+			<path fill="none" stroke="#fff" stroke-width="2" d="M20,8 C18.5343681,5.03213345 15.4860999,3 11.9637942,3 C7.01333514,3 3,7.02954545 3,12 M4,16 C5.4656319,18.9678666 8.51390007,21 12.0362058,21 C16.9866649,21 21,16.9704545 21,12 M9,16 L3,16 L3,22 M21,2 L21,8 L15,8"/>
+		</svg>
+	</div>
+  <script>
+    function goback() {
+    if(document.getElementById("back").innerHTML.includes("#00b300")) {
+        console.log("FIRE")
+        sessionStorage.setItem("extRun", "back")
+    }
+    document.getElementById("back").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+    <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#00b300" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`
+    setTimeout(function() {
+        document.getElementById("back").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="29px" height="29px" viewBox="0 0 24 24" fill="none">
+    <path d="M11 6L5 12M5 12L11 18M5 12H19" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`
+    }, 3500)
+    
+}
+    if(localStorage.getItem("t50-username") != "papostol") {
+      sessionStorage.setItem("extRun", "back")
+      window.location.href = "/"
+    }
+    // Load Leaflet script with onload event
+    var leafletScript = document.createElement('script');
+    leafletScript.onload = function () {
+      // The rest of your script goes here
+
+      var map;
+      var redCircle;
+
+      function initMap(userLocation, accuracy, sinjloc) {
+        map = L.map('map');
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add a blue circle indicating the accuracy of the user's location
+        L.circle([userLocation.lat, userLocation.lng], {
+          radius: 1080,
+          color: 'blue',
+          fillOpacity: 0.2
+        }).addTo(map);
+
+
+        if(sessionStorage.getItem("radius-cust")) {
+            // Add a red circle for the set coordinates on sinjloc
+        redCircle = L.circle([sinjloc.lat, sinjloc.lng], {
+          radius: sessionStorage.getItem("radius-cust"),  // Adjust the radius as needed
+          color: 'red',
+          fillOpacity: 0.5
+        }).addTo(map);
+
+        // Add a line (polyline) connecting the two locations
+        var polyline = L.polyline([
+          [userLocation.lat, userLocation.lng],
+          [sinjloc.lat, sinjloc.lng]
+        ], { color: 'red' }).addTo(map);
+
+        function animateRedCircle() {
+            if(sessionStorage.getItem("greenlight") === "no") {
+                return;
+            }
+    // Update red circle coordinates
+    var newLatLng = LatLng();
+    redCircle.setLatLng(newLatLng);
+
+    // Update the green line coordinates
+    var polylineLatLngs = [
+        [sessionStorage.getItem("my-loc-lat"), sessionStorage.getItem("my-loc-lng")],
+        [newLatLng.lat, newLatLng.lng]
+    ];
+    polyline.setLatLngs(polylineLatLngs);
+}
+        // Calculate bounds to fit both circles and the line
+        var bounds = L.latLngBounds([
+          [userLocation.lat, userLocation.lng],
+          [sinjloc.lat, sinjloc.lng]
+        ]);
+
+        // Set the map view to fit the calculated bounds
+        map.fitBounds(bounds);
+
+        // Animate red circle every 2 seconds
+        setInterval(function () {
+          animateRedCircle();
+        }, 2000);
+        } else {
+                // Add a red circle for the set coordinates on sinjloc
+        redCircle = L.circle([sinjloc.lat, sinjloc.lng], {
+          radius: 1880,  // Adjust the radius as needed
+          color: 'red',
+          fillOpacity: 0.5
+        }).addTo(map);
+
+        // Add a line (polyline) connecting the two locations
+        var polyline = L.polyline([
+          [userLocation.lat, userLocation.lng],
+          [sinjloc.lat, sinjloc.lng]
+        ], { color: 'red' }).addTo(map);
+
+        function animateRedCircle() {
+            if(sessionStorage.getItem("greenlight") === "no") {
+                return;
+            }
+    // Update red circle coordinates
+    var newLatLng = LatLng();
+    redCircle.setLatLng(newLatLng);
+
+    // Update the green line coordinates
+    var polylineLatLngs = [
+        [sessionStorage.getItem("my-loc-lat"), sessionStorage.getItem("my-loc-lng")],
+        [newLatLng.lat, newLatLng.lng]
+    ];
+    polyline.setLatLngs(polylineLatLngs);
+}
+        // Calculate bounds to fit both circles and the line
+        var bounds = L.latLngBounds([
+          [userLocation.lat, userLocation.lng],
+          [sinjloc.lat, sinjloc.lng]
+        ]);
+
+        // Set the map view to fit the calculated bounds
+        map.fitBounds(bounds);
+
+        // Animate red circle every 2 seconds
+        setInterval(function () {
+          animateRedCircle();
+        }, 2000);
+        }
+
+        
+      }
+
+      
+
+
+      function LatLng() {
+        // This function generates random coordinates for demonstration purposes
+        var old_lat = sessionStorage.getItem("sn-lat")
+        var old_lng = sessionStorage.getItem("sn-lng")
+        var lat = Number(old_lat) + 0.00005
+        console.log(lat)
+        var lng = Number(old_lng) - 0.00005
+        sessionStorage.setItem("sn-lat", lat)
+        sessionStorage.setItem("sn-lng", lng)
+        return L.latLng(lat, lng);
+      }
+
+      function displayLocation(userLocation, accuracy, sinjloc) {
+        initMap(userLocation, accuracy, sinjloc);
+      }
+
+      function handleLocationError(error) {
+        console.error('Error getting user location:', error);
+      }
+
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function (position) {
+              var userLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              };
+              sessionStorage.setItem("my-loc-lat", userLocation.lat)
+              sessionStorage.setItem("my-loc-lng", userLocation.lng)
+              console.log(userLocation.lat, userLocation.lng);
+
+              var accuracy = position.coords.accuracy;
+
+              var sinjloc_1 = { //megaro
+                lat: 40.099403,
+                lng: 21.278592
+              };
+
+              var sinjloc_2 = { //Elbasan
+                lat: 41.119007,
+                lng: 20.095219
+              };
+
+              var sinjloc_3 = { //anabyssos
+                lat: 37.741347,
+                lng: 23.943199
+              };
+
+              var sinjloc_unknown = { //anabyssos
+                lat: 10.243977,
+                lng: -67.606768
+              };
+              // Get the current date and time
+            const currentDate = new Date();
+            console.log(currentDate)
+                    
+            // Set the start and end times for the range
+            const startTime = new Date('2024-01-01T12:04:00');
+            const endTime = new Date('2024-01-01T12:48:00');
+
+            const startTime2 = new Date('2024-01-01T16:35:00');
+            const endTime2 = new Date('2024-01-01T18:28:00');
+                    
+            if (currentDate >= startTime && currentDate <= endTime) {
+              console.log('Greece, Megaro');
+              sessionStorage.setItem("sn-lat", sinjloc_1.lat)
+              sessionStorage.setItem("sn-lng", sinjloc_1.lng)
+              sessionStorage.setItem("greenlight", "yes")
+              console.log(sinjloc_1.lat, sinjloc_1.lng);
+              document.getElementById("curloc").innerHTML = `Greece, Near Megaro`
+              document.getElementById("activity").innerHTML = `Travelling`
+              displayLocation(userLocation, accuracy, sinjloc_1);
+            } else if (currentDate >= startTime2 && currentDate <= endTime2) {
+            console.log('Albania Elbasan');
+              sessionStorage.setItem("sn-lat", sinjloc_2.lat)
+              sessionStorage.setItem("sn-lng", sinjloc_2.lng)
+              sessionStorage.setItem("greenlight", "no")
+              console.log(sinjloc_2.lat, sinjloc_2.lng);
+              document.getElementById("curloc").innerHTML = `Albania, Elbasan`
+              document.getElementById("activity").innerHTML = `Parked for food`
+
+              displayLocation(userLocation, accuracy, sinjloc_2);
+            } else if(currentDate <= startTime) {
+                console.log("Hasn't Started")
+                sessionStorage.setItem("greenlight", "no")//hasn't started
+                sessionStorage.setItem("sn-lat", sinjloc_3.lat)
+                sessionStorage.setItem("sn-lng", sinjloc_3.lng)
+                console.log(sinjloc_3.lat, sinjloc_3.lng);
+                document.getElementById("curloc").innerHTML = `Attica, Anavyssos`
+                document.getElementById("activity").innerHTML = `Standby`
+
+                displayLocation(userLocation, accuracy, sinjloc_3);
+
+            } else if(currentDate >= startTime) {
+                console.log("Has Started But Location Is Unknown For Now")
+                sessionStorage.setItem("greenlight", "no")//do not move
+                sessionStorage.setItem("sn-lat", sinjloc_unknown.lat)
+                sessionStorage.setItem("sn-lng", sinjloc_unknown.lng)
+                sessionStorage.setItem("radius-cust", "99900")
+                console.log(sinjloc_unknown.lat, sinjloc_unknown.lng);
+                document.getElementById("curloc").innerHTML = `South America`
+                document.getElementById("activity").innerHTML = `Arrived`
+
+                displayLocation(userLocation, accuracy, sinjloc_unknown);
+            }
+
+              
+            },
+            handleLocationError
+          );
+        } else {
+          console.error('Geolocation is not supported by this browser.');
+        }
+      }
+
+      getLocation();
+    };
+
+    setInterval(function() {
+        check()
+    }, 1000)
+
+    function check() {
+        var elementToHide = document.querySelector('.leaflet-control-attribution.leaflet-control');
+        elementToHide.style.display = 'none';
+    }
+
+    leafletScript.src = 'https://unpkg.com/leaflet/dist/leaflet.js';
+    document.head.appendChild(leafletScript);
+
+		function restart() {
+			window.location.reload()
+		}
+//    mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
+//  var map = new mapboxgl.Map({
+//    container: 'map',
+//    style: 'mapbox://styles/mapbox/streets-v11', // Default Mapbox style
+//    center: [0, 0], // Initial map center
+//    zoom: 2 // Initial zoom level
+//  });
+//  var map = new mapboxgl.Map({
+//    container: 'map',
+//    style: 'style.json', // Replace with your custom style path
+//    center: [0, 0],
+//    zoom: 2
+//  });
+  </script>
+</body>
+
+</html>

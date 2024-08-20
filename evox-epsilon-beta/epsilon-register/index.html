@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Register | Evox </title> 
+    <link rel="stylesheet" href="style.css">
+   </head>
+<body>
+  <div class="wrapper">
+    <h2>Evox Registration</h2>
+    <form onsubmit="submit()">
+      <div class="input-box">
+        <input id="fname" style="width: 47%;margin-right: 1%" type="text" placeholder="First Name" required>
+        <input id="lname" type="text" style="width: 50%;" placeholder="Last Name" required>
+      </div>
+      <div class="input-box">
+        <input id="username" type="name" placeholder="Username" required>
+      </div>
+      <div class="input-box">
+        <input id="email" type="email" placeholder="name@example.com" required>
+      </div>
+      <div class="input-box">
+        <input id="password" type="password" placeholder="Password" required>
+      </div>
+      <div class="input-box">
+        <input type="password" placeholder="Confirm password" required>
+      </div>
+      <div class="input-box">
+        <select id="countryCode" style="width: 24.5%;" required>
+            <option value="+30">+30</option>
+            <option value="+1">+1</option>
+            <option value="+44">+44</option>
+            <option value="+355">+355</option>
+        </select>
+        <input id="phone" style="width: 73%; margin-left: 1%;" type="number" placeholder="Phone Number" required>
+      </div>
+      <div class="policy">
+        <input id="terms" type="checkbox">
+        <h3 id="termsh3">I accept all terms and conditions.</h3>
+      </div>
+      <div class="policy">
+        <input id="enCryptox" type="checkbox">
+        <h3>Enable cryptox after activation.</h3>
+      </div>
+
+      <div class="input-box button">
+        <input onclick="submit()" type="submit" value="Register Now">
+      </div>
+      <div class="text">
+        <h3>Already have an account? <a href="../">Login now</a></h3>
+      </div>
+    </form>
+    <input onclick="submit()" value="Register Now">
+  </div>
+</body>
+<script src="register.js"></script>
+</html>

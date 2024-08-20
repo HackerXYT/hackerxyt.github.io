@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Evox Preview</title>
+    <link rel="stylesheet" href="client.css">
+    <link rel="stylesheet" href="secondary.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+</head>
+
+<body style="background-color: #121212;">
+    <video autoplay muted loop playsinline id="user-video-forPreview"
+        style="opacity:0.5;position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
+        <source src="" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div>
+
+
+        <h3 style="display:none;text-align: center;margin-top: 10px;margin-bottom: 18.72px;">Your Friends</h3>
+        <div style="display: none;" class="loading loading--circle" id="load-users-friends" title="Loading">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                <path fill="#fff"
+                    d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                    <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                        to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                </path>
+            </svg>
+        </div>
+        <div style="margin: 0 auto;margin-top: 50px;
+    position: relative;" class="user-circle">
+            <img id="friend-pfp" src="t50-img.png" alt="User Image">
+        </div>
+        <div style="height: auto;
+    margin: 0 auto;
+    padding: 10px;
+    position: relative;text-align: center;">
+            <div class="user-details">
+                <div id="friend-username" class="user-name">Error</div>
+            </div>
+        </div>
+        <a href="#" style="height: 50%" class="apple-button">Last Seen<span id="last_seen">Unknown</span></a>
+        <a href="#" id="Friendbirth" style="height: 50%" class="apple-button">Birthdate<span
+                id="FriendbirthTXT">Unknown</span></a>
+        <a href="#" onclick="secureline(this)" id="secureline-username" style="height: 50%;color: #cb450f"
+            class="apple-button">Start SecureLine<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                    fill="#666" />
+            </svg></a>
+        <p style="margin: 6px" class="user-email">EMAIL & PHONE NUMBERS</p>
+        <a href="#" id="friend-email" style="height: 50%" class="apple-button"></a>
+        <p style="margin: 6px" class="user-email">These email addresses and phone numbers can be used to reach
+            the user.</p>
+
+        <p style="margin: 6px; margin-top: 20px;" class="user-email">DANGER ZONE</p>
+        <a href="#" style="height: 50%;color: rgb(255, 0, 0)" class="apple-button">Block User<svg
+                xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                    fill="#666" />
+            </svg></a>
+        <!--<div onclick="" class="list-user-info">
+            <div class="user-circle">
+                <img src="t50-img.png" alt="User Image">
+            </div>
+            <div class="user-details">
+                <div class="user-name">Error</div>
+                <div class="user-email">error@example.com</div>
+            </div>
+                <a href="#" id="${username}" onclick="addfriend(this)" class="apple-button-list">Add</a>
+        </div>-->
+        <!--Show added friends-->
+
+    </div>
+</body>
+<script>
+    var wind = new URL(window.location.href);
+    var pfp = sessionStorage.getItem("pfp");
+    var bd = wind.searchParams.get("bd");
+    var llogin = wind.searchParams.get("llogin");
+    document.getElementById("friend-email").innerHTML = localStorage.getItem("t50-email")
+    document.getElementById("friend-username").innerHTML = localStorage.getItem("t50-username")
+    if (bd) {
+        document.getElementById("FriendbirthTXT").innerHTML = bd
+    }
+    if (pfp) {
+        document.getElementById("friend-pfp").src = pfp
+    } else {
+        console.log("PROFILE PREVIEW ERROR: NO PFP")
+    }
+    if (llogin) {
+        document.getElementById("last_seen").innerHTML = llogin
+    }
+    
+
+</script>
+
+</html>

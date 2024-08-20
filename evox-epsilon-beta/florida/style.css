@@ -1,0 +1,442 @@
+:root {
+  --primary: #5628EE;
+  --success: #41D071;
+  --grey-light: #99A3BA;
+  --grey: #6C7486;
+  --grey-dark: #3F4656;
+  --light: #12121200;
+  --lighter: #E4ECFA;
+  --shadow: rgba(90, 90, 90, 0.809);
+}
+
+.drop {
+  --r: 0rad;
+  width: 350px;
+  height: 420px;
+  background: #fbf2f2;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px -2px var(--shadow);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.drop nav {
+  border-bottom: 1px solid var(--lighter);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+}
+.drop nav > svg {
+  display: block;
+  margin-right: 16px;
+  width: 20px;
+  height: 20px;
+  color: var(--grey-light);
+}
+.drop nav ul {
+  display: flex;
+}
+.drop nav ul:last-child {
+  margin-left: auto;
+}
+.drop nav ul li {
+  margin-bottom: -1px;
+}
+.drop nav ul li:not(:last-child) {
+  margin-right: 16px;
+}
+.drop nav ul li a {
+  display: block;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 21px;
+  color: var(--grey-light);
+  text-decoration: none;
+  padding: 12px 0 11px 0;
+  border-bottom: 1px solid transparent;
+}
+.drop nav ul li a svg {
+  width: 21px;
+  height: 21px;
+  display: block;
+}
+.drop nav ul li.active a {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+.drop .center {
+  cursor: pointer;
+  --y: 52px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 6;
+  transition: transform 0.3s ease;
+  transform: translate(-50%, var(--y));
+}
+.drop .center > div {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 43px;
+  width: 120px;
+  background: var(--primary);
+  border-radius: 5px;
+  transition: width 0.2s ease, height 0.2s ease, border-radius 0.2s ease, opacity 0.4s ease;
+}
+.drop .center > div span,
+.drop .center > div .circle, .drop .center > div > svg {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+}
+.drop .center > div span, .drop .center > div > svg {
+  color: #fff;
+  transition: opacity 0.2s ease;
+}
+.drop .center > div span {
+  font-weight: 500;
+  font-size: 16px;
+}
+.drop .center > div > svg {
+  width: 32px;
+  height: 32px;
+  opacity: 0;
+}
+.drop .center > div .circle {
+  opacity: 0;
+}
+.drop .center > div .circle svg {
+  width: 92px;
+  height: 92px;
+  color: var(--primary);
+  display: block;
+  transform: rotate(var(--r));
+}
+.drop .intro,
+.drop .hint {
+  text-align: center;
+  --y: -76px;
+  color: var(--grey);
+  font-size: 14px;
+  line-height: 23px;
+  text-align: center;
+  width: 100%;
+  max-width: 220px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, var(--y));
+  transition: opacity 0.2s ease, transform 0.4s ease;
+}
+.drop .intro h4,
+.drop .hint h4 {
+  margin-bottom: 8px;
+  color: var(--grey-dark);
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 20px;
+  width: 100%;
+}
+.drop .intro p,
+.drop .hint p {
+  margin: 0;
+}
+.drop .hint {
+  --y: 80px;
+  opacity: 0;
+}
+.drop ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.drop ul.list li {
+  --y: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(var(--y));
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.drop ul.list li:not(:first-child) {
+  border-top: 1px solid var(--lighter);
+}
+.drop ul.list li:nth-child(1) {
+  transition-delay: 0.24s;
+}
+.drop ul.list li:nth-child(2) {
+  transition-delay: 0.32s;
+}
+.drop ul.list li:nth-child(3) {
+  transition-delay: 0.4s;
+}
+.drop ul.list li:nth-child(4) {
+  transition-delay: 0.48s;
+}
+.drop ul.list li:nth-child(5) {
+  transition-delay: 0.56s;
+}
+.drop ul.list li img {
+  border-radius: 5px;
+  width: 84px;
+  height: 48px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin-right: 12px;
+  box-shadow: 0 4px 12px var(--shadow);
+}
+.drop ul.list li .text strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--grey-dark);
+  margin-bottom: 4px;
+}
+.drop ul.list li .text small {
+  display: block;
+  color: var(--grey-light);
+  font-size: 14px;
+}
+.drop ul.list li .progress {
+  margin-left: auto;
+  border-radius: 50%;
+  background: var(--light);
+  position: relative;
+}
+.drop ul.list li .progress:before {
+  --s: 1;
+  content: "";
+  width: 28px;
+  height: 28px;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  position: absolute;
+  background: #fff;
+  border-radius: inherit;
+  transform: translate(-50%, -50%) scale(var(--s));
+  transition: transform 0.32s ease;
+}
+.drop ul.list li .progress svg {
+  display: block;
+  fill: none;
+}
+.drop ul.list li .progress svg.pie {
+  --s: 1;
+  width: 32px;
+  height: 32px;
+  transform: rotate(-90deg) scale(var(--s));
+  transition: transform 0.5s ease;
+}
+.drop ul.list li .progress svg.pie circle {
+  stroke-width: 16;
+  stroke: var(--primary);
+}
+.drop ul.list li .progress svg.tick {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke: var(--primary);
+  transition: stroke 0.3s ease 0.8s;
+}
+.drop ul.list li .progress svg.tick polyline {
+  stroke-dasharray: 18 18 18;
+  stroke-dashoffset: 18;
+  transition: stroke-dashoffset 0.4s ease 0.7s;
+}
+.drop ul.list li .progress.complete {
+  background: none;
+}
+.drop ul.list li .progress.complete:before {
+  --s: 0;
+}
+.drop ul.list li .progress.complete svg.pie {
+  --s: .08;
+  -webkit-animation: tick 0.3s linear forwards 0.4s;
+          animation: tick 0.3s linear forwards 0.4s;
+}
+.drop ul.list li .progress.complete svg.tick {
+  stroke: var(--success);
+}
+.drop ul.list li .progress.complete svg.tick polyline {
+  stroke-dashoffset: 36;
+}
+.drop.dragged .center {
+  --y: 4px;
+}
+.drop.dragged .center > div {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  -webkit-animation: move 2s ease-in-out infinite 0.2s;
+          animation: move 2s ease-in-out infinite 0.2s;
+}
+.drop.dragged .center > div span {
+  opacity: 0;
+}
+.drop.dragged .center > div > svg {
+  opacity: 1;
+  transition-delay: 0.2s;
+}
+.drop.dragged .center > div .circle {
+  opacity: 1;
+  transition: opacity 0s ease 0.2s;
+}
+.drop.dragged .intro {
+  --y: -120px;
+  opacity: 0;
+}
+.drop.dragged .hint {
+  --y: 60px;
+  opacity: 1;
+}
+.drop.dropped .center > div {
+  background: none;
+  -webkit-animation-play-state: paused;
+          animation-play-state: paused;
+}
+.drop.dropped .center > div .circle svg {
+  -webkit-animation: scale 0.7s linear 0.4s;
+          animation: scale 0.7s linear 0.4s;
+}
+.drop.show .center {
+  --y: -40px;
+}
+.drop.show .center > div {
+  opacity: 0;
+}
+.drop.show .list li {
+  --y: 0;
+  opacity: 1;
+}
+.drop.show .hint {
+  --y: 40px;
+  opacity: 0;
+}
+
+#emitter {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.dot {
+  background-color: var(--primary);
+  border-radius: 50%;
+  position: fixed;
+  z-index: 5;
+  display: none;
+  top: 0;
+  left: 0;
+}
+
+@-webkit-keyframes move {
+  50% {
+    transform: translate(-50%, -70%);
+  }
+}
+
+@keyframes move {
+  50% {
+    transform: translate(-50%, -70%);
+  }
+}
+@-webkit-keyframes scale {
+  40% {
+    transform: scale(0.92) rotate(var(--r));
+  }
+}
+@keyframes scale {
+  40% {
+    transform: scale(0.92) rotate(var(--r));
+  }
+}
+@-webkit-keyframes tick {
+  100% {
+    transform: rotate(-90deg) translate(0, -6px) scale(var(--s));
+  }
+}
+@keyframes tick {
+  100% {
+    transform: rotate(-90deg) translate(0, -6px) scale(var(--s));
+  }
+}
+html {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: inherit;
+}
+*:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: Roboto, Arial;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--light);
+  padding: 20px;
+}
+body .dribbble {
+  position: fixed;
+  display: block;
+  right: 20px;
+  bottom: 20px;
+}
+body .dribbble img {
+  display: block;
+  height: 28px;
+}
+#recents {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding: 10px; /* Optional: Add padding to the container */
+  max-height: 363px;
+
+}
+
+.notification {
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 95%;
+  background-color: #99A3BA;
+  border-radius: 20px;
+  height: auto;
+  text-align: center;
+}
+
+.notification h4 {
+  margin:0;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.notification p{
+  margin:0;
+  padding: 0;
+  margin-bottom: 10px;
+}

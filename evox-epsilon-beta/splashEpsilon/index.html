@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --splash2-pos: 100%;
+            --myClass-fontSize: 16px;
+        }
+
+        @font-face {
+            font-family: "Bold";
+            src: url('Urbanist-Bold.ttf');
+        }
+
+        @font-face {
+            font-family: "Regular";
+            src: url('Urbanist-Regular.ttf');
+        }
+
+        html,
+        body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #010012;
+            color: white;
+            font-family: "Regular";
+        }
+
+        .splashImg {
+            position: relative;
+            width: 100vw;
+            height: auto;
+            top: 0;
+            z-index: 10;
+        }
+
+        .content {
+            position: relative;
+            z-index: 11;
+            padding: 20px;
+        }
+
+        .content p {
+            font-size: 20px;
+            color: #777777;
+        }
+
+        .content h1 {
+            font-family: "Bold";
+            font-size: 35px;
+        }
+
+        .parentForDots {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            opacity: 1;
+            transform: translateX(-50%);
+            transition: opacity 0.5s ease;
+        }
+
+        .splash1,
+        .splash2,
+        .splash3 {
+            scrollbar-width: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: block;
+            align-items: center;
+            scroll-behavior: smooth;
+            touch-action: none;
+            z-index: 998;
+            box-sizing: border-box;
+            opacity: 1;
+            overflow: hidden;
+            visibility: hidden;
+            transition: transform 1.3s ease-in-out, opacity 1.3s ease, visibility 1.3s;
+            box-shadow: 0 0 10px rgba(20, 20, 20, 0.65);
+            border-radius: 20px;
+        }
+
+        .splash1 {
+            transform: translateX(-100%);
+        }
+
+        .splash2 {
+            transform: translateX(var(--splash2-pos));
+        }
+
+        .splash3 {
+            transform: translateX(100%);
+        }
+
+        .splash1.active,
+        .splash2.active,
+        .splash3.active {
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .splash2.deactive {
+            visibility: hidden;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+
+<body id="body">
+    <div id="splash1" class="splash1 active">
+        <img class="splashImg" src="image_processing20210225-9935-qkmi2w.png" alt="Splash Image">
+        <div class="content">
+            <h1>Trusted Friends</h1>
+            <p>Trusted Friend' is a M-of-N social recovery module that allows users to access their accounts.</p>
+        </div>
+    </div>
+
+    <div id="splash2" class="splash2">
+        <img class="splashImg" src="identity.png" alt="Splash Image">
+        <div class="content">
+            <h1>Identity</h1>
+            <p>Trusted Friend' is a M-of-N social recovery module that allows users to access their accounts.</p>
+        </div>
+    </div>
+
+    <div id="splash3" class="splash3">
+        <img class="splashImg" src="shard.png" alt="Splash Image">
+        <div class="content">
+            <h1>Capsule Shard</h1>
+            <p>Trusted Friend' is a M-of-N social recovery module that allows users to access their accounts.</p>
+        </div>
+    </div>
+
+    <div id="parentDots" class="parentForDots">
+        <div id="dotsCont" class="dots">
+            <svg width="15px" height="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="#fff" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
+            </svg>
+            <svg width="15px" height="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="#777777" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
+            </svg>
+            <svg width="15px" height="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="#777777" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        function updateCSSVariable(variable, value) {
+            document.documentElement.style.setProperty(variable, value);
+        }
+
+        function dotActive(what) {
+            document.getElementById("dotsCont").style.opacity = "0"
+            let oneAc = `<svg width="15px" height="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="#fff" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
+            </svg>
+            <svg width="15px" height="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="#777777" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
+            </svg>
+            <svg width="15px" height="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="#777777" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
+            </svg>`
+            let twoAc = `<svg width="15px" height="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="#777777" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
+            </svg>
+            <svg width="15px" height="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="#fff" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
+            </svg>
+            <svg width="15px" height="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="#777777" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
+            </svg>`
+            let threeAc = `<svg width="15px" height="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="#777777" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
+            </svg>
+            <svg width="15px" height="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="#777777" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
+            </svg>
+            <svg width="15px" height="15px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="none">
+                <path fill="#fff" d="M8 3a5 5 0 100 10A5 5 0 008 3z" />
+            </svg>`
+            setTimeout(function () {
+                if (what === 1) {
+                    document.getElementById("dotsCont").innerHTML = oneAc
+                } else if (what === 2) {
+                    document.getElementById("dotsCont").innerHTML = twoAc
+                } else if (what === 3) {
+                    document.getElementById("dotsCont").innerHTML = threeAc
+                }
+                document.getElementById("dotsCont").style.opacity = "1"
+            }, 500)
+
+        }
+
+
+        function next() {
+            let s1 = document.getElementById("splash1")
+            let s2 = document.getElementById("splash2")
+            let s3 = document.getElementById("splash3")
+            if (s1.classList.contains("active")) {
+                console.log("1")
+
+                s1.classList.remove("active");
+                s2.classList.add("active");
+                dotActive(2)
+                //set 2 as active
+            } else if (s2.classList.contains("active")) {
+                console.log("2")
+                updateCSSVariable('--splash2-pos', '-100%');
+                s2.classList.remove("active");
+                //s2.style.transform = "translateX(-150%);"
+                s3.classList.add("active");
+                dotActive(3)
+                //set 3 as active
+            } else if (s3.classList.contains("active")) {
+                console.log("3")
+                updateCSSVariable('--splash2-pos', '100%');
+                s3.classList.remove("active");
+                s1.classList.add("active");
+                dotActive(1)
+                //set 1 as active
+            }
+        }
+
+        function previous() {
+            let s1 = document.getElementById("splash1")
+            let s2 = document.getElementById("splash2")
+            let s3 = document.getElementById("splash3")
+            if (s1.classList.contains("active")) {
+                console.log("1")
+                s1.classList.remove("active");
+                s3.classList.add("active");
+                dotActive(3)
+            } else if (s2.classList.contains("active")) {
+                console.log("2")
+                //updateCSSVariable('--splash2-pos', '-100%');
+                s2.classList.remove("active");
+                //s2.style.transform = "translateX(-150%);"
+                s1.classList.add("active");
+                dotActive(1)
+            } else if (s3.classList.contains("active")) {
+                console.log("3")
+                updateCSSVariable('--splash2-pos', '100%');
+                s3.classList.remove("active");
+                s2.classList.add("active");
+                dotActive(2)
+            }
+        }
+
+        // Prevent default scroll behavior on mobile
+
+
+        const swipeAreaSplash = document.getElementById('body'); //not chats
+
+        let touchstartXSplash = 0;
+        let touchendXSplash = 0;
+
+        function handleSplash() {
+            const distance = touchendXSplash - touchstartXSplash;
+
+            if (distance > 40) { // Left-to-right swipe
+                console.log("Left right")
+                previous()
+            } else if (distance < -50) { // Right-to-left swipe
+                console.log("Right Left")
+                next()
+            }
+        }
+
+        swipeAreaSplash.addEventListener('touchstart', (event) => {
+            touchstartXSplash = event.changedTouches[0].screenX;
+        });
+
+        swipeAreaSplash.addEventListener('touchend', (event) => {
+            touchendXSplash = event.changedTouches[0].screenX;
+            handleSplash();
+        });
+    </script>
+</body>
+
+</html>
