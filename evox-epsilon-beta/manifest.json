@@ -3,7 +3,7 @@
   "short_name": "Beta",
   "id": "evx-epsilon",
   "start_url": "/evox-epsilon-beta/",
-  "background_color": "#000",
+  "background_color": "#000000",
   "display": "standalone",
   "display_override": ["tabbed"],
   "tab_strip": {
@@ -14,7 +14,7 @@
   "orientation": "portrait",
   "dir": "ltr",
   "scope": "/evox-epsilon-beta/",
-  "theme_color": "#000",
+  "theme_color": "#000000",
   "lang": "en-US",
   "categories": [
     "entertainment",

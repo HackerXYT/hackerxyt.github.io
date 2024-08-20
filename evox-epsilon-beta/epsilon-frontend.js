@@ -15,6 +15,11 @@ if (localStorage.getItem("currentSrv")) {
 //    }
 //}
 //Removing to make debug better
+
+
+function restart() {
+    window.location.reload()
+}
 function clientVerified() {
     if (ip !== 'error') {
         const username = localStorage.getItem("t50-username")
@@ -31,7 +36,7 @@ function clientVerified() {
                     return response.text();
                 })
                 .then(data => {
-                    if (data === "Credentials Correct") {
+                    if (data.includes("Credentials Correct")) {
                         verificationComplete()
                     } else if (data.includes("IP Not Verified")) {
                         console.log("Account Verified But IP is Unknown")
@@ -442,7 +447,7 @@ function startLogin() {
                     }
                     returnToLoginMenu()
                     setTimeout(function () {
-                        $("#container").fadeOut("fast")
+                        $("#connectionContainer").fadeOut("fast")
                         verificationComplete()
                     }, 1000)
 
@@ -587,7 +592,7 @@ function on2FAComplete() {
                 sessionStorage.setItem("loggedin", email)
                 sessionStorage.setItem("loggedinpswd", btoa(password))
                 localStorage.setItem("2fa_status", "On")
-                $("#container").fadeOut("fast")
+                $("#connectionContainer").fadeOut("fast")
                 verificationComplete()
             } else if (data === "Exists") {
                 successLogin.play()
@@ -614,7 +619,7 @@ function on2FAComplete() {
                 sessionStorage.setItem("loggedin", email)
                 sessionStorage.setItem("loggedinpswd", btoa(password))
                 localStorage.setItem("2fa_status", "On")
-                $("#container").fadeOut("fast")
+                $("#connectionContainer").fadeOut("fast")
                 verificationComplete()
             } else if (data === "Wrong Code") {
                 shake_me("ver_code")
@@ -763,12 +768,12 @@ function verificationComplete() {
                             })
                             .then(lastLogin => {
                                 console.log(lastLogin)
-                                if(lastLogin !== 'Unknown') {
+                                if (lastLogin !== 'Unknown') {
                                     span.textContent = formatTimeDifference(lastLogin);
                                 } else {
                                     span.style.display = 'none'
                                 }
-                                
+
                             }).catch(error => {
                                 span.style.display = 'none'
                                 console.error(error);
@@ -799,12 +804,10 @@ function verificationComplete() {
 
 
 
-    $("#loading-text").fadeOut("fast", function () {
-        document.getElementById("gateway").style.display = 'flex'
-        setTimeout(function () {
-            document.getElementById("gateway").style.opacity = '1'
-        }, 50)
-
-    })
+    $("#loading-text").fadeOut("fast")
+    document.getElementById("gateway").style.display = 'flex'
+    setTimeout(function () {
+        document.getElementById("gateway").style.opacity = '1'
+    }, 50)
 
 }
