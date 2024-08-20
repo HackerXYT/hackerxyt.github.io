@@ -673,7 +673,6 @@ input {
 
 }
 
-
 .grabbable::before {
   content: "";
   position: absolute;

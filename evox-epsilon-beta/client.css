@@ -4,7 +4,7 @@
 }
 
 html {
-  /* scroll-behavior: smooth; */
+  scroll-behavior: smooth;
 }
 
 @font-face {
@@ -363,6 +363,11 @@ html {
 .slUserPFP.social {
   width: 50px;
   height: 50px;
+}
+
+.slUserPFP.fav-rec {
+  width: 30px;
+  height: 30px;
 }
 
 .bottomButtonsSline {
@@ -2343,40 +2348,80 @@ a {
 
 .message,
 .message-me {
-  display: inline-flex;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  background-color: #3e4649;
+  display: flex;
+  align-items: center; /* Align items to the center vertically */
+  margin: 10px 0; /* Combined top and bottom margins */
+  background-color: #191919;
   color: #fff;
   padding: 15px 20px;
   font-size: 16px;
-  border-radius: 52px;
+  border-radius: 20px 20px 0 0; /* Combined border-radius */
   outline: none;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-all;
-  /* Breaks words or URLs at any character to prevent overflow */
-  white-space: pre-wrap;
+  overflow-wrap: break-word; /* Simplified word wrapping */
+  white-space: pre-wrap; /* Preserve white spaces and wrap text */
+  word-break: break-word; /* Break long words to prevent overflow */
 }
 
+.message .urlImg,
+.message-me .urlImg {
+  width: 35px;
+  height: 35px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center; /* Center content inside */
+  margin-right: 10px;
+  vertical-align: middle;
+  border-radius: 10px;
+}
+
+.message .embedCol span,
+.message-me .embedCol span {
+
+  font-size: 16px;
+}
+
+.message .embedCol vo,
+.message-me .embedCol vo {
+  margin-top: 5px;
+  font-size: 13px;
+  color: #a2a2a3;
+}
+
+.message .imgBox,
+.message-me .imgBox {
+  margin-left: 15px;
+  width: 25px;
+  height: 25px;
+  background-color: #161616;
+  border-radius: 8px;
+  padding: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center; /* Center content inside */
+  vertical-align: middle;
+}
+
+.message .embedCol,
+.message-me .embedCol {
+  display: flex;
+  flex-direction: column;
+}
+
+
 .message-me {
-  background-color: #0070d8;
+  background-color: #191919;
   max-width: 50%;
   margin-top: 0;
   margin-left: auto;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 20px;
+  border-radius: 20px 20px 2px 20px; /* Adjust border-radius as needed */
+  margin-right: 20px;
 }
 
 .message {
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 0;
-  margin-right: auto;
   max-width: 50%;
+  margin-right: auto;
+  margin-left: 20px;
+  border-radius: 20px 20px 20px 2px; /* Adjust border-radius as needed */
 }
 
 
@@ -2404,7 +2449,7 @@ a {
   flex-shrink: 0;
   object-fit: cover;
   margin-right: 3px;
-  background-color: #0071d9;
+  background-color: #191919;
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -5030,4 +5075,394 @@ input:-webkit-autofill {
   display: none;
   touch-action: manipulation;
   overflow: hidden;
+}
+
+.gallery-container {
+  width: 100%;
+  max-width: 600px;
+  /* Set a maximum width for larger screens */
+  margin: 0;
+  /* Center the gallery on the page */
+}
+
+.image-wrapper {
+  width: 32.33%;
+  /* Take 1/3 of the horizontal space */
+  float: left;
+  box-sizing: border-box;
+  position: relative;
+  margin: 2px
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Fill the container without stretching */
+  display: block;
+
+}
+
+.securelinePopup {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  display: block;
+  padding: 0 30px 30px 30px;
+  align-items: center;
+  scroll-behavior: smooth;
+  touch-action: auto;
+  justify-content: center;
+  background: #0c0d16d9;
+  z-index: 1000;
+  box-sizing: border-box;
+  opacity: 1;
+  visibility: hidden;
+  transform: translateY(100%);
+  transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 0.5s ease-in-out;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  overflow-x: hidden;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+
+.securelinePopup.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateY(0);
+  /* Slide the popup into view */
+}
+
+.backButton {
+  position: fixed;
+  top: 20px;
+  left: 20px; 
+  background-color: rgba(60, 62, 70, 0.614);
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1001;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: none;
+}
+
+.backButtonLegacy {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.614);
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1001;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.securelinePopup .grabbable {
+  position: sticky;
+  background-color: #3c3e46;
+  height: 5px;
+  width: 15%;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50px;
+  transition: background-color 1s ease-out;
+  z-index: 999;
+}
+
+.securelinePopup .grabbable::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  /* Extend clickable area upwards */
+  left: -30px;
+  /* Extend clickable area to the left */
+  right: -30px;
+  /* Extend clickable area to the right */
+  bottom: -30px;
+  /* Extend clickable area downwards */
+  background: transparent;
+  /* Ensure it's transparent */
+  cursor: pointer;
+  /* Make sure the cursor changes */
+}
+
+.securelinePopup .grabbable:active {
+  cursor: grabbing;
+}
+
+.secureline-row {
+  display: flex;
+  flex-direction: row;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.secureline-favorites-recommend {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  border-radius: 20px;
+}
+
+.secureline-favorites-recommend .block {
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: #181a22;
+  border-radius: 20px;
+  margin-right: 10px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.secureline-favorites-recommend .block .row {
+  display: flex;
+  flex-direction: row;
+}
+
+.secureline-favorites-recommend .block .icon {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.secureline-favorites-recommend .block .column {
+  display: flex;
+  flex-direction: column;
+}
+
+.secureline-favorites-recommend .block .column p {
+  font-size: 17px;
+  color: #d1d3d9;
+  font-family: "SF";
+  margin: 0;
+}
+
+.secureline-favorites-recommend .block .column span {
+  font-size: 14px;
+  color: #6f717a;
+  font-family: "SF";
+  margin: 0;
+}
+
+.secureline-search {
+  position: relative;
+  background-color: #171921;
+  border-radius: 20px;
+  width: 100%;
+}
+
+.secureline-button {
+  margin-left: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  background-color: #171921;
+  border-radius: 20px;
+  width: 75px;
+  height: 61;
+}
+
+.secureline-search input {
+  background: transparent;
+  border: none;
+  color: #dfe1e6;
+  padding: 20px;
+  padding-left: 60px;
+  font-size: 18px;
+  outline: none;
+  flex: 1;
+  font-family: "SF";
+  width: calc(100% - 80px);
+}
+
+.secureline-search .search {
+  position: absolute;
+  left: 25px;
+  /* Adjust the left position to place the SVG where you want */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.secureline-users {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.secureline-users .user {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-bottom: 20px;
+}
+
+.secureline-users .user .add-favorite {
+  margin-left: auto;
+  transition: transform 0.1s ease-in-out;
+}
+
+.secureline-users .user .icon {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.secureline-users .user .column {
+  display: flex;
+  flex-direction: column;
+}
+
+.secureline-users .user .column p {
+  font-size: 17px;
+  color: #d1d3d9;
+  font-family: "SF";
+  margin: 0;
+}
+
+.secureline-users .user .column span {
+  font-size: 14px;
+  color: #6f717a;
+  font-family: "SF";
+  margin: 0;
+}
+
+.secureline-messenger {
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+.secureline-messenger .topBar {
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 80px;
+  display: flex;
+  flex-shrink: 0;
+  position: fixed;
+  /* Change from relative to fixed */
+  top: 0;
+  /* Position at the top of the viewport */
+  left: 0;
+  /* Position at the left of the viewport */
+  width: 100%;
+  /* Full width of the viewport */
+  box-sizing: border-box;
+  z-index: 1000;
+  background: transparent;
+  /* Ensures the element stays on top of other content */
+  transition: background-color 0.2s ease-in-out, backdrop-filter 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+  background-color: #1d1d1d86;
+  /* Semi-transparent background */
+  backdrop-filter: blur(25px);
+  /* Adjust the blur amount as needed */
+  -webkit-backdrop-filter: blur(25px);
+  
+}
+
+.secureline-messenger .topBar .icon p {
+  font-size: 20px;
+  font-family: "SF";
+  margin-left: 10px;
+}
+
+.secureline-messenger .topBar .icon {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  display: flex; /* Make the icon container a flex container */
+  flex: 1; /* Allow the .icon container to grow and take available space */
+}
+
+.secureline-messenger .topBar .icon .backButtonLegacy  {
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+}
+
+.secureline-messenger .topBar .icon .ham {
+  display: inline-flex;
+  align-items: center;
+  margin-left: auto; /* Pushes this element to the far right */
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+
+.secureline-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+.secureline-messages > *:first-child {
+  margin-top: 90px; /* Adjust as needed */
+}
+
+.secureline-messages > *:last-child {
+  margin-bottom: 100px; /* Adjust as needed */
+}
+.bottomActions {
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 90px;
+  display: flex;
+  flex-shrink: 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1000;
+  background: transparent;
+  transition: background-color 0.2s ease-in-out, backdrop-filter 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+  background-color: #1d1d1d86;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.bottomActions .attach {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.bottomActions .attach img {
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+}
+
+.secureline-placeholder {
+  opacity: 0;
+  height: 90px;
 }

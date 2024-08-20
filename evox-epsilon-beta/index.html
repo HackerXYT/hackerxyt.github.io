@@ -1,69 +1,24 @@
 <!DOCTYPE html>
-<html id="VOXhtml" lang="en"> <!--  manifest="cache.manifest"-->
+<html lang="en">
 
 <head>
     <script>
-        function notice(message) {
-            const oldhtml = document.getElementById("notification-span").innerHTML
-            var notification = document.getElementById('notification');
-            if (notification.className.includes("show")) {
-                console.log("Notification Is Shown")
-                notification.classList.remove('show');
-                setTimeout(function () {
-                    document.getElementById("notification-span").innerHTML = message
-                    notification.classList.add('show');
-                    setTimeout(function () {
-                        notification.classList.remove('show');
-                    }, 2500);
-                }, 500)
-            } else {
-                document.getElementById("notification-span").innerHTML = message
-                notification.classList.add('show');
-                setTimeout(function () {
-                    notification.classList.remove('show');
-                }, 2500);
-            }
-            setTimeout(function () {
-                document.getElementById("notification-span").innerHTML = oldhtml
-            }, 3000)
-        }
         let successLoad = false;
-        // Override the global error handler
         window.onerror = function (message, source, lineno, colno, error) {
-            //alert(`An error occurred: ${message} at ${source}:${lineno}:${colno}`);
             if (successLoad === false) {
-                notice(`An error occurred: ${message} at ${source}:${lineno}:${colno}`)
+                warn(`An error occurred: ${message} at ${source}:${lineno}:${colno}`)
             }
-            return false;  // Let the browser console still show the error if available
+            return false;
         };
-
-        // Handle unhandled promise rejections
-        window.addEventListener('unhandledrejection', function (event) {
+        window.addEventListener('unhandledrejection', function (message, source, lineno, colno, error) {
             if (successLoad === false) {
-                notice(`An error occurred: ${message} at ${source}:${lineno}:${colno}`)
+                warn(`An error occurred: ${source}:${lineno}:${colno}`)
             }
-            //alert(`An unhandled promise rejection occurred: ${event.reason}`);
         });
-
         const originalConsoleLog = console.log;
-
-        // Override the console.log function
         console.log = function (...args) {
-            // Display an alert with the log message
             //alert(args.join(' '));
             originalConsoleLog.apply(console, args);
-            //try {
-            //    alert(`${args.join(' ')}`)
-            //} catch (error) {
-            //    return;
-            //}
-
-
-
-
-
-            // Call the original console.log function with the same arguments
-
         };
     </script>
     <meta charset="UTF-8">
@@ -80,7 +35,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./epsilon-assets/favicon-32x32.png?v=epsilon">
     <link rel="icon" type="image/png" sizes="16x16" href="./epsilon-assets/favicon-16x16.png?v=epsilon">
     <link rel="apple-touch-icon-precomposed" href="./epsilon-assets/EVX.png">
-    <link rel="icon" type="image/png" href="./epsilon-assets/EvoxEPSILON.png?v=epsilon">
+    <link rel="icon" type="image/png" href="./EvoxEPSILON.png">
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)"><!--2c2c2c-->
     <meta name="apple-mobile-web-app-status-bar-style" content="black" /><!--black-translucent-->
@@ -265,14 +220,6 @@
     <link rel="apple-touch-startup-image"
         href="https://evoxs.xyz/evox-epsilon/epsilon-assets/apple-splash-dark-1136-640.png"
         media="(prefers-color-scheme: dark) and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <!--<link rel="manifest" href="/manifest.json" />-->
-
-    <!--<link rel="apple-touch-icon" sizes="180x180" href="evox-logo-apple.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="evox-logo-apple.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="evox-logo-apple.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="evox-logo-apple.png">
-    <link rel="apple-touch-icon-precomposed" href="evox-logo-apple.png">-->
-
     <link rel="stylesheet" href="client.css">
     <link rel="stylesheet" href="secondary.css">
     <link rel="stylesheet" href="background.css">
@@ -281,48 +228,7 @@
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css'>
     <link rel="stylesheet" href="devices.min.css">
-    
-
-    <!-- Google tag (gtag.js)
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JEBKFVFJT"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-3JEBKFVFJT');
-    </script>-->
 </head>
-<script>
-    //sessionStorage.clear()
-</script>
-<style>
-    .gallery-container {
-        width: 100%;
-        max-width: 600px;
-        /* Set a maximum width for larger screens */
-        margin: 0;
-        /* Center the gallery on the page */
-    }
-
-    .image-wrapper {
-        width: 32.33%;
-        /* Take 1/3 of the horizontal space */
-        float: left;
-        box-sizing: border-box;
-        position: relative;
-        margin: 2px
-    }
-
-    .image-wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        /* Fill the container without stretching */
-        display: block;
-
-    }
-</style>
 
 <body>
     <div id="background">
@@ -447,33 +353,6 @@
 
 
     <div id="container">
-        <script>
-
-            document.addEventListener('DOMContentLoaded', () => {
-                console.log("[EE] Event Listener Registered");
-
-                // Event listener for scroll events on the window
-                window.addEventListener("scroll", () => {
-                    // Get the scroll position of the document
-                    const scrollPosition = window.scrollY || window.pageYOffset;
-
-                    //console.log('Scroll position:', scrollPosition);
-
-                    // Check if the scroll position is at the top
-                    if (scrollPosition === 0) {
-                        //console.log('User has scrolled back to the top.');
-                        document.getElementById("gatewayActions").classList.remove('back')
-                    } else {
-                        //console.log('User is scrolling down.');
-                        if (scrollPosition >= 22) {
-                            document.getElementById("gatewayActions").classList.add('back')
-                        } else {
-                            document.getElementById("gatewayActions").classList.remove('back')
-                        }
-                    }
-                });
-            });
-        </script>
         <div class="gateway" id="gateway">
             <div id="gatewayActions" class="gatewayActions">
                 <p>Ask</p>
@@ -580,7 +459,7 @@
                         </div>
                     </div>
                     <div class="bottomButtonsSline">
-                        <a href="#$">
+                        <a onclick="showChats()" href="#secureline->home">
                             Show all friends
                             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
                                 fill="none">
@@ -653,10 +532,207 @@
 
         </div>
     </div>
+    <button onclick="hideChats()" class="backButton" id="secureline-back">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+            <g clip-path="url(#clip0_429_11257)">
+                <path d="M14 7L9 12" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M9 12L14 17" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+            <defs>
+                <clipPath id="clip0_429_11257">
+                    <rect width="24" height="24" fill="white" />
+                </clipPath>
+            </defs>
+        </svg></button>
+    <div class="securelinePopup" id="secureline">
+
+        <div class="grabbable"></div>
+        <div class="secureline-row">
+            <div class="secureline-search">
+                <div class="search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M17.0392 15.6244C18.2714 14.084 19.0082 12.1301 19.0082 10.0041C19.0082 5.03127 14.9769 1 10.0041 1C5.03127 1 1 5.03127 1 10.0041C1 14.9769 5.03127 19.0082 10.0041 19.0082C12.1301 19.0082 14.084 18.2714 15.6244 17.0392L21.2921 22.707C21.6828 23.0977 22.3163 23.0977 22.707 22.707C23.0977 22.3163 23.0977 21.6828 22.707 21.2921L17.0392 15.6244ZM10.0041 17.0173C6.1308 17.0173 2.99087 13.8774 2.99087 10.0041C2.99087 6.1308 6.1308 2.99087 10.0041 2.99087C13.8774 2.99087 17.0173 6.1308 17.0173 10.0041C17.0173 13.8774 13.8774 17.0173 10.0041 17.0173Z"
+                            fill="#dfe1e6" />
+                    </svg>
+                </div>
+                <input placeholder="Where to?">
+            </div>
+            <div class="secureline-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 12H18M12 6V18" stroke="#dfe1e6" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </div>
+        </div>
+        <div id="favorites-recommended" class="secureline-favorites-recommend">
+            <!--Recommend-->
+            <div class="block">
+                <div class="row">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px"
+                            height="30px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g fill="#b5b5b8" fill-rule="nonzero">
+                                    <path
+                                        d="M12.5952193,9.46477576 L21.301858,18.1784929 C22.1878771,19.0651592 22.1873852,20.5021945 21.3007593,21.388254 C20.4141512,22.2742958 18.9771571,22.2738089 18.0910534,21.3871388 L9.38521931,12.6747758 L12.5952193,9.46477576 Z M7.14822944,15.0068466 L7.25,15 C7.62969577,15 7.94349096,15.2821539 7.99315338,15.6482294 L8,15.75 L8,16.5 L8.75,16.5 C9.12969577,16.5 9.44349096,16.7821539 9.49315338,17.1482294 L9.5,17.25 C9.5,17.6296958 9.21784612,17.943491 8.85177056,17.9931534 L8.75,18 L8,18 L8,18.75 C8,19.1296958 7.71784612,19.443491 7.35177056,19.4931534 L7.25,19.5 C6.87030423,19.5 6.55650904,19.2178461 6.50684662,18.8517706 L6.5,18.75 L6.5,18 L5.75,18 C5.37030423,18 5.05650904,17.7178461 5.00684662,17.3517706 L5,17.25 C5,16.8703042 5.28215388,16.556509 5.64822944,16.5068466 L5.75,16.5 L6.5,16.5 L6.5,15.75 C6.5,15.3703042 6.78215388,15.056509 7.14822944,15.0068466 L7.25,15 L7.14822944,15.0068466 Z M10.6863766,7.56538381 L10.8224894,7.69092148 L11.5342193,8.40377576 L8.32421931,11.6137758 L7.61212833,10.9003428 C6.73457385,10.0212747 6.73491729,8.59738051 7.61315354,7.71847802 L7.76962668,7.57149946 C8.60692789,6.8538806 9.84665214,6.85190509 10.6863766,7.56538381 Z M17.1482294,5.00684662 L17.25,5 C17.6296958,5 17.943491,5.28215388 17.9931534,5.64822944 L18,5.75 L18,6.5 L18.75,6.5 C19.1296958,6.5 19.443491,6.78215388 19.4931534,7.14822944 L19.5,7.25 C19.5,7.62969577 19.2178461,7.94349096 18.8517706,7.99315338 L18.75,8 L18,8 L18,8.75 C18,9.12969577 17.7178461,9.44349096 17.3517706,9.49315338 L17.25,9.5 C16.8703042,9.5 16.556509,9.21784612 16.5068466,8.85177056 L16.5,8.75 L16.5,8 L15.75,8 C15.3703042,8 15.056509,7.71784612 15.0068466,7.35177056 L15,7.25 C15,6.87030423 15.2821539,6.55650904 15.6482294,6.50684662 L15.75,6.5 L16.5,6.5 L16.5,5.75 C16.5,5.37030423 16.7821539,5.05650904 17.1482294,5.00684662 L17.25,5 L17.1482294,5.00684662 Z M5.14822944,3.00684662 L5.25,3 C5.62969577,3 5.94349096,3.28215388 5.99315338,3.64822944 L6,3.75 L6,4.5 L6.75,4.5 C7.12969577,4.5 7.44349096,4.78215388 7.49315338,5.14822944 L7.5,5.25 C7.5,5.62969577 7.21784612,5.94349096 6.85177056,5.99315338 L6.75,6 L6,6 L6,6.75 C6,7.12969577 5.71784612,7.44349096 5.35177056,7.49315338 L5.25,7.5 C4.87030423,7.5 4.55650904,7.21784612 4.50684662,6.85177056 L4.5,6.75 L4.5,6 L3.75,6 C3.37030423,6 3.05650904,5.71784612 3.00684662,5.35177056 L3,5.25 C3,4.87030423 3.28215388,4.55650904 3.64822944,4.50684662 L3.75,4.5 L4.5,4.5 L4.5,3.75 C4.5,3.37030423 4.78215388,3.05650904 5.14822944,3.00684662 L5.25,3 L5.14822944,3.00684662 Z">
+                                    </path>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="column">
+                        <p>Username</p>
+                        <span>A message here</span>
+                    </div>
+                </div>
+            </div>
+
+            <!--Favorite-->
+            <div class="block">
+                <div class="row">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
+                                fill="#b5b5b8" />
+                        </svg>
+                    </div>
+                    <div class="column">
+                        <p>Username</p>
+                        <span>A message here..</span>
+                    </div>
+                </div>
+            </div>
+            <div class="block">
+                <div class="row">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
+                                fill="#b5b5b8" />
+                        </svg>
+                    </div>
+                    <div class="column">
+                        <p>Username</p>
+                        <span>A message here</span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div id="secureline-users" class="secureline-users">
+            <div onclick="openChat()" class="user">
+                <div class="icon">
+                    <img class="slUserPFP social" src="evox-logo-apple.png">
+                </div>
+                <div class="column">
+                    <p>Username</p>
+                    <span>A message here</span>
+                </div>
+                <div onclick="add_favorite(event, this)" data-status="default" class="add-favorite">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
+                            stroke="#7d7e87" stroke-width="1.5" />
+                    </svg>
+                </div>
+            </div>
+            <div onclick="openChat()" class="user">
+                <div class="icon">
+                    <img class="slUserPFP social" src="evox-logo-apple.png">
+                </div>
+                <div class="column">
+                    <p>Username</p>
+                    <span>A message here</span>
+                </div>
+                <div onclick="add_favorite(event, this)" data-status="default" class="add-favorite">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
+                            stroke="#7d7e87" stroke-width="1.5" />
+                    </svg>
+                </div>
+            </div>
+            <div onclick="openChat()" class="user">
+                <div class="icon">
+                    <img class="slUserPFP social" src="evox-logo-apple.png">
+                </div>
+                <div class="column">
+                    <p>Username</p>
+                    <span>A message here</span>
+                </div>
+                <div onclick="add_favorite(event, this)" data-status="default" class="add-favorite">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
+                            stroke="#7d7e87" stroke-width="1.5" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div id="messenger" class="secureline-messenger">
+        <div class="topBar">
+            <div class="icon">
+                <button onclick="goBackMessenger()" id="goBackMessenger" class="backButtonLegacy">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                        <g clip-path="url(#clip0_429_11257)">
+                            <path d="M14 7L9 12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M9 12L14 17" stroke="#fff" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_429_11257">
+                                <rect width="24" height="24" fill="white" />
+                            </clipPath>
+                        </defs>
+                    </svg></button><img id="secureline-pfp" class="slUserPFP social" src="evox-logo-apple.png">
+                <p id="secureline-username">Username</p>
+                <span class="ham">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+                        <path d="M4 18L20 18" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M4 12L20 12" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M4 6L20 6" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                </span>
+            </div>
+        </div>
+        <div class="secureline-messages" id="messages-container">
+            
+            
+        </div>
+        <div class="bottomActions">
+            <div class="bottom-actions">
+                <a href="#" style="width: 50px;height:50px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24"
+                        fill="none">
+                        <path opacity="0.93"
+                            d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16.37 14.35L14.15 16.57C13.61 17.11 12.91 17.37 12.21 17.37C11.51 17.37 10.8 17.1 10.27 16.57C9.75 16.05 9.46 15.36 9.46 14.63C9.46 13.9 9.75 13.2 10.27 12.69L11.68 11.28C11.97 10.99 12.45 10.99 12.74 11.28C13.03 11.57 13.03 12.05 12.74 12.34L11.33 13.75C11.09 13.99 10.96 14.3 10.96 14.63C10.96 14.96 11.09 15.28 11.33 15.51C11.82 16 12.61 16 13.1 15.51L15.32 13.29C16.59 12.02 16.59 9.96 15.32 8.69C14.05 7.42 11.99 7.42 10.72 8.69L8.3 11.11C7.79 11.62 7.51 12.29 7.51 13C7.51 13.71 7.79 14.39 8.3 14.89C8.59 15.18 8.59 15.66 8.3 15.95C8.01 16.24 7.53 16.24 7.24 15.95C6.44 15.18 6 14.13 6 13.01C6 11.89 6.43 10.84 7.22 10.05L9.64 7.63C11.49 5.78 14.51 5.78 16.36 7.63C18.22 9.48 18.22 12.5 16.37 14.35Z"
+                            fill="#fff" />
+                    </svg>
+                </a>
+                <input id="message_input" placeholder="Type something..." autocomplete="off" class="apple-input-sl">
+                <!--attach goes here-->
+                <a class="send_message_btn" onclick="send_message()">
+                    <svg id="sendSvg" width="35px" height="35px" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z"
+                            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
     <div class="notification-container" id="notification">
         <p id="notification-title"><svg xmlns="http://www.w3.org/2000/svg" fill="#fad836" width="25px" height="25px"
                 viewBox="0 0 32 32" version="1.1">
-                <title>notice1</title>
                 <path
                     d="M15.5 3c-7.456 0-13.5 6.044-13.5 13.5s6.044 13.5 13.5 13.5 13.5-6.044 13.5-13.5-6.044-13.5-13.5-13.5zM15.5 27c-5.799 0-10.5-4.701-10.5-10.5s4.701-10.5 10.5-10.5 10.5 4.701 10.5 10.5-4.701 10.5-10.5 10.5zM15.5 10c-0.828 0-1.5 0.671-1.5 1.5v5.062c0 0.828 0.672 1.5 1.5 1.5s1.5-0.672 1.5-1.5v-5.062c0-0.829-0.672-1.5-1.5-1.5zM15.5 20c-0.828 0-1.5 0.672-1.5 1.5s0.672 1.5 1.5 1.5 1.5-0.672 1.5-1.5-0.672-1.5-1.5-1.5z" />
             </svg>
@@ -793,24 +869,7 @@
         <iframe id="launchApp" style="display:none;background: radial-gradient(circle, #282828, #000000)"
             src="PreloadApp.html"></iframe>
     </div>
-    <div class="floridaCont" id="launchFloridaCont" style="position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    overflow: hidden;
-    z-index: 999999;
-    -webkit-overflow-scrolling: touch;
-    /* For iOS Safari */">
-        <iframe id="launchFlorida" src="florida/index.html"></iframe>
-    </div>
     <div style="display: none;" id="preNotif"><!--This Part Is Used For Checking New Notifications--></div>
-
-    <!--<div class="parent-notification-container">
-        <div onclick="hideME()" id="apple-style" class="apple-style">
-            <span id="appUP">Epsilon 4.0.2 • Florida 0.1</span>
-        </div>
-    </div>-->
     <noscript>
         <div class="parent-notification-container">
             <div class="apple-style active">
@@ -848,64 +907,15 @@
 <script src="../scripts/jquery-3.7.0.js"></script>
 <script src="florida.js"></script>
 <script src="epsilon-frontend.js"></script>
-    <script src="epsilon-backend.js"></script>
+<script src="epsilon-backend.js"></script>
 
-    <script defer>
-        //if (window.location.href.includes("https://")) {
-        //    var newUrl = window.location.href.replace("https://", "http://");
-        //    window.location.href = newUrl;
-        //}
-        function removeTrailingSlash(value) {
-            return value.replace(/\/$/, ''); // Replace trailing slash if it exists
-        }
-        let ip = "error";
-        document.addEventListener("DOMContentLoaded", function () {
-
-            //sessionStorage.removeItem("IPV4")
-            fetch('https://jsonip.com/')
-                .then(response => response.json())
-                .then(geo => {
-                    console.log(localStorage.getItem("IPV4"), geo.ip)
-                    //if (window.location.href.includes("#verify")) {
-                    //    
-                    //}
-                    if (localStorage.getItem("IPV4") !== geo.ip) {
-                        //document.getElementById("wait").innerHTML = "Verifying New IP"
-                        localStorage.setItem("IPV4", geo.ip);
-                        console.log("New IP")
-                        //let stringWithoutHash = window.location.href.replace(/#/g, '');
-                        //setTimeout(function () {
-                        //    let string;
-                        //    if (stringWithoutHash.endsWith("/")) {
-                        // Remove the trailing "/"
-                        //        string = stringWithoutHash.slice(0, -1);
-                        //    } else {
-                        //        string = stringWithoutHash
-                        //    }
-                        //    if (!window.location.href.includes("#verify")) {
-                        //        window.location.href = `${string}/#verify`
-                        //    }
-
-                        //}, 2000)
-                        
-                    }
-
-                    console.log(geo.ip);
-                    ip = geo.ip;
-                    clientVerified()
-
-                    // Add code dependent on the fetch request's completion here
-                    // For example, you can load other JavaScript files dynamically:
-                })
-                .catch(error => {
-                    ip = "offline"
-                    console.error("YOU ARE OFFLINE")
-                    console.log('Error:', error);
-                });
+<script defer>
+    //if (window.location.href.includes("https://")) {
+    //    var newUrl = window.location.href.replace("https://", "http://");
+    //    window.location.href = newUrl;
+    //}
 
 
+</script>
 
-        });
-
-    </script>
 </html>
