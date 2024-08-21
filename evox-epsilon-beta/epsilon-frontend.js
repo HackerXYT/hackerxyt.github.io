@@ -817,6 +817,9 @@ function hideChats() {
         securelinePopup.scrollTop = 0;
         securelinePopup.style.height = "60%"
     }, 500)
+    setTimeout(function () {
+        document.getElementById("secureline-input").value = ''
+    }, 500)
 
 }
 function showChats() {
@@ -833,8 +836,10 @@ function showChats() {
     $("#container").fadeOut("fast")
 }
 
-function add_favorite(event, element) {
+function add_favorite(event, element, customColor, customDimen) {
     event.stopPropagation();
+    const color = customColor ? customColor : '#7d7e87';
+    const height_width = customDimen ? customDimen : '30px';
     const status = element.getAttribute("data-status")
     if (status === "default") {
         if (localStorage.getItem("favorites")) {
@@ -849,11 +854,12 @@ function add_favorite(event, element) {
         element.setAttribute("data-status", 'fav')
         element.style.transform = 'scale(1.2)'
         setTimeout(function () {
-            element.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-                            <path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" fill="#7d7e87"/>
+            element.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="${height_width}" height="${height_width}" viewBox="0 0 24 24" fill="none">
+                            <path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" fill="${color}"/>
                             </svg>`
             element.style.transform = 'scale(1)'
         }, 200)
+        document.getElementById(`user-${element.getAttribute("data-name")}`).remove()
 
     } else {
         if (localStorage.getItem("favorites")) {
@@ -865,26 +871,45 @@ function add_favorite(event, element) {
         element.setAttribute("data-status", 'default')
         element.style.transform = 'scale(1.2)'
         setTimeout(function () {
-            element.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-                        <path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" stroke="#7d7e87" stroke-width="1.5"/>
+            element.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="${height_width}" height="${height_width}" viewBox="0 0 24 24" fill="none">
+                        <path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" stroke="${color}" stroke-width="1.5"/>
                         </svg>`
             element.style.transform = 'scale(1)'
         }, 200)
+        loadSecurelineHome()
+
     }
-    loadSecurelineHome()
-    $("#secureline-users").fadeOut("fast")
-    $("#favorites-recommended").fadeOut("fast")
+    reloadFavs()
+
+    //$("#secureline-users").fadeOut("fast")
+    //$("#favorites-recommended").fadeOut("fast")
 
 }
 
 function openChat(data, location) {
     console.log('Chat opened');
+
     const username = data.username
     const isFavorite = data.favorite//true-false
+    document.getElementById("favStatInChat").setAttribute("data-name", username)
+    if (isFavorite === true) {
+        document.getElementById("favStatInChat").setAttribute("data-status", 'fav')
+        document.getElementById("favStatInChat").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                            <path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" fill="#fff"/>
+                            </svg>`
+    } else {
+        document.getElementById("favStatInChat").setAttribute("data-status", 'default')
+        document.getElementById("favStatInChat").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                                <path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" stroke="#fff" stroke-width="1.5"/>
+                                </svg>`
+    }
     if (location === 'home') {
+        console.log("Location: home")
+
         $("#container").fadeOut("fast")
         $("#messenger").fadeIn("fast")
     } else {
+        console.log("Location: friends")
         const securelinePopup = document.querySelector('#secureline');
         removeScrollListener(securelinePopup)
         securelinePopup.classList.remove("active")
@@ -902,8 +927,6 @@ function openChat(data, location) {
 
     }
     document.getElementById("secureline-username").innerText = username
-    actionReload(username)
-    console.warn("Running Secureline For", username)
     document.getElementById("goBackMessenger").style.display = 'flex'
     setTimeout(function () {
         document.getElementById("goBackMessenger").style.opacity = '1'
@@ -916,6 +939,13 @@ function openChat(data, location) {
             setNetworkStatus('off')
             console.error(error);
         });
+    actionReload(username)
+    console.warn("Running Secureline For", username)
+    setTimeout(function () {
+        document.getElementById("secureline-input").value = ''
+    }, 500)
+
+
 }
 
 function showSocial() {
@@ -976,4 +1006,37 @@ function goBackMessenger() {
     setTimeout(function () {
         document.getElementById("secureline-back").style.opacity = '1'
     }, 200)
+}
+
+function showFriend(element) {
+    document.getElementById("userProfile-back").style.display = 'flex'
+    setTimeout(function () {
+        document.getElementById("userProfile-back").style.opacity = '1'
+    }, 200)
+    const pElement = element.querySelector('.column p');
+    const pText = pElement.textContent;
+    console.log('Launching:', pText);
+    document.getElementById("user-profile").style.display = 'flex'
+    const socialPopup = document.getElementById("social")
+    socialPopup.classList.remove("active")
+    document.getElementById("social-back").style.opacity = '0'
+    setTimeout(function () {
+        document.getElementById("social-back").style.display = 'none'
+    }, 200)
+    document.getElementById("bottomActionsSocial").classList.remove("visible")
+}
+
+function hideUserProfile() {
+    document.getElementById("userProfile-back").style.opacity = '0'
+    setTimeout(function () {
+        document.getElementById("userProfile-back").style.display = 'none'
+    }, 200)
+    document.getElementById("user-profile").style.display = 'none'
+    const socialPopup = document.getElementById("social")
+    socialPopup.classList.add("active")
+    document.getElementById("social-back").style.display = 'flex'
+    setTimeout(function () {
+        document.getElementById("social-back").style.opacity = '1'
+    }, 200)
+    document.getElementById("bottomActionsSocial").classList.add("visible")
 }

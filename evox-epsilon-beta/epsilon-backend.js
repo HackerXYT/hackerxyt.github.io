@@ -277,7 +277,7 @@ function attachUi(data) {
                 const data = localStorage.getItem(`user-${friend}-lastLogin`)
                 if (data) {
                     console.warn("Server connection failed. Trying local")
-                    console.log(lastLogin)
+                    const lastLogin = data
                     if (lastLogin !== 'Unknown') {
                         span.textContent = formatTimeDifference(lastLogin);
                     } else {
@@ -327,6 +327,127 @@ function formatTimeDifference(timestamp) {
 }
 
 //Secureline
+const inputSecureline = document.getElementById('secureline-input');
+
+// Add event listener for focus event
+let staticDevHeight = false;
+let stockHeight = null;
+inputSecureline.addEventListener('focus', function () {
+    $("#favorites-recommended").fadeOut("fast")
+    $("#secureline-users").fadeOut("fast", function () {
+        if (inputSecureline.value !== "") {
+            runSearch(inputSecureline.value)
+        }
+
+        console.log('Input field is focused');
+
+        if (staticDevHeight === false) {
+            let currentHeight;
+            currentHeight = parseInt(document.getElementById("secureline").style.height)
+            if (currentHeight.toString().includes('NaN')) {
+                currentHeight = '60%'
+
+            }
+            if (!currentHeight.toString().includes("%")) {
+                stockHeight = currentHeight + "px"
+                const minus15per = currentHeight - (currentHeight * 20 / 100)
+                document.getElementById("secureline").style.height = minus15per + "px"
+                staticDevHeight = minus15per + "px"
+            } else {
+                stockHeight = currentHeight
+                const minus15per = (parseInt(stockHeight) - 15) + "%"
+                document.getElementById("secureline").style.height = minus15per
+                staticDevHeight = minus15per
+            }
+
+        } else {
+            document.getElementById("secureline").style.height = staticDevHeight
+        }
+    })
+
+});
+
+window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: 'smooth' // Optional: adds smooth scrolling animation
+});
+inputSecureline.addEventListener('blur', function () {
+    console.log('Input field is blurred');
+    document.getElementById("secureline").style.height = stockHeight
+    $("#secureline-search-users").fadeOut("fast", function () {
+        $("#favorites-recommended").fadeIn("fast")
+        $("#secureline-users").fadeIn("fast")
+    })
+
+
+});
+let previousInput = null;
+inputSecureline.addEventListener('input', function (event) {
+    const inputValue = event.target.value.toLowerCase(); // Convert input value to lowercase
+    if (inputValue === "") {
+        document.getElementById("secureline").style.height = stockHeight
+        $("#secureline-search-users").fadeOut("fast", function () {
+            $("#favorites-recommended").fadeIn("fast")
+            $("#secureline-users").fadeIn("fast")
+        })
+
+
+        return;
+    }
+    $("#favorites-recommended").fadeOut("fast")
+    $("#secureline-users").fadeOut("fast", function () {
+        console.log('Input field new input', inputValue);
+        previousInput = inputValue;
+        runSearch(inputValue)
+    })
+
+
+});
+
+
+function runSearch(inputValue) {
+    if (staticDevHeight.toString().includes("%")) {
+        document.getElementById("secureline").style.height = parseInt(staticDevHeight) + 20 + '%'
+    } else {
+        document.getElementById("secureline").style.height = parseInt(staticDevHeight) + 100 + 'px'
+    }
+
+
+    const friends_a = localStorage.getItem("friends");
+    if (friends_a) {
+        // Parse the JSON string into an array
+        const friends = JSON.parse(friends_a); // ["a", "b", "c"]
+
+        // Find all friends that contain the inputValue as a substring (case-insensitive)
+        const matchingFriends = friends.filter(friend =>
+            friend.toLowerCase().includes(inputValue)
+        );
+
+
+        if (matchingFriends.length > 0) {
+            console.log('Matching friends:', matchingFriends);
+            securelineHome(matchingFriends, 'secureline-search-users')
+            $("#secureline-search-users").fadeIn("fast")
+
+        } else {
+            console.log('No matching friends found.');
+            const friendSearch = document.getElementById("secureline-search-users")
+            if (!friendSearch.innerHTML.includes("No Friends Found</p>")) {
+                $("#secureline-search-users").fadeOut("fast", function () {
+                    friendSearch.innerHTML = `<div class="loadingContainer">
+                    <p>No Friends Found</p>
+                </div>`
+                    $("#secureline-search-users").fadeIn("fast")
+                })
+            }
+
+
+
+        }
+    } else {
+        console.error("Friends are not locally saved!");
+    }
+}
 // Helper function to format date and time
 let lastScrollTop = 0; // Variable to keep track of the last scroll position
 let isListening = false;
@@ -385,38 +506,147 @@ function loadSecurelineHome() {
         .then(data => {
             setNetworkStatus('on')
             localStorage.setItem("friends", JSON.stringify(data)); // Ensure data is stored as a JSON string
-            securelineHome(data)
+            securelineHome(data, 'secureline-users')
         })
         .catch(error => {
             setNetworkStatus('off')
             const data = localStorage.getItem("friends")
             if (data) {
                 console.warn("Server connection failed. Trying local")
-                securelineHome(JSON.parse(data))
+                securelineHome(JSON.parse(data), 'secureline-users')
             } else {
                 console.error('loadSecurelineHome Failed!', error);
             }
         });
 }
 
-function securelineHome(data) {
+function reloadFavs() {
+    console.log("reloadFavs Triggered")
+    $("#favorites-recommended").fadeOut("fast")
+    const friends = localStorage.getItem("friends")
+    const targetDiv = document.getElementById('favorites-recommended');
+    const favorites = localStorage.getItem("favorites")
+    targetDiv.innerHTML = ''
+    if (favorites) {
+        const favorites_j = JSON.parse(favorites)
+        if (friends) {
+            const jsonFriends = JSON.parse(friends)
+            favorites_j.forEach((friend) => {
+                const favorites = localStorage.getItem("favorites")
+                if (favorites) {
+                    const previous = JSON.parse(favorites)
+                    if (previous.includes(friend)) {
+                        const blockDiv = document.createElement('div');
+                        blockDiv.className = 'block';
+                        blockDiv.onclick = function () {
+                            const json = {
+                                username: friend,
+                                favorite: true
+                            }
+                            openChat(json)
+                        };
+
+                        // Create the row div
+                        const rowDiv = document.createElement('div');
+                        rowDiv.className = 'row';
+
+                        // Create the icon div
+                        const iconDiv = document.createElement('div');
+                        iconDiv.className = 'icon';
+                        iconDiv.innerHTML = `<img class="slUserPFP fav-rec" src="searching_users.gif">`;
+                        loadPFPget(friend)
+                            .then(profileImage => {
+                                iconDiv.innerHTML = `<img class="slUserPFP fav-rec" src="${profileImage}">`;
+                            }).catch(error => {
+                                setNetworkStatus('off')
+                                console.error(error);
+                            });
+
+
+                        // Create the column div
+                        const columnDiv = document.createElement('div');
+                        columnDiv.className = 'column';
+
+                        // Create the paragraph and span elements
+                        const paragraph = document.createElement('p');
+                        paragraph.textContent = friend;
+
+                        const span = document.createElement('span');
+                        fetch(`${srv}/secureline?method=lastMSG&username=${localStorage.getItem("t50-username")}&recipient_username=${friend}&password=${atob(localStorage.getItem("t50pswd"))}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                }
+                                return response.text();
+                            })
+                            .then(lastMsg => {
+
+                                if (lastMsg.length > 15) {
+                                    span.textContent = lastMsg.substring(0, 15) + '..'
+                                } else {
+                                    span.textContent = lastMsg
+                                }
+                            }).catch(error => {
+                                const lastMsg = localStorage.getItem(`${friend}-lastMsg`)
+                                if (lastMsg.length > 15) {
+                                    span.textContent = lastMsg.substring(0, 15) + '..'
+                                } else {
+                                    span.textContent = lastMsg
+                                }
+                            })
+
+
+
+
+                        // Append paragraph and span to the column div
+                        columnDiv.appendChild(paragraph);
+                        columnDiv.appendChild(span);
+
+                        // Append icon and column to the row div
+                        rowDiv.appendChild(iconDiv);
+                        rowDiv.appendChild(columnDiv);
+
+                        // Append row to the block div
+                        blockDiv.appendChild(rowDiv);
+
+                        // Append block to the target div
+                        targetDiv.appendChild(blockDiv);
+                        $("#favorites-recommended").fadeIn("fast")
+                    } else {
+                        return;
+                    }
+                } else {
+                    return;
+                }
+            })
+
+        }
+    }
+
+
+
+}
+
+function securelineHome(data, appending) {
     if (data.length === 0) {
         console.log("No Friends");
         return;
     }
 
-    const container = document.getElementById('secureline-users');
+    const container = document.getElementById(appending);
     container.innerHTML = '';
     const targetDiv = document.getElementById('favorites-recommended');
-    targetDiv.innerHTML = ''
+    if (appending === 'secureline-users') {
+        targetDiv.innerHTML = ''
+    }
+
     const friendPromises = data.map(friend => {
         return new Promise((resolve, reject) => {
             const userDiv = document.createElement('div');
             userDiv.className = 'user';
+            userDiv.id = `user-${friend}`;
             userDiv.onclick = function () {
-                const json = {
-                    username: friend
-                }
+                const json = { username: friend, favorite: JSON.parse(localStorage.getItem("favorites") || "[]").includes(friend) };
                 openChat(json)
             };
 
@@ -453,66 +683,30 @@ function securelineHome(data) {
                 .then(lastMsg => {
                     setNetworkStatus('on')
                     localStorage.setItem(`${friend}-lastMsg`, lastMsg)
+
+
+                    if (lastMsg === 'Chat not created' && appending === "secureline-users") {
+                        console.log(`Stopping Spawn For User ${friend}.`)
+                        userDiv.remove();
+                        return;
+                    }
+
                     messageSpan.textContent = lastMsg;
-                    if (favorites) {
+                    if (appending !== 'secureline-users') {
+                        //continue
+                        console.log(`Continue appending ${friend}`)
+                    } else if (favorites && appending === 'secureline-users') {
+
                         const previous = JSON.parse(favorites)
                         if (previous.includes(friend)) {
-                            const blockDiv = document.createElement('div');
-                            blockDiv.className = 'block';
-                            blockDiv.onclick = function () {
-                                const json = {
-                                    username: friend,
-                                    favorite: true
-                                }
-                                openChat(json)
-                            };
-
-                            // Create the row div
-                            const rowDiv = document.createElement('div');
-                            rowDiv.className = 'row';
-
-                            // Create the icon div
-                            const iconDiv = document.createElement('div');
-                            iconDiv.className = 'icon';
-                            iconDiv.innerHTML = `<img class="slUserPFP fav-rec" src="searching_users.gif">`;
-                            loadPFPget(friend)
-                                .then(profileImage => {
-                                    iconDiv.innerHTML = `<img class="slUserPFP fav-rec" src="${profileImage}">`;
-                                }).catch(error => {
-                                    setNetworkStatus('off')
-                                    console.error(error);
-                                });
+                            console.log(`appending: ${appending} -> user ${friend} favorite -> true`)
 
 
-                            // Create the column div
-                            const columnDiv = document.createElement('div');
-                            columnDiv.className = 'column';
-
-                            // Create the paragraph and span elements
-                            const paragraph = document.createElement('p');
-                            paragraph.textContent = friend;
-
-                            const span = document.createElement('span');
-
-                            if (lastMsg.length > 15) {
-                                span.textContent = lastMsg.substring(0, 15) + '..'
-                            } else {
-                                span.textContent = lastMsg
+                            if (appending === 'secureline-users') {
+                                //$("#favorites-recommended").fadeIn("fast")
                             }
+                            return;
 
-                            // Append paragraph and span to the column div
-                            columnDiv.appendChild(paragraph);
-                            columnDiv.appendChild(span);
-
-                            // Append icon and column to the row div
-                            rowDiv.appendChild(iconDiv);
-                            rowDiv.appendChild(columnDiv);
-
-                            // Append row to the block div
-                            blockDiv.appendChild(rowDiv);
-
-                            // Append block to the target div
-                            targetDiv.appendChild(blockDiv);
                         } else {
                             return;
                         }
@@ -599,6 +793,7 @@ function securelineHome(data) {
                     resolve(); // Resolve the promise even if there is an error
                 });
 
+            console.warn(`Reached Default Append ${friend}, Container: ${appending}`)
             columnDiv.appendChild(usernameP);
             columnDiv.appendChild(messageSpan);
 
@@ -607,8 +802,7 @@ function securelineHome(data) {
 
             if (favorites) {
                 const previous = JSON.parse(favorites)
-                if (previous.includes(friend)) {
-                    return;
+                if (previous.includes(friend) && appending !== 'secureline-users') {
                     favoriteDiv.setAttribute('data-status', 'fav');
                     favoriteDiv.setAttribute('data-name', friend);
                     favoriteDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
@@ -637,6 +831,12 @@ function securelineHome(data) {
             userDiv.appendChild(columnDiv);
             userDiv.appendChild(favoriteDiv);
             container.appendChild(userDiv);
+            if (favorites) {
+                const previous = JSON.parse(favorites)
+                if (previous.includes(friend) && appending === 'secureline-users') {
+                    document.getElementById(`user-${friend}`).remove()
+                }
+            }
         });
     });
 
@@ -649,6 +849,11 @@ function securelineHome(data) {
             //const reversedBlocks = blocks.reverse();
             //container.innerHTML = '';
             //reversedBlocks.forEach(block => container.appendChild(block));
+            const targetDiv = document.getElementById('favorites-recommended');
+            if (appending === 'secureline-users') {
+                reloadFavs()
+            }
+
             console.log("All friends have been loaded and displayed.");
             const securelinePopup = document.querySelector('#secureline');
 
@@ -678,8 +883,10 @@ function securelineHome(data) {
             if (newHeight !== currentHeight) {
                 securelinePopup.style.height = newHeight + 'px';
             }
-            $("#secureline-users").fadeIn("fast")
-            $("#favorites-recommended").fadeIn("fast")
+            $(`#${appending}`).fadeIn("fast")
+            if (appending === 'secureline-users') {
+                $("#favorites-recommended").fadeIn("fast")
+            }
 
         })
         .catch(error => {

@@ -364,8 +364,8 @@
                         <path d="M4 20V19M8 20V16M12 20V12M16 20V8M20 20V4" stroke="#55565f" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    <svg style="display: none;" id="offlineStatus" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
-                        viewBox="0 0 24 24" fill="none">
+                    <svg style="display: none;" id="offlineStatus" xmlns="http://www.w3.org/2000/svg" width="25px"
+                        height="25px" viewBox="0 0 24 24" fill="none">
                         <path d="M20 4V14.3945M16 16V20M16 8V10.399M12 12V20M8 16V20M4 19V20M3 3L21 21" stroke="#55565f"
                             stroke-width="2" stroke-linecap="round" />
                     </svg>
@@ -554,7 +554,7 @@
                             fill="#dfe1e6" />
                     </svg>
                 </div>
-                <input placeholder="Where to?">
+                <input id="secureline-input" placeholder="Where to?" autocomplete="off">
             </div>
             <div class="secureline-button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
@@ -563,7 +563,28 @@
                 </svg>
             </div>
         </div>
-        <div id="favorites-recommended" class="secureline-favorites-recommend">
+        <div id="favorites-recommended" class="secureline-favorites-recommend" style="display: none;">
+
+
+            <!--Favorite-->
+            <div class="block">
+                <div class="row">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
+                                fill="#b5b5b8" />
+                        </svg>
+                    </div>
+                    <div class="column">
+                        <p>Favorites</p>
+                        <span>Loading..</span>
+                    </div>
+                </div>
+            </div>
+
+
             <!--Recommend-->
             <div class="block">
                 <div class="row">
@@ -580,100 +601,47 @@
                         </svg>
                     </div>
                     <div class="column">
-                        <p>Username</p>
-                        <span>A message here</span>
-                    </div>
-                </div>
-            </div>
-
-            <!--Favorite-->
-            <div class="block">
-                <div class="row">
-                    <div class="icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24"
-                            fill="none">
-                            <path
-                                d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
-                                fill="#b5b5b8" />
-                        </svg>
-                    </div>
-                    <div class="column">
-                        <p>Username</p>
-                        <span>A message here..</span>
-                    </div>
-                </div>
-            </div>
-            <div class="block">
-                <div class="row">
-                    <div class="icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
-                            fill="none">
-                            <path
-                                d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
-                                fill="#b5b5b8" />
-                        </svg>
-                    </div>
-                    <div class="column">
-                        <p>Username</p>
-                        <span>A message here</span>
+                        <p>Explore</p>
+                        <span>Loading..</span>
                     </div>
                 </div>
             </div>
 
 
         </div>
+
         <div id="secureline-users" class="secureline-users">
-            <div onclick="openChat()" class="user">
-                <div class="icon">
-                    <img class="slUserPFP social" src="evox-logo-apple.png">
-                </div>
-                <div class="column">
-                    <p>Username</p>
-                    <span>A message here</span>
-                </div>
-                <div onclick="add_favorite(event, this)" data-status="default" class="add-favorite">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
-                            stroke="#7d7e87" stroke-width="1.5" />
-                    </svg>
-                </div>
+            <div class="loadingContainer">
+                <h3>Loading Friends..</h3>
+                <svg version="1.1" width="30px" height="30px" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+                    style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                    <path fill="#fff"
+                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                    </path>
+                </svg>
             </div>
-            <div onclick="openChat()" class="user">
-                <div class="icon">
-                    <img class="slUserPFP social" src="evox-logo-apple.png">
-                </div>
-                <div class="column">
-                    <p>Username</p>
-                    <span>A message here</span>
-                </div>
-                <div onclick="add_favorite(event, this)" data-status="default" class="add-favorite">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
-                            stroke="#7d7e87" stroke-width="1.5" />
-                    </svg>
-                </div>
-            </div>
-            <div onclick="openChat()" class="user">
-                <div class="icon">
-                    <img class="slUserPFP social" src="evox-logo-apple.png">
-                </div>
-                <div class="column">
-                    <p>Username</p>
-                    <span>A message here</span>
-                </div>
-                <div onclick="add_favorite(event, this)" data-status="default" class="add-favorite">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
-                            stroke="#7d7e87" stroke-width="1.5" />
-                    </svg>
-                </div>
-            </div>
-        </div>
 
+        </div>
+        <div id="secureline-search-users" class="secureline-users" style="display: none;">
+            <div class="loadingContainer">
+                <h3>Searching Friends..</h3>
+                <svg version="1.1" width="30px" height="30px" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+                    style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                    <path fill="#fff"
+                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                    </path>
+                </svg>
+            </div>
+
+        </div>
     </div>
+
 
     <button onclick="hideSocial()" class="backButton" id="social-back">
         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -692,31 +660,21 @@
         <div class="grabbable"></div>
         <!--<p class="header-popup">Social</p>-->
         <div id="social-users" class="social-users">
-            <div onclick="showFriend(this)" class="user">
-                <div class="icon">
-                    <img class="slUserPFP social" src="evox-logo-apple.png">
-                </div>
-                <div class="column">
-                    <p>Username</p>
-                    <span>A message here</span>
-                </div>
-                <div class="show-user-info">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-                        <g clip-path="url(#clip0_429_11257)">
-                            <path d="M14 7L9 12" stroke="#7d7e87" stroke-width="2.5" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M9 12L14 17" stroke="#7d7e87" stroke-width="2.5" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </g>
-                        <defs>
-                            <clipPath>
-                                <rect width="24" height="24" fill="white" />
-                            </clipPath>
-                        </defs>
-                    </svg>
-                </div>
+            <div class="loadingContainer">
+                <h3>Loading Friends..</h3>
+                <svg version="1.1" width="30px" height="30px" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+                    style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                    <path fill="#fff"
+                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                    </path>
+                </svg>
             </div>
+
         </div>
+        <div style="opacity: 0;height: 60px;"></div>
 
     </div>
     <div class="bottomActionsSocial" id="bottomActionsSocial">
@@ -767,6 +725,15 @@
                     </svg></button><img id="secureline-pfp" class="slUserPFP social" src="evox-logo-apple.png">
                 <p id="secureline-username">Username</p>
                 <span class="ham">
+                    <div id="favStatInChat" onclick="add_favorite(event, this, '#fff', '25px');" data-name="???"
+                        data-status="default" class="add-favorite inChat">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
+                                stroke="#fff" stroke-width="1.5" />
+                        </svg>
+                    </div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
                         <path d="M4 18L20 18" stroke="#fff" stroke-width="2" stroke-linecap="round" />
                         <path d="M4 12L20 12" stroke="#fff" stroke-width="2" stroke-linecap="round" />
@@ -800,6 +767,68 @@
                 </a>
             </div>
         </div>
+    </div>
+    <button onclick="hideUserProfile()" class="backButton" id="userProfile-back">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+            <g clip-path="url(#clip0_429_11257)">
+                <path d="M14 7L9 12" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M9 12L14 17" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+            <defs>
+                <clipPath id="clip0_429_11257">
+                    <rect width="24" height="24" fill="white" />
+                </clipPath>
+            </defs>
+        </svg></button>
+    <div id="user-profile" class="user-profile">
+        <div class="slUser">
+            <img class="slUserPFP profile" src="tascoPoster.png">
+        </div>
+        <p>0 Friends</p>
+        <h3>Username</h3>
+        <div class="user-tags">
+            <div class="user-tag">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path d="M10 4L7 20M17 4L14 20M5 8H20M4 16H19" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                Tag1
+            </div>
+            <div class="user-tag">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path d="M10 4L7 20M17 4L14 20M5 8H20M4 16H19" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                Tag2
+            </div>
+            <div class="user-tag">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path d="M10 4L7 20M17 4L14 20M5 8H20M4 16H19" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                Tag3
+            </div>
+        </div>
+        <div class="vo-container">
+            <vo>Info</vo>
+            
+        </div>
+        <div class="evox-info">
+            <div class="infoBlock">
+                <p>Last Seen</p>
+                <span>9090</span>
+            </div>
+            <div class="infoBlock">
+                <p>Age</p>
+                <span>9090</span>
+            </div>
+            <div class="infoBlock">
+                <p>Birthdate</p>
+                <span>9090</span>
+            </div>
+            <div class="infoBlock">
+                <p>Sessions</p>
+                <span>9090</span>
+            </div>
+        </div>
+        
     </div>
     <div class="notification-container" id="notification">
         <p id="notification-title"><svg xmlns="http://www.w3.org/2000/svg" fill="#fad836" width="25px" height="25px"
@@ -888,7 +917,8 @@
 
 
         <p id="confirm__heading" class="cookie__heading">Warning!</p>
-        <p id="confirm__desc" class="cookie__desc">Logging out will result in the loss of all locally stored Evox data.
+        <p id="confirm__desc" class="cookie__desc">Logging out will result in the loss of all locally stored Evox
+            data.
             You'll need to re-enter your credentials to regain access to your account.</p>
 
 
@@ -961,7 +991,8 @@
     <div class="noScript container">
         <img width="40px" src="error.svg">
         <h2>JavaScript&nbsp;is&nbsp;disabled!</h2>
-        <p style="font-size: smaller;">Evox requires JavaScript to access and manage both local and external information
+        <p style="font-size: smaller;">Evox requires JavaScript to access and manage both local and external
+            information
             associated with your account.</p>
         <div class="parent-notification-container" style="height: auto;">
             <a href="../evox-epsilon/index.html" class="apple-button-withicon" style="max-width: 251px;"><img

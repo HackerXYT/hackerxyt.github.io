@@ -368,6 +368,11 @@ html {
   height: 50px;
 }
 
+.slUserPFP.profile {
+  width: 100px;
+  height: 100px;
+}
+
 .slUserPFP.fav-rec {
   width: 30px;
   height: 30px;
@@ -5360,6 +5365,15 @@ input:-webkit-autofill {
   transition: transform 0.1s ease-in-out;
 }
 
+.add-favorite.inChat {
+  margin-left: auto;
+  transition: transform 0.1s ease-in-out;
+  margin-right: 10px;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
 .secureline-users .user .icon {
   display: inline-flex;
   align-items: center;
@@ -5685,4 +5699,113 @@ input:-webkit-autofill {
   flex-direction: column;
   font-size: 14px;
   color: #ffffff;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  vertical-align: middle;
+}
+.user-profile {
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+}
+
+.user-profile p {
+  margin: 0;
+  margin-top: 10px;
+}
+
+.vo-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start; /* Align the <vo> to the left */
+  margin-bottom: 10px; /* Optional: space below <vo> */
+}
+
+.user-profile vo {
+  margin: 0;
+  font-size: 16px;
+  margin-top: 20px;
+  padding-left: 35px;
+}
+
+.user-profile h3 {
+  font-weight: normal;
+  font-size: 30px;
+  margin: 0;
+  margin-top: 10px;
+}
+
+.user-tags {
+  padding-left: 50px;
+  padding-right: 50px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.user-tags .user-tag {
+  background-color: #37373765;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  color: #fff;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 10px;
+  margin-right: 5px;
+}
+
+.user-tags .user-tag svg {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.evox-info {
+  overflow-x: auto;
+  padding-left: 55px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.infoBlock {
+  white-space: nowrap;
+  padding: 15px 20px;
+  background-color: #24242484;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  color: #fff;
+  border-radius: 20px;
+  margin-right: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align child elements to the top */
+  text-align: left; /* Align text to the left within the block */
+}
+.infoBlock p {
+  margin: 0;
+  font-size: 16px;
+  color: #8e8e8e;
+}
+
+.infoBlock span {
+  font-size: 18px;
+  color: #c7c7c7;
 }
