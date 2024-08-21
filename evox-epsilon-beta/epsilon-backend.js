@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
             clientVerified()
         })
         .catch(error => {
+
             ip = "offline"
             console.error("YOU ARE OFFLINE")
             console.log('Error:', error);
@@ -42,6 +43,7 @@ function loadPFPget(username) {
                             return response.text();
                         })
                         .then(profileimage => {
+                            setNetworkStatus('on')
                             if (profileimage.indexOf("base64") === -1) {
                                 profileimage = "data:image/jpeg;base64," + profileimage;
                             }
@@ -50,6 +52,7 @@ function loadPFPget(username) {
                             profilesLocal(username, profileimage);
                         })
                         .catch(error => {
+                            setNetworkStatus('off')
                             console.error("Cannot set src for", username);
                             console.error(error);
                             reject(error);
@@ -152,6 +155,145 @@ function profilesLocal(username, img) {
     };
 }
 
+//UI
+function attachUi(data) {
+    if (data === "") {
+        console.log("No Friends")
+        return;
+    }
+
+    const carousel = document.getElementById("securelineCarousel");
+    carousel.innerHTML = ''
+
+    let firstFiveValues = data.slice(0, 5);
+    firstFiveValues.forEach((friend) => {
+        const slUserDiv = document.createElement("div");
+        slUserDiv.className = "slUser";
+        if (localStorage.getItem("favorites")) {
+            const previous = JSON.parse(localStorage.getItem("favorites"))
+            if (previous.includes(friend)) {
+                slUserDiv.onclick = function () {
+                    const json = {
+                        username: friend,
+                        favorite: true
+                    }
+                    openChat(json, 'home')
+                }
+            } else {
+                slUserDiv.onclick = function () {
+                    const json = {
+                        username: friend,
+                        favorite: false
+                    }
+                    openChat(json, 'home')
+                }
+            }
+        } else {
+            slUserDiv.onclick = function () {
+                const json = {
+                    username: friend,
+                    favorite: false
+                }
+                openChat(json, 'home')
+            }
+        }
+
+        const imgElement = document.createElement("img");
+        imgElement.className = "slUserPFP";
+        imgElement.src = "searching_users.gif";
+        loadPFPget(friend)
+            .then(profileImage => {
+                imgElement.src = profileImage;
+            }).catch(error => {
+                setNetworkStatus('off')
+                console.error(error);
+            });
+        slUserDiv.appendChild(imgElement);
+        carousel.appendChild(slUserDiv);
+    })
+
+    const social = document.getElementById("socialInfo");
+    social.innerHTML = ''
+    data.sort(() => 0.5 - Math.random());
+    let random3Values = data.slice(0, 3);
+    random3Values.forEach((friend) => {
+
+
+        const socialUserDiv = document.createElement('div');
+        socialUserDiv.className = 'socialUser';
+
+        // Create the image element
+        const img = document.createElement('img');
+        img.className = 'slUserPFP social';
+        img.src = 'searching_users.gif';
+        loadPFPget(friend)
+            .then(profileImage => {
+                img.src = profileImage;
+            }).catch(error => {
+                setNetworkStatus('off')
+                console.error(error);
+            });
+
+        const p = document.createElement('p');
+        p.textContent = friend;
+
+        const span = document.createElement('span');
+
+
+        fetch(`${srv}/accounts?method=getemailbyusername&username=${friend}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(friend_email => {
+                setNetworkStatus('on')
+                fetch(`${srv}/accounts?email=${friend_email}&username=${friend}&method=last_login`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(lastLogin => {
+                        setNetworkStatus('on')
+                        localStorage.setItem(`user-${friend}-lastLogin`, lastLogin)
+                        console.log(lastLogin)
+                        if (lastLogin !== 'Unknown') {
+                            span.textContent = formatTimeDifference(lastLogin);
+                        } else {
+                            span.style.display = 'none'
+                        }
+
+                    }).catch(error => {
+                        setNetworkStatus('off')
+                        span.style.display = 'none'
+                        console.error(error);
+                    });
+
+            }).catch(error => {
+                setNetworkStatus('off')
+                const data = localStorage.getItem(`user-${friend}-lastLogin`)
+                if (data) {
+                    console.warn("Server connection failed. Trying local")
+                    console.log(lastLogin)
+                    if (lastLogin !== 'Unknown') {
+                        span.textContent = formatTimeDifference(lastLogin);
+                    } else {
+                        span.style.display = 'none'
+                    }
+                } else {
+                    console.error('Last Login Failed! Server Offline.', error);
+                }
+            });
+        socialUserDiv.appendChild(img);
+        socialUserDiv.appendChild(p);
+        socialUserDiv.appendChild(span);
+        social.appendChild(socialUserDiv)
+    })
+}
+
 //Time Management
 function formatTimeDifference(timestamp) {
     // Parse the provided timestamp into a Date object
@@ -241,216 +383,307 @@ function loadSecurelineHome() {
             return response.json();
         })
         .then(data => {
+            setNetworkStatus('on')
             localStorage.setItem("friends", JSON.stringify(data)); // Ensure data is stored as a JSON string
-            if (data.length === 0) {
-                console.log("No Friends");
-                return;
+            securelineHome(data)
+        })
+        .catch(error => {
+            setNetworkStatus('off')
+            const data = localStorage.getItem("friends")
+            if (data) {
+                console.warn("Server connection failed. Trying local")
+                securelineHome(JSON.parse(data))
+            } else {
+                console.error('loadSecurelineHome Failed!', error);
             }
+        });
+}
 
-            const container = document.getElementById('secureline-users');
-            container.innerHTML = '';
-            const targetDiv = document.getElementById('favorites-recommended');
-            targetDiv.innerHTML = ''
-            const friendPromises = data.map(friend => {
-                return new Promise((resolve, reject) => {
-                    const userDiv = document.createElement('div');
-                    userDiv.className = 'user';
-                    userDiv.onclick = function () {
-                        const json = {
-                            username: friend
-                        }
-                        openChat(json)
-                    };
+function securelineHome(data) {
+    if (data.length === 0) {
+        console.log("No Friends");
+        return;
+    }
 
-                    const iconDiv = document.createElement('div');
-                    iconDiv.className = 'icon';
-                    const img = document.createElement('img');
-                    img.className = 'slUserPFP social';
-                    img.src = "searching_users.gif";
-                    loadPFPget(friend)
-                        .then(profileImage => {
-                            img.src = profileImage;
-                            resolve(); // Resolve the promise when the image is loaded
-                        }).catch(error => {
-                            console.error(error);
-                            resolve(); // Resolve the promise even if there is an error
-                        });
-                    iconDiv.appendChild(img);
+    const container = document.getElementById('secureline-users');
+    container.innerHTML = '';
+    const targetDiv = document.getElementById('favorites-recommended');
+    targetDiv.innerHTML = ''
+    const friendPromises = data.map(friend => {
+        return new Promise((resolve, reject) => {
+            const userDiv = document.createElement('div');
+            userDiv.className = 'user';
+            userDiv.onclick = function () {
+                const json = {
+                    username: friend
+                }
+                openChat(json)
+            };
 
-                    const columnDiv = document.createElement('div');
-                    columnDiv.className = 'column';
-                    const usernameP = document.createElement('p');
-                    usernameP.textContent = friend;
-                    const messageSpan = document.createElement('span');
-                    messageSpan.textContent = 'Loading Messages..';
-                    const favorites = localStorage.getItem("favorites")
-                    fetch(`${srv}/secureline?method=lastMSG&username=${localStorage.getItem("t50-username")}&recipient_username=${friend}&password=${atob(localStorage.getItem("t50pswd"))}`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error(`HTTP error! Status: ${response.status}`);
-                            }
-                            return response.text();
-                        })
-                        .then(lastMsg => {
-                            messageSpan.textContent = lastMsg;
-                            if (favorites) {
-                                const previous = JSON.parse(favorites)
-                                if (previous.includes(friend)) {
-                                    const blockDiv = document.createElement('div');
-                                    blockDiv.className = 'block';
-                                    blockDiv.onclick = function () {
-                                        const json = {
-                                            username: friend,
-                                            favorite: true
-                                        }
-                                        openChat(json)
-                                    };
+            const iconDiv = document.createElement('div');
+            iconDiv.className = 'icon';
+            const img = document.createElement('img');
+            img.className = 'slUserPFP social';
+            img.src = "searching_users.gif";
+            loadPFPget(friend)
+                .then(profileImage => {
+                    img.src = profileImage;
+                    resolve(); // Resolve the promise when the image is loaded
+                }).catch(error => {
+                    setNetworkStatus('off')
+                    console.error(error);
+                    resolve(); // Resolve the promise even if there is an error
+                });
+            iconDiv.appendChild(img);
 
-                                    // Create the row div
-                                    const rowDiv = document.createElement('div');
-                                    rowDiv.className = 'row';
-
-                                    // Create the icon div
-                                    const iconDiv = document.createElement('div');
-                                    iconDiv.className = 'icon';
-                                    iconDiv.innerHTML = `<img class="slUserPFP fav-rec" src="searching_users.gif">`;
-                                    loadPFPget(friend)
-                                        .then(profileImage => {
-                                            iconDiv.innerHTML = `<img class="slUserPFP fav-rec" src="${profileImage}">`;
-                                        }).catch(error => {
-                                            console.error(error);
-                                        });
-
-
-                                    // Create the column div
-                                    const columnDiv = document.createElement('div');
-                                    columnDiv.className = 'column';
-
-                                    // Create the paragraph and span elements
-                                    const paragraph = document.createElement('p');
-                                    paragraph.textContent = friend;
-
-                                    const span = document.createElement('span');
-
-                                    if (lastMsg.length > 15) {
-                                        span.textContent = lastMsg.substring(0, 15) + '..'
-                                    } else {
-                                        span.textContent = lastMsg
-                                    }
-
-                                    // Append paragraph and span to the column div
-                                    columnDiv.appendChild(paragraph);
-                                    columnDiv.appendChild(span);
-
-                                    // Append icon and column to the row div
-                                    rowDiv.appendChild(iconDiv);
-                                    rowDiv.appendChild(columnDiv);
-
-                                    // Append row to the block div
-                                    blockDiv.appendChild(rowDiv);
-
-                                    // Append block to the target div
-                                    targetDiv.appendChild(blockDiv);
-                                } else {
-                                    return;
-                                }
-                            } else {
-                                return;
-                            }
-                            resolve(); // Resolve the promise when the message is loaded
-                        }).catch(error => {
-                            console.error(error);
-                            resolve(); // Resolve the promise even if there is an error
-                        });
-
-                    columnDiv.appendChild(usernameP);
-                    columnDiv.appendChild(messageSpan);
-
-                    const favoriteDiv = document.createElement('div');
-                    favoriteDiv.className = 'add-favorite';
-
+            const columnDiv = document.createElement('div');
+            columnDiv.className = 'column';
+            const usernameP = document.createElement('p');
+            usernameP.textContent = friend;
+            const messageSpan = document.createElement('span');
+            messageSpan.textContent = 'Loading Messages..';
+            const favorites = localStorage.getItem("favorites")
+            fetch(`${srv}/secureline?method=lastMSG&username=${localStorage.getItem("t50-username")}&recipient_username=${friend}&password=${atob(localStorage.getItem("t50pswd"))}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(lastMsg => {
+                    setNetworkStatus('on')
+                    localStorage.setItem(`${friend}-lastMsg`, lastMsg)
+                    messageSpan.textContent = lastMsg;
                     if (favorites) {
                         const previous = JSON.parse(favorites)
                         if (previous.includes(friend)) {
-                            return;
-                            favoriteDiv.setAttribute('data-status', 'fav');
-                            favoriteDiv.setAttribute('data-name', friend);
-                            favoriteDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-                            <path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" fill="#7d7e87"/>
-                            </svg>`
+                            const blockDiv = document.createElement('div');
+                            blockDiv.className = 'block';
+                            blockDiv.onclick = function () {
+                                const json = {
+                                    username: friend,
+                                    favorite: true
+                                }
+                                openChat(json)
+                            };
+
+                            // Create the row div
+                            const rowDiv = document.createElement('div');
+                            rowDiv.className = 'row';
+
+                            // Create the icon div
+                            const iconDiv = document.createElement('div');
+                            iconDiv.className = 'icon';
+                            iconDiv.innerHTML = `<img class="slUserPFP fav-rec" src="searching_users.gif">`;
+                            loadPFPget(friend)
+                                .then(profileImage => {
+                                    iconDiv.innerHTML = `<img class="slUserPFP fav-rec" src="${profileImage}">`;
+                                }).catch(error => {
+                                    setNetworkStatus('off')
+                                    console.error(error);
+                                });
+
+
+                            // Create the column div
+                            const columnDiv = document.createElement('div');
+                            columnDiv.className = 'column';
+
+                            // Create the paragraph and span elements
+                            const paragraph = document.createElement('p');
+                            paragraph.textContent = friend;
+
+                            const span = document.createElement('span');
+
+                            if (lastMsg.length > 15) {
+                                span.textContent = lastMsg.substring(0, 15) + '..'
+                            } else {
+                                span.textContent = lastMsg
+                            }
+
+                            // Append paragraph and span to the column div
+                            columnDiv.appendChild(paragraph);
+                            columnDiv.appendChild(span);
+
+                            // Append icon and column to the row div
+                            rowDiv.appendChild(iconDiv);
+                            rowDiv.appendChild(columnDiv);
+
+                            // Append row to the block div
+                            blockDiv.appendChild(rowDiv);
+
+                            // Append block to the target div
+                            targetDiv.appendChild(blockDiv);
                         } else {
-                            favoriteDiv.setAttribute('data-status', 'default');
-                            favoriteDiv.setAttribute('data-name', friend);
-                            favoriteDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-                        <path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" stroke="#7d7e87" stroke-width="1.5"/>
-                        </svg>`
+                            return;
                         }
                     } else {
-                        favoriteDiv.setAttribute('data-status', 'default');
-                        favoriteDiv.setAttribute('data-name', friend);
-                        favoriteDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-                        <path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" stroke="#7d7e87" stroke-width="1.5"/>
-                        </svg>`
+                        return;
                     }
+                    resolve(); // Resolve the promise when the message is loaded
+                }).catch(error => {
+                    setNetworkStatus('off')
+                    const lastMsg = localStorage.getItem(`${friend}-lastMsg`)
+                    if (data) {
+                        console.warn("Server connection failed. Trying local")
+                        messageSpan.textContent = lastMsg;
+                        if (favorites) {
+                            const previous = JSON.parse(favorites)
+                            if (previous.includes(friend)) {
+                                const blockDiv = document.createElement('div');
+                                blockDiv.className = 'block';
+                                blockDiv.onclick = function () {
+                                    const json = {
+                                        username: friend,
+                                        favorite: true
+                                    }
+                                    openChat(json)
+                                };
 
-                    favoriteDiv.onclick = function (event) {
-                        add_favorite(event, this);
-                    };
+                                // Create the row div
+                                const rowDiv = document.createElement('div');
+                                rowDiv.className = 'row';
 
-                    userDiv.appendChild(iconDiv);
-                    userDiv.appendChild(columnDiv);
-                    userDiv.appendChild(favoriteDiv);
-                    container.appendChild(userDiv);
-                });
-            });
+                                // Create the icon div
+                                const iconDiv = document.createElement('div');
+                                iconDiv.className = 'icon';
+                                iconDiv.innerHTML = `<img class="slUserPFP fav-rec" src="searching_users.gif">`;
+                                loadPFPget(friend)
+                                    .then(profileImage => {
+                                        iconDiv.innerHTML = `<img class="slUserPFP fav-rec" src="${profileImage}">`;
+                                    }).catch(error => {
+                                        setNetworkStatus('off')
+                                        console.error(error);
+                                    });
 
-            Promise.all(friendPromises)
-                .then(() => {
-                    // Code to run after all friends are fully processed
-                    //const container = document.getElementById('favorites-recommended');
-                    //const blocks = Array.from(container.getElementsByClassName('block'));
-                    // Reverse the order of these elements
-                    //const reversedBlocks = blocks.reverse();
-                    //container.innerHTML = '';
-                    //reversedBlocks.forEach(block => container.appendChild(block));
-                    console.log("All friends have been loaded and displayed.");
-                    const securelinePopup = document.querySelector('#secureline');
 
-                    // Get the viewport height
-                    const viewportHeight = window.innerHeight;
+                                // Create the column div
+                                const columnDiv = document.createElement('div');
+                                columnDiv.className = 'column';
 
-                    // Get any offsets or margins from the viewport height if applicable
-                    // Adjust these values as needed for your specific layout
-                    const topOffset = 20; // example value, adjust based on actual layout
-                    const bottomOffset = 20; // example value, adjust based on actual layout
+                                // Create the paragraph and span elements
+                                const paragraph = document.createElement('p');
+                                paragraph.textContent = friend;
 
-                    // Calculate the available height for the #secureline element
-                    const availableHeight = viewportHeight - topOffset - bottomOffset;
+                                const span = document.createElement('span');
 
-                    // Calculate the maximum height for the element (80% of the viewport height)
-                    const maxHeight = viewportHeight * 0.8;
+                                if (lastMsg.length > 15) {
+                                    span.textContent = lastMsg.substring(0, 15) + '..'
+                                } else {
+                                    span.textContent = lastMsg
+                                }
 
-                    // Calculate the content height
-                    const contentHeight = securelinePopup.scrollHeight;
+                                // Append paragraph and span to the column div
+                                columnDiv.appendChild(paragraph);
+                                columnDiv.appendChild(span);
 
-                    // Determine the new height to set
-                    const newHeight = Math.min(availableHeight, maxHeight, contentHeight);
+                                // Append icon and column to the row div
+                                rowDiv.appendChild(iconDiv);
+                                rowDiv.appendChild(columnDiv);
 
-                    // Set the height if the new height is different from the current height
-                    const currentHeight = parseFloat(window.getComputedStyle(securelinePopup).height);
+                                // Append row to the block div
+                                blockDiv.appendChild(rowDiv);
 
-                    if (newHeight !== currentHeight) {
-                        securelinePopup.style.height = newHeight + 'px';
+                                // Append block to the target div
+                                targetDiv.appendChild(blockDiv);
+                            } else {
+                                return;
+                            }
+                        } else {
+                            return;
+                        }
+                        resolve(); // Resolve the promise when the message is loaded
+                    } else {
+                        console.error('Secureline Failed!', error);
                     }
-                    $("#secureline-users").fadeIn("fast")
-                    $("#favorites-recommended").fadeIn("fast")
-
-                })
-                .catch(error => {
                     console.error(error);
+                    resolve(); // Resolve the promise even if there is an error
                 });
+
+            columnDiv.appendChild(usernameP);
+            columnDiv.appendChild(messageSpan);
+
+            const favoriteDiv = document.createElement('div');
+            favoriteDiv.className = 'add-favorite';
+
+            if (favorites) {
+                const previous = JSON.parse(favorites)
+                if (previous.includes(friend)) {
+                    return;
+                    favoriteDiv.setAttribute('data-status', 'fav');
+                    favoriteDiv.setAttribute('data-name', friend);
+                    favoriteDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+                    <path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" fill="#7d7e87"/>
+                    </svg>`
+                } else {
+                    favoriteDiv.setAttribute('data-status', 'default');
+                    favoriteDiv.setAttribute('data-name', friend);
+                    favoriteDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+                <path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" stroke="#7d7e87" stroke-width="1.5"/>
+                </svg>`
+                }
+            } else {
+                favoriteDiv.setAttribute('data-status', 'default');
+                favoriteDiv.setAttribute('data-name', friend);
+                favoriteDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+                <path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" stroke="#7d7e87" stroke-width="1.5"/>
+                </svg>`
+            }
+
+            favoriteDiv.onclick = function (event) {
+                add_favorite(event, this);
+            };
+
+            userDiv.appendChild(iconDiv);
+            userDiv.appendChild(columnDiv);
+            userDiv.appendChild(favoriteDiv);
+            container.appendChild(userDiv);
+        });
+    });
+
+    Promise.all(friendPromises)
+        .then(() => {
+            // Code to run after all friends are fully processed
+            //const container = document.getElementById('favorites-recommended');
+            //const blocks = Array.from(container.getElementsByClassName('block'));
+            // Reverse the order of these elements
+            //const reversedBlocks = blocks.reverse();
+            //container.innerHTML = '';
+            //reversedBlocks.forEach(block => container.appendChild(block));
+            console.log("All friends have been loaded and displayed.");
+            const securelinePopup = document.querySelector('#secureline');
+
+            // Get the viewport height
+            const viewportHeight = window.innerHeight;
+
+            // Get any offsets or margins from the viewport height if applicable
+            // Adjust these values as needed for your specific layout
+            const topOffset = 20; // example value, adjust based on actual layout
+            const bottomOffset = 20; // example value, adjust based on actual layout
+
+            // Calculate the available height for the #secureline element
+            const availableHeight = viewportHeight - topOffset - bottomOffset;
+
+            // Calculate the maximum height for the element (80% of the viewport height)
+            const maxHeight = viewportHeight * 0.8;
+
+            // Calculate the content height
+            const contentHeight = securelinePopup.scrollHeight;
+
+            // Determine the new height to set
+            const newHeight = Math.min(availableHeight, maxHeight, contentHeight);
+
+            // Set the height if the new height is different from the current height
+            const currentHeight = parseFloat(window.getComputedStyle(securelinePopup).height);
+
+            if (newHeight !== currentHeight) {
+                securelinePopup.style.height = newHeight + 'px';
+            }
+            $("#secureline-users").fadeIn("fast")
+            $("#favorites-recommended").fadeIn("fast")
+
         })
         .catch(error => {
+            setNetworkStatus('off')
             console.error(error);
         });
 }
@@ -489,6 +722,7 @@ function processMessage(data, element) {
     fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}&password=${atob(localStorage.getItem("t50pswd"))}`)
         .then(response => response.ok ? response.text() : Promise.reject(`HTTP error! Status: ${response.status}`))
         .then(text => {
+            setNetworkStatus('on')
             try {
                 const data = JSON.parse(text);
                 if (!data || !data.messages) throw new Error("Invalid data format");
@@ -613,6 +847,7 @@ function actionReload(whoto) {
             return response.text();
         })
         .then(messages => {
+            setNetworkStatus('on')
             try {
                 const integrityCheck = JSON.parse(messages);
             } catch (error) {
@@ -647,7 +882,7 @@ function actionReload(whoto) {
                             const url = new URL(message.content);
                             const logoUrl = `https://logo.clearbit.com/${url.hostname}`;
 
-                            let infoFile;
+                            let infoFile = 'URL';
                             let fileSrc = false;
                             const filenameWithoutExtension = message.content.split('/').pop().replace(/\.[^.]+$/, '');
                             if (message.content.includes('.pdf')) {
@@ -709,6 +944,7 @@ function actionReload(whoto) {
                                     messagesContainer.appendChild(messageElement);
                                     resolve();
                                 }).catch(error => {
+                                    setNetworkStatus('off')
                                     console.error(error);
                                     resolve(); // Resolve even if there's an error to ensure all messages are processed
                                 });
@@ -739,6 +975,7 @@ function actionReload(whoto) {
                         console.log("All messages have been processed and displayed.");
                     })
                     .catch(error => {
+                        setNetworkStatus('off')
                         console.error("Error processing messages:", error);
                     });
             } else {
@@ -746,6 +983,7 @@ function actionReload(whoto) {
             }
         })
         .catch(error => {
+            setNetworkStatus('off')
             console.error("Error fetching chat messages:", error);
         });
 }
@@ -826,33 +1064,126 @@ async function checkUrlAccessibility(url) {
 
 async function getFileSize(url) {
     try {
-      const response = await fetch(url);
-  
-      // Check if the request was successful
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      // Get the Content-Length header which provides the file size in bytes
-      const contentLength = response.headers.get('Content-Length');
-  
-      if (!contentLength) {
-        throw new Error('Content-Length header is missing');
-      }
-  
-      // Convert contentLength to a number
-      const fileSizeInBytes = parseInt(contentLength, 10);
-  
-      // Convert bytes to megabytes and gigabytes
-      const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
-      const fileSizeInGB = fileSizeInBytes / (1024 * 1024 * 1024);
-  
-      console.log(`File Size: ${fileSizeInBytes} bytes`);
-      console.log(`File Size: ${fileSizeInMB.toFixed(2)} MB`);
-      console.log(`File Size: ${fileSizeInGB.toFixed(6)} GB`);
-  
-      return fileSizeInMB.toFixed(2);
+        const response = await fetch(url);
+
+        // Check if the request was successful
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Get the Content-Length header which provides the file size in bytes
+        const contentLength = response.headers.get('Content-Length');
+
+        if (!contentLength) {
+            throw new Error('Content-Length header is missing');
+        }
+
+        // Convert contentLength to a number
+        const fileSizeInBytes = parseInt(contentLength, 10);
+
+        // Convert bytes to megabytes and gigabytes
+        const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+        const fileSizeInGB = fileSizeInBytes / (1024 * 1024 * 1024);
+
+        console.log(`File Size: ${fileSizeInBytes} bytes`);
+        console.log(`File Size: ${fileSizeInMB.toFixed(2)} MB`);
+        console.log(`File Size: ${fileSizeInGB.toFixed(6)} GB`);
+
+        return fileSizeInMB.toFixed(2);
     } catch (error) {
-      console.error('Error:', error);
+        console.error('Error:', error);
     }
-  }
+}
+
+
+//Social
+function loadFriendsSocial() {
+
+    fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            setNetworkStatus('on')
+            localStorage.setItem("friends", JSON.stringify(data)); // Ensure data is stored as a JSON string
+            loadSocial(data)
+        })
+        .catch(error => {
+            setNetworkStatus('off')
+            const data = localStorage.getItem("friends")
+            if (data) {
+                console.warn("Server connection failed. Trying local")
+                loadSocial(JSON.parse(data))
+            } else {
+                console.error('loadFriendsSocial Failed!', error);
+            }
+        });
+    // Create the main user div
+
+}
+
+function loadSocial(data) {
+    const socialUsersContainer = document.getElementById('social-users');
+    socialUsersContainer.innerHTML = ''
+    if (data.length === 0) {
+        console.log("No Friends");
+        return;
+    }
+
+    data.forEach(friend => {
+        const userDiv = document.createElement('div');
+        userDiv.className = 'user';
+        userDiv.onclick = function () {
+            showFriend(this)
+        }
+        const iconDiv = document.createElement('div');
+        iconDiv.className = 'icon';
+
+        const img = document.createElement('img');
+        img.className = 'slUserPFP social';
+        img.src = 'searching_users.gif';
+        loadPFPget(friend)
+            .then(profileImage => {
+                img.src = profileImage;;
+            }).catch(error => {
+                setNetworkStatus('off')
+                console.error(error);
+            });
+        iconDiv.appendChild(img);
+
+        // Create the column div with username and message
+        const columnDiv = document.createElement('div');
+        columnDiv.className = 'column';
+
+        const usernameP = document.createElement('p');
+        usernameP.textContent = friend;
+        columnDiv.appendChild(usernameP);
+
+
+        // Create the show-user-info div with SVG
+        const showUserInfoDiv = document.createElement('div');
+        showUserInfoDiv.className = 'show-user-info';
+        showUserInfoDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+                <g clip-path="url(#clip0_429_11257)">
+                <path d="M14 7L9 12" stroke="#7d7e87" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 12L14 17" stroke="#7d7e87" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <defs>
+                <clipPath>
+                <rect width="24" height="24" fill="white"/>
+                </clipPath>
+                </defs>
+                </svg>`
+
+        // Append all created elements to the userDiv
+        userDiv.appendChild(iconDiv);
+        userDiv.appendChild(columnDiv);
+        userDiv.appendChild(showUserInfoDiv);
+
+        // Append the userDiv to the target container
+        socialUsersContainer.appendChild(userDiv);
+    })
+}

@@ -5,6 +5,16 @@ if (localStorage.getItem("currentSrv")) {
     srv = "https://data.evoxs.xyz"
 }
 
+function setNetworkStatus(what) {
+    if (what === "on") {
+        $("#offlineStatus").fadeOut("fast")
+        $("#onlineStatus").fadeIn("fast")
+    } else if (what === "off") {
+        $("#onlineStatus").fadeOut("fast")
+        $("#offlineStatus").fadeIn("fast")
+    }
+}
+
 function warn(message) {
     const oldhtml = document.getElementById("notification-span").innerHTML
     var notification = document.getElementById('notification');
@@ -86,6 +96,7 @@ function clientVerified() {
                     return response.text();
                 })
                 .then(data => {
+                    setNetworkStatus('on')
                     if (data.includes("Credentials Correct")) {
                         verificationComplete()
                     } else if (data.includes("IP Not Verified")) {
@@ -98,6 +109,7 @@ function clientVerified() {
                                 return response.text();
                             })
                             .then(data => {
+                                setNetworkStatus('on')
                                 if (data === "Complete") {
                                     verificationComplete()
                                 } else if (data === "Exists") {
@@ -106,6 +118,7 @@ function clientVerified() {
                                     notice(`Authorization IP Ops Failed`)
                                 }
                             }).catch(error => {
+                                setNetworkStatus('off')
                                 console.error('Fetch error:', error);
                             });
                     } else {
@@ -116,7 +129,12 @@ function clientVerified() {
                         clientVerified()
                     }
                 }).catch(error => {
-                    console.error(error)
+                    setNetworkStatus('off')
+                    warn("Server Connection Failed. Running Offline")
+                    verificationComplete()
+
+
+                    console.error('Server Connection Failed!', error)
                 })
         } else {
             console.log("New User.")
@@ -129,6 +147,7 @@ function clientVerified() {
                     return response.text();
                 })
                 .then(data => {
+                    setNetworkStatus('on')
                     //data is not used, a simple response is fine
                     console.log('%c' + "Server Online!", `color: green; font-size: 16px; font-weight: normal;`)
                     $("#bggradient").fadeIn("slow")
@@ -144,6 +163,7 @@ function clientVerified() {
                     })
                 })
                 .catch(error => {
+                    setNetworkStatus('off')
                     notice("Oh Snap! Evox Is Offline.<br>Please Retry Later.")
 
                     console.error('Fetch error:', error);
@@ -323,6 +343,7 @@ voxEmailInput.addEventListener('blur', function () {
                 return response.text();
             })
             .then(matchedUser => {
+                setNetworkStatus('on')
                 if (matchedUser !== "Account Not Found" && !matchedUser.includes("Something Went Wrong")) {
                     document.getElementById("emailIcon").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
                               viewBox="0 0 24 24" fill="none">
@@ -366,6 +387,7 @@ voxEmailInput.addEventListener('blur', function () {
                 }
 
             }).catch(error => {
+                setNetworkStatus('off')
                 console.error(error);
             });
     }, 400)
@@ -396,6 +418,7 @@ function startLogin() {
                 return response.text();
             })
             .then(data => {
+                setNetworkStatus('on')
                 document.getElementById("beginLoginBtn").innerHTML = `Login`
 
                 var wind = new URL(window.location.href);
@@ -460,6 +483,7 @@ function startLogin() {
                                 return response.text();
                             })
                             .then(data => {
+                                setNetworkStatus('on')
                                 if (data === "Complete") {
                                     //window.close()
                                     window.location.href = "ext-ready.html"
@@ -467,6 +491,7 @@ function startLogin() {
                                 return;
 
                             }).catch(error => {
+                                setNetworkStatus('off')
                                 console.error('Fetch error:', error);
                             });
                         //send to dc that id matches to acc email
@@ -527,6 +552,7 @@ function startLogin() {
                 }
             })
             .catch(error => {
+                setNetworkStatus('off')
                 document.getElementById("beginLoginBtn").innerHTML = `Login Failed`
                 console.error('Fetch error:', error);
             });
@@ -588,6 +614,7 @@ function on2FAComplete() {
             return response.text();
         })
         .then(data => {
+            setNetworkStatus('on')
             if (data === "Complete") {
                 successLogin.play()
                 var wind = new URL(window.location.href);
@@ -601,6 +628,7 @@ function on2FAComplete() {
                             return response.text();
                         })
                         .then(data => {
+                            setNetworkStatus('on')
                             if (data === "Complete") {
                                 //window.close()
                                 window.location.href = "ext-ready.html"
@@ -608,6 +636,7 @@ function on2FAComplete() {
                             return;
 
                         }).catch(error => {
+                            setNetworkStatus('off')
                             console.error('Fetch error:', error);
                         });
                     //send to dc that id matches to acc email
@@ -686,6 +715,7 @@ function on2FAComplete() {
             }
             //IF IP EXISTS THEN DONT REQUIRE 2FA, ELSE REQUIRE 2FA
         }).catch(error => {
+            setNetworkStatus('off')
             console.error('Fetch error:', error);
         });
 }
@@ -749,127 +779,20 @@ function verificationComplete() {
             return response.json();
         })
         .then(data => {
-            localStorage.setItem("friends", data)
-            if (data === "") {
-                console.log("No Friends")
-                return;
-            }
-
-            const carousel = document.getElementById("securelineCarousel");
-            carousel.innerHTML = ''
-
-            let firstFiveValues = data.slice(0, 5);
-            firstFiveValues.forEach((friend) => {
-                const slUserDiv = document.createElement("div");
-                slUserDiv.className = "slUser";
-                if (localStorage.getItem("favorites")) {
-                    const previous = JSON.parse(localStorage.getItem("favorites"))
-                    if (previous.includes(friend)) {
-                        slUserDiv.onclick = function () {
-                            const json = {
-                                username: friend,
-                                favorite: true
-                            }
-                            openChat(json, 'home')
-                        }
-                    } else {
-                        slUserDiv.onclick = function () {
-                            const json = {
-                                username: friend,
-                                favorite: false
-                            }
-                            openChat(json, 'home')
-                        }
-                    }
-                } else {
-                    slUserDiv.onclick = function () {
-                        const json = {
-                            username: friend,
-                            favorite: false
-                        }
-                        openChat(json, 'home')
-                    }
-                }
-
-                const imgElement = document.createElement("img");
-                imgElement.className = "slUserPFP";
-                imgElement.src = "searching_users.gif";
-                loadPFPget(friend)
-                    .then(profileImage => {
-                        imgElement.src = profileImage;
-                    }).catch(error => {
-                        console.error(error);
-                    });
-                slUserDiv.appendChild(imgElement);
-                carousel.appendChild(slUserDiv);
-            })
-
-            const social = document.getElementById("socialInfo");
-            social.innerHTML = ''
-            data.sort(() => 0.5 - Math.random());
-            let random3Values = data.slice(0, 3);
-            random3Values.forEach((friend) => {
-
-
-                const socialUserDiv = document.createElement('div');
-                socialUserDiv.className = 'socialUser';
-
-                // Create the image element
-                const img = document.createElement('img');
-                img.className = 'slUserPFP social';
-                img.src = 'searching_users.gif';
-                loadPFPget(friend)
-                    .then(profileImage => {
-                        img.src = profileImage;
-                    }).catch(error => {
-                        console.error(error);
-                    });
-
-                const p = document.createElement('p');
-                p.textContent = friend;
-
-                const span = document.createElement('span');
-
-
-                fetch(`${srv}/accounts?method=getemailbyusername&username=${friend}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        return response.text();
-                    })
-                    .then(friend_email => {
-                        fetch(`${srv}/accounts?email=${friend_email}&username=${friend}&method=last_login`)
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error(`HTTP error! Status: ${response.status}`);
-                                }
-                                return response.text();
-                            })
-                            .then(lastLogin => {
-                                console.log(lastLogin)
-                                if (lastLogin !== 'Unknown') {
-                                    span.textContent = formatTimeDifference(lastLogin);
-                                } else {
-                                    span.style.display = 'none'
-                                }
-
-                            }).catch(error => {
-                                span.style.display = 'none'
-                                console.error(error);
-                            });
-
-                    }).catch(error => {
-                        console.error(error);
-                    });
-                socialUserDiv.appendChild(img);
-                socialUserDiv.appendChild(p);
-                socialUserDiv.appendChild(span);
-                social.appendChild(socialUserDiv)
-            })
+            setNetworkStatus('on')
+            localStorage.setItem("friends", JSON.stringify(data))
+            attachUi(data)
         })
         .catch(error => {
-            console.error(error);
+            setNetworkStatus('off')
+            const data = localStorage.getItem("friends")
+            if (data) {
+                console.warn("Server connection failed. Trying local")
+                attachUi(JSON.parse(data))
+            } else {
+                console.error('Carousel Failed!', error);
+            }
+
         });
     $("#loading-text").fadeOut("fast")
     document.getElementById("gateway").style.display = 'flex'
@@ -885,7 +808,10 @@ function hideChats() {
     removeScrollListener(securelinePopup)
     securelinePopup.classList.remove("active")
 
-    $("#secureline-back").fadeOut("fast")
+    document.getElementById("secureline-back").style.opacity = '0'
+    setTimeout(function () {
+        document.getElementById("secureline-back").style.display = 'none'
+    }, 200)
     $("#container").fadeIn("fast")
     setTimeout(function () {
         securelinePopup.scrollTop = 0;
@@ -900,7 +826,10 @@ function showChats() {
     loadSecurelineHome()
     const popup = document.getElementById("secureline")
     popup.classList.add("active")
-    $("#secureline-back").fadeIn("fast")
+    document.getElementById("secureline-back").style.display = 'flex'
+    setTimeout(function () {
+        document.getElementById("secureline-back").style.opacity = '1'
+    }, 200)
     $("#container").fadeOut("fast")
 }
 
@@ -964,23 +893,59 @@ function openChat(data, location) {
             securelinePopup.scrollTop = 0;
             securelinePopup.style.height = "60%"
         }, 500)
-        $("#secureline-back").fadeOut("fast")
+        document.getElementById("secureline-back").style.opacity = '0'
+        setTimeout(function () {
+            document.getElementById("secureline-back").style.display = 'none'
+        }, 200)
+
         $("#messenger").fadeIn("fast")
 
     }
     document.getElementById("secureline-username").innerText = username
     actionReload(username)
     console.warn("Running Secureline For", username)
-    $("#goBackMessenger").fadeIn("fast")
+    document.getElementById("goBackMessenger").style.display = 'flex'
+    setTimeout(function () {
+        document.getElementById("goBackMessenger").style.opacity = '1'
+    }, 200)
 
     loadPFPget(username)
         .then(profileImage => {
             document.getElementById("secureline-pfp").src = profileImage;
         }).catch(error => {
+            setNetworkStatus('off')
             console.error(error);
         });
+}
 
+function showSocial() {
+    const socialPopup = document.getElementById("social")
+    socialPopup.classList.add("active")
 
+    $("#container").fadeOut("fast")
+    document.getElementById("social-back").style.display = 'flex'
+    setTimeout(function () {
+        document.getElementById("social-back").style.opacity = '1'
+    }, 200)
+    loadFriendsSocial()
+    setTimeout(function () {
+        document.getElementById("bottomActionsSocial").classList.add("visible")
+    }, 200)
+}
+
+function hideSocial() {
+    const socialPopup = document.getElementById("social")
+    socialPopup.classList.remove("active")
+    document.getElementById("social-back").style.opacity = '0'
+    setTimeout(function () {
+        document.getElementById("social-back").style.display = 'none'
+    }, 200)
+    $("#container").fadeIn("fast")
+    document.getElementById("bottomActionsSocial").classList.remove("visible")
+    setTimeout(function () {
+        socialPopup.scrollTop = 0;
+        socialPopup.style.height = "60%"
+    }, 500)
 }
 
 function setFullHeight() {
@@ -992,13 +957,23 @@ window.addEventListener('load', setFullHeight);
 window.addEventListener('resize', setFullHeight);
 
 function goBackMessenger() {
-    $("#goBackMessenger").fadeOut("fast")
-    $("#messenger").fadeOut("fast")
+    const popup = document.getElementById("secureline")
+    popup.classList.add("active")
+    document.getElementById("goBackMessenger").classList.remove("visible")
+
+    document.getElementById("goBackMessenger").style.opacity = '0'
+    setTimeout(function () {
+        document.getElementById("goBackMessenger").style.display = 'none'
+    }, 200)
+    $("#messenger").fadeOut('fast')
+
     const securelinePopup = document.querySelector('#secureline');
     addScrollListener(securelinePopup)
 
     loadSecurelineHome()
-    const popup = document.getElementById("secureline")
-    popup.classList.add("active")
-    $("#secureline-back").fadeIn("fast")
+
+    document.getElementById("secureline-back").style.display = 'flex'
+    setTimeout(function () {
+        document.getElementById("secureline-back").style.opacity = '1'
+    }, 200)
 }

@@ -84,6 +84,7 @@ html {
   0% {
     background: transparent;
   }
+
   100% {
     background: linear-gradient(to bottom, rgb(0, 0, 0), rgba(0, 0, 0, 0.793));
   }
@@ -157,9 +158,11 @@ html {
   flex-direction: column;
   margin-top: 70px;
 }
+
 .card {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
+
 .gatewayExplore .card {
   margin-bottom: 10px;
   padding: 15px;
@@ -2349,17 +2352,23 @@ a {
 .message,
 .message-me {
   display: flex;
-  align-items: center; /* Align items to the center vertically */
-  margin: 10px 0; /* Combined top and bottom margins */
+  align-items: center;
+  /* Align items to the center vertically */
+  margin: 10px 0;
+  /* Combined top and bottom margins */
   background-color: #191919;
   color: #fff;
   padding: 15px 20px;
   font-size: 16px;
-  border-radius: 20px 20px 0 0; /* Combined border-radius */
+  border-radius: 20px 20px 0 0;
+  /* Combined border-radius */
   outline: none;
-  overflow-wrap: break-word; /* Simplified word wrapping */
-  white-space: pre-wrap; /* Preserve white spaces and wrap text */
-  word-break: break-word; /* Break long words to prevent overflow */
+  overflow-wrap: break-word;
+  /* Simplified word wrapping */
+  white-space: pre-wrap;
+  /* Preserve white spaces and wrap text */
+  word-break: break-word;
+  /* Break long words to prevent overflow */
 }
 
 .message .urlImg,
@@ -2368,7 +2377,8 @@ a {
   height: 35px;
   display: inline-flex;
   align-items: center;
-  justify-content: center; /* Center content inside */
+  justify-content: center;
+  /* Center content inside */
   margin-right: 10px;
   vertical-align: middle;
   border-radius: 10px;
@@ -2397,7 +2407,8 @@ a {
   padding: 5px;
   display: inline-flex;
   align-items: center;
-  justify-content: center; /* Center content inside */
+  justify-content: center;
+  /* Center content inside */
   vertical-align: middle;
 }
 
@@ -2413,7 +2424,8 @@ a {
   max-width: 50%;
   margin-top: 0;
   margin-left: auto;
-  border-radius: 20px 20px 2px 20px; /* Adjust border-radius as needed */
+  border-radius: 20px 20px 2px 20px;
+  /* Adjust border-radius as needed */
   margin-right: 20px;
 }
 
@@ -2421,7 +2433,8 @@ a {
   max-width: 50%;
   margin-right: auto;
   margin-left: 20px;
-  border-radius: 20px 20px 20px 2px; /* Adjust border-radius as needed */
+  border-radius: 20px 20px 20px 2px;
+  /* Adjust border-radius as needed */
 }
 
 
@@ -5142,7 +5155,7 @@ input:-webkit-autofill {
 .backButton {
   position: fixed;
   top: 20px;
-  left: 20px; 
+  left: 20px;
   background-color: rgba(60, 62, 70, 0.614);
   width: 40px;
   height: 40px;
@@ -5155,7 +5168,19 @@ input:-webkit-autofill {
   z-index: 1001;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+  flex-direction: column;
+  /* Not needed if align-items and justify-content are enough */
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
   display: none;
+  /* Start hidden but still in document flow */
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+}
+
+.backButton.visible {
+  opacity: 1;
+  visibility: visible;
 }
 
 .backButtonLegacy {
@@ -5172,7 +5197,16 @@ input:-webkit-autofill {
   z-index: 1001;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+  opacity: 0;
+  display: none;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
 }
+
+.backButtonLegacy.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
 
 .securelinePopup .grabbable {
   position: sticky;
@@ -5382,7 +5416,7 @@ input:-webkit-autofill {
   backdrop-filter: blur(25px);
   /* Adjust the blur amount as needed */
   -webkit-backdrop-filter: blur(25px);
-  
+
 }
 
 .secureline-messenger .topBar .icon p {
@@ -5395,11 +5429,13 @@ input:-webkit-autofill {
   display: inline-flex;
   align-items: center;
   vertical-align: middle;
-  display: flex; /* Make the icon container a flex container */
-  flex: 1; /* Allow the .icon container to grow and take available space */
+  display: flex;
+  /* Make the icon container a flex container */
+  flex: 1;
+  /* Allow the .icon container to grow and take available space */
 }
 
-.secureline-messenger .topBar .icon .backButtonLegacy  {
+.secureline-messenger .topBar .icon .backButtonLegacy {
   width: 35px;
   height: 35px;
   margin-right: 10px;
@@ -5408,7 +5444,8 @@ input:-webkit-autofill {
 .secureline-messenger .topBar .icon .ham {
   display: inline-flex;
   align-items: center;
-  margin-left: auto; /* Pushes this element to the far right */
+  margin-left: auto;
+  /* Pushes this element to the far right */
   box-sizing: border-box;
   vertical-align: middle;
 }
@@ -5423,13 +5460,16 @@ input:-webkit-autofill {
   width: 100%;
 }
 
-.secureline-messages > *:first-child {
-  margin-top: 90px; /* Adjust as needed */
+.secureline-messages>*:first-child {
+  margin-top: 90px;
+  /* Adjust as needed */
 }
 
-.secureline-messages > *:last-child {
-  margin-bottom: 100px; /* Adjust as needed */
+.secureline-messages>*:last-child {
+  margin-bottom: 100px;
+  /* Adjust as needed */
 }
+
 .bottomActions {
   padding-left: 20px;
   padding-right: 20px;
@@ -5465,4 +5505,184 @@ input:-webkit-autofill {
 .secureline-placeholder {
   opacity: 0;
   height: 90px;
+}
+
+
+.socialPopup {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  display: block;
+  padding: 0 30px 30px 30px;
+  align-items: center;
+  scroll-behavior: smooth;
+  touch-action: auto;
+  justify-content: center;
+  background: #0c0d16d9;
+  z-index: 1000;
+  box-sizing: border-box;
+  opacity: 1;
+  visibility: hidden;
+  transform: translateY(100%);
+  transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 0.5s ease-in-out;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  overflow-x: hidden;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+
+.socialPopup.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateY(0);
+  /* Slide the popup into view */
+}
+
+
+.socialPopup .grabbable {
+  position: sticky;
+  background-color: #3c3e46;
+  height: 5px;
+  width: 15%;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50px;
+  transition: background-color 1s ease-out;
+  z-index: 999;
+}
+
+.socialPopup .grabbable::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  /* Extend clickable area upwards */
+  left: -30px;
+  /* Extend clickable area to the left */
+  right: -30px;
+  /* Extend clickable area to the right */
+  bottom: -30px;
+  /* Extend clickable area downwards */
+  background: transparent;
+  /* Ensure it's transparent */
+  cursor: pointer;
+  /* Make sure the cursor changes */
+}
+
+.socialPopup .grabbable:active {
+  cursor: grabbing;
+}
+
+.header-popup {
+  text-align: center;
+  margin-top: 20px;
+  color: #3c3e46;
+}
+
+.social-users {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.social-users .user {
+  background-color: #33333331;
+  padding: 20px 15px;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-bottom: 10px;
+  border-radius: 25px;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+.social-users .user .add-favorite {
+  margin-left: auto;
+  transition: transform 0.1s ease-in-out;
+}
+
+.social-users .user .icon {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.social-users .user .column {
+  display: flex;
+  flex-direction: column;
+}
+
+.social-users .user .column p {
+  font-size: 19px;
+  color: #d1d3d9;
+  font-family: "SF";
+  margin: 0;
+}
+
+.show-user-info {
+  margin-left: auto;
+  transform: rotate(180deg);
+  transition: transform 0.1s ease-in-out;
+}
+
+.bottomActionsSocial {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  height: 90px;
+  display: flex;
+  flex-shrink: 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1000;
+  background: transparent;
+  background-color: #0c0d16;
+  justify-content: space-around;
+  flex-direction: row;
+  opacity: 0;
+  visibility: hidden;
+  /* Start hidden but still in document flow */
+  transition: opacity 0.2s ease-in-out, visibility 0.8s ease-in-out, background-color 0.2s ease-in-out, backdrop-filter 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+}
+
+/* Add a class to make it visible */
+.bottomActionsSocial.visible {
+  opacity: 1;
+  visibility: visible;
+  /* Make the element visible */
+}
+
+.bottomActionsSocial .menuItem {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #9d9fa6;
+}
+
+.bottomActionsSocial .menuItem.active {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #ffffff;
 }
