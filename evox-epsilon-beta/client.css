@@ -152,8 +152,8 @@ html {
 
 .gatewayExplore {
 
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 0;
+  padding-right: 0;
   position: relative;
   flex-direction: column;
   margin-top: 70px;
