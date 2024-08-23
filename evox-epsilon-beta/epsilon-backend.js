@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .catch(error => {
 
-            ip = "offline"
-            console.error("YOU ARE OFFLINE")
+            ip = localStorage.getItem("IPV4") || "offline"
+            console.error("JSONIP IS OFFLINE")
             console.log('Error:', error);
         });
 });
@@ -1437,6 +1437,7 @@ function loadSocial(data) {
         // Create the show-user-info div with SVG
         const showUserInfoDiv = document.createElement('div');
         showUserInfoDiv.className = 'show-user-info';
+        showUserInfoDiv.id = `showUserInfoDiv-${friend}`
         showUserInfoDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
                 <g clip-path="url(#clip0_429_11257)">
                 <path d="M14 7L9 12" stroke="#7d7e87" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>

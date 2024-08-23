@@ -782,16 +782,25 @@
             </defs>
         </svg></button>
     <div id="user-profile" class="user-profile">
+        <p id="loadingIndicatorProfile" class="loadingIndicatorProfile">Canvas Loading <svg version="1.1" width="20px" height="20px" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+            style="enable-background:new 0 0 50 50;" xml:space="preserve">
+            <path fill="#fff"
+                d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                    to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+            </path>
+        </svg></p>
         <video autoplay muted loop playsinline id="user-video-forDisplay"
-            style="opacity:0.5;position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
-            <source src="" id="user-video" type="video/mp4">
+            style="opacity:0.5;position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;overflow: hidden;">
+            <source src="5512609-hd_1080_1920_25fps.mp4" id="user-video" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         <div class="slUser">
-            <img class="slUserPFP profile" src="tascoPoster.png">
+            <img id="user-profile-picture" class="slUserPFP profile" src="tascoPoster.png">
         </div>
         <p class="friendsCounterUser" id="friendsCount">0 <span>Friends</span></p>
-        <h3>Username</h3>
+        <h3 id="user-profile-username">Username</h3>
         <div class="user-tags">
             <div class="user-tag">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
@@ -822,21 +831,24 @@
         <div class="evox-info">
             <div class="infoBlock">
                 <p>Last Seen</p>
-                <span id="user-lastSeen">9090</span>
+                <span id="user-lastSeen">Loading</span>
             </div>
-            <div class="infoBlock">
+            <div id="user-age-block" class="infoBlock">
                 <p>Age</p>
-                <span id="user-age">9090</span>
+                <span id="user-age">Loading</span>
             </div>
-            <div class="infoBlock">
+            <div id="user-birth-block" class="infoBlock">
                 <p>Birthdate</p>
-                <span id="user-birthdate">9090</span>
+                <span id="user-birthdate">Loading</span>
             </div>
             <div class="infoBlock">
-                <p>Sessions</p>
-                <span>9090</span>
+                <p>Cryptox</p>
+                <span id="user-cryptox">No</span>
             </div>
-            <div class="placeHolder"></div>
+            <div class="infoBlock" style="margin-right: 100px">
+                <p>Verified</p>
+                <span>Yes</span>
+            </div>
         </div>
 
     </div>

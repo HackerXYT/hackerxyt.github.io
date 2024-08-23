@@ -1059,22 +1059,174 @@ function showFriend(element) {
         document.getElementById("userProfile-back").style.opacity = '1'
     }, 200)
     const pElement = element.querySelector('.column p');
-    const pText = pElement.textContent;
-    console.log('Launching:', pText);
+    const friend = pElement.textContent;
+    const defaultArrow = document.getElementById(`showUserInfoDiv-${friend}`).innerHTML
+    document.getElementById(`showUserInfoDiv-${friend}`).innerHTML = `<svg version="1.1" width="25px" height="25px" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+            style="enable-background:new 0 0 50 50;" xml:space="preserve">
+            <path fill="#fff"
+                d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                    to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+            </path>
+        </svg>`
+    console.log("Default arrow", defaultArrow)
+    console.log('Launching:', friend);//
+    document.getElementById("user-profile-picture").src = 'searching_users.gif'
+    loadPFPget(friend)
+        .then(profileImage => {
+            document.getElementById("user-profile-picture").src = profileImage
+        }).catch(error => {
+            setNetworkStatus('off')
+            console.error(error);
+        });
+    document.getElementById("user-profile-username").innerText = friend
+    fetch(`${srv}/cryptox?method=isCryptoxed&username=${friend}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(isCryptoxed => {
+            if (isCryptoxed === 'Enabled') {
+                document.getElementById("user-cryptox").innerText = 'Enabled'
+            } else if (isCryptoxed === 'Disabled') {
+                document.getElementById("user-cryptox").innerText = 'Disabled'
+            } else {
+                document.getElementById("user-cryptox").innerText = '🤯'
+            }
+        }).catch(error => {
+            console.log('userFriends failed to load:', error)
+        })
+    fetch(`${srv}/social?username=${friend}&todo=friends`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(userFriends => {
+            if (userFriends !== '') {
+                const userJsonFriends = JSON.parse(userFriends)
+                console.log(`${friend} friends length: ${userJsonFriends.length}`)
+                if (userJsonFriends.length === 1) {
+                    document.getElementById("friendsCount").innerHTML = `${userJsonFriends.length} <span>Friend</span>`
+                } else {
+                    document.getElementById("friendsCount").innerHTML = `${userJsonFriends.length} <span>Friends</span>`
+                }
+
+            } else {
+                document.getElementById("friendsCount").innerHTML = `0 <span>Friends</span>`
+            }
+
+        }).catch(error => {
+            console.log('userFriends failed to load:', error)
+        })
+    fetch(`${srv}/accounts?method=getemailbyusername&username=${friend}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(friend_email => {
+            fetch(`${srv}/accounts?email=${friend_email}&username=${friend}&method=last_login`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(last_login => {
+                    if (last_login !== 'Unknown') {
+                        document.getElementById("user-lastSeen").innerText = formatTimeDifference(last_login)
+                    } else {
+                        document.getElementById("user-lastSeen").innerText = 'Unknown'
+                    }
+
+                }).catch(error => {
+                    console.log("User Load Last Login Failed [3]:", error)
+                })
+            fetch(`${srv}/accounts?email=${friend_email}&username=${friend}&birth=get`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(birthdateString => {
+                    if (birthdateString) {
+                        document.getElementById("user-age-block").style.display = ''
+                        document.getElementById("user-birth-block").style.display = ''
+                        let parts = birthdateString.split('/');
+                        let day = parseInt(parts[0]);
+                        let month = parseInt(parts[1]) - 1; // Months are zero-based in JavaScript
+                        let year = parseInt(parts[2]);
+                        let birthdate = new Date(year, month, day);
+                        let today = new Date();
+                        let age = today.getFullYear() - birthdate.getFullYear();
+                        let monthDiff = today.getMonth() - birthdate.getMonth();
+                        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthdate.getDate())) {
+                            age--;
+                        }
+
+                        console.log("Age: " + age);
+                        document.getElementById("user-age").innerText = age
+                        document.getElementById("user-birthdate").innerText = birthdateString
+                    } else {
+                        console.log("No age registered")
+                        document.getElementById("user-age-block").style.display = 'none'
+                        document.getElementById("user-birth-block").style.display = 'none'
+                    }
+                    document.getElementById("user-profile").classList.add('active')
+                    const socialPopup = document.getElementById("social")
+                    socialPopup.classList.remove("active")
+                    document.getElementById("social-back").style.opacity = '0'
+                    setTimeout(function () {
+                        document.getElementById("social-back").style.display = 'none'
+                    }, 200)
+                    document.getElementById("bottomActionsSocial").classList.remove("visible")
+                    $("#bggradient").fadeOut("fast")
+                    setTimeout(() => {
+                        document.getElementById(`showUserInfoDiv-${friend}`).innerHTML = defaultArrow
+                    }, 250);
+
+                }).catch(error => {
+                    console.log("User Load Failed [2]:", error)
+                })
+        }).catch(error => {
+            console.log("User load failed [1]:", error)
+        })
+
+    document.getElementById("loadingIndicatorProfile").style.display = ''
+    document.getElementById("user-video-forDisplay").src = ''
+    document.getElementById("user-video-forDisplay").style.display = 'none'
+    fetch(`${srv}/profiles?name=${friend}&authorize=cover`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(coverIMG => {
+            if (coverIMG !== "None") {
+
+                document.getElementById("user-video-forDisplay").style.display = ''
+                document.getElementById("user-video-forDisplay").src = coverIMG
+                document.getElementById("loadingIndicatorProfile").style.display = 'none'
+            } else {
+                document.getElementById("user-video-forDisplay").src = ''
+                document.getElementById("user-video-forDisplay").style.display = 'none'
+                document.getElementById("loadingIndicatorProfile").style.display = 'none'
+            }
+
+        }).catch(error => {
+            console.error(error);
+        })
 
 
-    
 
-
-    document.getElementById("user-profile").style.display = 'flex'
-    const socialPopup = document.getElementById("social")
-    socialPopup.classList.remove("active")
-    document.getElementById("social-back").style.opacity = '0'
-    setTimeout(function () {
-        document.getElementById("social-back").style.display = 'none'
-    }, 200)
-    document.getElementById("bottomActionsSocial").classList.remove("visible")
-    $("#bggradient").fadeOut("fast")
 }
 
 function hideUserProfile() {
@@ -1083,7 +1235,7 @@ function hideUserProfile() {
     setTimeout(function () {
         document.getElementById("userProfile-back").style.display = 'none'
     }, 200)
-    document.getElementById("user-profile").style.display = 'none'
+    document.getElementById("user-profile").classList.remove('active')
     const socialPopup = document.getElementById("social")
     socialPopup.classList.add("active")
     document.getElementById("social-back").style.display = 'flex'
