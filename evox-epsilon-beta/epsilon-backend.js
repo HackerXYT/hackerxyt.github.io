@@ -156,19 +156,35 @@ function profilesLocal(username, img) {
 }
 
 //UI
-function attachUi(data) {
+function attachUi(data, bypassRecommendations) {
     if (data === "") {
         console.log("No Friends")
         return;
+    } else {
+        console.log("User has friends", data)
+        if (data.length <= 3 && !bypassRecommendations) {
+            attachRecommendations(data)
+        }
     }
 
     const carousel = document.getElementById("securelineCarousel");
-    carousel.innerHTML = ''
+    if (!bypassRecommendations) {
+        carousel.innerHTML = ''
+    }
+
 
     let firstFiveValues = data.slice(0, 5);
     firstFiveValues.forEach((friend) => {
+        if(friend === localStorage.getItem("t50-username")) {
+            return;
+        }
         const slUserDiv = document.createElement("div");
-        slUserDiv.className = "slUser";
+        slUserDiv.id = `carousel-${friend}`
+        if(bypassRecommendations) {
+            slUserDiv.className = "slUser add";
+        } else {
+            slUserDiv.className = "slUser";
+        }
         if (localStorage.getItem("favorites")) {
             const previous = JSON.parse(localStorage.getItem("favorites"))
             if (previous.includes(friend)) {
@@ -201,6 +217,14 @@ function attachUi(data) {
         const imgElement = document.createElement("img");
         imgElement.className = "slUserPFP";
         imgElement.src = "searching_users.gif";
+        if(bypassRecommendations) {
+            slUserDiv.innerHTML = slUserDiv.innerHTML + `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+            fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M11 17C11 17.5523 11.4477 18 12 18C12.5523 18 13 17.5523 13 17V13H17C17.5523 13 18 12.5523 18 12C18 11.4477 17.5523 11 17 11H13V7C13 6.44771 12.5523 6 12 6C11.4477 6 11 6.44771 11 7V11H7C6.44772 11 6 11.4477 6 12C6 12.5523 6.44772 13 7 13H11V17Z"
+                fill="#fff" />
+        </svg>`
+        }
         loadPFPget(friend)
             .then(profileImage => {
                 imgElement.src = profileImage;
@@ -209,14 +233,23 @@ function attachUi(data) {
                 console.error(error);
             });
         slUserDiv.appendChild(imgElement);
+        
+        
         carousel.appendChild(slUserDiv);
     })
-
+    //Social Info
     const social = document.getElementById("socialInfo");
+    if (bypassRecommendations) {
+        return;
+    }
     social.innerHTML = ''
+    
     data.sort(() => 0.5 - Math.random());
     let random3Values = data.slice(0, 3);
     random3Values.forEach((friend) => {
+        if(friend === localStorage.getItem("t50-username")) {
+            return;
+        }
 
 
         const socialUserDiv = document.createElement('div');
@@ -294,6 +327,38 @@ function attachUi(data) {
     })
 }
 
+function attachRecommendations(friends) {
+    friends.push(localStorage.getItem("t50-username"))
+    console.log('Attaching Recommendations')
+    fetch(`${srv}/accounts?method=getAllEvoxUsers`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(allFriends => {
+
+            const excludedValues = friends;
+
+            // Filter out the excluded values
+            const filteredFriends = allFriends.filter(friend => !excludedValues.includes(friend));
+            
+            // Shuffle the filtered array randomly
+            const shuffled = filteredFriends.sort(() => 0.5 - Math.random());
+            
+            // Get the first 3 elements from the shuffled array
+            const selectedValues = shuffled.slice(0, 3);
+            
+            console.log(selectedValues);
+            attachUi(selectedValues, 'bypassRecommendations')
+
+
+        }).catch(error => {
+            console.error('attachRecommendations error:', error);
+        })
+}
+
 //Time Management
 function formatTimeDifference(timestamp) {
     // Parse the provided timestamp into a Date object
@@ -311,18 +376,16 @@ function formatTimeDifference(timestamp) {
     const diffWeeks = Math.floor(diffDays / 7);
 
     // Determine the appropriate format
-    if (diffHours < 24) {
-        if (diffMinutes < 60) {
-            return `${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''}`;
-        } else {
-            return `${diffHours} hour${diffHours !== 1 ? 's' : ''}`;
-        }
-    } else if (diffDays < 6) {
+    if (diffSeconds < 60) {
+        return 'less than 1 minute';
+    } else if (diffMinutes < 60) {
+        return `${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''}`;
+    } else if (diffHours < 24) {
+        return `${diffHours} hour${diffHours !== 1 ? 's' : ''}`;
+    } else if (diffDays < 7) {
         return `${diffDays} day${diffDays !== 1 ? 's' : ''}`;
-    } else if (diffDays >= 7) {
-        return `${diffWeeks} week${diffWeeks !== 1 ? 's' : ''}`;
     } else {
-        return 'Time difference is too large';
+        return `${diffWeeks} week${diffWeeks !== 1 ? 's' : ''}`;
     }
 }
 
@@ -342,6 +405,7 @@ inputSecureline.addEventListener('focus', function () {
         console.log('Input field is focused');
 
         if (staticDevHeight === false) {
+            return;
             let currentHeight;
             currentHeight = parseInt(document.getElementById("secureline").style.height)
             if (currentHeight.toString().includes('NaN')) {
@@ -361,6 +425,7 @@ inputSecureline.addEventListener('focus', function () {
             }
 
         } else {
+            return;
             document.getElementById("secureline").style.height = staticDevHeight
         }
     })
@@ -372,8 +437,9 @@ window.scrollTo({
     behavior: 'smooth' // Optional: adds smooth scrolling animation
 });
 inputSecureline.addEventListener('blur', function () {
+    
     console.log('Input field is blurred');
-    document.getElementById("secureline").style.height = stockHeight
+    //document.getElementById("secureline").style.height = stockHeight
     $("#secureline-search-users").fadeOut("fast", function () {
         $("#favorites-recommended").fadeIn("fast")
         $("#secureline-users").fadeIn("fast")
@@ -385,13 +451,11 @@ let previousInput = null;
 inputSecureline.addEventListener('input', function (event) {
     const inputValue = event.target.value.toLowerCase(); // Convert input value to lowercase
     if (inputValue === "") {
-        document.getElementById("secureline").style.height = stockHeight
+        //document.getElementById("secureline").style.height = stockHeight
         $("#secureline-search-users").fadeOut("fast", function () {
             $("#favorites-recommended").fadeIn("fast")
             $("#secureline-users").fadeIn("fast")
         })
-
-
         return;
     }
     $("#favorites-recommended").fadeOut("fast")
