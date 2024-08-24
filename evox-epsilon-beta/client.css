@@ -66,8 +66,9 @@ html {
   z-index: 1000;
   background: transparent;
   /* Ensures the element stays on top of other content */
-  transition: background-color 0.2s ease-in-out, backdrop-filter 0.2s ease-in-out, border-radius 0.2s ease-in-out;
-
+  
+  /* Initially off-screen to the left */
+  transition: background-color 0.2s ease-in-out, backdrop-filter 0.2s ease-in-out, border-radius 0.2s ease-in-out, transform 1s ease;
 }
 
 .gatewayActions.back {
@@ -78,6 +79,10 @@ html {
   backdrop-filter: blur(25px);
   /* Adjust the blur amount as needed */
   -webkit-backdrop-filter: blur(25px);
+}
+
+.gatewayActions.top {
+  transform: translateY(-150%);
 }
 
 @keyframes gradientAnimation {
@@ -156,6 +161,7 @@ html {
   position: relative;
   flex-direction: column;
   margin-top: 70px;
+  transition: transform 0.5s ease-in-out, filter 0.2s ease-in-out;
 }
 
 .card {
@@ -379,6 +385,11 @@ html {
   height: 30px;
 }
 
+.slUserPFP.actions {
+  width: 40px;
+  height: 40px;
+}
+
 .bottomButtonsSline {
   margin-top: 10px;
   width: 100%;
@@ -410,7 +421,8 @@ html {
 .bottomButtonsSline a .icon-wrapper {
   display: inline-flex;
   align-items: center;
-  margin-left: 5px; /* Adjust this value as needed */
+  margin-left: 5px;
+  /* Adjust this value as needed */
 }
 
 .bottomButtonsSline a svg {
@@ -1192,9 +1204,9 @@ a {
   color: green;
 }
 
-.disabled {
+/*.disabled {
   color: red;
-}
+}*/
 
 .checkbox-container {
   display: flex;
@@ -5717,6 +5729,7 @@ input:-webkit-autofill {
   fill: #9d9fa6;
   transition: fill 0.15s ease-in-out, stroke 0.15s ease-in-out;
 }
+
 .bottomActionsSocial .menuItem#menu-discover svg path:nth-of-type(2),
 .bottomActionsSocial .menuItem#menu-discover svg path:nth-of-type(3) {
   stroke: #9d9fa6;
@@ -5727,6 +5740,7 @@ input:-webkit-autofill {
   fill: #dbdde3;
   transition: fill 0.15s ease-in-out, stroke 0.15s ease-in-out;
 }
+
 .bottomActionsSocial .menuItem#menu-discover.active svg path:nth-of-type(2),
 .bottomActionsSocial .menuItem#menu-discover.active svg path:nth-of-type(3) {
   stroke: #dbdde3;
@@ -5752,6 +5766,7 @@ input:-webkit-autofill {
   text-align: center;
   vertical-align: middle;
 }
+
 .user-profile {
   overflow-x: hidden;
   overflow-y: hidden;
@@ -5786,8 +5801,10 @@ input:-webkit-autofill {
 .vo-container {
   width: 100%;
   display: flex;
-  justify-content: flex-start; /* Align the <vo> to the left */
-  margin-bottom: 10px; /* Optional: space below <vo> */
+  justify-content: flex-start;
+  /* Align the <vo> to the left */
+  margin-bottom: 10px;
+  /* Optional: space below <vo> */
 }
 
 .user-profile vo {
@@ -5838,6 +5855,7 @@ input:-webkit-autofill {
   flex-direction: row;
   width: 100%;
 }
+
 .infoBlock {
   white-space: nowrap;
   padding: 15px 20px;
@@ -5849,9 +5867,12 @@ input:-webkit-autofill {
   margin-right: 5px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Align child elements to the top */
-  text-align: left; /* Align text to the left within the block */
+  justify-content: flex-start;
+  /* Align child elements to the top */
+  text-align: left;
+  /* Align text to the left within the block */
 }
+
 .infoBlock p {
   margin: 0;
   font-size: 16px;
@@ -5887,4 +5908,329 @@ input:-webkit-autofill {
   display: inline-flex;
   align-items: center;
   vertical-align: middle;
+}
+
+
+@media only screen and (min-width: 769px) {
+
+  /* (assumed to be PCs) */
+  #container {
+    width: 420px;
+  }
+
+  .gatewayActions {
+    width: 420px;
+    justify-content: center;
+    /* Center content horizontally */
+    top: 0;
+    /* Position at the top of the viewport */
+    left: 50%;
+    /* Start positioning from the middle of the viewport */
+    transform: translateX(-50%);
+    /* Shift the element back by 50% of its width to truly center it */
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .securelinePopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 420px;
+    /* Adjust the width as needed */
+    height: 80%;
+    /* Adjust the height as needed */
+    padding: 0 30px 30px 30px;
+    display: flex;
+    /* Use flexbox to align content inside the div */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #0c0d16d9;
+    z-index: 1000;
+    box-sizing: border-box;
+    opacity: 1;
+    visibility: hidden;
+    transform: translate(-50%, -50%);
+    /* Center the div */
+    transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 0.5s ease-in-out;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    overflow-x: hidden;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+  }
+
+  .securelinePopup.active {
+    opacity: 1;
+    /* Show the popup */
+    visibility: visible;
+    /* Show the popup */
+    transform: translate(-50%, -50%);
+    /* Slide the popup into view */
+  }
+}
+
+.settingsBlocks {
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  overflow-x: hidden;
+}
+
+.settingsBlocks .settingBlock {
+  flex: 0 0 50%;
+  border-radius: 10px;
+  margin-left: 5px;
+  width: 50%;
+  height: 125px;
+  /* Maintain aspect ratio */
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent background */
+  backdrop-filter: blur(5px);
+  /* Adjust the blur amount as needed */
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.settingsBlocks .settingBlock p {
+  display: flex;
+  color: #dbdde3;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 0;
+  margin-top: 7px;
+}
+
+.settingsBlocks .settingBlock .stIcon {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  width: 40px;
+  height: 40px;
+}
+
+
+.settingsPopup {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 235px;
+  display: block;
+  padding: 0 30px 30px 30px;
+  align-items: center;
+  scroll-behavior: smooth;
+  touch-action: auto;
+  justify-content: center;
+  background: #0c0d16d9;
+  z-index: 1000;
+  box-sizing: border-box;
+  opacity: 1;
+  visibility: hidden;
+  transform: translateY(100%);
+  transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 0.5s ease-in-out;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  overflow-x: hidden;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+
+.settingsPopup.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateY(0);
+  /* Slide the popup into view */
+}
+
+
+.settingsPopup .grabbable {
+  position: sticky;
+  background-color: #3c3e46;
+  height: 5px;
+  width: 15%;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50px;
+  transition: background-color 1s ease-out;
+  z-index: 999;
+}
+
+.settingsPopup .grabbable::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  /* Extend clickable area upwards */
+  left: -30px;
+  /* Extend clickable area to the left */
+  right: -30px;
+  /* Extend clickable area to the right */
+  bottom: -30px;
+  /* Extend clickable area downwards */
+  background: transparent;
+  /* Ensure it's transparent */
+  cursor: pointer;
+  /* Make sure the cursor changes */
+}
+
+.settingsPopup .grabbable:active {
+  cursor: grabbing;
+}
+
+
+.buttonsContainer {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.buttonsContainer .option {
+  background-color: #242426;
+  border-radius: 0;
+  width: 100%;
+  height: 50px;  /* Default height */
+  display: flex;
+  align-items: center;
+  position: relative;  /* Allows positioning of children */
+  padding-bottom: 0;  /* No padding initially */
+  transition: background-color 0.2s ease-in-out, padding 0.2s ease-in-out, height 0.5s ease-in-out;
+}
+
+.buttonsContainer .option.expanded {
+  height: 50px;  /* Adjust as needed to fit the bgBox */
+  padding-bottom: 125px;  /* Add padding for bgBox */
+}
+
+.option .bgBox {
+  display: flex;
+  flex-direction: row;
+  position: absolute;  /* Positioned at the bottom */
+  bottom: 0;
+  width: 95%;  /* Full width of the parent */
+  padding: 10px;  /* Optional padding */
+  visibility: hidden;
+  opacity: 0;
+  justify-content: space-evenly;
+  transition: visibility 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.buttonsContainer .option.expanded .bgBox{
+  visibility: visible;
+  opacity: 1;
+}
+
+.option .bgBox .aBox {
+  width: 100px;
+  height: 100px;
+  background-color: transparent;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* Ensure that the container is relatively positioned */
+  overflow: hidden; /* Hide any overflow from the image */
+}
+
+.option .bgBox .aBox.current {
+  width: 100px;
+  height: 100px;
+  border: #00fe77 1px dashed ;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* Ensure that the container is relatively positioned */
+  overflow: hidden; /* Hide any overflow from the image */
+}
+
+.option .bgBox .aBox img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the container */
+  position: absolute; /* Position the image absolutely */
+  top: 0; /* Align the top edge */
+  left: 0; /* Align the left edge */
+  margin: auto; /* Center the image horizontally and vertically */
+}
+
+.option .bgBox .aBox p {
+  font-size: 16px;
+  position: absolute; /* Absolutely position the text */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the text */
+  text-align: center;
+  color: #dbdde3;
+  margin: 0; /* Remove default margin */
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.5); /* Subtle shadow effect */
+  opacity: 0.7;
+}
+
+.option.disabled {
+  background-color: #242426e4;
+  border-radius: 0;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  pointer-events: none;
+  align-items: center;
+}
+
+.option span {
+  margin-left: 15px;
+}
+
+.option vo {
+  margin-left: auto;
+  margin-right: 10px;
+  /* Adjust the spacing as needed */
+  font-weight: lighter;
+  color: #8b8b8b;
+}
+
+.buttonsContainer .option:hover {
+  background-color: #3d3d3d;
+}
+
+.buttonsContainer .option.disabled {
+  opacity: 0.5;
+}
+
+.option img {
+  width: 30px;
+  height: 30px;
+  border-radius: 0.5rem;
+  margin-left: 15px;
+}
+
+.option svg {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+
+.buttonsContainer .option:first-child {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+
+
+.buttonsContainer .option:last-child {
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
 }

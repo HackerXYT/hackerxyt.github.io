@@ -96,7 +96,8 @@ function clientVerified() {
         const password = atob(localStorage.getItem("t50pswd"))
         if (username && email && password) {
             console.log("Returning User.")
-            $("#bggradient").fadeIn("slow")
+            //$("#bggradient").fadeIn("slow")
+            loadBackground()
             fetch(`${srv}/accounts?email=${email}&password=${password}&autologin=true&ip=${ip}`)
                 .then(response => {
                     if (!response.ok) {
@@ -159,7 +160,8 @@ function clientVerified() {
                     setNetworkStatus('on')
                     //data is not used, a simple response is fine
                     console.log('%c' + "Server Online!", `color: green; font-size: 16px; font-weight: normal;`)
-                    $("#bggradient").fadeIn("slow")
+                    //$("#bggradient").fadeIn("slow")
+                    loadBackground()
                     $("#loading-text").fadeOut("fast")
 
                     $("#connectionContainer").fadeIn("slow", function () {
@@ -988,9 +990,10 @@ function openChat(data, location) {
 }
 
 function showSocial(el) {
+    el.style.transform = 'scale(0.96)'
     const socialPopup = document.getElementById("social")
     socialPopup.classList.add("active")
-    el.style.transform = 'scale(0.96)'
+
     setTimeout(function () {
         //workingElem.style.transform = 'rotate(0deg)'
         el.style.transform = 'scale(1)'
@@ -1230,7 +1233,8 @@ function showFriend(element) {
 }
 
 function hideUserProfile() {
-    $("#bggradient").fadeIn("slow")
+    //$("#bggradient").fadeIn("slow")
+    loadBackground()
     document.getElementById("userProfile-back").style.opacity = '0'
     setTimeout(function () {
         document.getElementById("userProfile-back").style.display = 'none'
@@ -1295,4 +1299,166 @@ function bottomButtonPress(which, el) {
 
 function openPanel(which) {
     //accept library and addapp as values
+}
+
+function backgroundSwitch(colorScheme) { //purple, blue, default
+    const root = document.documentElement;
+    $("#background").fadeOut("fast", function () {
+        switch (colorScheme) {
+            case "purple":
+
+                root.style.setProperty('--color-bg1', 'rgba(108, 0, 162, 1)');
+                root.style.setProperty('--color-bg2', 'rgba(0, 17, 82, 1)');
+                root.style.setProperty('--color1', '76, 0, 162');
+                root.style.setProperty('--color2', '0, 82, 139');
+                root.style.setProperty('--color3', '0, 160, 176');
+                root.style.setProperty('--color4', '103, 93, 98');
+                root.style.setProperty('--color5', '17, 19, 26');
+                root.style.setProperty('--color-interactive', '140, 100, 255');
+                $("#background").fadeIn("fast")
+                break;
+            case "blue":
+                root.style.setProperty('--color-bg1', 'rgba(0, 17, 82, 1)');
+                root.style.setProperty('--color-bg2', 'rgba(0, 105, 224, 1)');
+                root.style.setProperty('--color1', '0, 43, 109');
+                root.style.setProperty('--color2', '0, 82, 139');
+                root.style.setProperty('--color3', '0, 160, 224');
+                root.style.setProperty('--color4', '68, 85, 104');
+                root.style.setProperty('--color5', '15, 18, 35');
+                root.style.setProperty('--color-interactive', '60, 160, 255');
+                $("#background").fadeIn("fast")
+                break;
+            case "default":
+                root.style.setProperty('--color-bg1', 'rgba(76, 0, 162, 0)');
+                root.style.setProperty('--color-bg2', 'rgba(0, 82, 59, 0)');
+                root.style.setProperty('--color1', '9, 43, 109');
+                root.style.setProperty('--color2', '0, 105, 224');
+                root.style.setProperty('--color3', '76, 223, 229');
+                root.style.setProperty('--color4', '103, 93, 98');
+                root.style.setProperty('--color5', '17, 19, 26');
+                root.style.setProperty('--color-interactive', '140, 100, 255');
+                $("#background").fadeIn("fast")
+                break;
+            default:
+                console.error("Unknown color scheme: " + colorScheme);
+                break;
+
+        }
+    })
+
+}
+
+function settingsOpen(panel) {
+    //panel -> security or epsilon
+
+    //hiding previous may shown divs
+    document.getElementById("settings-personal").style.display = 'none'
+    document.getElementById("settings-customize").style.display = 'none'
+    if(document.getElementById("changeBackgroundSlider").classList.contains("expanded")) {
+        changeBackgroundSlider(document.getElementById("changeBackgroundSlider"))
+    }
+    
+    //reset heights
+    document.getElementById("settings").style.height = '235px'
+    settingsGrabCloseTrigger = 694
+
+    if (panel === 'security') {
+        document.getElementById("settings-security").style.display = ''
+        document.getElementById("settings-epsilon").style.display = 'none'
+        document.getElementById("gatewayExploreScroll").style.transform = 'scale(0.97)'
+        document.getElementById("gatewayExploreScroll").style.filter = 'blur(5px)'
+        document.body.style.overflow = 'hidden'
+        //disableScroll()
+        document.getElementById("gatewayActions").classList.add("top")
+        const popup = document.getElementById("settings")
+        popup.classList.add("active")
+    } else if (panel === 'epsilon') {
+        document.getElementById("settings-security").style.display = 'none'
+        document.getElementById("settings-epsilon").style.display = ''
+        document.getElementById("gatewayExploreScroll").style.transform = 'scale(0.97)'
+        document.getElementById("gatewayExploreScroll").style.filter = 'blur(5px)'
+        document.body.style.overflow = 'hidden'
+        //disableScroll()
+        document.getElementById("gatewayActions").classList.add("top")
+        const popup = document.getElementById("settings")
+        popup.classList.add("active")
+    }
+}
+
+function hideSettings() {
+    document.getElementById("gatewayExploreScroll").style.transform = ''
+    document.getElementById("gatewayExploreScroll").style.filter = ''
+    const popup = document.getElementById("settings")
+    document.getElementById("gatewayActions").classList.remove("top")
+    popup.classList.remove("active")
+    setTimeout(function () {
+        document.body.style.overflow = ''
+    }, 500)
+}
+
+function attachSettingsData(data, container) {// data -> personal, security, cypher
+    setTimeout(function () {//set to allow the user to view the onhover effect
+        if (data) {
+            if (document.getElementById(`settings-${data}`)) {
+                let hiding = null
+                if (container === 1) {
+                    hiding = "#settings-security"
+                } else if (container === 2) {
+                    hiding = "#settings-epsilon"
+                } else {
+                    warn(`Cannot attach ${data} on settings.<br>Error Code: EBETAMISS_CONT`)
+                    return;
+                }
+                $(hiding).fadeOut("fast", function () {
+                    $(`#settings-${data}`).fadeIn("fast")
+                })
+
+                if (data === 'customize') {
+                    settingsGrabCloseTrigger = 827
+                    document.getElementById("settings").style.height = '120px'
+                }
+            } else {
+                //console.log("EBETA404")
+                warn(`Cannot attach ${data} on settings.<br>Error Code: EBETA404`)
+            }
+
+        }
+    }, 100)
+
+}
+
+let openSlider = false
+function changeBackgroundSlider(elem) {
+    const gradient = localStorage.getItem("customEpsilonGradient")
+    if(gradient) {
+        document.getElementById(`grad-${gradient}`).classList.add('current')
+    } else {
+        document.getElementById(`grad-default`).classList.add('current')
+    }
+    
+    
+    elem.classList.toggle('expanded');
+    
+    if(openSlider) {
+        openSlider = false
+        document.getElementById("backgroundOpenSlider").style.transform = 'rotate(90deg)';
+        document.getElementById("settings").style.height = '120px';
+    } else {
+        openSlider = true
+        document.getElementById("backgroundOpenSlider").style.transform = 'rotate(270deg)';
+        document.getElementById("settings").style.height = '280px';
+    }
+    //$("#bgBox").fadeIn("fast");  // Show the bgBox with fade-in effect
+}
+
+function changeBackground(event, background) {
+    event.stopPropagation();
+    document.getElementById(`grad-default`).classList.remove('current')
+    document.getElementById(`grad-blue`).classList.remove('current')
+    document.getElementById(`grad-purple`).classList.remove('current')
+
+    console.log("Stopped Slider Toggle", background)
+    document.getElementById(`grad-${background}`).classList.add('current')
+    backgroundSwitch(background) //purple, blue, default
+    localStorage.setItem('customEpsilonGradient', background)
 }

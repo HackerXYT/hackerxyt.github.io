@@ -20,6 +20,43 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log('Error:', error);
         });
 });
+
+function loadBackground() {
+    const gradient = localStorage.getItem("customEpsilonGradient")
+    let colorScheme;
+    console.log("Grad:", gradient)
+    const root = document.documentElement;
+    if (gradient === 'purple') {
+        console.log("Setting Purple")
+        root.style.setProperty('--color-bg1', 'rgba(108, 0, 162, 1)');
+        root.style.setProperty('--color-bg2', 'rgba(0, 17, 82, 1)');
+        root.style.setProperty('--color1', '76, 0, 162');
+        root.style.setProperty('--color2', '0, 82, 139');
+        root.style.setProperty('--color3', '0, 160, 176');
+        root.style.setProperty('--color4', '103, 93, 98');
+        root.style.setProperty('--color5', '17, 19, 26');
+        root.style.setProperty('--color-interactive', '140, 100, 255');
+    } else if (gradient === 'blue') {
+        console.log("Setting Blue")
+        root.style.setProperty('--color-bg1', 'rgba(0, 17, 82, 1)');
+        root.style.setProperty('--color-bg2', 'rgba(0, 105, 224, 1)');
+        root.style.setProperty('--color1', '0, 43, 109');
+        root.style.setProperty('--color2', '0, 82, 139');
+        root.style.setProperty('--color3', '0, 160, 224');
+        root.style.setProperty('--color4', '68, 85, 104');
+        root.style.setProperty('--color5', '15, 18, 35');
+        root.style.setProperty('--color-interactive', '60, 160, 255');
+    } else if (gradient === 'default') {
+        console.log("Leaving Default -> Got from storage")
+    } else {
+        console.log("Leaving Default")
+    }
+
+    $("#background").fadeIn("fast")
+    $("#bggradient").fadeIn("fast")
+
+
+}
 //IndexedDB
 function loadPFPget(username) {
     return new Promise((resolve, reject) => {
@@ -33,6 +70,33 @@ function loadPFPget(username) {
                     // Resolve with data if available
                     console.log(`Retrieved profile picture for user [${username}]`);
                     resolve(data.data);
+                    console.log(`Refreshing picture for ${username}`)
+                    fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            }
+                            return response.text();
+                        })
+                        .then(profileimage => {
+                            setNetworkStatus('on')
+                            if (profileimage.indexOf("base64") === -1) {
+                                profileimage = "data:image/jpeg;base64," + profileimage;
+                            }
+                            if(profileimage !== data.data) {
+                                console.log(`Found new picture for user ${username}`)
+                                profilesLocal(username, profileimage);
+                            } else {
+                                console.log(`Client has latest picture for ${username}`)
+                            }
+                            
+                        })
+                        .catch(error => {
+                            setNetworkStatus('off')
+                            console.error("Cannot refresh", username);
+                            console.error(error);
+                            reject(error);
+                        });
                 } else {
                     console.log(`Loaded profile picture for user [${username}]`);
                     fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
@@ -120,8 +184,11 @@ function checkUsernameAndGetData(username, getDataCallback) {
     };
 }
 
+const DB_NAME = 'EvoxSocial';
+const DB_VERSION = 3; // Update this number if you make schema changes
+
 function profilesLocal(username, img) {
-    let request = window.indexedDB.open('EvoxSocial'); // Change the version number to 2
+    let request = window.indexedDB.open(DB_NAME, DB_VERSION);
 
     request.onerror = function (event) {
         console.log("Database error:", event.target.error);
@@ -131,29 +198,34 @@ function profilesLocal(username, img) {
         // Database has been opened successfully
         let db = event.target.result;
 
-        // Proceed with adding the user
+        // Proceed with adding or updating the user
         let transaction = db.transaction(['Profiles'], 'readwrite');
         let objectStore = transaction.objectStore('Profiles');
 
         let newUser = { data: img, username: username };
-        let addRequest = objectStore.add(newUser);
+        let putRequest = objectStore.put(newUser); // Use 'put' to replace existing key
 
-        addRequest.onsuccess = function (event) {
+        putRequest.onsuccess = function (event) {
             console.log(`Operation [${username}] Profile Picture Succeeded.`);
         };
 
-        addRequest.onerror = function (event) {
-            console.log("Error adding user:", event.target.error);
+        putRequest.onerror = function (event) {
+            console.log("Error adding or updating user:", event.target.error);
         };
     };
 
     request.onupgradeneeded = function (event) {
-        // If the database does not exist or needs to be updated
         let db = event.target.result;
-        let objectStore = db.createObjectStore('Profiles', { keyPath: 'username' });
-        objectStore.createIndex('usernameIndex', 'username', { unique: true });
+
+        // Create object store if it does not exist
+        if (!db.objectStoreNames.contains('Profiles')) {
+            let objectStore = db.createObjectStore('Profiles', { keyPath: 'username' });
+            objectStore.createIndex('usernameIndex', 'username', { unique: true });
+        }
     };
 }
+
+
 
 //UI
 function attachUi(data, bypassRecommendations) {
@@ -175,12 +247,12 @@ function attachUi(data, bypassRecommendations) {
 
     let firstFiveValues = data.slice(0, 5);
     firstFiveValues.forEach((friend) => {
-        if(friend === localStorage.getItem("t50-username")) {
+        if (friend === localStorage.getItem("t50-username")) {
             return;
         }
         const slUserDiv = document.createElement("div");
         slUserDiv.id = `carousel-${friend}`
-        if(bypassRecommendations) {
+        if (bypassRecommendations) {
             slUserDiv.className = "slUser add";
         } else {
             slUserDiv.className = "slUser";
@@ -217,7 +289,7 @@ function attachUi(data, bypassRecommendations) {
         const imgElement = document.createElement("img");
         imgElement.className = "slUserPFP";
         imgElement.src = "searching_users.gif";
-        if(bypassRecommendations) {
+        if (bypassRecommendations) {
             slUserDiv.innerHTML = slUserDiv.innerHTML + `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
             fill="none">
             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -233,8 +305,8 @@ function attachUi(data, bypassRecommendations) {
                 console.error(error);
             });
         slUserDiv.appendChild(imgElement);
-        
-        
+
+
         carousel.appendChild(slUserDiv);
     })
     //Social Info
@@ -243,11 +315,11 @@ function attachUi(data, bypassRecommendations) {
         return;
     }
     social.innerHTML = ''
-    
+
     data.sort(() => 0.5 - Math.random());
     let random3Values = data.slice(0, 3);
     random3Values.forEach((friend) => {
-        if(friend === localStorage.getItem("t50-username")) {
+        if (friend === localStorage.getItem("t50-username")) {
             return;
         }
 
@@ -343,13 +415,13 @@ function attachRecommendations(friends) {
 
             // Filter out the excluded values
             const filteredFriends = allFriends.filter(friend => !excludedValues.includes(friend));
-            
+
             // Shuffle the filtered array randomly
             const shuffled = filteredFriends.sort(() => 0.5 - Math.random());
-            
+
             // Get the first 3 elements from the shuffled array
             const selectedValues = shuffled.slice(0, 3);
-            
+
             console.log(selectedValues);
             attachUi(selectedValues, 'bypassRecommendations')
 
@@ -437,7 +509,7 @@ window.scrollTo({
     behavior: 'smooth' // Optional: adds smooth scrolling animation
 });
 inputSecureline.addEventListener('blur', function () {
-    
+
     console.log('Input field is blurred');
     //document.getElementById("secureline").style.height = stockHeight
     $("#secureline-search-users").fadeOut("fast", function () {
@@ -1458,4 +1530,97 @@ function loadSocial(data) {
         // Append the userDiv to the target container
         socialUsersContainer.appendChild(userDiv);
     })
+}
+function isElementOutsideViewport(elementId) {
+    const element = document.getElementById(elementId);
+
+    if (!element) {
+        console.warn("Element with ID '" + elementId + "' not found.");
+        return false;
+    }
+
+    const rect = element.getBoundingClientRect();
+    const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    // Check if the element is outside the viewport
+    return rect.bottom < 0 || rect.top > viewportHeight || rect.right < 0 || rect.left > viewportWidth;
+}
+
+const popIt = document.getElementById('settings');
+const grab = document.getElementById('settings-grab');
+
+let startY, startTop;
+const threshold = 10; // Threshold in pixels from the top where dragging upwards is allowed
+
+let settingsGrabCloseTrigger = 694
+grab.addEventListener('touchstart', function (e) {
+    const touch = e.touches[0];
+    startY = touch.clientY;
+    startTop = parseInt(window.getComputedStyle(popIt).top, 10);
+    document.addEventListener('touchmove', moveDiv);
+    document.addEventListener('touchend', stopMoveDiv);
+});
+
+function moveDiv(e) {
+    const touch = e.touches[0];
+    const deltaY = touch.clientY - startY;
+
+    // Calculate the new top position
+    let newTop = startTop + deltaY;
+
+    console.log(newTop)
+    // Restrict movement downwards only
+    if (newTop < settingsGrabCloseTrigger) {
+        return;
+    }
+    if (newTop > 100) {
+        hideSettings()
+        setTimeout(function () {
+            popIt.style.top = '';
+        }, 600)
+    }
+    if (newTop > startTop) {
+        popIt.style.top = newTop + 'px';
+    } else if (newTop < startTop && startTop >= threshold) {
+        // Allow movement upwards only if above threshold
+        popIt.style.top = newTop + 'px';
+    }
+}
+
+function stopMoveDiv() {
+
+    document.removeEventListener('touchmove', moveDiv);
+    document.removeEventListener('touchend', stopMoveDiv);
+
+    const elementId = "settings";
+    const isOutsideViewport = isElementOutsideViewport(elementId);
+
+    if (isOutsideViewport) {
+        console.log("Element with ID '" + elementId + "' is outside the viewport.");
+
+        hideSettings()
+        setTimeout(function () {
+            popIt.style.top = '';
+        }, 500)
+
+    } else {
+        console.log("Element with ID '" + elementId + "' is inside the viewport.");
+    }
+}
+
+function preventDefault(e) {
+    e.preventDefault();
+}
+
+// Disable scroll
+function disableScroll() {
+    window.addEventListener('scroll', preventDefault, { passive: false });
+    window.addEventListener('touchmove', preventDefault, { passive: false });
+}
+
+// Enable scroll
+function enableScroll() {
+    window.removeEventListener('scroll', preventDefault, { passive: false });
+    window.removeEventListener('touchmove', preventDefault, { passive: false });
 }
