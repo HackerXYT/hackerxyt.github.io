@@ -5,6 +5,18 @@ if (localStorage.getItem("currentSrv")) {
     srv = "https://data.evoxs.xyz"
 }
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for(let registration of registrations) {
+      registration.unregister();
+    }
+  }).catch(function(error) {
+    console.error('Error unregistering service worker:', error);
+  });
+} else {
+  console.log('Service workers are not supported in this browser.');
+}
+
 function setNetworkStatus(what) {
     if (what === "on") {
         $("#offlineStatus").fadeOut("fast")
@@ -793,36 +805,7 @@ function verificationComplete() {
             setNetworkStatus('on')
             localStorage.setItem("friends", JSON.stringify(data))
             attachUi(data)
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/evox-epsilon-beta/epsilon-serviceWorker.js').then(registration => {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        
-                    // Listen for updates to the service worker
-                    registration.onupdatefound = () => {
-                        const installingWorker = registration.installing;
-        
-                        installingWorker.onstatechange = () => {
-                            if (installingWorker.state === 'installed') {
-                                if (navigator.serviceWorker.controller) {
-                                    // New update available
-                                    warn('An update is available.<br>Update in settings.');
-        
-                                    //if (confirm('New version available. Refresh to update?')) {
-                                    //    window.location.reload();
-                                    //}
-                                } else {
-                                    // Content is cached for offline use
-                                    console.log('Content is cached for offline use.');
-                                }
-                            }
-                        };
-                    };
-        
-                }).catch(error => {
-                    console.log('ServiceWorker registration failed: ', error);
-                    warn('ServiceWorker registration failed: ', error)
-                });
-            }
+            
         })
         .catch(error => {
             setNetworkStatus('off')
