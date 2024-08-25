@@ -793,6 +793,36 @@ function verificationComplete() {
             setNetworkStatus('on')
             localStorage.setItem("friends", JSON.stringify(data))
             attachUi(data)
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/evox-epsilon-beta/epsilon-serviceWorker.js').then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        
+                    // Listen for updates to the service worker
+                    registration.onupdatefound = () => {
+                        const installingWorker = registration.installing;
+        
+                        installingWorker.onstatechange = () => {
+                            if (installingWorker.state === 'installed') {
+                                if (navigator.serviceWorker.controller) {
+                                    // New update available
+                                    warn('An update is available.<br>Update in settings.');
+        
+                                    //if (confirm('New version available. Refresh to update?')) {
+                                    //    window.location.reload();
+                                    //}
+                                } else {
+                                    // Content is cached for offline use
+                                    console.log('Content is cached for offline use.');
+                                }
+                            }
+                        };
+                    };
+        
+                }).catch(error => {
+                    console.log('ServiceWorker registration failed: ', error);
+                    warn('ServiceWorker registration failed: ', error)
+                });
+            }
         })
         .catch(error => {
             setNetworkStatus('off')
@@ -1354,34 +1384,56 @@ function settingsOpen(panel) {
     //hiding previous may shown divs
     document.getElementById("settings-personal").style.display = 'none'
     document.getElementById("settings-customize").style.display = 'none'
-    if(document.getElementById("changeBackgroundSlider").classList.contains("expanded")) {
+    document.getElementById("settings-about").style.display = 'none'
+    if (document.getElementById("changeBackgroundSlider").classList.contains("expanded")) {
         changeBackgroundSlider(document.getElementById("changeBackgroundSlider"))
     }
-    
+
     //reset heights
     document.getElementById("settings").style.height = '235px'
     settingsGrabCloseTrigger = 694
-
+    hideThreshold = 100
     if (panel === 'security') {
-        document.getElementById("settings-security").style.display = ''
-        document.getElementById("settings-epsilon").style.display = 'none'
-        document.getElementById("gatewayExploreScroll").style.transform = 'scale(0.97)'
-        document.getElementById("gatewayExploreScroll").style.filter = 'blur(5px)'
-        document.body.style.overflow = 'hidden'
-        //disableScroll()
-        document.getElementById("gatewayActions").classList.add("top")
-        const popup = document.getElementById("settings")
-        popup.classList.add("active")
+        document.getElementById("accountSettingsIcon").style.transform = 'rotate(40deg)'
+        setTimeout(function () {
+            document.getElementById("accountSettingsIcon").style.transform = 'rotate(0deg)'
+        }, 200)
+        setTimeout(function () {
+            document.getElementById("settings-security").style.display = ''
+            document.getElementById("settings-epsilon").style.display = 'none'
+            document.getElementById("gatewayExploreScroll").style.transform = 'scale(0.97)'
+            document.getElementById("gatewayExploreScroll").style.filter = 'blur(5px)'
+            document.body.style.overflow = 'hidden'
+            if (scrolling === true) {
+                console.log("Disabling Scrolling")
+                disableScroll()
+            }
+
+            document.getElementById("gatewayActions").classList.add("top")
+            const popup = document.getElementById("settings")
+            popup.classList.add("active")
+        }, 400)
     } else if (panel === 'epsilon') {
-        document.getElementById("settings-security").style.display = 'none'
-        document.getElementById("settings-epsilon").style.display = ''
-        document.getElementById("gatewayExploreScroll").style.transform = 'scale(0.97)'
-        document.getElementById("gatewayExploreScroll").style.filter = 'blur(5px)'
-        document.body.style.overflow = 'hidden'
-        //disableScroll()
-        document.getElementById("gatewayActions").classList.add("top")
-        const popup = document.getElementById("settings")
-        popup.classList.add("active")
+        document.getElementById("epsilonSettingsIcon").style.transform = 'scale(0.8)'
+        setTimeout(function () {
+            document.getElementById("epsilonSettingsIcon").style.transform = 'scale(1.2)'
+        }, 200)
+        setTimeout(function () {
+
+            document.getElementById("settings-security").style.display = 'none'
+            document.getElementById("settings-epsilon").style.display = ''
+            document.getElementById("gatewayExploreScroll").style.transform = 'scale(0.97)'
+            document.getElementById("gatewayExploreScroll").style.filter = 'blur(5px)'
+            document.body.style.overflow = 'hidden'
+            if (scrolling === true) {
+                console.log("Disabling Scrolling")
+                disableScroll()
+            }
+            document.getElementById("gatewayActions").classList.add("top")
+            const popup = document.getElementById("settings")
+            popup.classList.add("active")
+        }, 400)
+
     }
 }
 
@@ -1391,6 +1443,11 @@ function hideSettings() {
     const popup = document.getElementById("settings")
     document.getElementById("gatewayActions").classList.remove("top")
     popup.classList.remove("active")
+
+    if (scrolling === false) {
+        console.log("Enabling Scrolling")
+        enableScroll()
+    }
     setTimeout(function () {
         document.body.style.overflow = ''
     }, 500)
@@ -1414,11 +1471,18 @@ function attachSettingsData(data, container) {// data -> personal, security, cyp
                 })
 
                 if (data === 'customize') {
-                    settingsGrabCloseTrigger = 827
-                    document.getElementById("settings").style.height = '120px'
+                    settingsGrabCloseTrigger = 726
+                    document.getElementById("settings").style.height = '200px'
+                }
+                if (data === 'about') {
+                    loadAppAbout()
+                    settingsGrabCloseTrigger = 520
+                    hideThreshold = 618
+                    document.getElementById("settings").style.height = '435px'
+                    
                 }
             } else {
-                //console.log("EBETA404")
+                console.log("EBETA404")
                 warn(`Cannot attach ${data} on settings.<br>Error Code: EBETA404`)
             }
 
@@ -1430,19 +1494,19 @@ function attachSettingsData(data, container) {// data -> personal, security, cyp
 let openSlider = false
 function changeBackgroundSlider(elem) {
     const gradient = localStorage.getItem("customEpsilonGradient")
-    if(gradient) {
+    if (gradient) {
         document.getElementById(`grad-${gradient}`).classList.add('current')
     } else {
         document.getElementById(`grad-default`).classList.add('current')
     }
-    
-    
+
+
     elem.classList.toggle('expanded');
-    
-    if(openSlider) {
+
+    if (openSlider) {
         openSlider = false
         document.getElementById("backgroundOpenSlider").style.transform = 'rotate(90deg)';
-        document.getElementById("settings").style.height = '120px';
+        document.getElementById("settings").style.height = '200px';
     } else {
         openSlider = true
         document.getElementById("backgroundOpenSlider").style.transform = 'rotate(270deg)';
@@ -1461,4 +1525,52 @@ function changeBackground(event, background) {
     document.getElementById(`grad-${background}`).classList.add('current')
     backgroundSwitch(background) //purple, blue, default
     localStorage.setItem('customEpsilonGradient', background)
+}
+
+function updateServiceWorkerCache() {
+    if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({
+            action: 'UPDATE_CACHE'
+        });
+    } else {
+        console.log('No active service worker found.');
+    }
+}
+
+function updateServiceWorkerCacheAndReload() {
+    try {
+        updateServiceWorkerCache()
+    } catch (error) {
+        warn("Service Worker Update Failed.<br>Evox Is Reloading..")
+
+    }
+
+    setTimeout(function () {
+        window.location.reload()
+    }, 500)
+}
+
+
+let activeTab = 'Explore'
+function enableTab(element) {
+    const old = activeTab
+    document.getElementById(`tab-${activeTab.toLowerCase()}`).classList.remove("active")
+    if (element.innerHTML.includes("Ask") && !element.classList.contains("active")) {
+        activeTab = 'Ask'
+        element.classList.add("active")
+        setTimeout(function () {
+            updateServiceWorkerCacheAndReload()
+        }, 500)
+    } else if (element.innerHTML.includes("Explore") && !element.classList.contains("active")) {
+        activeTab = 'Explore'
+        element.classList.add("active")
+    } else if (element.innerHTML.includes("Profile") && !element.classList.contains("active")) {
+        activeTab = 'Profile'
+        element.classList.add("active")
+    } else {
+        console.log("Nothing found")
+        return;
+    }
+    console.log(`Hit. Changed From ${old} to ${activeTab}`)
+
 }

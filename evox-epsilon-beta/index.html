@@ -231,8 +231,8 @@
     <link rel="stylesheet" href="background.css">
     <link rel="stylesheet" href="indicator.css">
     <script src="../scripts/howler.js"></script>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css'>
+    <link rel='stylesheet' href='all.min.css'>
+    <link rel='stylesheet' href='owl.carousel.min.css'>
     <link rel="stylesheet" href="devices.min.css">
 </head>
 
@@ -361,9 +361,9 @@
     <div id="container">
         <div class="gateway" id="gateway">
             <div id="gatewayActions" class="gatewayActions">
-                <p>Ask</p>
-                <p class="active">Explore</p>
-                <p>Profile</p>
+                <p id="tab-ask" onclick="enableTab(this)">Ask</p>
+                <p id="tab-explore" onclick="enableTab(this)" class="active">Explore</p>
+                <p id="tab-profile" onclick="enableTab(this)">Profile</p>
                 <span id="networkStatus" class="quickAccess">
                     <svg id="onlineStatus" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
                         viewBox="0 0 24 24" fill="none">
@@ -534,7 +534,8 @@
                     <h2>Settings</h2>
                     <div class="settingsBlocks">
                         <div onclick="settingsOpen('security')" class="settingBlock">
-                            <svg class="stIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                            <svg id="accountSettingsIcon" class="stIcon" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24" fill="none">
                                 <path opacity="0.4"
                                     d="M18.3301 5.67L6.59009 17.41C6.15009 17.85 5.41008 17.79 5.05008 17.27C3.81008 15.46 3.08008 13.32 3.08008 11.12V6.73C3.08008 5.91 3.70008 4.98 4.46008 4.67L10.0301 2.39C11.2901 1.87 12.6901 1.87 13.9501 2.39L17.9901 4.03999C18.6601 4.30999 18.8301 5.17 18.3301 5.67Z"
                                     fill="#dbdde3" />
@@ -546,7 +547,7 @@
 
                         </div>
                         <div onclick="settingsOpen('epsilon')" class="settingBlock">
-                            <img class="stIcon" src="EvoxEPSILON.png">
+                            <img id="epsilonSettingsIcon" class="stIcon" src="EvoxEPSILON.png">
                             <p>Epsilon</p>
                         </div>
 
@@ -833,6 +834,62 @@
 
             </div>
         </div>
+        <div id="settings-about" class="settings-panel" style="display: none;">
+            <div class="buttonsContainer">
+                <div class="option">
+                    <img src="epsilon-frontend-assets/version.png"><span>App version</span>
+                    <div id="appVersion"
+                        style="margin-left: auto;margin-right: 10px;transition: transform 0.5s ease-in-out;">
+                        Unknown
+                    </div>
+                </div>
+                <div class="option">
+                    <img src="epsilon-frontend-assets/update.png"><span>Check for updates</span>
+                    <div
+                        style="margin-left: auto;margin-right: 10px;transition: transform 0.5s ease-in-out;">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#fff"></path>
+                    </svg>
+                    </div>
+                </div>
+
+            </div>
+            <div class="buttonsContainer">
+                <div class="option">
+                    <img src="epsilon-frontend-assets/offlineMode.png"><span>Offline mode</span>
+                    <div
+                        style="margin-left: auto;margin-right: 10px;transition: transform 0.5s ease-in-out;display: inline-flex;
+                        align-items: center;
+                        vertical-align: middle;">
+                        <span id="offlinemode-status">Standby</span><svg
+                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#fff"></path>
+                    </svg>
+                    </div>
+                </div>
+                <div class="option">
+                    <img src="epsilon-frontend-assets/serviceWorker.png"><span>Service Worker</span>
+                    <div
+                        style="margin-left: auto;margin-right: 10px;transition: transform 0.5s ease-in-out;display: inline-flex;
+                        align-items: center;
+                        vertical-align: middle;">
+                        <span id="swStatus">Enabled</span>
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#fff"></path>
+                    </svg>
+                    </div>
+                </div>
+
+            </div>
+        </div>
         <div id="settings-customize" class="settings-panel" style="display: none;">
             <div class="buttonsContainer">
                 <div onclick="changeBackgroundSlider(this)" id="changeBackgroundSlider" class="option">
@@ -844,7 +901,8 @@
                             <path
                                 d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
                                 fill="#fff"></path>
-                        </svg></div>
+                        </svg>
+                    </div>
                     <div id="bgBox" class="bgBox">
                         <div id="grad-default" onclick="changeBackground(event, 'default')" class="aBox">
                             <img src="epsilon-frontend-assets/defaultBg.png">

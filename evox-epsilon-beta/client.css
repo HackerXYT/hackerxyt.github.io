@@ -116,14 +116,24 @@ html {
   font-weight: bold;
   color: #55565f;
   position: relative;
-  /* Required to position the :before element relative to the <p> */
+  transition: color 0.5s ease-in-out;
 }
 
-.gatewayActions .logoE {
-  display: inline-flex;
-  align-items: center;
-  margin-right: 5px;
-  vertical-align: middle;
+.gatewayActions p:before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 50%;
+  width: 0;  /* Initially hidden */
+  height: 4px;
+  background-color: #3566ef;
+  /*border-top-left-radius: 5px;*/
+  /*border-top-right-radius: 5px;*/
+  border-radius: 5px;
+  bottom: -10px;
+  transform: translateX(-50%);
+  opacity: 0;  /* Initially hidden */
+  transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
 .gatewayActions p.active {
@@ -131,21 +141,8 @@ html {
 }
 
 .gatewayActions p.active:before {
-  content: '';
-  display: block;
-  position: absolute;
-  left: 50%;
-  width: 85%;
-  height: 4px;
-  /* Height of the blue bar */
-  background-color: #3566ef;
-  /* Color of the blue bar */
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  bottom: -10px;
-  /* Position the bar 10px below the <p> element */
-  transform: translateX(-50%);
-  /* Centers the bar under the <p> */
+  width: 85%;  /* Expand width when active */
+  opacity: 1;  /* Fade in when active */
 }
 
 .gatewayActions span {
@@ -5910,6 +5907,10 @@ input:-webkit-autofill {
   vertical-align: middle;
 }
 
+#container {
+  overflow: hidden;
+}
+
 
 @media only screen and (min-width: 769px) {
 
@@ -6018,6 +6019,7 @@ input:-webkit-autofill {
   vertical-align: middle;
   width: 40px;
   height: 40px;
+  transition: background-color 0.3s ease, opacity 0.5s ease, transform 0.2s ease;
 }
 
 

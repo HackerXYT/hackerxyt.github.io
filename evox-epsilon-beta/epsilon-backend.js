@@ -21,6 +21,49 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 });
 
+
+const appVersion = '6.1.1'
+function loadAppAbout() {
+    document.getElementById("appVersion").innerHTML = appVersion
+    try {
+        navigator.serviceWorker.getRegistrations().then(function (registrations) {
+            if (registrations.length > 0) {
+                console.log('Service Worker is registered');
+
+                document.getElementById("swStatus").innerText = 'Registered'
+                caches.has('epsilon-cache-v1').then((exists) => {
+                    if (exists) {
+                        
+                        if (navigator.onLine) {
+                            document.getElementById("offlinemode-status").innerText = 'Ready'
+                        } else {
+                            document.getElementById("offlinemode-status").innerText = 'Active'
+                        }
+                    } else {
+                        document.getElementById("offlinemode-status").innerText = 'Unset'
+                    }
+                }).catch((error) => {
+
+                    document.getElementById("offlinemode-status").innerText = 'Not Supported'
+                    console.error('Error checking cache existence:', error);
+                });
+            } else {
+                console.log('No Service Worker is registered');
+                document.getElementById("offlinemode-status").innerText = 'Unset'
+                document.getElementById("swStatus").innerText = 'Ready'
+            }
+        }).catch(function (error) {
+            console.error('Error fetching service worker registrations:', error);
+        });
+    } catch (error) {
+        console.log("Sw failed")
+        document.getElementById("offlinemode-status").innerText = 'Disabled'
+        document.getElementById("swStatus").innerText = 'Not Supported'
+    }
+
+    
+}
+
 function loadBackground() {
     const gradient = localStorage.getItem("customEpsilonGradient")
     let colorScheme;
@@ -83,13 +126,13 @@ function loadPFPget(username) {
                             if (profileimage.indexOf("base64") === -1) {
                                 profileimage = "data:image/jpeg;base64," + profileimage;
                             }
-                            if(profileimage !== data.data) {
+                            if (profileimage !== data.data) {
                                 console.log(`Found new picture for user ${username}`)
                                 profilesLocal(username, profileimage);
                             } else {
                                 console.log(`Client has latest picture for ${username}`)
                             }
-                            
+
                         })
                         .catch(error => {
                             setNetworkStatus('off')
@@ -1554,6 +1597,7 @@ let startY, startTop;
 const threshold = 10; // Threshold in pixels from the top where dragging upwards is allowed
 
 let settingsGrabCloseTrigger = 694
+let hideThreshold = 100
 grab.addEventListener('touchstart', function (e) {
     const touch = e.touches[0];
     startY = touch.clientY;
@@ -1574,7 +1618,7 @@ function moveDiv(e) {
     if (newTop < settingsGrabCloseTrigger) {
         return;
     }
-    if (newTop > 100) {
+    if (newTop > hideThreshold) {
         hideSettings()
         setTimeout(function () {
             popIt.style.top = '';
@@ -1613,14 +1657,22 @@ function preventDefault(e) {
     e.preventDefault();
 }
 
+
+let scrolling = true
 // Disable scroll
 function disableScroll() {
+    console.log('D1: Old Scrolling:', scrolling)
     window.addEventListener('scroll', preventDefault, { passive: false });
     window.addEventListener('touchmove', preventDefault, { passive: false });
+    scrolling = false
+    console.log('D1: New Scrolling:', scrolling)
 }
 
 // Enable scroll
 function enableScroll() {
+    console.log('E1: Old Scrolling:', scrolling)
     window.removeEventListener('scroll', preventDefault, { passive: false });
     window.removeEventListener('touchmove', preventDefault, { passive: false });
+    scrolling = true
+    console.log('E2: New Scrolling:', scrolling)
 }
