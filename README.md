@@ -34,13 +34,13 @@ Evox Gateway is a versatile application designed to provide users with access to
 
 To use Evox Gateway, follow these steps:
 
-1. [Access https:/team50.sytes.net](https://team50.sytes.net)
+1. [Access https:/evoxs.xyz](https://evoxs.xyz)
 2. Sign in to your account.
 3. Explore the various functionalities offered by Evox Gateway, including Evox apps and gateway functions.
 
 ## Support
 
-If you encounter any issues or have any questions, please feel free to contact our support team at [support@evox.com](mailto:support@evox.com).
+If you encounter any issues or have any questions, please feel free to contact our support team at [admin@evoxs.xyz](mailto:admin@evoxs.xyz).
 
 ## Contributing
 
