@@ -202,7 +202,7 @@ if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
                     console.log("All ok")
                 } else {
                     alert("far you go..")
-                    localStorage.clear()
+                    //localStorage.clear()
                     window.location.reload()
 
                 }
@@ -230,7 +230,9 @@ if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
 
             }).catch(error => {
                 // Handle errors
-                alert('Profile Picture Failed To Load:', error)
+                alert(`Debug.\nClient responded as ${navigator.onLine} on request for navigator.onLine,\nbut authorization request failed with error:\n${error}\n\nClient will continue with function 'loadStories()'.`)
+                loadStories()
+                console.warn('Profile Picture Failed To Load:', error)
                 console.error('Error:', error);
             });
         fetch(`${srv}/images-database?method=getTypes&password=${atob(localStorage.getItem("t50pswd"))}`, {
