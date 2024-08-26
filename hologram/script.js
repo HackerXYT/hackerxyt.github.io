@@ -59,11 +59,11 @@ function reqOtp() {
                     document.getElementById("otpReq").style.display = ''
                 }, 10000)
             } else {
-                alert(`Error ${data}`)
+                alert(`OTP Error ${data}`)
             }
         })
         .catch(error => {
-            alert("An error occured!",error)
+            alert("An otp error occured!",error)
             console.error(error);
         });
 }
@@ -117,7 +117,7 @@ function loginNow() {
 
         })
         .catch(error => {
-            alert(`An error occured! ${error}`)
+            alert(`An otp verification error occured! ${error}`)
             console.error(error);
         });
 }
@@ -202,6 +202,7 @@ if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
                     console.log("All ok")
                 } else {
                     alert("far you go..")
+                    alert(`fatal reject triggered by checkOwnership function.\nConnection with server succeeded but response was: ${data}.\n\nHologram will now reload.`)
                     //localStorage.clear()
                     window.location.reload()
 
@@ -248,7 +249,7 @@ if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
                 loadStories()
             }).catch(error => {
                 // Handle errors
-                alert(error);
+                alert('getTypes rejected', error);
                 console.error('Error:', error);
             });
     } else {
@@ -473,7 +474,7 @@ function dbload() {
         })
         .catch(error => {
             // Handle errors
-            alert(error);
+            alert('getIds Failed:', error);
             console.error('Error:', error);
         });
 
@@ -788,7 +789,7 @@ function filter(vv, element) {
                     fullSc()
                 }
             } else {
-                alert("Unable to load, you are offline!")
+                alert("Unable to getByType, you are offline!\nNext time let files be downloaded first.")
             }
             console.error('Error:', error);
         });
