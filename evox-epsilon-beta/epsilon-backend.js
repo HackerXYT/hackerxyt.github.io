@@ -293,8 +293,9 @@ function attachUi(data, bypassRecommendations) {
         if (friend === localStorage.getItem("t50-username")) {
             return;
         }
-        const slUserDiv = document.createElement("div");
+        const slUserDiv = document.createElement("a");
         slUserDiv.id = `carousel-${friend}`
+        slUserDiv.href = `#secureline-${friend}`
         if (bypassRecommendations) {
             slUserDiv.className = "slUser add";
         } else {
@@ -821,8 +822,9 @@ function securelineHome(data, appending) {
 
     const friendPromises = data.map(friend => {
         return new Promise((resolve, reject) => {
-            const userDiv = document.createElement('div');
+            const userDiv = document.createElement('a');
             userDiv.className = 'user';
+            userDiv.href = `#secureline-${friend}`;
             userDiv.id = `user-${friend}`;
             userDiv.onclick = function () {
                 const json = { username: friend, favorite: JSON.parse(localStorage.getItem("favorites") || "[]").includes(friend) };

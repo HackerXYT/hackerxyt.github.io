@@ -6,15 +6,15 @@ if (localStorage.getItem("currentSrv")) {
 }
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(function(registrations) {
-    for(let registration of registrations) {
-      registration.unregister();
-    }
-  }).catch(function(error) {
-    console.error('Error unregistering service worker:', error);
-  });
+    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        for (let registration of registrations) {
+            registration.unregister();
+        }
+    }).catch(function (error) {
+        console.error('Error unregistering service worker:', error);
+    });
 } else {
-  console.log('Service workers are not supported in this browser.');
+    console.log('Service workers are not supported in this browser.');
 }
 
 function setNetworkStatus(what) {
@@ -782,17 +782,49 @@ function verificationComplete() {
 
     const appsElement = document.getElementById('apps');
     appsElement.innerHTML = ''
+    let countApps = 0
     stockApps.forEach((app) => {
         const evoxAppDiv = document.createElement('div');
         evoxAppDiv.className = 'evoxApp';
-        evoxAppDiv.onclick = function () {
-            showApp(app)
+        const newC = countApps + 1
+        countApps = newC
+
+        //evoxAppDiv.onclick = function () {
+        //    showApp(app)
+        //}
+        //const imgElement = document.createElement('img');
+        //imgElement.src = `./posters/${app}.png`;
+        //evoxAppDiv.appendChild(imgElement);
+        const appDiv = document.createElement('div');
+        appDiv.id = `app${newC}`;
+        appDiv.className = 'evoxApp';
+
+        // Create the inner div with id 'Zapp1', class 'zoomable', and an onclick event
+        const zoomableDiv = document.createElement('div');
+        zoomableDiv.id = `Zapp${newC}`;
+        zoomableDiv.className = 'zoomable';
+        zoomableDiv.onclick = function () {
+            animateM(this)
         }
-        const imgElement = document.createElement('img');
-        imgElement.src = `./posters/${app}.png`;
-        evoxAppDiv.appendChild(imgElement);
-        appsElement.appendChild(evoxAppDiv);
+
+        // Create the image element
+        const img = document.createElement('img');
+        img.src = `./posters/${app}.png`;
+        img.alt = `${app.toUpperCase()} Image`;
+
+        // Append the image to the zoomable div
+        zoomableDiv.appendChild(img);
+
+        // Create the paragraph element with text content
+
+
+        // Append the zoomable div and paragraph to the outer div
+        appDiv.appendChild(zoomableDiv);
+
+        // Append the entire structure to the container
+        appsElement.appendChild(appDiv);
     })
+
 
     fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
         .then(response => {
@@ -805,7 +837,7 @@ function verificationComplete() {
             setNetworkStatus('on')
             localStorage.setItem("friends", JSON.stringify(data))
             attachUi(data)
-            
+
         })
         .catch(error => {
             setNetworkStatus('off')
@@ -1307,6 +1339,30 @@ function bottomButtonPress(which, el) {
                 openPanel(which)
             }, 150)
         }, 200)
+    } else if (which === 'launch') {
+        //const workingElem = document.getElementById("pressAnimationAddapp")
+        //workingElem.style.transform = 'rotate(180deg)'
+        el.style.transform = 'scale(0.96)'
+        document.getElementById("launchDisk").style.transform = 'rotate(1360deg)'
+        const dotElement = document.querySelector('.dot');
+        dotElement.style.animation = null;
+        setTimeout(function () {
+            //workingElem.style.transform = 'rotate(0deg)'
+            el.style.transform = 'scale(1)'
+            setTimeout(function () {
+                document.getElementById("launchDisk").style.transform = 'rotate(0deg)'
+                const dotElement = document.querySelector('.dot');
+                dotElement.style.animation = 'dotAnimation 1s infinite';
+            }, 1150)
+        }, 200)
+    } else {
+        el.style.transform = 'scale(0.96)'
+        setTimeout(function () {
+            //workingElem.style.transform = 'rotate(0deg)'
+            el.style.transform = 'scale(1)'
+        }, 200)
+        const dotElement = document.querySelector('.dot');
+        dotElement.style.animation = null;
     }
 }
 
@@ -1462,7 +1518,7 @@ function attachSettingsData(data, container) {// data -> personal, security, cyp
                     settingsGrabCloseTrigger = 520
                     hideThreshold = 618
                     document.getElementById("settings").style.height = '435px'
-                    
+
                 }
             } else {
                 console.log("EBETA404")
@@ -1557,3 +1613,98 @@ function enableTab(element) {
     console.log(`Hit. Changed From ${old} to ${activeTab}`)
 
 }
+
+function animateM(e) {
+    const item = e
+    const isZoomed = item.classList.contains('fullscreen');
+    const attr = item.id
+    console.log('attr:', attr)
+
+
+    // Reset all other images to their original state
+    //document.querySelectorAll('.zoomable').forEach(el => {
+    //    el.classList.remove('fullscreen');
+    //});
+
+    // Toggle the fullscreen state
+    if (!isZoomed) {
+        const dotElement = document.querySelector('.dot');
+        dotElement.style.animation = 'dotAnimation 1s infinite';
+        item.classList.add('fullscreen');
+        var imgElement = item.querySelector('img');
+        document.body.classList.add('no-scroll');
+        document.getElementById("gatewayExploreScroll").style.marginTop = '10px'
+        $("#bottomButtonsDefault").fadeOut("fast", function() {
+            $("#bottomButtonsFocus").fadeIn("fast")
+        })
+        document.getElementById("gatewayActions").classList.add("top")
+        document.getElementById("card-secureline").style.transform = 'translateY(250%)'
+        document.getElementById("card-social").style.transform = 'translateY(150%)'
+        document.getElementById("card-settings").style.transform = 'translateY(150%)'
+        let add = null
+        if (attr.includes("1")) {
+            //item1
+            $("#app2").fadeOut("fast")
+            $("#app3").fadeOut("fast")
+            add = 'app1'
+        } else if (attr.includes("2")) {
+            $("#app1").fadeOut("fast")
+            $("#app3").fadeOut("fast")
+            add = 'app2'
+        } else if (attr.includes("3")) {
+            $("#app1").fadeOut("fast")
+            $("#app2").fadeOut("fast")
+            add = 'app3'
+        }
+        setTimeout(function() {
+            
+            document.getElementById("apps").insertBefore(document.getElementById(add), document.getElementById("apps").firstChild);
+        }, 500)
+
+    } else {
+        const dotElement = document.querySelector('.dot');
+        dotElement.style.animation = null;
+        var imgElement = item.querySelector('img');
+        imgElement.style.borderRadius = null
+        imgElement.overflow = null
+        document.getElementById("gatewayExploreScroll").style.marginTop = '70px'
+        $("#bottomButtonsFocus").fadeOut("fast", function() {
+            $("#bottomButtonsDefault").fadeIn("fast")
+
+        })
+        item.classList.remove('fullscreen');
+        document.body.classList.remove('no-scroll');
+        document.getElementById("gatewayActions").classList.remove("top")
+        document.getElementById("card-secureline").style.transform = null
+        document.getElementById("card-social").style.transform = null
+        document.getElementById("card-settings").style.transform = null
+        setTimeout(function () {
+            if (attr.includes("1")) {
+                //item1
+                $("#app2").fadeIn("fast")
+                $("#app3").fadeIn("fast")
+                add = 'app1'
+            } else if (attr.includes("2")) {
+                $("#app1").fadeIn("fast")
+                $("#app3").fadeIn("fast")
+                add = 'app2'
+            } else if (attr.includes("3")) {
+                $("#app1").fadeIn("fast")
+                $("#app2").fadeIn("fast")
+                add = 'app3'
+            }
+        }, 500)
+
+
+    }
+}
+
+// Optional: Close zoom when clicking outside the image
+//document.addEventListener('click', function (event) {
+//    if (!event.target.closest('.zoomable img')) {
+//        document.querySelectorAll('.zoomable.fullscreen').forEach(el => {
+//            el.classList.remove('fullscreen');
+//        });
+//        document.body.classList.remove('no-scroll');
+//    }
+//});

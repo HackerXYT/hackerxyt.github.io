@@ -14,6 +14,7 @@ function retryLogin() {
         document.getElementById("mainContainer").style.transform = "scale(0.98)"
     }, 500)
 }
+
 const inputElement = document.getElementById('mhCode');
 
 // Check if the input element exists

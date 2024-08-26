@@ -34,25 +34,26 @@
 const STATIC_CACHE_NAME = 'static-cache-v1';
 const APP_CACHE_NAME = 'app-cache-v1';
 const CACHE_STATIC = [
-  '/hologram/',
-  '/hologram/index.html',
-  '/hologram/style.css',
-  '/hologram/apple.png',
-  '/hologram/dc.png',
-  '/hologram/fav.svg',
-  '/hologram/mails.png',
-  '/hologram/nexusEpsilon.png',
-  '/hologram/nexusEpsilonold.png',
-  '/hologram/nexusIMG.png',
-  '/hologram/nexusSLINE.png',
-  '/hologram/nexusTasco.png',
-  '/hologram/notyetloaded.gif',
-  '/hologram/script.js',
-  '/hologram/SFUIText-Medium.ttf',
-  '/hologram/searching_users.gif',
-  '/hologram/sline.png',
-  '/hologram/hologramW.png',
-  '/hologram/arrow-down.svg'
+  "/hologram/",
+  "/hologram/index.html",
+  "/hologram/style.css",
+  "/hologram/apple.png",
+  "/hologram/dc.png",
+  "/hologram/fav.svg",
+  "/hologram/mails.png",
+  "/hologram/nexusEpsilon.png",
+  "/hologram/nexusEpsilonold.png",
+  "/hologram/nexusIMG.png",
+  "/hologram/nexusSLINE.png",
+  "/hologram/nexusTasco.png",
+  "/hologram/notyetloaded.gif",
+  "/hologram/script.js",
+  "/hologram/SFUIText-Medium.ttf",
+  "/hologram/searching_users.gif",
+  "/hologram/sline.png",
+  "/hologram/hologramW.png",
+  "/hologram/arrow-down.svg",
+  "/evox-epsilon-beta/ohNoEvoxError.html" // Ensure this is cached
 ];
 const CACHE_APP = [
   '/hologram/script.js'
@@ -77,44 +78,43 @@ self.addEventListener('install', event => {
 });
 
 // Activate event: Clean up old caches and claim clients
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    Promise.all([
-      self.clients.claim(), // Take control of all clients immediately
-      caches.keys().then(cacheNames => {
-        return Promise.all(
-          cacheNames.map(cacheName => {
-            if (cacheName !== STATIC_CACHE_NAME && cacheName !== APP_CACHE_NAME) {
-              console.log('Deleting old cache:', cacheName);
-              return caches.delete(cacheName);
-            }
-          })
-        );
-      })
-    ])
+self.addEventListener("activate", e => {
+  e.waitUntil(
+      caches.keys().then(keys => {
+          return Promise.all(
+              keys.filter(key => key !== STATIC_CACHE_NAME && key !== APP_CACHE_NAME)
+                  .map(key => {
+                      console.log("Deleting old cache:", key);
+                      return caches.delete(key);
+                  })
+          );
+      }).then(() => self.clients.claim())
   );
 });
 
 // Fetch event: Serve cached content when offline and update cache with network responses
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      if (response) {
-        return response; // Cache hit - return the cached response
-      }
+self.addEventListener("fetch", e => {
+  e.respondWith(
+      caches.match(e.request).then(response => {
+          if (response) {
+              return response;
+          }
 
-      // Fetch from the network and update the cache
-      return fetch(event.request).then(networkResponse => {
-        if (networkResponse && networkResponse.status === 200) {
-          caches.open(STATIC_CACHE_NAME).then(cache => {
-            cache.put(event.request, networkResponse.clone());
+          return fetch(e.request).then(networkResponse => {
+              if (networkResponse && networkResponse.status === 200) {
+                  const responseClone = networkResponse.clone();
+                  caches.open(STATIC_CACHE_NAME).then(cache => {
+                      cache.put(e.request, responseClone).catch(err => {
+                          console.error("Failed to cache the request:", e.request.url, err);
+                      });
+                  });
+              }
+              return networkResponse;
+          }).catch(() => {
+              // Fallback URL for offline scenarios
+              return caches.match("/hologram/ohNoEvoxError.html");
           });
-        }
-        return networkResponse;
-      }).catch(() => {
-        return caches.match('/hologram/nexusEpsilon.png'); // Serve offline page if network fails
-      });
-    })
+      })
   );
 });
 

@@ -66,7 +66,7 @@ html {
   z-index: 1000;
   background: transparent;
   /* Ensures the element stays on top of other content */
-  
+
   /* Initially off-screen to the left */
   transition: background-color 0.2s ease-in-out, backdrop-filter 0.2s ease-in-out, border-radius 0.2s ease-in-out, transform 1s ease;
 }
@@ -124,7 +124,8 @@ html {
   display: block;
   position: absolute;
   left: 50%;
-  width: 0;  /* Initially hidden */
+  width: 0;
+  /* Initially hidden */
   height: 4px;
   background-color: #3566ef;
   /*border-top-left-radius: 5px;*/
@@ -132,7 +133,8 @@ html {
   border-radius: 5px;
   bottom: -10px;
   transform: translateX(-50%);
-  opacity: 0;  /* Initially hidden */
+  opacity: 0;
+  /* Initially hidden */
   transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
@@ -141,8 +143,10 @@ html {
 }
 
 .gatewayActions p.active:before {
-  width: 85%;  /* Expand width when active */
-  opacity: 1;  /* Fade in when active */
+  width: 85%;
+  /* Expand width when active */
+  opacity: 1;
+  /* Fade in when active */
 }
 
 .gatewayActions span {
@@ -158,12 +162,15 @@ html {
   position: relative;
   flex-direction: column;
   margin-top: 70px;
-  transition: transform 0.5s ease-in-out, filter 0.2s ease-in-out;
+  transition: transform 0.5s ease-in-out, filter 0.2s ease-in-out, margin-top 0.5s ease-in-out;
 }
 
 .card {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: transform 0.7s ease-in-out;
 }
+
+
 
 .gatewayExplore .card {
   margin-bottom: 10px;
@@ -231,11 +238,49 @@ html {
   border-radius: 10px;
   margin-left: 10px;
   position: relative;
-  /* Make the parent div a positioned element */
 }
+
 
 .appCarousel .evoxApp.disabled img {
   opacity: 0.3;
+}
+
+
+.zoomable img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.5s ease, opacity 0.5s ease, width 0.5s ease-in-out, height 0.5s ease-in-out, border-radius 0.5s ease-in-out;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.zoomable.fullscreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.zoomable.fullscreen img {
+  position: relative;
+
+  width: 120%;
+  height: 100%;
+
+}
+
+/*position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1.5);
+  width: auto;
+  height: auto;
+  max-width: 269px;
+  z-index: 9999;
+  opacity: 1;*/
+
+body.no-scroll {
+  overflow: hidden;
 }
 
 .evoxApp img {
@@ -321,6 +366,22 @@ html {
 .securelineCarousel .slUser.add img {
   opacity: 0.3;
 }
+
+@keyframes dotAnimation {
+  0% {
+      transform: translate(0, 0);
+      opacity: 1;
+  }
+  50% {
+      transform: translate(-3px, 3px);
+      opacity: 0.5;
+  }
+  100% {
+      transform: translate(0, 0);
+      opacity: 1;
+  }
+}
+
 
 .securelineCarousel .slUser.add svg {
   position: absolute;
@@ -6101,37 +6162,46 @@ input:-webkit-autofill {
   flex-direction: column;
   width: 100%;
 }
+
 .buttonsContainer .option {
   background-color: #242426;
   border-radius: 0;
   width: 100%;
-  height: 50px;  /* Default height */
+  height: 50px;
+  /* Default height */
   display: flex;
   align-items: center;
-  position: relative;  /* Allows positioning of children */
-  padding-bottom: 0;  /* No padding initially */
+  position: relative;
+  /* Allows positioning of children */
+  padding-bottom: 0;
+  /* No padding initially */
   transition: background-color 0.2s ease-in-out, padding 0.2s ease-in-out, height 0.5s ease-in-out;
 }
 
 .buttonsContainer .option.expanded {
-  height: 50px;  /* Adjust as needed to fit the bgBox */
-  padding-bottom: 125px;  /* Add padding for bgBox */
+  height: 50px;
+  /* Adjust as needed to fit the bgBox */
+  padding-bottom: 125px;
+  /* Add padding for bgBox */
 }
 
 .option .bgBox {
   display: flex;
   flex-direction: row;
-  position: absolute;  /* Positioned at the bottom */
+  position: absolute;
+  /* Positioned at the bottom */
   bottom: 0;
-  width: 95%;  /* Full width of the parent */
-  padding: 10px;  /* Optional padding */
+  width: 95%;
+  /* Full width of the parent */
+  padding: 10px;
+  /* Optional padding */
   visibility: hidden;
   opacity: 0;
   justify-content: space-evenly;
   transition: visibility 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
-.buttonsContainer .option.expanded .bgBox{
+.buttonsContainer .option.expanded .bgBox {
   visibility: visible;
   opacity: 1;
 }
@@ -6144,42 +6214,55 @@ input:-webkit-autofill {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative; /* Ensure that the container is relatively positioned */
-  overflow: hidden; /* Hide any overflow from the image */
+  position: relative;
+  /* Ensure that the container is relatively positioned */
+  overflow: hidden;
+  /* Hide any overflow from the image */
 }
 
 .option .bgBox .aBox.current {
   width: 100px;
   height: 100px;
-  border: #00fe77 1px dashed ;
+  border: #00fe77 1px dashed;
   border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative; /* Ensure that the container is relatively positioned */
-  overflow: hidden; /* Hide any overflow from the image */
+  position: relative;
+  /* Ensure that the container is relatively positioned */
+  overflow: hidden;
+  /* Hide any overflow from the image */
 }
 
 .option .bgBox .aBox img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensure the image covers the container */
-  position: absolute; /* Position the image absolutely */
-  top: 0; /* Align the top edge */
-  left: 0; /* Align the left edge */
-  margin: auto; /* Center the image horizontally and vertically */
+  object-fit: cover;
+  /* Ensure the image covers the container */
+  position: absolute;
+  /* Position the image absolutely */
+  top: 0;
+  /* Align the top edge */
+  left: 0;
+  /* Align the left edge */
+  margin: auto;
+  /* Center the image horizontally and vertically */
 }
 
 .option .bgBox .aBox p {
   font-size: 16px;
-  position: absolute; /* Absolutely position the text */
+  position: absolute;
+  /* Absolutely position the text */
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* Center the text */
+  transform: translate(-50%, -50%);
+  /* Center the text */
   text-align: center;
   color: #dbdde3;
-  margin: 0; /* Remove default margin */
-  text-shadow: 0 0 1px rgba(0, 0, 0, 0.5); /* Subtle shadow effect */
+  margin: 0;
+  /* Remove default margin */
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+  /* Subtle shadow effect */
   opacity: 0.7;
 }
 

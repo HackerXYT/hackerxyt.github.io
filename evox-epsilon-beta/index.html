@@ -381,22 +381,27 @@
 
             <!--Cards-->
             <div id="gatewayExploreScroll" class="gatewayExplore">
-                <div class="card">
+                <div id="card-apps" class="card">
                     <div id="apps" class="appCarousel">
-
-                        <div class="evoxApp">
-                            <img src="tascoPoster.png">
+                        <div id="app1" class="evoxApp">
+                            <div id="Zapp1" onclick="animateM(this)" class="zoomable">
+                                <img src="tascoPoster.png" alt="App Image">
+                            </div>
                             <p>App</p>
                         </div>
-                        <div class="evoxApp">
-                            <img src="tascoPoster.png">
+                        <div id="app2" class="evoxApp">
+                            <div id="Zapp2" onclick="animateM(this)" class="zoomable">
+                                <img src="tascoPoster.png" alt="App Image">
+                            </div>
                         </div>
-                        <div class="evoxApp disabled">
-                            <img src="tascoPoster.png">
+                        <div id="app3" class="evoxApp disabled">
+                            <div id="Zapp3" onclick="animateM(this)" class="zoomable">
+                                <img src="tascoPoster.png" alt="App Image">
+                            </div>
                             <p>Locked</p>
                         </div>
                     </div>
-                    <div class="bottomButtons">
+                    <div id="bottomButtonsDefault" class="bottomButtons">
                         <a onclick="bottomButtonPress('library', this)" class="firstChild" href="#library">
                             <svg id="pressAnimationLibrary" xmlns="http://www.w3.org/2000/svg" width="20px"
                                 height="20px" viewBox="0 0 24 24" fill="none">
@@ -419,10 +424,26 @@
                             Add App
                         </a>
                     </div>
+                    <div id="bottomButtonsFocus" class="bottomButtons" style="display: none;">
+                        <a onclick="bottomButtonPress('launch', this)" class="firstChild" href="#launch">
+                            <svg style="transition: transform 1s ease-in-out;" id="launchDisk" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM8 12C8 9.79086 9.79086 8 12 8C12.5523 8 13 7.55228 13 7C13 6.44772 12.5523 6 12 6C8.68629 6 6 8.68629 6 12C6 12.5523 6.44772 13 7 13C7.55228 13 8 12.5523 8 12ZM17 11C17.5523 11 18 11.4477 18 12C18 15.3137 15.3137 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C14.2091 16 16 14.2091 16 12C16 11.4477 16.4477 11 17 11ZM12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10Z" fill="#dbdde3"/>
+                                </svg>
+                            Launch
+                        </a>
+                        <a onclick="bottomButtonPress('edit', this)" href="#edit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C12 20.4477 12.4477 20 13 20H21C21.5523 20 22 20.4477 22 21C22 21.5523 21.5523 22 21 22H13C12.4477 22 12 21.5523 12 21Z" fill="#dbdde3"/>
+                                <path class="dot" fill-rule="evenodd" clip-rule="evenodd" d="M20.7736 8.09994C22.3834 6.48381 22.315 4.36152 21.113 3.06183C20.5268 2.4281 19.6926 2.0233 18.7477 2.00098C17.7993 1.97858 16.8167 2.34127 15.91 3.09985C15.8868 3.11925 15.8645 3.13969 15.8432 3.16111L2.87446 16.1816C2.31443 16.7438 2 17.5051 2 18.2987V19.9922C2 21.0937 2.89197 22 4.00383 22H5.68265C6.48037 22 7.24524 21.6823 7.80819 21.1171L20.7736 8.09994ZM17.2071 5.79295C16.8166 5.40243 16.1834 5.40243 15.7929 5.79295C15.4024 6.18348 15.4024 6.81664 15.7929 7.20717L16.7929 8.20717C17.1834 8.59769 17.8166 8.59769 18.2071 8.20717C18.5976 7.81664 18.5976 7.18348 18.2071 6.79295L17.2071 5.79295Z" fill="#dbdde3"/>
+                            </svg>
+                            
+                            Edit
+                        </a>
+                    </div>
                 </div>
 
 
-                <div class="card">
+                <div id="card-secureline" class="card">
                     <img class="banner" src="securelineBanner.png">
                     <div id="securelineCarousel" class="securelineCarousel">
                         <div class="slUser">
@@ -475,7 +496,7 @@
                     </div>
                 </div>
 
-                <div class="card">
+                <div id="card-social" class="card">
                     <h2>Friends</h2>
                     <div id="socialInfo" class="socialInfo">
                         <div class="socialUser">
@@ -530,7 +551,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="card"> <!--Settings-->
+                <div id="card-settings" class="card"> <!--Settings-->
                     <h2>Settings</h2>
                     <div class="settingsBlocks">
                         <div onclick="settingsOpen('security')" class="settingBlock">
@@ -845,14 +866,13 @@
                 </div>
                 <div class="option">
                     <img src="epsilon-frontend-assets/update.png"><span>Check for updates</span>
-                    <div
-                        style="margin-left: auto;margin-right: 10px;transition: transform 0.5s ease-in-out;">
-                        <svg
-                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#fff"></path>
-                    </svg>
+                    <div style="margin-left: auto;margin-right: 10px;transition: transform 0.5s ease-in-out;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                                fill="#fff"></path>
+                        </svg>
                     </div>
                 </div>
 
@@ -860,31 +880,29 @@
             <div class="buttonsContainer">
                 <div class="option">
                     <img src="epsilon-frontend-assets/offlineMode.png"><span>Offline mode</span>
-                    <div
-                        style="margin-left: auto;margin-right: 10px;transition: transform 0.5s ease-in-out;display: inline-flex;
+                    <div style="margin-left: auto;margin-right: 10px;transition: transform 0.5s ease-in-out;display: inline-flex;
                         align-items: center;
                         vertical-align: middle;">
-                        <span id="offlinemode-status">Standby</span><svg
-                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#fff"></path>
-                    </svg>
+                        <span id="offlinemode-status">Standby</span><svg xmlns="http://www.w3.org/2000/svg" width="20px"
+                            height="20px" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                                fill="#fff"></path>
+                        </svg>
                     </div>
                 </div>
                 <div class="option">
                     <img src="epsilon-frontend-assets/serviceWorker.png"><span>Service Worker</span>
-                    <div
-                        style="margin-left: auto;margin-right: 10px;transition: transform 0.5s ease-in-out;display: inline-flex;
+                    <div style="margin-left: auto;margin-right: 10px;transition: transform 0.5s ease-in-out;display: inline-flex;
                         align-items: center;
                         vertical-align: middle;">
                         <span id="swStatus">Enabled</span>
-                        <svg
-                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#fff"></path>
-                    </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                                fill="#fff"></path>
+                        </svg>
                     </div>
                 </div>
 
