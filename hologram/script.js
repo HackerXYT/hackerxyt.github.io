@@ -15,6 +15,8 @@ function retryLogin() {
     }, 500)
 }
 
+let types = [];
+
 const inputElement = document.getElementById('mhCode');
 
 // Check if the input element exists
@@ -53,9 +55,9 @@ function reqOtp() {
     fetch(`${srv}/otp?username=${document.getElementById("mhUsername").value}&method=request`)
         .then(response => response.text())
         .then(data => {
-            if(data === 'Done') {
+            if (data === 'Done') {
                 document.getElementById("otpReq").style.display = 'none'
-                setTimeout(function() {
+                setTimeout(function () {
                     document.getElementById("otpReq").style.display = ''
                 }, 10000)
             } else {
@@ -63,7 +65,7 @@ function reqOtp() {
             }
         })
         .catch(error => {
-            alert("An otp error occured!",error)
+            alert("An otp error occured!", error)
             console.error(error);
         });
 }
@@ -127,16 +129,16 @@ function onlineMode() {
         root.style.setProperty('--con-type', 'var(--con-type-offline)');
         localStorage.removeItem("online-mode")
         localStorage.setItem("srv", "http://192.168.1.126:4000")
-        setTimeout(function() {
+        setTimeout(function () {
             window.location.reload()
         }, 800)
-        
+
     } else {
         const root = document.documentElement;
         root.style.setProperty('--con-type', 'var(--con-type-online)');
         localStorage.setItem("online-mode", "true")
         localStorage.setItem("srv", "https://data.evoxs.xyz")
-        setTimeout(function() {
+        setTimeout(function () {
             window.location.reload()
         }, 800)
     }
@@ -249,7 +251,15 @@ if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
                 loadStories()
             }).catch(error => {
                 // Handle errors
-                alert('getTypes rejected', error);
+                if(localStorage.getItem("types")) {
+                    const data = JSON.parse(localStorage.getItem("types"))
+                    types = data
+                    loadStories()
+                }
+                
+                
+                
+                //alert('getTypes rejected', error);
                 console.error('Error:', error);
             });
     } else {
@@ -338,8 +348,8 @@ function loadImageFromIndexedDB(imageName) {
 }
 
 
-
-
+let postCount = 0
+let loaded = []
 function dbload() {
     fetch(`${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&method=getIDs`, {
         method: 'GET',
@@ -349,9 +359,10 @@ function dbload() {
     })
         .then(response => response.json())
         .then(data => {
+            localStorage.setItem("getIds", JSON.stringify(data))
             const numberOfValues = data.length;
             //const numberOfValues = 50
-
+            postCount = numberOfValues
             data.sort((a, b) => {
                 // Extract the numeric part of the filenames
                 let numA = parseInt(a.match(/\d+/)[0]);
@@ -393,6 +404,8 @@ function dbload() {
                 loadImageFromIndexedDB(`image${number}.png`).then(imageSrc => {
                     console.log("Image Found! Loading From IndexedDB");
                     img.src = imageSrc; // Set image source to Blob URL from IndexedDB
+                    loaded.push(`image${number}.png`)
+                    refreshPercent()
                 }).catch(error => {
                     console.log("Image not found in IndexedDB, loading from network", error);
 
@@ -410,6 +423,8 @@ function dbload() {
                         cacheImage(URL.createObjectURL(blob), `image${number}.png`);
                         const blobUrl = URL.createObjectURL(blob); // Create a Blob URL
                         img.src = blobUrl
+                        loaded.push(`image${number}.png`)
+                        refreshPercent()
                     }).catch(fetchError => {
                         console.error('Error fetching or caching image:', fetchError);
                     });
@@ -474,14 +489,176 @@ function dbload() {
         })
         .catch(error => {
             // Handle errors
-            alert('getIds Failed:', error);
+            //alert('getIds Failed:', error);
+            const data_b = localStorage.getItem("getIds")
+            if (data_b) {
+                const data = JSON.parse(data_b)
+                const numberOfValues = data.length;
+                //const numberOfValues = 50
+                postCount = numberOfValues
+                data.sort((a, b) => {
+                    // Extract the numeric part of the filenames
+                    let numA = parseInt(a.match(/\d+/)[0]);
+                    let numB = parseInt(b.match(/\d+/)[0]);
+
+                    // Compare the numeric parts
+                    return numA - numB;
+                });
+
+                const container = document.getElementById("images-container");
+                container.innerHTML = ""; // Clear the container once before the loop
+
+                //setTimeout(function () {
+                //    const transparent = document.createElement("div");
+                //    transparent.className = "transparent-placeholder";
+                //    container.appendChild(transparent);
+                //}, 800);
+                data.forEach(value => {
+                    let number = value.match(/\d+/)[0];
+                    ////console.log("num:", number);
+
+                    // Create and append the transparent placeholder
+
+
+                    // Create and append the image element
+                    const div = document.createElement("div");
+                    div.className = `image`;
+                    div.id = `item${number}`;
+
+                    // Create an img element
+                    const img = document.createElement("img");
+                    img.alt = `Image ${number}`;
+                    img.id = `img${number}`;
+
+                    // Set initial placeholder src
+                    img.src = "searching_users.gif";
+                    const imageName = `image${number}.png`;
+                    // Attempt to load the image from IndexedDB
+                    loadImageFromIndexedDB(`image${number}.png`).then(imageSrc => {
+                        console.log("Image Found! Loading From IndexedDB");
+                        img.src = imageSrc; // Set image source to Blob URL from IndexedDB
+                        loaded.push(`image${number}.png`)
+                        refreshPercent()
+                    }).catch(error => {
+                        console.log("Image not found in IndexedDB, loading from network", error);
+
+                        // Fallback to network URL
+                        img.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+
+                        // Fetch and cache the image
+                        fetch(img.src).then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.blob(); // Get the image as a Blob
+                        }).then(blob => {
+                            // Cache the image in IndexedDB
+                            cacheImage(URL.createObjectURL(blob), `image${number}.png`);
+                            const blobUrl = URL.createObjectURL(blob); // Create a Blob URL
+                            img.src = blobUrl
+                            loaded.push(`image${number}.png`)
+                            refreshPercent()
+                        }).catch(fetchError => {
+                            console.error('Error fetching or caching image:', fetchError);
+                        });
+                    })
+                    //img.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+
+                    img.onclick = function () {
+                        selected = number
+                    }
+
+                    const vo = document.createElement("vo");
+                    vo.innerHTML = `<svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M11.993 5.09691C11.0387 4.25883 9.78328 3.75 8.40796 3.75C5.42122 3.75 3 6.1497 3 9.10988C3 10.473 3.50639 11.7242 4.35199 12.67L12 20.25L19.4216 12.8944L19.641 12.6631C20.4866 11.7172 21 10.473 21 9.10988C21 6.1497 18.5788 3.75 15.592 3.75C14.2167 3.75 12.9613 4.25883 12.007 5.09692L12 5.08998L11.993 5.09691ZM12 7.09938L12.0549 7.14755L12.9079 6.30208L12.9968 6.22399C13.6868 5.61806 14.5932 5.25 15.592 5.25C17.763 5.25 19.5 6.99073 19.5 9.10988C19.5 10.0813 19.1385 10.9674 18.5363 11.6481L18.3492 11.8453L12 18.1381L5.44274 11.6391C4.85393 10.9658 4.5 10.0809 4.5 9.10988C4.5 6.99073 6.23699 5.25 8.40796 5.25C9.40675 5.25 10.3132 5.61806 11.0032 6.22398L11.0921 6.30203L11.9452 7.14752L12 7.09938Z"
+                            fill="#fff" />
+                    </svg>`
+                    vo.onclick = function () {
+                        alert("Clicked!")
+                    }
+
+                    if (info) {
+                        const imageKey = `image${number}.png`;
+                        const imageInfo = info[imageKey];
+
+                        if (imageInfo && imageInfo.favorite === true) {
+                            vo.style.display = 'block'; // Adjust the display style as needed
+                        } else {
+                            console.log(`image${number}.png -> ${imageInfo ? imageInfo.favorite : 'undefined'}`);
+                        }
+                    } else {
+                        console.error("info is undefined or null", info);
+                    }
+
+
+                    div.appendChild(img);
+                    div.appendChild(vo)
+                    container.appendChild(div);
+
+                    function setItemHeight(imgId, itemId) {
+                        const img = document.getElementById(imgId);
+                        if (img) { // Check if the image element exists
+                            img.onload = function () {
+                                const height = img.offsetHeight;
+                                document.getElementById(itemId).style.height = `${height}px`;
+                            };
+                        } else {
+                            console.error(`Image with id ${imgId} not found.`);
+                        }
+                    }
+
+                });
+
+
+                if (numberOfValues === 0) {
+                    console.log("No images loaded", `${srv}/images-database?password=[atob]&method=getIDs`);
+                } else {
+                    fullSc()
+                }
+                document.getElementById("footer").style.display = ""
+            }
             console.error('Error:', error);
         });
 
 
 
 }
-//
+
+function refreshPercent() {
+    document.getElementById("loadPercent").style.opacity = '1'
+    // Check if postCount and loaded are defined and valid
+    if (typeof postCount !== 'number' || postCount <= 0) {
+        console.error("Invalid postCount value");
+        return;
+    }
+
+    if (!Array.isArray(loaded)) {
+        console.error("Invalid loaded value");
+        return;
+    }
+
+    const currentLoad = loaded.length;
+    console.log(`currentLoad: ${currentLoad}, postCount: ${postCount}`);
+
+    // Calculate the percentage
+    const loadedPercent = (100 * currentLoad) / postCount;
+
+    // Cap the percentage at 100%
+    const cappedPercent = Math.min(loadedPercent, 100);
+
+    // Round the percentage to the nearest whole number
+    const roundedPercent = Math.round(cappedPercent);
+
+    // Display the percentage in the element with id "loadPercent"
+    document.getElementById("loadPercent").innerHTML = `${roundedPercent}%`;
+    if (roundedPercent === 100) {
+        setTimeout(function () {
+            document.getElementById("loadPercent").style.opacity = '0'
+            loaded = []
+        }, 900)
+    }
+}
 
 function begin() {
     fetch(`${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&method=getInfo`, {
@@ -798,18 +975,12 @@ function getRandomValue(arr) {
     const randomIndex = Math.floor(Math.random() * arr.length);
     return arr[randomIndex];
 }
-let types = [];
-
-
-
-//
 
 
 let start = 0
 function loadStories() {
     console.log(types)
     types.forEach((type) => {
-
         fetch(`${srv}/images-database?method=getByType&password=${atob(localStorage.getItem("t50pswd"))}&format=${type}`, {
             method: 'GET',
             headers: {
@@ -819,7 +990,6 @@ function loadStories() {
             .then(response => response.json())
             .then(data => {
                 localStorage.setItem(`type${type}`, JSON.stringify(data))
-
                 const iconPfp = getRandomValue(data);
                 let number = iconPfp.match(/\d+/)[0];
                 start = start + 1;
@@ -882,6 +1052,9 @@ function loadStories() {
                     document.getElementById(`op${start}`).innerText = `${type}`
 
                     const imageElement = document.getElementById(`u${start}`);
+                    imageElement.onclick = function () {
+                        showStory(type)
+                    }
                     //imageElement.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
                     imageElement.src = "searching_users.gif";
                     const imageName = `image${number}.png`;
@@ -889,6 +1062,7 @@ function loadStories() {
                     loadImageFromIndexedDB(`image${number}.png`).then(imageSrc => {
                         console.log("Image Found! Loading From IndexedDB");
                         imageElement.src = imageSrc; // Set image source to Blob URL from IndexedDB
+                        imageElement.alt = type
                     }).catch(error => {
                         console.log("Image not found in IndexedDB, loading from network", error);
 
@@ -1228,8 +1402,9 @@ function showStory(what) {
             init(data)
 
         }).catch(error => {
+            alert("Debug showStory failed. Loading from storage")
             init(JSON.parse(localStorage.getItem(`getByType${what}`)))
-            console.error("Error fetching data:", error);
+            console.error("Error fetching data for showStory:", error);
         });
 }
 
