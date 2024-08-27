@@ -172,7 +172,8 @@
     <div id="mainContainer" class="container">
         <h2 class="title" style="margin-top: 0;"><img src="hologramW.png" height="15px"><img
                 onclick="alert('Hologram Reloading..');window.location.reload()" src='arrow-down.svg'
-                style="vertical-align: middle;width: 20px;height: 20px;"><span id="loadPercent" style="margin-left: auto;float: right;transition: opacity 0.5s ease-in-out">0%</span></h2>
+                style="vertical-align: middle;width: 20px;height: 20px;"><span id="loadPercent"
+                style="margin-left: auto;float: right;transition: opacity 0.5s ease-in-out">0%</span></h2>
         <div class="stories">
 
             <div onclick="onlineMode()" class="user me">
@@ -221,7 +222,7 @@
                 Send
             </div>
         </div>
-        <p class="title">Posts</p>
+        <p class="title">You might like</p>
         <div class="gallery" id="images-container">
             <div class="image">
                 <img src="apple.png">
@@ -282,8 +283,165 @@
             </div>
         </div>
     </div>
+    <div style="display: none;" id="lock">
+        <img src="hologramW.png" height="25px">
+        <p>Enter your PIN code below.</p>
+
+        <div id="pin-input" class="pin-input">
+            <svg id="PINload" style="display: none;" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" width="25px"
+                height="25px" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                <path fill="#dedede"
+                    d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                    <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                        to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                </path>
+            </svg>
+            <div id="PINdots">
+                <span id="ps1"></span>
+                <span id="ps2"></span>
+                <span id="ps3"></span>
+                <span id="ps4"></span>
+            </div>
+
+        </div>
+        <div class="pin-pad">
+            <button onclick="clickPIN(this)">1</button>
+            <button onclick="clickPIN(this)">2</button>
+            <button onclick="clickPIN(this)">3</button>
+            <button onclick="clickPIN(this)">4</button>
+            <button onclick="clickPIN(this)">5</button>
+            <button onclick="clickPIN(this)">6</button>
+            <button onclick="clickPIN(this)">7</button>
+            <button onclick="clickPIN(this)">8</button>
+
+            <button onclick="clickPIN(this)">9</button>
+            <button class="delete-button" style="background: transparent;"></button>
+
+
+            <button onclick="clickPIN(this)">0</button><button onclick="deletePIN()" class="delete-button"
+                style="background: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                    viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M12.0004 9.5L17.0004 14.5M17.0004 9.5L12.0004 14.5M4.50823 13.9546L7.43966 17.7546C7.79218 18.2115 7.96843 18.44 8.18975 18.6047C8.38579 18.7505 8.6069 18.8592 8.84212 18.9253C9.10766 19 9.39623 19 9.97336 19H17.8004C18.9205 19 19.4806 19 19.9084 18.782C20.2847 18.5903 20.5907 18.2843 20.7824 17.908C21.0004 17.4802 21.0004 16.9201 21.0004 15.8V8.2C21.0004 7.0799 21.0004 6.51984 20.7824 6.09202C20.5907 5.71569 20.2847 5.40973 19.9084 5.21799C19.4806 5 18.9205 5 17.8004 5H9.97336C9.39623 5 9.10766 5 8.84212 5.07467C8.6069 5.14081 8.38579 5.2495 8.18975 5.39534C7.96843 5.55998 7.79218 5.78846 7.43966 6.24543L4.50823 10.0454C3.96863 10.7449 3.69883 11.0947 3.59505 11.4804C3.50347 11.8207 3.50347 12.1793 3.59505 12.5196C3.69883 12.9053 3.96863 13.2551 4.50823 13.9546Z"
+                        stroke="#dedede" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg></button>
+        </div>
+        <div class="version">Evox Epsilon. All rights reserved.</div>
+    </div>
+    <div id="nav-container" class="nav-container">
+        <div onclick="navigate(this)" id="discover" class="nav-item active">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M10 8C10 4.68629 12.6863 2 16 2C19.3137 2 22 4.68629 22 8C22 11.3137 19.3137 14 16 14C12.6863 14 10 11.3137 10 8Z"
+                    fill="#dcdcdc" />
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M2 15.5C2 13.0147 4.01472 11 6.5 11C8.98528 11 11 13.0147 11 15.5C11 17.9853 8.98528 20 6.5 20C4.01472 20 2 17.9853 2 15.5Z"
+                    fill="#dcdcdc" />
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M13 18.5C13 16.567 14.567 15 16.5 15C18.433 15 20 16.567 20 18.5C20 20.433 18.433 22 16.5 22C14.567 22 13 20.433 13 18.5Z"
+                    fill="#dcdcdc" />
+            </svg>
+        </div>
+        <div onclick="navigate(this)" class="nav-item" id="files">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M5.41959 3.23866C6.23018 3.05852 7.19557 3 8.312 3H9.92963C10.9327 3 11.8694 3.5013 12.4258 4.3359L13.2383 5.5547C13.4238 5.83288 13.736 6 14.0704 6H19.1258C20.7233 6 22.0181 7.26115 22.0029 8.8852C21.9847 10.8192 22 12.7539 22 14.688C22 15.8044 21.9415 16.7698 21.7613 17.5804C21.5787 18.4024 21.2579 19.1251 20.6915 19.6915C20.1251 20.2579 19.4024 20.5787 18.5804 20.7613C17.7698 20.9415 16.8044 21 15.688 21H8.312C7.19557 21 6.23018 20.9415 5.41959 20.7613C4.59764 20.5787 3.87488 20.2579 3.30848 19.6915C2.74209 19.1251 2.42133 18.4024 2.23866 17.5804C2.05852 16.7698 2 15.8044 2 14.688V9.312C2 8.19557 2.05852 7.23018 2.23866 6.41959C2.42133 5.59764 2.74209 4.87488 3.30848 4.30848C3.87488 3.74209 4.59764 3.42133 5.41959 3.23866Z"
+                    fill="#dcdcdc" />
+            </svg>
+        </div>
+        <div onclick="navigate(this)" class="nav-item" id="account">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M14.2788 2.15224C13.9085 2 13.439 2 12.5 2C11.561 2 11.0915 2 10.7212 2.15224C10.2274 2.35523 9.83509 2.74458 9.63056 3.23463C9.53719 3.45834 9.50065 3.7185 9.48635 4.09799C9.46534 4.65568 9.17716 5.17189 8.69017 5.45093C8.20318 5.72996 7.60864 5.71954 7.11149 5.45876C6.77318 5.2813 6.52789 5.18262 6.28599 5.15102C5.75609 5.08178 5.22018 5.22429 4.79616 5.5472C4.47814 5.78938 4.24339 6.1929 3.7739 6.99993C3.30441 7.80697 3.06967 8.21048 3.01735 8.60491C2.94758 9.1308 3.09118 9.66266 3.41655 10.0835C3.56506 10.2756 3.77377 10.437 4.0977 10.639C4.57391 10.936 4.88032 11.4419 4.88029 12C4.88026 12.5581 4.57386 13.0639 4.0977 13.3608C3.77372 13.5629 3.56497 13.7244 3.41645 13.9165C3.09108 14.3373 2.94749 14.8691 3.01725 15.395C3.06957 15.7894 3.30432 16.193 3.7738 17C4.24329 17.807 4.47804 18.2106 4.79606 18.4527C5.22008 18.7756 5.75599 18.9181 6.28589 18.8489C6.52778 18.8173 6.77305 18.7186 7.11133 18.5412C7.60852 18.2804 8.2031 18.27 8.69012 18.549C9.17714 18.8281 9.46533 19.3443 9.48635 19.9021C9.50065 20.2815 9.53719 20.5417 9.63056 20.7654C9.83509 21.2554 10.2274 21.6448 10.7212 21.8478C11.0915 22 11.561 22 12.5 22C13.439 22 13.9085 22 14.2788 21.8478C14.7726 21.6448 15.1649 21.2554 15.3694 20.7654C15.4628 20.5417 15.4994 20.2815 15.5137 19.902C15.5347 19.3443 15.8228 18.8281 16.3098 18.549C16.7968 18.2699 17.3914 18.2804 17.8886 18.5412C18.2269 18.7186 18.4721 18.8172 18.714 18.8488C19.2439 18.9181 19.7798 18.7756 20.2038 18.4527C20.5219 18.2105 20.7566 17.807 21.2261 16.9999C21.6956 16.1929 21.9303 15.7894 21.9827 15.395C22.0524 14.8691 21.9088 14.3372 21.5835 13.9164C21.4349 13.7243 21.2262 13.5628 20.9022 13.3608C20.4261 13.0639 20.1197 12.558 20.1197 11.9999C20.1197 11.4418 20.4261 10.9361 20.9022 10.6392C21.2263 10.4371 21.435 10.2757 21.5836 10.0835C21.9089 9.66273 22.0525 9.13087 21.9828 8.60497C21.9304 8.21055 21.6957 7.80703 21.2262 7C20.7567 6.19297 20.522 5.78945 20.2039 5.54727C19.7799 5.22436 19.244 5.08185 18.7141 5.15109C18.4722 5.18269 18.2269 5.28136 17.8887 5.4588C17.3915 5.71959 16.7969 5.73002 16.3099 5.45096C15.8229 5.17191 15.5347 4.65566 15.5136 4.09794C15.4993 3.71848 15.4628 3.45833 15.3694 3.23463C15.1649 2.74458 14.7726 2.35523 14.2788 2.15224ZM12.5 15C14.1695 15 15.5228 13.6569 15.5228 12C15.5228 10.3431 14.1695 9 12.5 9C10.8305 9 9.47716 10.3431 9.47716 12C9.47716 13.6569 10.8305 15 12.5 15Z"
+                    fill="#dcdcdc" />
+            </svg>
+        </div>
+
+    </div>
+    <div class="files-container" id="files-container">
+        <h3>Your files
+            <span style="
+  margin-left: auto;
+  float: right;
+  background-color: transparent;
+  border: red 1px solid;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 0;
+  line-height: 40px; /* Adjust line-height to match height for perfect vertical centering */
+" id="files-count">0</span>
+        </h3>
+        <p>View your offline hologram data</p>
+        <div id="files-list" class="files-list">
+            <!--File items will spawn here-->
+        </div>
+
+    </div>
+
+    <div class="account-container" id="account-container">
+        <div id="main_settings">
+            <h2 class="title" style="margin-top: 0;padding-left: 30px;"><img src="hologramW.png" height="15px"></h2>
+            <h2 style="padding-left: 30px;">Settings</h2>
+    
+            <div class="userProfile">
+                <div class="icon">
+                    <img src="sline.png">
+                </div>
+                <div class="info">
+                    <p id="accname">None</p>
+                    <span id="accemail">Error</span>
+                </div>
+            </div>
+            <div class="settings">
+                <div onclick="setupPin()" class="settings-item">
+                    PIN<span><vox id="pin-status">No</vox><img src='arrow-down.svg'
+                            style="vertical-align: middle;width: 20px;height: 20px;transform: rotate(-90deg);"></span>
+                </div>
+                <div class="settings-item">
+                    Service Worker<span><vox id="sw-status">No</vox><img src='arrow-down.svg'
+                            style="vertical-align: middle;width: 20px;height: 20px;transform: rotate(-90deg);"></span>
+                </div>
+                <div class="settings-item">
+                    Local Database<span><vox id="indexdb-status">No</vox><img src='arrow-down.svg'
+                            style="vertical-align: middle;width: 20px;height: 20px;transform: rotate(-90deg);"></span>
+                </div>
+            </div>
+        </div>
+        <div id="setupPin" style="display: none;">
+            <h3 style="text-align: center;">Pin Settings</h3>
+            <div class="setups">
+                <div class="setups-item">
+                    Status<span id="pin-status-set">Unset</span>
+                </div>
+                <div class="input-container">
+                    <input id="holosetpin" type="text" 
+                           pattern="\d{4}"
+                           inputmode="decimal"
+                           placeholder="Enter your 4-digit PIN here." 
+                           maxlength="4" 
+                           title="PIN must be 4 digits" 
+                           oninput="validatePIN(this)">
+                    <div id="info-div" class="info-div">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M11 4C10.4477 4 10 4.44772 10 5V8H15.0658C15.9523 7.99995 16.7161 7.99991 17.3278 8.08215C17.9833 8.17028 18.6117 8.36902 19.1213 8.87868C19.631 9.38835 19.8297 10.0167 19.9179 10.6722C20.0001 11.2839 20.0001 12.0477 20 12.9342V17.0658C20.0001 17.9523 20.0001 18.7161 19.9179 19.3278C19.8297 19.9833 19.631 20.6117 19.1213 21.1213C18.6117 21.631 17.9833 21.8297 17.3278 21.9179C16.7161 22.0001 15.9523 22.0001 15.0658 22H8.93414C8.04767 22.0001 7.28387 22.0001 6.67222 21.9179C6.0167 21.8297 5.38835 21.631 4.87869 21.1213C4.36902 20.6117 4.17028 19.9833 4.08215 19.3278C3.99991 18.7161 3.99995 17.9523 4 17.0658V12.9342C3.99995 12.0477 3.99991 11.2839 4.08215 10.6722C4.17028 10.0167 4.36902 9.38835 4.87869 8.87868C5.38835 8.36902 6.0167 8.17028 6.67222 8.08214C7.05704 8.03041 7.50208 8.01124 8.00001 8.00415V5C8.00001 3.34315 9.34316 2 11 2H13.0625C14.6848 2 16 3.31516 16 4.9375V5C16 5.55228 15.5523 6 15 6C14.4477 6 14 5.55228 14 5V4.9375C14 4.41973 13.5803 4 13.0625 4H11ZM12 13C10.8954 13 10 13.8954 10 15C10 16.1046 10.8954 17 12 17C13.1046 17 14 16.1046 14 15C14 13.8954 13.1046 13 12 13Z" fill="#dcdcdc"/>
+                            </svg>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+
+    </div>
 
 </body>
+<script src="../scripts/jquery-3.7.0.js"></script>
 <script src="script.js"></script>
 
 </html>

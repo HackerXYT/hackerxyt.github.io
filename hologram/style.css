@@ -11,7 +11,9 @@ body {
     /* Remove default margin */
     padding: 0;
     /* Remove default padding */
+    touch-action: manipulation;
 }
+
 :root {
     --con-type-online: rgb(255, 0, 0);
     --con-type-offline: rgb(0, 136, 255);
@@ -24,7 +26,7 @@ body {
     padding: 20px;
     box-sizing: border-box;
     /* Include padding within the width */
-    transition: transform 1s ease-in-out;
+    transition: transform 0.7s ease-in-out;
 }
 
 .stories {
@@ -36,6 +38,7 @@ body {
     overflow-y: hidden;
     /* Prevent horizontal scrolling for the container */
 }
+
 .stories .user {
     display: flex;
     position: relative;
@@ -51,7 +54,8 @@ body {
     flex-shrink: 0;
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
-    position: relative; /* Ensure positioning for the pseudo-element */
+    position: relative;
+    /* Ensure positioning for the pseudo-element */
 }
 
 .stories::-webkit-scrollbar {
@@ -77,8 +81,10 @@ body {
 
 .stories .user.me {
     background: transparent;
-    border: none; /* Remove the border to use the pseudo-element for the effect */
-    position: relative; /* Ensure positioning for the pseudo-element */
+    border: none;
+    /* Remove the border to use the pseudo-element for the effect */
+    position: relative;
+    /* Ensure positioning for the pseudo-element */
 }
 
 .stories .user.me::before {
@@ -98,6 +104,7 @@ body {
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
@@ -120,12 +127,12 @@ body {
     padding-top: 0;
     width: 100%;
     display: flex;
+    /*flex-wrap: wrap;  Allow items to wrap to the next line */
     flex-direction: row;
     overflow-x: auto;
-    /* Enable horizontal scrolling */
-    white-space: nowrap;
-    /* Prevent wrapping of child elements */
     padding-bottom: 5px;
+    gap: 5px; /* Add some space between the genres */
+    justify-content: flex-start; /* Align items to the start of the container */
 }
 
 .filter::-webkit-scrollbar {
@@ -147,7 +154,6 @@ body {
 .filter .option {
     display: inline-block;
     /* Ensure options align in a row */
-    margin-right: 10px;
     padding: 10px;
     color: #ffffffcd;
     background-color: #17412600;
@@ -301,7 +307,8 @@ body {
     height: 100vh;
     object-fit: cover;
     transition: transform 0.5s ease, top 0.5s ease, left 0.5s ease;
-    z-index: 999; /* Ensure it's above other content */
+    z-index: 999;
+    /* Ensure it's above other content */
 }
 
 .fullscreen-zoom.active {
@@ -450,6 +457,7 @@ body {
     /* Transition for sliding effect, opacity, and visibility */
     overflow: hidden;
 }
+
 .topIndicators {
     display: flex;
     flex-direction: row;
@@ -457,17 +465,23 @@ body {
     top: 10px;
     left: 0;
     width: 100%;
-    padding: 0 10px; /* Optional: Add padding to prevent touching the edges */
-    box-sizing: border-box; /* Ensure padding is included in the width calculation */
+    padding: 0 10px;
+    /* Optional: Add padding to prevent touching the edges */
+    box-sizing: border-box;
+    /* Ensure padding is included in the width calculation */
 }
 
 .progress-container {
-    flex: 1; /* Make each progress bar take equal space */
-    height: 4px; /* Height of each progress bar */
-    background-color: #2d2d2d; /* Background color of the progress container */
+    flex: 1;
+    /* Make each progress bar take equal space */
+    height: 4px;
+    /* Height of each progress bar */
+    background-color: #2d2d2d;
+    /* Background color of the progress container */
     border-radius: 4px;
     overflow: hidden;
-    margin: 0 1px; /* Small margin to create space between progress bars */
+    margin: 0 1px;
+    /* Small margin to create space between progress bars */
     position: relative;
 }
 
@@ -476,8 +490,10 @@ body {
     top: 0;
     left: 0;
     height: 100%;
-    background-color: #ffffff; /* Color of the progress bar */
-    width: 0%; /* Start with 0 width */
+    background-color: #ffffff;
+    /* Color of the progress bar */
+    width: 0%;
+    /* Start with 0 width */
     border-radius: 1px;
 }
 
@@ -489,6 +505,7 @@ body {
     from {
         width: 0%;
     }
+
     to {
         width: 100%;
     }
@@ -506,7 +523,7 @@ body {
 .imgF img {
     width: 100%;
     height: 100%;
-    object-fit:cover;
+    object-fit: cover;
 }
 
 .bottomIndicators {
@@ -516,7 +533,8 @@ body {
 }
 
 .circle {
-    background: rgba(45, 45, 45, 0.782); /* Transparent black background */
+    background: rgba(45, 45, 45, 0.782);
+    /* Transparent black background */
     width: 50px;
     height: 50px;
     padding: 5px;
@@ -525,4 +543,478 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+
+#lock {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    height: 100vh;
+    background-color: #04061a;
+}
+
+#lock h1 {
+    color: #dedede;
+    font-size: 24px;
+    margin-bottom: 8px;
+
+}
+
+#lock p {
+    font-size: 14px;
+    color: #babec1;
+    margin-bottom: 32px;
+}
+
+.pin-input {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+
+.pin-input span {
+    width: 5px;
+    height: 5px;
+    margin: 0 4px;
+    background-color: #dedede;
+    border-radius: 50%;
+    display: inline-block;
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.pin-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    justify-content: center;
+}
+
+.pin-pad button {
+    width: 64px;
+    height: 64px;
+    font-size: 24px;
+    background-color: #cecece;
+    border: none;
+    color: #000;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.pin-pad button:active {
+    background-color: #888888;
+}
+
+.delete-button {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.version {
+    position: fixed;
+    bottom: 20px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.pin-pad .invisible-button {
+    background-color: transparent;
+    border: none;
+    cursor: default;
+    pointer-events: none;
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    10% {
+        transform: translate(-10px, 0);
+    }
+
+    20% {
+        transform: translate(10px, 0);
+    }
+
+    30% {
+        transform: translate(-10px, 0);
+    }
+
+    40% {
+        transform: translate(10px, 0);
+    }
+
+    50% {
+        transform: translate(-10px, 0);
+    }
+
+    60% {
+        transform: translate(10px, 0);
+    }
+
+    70% {
+        transform: translate(-10px, 0);
+    }
+
+    80% {
+        transform: translate(10px, 0);
+    }
+
+    90% {
+        transform: translate(-10px, 0);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+.shake {
+    animation-name: shake;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+}
+.nav-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 200px;
+    background-color: #323232;
+    border: #2c2d2e 2px solid;
+    border-radius: 50px;
+    height: 60px;
+    box-shadow: 0 0 10px rgba(20, 20, 20, 0.628);
+    z-index: 9999;
+}
+
+.nav-item svg {
+    height: 30px;
+    width: 30px;
+}
+.nav-item.active {
+    background-color: #806bf6;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px 5px rgba(128, 107, 246, 0.3); /* Glow effect */
+}
+.nav-item {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.5s ease-in-out, border-radius 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+}
+
+
+.files-container {
+    font-family: "SF";
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    /* Change from 'visible' to 'auto' */
+    scroll-behavior: smooth;
+    touch-action: auto;
+    background: transparent;
+
+    /* Semi-transparent black overlay */
+    box-sizing: border-box;
+    /* Include padding in the element's total width and height */
+    color: white;
+    opacity: 1;
+    /* Initially hidden */
+    visibility: hidden;
+    /* Initially hidden */
+    transform: translateX(120%);
+    /* Initially off-screen to the left */
+    transition: transform 0.6s ease-in-out, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out;
+    overflow: auto;
+}
+
+.files-container.active {
+    opacity: 1;
+    /* Show the popup */
+    visibility: visible;
+    /* Show the popup */
+    transform: translateX(0);
+    /* Slide the popup into view */
+}
+
+.files-container h3 {
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 25px;
+    font-weight: 0;
+}
+
+.files-container p {
+    margin:0;
+}
+
+.files-list {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 20px;
+}
+
+.files-list .fileitem{
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    background-color: #3929675c;
+    border-radius: 20px;
+    vertical-align: middle;
+    margin-bottom: 10px;
+}
+
+.files-list .fileitem .icon{
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2c2c2c;
+}
+
+.files-list>*:last-child {
+    margin-bottom: 90px;
+    /* Adjust as needed */
+  }
+  
+
+.files-list .fileitem .icon svg{
+    justify-content: center;
+    align-items: center;
+}
+.files-list .fileitem .infoCont {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Aligns content vertically */
+    align-items: flex-start; /* Aligns content to the left */
+    margin-left: 10px;
+}
+
+.files-list .fileitem .infoCont p {
+    margin-left: 0; 
+    text-align: left;
+    font-size: 16px;
+}
+
+
+.files-list .fileitem .infoCont span {
+    margin-left: 0;
+    text-align: left;
+    font-size: 14px;
+}
+
+.account-container {
+    font-family: "SF";
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* Change from 'visible' to 'auto' */
+    scroll-behavior: smooth;
+    touch-action: auto;
+    background: transparent;
+    padding-left: 0px;
+    padding-top: 30px;
+    padding-right: 10px;
+
+    /* Semi-transparent black overlay */
+    box-sizing: border-box;
+    /* Include padding in the element's total width and height */
+    color: white;
+    opacity: 1;
+    /* Initially hidden */
+    visibility: hidden;
+    /* Initially hidden */
+    transform: translateX(120%);
+    /* Initially off-screen to the left */
+    transition: transform 0.6s ease-in-out, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out;
+    overflow: auto;
+}
+
+.account-container.active {
+    opacity: 1;
+    /* Show the popup */
+    visibility: visible;
+    /* Show the popup */
+    transform: translateX(0);
+    /* Slide the popup into view */
+}
+
+
+.settings {
+    padding: 30px;
+}
+
+.settings-item {
+    width: 95%;
+    background-color: #2c2c2c71;
+    padding: 15px;
+    vertical-align: middle;
+}
+
+.settings-item span {
+    margin-left: auto;
+    float: right;
+    vertical-align: middle;
+}
+
+/* Apply border-radius to the first and last .settings-item within .settings */
+.settings .settings-item:first-child {
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}
+
+.settings .settings-item:last-child {
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+.userProfile {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    border-radius: 20px;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    padding-left: 30px;
+
+}
+
+.userProfile .icon {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2c2c2c;
+}
+
+
+.userProfile .icon img {
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #2c2c2c;
+}
+
+.userProfile .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Aligns content vertically */
+    align-items: flex-start;
+    /* Aligns content to the left */
+    margin-left: 10px;
+}
+
+.userProfile .info p {
+    margin-left: 0;
+    margin: 0;
+    text-align: left;
+    font-size: 19px;
+}
+
+
+.userProfile .info span {
+    margin-left: 0;
+    margin: 0;
+    text-align: left;
+    font-size: 14px;
+}
+
+.input-container {
+    width: 95%;
+    background-color: #2c2c2c71;
+    padding: 15px;
+    margin: 0 auto;
+    vertical-align: middle;
+    border-radius: 1rem; /* Rounded corners for the entire input container */
+    position: relative; /* Ensure the container is positioned relatively */
+    display: inline-block;
+}
+
+/* Style for the input field itself */
+.input-container input {
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: none;
+    background-color: transparent; /* Slightly darker background for the input field */
+    color: #fff; /* Text color */
+    box-sizing: border-box;
+}
+
+/* Style for the input field placeholder text */
+.input-container input::placeholder {
+    color: #888; /* Placeholder text color */
+}
+
+
+.setups {
+    padding: 30px;
+}
+
+.setups-item {
+    width: 95%;
+    background-color: #2c2c2c71;
+    padding: 15px;
+    vertical-align: middle;
+    border-radius: 1rem;
+    margin-bottom: 10px;
+}
+
+.setups-item span {
+    margin-left: auto;
+    float: right;
+    vertical-align: middle;
+}
+
+
+.input-container .info-div {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 5px; /* Add some padding */
 }

@@ -181,6 +181,7 @@ if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
 
     document.getElementById("mainContainer").style.transform = "scale(0.98)"
     document.getElementById("loginDiv").classList.add("active")
+    document.getElementById("nav-container").style.display = 'none'
     //getep()
 
 } else {
@@ -189,83 +190,8 @@ if (!localStorage.getItem("t50-username") || !localStorage.getItem("t50pswd")) {
         root.style.setProperty('--con-type', 'var(--con-type-online)');
     }
     begin()
-    if (navigator.onLine) {
-        console.log("The user is online.");
-        fetch(`${srv}/images/checkOwnerShip?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json', // Modify this based on your API's requirements
-            }
-        })
-            .then(response => response.text())
-            .then(data => {
-                //console.log(data)
-                if (data === "Accepted") {
-                    console.log("All ok")
-                } else {
-                    alert("far you go..")
-                    alert(`fatal reject triggered by checkOwnership function.\nConnection with server succeeded but response was: ${data}.\n\nHologram will now reload.`)
-                    //localStorage.clear()
-                    window.location.reload()
 
-                }
-                document.getElementById("me").src = "notyetloaded.gif";
-                fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${localStorage.getItem("t50-username")}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        return response.text();
-                    })
-                    .then(profileimage => {
-                        if (profileimage.indexOf("base64") === -1) {
-                            ////console.log("Fixing Base64");
-                            profileimage = "data:image/jpeg;base64," + profileimage;
-                        }
-                        // Resolve with profile image
-                        document.getElementById("me").src = profileimage
-                    })
-                    .catch(error => {
-                        console.error("Cannot set src for", username);
-                        console.error(error);
-                        reject(error);
-                    });
 
-            }).catch(error => {
-                // Handle errors
-                alert(`Debug.\nClient responded as ${navigator.onLine} on request for navigator.onLine,\nbut authorization request failed with error:\n${error}\n\nClient will continue with function 'loadStories()'.`)
-                loadStories()
-                console.warn('Profile Picture Failed To Load:', error)
-                console.error('Error:', error);
-            });
-        fetch(`${srv}/images-database?method=getTypes&password=${atob(localStorage.getItem("t50pswd"))}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json', // Modify this based on your API's requirements
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                types = data
-                localStorage.setItem("types", JSON.stringify(data))
-                loadStories()
-            }).catch(error => {
-                // Handle errors
-                if(localStorage.getItem("types")) {
-                    const data = JSON.parse(localStorage.getItem("types"))
-                    types = data
-                    loadStories()
-                }
-                
-                
-                
-                //alert('getTypes rejected', error);
-                console.error('Error:', error);
-            });
-    } else {
-        loadStories()
-        console.log("The user is offline.");
-    }
 
 
 }
@@ -660,7 +586,85 @@ function refreshPercent() {
     }
 }
 
-function begin() {
+function Boot() {
+    document.getElementById("nav-container").style.display = 'flex'
+    if (navigator.onLine) {
+        console.log("The user is online.");
+        fetch(`${srv}/images/checkOwnerShip?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json', // Modify this based on your API's requirements
+            }
+        })
+            .then(response => response.text())
+            .then(data => {
+                //console.log(data)
+                if (data === "Accepted") {
+                    console.log("All ok")
+                } else {
+                    alert("far you go..")
+                    alert(`fatal reject triggered by checkOwnership function.\nConnection with server succeeded but response was: ${data}.\n\nHologram will now reload.`)
+                    //localStorage.clear()
+                    window.location.reload()
+
+                }
+                document.getElementById("me").src = "notyetloaded.gif";
+                fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${localStorage.getItem("t50-username")}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(profileimage => {
+                        if (profileimage.indexOf("base64") === -1) {
+                            ////console.log("Fixing Base64");
+                            profileimage = "data:image/jpeg;base64," + profileimage;
+                        }
+                        // Resolve with profile image
+                        document.getElementById("me").src = profileimage
+                    })
+                    .catch(error => {
+                        console.error("Cannot set src for", username);
+                        console.error(error);
+                        reject(error);
+                    });
+
+            }).catch(error => {
+                // Handle errors
+                alert(`Debug.\nClient responded as ${navigator.onLine} on request for navigator.onLine,\nbut authorization request failed with error:\n${error}\n\nClient will continue with function 'loadStories()'.`)
+                loadStories()
+                console.warn('Profile Picture Failed To Load:', error)
+                console.error('Error:', error);
+            });
+        fetch(`${srv}/images-database?method=getTypes&password=${atob(localStorage.getItem("t50pswd"))}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json', // Modify this based on your API's requirements
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                types = data
+                localStorage.setItem("types", JSON.stringify(data))
+                loadStories()
+            }).catch(error => {
+                // Handle errors
+                if (localStorage.getItem("types")) {
+                    const data = JSON.parse(localStorage.getItem("types"))
+                    types = data
+                    loadStories()
+                }
+
+
+
+                //alert('getTypes rejected', error);
+                console.error('Error:', error);
+            });
+    } else {
+        loadStories()
+        console.log("The user is offline.");
+    }
     fetch(`${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&method=getInfo`, {
         method: 'GET',
         headers: {
@@ -689,6 +693,129 @@ function begin() {
         document.getElementById(`op${op}`).classList.remove("active")
     });
     document.getElementById(`op0`).classList.add("active")
+}
+
+function begin() {
+    if (localStorage.getItem("HologramPin") && !sessionStorage.getItem("remUnlocked")) {
+        document.getElementById("lock").style.display = 'flex'
+        document.getElementById("mainContainer").style.display = 'none'
+        document.getElementById("nav-container").style.display = 'none'
+    } else {
+        Boot()
+    }
+
+}
+
+
+let pin = "";
+let proccessingPIN = false
+function clickPIN(element) {
+    let number = element.innerHTML
+    //console.log(number)
+
+    if (pin.length <= 3) {
+        if (pin.length == 0) {
+            document.getElementById("ps1").style.width = "10px"
+            document.getElementById("ps1").style.height = "10px"
+        } else if (pin.length == 1) {
+            document.getElementById("ps2").style.width = "10px"
+            document.getElementById("ps2").style.height = "10px"
+        } else if (pin.length == 2) {
+            document.getElementById("ps3").style.width = "10px"
+            document.getElementById("ps3").style.height = "10px"
+        } else if (pin.length == 3) {
+            document.getElementById("ps4").style.width = "10px"
+            document.getElementById("ps4").style.height = "10px"
+        }
+        //not full
+        pin = `${pin}${number}`
+        //console.log("Pin Got:", pin)
+        if (pin.length == 4) {
+            proccessingPIN = true
+            $("#PINdots").fadeOut("fast", function () {
+                $("#PINload").fadeIn("fast")
+            })
+            setTimeout(function () {
+                let accpin = atob(localStorage.getItem("HologramPin"))
+                console.log(pin, "-->", accpin)
+                if (pin === accpin) {
+
+                    proccessingPIN = false
+                    //console.log("Correct")
+                    $("#PINload").fadeOut("fast", function () {
+                        //document.body.style.overflow = 'auto';
+                        document.body.style.touchAction = '';
+                        $("#lock").fadeOut("fast", function () {
+                            $("#mainContainer").fadeIn("fast")
+                        })
+                        if (localStorage.getItem("remPIN") === "true") {
+                            sessionStorage.setItem("remUnlocked", "true")
+                        }
+                        Boot()
+                    })
+                } else {
+
+                    proccessingPIN = false
+                    deletePIN()
+                    deletePIN()
+                    deletePIN()
+                    deletePIN()
+                    $("#PINload").fadeOut("fast", function () {
+                        $("#PINdots").fadeIn("fast", function () {
+                            shake_me("pin-input")
+                        })
+                    })
+                }
+            }, 900)
+        }
+    }
+    // else {    
+    // Complete here    
+    //    //console.log("Pin Final:", pin)
+    //}
+}
+
+function shake_me(what) {
+    document.getElementById(`${what}`).classList.add('shake');
+    setTimeout(function () {
+        document.getElementById(`${what}`).classList.remove('shake');
+    }, 500);
+}
+
+
+function deletePIN() {
+    if (proccessingPIN === true) {
+        shake_me("pin-input")
+        return;
+    }
+    if (pin.length == 0) {
+        document.getElementById("ps1").style.width = "5px"
+        document.getElementById("ps1").style.height = "5px"
+    } else if (pin.length == 1) {
+        document.getElementById("ps1").style.width = "5px"
+        document.getElementById("ps1").style.height = "5px"
+    } else if (pin.length == 2) {
+        document.getElementById("ps2").style.width = "5px"
+        document.getElementById("ps2").style.height = "5px"
+    } else if (pin.length == 3) {
+        document.getElementById("ps3").style.width = "5px"
+        document.getElementById("ps3").style.height = "5px"
+    } else if (pin.length == 4) {
+        document.getElementById("ps4").style.width = "5px"
+        document.getElementById("ps4").style.height = "5px"
+    }
+
+    pin = pin.slice(0, -1);
+    //console.log("Removed last", pin)
+}
+
+function removePIN() {
+    localStorage.removeItem("HologramPin")
+}
+
+function lockNow() {
+    sessionStorage.removeItem("remUnlocked")
+    window.location.reload()
 }
 
 
@@ -1411,4 +1538,219 @@ function showStory(what) {
 function performAdditionalActions(storyJson) {
     console.log("Additional actions with storyJson:", storyJson);
     //external actions
+}
+
+async function getEverythingFromIndexedDB() {
+    const db = await openDatabase();
+
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction(['images'], 'readonly');
+        const store = transaction.objectStore('images');
+        const request = store.getAll();
+
+        request.onsuccess = function (event) {
+            resolve(event.target.result);
+        };
+
+        request.onerror = function (event) {
+            reject('Failed to read from IndexedDB:', event.target.errorCode);
+        };
+    });
+}
+
+// Example of using the function
+function checkIndexedDBExists(dbName) {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open(dbName);
+
+        request.onsuccess = () => {
+            // Database exists
+            resolve(true);
+            // Optionally, you can close the connection here
+            request.result.close();
+        };
+
+        request.onerror = () => {
+            // Database does not exist or some error occurred
+            if (request.error.name === 'NotFoundError') {
+                resolve(false);
+            } else {
+                reject(request.error);
+            }
+        };
+
+        request.onblocked = () => {
+            // Handle the case where the request is blocked (e.g., due to an open connection)
+            reject(new Error('Database request was blocked.'));
+        };
+    });
+}
+
+let activeId = 'discover'
+function navigate(e) {
+    if (e.classList.contains("active")) {
+        $("#setupPin").fadeOut("fast", function () {
+            $("#main_settings").fadeIn("fast")
+        })
+        return;
+    } else {
+        e.classList.add("active");
+        const id = e.id;
+
+        const ids = ['discover', 'files', 'account'].filter(item => item !== id);
+        ids.forEach((id) => {
+            document.getElementById(id).classList.remove("active");
+        });
+        if (id === 'files') {//go to files
+            document.getElementById("files-container").classList.add("active")
+            console.log(activeId)
+            if (activeId === 'discover') {
+                console.log("Hiding discover")
+                document.getElementById("mainContainer").style.transform = 'translateX(-120%)'
+                setTimeout(function () {
+                    document.getElementById("mainContainer").style.display = 'none'
+                }, 700)
+            }
+            if (activeId === 'account') {
+                document.getElementById("account-container").classList.remove("active")
+            }
+
+            document.getElementById("files-list").innerHTML = ''
+            getEverythingFromIndexedDB()
+                .then(data => {
+                    document.getElementById("files-count").innerText = data.length
+                    console.log('All images:', data);
+                    data.forEach((file) => {
+                        document.getElementById("files-list").innerHTML = document.getElementById("files-list").innerHTML + `<div class="fileitem">
+                <div class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M22 13.6477V8.976C22 7.72287 21.9342 6.64762 21.7345 5.74915C21.5323 4.83933 21.1798 4.05065 20.5646 3.43543C19.9494 2.82021 19.1607 2.46772 18.2508 2.26552C17.3524 2.06584 16.2771 2 15.024 2H8.976C7.72287 2 6.64762 2.06584 5.74915 2.26552C4.83933 2.46772 4.05065 2.82021 3.43543 3.43543C2.82021 4.05065 2.46772 4.83933 2.26552 5.74915C2.06584 6.64762 2 7.72287 2 8.976V15.024C2 16.2771 2.06584 17.3524 2.26552 18.2508C2.46772 19.1607 2.82021 19.9494 3.43543 20.5646C4.05065 21.1798 4.83933 21.5323 5.74915 21.7345C6.64762 21.9342 7.72287 22 8.976 22H15.024C16.2771 22 17.3524 21.9342 18.2508 21.7345C19.1607 21.5323 19.9494 21.1798 20.5646 20.5646C21.1798 19.9494 21.5323 19.1607 21.7345 18.2508C21.9342 17.3524 22 16.2771 22 15.024V13.6942C22.0004 13.6787 22.0004 13.6632 22 13.6477ZM4.21788 6.18305C4.066 6.86645 4 7.76851 4 8.976V11.096C4.71987 10.4038 5.39001 9.83748 6.03895 9.42453C6.82527 8.92417 7.6322 8.61574 8.50225 8.61574C9.3723 8.61574 10.1792 8.92417 10.9656 9.42453C11.7421 9.91865 12.5489 10.6324 13.435 11.5185L15.0603 13.1438C16.0436 12.3332 17.0078 11.7735 18.0456 11.6442C18.7292 11.559 19.3739 11.6673 20 11.9198V8.976C20 7.76851 19.934 6.86645 19.7821 6.18305C19.6328 5.51101 19.414 5.11327 19.1504 4.84964C18.8867 4.58602 18.489 4.36724 17.8169 4.21788C17.1336 4.066 16.2315 4 15.024 4H8.976C7.76851 4 6.86645 4.066 6.18305 4.21788C5.51101 4.36724 5.11327 4.58602 4.84964 4.84964C4.58602 5.11327 4.36724 5.51101 4.21788 6.18305Z" fill="#dcdcdc"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M14 8C14 6.89543 14.8954 6 16 6C17.1046 6 18 6.89543 18 8C18 9.10457 17.1046 10 16 10C14.8954 10 14 9.10457 14 8Z" fill="#dcdcdc"/>
+                        </svg>
+                </div>
+                <div class="infoCont">
+                    <p>${file.name}</p>
+                    <span>Type: blob</span>
+                </div>
+                
+            </div>
+                        `
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            activeId = id
+        }
+
+        if (id === 'discover') {
+
+            document.getElementById("mainContainer").style.display = null
+            setTimeout(function () {
+                document.getElementById("mainContainer").style.transform = 'translateX(0)'
+                if (activeId === 'files') {
+                    document.getElementById("files-container").classList.remove("active")
+                }
+                if (activeId === 'account') {
+                    document.getElementById("account-container").classList.remove("active")
+                }
+                activeId = id
+            }, 50)
+
+        }
+
+        if (id === 'account') {
+            document.getElementById("account-container").classList.add("active")
+            console.log(activeId)
+            if (activeId === 'discover') {
+                console.log("Hiding discover")
+                document.getElementById("mainContainer").style.transform = 'translateX(-120%)'
+                setTimeout(function () {
+                    document.getElementById("mainContainer").style.display = 'none'
+                }, 700)
+            }
+            if (activeId === 'files') {
+                document.getElementById("files-container").classList.remove("active")
+            }
+
+            document.getElementById("accname").innerText = localStorage.getItem("t50-username")
+            document.getElementById("accemail").innerText = localStorage.getItem("t50-email")
+            console.log(localStorage.getItem("HologramPin"))
+            if (localStorage.getItem("HologramPin")) {
+                document.getElementById("pin-status").innerText = 'Enabled'
+
+                document.getElementById("pin-status-set").innerText = 'Enabled'
+                document.getElementById("info-div").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.00001 5V8.00415C7.50208 8.01124 7.05704 8.03041 6.67222 8.08214C6.0167 8.17028 5.38835 8.36902 4.87869 8.87868C4.36902 9.38835 4.17028 10.0167 4.08215 10.6722C3.99991 11.2839 3.99995 12.0477 4 12.9342V17.0658C3.99995 17.9523 3.99991 18.7161 4.08215 19.3278C4.17028 19.9833 4.36902 20.6117 4.87869 21.1213C5.38835 21.631 6.0167 21.8297 6.67222 21.9179C7.28387 22.0001 8.0477 22.0001 8.93417 22H15.0659C15.9523 22.0001 16.7161 22.0001 17.3278 21.9179C17.9833 21.8297 18.6117 21.631 19.1213 21.1213C19.631 20.6117 19.8297 19.9833 19.9179 19.3278C20.0001 18.7161 20.0001 17.9523 20 17.0658V12.9342C20.0001 12.0477 20.0001 11.2839 19.9179 10.6722C19.8297 10.0167 19.631 9.38835 19.1213 8.87868C18.6117 8.36902 17.9833 8.17028 17.3278 8.08215C16.943 8.03041 16.4979 8.01124 16 8.00415V5C16 3.34315 14.6569 2 13 2H11C9.34316 2 8.00001 3.34315 8.00001 5ZM11 4C10.4477 4 10 4.44772 10 5V8L14 8V5C14 4.44772 13.5523 4 13 4H11ZM12 13C10.8954 13 10 13.8954 10 15C10 16.1046 10.8954 17 12 17C13.1046 17 14 16.1046 14 15C14 13.8954 13.1046 13 12 13Z" fill="#dcdcdc"/>
+</svg>`
+
+            } else {
+                document.getElementById("pin-status").innerText = 'Unset'
+                document.getElementById("pin-status-set").innerText = 'Unset'
+
+            }
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistration().then(function (registration) {
+                    if (registration) {
+                        document.getElementById("sw-status").innerText = 'Registered'
+                    } else {
+                        document.getElementById("sw-status").innerText = 'Ready'
+                    }
+                }).catch(function (error) {
+                    document.getElementById("sw-status").innerText = 'Unsupported'
+                    console.error('Error checking Service Worker registration:', error);
+                });
+            } else {
+                document.getElementById("sw-status").innerText = 'Unsupported'
+                console.log('Service Worker is not supported in this browser.');
+            }
+
+            checkIndexedDBExists('imagesDB').then(exists => {
+                if (exists) {
+                    console.log('Database exists');
+                    document.getElementById("indexdb-status").innerText = 'Active'
+                } else {
+                    document.getElementById("indexdb-status").innerText = 'Inactive'
+                    console.log('Database does not exist');
+                }
+            }).catch(error => {
+                document.getElementById("indexdb-status").innerText = '🤯'
+                console.error('Error checking database existence:', error);
+            });
+
+            activeId = id
+
+
+        }
+
+
+    }
+}
+
+function validatePIN(input) {
+    // Remove non-digit characters
+    input.value = input.value.replace(/\D/g, '');
+
+    // Ensure the value is no longer than 4 digits
+    if (input.value.length > 4) {
+        input.value = input.value.slice(0, 4);
+    } else {
+        if (input.value.length === 4) {
+            document.getElementById("info-div").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.00001 5V8.00415C7.50208 8.01124 7.05704 8.03041 6.67222 8.08214C6.0167 8.17028 5.38835 8.36902 4.87869 8.87868C4.36902 9.38835 4.17028 10.0167 4.08215 10.6722C3.99991 11.2839 3.99995 12.0477 4 12.9342V17.0658C3.99995 17.9523 3.99991 18.7161 4.08215 19.3278C4.17028 19.9833 4.36902 20.6117 4.87869 21.1213C5.38835 21.631 6.0167 21.8297 6.67222 21.9179C7.28387 22.0001 8.0477 22.0001 8.93417 22H15.0659C15.9523 22.0001 16.7161 22.0001 17.3278 21.9179C17.9833 21.8297 18.6117 21.631 19.1213 21.1213C19.631 20.6117 19.8297 19.9833 19.9179 19.3278C20.0001 18.7161 20.0001 17.9523 20 17.0658V12.9342C20.0001 12.0477 20.0001 11.2839 19.9179 10.6722C19.8297 10.0167 19.631 9.38835 19.1213 8.87868C18.6117 8.36902 17.9833 8.17028 17.3278 8.08215C16.943 8.03041 16.4979 8.01124 16 8.00415V5C16 3.34315 14.6569 2 13 2H11C9.34316 2 8.00001 3.34315 8.00001 5ZM11 4C10.4477 4 10 4.44772 10 5V8L14 8V5C14 4.44772 13.5523 4 13 4H11ZM12 13C10.8954 13 10 13.8954 10 15C10 16.1046 10.8954 17 12 17C13.1046 17 14 16.1046 14 15C14 13.8954 13.1046 13 12 13Z" fill="#dcdcdc"/>
+</svg>`
+            localStorage.setItem("HologramPin", btoa(input.value))
+        } else if (input.value.length < 4) {
+            document.getElementById("info-div").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M11 4C10.4477 4 10 4.44772 10 5V8H15.0658C15.9523 7.99995 16.7161 7.99991 17.3278 8.08215C17.9833 8.17028 18.6117 8.36902 19.1213 8.87868C19.631 9.38835 19.8297 10.0167 19.9179 10.6722C20.0001 11.2839 20.0001 12.0477 20 12.9342V17.0658C20.0001 17.9523 20.0001 18.7161 19.9179 19.3278C19.8297 19.9833 19.631 20.6117 19.1213 21.1213C18.6117 21.631 17.9833 21.8297 17.3278 21.9179C16.7161 22.0001 15.9523 22.0001 15.0658 22H8.93414C8.04767 22.0001 7.28387 22.0001 6.67222 21.9179C6.0167 21.8297 5.38835 21.631 4.87869 21.1213C4.36902 20.6117 4.17028 19.9833 4.08215 19.3278C3.99991 18.7161 3.99995 17.9523 4 17.0658V12.9342C3.99995 12.0477 3.99991 11.2839 4.08215 10.6722C4.17028 10.0167 4.36902 9.38835 4.87869 8.87868C5.38835 8.36902 6.0167 8.17028 6.67222 8.08214C7.05704 8.03041 7.50208 8.01124 8.00001 8.00415V5C8.00001 3.34315 9.34316 2 11 2H13.0625C14.6848 2 16 3.31516 16 4.9375V5C16 5.55228 15.5523 6 15 6C14.4477 6 14 5.55228 14 5V4.9375C14 4.41973 13.5803 4 13.0625 4H11ZM12 13C10.8954 13 10 13.8954 10 15C10 16.1046 10.8954 17 12 17C13.1046 17 14 16.1046 14 15C14 13.8954 13.1046 13 12 13Z" fill="#dcdcdc"/>
+                            </svg>`
+            localStorage.removeItem("HologramPin")
+        }
+    }
+}
+
+function setupPin() {
+    $("#main_settings").fadeOut("fast", function () {
+        $("#setupPin").fadeIn("fast")
+    })
 }
