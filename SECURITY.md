@@ -2,7 +2,7 @@
 
 ## Reporting Security Vulnerabilities
 
-At Evox, we take security seriously. If you discover any security vulnerabilities within the Evox application, please report them immediately to our security team at security@evox.com. We appreciate your help in keeping our platform safe and secure.
+At Evox, we take security seriously. If you discover any security vulnerabilities within the Evox application, please report them immediately to our security team at admin@evoxs.xyz. We appreciate your help in keeping our platform safe and secure.
 
 ## Security Measures
 
