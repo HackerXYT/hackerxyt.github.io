@@ -695,8 +695,8 @@ function Boot() {
     document.getElementById(`op0`).classList.add("active")
 }
 
-function begin() {
-    if (localStorage.getItem("HologramPin") && !sessionStorage.getItem("remUnlocked")) {
+function begin(bp) {
+    if (localStorage.getItem("HologramPin") && !sessionStorage.getItem("remUnlocked") && !bp) {
         document.getElementById("lock").style.display = 'flex'
         document.getElementById("mainContainer").style.display = 'none'
         document.getElementById("nav-container").style.display = 'none'
