@@ -803,9 +803,10 @@ img {
   font-family: "SF";
   width: 250px;
   height: 40px;
-  border: 2px solid #662c2c;
-  border-radius: 13px;
-  background: transparent;
+  background-color: #191919;
+  /*border: 2px solid #662c2c;*/
+  border: 1px solid #323232;
+  border-radius: 20px;
   color: #fff;
   font-size: 16px;
   cursor: pointer;
@@ -900,6 +901,23 @@ img {
   color: #c4cbd2;
   overflow: visible;
   touch-action: manipulation;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0;
+}
+
+.centered-text img {
+  width: 100px;
+  height: 100px;
+  animation: scaleAnimation 1s ease-in-out infinite;
+}
+
+@keyframes scaleAnimation {
+  0%, 100% {
+      transform: scale(0.9);
+  }
+  50% {
+      transform: scale(1);
+  }
 }
 
 .settings-button {
@@ -5572,10 +5590,14 @@ input:-webkit-autofill {
   box-sizing: border-box;
   z-index: 1000;
   background: transparent;
-  transition: background-color 0.2s ease-in-out, backdrop-filter 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out, backdrop-filter 0.2s ease-in-out, border-radius 0.2s ease-in-out, transform 0.2s ease-in-out;
   background-color: #1d1d1d86;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+}
+
+.bottomActions.hidden {
+  transform: translateY(100%);
 }
 
 .bottomActions .attach {

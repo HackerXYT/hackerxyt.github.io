@@ -1,3 +1,5 @@
+sessionStorage.removeItem("current_sline")
+sessionStorage.removeItem("lastChatInter")
 //IP Auth
 let ip = "error";
 document.addEventListener("DOMContentLoaded", function () {
@@ -21,8 +23,39 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 });
 
+function checkForUpdates() {
+    fetch(`https://evoxs.xyz/evox-epsilon-beta/epsilon-backend.js?v=${Math.floor(Math.random() * 100000)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(jsFile => {
+            const versionRegex = /const appVersion\s*=\s*'(\d+\.\d+\.\d+)'/;
 
-const appVersion = '6.1.1'
+            // Extract the version number using the regex
+            const matche = jsFile.toString().match(versionRegex);
+
+            // Check if a match is found and get the version number
+            const version = matche ? matche[1] : null;
+            if(version) {
+                if(appVersion < version) {
+                    console.log("You are using an older version.")
+                } else if(appVersion > version) {
+                    console.log("You are using a debug version.")
+                } else if(appVersion === version) {
+                    console.log("Up to date.")
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching the JavaScript file:', error);
+        });
+}
+
+
+const appVersion = '6.1.5'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -33,7 +66,7 @@ function loadAppAbout() {
                 document.getElementById("swStatus").innerText = 'Registered'
                 caches.has('epsilon-cache-v1').then((exists) => {
                     if (exists) {
-                        
+
                         if (navigator.onLine) {
                             document.getElementById("offlinemode-status").innerText = 'Ready'
                         } else {
@@ -61,7 +94,7 @@ function loadAppAbout() {
         document.getElementById("swStatus").innerText = 'Not Supported'
     }
 
-    
+
 }
 
 function loadBackground() {
@@ -550,7 +583,7 @@ inputSecureline.addEventListener('focus', function () {
 
 window.scrollTo({
     top: document.body.scrollHeight,
-    behavior: 'smooth' // Optional: adds smooth scrolling animation
+    behavior: 'smooth'
 });
 inputSecureline.addEventListener('blur', function () {
 
@@ -560,8 +593,6 @@ inputSecureline.addEventListener('blur', function () {
         $("#favorites-recommended").fadeIn("fast")
         $("#secureline-users").fadeIn("fast")
     })
-
-
 });
 let previousInput = null;
 inputSecureline.addEventListener('input', function (event) {
@@ -752,6 +783,33 @@ function reloadFavs() {
                         paragraph.textContent = friend;
 
                         const span = document.createElement('span');
+                        if (localStorage.getItem(`${friend}-lastMsg`)) {
+                            const lastMsg = localStorage.getItem(`${friend}-lastMsg`)
+                            let setItAs = null
+                            if (lastMsg.includes("http")) {
+                                setItAs = 'Sent a URL'
+                                if (lastMsg.includes("You:")) {
+                                    setItAs = 'You: Sent a URL'
+                                }
+                            } else {
+                                if (lastMsg.length > 15) {
+                                    setItAs = lastMsg.substring(0, 15) + '..'
+                                } else {
+                                    setItAs = lastMsg
+                                }
+                            }
+                            span.innerHTML = truncateString(setItAs) + `&nbsp;&nbsp;<svg version="1.1" width="10px"
+                            height="10px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                            y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                            <path fill="#fff"
+                                d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                                <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                                    to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                            </path>
+                        </svg>`
+
+                        }
+
                         fetch(`${srv}/secureline?method=lastMSG&username=${localStorage.getItem("t50-username")}&recipient_username=${friend}&password=${atob(localStorage.getItem("t50pswd"))}`)
                             .then(response => {
                                 if (!response.ok) {
@@ -761,17 +819,31 @@ function reloadFavs() {
                             })
                             .then(lastMsg => {
 
-                                if (lastMsg.length > 15) {
-                                    span.textContent = lastMsg.substring(0, 15) + '..'
+                                if (lastMsg.includes("http")) {
+                                    span.textContent = 'Sent a URL'
+                                    if (lastMsg.includes("You:")) {
+                                        span.textContent = 'You: Sent a URL'
+                                    }
                                 } else {
-                                    span.textContent = lastMsg
+                                    if (lastMsg.length > 15) {
+                                        span.textContent = lastMsg.substring(0, 15) + '..'
+                                    } else {
+                                        span.textContent = lastMsg
+                                    }
                                 }
                             }).catch(error => {
                                 const lastMsg = localStorage.getItem(`${friend}-lastMsg`)
-                                if (lastMsg.length > 15) {
-                                    span.textContent = lastMsg.substring(0, 15) + '..'
+                                if (lastMsg.includes("http")) {
+                                    span.textContent = 'Sent a URL'
+                                    if (lastMsg.includes("You:")) {
+                                        span.textContent = 'You: Sent a URL'
+                                    }
                                 } else {
-                                    span.textContent = lastMsg
+                                    if (lastMsg.length > 15) {
+                                        span.textContent = lastMsg.substring(0, 15) + '..'
+                                    } else {
+                                        span.textContent = lastMsg
+                                    }
                                 }
                             })
 
@@ -824,6 +896,7 @@ function securelineHome(data, appending) {
         return new Promise((resolve, reject) => {
             const userDiv = document.createElement('a');
             userDiv.className = 'user';
+
             userDiv.href = `#secureline-${friend}`;
             userDiv.id = `user-${friend}`;
             userDiv.onclick = function () {
@@ -854,6 +927,21 @@ function securelineHome(data, appending) {
             const messageSpan = document.createElement('span');
             messageSpan.textContent = 'Loading Messages..';
             const favorites = localStorage.getItem("favorites")
+            if (localStorage.getItem(`${friend}-lastMsg`)) {
+                messageSpan.innerHTML = truncateString(localStorage.getItem(`${friend}-lastMsg`), 36) + `&nbsp;&nbsp;<svg version="1.1" width="10px"
+                height="10px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                <path fill="#fff"
+                    d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                    <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                        to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                </path>
+            </svg>`
+                if (localStorage.getItem(`${friend}-lastMsg`) === "Chat not created") {
+                    userDiv.style.opacity = '0'
+                }
+            }
+
             fetch(`${srv}/secureline?method=lastMSG&username=${localStorage.getItem("t50-username")}&recipient_username=${friend}&password=${atob(localStorage.getItem("t50pswd"))}`)
                 .then(response => {
                     if (!response.ok) {
@@ -864,7 +952,7 @@ function securelineHome(data, appending) {
                 .then(lastMsg => {
                     setNetworkStatus('on')
                     localStorage.setItem(`${friend}-lastMsg`, lastMsg)
-
+                    userDiv.style.opacity = '1'
 
                     if (lastMsg === 'Chat not created' && appending === "secureline-users") {
                         console.log(`Stopping Spawn For User ${friend}.`)
@@ -872,7 +960,18 @@ function securelineHome(data, appending) {
                         return;
                     }
 
-                    messageSpan.textContent = lastMsg;
+                    if (lastMsg.includes("http")) {
+                        messageSpan.textContent = 'Sent a URL'
+                        if (lastMsg.includes("You:")) {
+                            messageSpan.textContent = 'You: Sent a URL'
+                        }
+                    } else {
+                        messageSpan.textContent = truncateString(lastMsg, 36)
+                    }
+
+
+
+
                     if (appending !== 'secureline-users') {
                         //continue
                         console.log(`Continue appending ${friend}`)
@@ -900,7 +999,7 @@ function securelineHome(data, appending) {
                     const lastMsg = localStorage.getItem(`${friend}-lastMsg`)
                     if (data) {
                         console.warn("Server connection failed. Trying local")
-                        messageSpan.textContent = lastMsg;
+                        //messageSpan.textContent = lastMsg;
                         if (favorites) {
                             const previous = JSON.parse(favorites)
                             if (previous.includes(friend)) {
@@ -941,11 +1040,19 @@ function securelineHome(data, appending) {
 
                                 const span = document.createElement('span');
 
-                                if (lastMsg.length > 15) {
-                                    span.textContent = lastMsg.substring(0, 15) + '..'
+                                if (lastMsg.includes("http")) {
+                                    span.textContent = 'Sent a URL'
+                                    if (lastMsg.includes("You:")) {
+                                        span.textContent = 'You: Sent a URL'
+                                    }
                                 } else {
-                                    span.textContent = lastMsg
+                                    if (lastMsg.length > 15) {
+                                        span.textContent = lastMsg.substring(0, 15) + '..'
+                                    } else {
+                                        span.textContent = lastMsg
+                                    }
                                 }
+
 
                                 // Append paragraph and span to the column div
                                 columnDiv.appendChild(paragraph);
@@ -1090,6 +1197,7 @@ function formatDate(date) {
 }
 
 function processMessage(data, element) {
+
     const creationDate = new Date(data);
     const todayMonth = new Date().getMonth();
     const creationMonth = creationDate.getMonth();
@@ -1098,8 +1206,9 @@ function processMessage(data, element) {
 
     if (data === "Chat Doesn't Exist") {
         document.getElementById("messages-container").innerHTML = `
-        <p class='centered-text'>Chat Hasn't Been Created.
+        <p style="opacity: 1" class='centered-text'>Chat Hasn't Been Created.
         <button style="margin-top: 20px" id="submit" onclick="create_chat()" class="transparent-button">Create Chat</button></p>`;
+        document.getElementById("bottomActionsSecureline").classList.add("hidden")
         return;
     }
 
@@ -1211,6 +1320,7 @@ function processMessage(data, element) {
                     container.appendChild(messageContainer);
                     const chatdiv = document.getElementById("messages-container");
                     chatdiv.scrollTop = chatdiv.scrollHeight;
+                    document.getElementById("bottomActionsSecureline").classList.remove("hidden")
                 });
             } catch (error) {
                 console.error("Error parsing messages:", error);
@@ -1219,8 +1329,27 @@ function processMessage(data, element) {
         .catch(error => console.error("Fetch error:", error));
 }
 
+function isValidSline(json) {
+    // Check if the json is an object
+    if (typeof json !== 'object' || json === null) {
+        return false;
+    }
+
+    // Check if the "messages" property exists and is an array
+    if (!Array.isArray(json.messages)) {
+        return false;
+    }
+
+    // Everything is valid
+    return true;
+}
+
 function actionReload(whoto) {
-    console.log("Reloading");
+    const container = document.getElementById("messages-container");
+    //container.innerHTML = `<p class='centered-text'>Loading ${whoto}..</p>`;
+    container.innerHTML = `<p id='tempTxt' class='centered-text'><img src="EvoxEPSILON.png"></p>`;
+    document.getElementById("tempTxt").style.opacity = '1'
+    console.log(`Reloading user's chat with ${whoto}`);
     sessionStorage.setItem("current_sline", whoto);
     const element = {
         "id": whoto
@@ -1235,21 +1364,41 @@ function actionReload(whoto) {
             return response.text();
         })
         .then(messages => {
+            //console.log(whoto, 'messages:\n', messages)
+
             setNetworkStatus('on')
             try {
                 const integrityCheck = JSON.parse(messages);
+                if (integrityCheck.messages.length === 0) {
+                    document.getElementById("messages-container").innerHTML = `<p id="tempTextNoMsg" class='centered-text'>No messages!</p>`;
+                    document.getElementById("tempTextNoMsg").style.opacity = '1'
+                    document.getElementById("bottomActionsSecureline").classList.remove("hidden")
+
+                    return;
+                } else {
+                    console.log("Messages length:", integrityCheck.messages.length)
+                }
             } catch (error) {
-                console.error("Possible Account Verification Error:", messages);
+                console.error("Possible Account Verification Error:", messages, error);
+                if (messages === "Chat not created") {
+                    document.getElementById("messages-container").innerHTML = `
+                    <p style="opacity: 1" class='centered-text'>Chat Hasn't Been Created.
+                    <button style="margin-top: 20px" id="submit" onclick="create_chat()" class="transparent-button">Create Chat</button></p>`;
+                    document.getElementById("bottomActionsSecureline").classList.add("hidden")
+                    return;
+                }
                 return;
             }
             if (sessionStorage.getItem("lastChatInter") === messages) {
                 console.log("No new messages");
+                document.getElementById("bottomActionsSecureline").classList.remove("hidden")
                 //return;
             }
             sessionStorage.setItem("lastChatInter", messages);
             if (messages === "Chat not created") {
-                document.getElementById("messages-container").innerHTML = `<p class='centered-text'>Chat Hasn't Been Created.<button style="margin-top: 20px" id="submit" onclick="create_chat()" class="transparent-button">Create Chat</button></p>`;
+                document.getElementById("messages-container").innerHTML = `<p style="opacity: 1" class='centered-text'>Chat Hasn't Been Created.<button style="margin-top: 20px" id="submit" onclick="create_chat()" class="transparent-button">Create Chat</button></p>`;
                 console.log("Chat Doesn't Exist");
+                document.getElementById("bottomActionsSecureline").classList.add("hidden")
                 return;
             }
             const jsonData = JSON.parse(messages);
@@ -1297,6 +1446,30 @@ function actionReload(whoto) {
                                 infoFile = 'URL';
                             }
 
+                            if (fileSrc !== false) {
+                                messageElement.innerHTML = `<img class="urlImg" src="${fileSrc}">
+                                <div class="embedCol">
+                                    <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
+                                    <vo>${infoFile}</vo>
+                                </div>
+                                <img class="imgBox" src="./novus/open.svg" style="margin-right: 0px;">`;
+                            } else {
+                                messageElement.innerHTML = `<img class="urlImg" style="width: 25px;height:25px" src="./novus/attach.svg">
+            <div class="embedCol">
+                <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
+                <vo>${infoFile}</vo>
+            </div>
+            <img class="imgBox" src="./novus/open.svg" style="margin-right: 0px;">`;
+                            }
+
+                            // Apply appropriate class based on the sender
+                            if (message.sender === localStorage.getItem("t50-username")) {
+                                messageElement.classList.add('message-me');
+                            } else {
+                                messageElement.classList.add('message');
+                            }
+                            messagesContainer.appendChild(messageElement);
+
                             checkUrlAccessibility(logoUrl)
                                 .then(not404 => {
                                     if (not404 === true) {
@@ -1323,13 +1496,7 @@ function actionReload(whoto) {
                         <img class="imgBox" src="./novus/open.svg" style="margin-right: 0px;">`;
                                         }
                                     }
-                                    // Apply appropriate class based on the sender
-                                    if (message.sender === localStorage.getItem("t50-username")) {
-                                        messageElement.classList.add('message-me');
-                                    } else {
-                                        messageElement.classList.add('message');
-                                    }
-                                    messagesContainer.appendChild(messageElement);
+
                                     resolve();
                                 }).catch(error => {
                                     setNetworkStatus('off')
@@ -1349,6 +1516,7 @@ function actionReload(whoto) {
 
                             // Append the message element to the messages container
                             messagesContainer.appendChild(messageElement);
+                            document.getElementById("bottomActionsSecureline").classList.remove("hidden")
                             resolve();
                         }
                     });
@@ -1361,6 +1529,7 @@ function actionReload(whoto) {
                         var contentDiv = document.getElementById('messages-container');
                         contentDiv.scrollTop = contentDiv.scrollHeight;
                         console.log("All messages have been processed and displayed.");
+
                     })
                     .catch(error => {
                         setNetworkStatus('off')
@@ -1376,6 +1545,35 @@ function actionReload(whoto) {
         });
 }
 
+function create_chat() {
+    document.getElementById("messages-container").innerHTML = `<p style="opacity: 1" class='centered-text'>Creating Chat
+    <svg style="margin-top: 20px" version="1.1" width="35px"
+                height="35px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                <path fill="#fff"
+                    d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                    <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                        to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                </path>
+            </svg>
+  </p>`
+    fetch(`https://data.evoxs.xyz/secureline?method=CreateChat&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&createnew=true&password=${atob(localStorage.getItem("t50pswd"))}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            if (data === "Created") {
+                console.log("Chat Created")
+                console.log("Reloading")
+                actionReload(sessionStorage.getItem("current_sline"))
+            } else {
+                warn(`Couldn't create chat: ${data}`)
+            }
+        })
+}
 
 function createAndClickHiddenLink(url) {
     // Create a new <a> element
@@ -1437,15 +1635,15 @@ async function checkUrlAccessibility(url) {
 
         // Check if the response status is in the range of successful responses
         if (response.ok) {
-            console.log('URL is accessible.');
+            //console.log('URL is accessible.');
             return true;
         } else {
-            console.log('URL is not accessible. Status:', response.status);
+            //console.log('URL is not accessible. Status:', response.status);
             return false;
         }
     } catch (error) {
         // Handle any errors that occurred during the fetch
-        console.error('Error checking URL:', error);
+        //console.error('Error checking URL:', error);
         return false;
     }
 }
@@ -1483,6 +1681,91 @@ async function getFileSize(url) {
     }
 }
 
+function rotateElement() {
+    // Get the element by its ID
+    const element = document.getElementById('sendSvg');
+
+    // Check if the element exists
+    if (element) {
+        // Get the current rotation angle
+        const currentRotationMatch = element.style.transform.match(/rotate\((\d+)deg\)/);
+
+        // Initialize current rotation to 0 if not set
+        let currentRotation = 0;
+        if (currentRotationMatch) {
+            currentRotation = parseInt(currentRotationMatch[1], 10);
+        }
+
+        // Increment the current rotation by 45 degrees
+        let newRotation = currentRotation + 410;
+
+        // Apply the new rotation to the element
+        element.style.transform = `rotate(${newRotation}deg)`;
+    }
+    setTimeout(function () {
+        if (element) {
+            // Get the current rotation angle
+            const currentRotationMatch = element.style.transform.match(/rotate\((\d+)deg\)/);
+
+            // Initialize current rotation to 0 if not set
+            let currentRotation = 0;
+            if (currentRotationMatch) {
+                currentRotation = parseInt(currentRotationMatch[1], 10);
+            }
+
+            // Increment the current rotation by 45 degrees
+            let newRotation = currentRotation - 410;
+
+            // Apply the new rotation to the element
+            element.style.transform = `rotate(${newRotation}deg)`;
+        }
+    }, 900)
+}
+
+function send_message() {
+    rotateElement()
+    sender = localStorage.getItem("t50-username")
+    recipient = sessionStorage.getItem("current_sline")
+    message = document.getElementById("message_input")
+    console.log("Sending message to", recipient)
+    if (message.value != "") {
+        //if (sessionStorage.getItem("sending") === "true") {
+        //    shake_me("message_input")
+        //    return;
+        //}
+        //message.disabled = true
+        //sessionStorage.setItem("sending", "true")
+        fetch(`https://data.evoxs.xyz/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${message.value}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+                message.value = ""
+                if (data === `Message Sent To ${recipient}`) {
+                    console.log("Message Sent")
+                    actionReload(recipient)
+                } else {
+                    console.error("Error Sending Message -SLINE ERROR")
+                }
+            }).catch(error => {
+                console.error(error)
+            })
+    }
+
+}
+
+function truncateString(str, length) {
+    // Check if the string length is greater than 51 characters
+    if (str.length > length) {
+        // Truncate the string to 51 characters and add ".."
+        return str.slice(0, length) + "..";
+    }
+    // If the string is 51 characters or less, return it as is
+    return str;
+}
 
 //Social
 function loadFriendsSocial() {

@@ -950,8 +950,13 @@ function add_favorite(event, element, customColor, customDimen) {
     } else {
         if (localStorage.getItem("favorites")) {
             const previous = JSON.parse(localStorage.getItem("favorites"))
-            console.log(previous)
-            previous.pop(element.getAttribute("data-name"))
+            console.log("Previous:", previous)
+            var index = previous.indexOf(element.getAttribute("data-name"));
+            // If the value exists in the array, remove it
+            if (index > -1) {
+                previous.splice(index, 1);
+            }
+            console.log("Updated:", previous)
             localStorage.setItem('favorites', JSON.stringify(previous))
         }
         element.setAttribute("data-status", 'default')
@@ -973,6 +978,7 @@ function add_favorite(event, element, customColor, customDimen) {
 }
 
 function openChat(data, location) {
+    document.getElementById("bottomActionsSecureline").classList.add("hidden")
     console.log('Chat opened');
 
     const username = data.username
@@ -1080,6 +1086,8 @@ window.addEventListener('load', setFullHeight);
 window.addEventListener('resize', setFullHeight);
 
 function goBackMessenger() {
+    sessionStorage.removeItem("current_sline")
+    sessionStorage.removeItem("lastChatInter")
     const popup = document.getElementById("secureline")
     popup.classList.add("active")
     document.getElementById("goBackMessenger").classList.remove("visible")
@@ -1247,22 +1255,50 @@ function showFriend(element) {
             console.log("User load failed [1]:", error)
         })
 
-    document.getElementById("loadingIndicatorProfile").style.display = ''
-    document.getElementById("user-video-forDisplay").src = ''
-    document.getElementById("user-video-forDisplay").style.display = 'none'
-    fetch(`${srv}/profiles?name=${friend}&authorize=cover`)
+        document.getElementById("loadingIndicatorProfile").style.display = ''
+        document.getElementById("user-video-forDisplay").src = ''
+        document.getElementById("user-video-forDisplay").style.display = 'none'
+    //Old db < NEW🥲
+    //fetch(`${srv}/profiles?name=${friend}&authorize=cover`)
+    //    .then(response => {
+    //        if (!response.ok) {
+    //            throw new Error(`HTTP error! Status: ${response.status}`);
+    //        }
+    //        return response.text();
+    //    })
+    //    .then(coverIMG => {
+    //        if (coverIMG !== "None") {
+    //
+    //            document.getElementById("user-video-forDisplay").style.display = ''
+    //            document.getElementById("user-video-forDisplay").src = coverIMG
+    //            document.getElementById("loadingIndicatorProfile").style.display = 'none'
+    //        } else {
+    //            document.getElementById("user-video-forDisplay").src = ''
+    //            document.getElementById("user-video-forDisplay").style.display = 'none'
+    //            document.getElementById("loadingIndicatorProfile").style.display = 'none'
+    //        }
+    //
+    //    }).catch(error => {
+    //        console.error(error);
+    //    })
+
+    fetch(`${srv}/canvas/${friend}/has`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             return response.text();
         })
-        .then(coverIMG => {
-            if (coverIMG !== "None") {
-
+        .then(canvasStatus => {
+            if (canvasStatus === 'true') {
+                
                 document.getElementById("user-video-forDisplay").style.display = ''
-                document.getElementById("user-video-forDisplay").src = coverIMG
-                document.getElementById("loadingIndicatorProfile").style.display = 'none'
+                document.getElementById("user-video-forDisplay").src = `${srv}/canvas/${friend}`
+                document.getElementById("user-video-forDisplay").onloadeddata = function () {
+                    console.log("Canvas Loaded!");
+                    document.getElementById("loadingIndicatorProfile").style.display = 'none'
+                };
+                
             } else {
                 document.getElementById("user-video-forDisplay").src = ''
                 document.getElementById("user-video-forDisplay").style.display = 'none'
@@ -1634,7 +1670,7 @@ function animateM(e) {
         var imgElement = item.querySelector('img');
         document.body.classList.add('no-scroll');
         document.getElementById("gatewayExploreScroll").style.marginTop = '10px'
-        $("#bottomButtonsDefault").fadeOut("fast", function() {
+        $("#bottomButtonsDefault").fadeOut("fast", function () {
             $("#bottomButtonsFocus").fadeIn("fast")
         })
         document.getElementById("gatewayActions").classList.add("top")
@@ -1656,8 +1692,8 @@ function animateM(e) {
             $("#app2").fadeOut("fast")
             add = 'app3'
         }
-        setTimeout(function() {
-            
+        setTimeout(function () {
+
             document.getElementById("apps").insertBefore(document.getElementById(add), document.getElementById("apps").firstChild);
         }, 500)
 
@@ -1668,7 +1704,7 @@ function animateM(e) {
         imgElement.style.borderRadius = null
         imgElement.overflow = null
         document.getElementById("gatewayExploreScroll").style.marginTop = '70px'
-        $("#bottomButtonsFocus").fadeOut("fast", function() {
+        $("#bottomButtonsFocus").fadeOut("fast", function () {
             $("#bottomButtonsDefault").fadeIn("fast")
 
         })

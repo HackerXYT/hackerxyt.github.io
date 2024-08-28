@@ -59,15 +59,15 @@ if (localStorage.getItem("currentSrv")) {
   srv = "https://data.evoxs.xyz"
 }
 
-if(!window.location.href.includes("https")) {
-  if(window.location.href.includes("192")) {
-    if(!srv.includes("40:")) {
-      alert("Welcome to Dev Mode, Switching to local bridge")
-      localStorage.setItem("currentSrv", "http://192.168.1.40:4000")
-      srv = "http://192.168.1.40:4000"
-    }
-  }
-}
+//if(!window.location.href.includes("https")) {
+//  if(window.location.href.includes("192")) {
+//    if(!srv.includes("40:")) {
+//      alert("Welcome to Dev Mode, Switching to local bridge")
+//      localStorage.setItem("currentSrv", "http://192.168.1.126:4000")
+//      srv = "http://192.168.1.126:4000"
+//    }
+//  }
+//}
 
 
 sessionStorage.removeItem("skipped")
