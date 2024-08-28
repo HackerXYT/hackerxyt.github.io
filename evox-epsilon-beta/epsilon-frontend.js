@@ -1259,28 +1259,28 @@ function showFriend(element) {
         document.getElementById("user-video-forDisplay").src = ''
         document.getElementById("user-video-forDisplay").style.display = 'none'
     //Old db < NEW🥲
-    //fetch(`${srv}/profiles?name=${friend}&authorize=cover`)
-    //    .then(response => {
-    //        if (!response.ok) {
-    //            throw new Error(`HTTP error! Status: ${response.status}`);
-    //        }
-    //        return response.text();
-    //    })
-    //    .then(coverIMG => {
-    //        if (coverIMG !== "None") {
-    //
-    //            document.getElementById("user-video-forDisplay").style.display = ''
-    //            document.getElementById("user-video-forDisplay").src = coverIMG
-    //            document.getElementById("loadingIndicatorProfile").style.display = 'none'
-    //        } else {
-    //            document.getElementById("user-video-forDisplay").src = ''
-    //            document.getElementById("user-video-forDisplay").style.display = 'none'
-    //            document.getElementById("loadingIndicatorProfile").style.display = 'none'
-    //        }
-    //
-    //    }).catch(error => {
-    //        console.error(error);
-    //    })
+    fetch(`${srv}/profiles?name=${friend}&authorize=cover`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(coverIMG => {
+            if (coverIMG !== "None") {
+    
+                document.getElementById("user-video-forDisplay").style.display = ''
+                document.getElementById("user-video-forDisplay").src = coverIMG
+                document.getElementById("loadingIndicatorProfile").style.display = 'none'
+            } else {
+                document.getElementById("user-video-forDisplay").src = ''
+                document.getElementById("user-video-forDisplay").style.display = 'none'
+                document.getElementById("loadingIndicatorProfile").style.display = 'none'
+            }
+    
+        }).catch(error => {
+            console.error(error);
+        })
 
     fetch(`${srv}/canvas/${friend}/has`)
         .then(response => {
@@ -1290,6 +1290,7 @@ function showFriend(element) {
             return response.text();
         })
         .then(canvasStatus => {
+            return;
             if (canvasStatus === 'true') {
                 
                 document.getElementById("user-video-forDisplay").style.display = ''
