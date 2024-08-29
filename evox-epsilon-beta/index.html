@@ -6,20 +6,25 @@
         let successLoad = false;
         window.onerror = function (message, source, lineno, colno, error) {
             if (successLoad === false) {
+
                 warn(`An error occurred: ${message} at ${source}:${lineno}:${colno}`)
             }
+            //alert(`An error occurred: ${message} at ${source}:${lineno}:${colno}`)
             return false;
         };
         window.addEventListener('unhandledrejection', function (message, source, lineno, colno, error) {
             if (successLoad === false) {
+
                 warn(`An error occurred: ${source}:${lineno}:${colno}`)
             }
+            //alert(`An error occurred: ${source}:${lineno}:${colno}`)
         });
         const originalConsoleLog = console.log;
         console.log = function (...args) {
             //alert(args.join(' '));
             originalConsoleLog.apply(console, args);
         };
+
     </script>
     <meta charset="UTF-8">
     <title>Epsilon</title>
@@ -359,25 +364,27 @@
 
 
     <div id="container">
+
+        <div id="gatewayActions" class="gatewayActions" style="display: none;">
+            <p id="tab-ask" onclick="enableTab(this)">Ask</p>
+            <p id="tab-explore" onclick="enableTab(this)" class="active">Explore</p>
+            <p id="tab-profile" onclick="enableTab(this)">Profile</p>
+            <span id="networkStatus" class="quickAccess">
+                <svg id="onlineStatus" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                    fill="none">
+                    <path d="M4 20V19M8 20V16M12 20V12M16 20V8M20 20V4" stroke="#55565f" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <svg style="display: none;" id="offlineStatus" xmlns="http://www.w3.org/2000/svg" width="25px"
+                    height="25px" viewBox="0 0 24 24" fill="none">
+                    <path d="M20 4V14.3945M16 16V20M16 8V10.399M12 12V20M8 16V20M4 19V20M3 3L21 21" stroke="#55565f"
+                        stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <!--<img class="slUserPFP actions" src="tascoPoster.png">-->
+            </span>
+        </div>
         <div class="gateway" id="gateway">
-            <div id="gatewayActions" class="gatewayActions">
-                <p id="tab-ask" onclick="enableTab(this)">Ask</p>
-                <p id="tab-explore" onclick="enableTab(this)" class="active">Explore</p>
-                <p id="tab-profile" onclick="enableTab(this)">Profile</p>
-                <span id="networkStatus" class="quickAccess">
-                    <svg id="onlineStatus" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
-                        viewBox="0 0 24 24" fill="none">
-                        <path d="M4 20V19M8 20V16M12 20V12M16 20V8M20 20V4" stroke="#55565f" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    <svg style="display: none;" id="offlineStatus" xmlns="http://www.w3.org/2000/svg" width="25px"
-                        height="25px" viewBox="0 0 24 24" fill="none">
-                        <path d="M20 4V14.3945M16 16V20M16 8V10.399M12 12V20M8 16V20M4 19V20M3 3L21 21" stroke="#55565f"
-                            stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                    <!--<img class="slUserPFP actions" src="tascoPoster.png">-->
-                </span>
-            </div>
+
 
             <!--Cards-->
             <div id="gatewayExploreScroll" class="gatewayExplore">
@@ -426,17 +433,26 @@
                     </div>
                     <div id="bottomButtonsFocus" class="bottomButtons" style="display: none;">
                         <a onclick="bottomButtonPress('launch', this)" class="firstChild" href="#launch">
-                            <svg style="transition: transform 1s ease-in-out;" id="launchDisk" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM8 12C8 9.79086 9.79086 8 12 8C12.5523 8 13 7.55228 13 7C13 6.44772 12.5523 6 12 6C8.68629 6 6 8.68629 6 12C6 12.5523 6.44772 13 7 13C7.55228 13 8 12.5523 8 12ZM17 11C17.5523 11 18 11.4477 18 12C18 15.3137 15.3137 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C14.2091 16 16 14.2091 16 12C16 11.4477 16.4477 11 17 11ZM12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10Z" fill="#dbdde3"/>
-                                </svg>
+                            <svg style="transition: transform 1s ease-in-out;" id="launchDisk"
+                                xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM8 12C8 9.79086 9.79086 8 12 8C12.5523 8 13 7.55228 13 7C13 6.44772 12.5523 6 12 6C8.68629 6 6 8.68629 6 12C6 12.5523 6.44772 13 7 13C7.55228 13 8 12.5523 8 12ZM17 11C17.5523 11 18 11.4477 18 12C18 15.3137 15.3137 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C14.2091 16 16 14.2091 16 12C16 11.4477 16.4477 11 17 11ZM12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10Z"
+                                    fill="#dbdde3" />
+                            </svg>
                             Launch
                         </a>
                         <a onclick="bottomButtonPress('edit', this)" href="#edit">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 21C12 20.4477 12.4477 20 13 20H21C21.5523 20 22 20.4477 22 21C22 21.5523 21.5523 22 21 22H13C12.4477 22 12 21.5523 12 21Z" fill="#dbdde3"/>
-                                <path class="dot" fill-rule="evenodd" clip-rule="evenodd" d="M20.7736 8.09994C22.3834 6.48381 22.315 4.36152 21.113 3.06183C20.5268 2.4281 19.6926 2.0233 18.7477 2.00098C17.7993 1.97858 16.8167 2.34127 15.91 3.09985C15.8868 3.11925 15.8645 3.13969 15.8432 3.16111L2.87446 16.1816C2.31443 16.7438 2 17.5051 2 18.2987V19.9922C2 21.0937 2.89197 22 4.00383 22H5.68265C6.48037 22 7.24524 21.6823 7.80819 21.1171L20.7736 8.09994ZM17.2071 5.79295C16.8166 5.40243 16.1834 5.40243 15.7929 5.79295C15.4024 6.18348 15.4024 6.81664 15.7929 7.20717L16.7929 8.20717C17.1834 8.59769 17.8166 8.59769 18.2071 8.20717C18.5976 7.81664 18.5976 7.18348 18.2071 6.79295L17.2071 5.79295Z" fill="#dbdde3"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12 21C12 20.4477 12.4477 20 13 20H21C21.5523 20 22 20.4477 22 21C22 21.5523 21.5523 22 21 22H13C12.4477 22 12 21.5523 12 21Z"
+                                    fill="#dbdde3" />
+                                <path class="dot" fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M20.7736 8.09994C22.3834 6.48381 22.315 4.36152 21.113 3.06183C20.5268 2.4281 19.6926 2.0233 18.7477 2.00098C17.7993 1.97858 16.8167 2.34127 15.91 3.09985C15.8868 3.11925 15.8645 3.13969 15.8432 3.16111L2.87446 16.1816C2.31443 16.7438 2 17.5051 2 18.2987V19.9922C2 21.0937 2.89197 22 4.00383 22H5.68265C6.48037 22 7.24524 21.6823 7.80819 21.1171L20.7736 8.09994ZM17.2071 5.79295C16.8166 5.40243 16.1834 5.40243 15.7929 5.79295C15.4024 6.18348 15.4024 6.81664 15.7929 7.20717L16.7929 8.20717C17.1834 8.59769 17.8166 8.59769 18.2071 8.20717C18.5976 7.81664 18.5976 7.18348 18.2071 6.79295L17.2071 5.79295Z"
+                                    fill="#dbdde3" />
                             </svg>
-                            
+
                             Edit
                         </a>
                     </div>
@@ -516,7 +532,7 @@
 
                     </div>
                     <div class="bottomButtons">
-                        <a onclick="showSocial(this)" class="firstChild" href="#social-manage">
+                        <a id="social-manage" onclick="showSocial(this)" class="firstChild" href="#social-manage">
                             <svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="25px"
                                 height="25px" viewBox="0 0 24 24" fill="none">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -577,6 +593,112 @@
                 <div style="opacity: 0;
                 /* This is the bottom of the app */
                 height: 20px;"></div>
+            </div>
+        </div>
+
+
+        <!--Self user profile-->
+        <div class="profileContainer user-profile" id="profileContainer">
+            
+            <p id="selfshowErrorCanvas" style="display: none;" class="loadingIndicatorSelf">Canvas Failed</p>
+            <video autoplay muted loop playsinline id="self-video-forDisplay"
+                style="opacity:0.5;position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;overflow: hidden;">
+                <source src="" id="user-video-self" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="slUser">
+                <img id="self-profile-picture" class="slUserPFP profile" src="evox-logo-apple.png">
+            </div>
+            <h3 id="self-profile-username">Username</h3>
+            <div id="self-tags" style="margin-top: 10px;flex-direction:row;display:flex"><!--Self-->
+                <vox style="display: flex;
+                flex-direction: row;
+                
+                white-space: nowrap;" id="userTags">
+
+                </vox>
+                <div onclick="addTag()" class="user-tag">
+                    <!--<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path d="M10 4L7 20M17 4L14 20M5 8H20M4 16H19" stroke="#fff" stroke-width="2"
+                            stroke-linecap="round" />
+                    </svg>-->
+                    +
+                </div>
+            </div>
+            <div class="vo-container">
+                <vo>Your Info</vo>
+            </div>
+            <div class="evox-info">
+                <div onclick="showFriendsFromProfile()" class="infoBlock">
+                    <p>Friends</p>
+                    <span id="self_friendsCount">0</span>
+
+                </div>
+                <div id="self-age-block" onclick="editBirthdate()" class="infoBlock">
+                    <p>Age</p>
+                    <span id="self-age">Loading</span>
+                </div>
+                <div class="infoBlock">
+                    <p>Cryptox</p>
+                    <span id="self-cryptox">No</span>
+                </div>
+                <div id="self-birth-block" onclick="editBirthdate()" class="infoBlock">
+                    <p>Birthdate</p>
+                    <span id="self-birthdate">Loading</span>
+                </div>
+                <div class="infoBlock">
+                    <p>Last Seen</p>
+                    <span id="self_lastSeen">Loading</span>
+                </div>
+                <div class="infoBlock" style="margin-right: 100px">
+                    <p>Verified</p>
+                    <span>Yes</span>
+                </div>
+            </div>
+            <div class="more_options">
+                <div onclick="showCanvasInput()" id="canvasOption" style="display: none;" class="profileOptions">
+                    Edit Canvas
+                </div>
+                <p id="loadingIndicatorSelfCanvas" style="margin-bottom: 20px">Canvas Loading <svg style="margin-left: 5px;
+                    display: inline-flex;
+                    align-items: center;
+                    vertical-align: middle;" version="1.1"
+                    width="20px" height="20px" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+                    style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                    <path fill="#fff"
+                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                    </path>
+                </svg></p>
+            </div>
+
+
+            <div class="birthdatePopup" id="birthdatePopup">
+                <div class="grabbable"></div>
+                <div class="birthcard">
+                    <!--Collumn-->
+                    <svg class="calendar" xmlns="http://www.w3.org/2000/svg" width="45px" height="45px"
+                        viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M2.00162 10C2.00052 10.1027 2 10.2067 2 10.312V15.688C2 16.8044 2.05852 17.7698 2.23866 18.5804C2.42133 19.4024 2.74209 20.1251 3.30848 20.6915C3.87488 21.2579 4.59764 21.5787 5.41959 21.7613C6.23018 21.9415 7.19557 22 8.312 22H15.688C16.8044 22 17.7698 21.9415 18.5804 21.7613C19.4024 21.5787 20.1251 21.2579 20.6915 20.6915C21.2579 20.1251 21.5787 19.4024 21.7613 18.5804C21.9415 17.7698 22 16.8044 22 15.688V10.312C22 10.2067 21.9995 10.1027 21.9984 10H2.00162Z"
+                            fill="#b5b5b8" />
+                        <path
+                            d="M4.99991 4.34708V3C4.99991 2.44772 5.44762 2 5.99991 2C6.55219 2 6.99991 2.44772 6.99991 3V4.03477C7.41104 4.01008 7.84846 4 8.31191 4H15.6879C16.1514 4 16.5888 4.01008 16.9999 4.03477V3C16.9999 2.44772 17.4476 2 17.9999 2C18.5522 2 18.9999 2.44772 18.9999 3V4.34708C19.649 4.54034 20.2235 4.8406 20.6914 5.30848C21.2578 5.87488 21.5786 6.59764 21.7612 7.41959C21.8024 7.60498 21.8373 7.79846 21.8665 8H2.1333C2.16253 7.79846 2.19737 7.60498 2.23857 7.41959C2.42124 6.59764 2.742 5.87488 3.30839 5.30848C3.77627 4.8406 4.35086 4.54034 4.99991 4.34708Z"
+                            fill="#b5b5b8" />
+                    </svg>
+                    <p id='moreBirthInfo'>💡</p>
+                    <p id="showBirthText">💡</p>
+                    <p style="display: none;" id="nextBirthday"></p>
+
+                    <div class="editButton">
+                        Something Wrong? Change your birthdate
+                    </div>
+
+                </div>
+
+
             </div>
 
         </div>
@@ -875,8 +997,8 @@
                         </svg>
                     </div>
                 </div>
-
             </div>
+            <p style="display: none;" id="updateCheck">No updates</p>
             <div class="buttonsContainer">
                 <div class="option">
                     <img src="epsilon-frontend-assets/offlineMode.png"><span>Offline mode</span>
@@ -1025,6 +1147,7 @@
                         to="360 25 25" dur="0.6s" repeatCount="indefinite" />
                 </path>
             </svg></p>
+        <p id="showErrorCanvas" class="loadingIndicatorProfile">Canvas Failed</p>
         <video autoplay muted loop playsinline id="user-video-forDisplay"
             style="opacity:0.5;position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;overflow: hidden;">
             <source src="5512609-hd_1080_1920_25fps.mp4" id="user-video" type="video/mp4">
@@ -1035,7 +1158,15 @@
         </div>
         <p class="friendsCounterUser" id="friendsCount">0 <span>Friends</span></p>
         <h3 id="user-profile-username">Username</h3>
-        <div class="user-tags">
+        <div id="friend-tags" style="margin-top: 10px;flex-direction:row;display:flex"><!--Self-->
+            <vox style="display: flex;
+            flex-direction: row;
+            
+            white-space: nowrap;" id="friendTags">
+
+            </vox>
+        </div>
+        <!--<div style="display: none;"  class="user-tags">
             <div class="user-tag">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                     <path d="M10 4L7 20M17 4L14 20M5 8H20M4 16H19" stroke="#fff" stroke-width="2"
@@ -1057,7 +1188,7 @@
                 </svg>
                 Tag3
             </div>
-        </div>
+        </div>-->
         <div class="vo-container">
             <vo>Info</vo>
 
@@ -1258,6 +1389,8 @@
         </div>
 
     </div>
+    <input style="display:none" type="file" id="upload-canvas" accept=".mp4, .mov, .webm, video/mp4, video/quicktime, video/webm" onchange="setUserCover()">
+    <div id="invisibleContainer" style="display: none;"></div>
 </body>
 
 

@@ -49,6 +49,7 @@ html {
   /* Darker background color */
 }
 
+
 .gatewayActions {
   padding-left: 30px;
   padding-right: 30px;
@@ -65,6 +66,7 @@ html {
   box-sizing: border-box;
   z-index: 1000;
   background: transparent;
+  
   /* Ensures the element stays on top of other content */
 
   /* Initially off-screen to the left */
@@ -74,11 +76,11 @@ html {
 .gatewayActions.back {
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  background-color: #000;
+  background-color: #000000bb;
   /* Semi-transparent background */
-  backdrop-filter: blur(25px);
+  backdrop-filter: blur(125px);
   /* Adjust the blur amount as needed */
-  -webkit-backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(125px);
 }
 
 .gatewayActions.top {
@@ -116,7 +118,12 @@ html {
   font-weight: bold;
   color: #55565f;
   position: relative;
-  transition: color 0.5s ease-in-out;
+  transition: color 0.5s ease-in-out, letter-spacing 1s ease-in-out, transform 1s ease-in-out, background-color 1s ease-in-out;
+  letter-spacing: 0px;
+}
+
+.gatewayActions p.animate {
+  letter-spacing: 2px; /* Adjust this value as needed */
 }
 
 .gatewayActions p:before {
@@ -138,8 +145,31 @@ html {
   transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
+.gatewayActions p.animate:before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 50%;
+  width: 0;
+  /* Initially hidden */
+  height: 4px;
+  background-color: #55565f7d;
+  /*border-top-left-radius: 5px;*/
+  /*border-top-right-radius: 5px;*/
+  border-radius: 5px;
+  bottom: -10px;
+  transform: translateX(-50%);
+  opacity: 0;
+  /* Initially hidden */
+  transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
 .gatewayActions p.active {
   color: #d0d1d9;
+}
+
+.gatewayActions p.animate.active {
+  color: #55565f;
 }
 
 .gatewayActions p.active:before {
@@ -1472,6 +1502,22 @@ a {
   transition: filter 1s ease-in, transform 0.5s ease-in-out, opacity 0.2s ease-in-out;
   display: none;
 }
+
+.profileContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  overflow-y: auto;
+  touch-action: none;
+  opacity: 0;
+  transition: filter 1s ease-in, transform 0.5s ease-in-out, opacity 0.2s ease-in-out;
+  display: none;
+}
+
+
+
 
 #lockscreen {
   display: none;
@@ -5907,6 +5953,7 @@ input:-webkit-autofill {
   display: flex;
   flex-direction: row;
   margin-top: 10px;
+  white-space: nowrap;
 }
 
 .user-tags .user-tag {
@@ -5922,6 +5969,29 @@ input:-webkit-autofill {
   margin-right: 5px;
 }
 
+.user-tag {
+  background-color: #37373765;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  color: #fff;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 10px;
+  margin-right: 5px;
+}
+
+.user-tag {
+  display: inline-flex; /* Use inline-flex to keep the container inline with other text */
+  align-items: center; /* Vertically centers the SVG and text */
+  gap: 2px; /* Adds space between the SVG and text */
+}
+
+.user-tag svg {
+  vertical-align: middle; /* Ensures SVG is vertically centered */
+  display: inline-block; /* Necessary for proper vertical alignment in some cases */
+}
 .user-tags .user-tag svg {
   display: inline-flex;
   align-items: center;
@@ -5960,8 +6030,16 @@ input:-webkit-autofill {
 }
 
 .infoBlock span {
+  display: inline-flex;
+  align-items: center;
   font-size: 18px;
   color: #c7c7c7;
+}
+
+.infoBlock svg {
+  position: relative;
+  transform: translateY(1.35px) rotate(180deg); /* Adjust the value as needed */
+  margin-left: 0;
 }
 
 .friendsCounterUser span {
@@ -5984,6 +6062,20 @@ input:-webkit-autofill {
 }
 
 .loadingIndicatorProfile svg {
+  margin-left: 5px;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.loadingIndicatorSelf {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+}
+
+.loadingIndicatorSelf svg {
   margin-left: 5px;
   display: inline-flex;
   align-items: center;
@@ -6340,4 +6432,136 @@ input:-webkit-autofill {
 .buttonsContainer .option:last-child {
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
+}
+
+.birthdatePopup {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 335px;
+  display: block;
+  padding: 0 30px 30px 30px;
+  align-items: center;
+  scroll-behavior: smooth;
+  touch-action: auto;
+  justify-content: center;
+  background: #0c0d16d9;
+  z-index: 1000;
+  box-sizing: border-box;
+  opacity: 1;
+  visibility: hidden;
+  transform: translateY(100%);
+  transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 0.5s ease-in-out;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  overflow-x: hidden;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+
+.birthdatePopup.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateY(0);
+  /* Slide the popup into view */
+}
+
+
+.birthdatePopup .grabbable {
+  position: sticky;
+  background-color: #3c3e46;
+  height: 5px;
+  width: 15%;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50px;
+  transition: background-color 1s ease-out;
+  z-index: 999;
+}
+
+.birthdatePopup .grabbable::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  /* Extend clickable area upwards */
+  left: -30px;
+  /* Extend clickable area to the left */
+  right: -30px;
+  /* Extend clickable area to the right */
+  bottom: -30px;
+  /* Extend clickable area downwards */
+  background: transparent;
+  /* Ensure it's transparent */
+  cursor: pointer;
+  /* Make sure the cursor changes */
+}
+
+.birthdatePopup .grabbable:active {
+  cursor: grabbing;
+}
+
+.birthdatePopup .birthcard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.birthdatePopup .birthcard .calendar {
+  margin-top: 35px;
+}
+
+.birthdatePopup .birthcard #showBirthText {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.birthdatePopup .birthcard #moreBirthInfo {
+  margin-top: 15px;
+  font-size: 18px;
+}
+
+.birthdatePopup .birthcard #nextBirthday {
+  font-size: 14px;
+}
+
+.birthdatePopup .editButton {
+  position: absolute;
+  bottom: 20px;
+  margin-top: 15px;
+  background-color: #43434331;
+  padding: 20px 20px;
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  vertical-align: middle;
+  margin-bottom: 10px;
+  border-radius: 25px;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+.more_options {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 20px;
+}
+
+.profileOptions {
+  background-color: #43434331;
+  padding: 20px 20px;
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  vertical-align: middle;
+  margin-bottom: 10px;
+  border-radius: 25px;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
 }

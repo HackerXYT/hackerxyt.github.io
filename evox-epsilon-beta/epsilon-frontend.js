@@ -5,6 +5,7 @@ if (localStorage.getItem("currentSrv")) {
     srv = "https://data.evoxs.xyz"
 }
 
+//alert(srv)
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.getRegistrations().then(function (registrations) {
         for (let registration of registrations) {
@@ -72,6 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
         //console.log('Scroll position:', scrollPosition);
 
         // Check if the scroll position is at the top
+        if (isProfileTabActive === true) {
+            return;
+        }
         if (scrollPosition === 0) {
             //console.log('User has scrolled back to the top.');
             document.getElementById("gatewayActions").classList.remove('back')
@@ -854,6 +858,7 @@ function verificationComplete() {
     document.getElementById("gateway").style.display = 'flex'
     setTimeout(function () {
         document.getElementById("gateway").style.opacity = '1'
+        $("#gatewayActions").fadeIn("fast")
     }, 50)
 
 }
@@ -881,6 +886,31 @@ function hideChats() {
         animate.style.transform = ''
     }, 500)
 
+    //refresh carousel etc
+    fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            setNetworkStatus('on')
+            localStorage.setItem("friends", JSON.stringify(data))
+            attachUi(data, null, 'onlyCarousel')
+
+        })
+        .catch(error => {
+            setNetworkStatus('off')
+            const data = localStorage.getItem("friends")
+            if (data) {
+                console.warn("Server connection failed. Trying local")
+                attachUi(JSON.parse(data, null, 'onlyCarousel'))
+            } else {
+                console.error('Carousel Failed!', error);
+            }
+
+        });
 }
 function showChats() {
     loadSecurelineHome()
@@ -1032,6 +1062,9 @@ function openChat(data, location) {
             console.error(error);
         });
     actionReload(username)
+    activeChatInterval = setInterval(function () {
+        actionReload(username, 'reloadPage')
+    }, 1700)
     console.warn("Running Secureline For", username)
     setTimeout(function () {
         document.getElementById("secureline-input").value = ''
@@ -1086,6 +1119,8 @@ window.addEventListener('load', setFullHeight);
 window.addEventListener('resize', setFullHeight);
 
 function goBackMessenger() {
+    clearInterval(activeChatInterval)
+    activeChatInterval = null;
     sessionStorage.removeItem("current_sline")
     sessionStorage.removeItem("lastChatInter")
     const popup = document.getElementById("secureline")
@@ -1109,15 +1144,80 @@ function goBackMessenger() {
     }, 200)
 }
 
-function showFriend(element) {
+function showRemoteFriend(id) {
+    const friend = id.replace('_socialHome', '');
+    const container = document.getElementById("invisibleContainer")
+    container.innerHTML = ''
+    const userDiv = document.createElement('div');
+    userDiv.className = 'user';
+    userDiv.id = `remote-${friend}-div`
+    userDiv.onclick = function () {
+        showFriend(this, 'dup')
+    }
+    const iconDiv = document.createElement('div');
+    iconDiv.className = 'icon';
+
+    const img = document.createElement('img');
+    img.className = 'slUserPFP social';
+    img.src = 'searching_users.gif';
+    loadPFPget(friend)
+        .then(profileImage => {
+            img.src = profileImage;;
+        }).catch(error => {
+            setNetworkStatus('off')
+            console.error(error);
+        });
+    iconDiv.appendChild(img);
+
+    // Create the column div with username and message
+    const columnDiv = document.createElement('div');
+    columnDiv.className = 'column';
+
+    const usernameP = document.createElement('p');
+    usernameP.textContent = friend;
+    columnDiv.appendChild(usernameP);
+
+
+    // Create the show-user-info div with SVG
+    const showUserInfoDiv = document.createElement('div');
+    showUserInfoDiv.className = 'show-user-info';
+    showUserInfoDiv.id = `showUserInfoDiv-${friend}-dup`
+    showUserInfoDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+                <g clip-path="url(#clip0_429_11257)">
+                <path d="M14 7L9 12" stroke="#7d7e87" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 12L14 17" stroke="#7d7e87" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <defs>
+                <clipPath>
+                <rect width="24" height="24" fill="white"/>
+                </clipPath>
+                </defs>
+                </svg>`
+
+    // Append all created elements to the userDiv
+    userDiv.appendChild(iconDiv);
+    userDiv.appendChild(columnDiv);
+    userDiv.appendChild(showUserInfoDiv);
+
+    // Append the userDiv to the target container
+    container.appendChild(userDiv);
+    showSocial(document.getElementById("social-manage"))
+    document.getElementById(`remote-${friend}-div`).click()
+
+
+}
+
+function showFriend(element, duplicate) {
     document.getElementById("userProfile-back").style.display = 'flex'
     setTimeout(function () {
         document.getElementById("userProfile-back").style.opacity = '1'
     }, 200)
     const pElement = element.querySelector('.column p');
     const friend = pElement.textContent;
-    const defaultArrow = document.getElementById(`showUserInfoDiv-${friend}`).innerHTML
-    document.getElementById(`showUserInfoDiv-${friend}`).innerHTML = `<svg version="1.1" width="25px" height="25px" xmlns="http://www.w3.org/2000/svg"
+    let defaultArrow;
+    if (!duplicate) {
+        defaultArrow = document.getElementById(`showUserInfoDiv-${friend}`).innerHTML
+        document.getElementById(`showUserInfoDiv-${friend}`).innerHTML = `<svg version="1.1" width="25px" height="25px" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
             style="enable-background:new 0 0 50 50;" xml:space="preserve">
             <path fill="#fff"
@@ -1126,6 +1226,11 @@ function showFriend(element) {
                     to="360 25 25" dur="0.6s" repeatCount="indefinite" />
             </path>
         </svg>`
+    } else {
+        defaultArrow = document.getElementById(`showUserInfoDiv-${friend}-dup`).innerHTML
+    }
+
+
     console.log("Default arrow", defaultArrow)
     console.log('Launching:', friend);//
     document.getElementById("user-profile-picture").src = 'searching_users.gif'
@@ -1196,7 +1301,7 @@ function showFriend(element) {
                 })
                 .then(last_login => {
                     if (last_login !== 'Unknown') {
-                        document.getElementById("user-lastSeen").innerText = formatTimeDifference(last_login)
+                        document.getElementById("user-lastSeen").innerText = formatTimeDifference(last_login) + " ago"
                     } else {
                         document.getElementById("user-lastSeen").innerText = 'Unknown'
                     }
@@ -1235,7 +1340,9 @@ function showFriend(element) {
                         document.getElementById("user-age-block").style.display = 'none'
                         document.getElementById("user-birth-block").style.display = 'none'
                     }
+
                     document.getElementById("user-profile").classList.add('active')
+
                     const socialPopup = document.getElementById("social")
                     socialPopup.classList.remove("active")
                     document.getElementById("social-back").style.opacity = '0'
@@ -1243,10 +1350,12 @@ function showFriend(element) {
                         document.getElementById("social-back").style.display = 'none'
                     }, 200)
                     document.getElementById("bottomActionsSocial").classList.remove("visible")
-                    $("#bggradient").fadeOut("fast")
-                    setTimeout(() => {
-                        document.getElementById(`showUserInfoDiv-${friend}`).innerHTML = defaultArrow
-                    }, 250);
+
+                    if (!duplicate) {
+                        setTimeout(() => {
+                            document.getElementById(`showUserInfoDiv-${friend}`).innerHTML = defaultArrow
+                        }, 250);
+                    }
 
                 }).catch(error => {
                     console.log("User Load Failed [2]:", error)
@@ -1254,35 +1363,89 @@ function showFriend(element) {
         }).catch(error => {
             console.log("User load failed [1]:", error)
         })
-
-        document.getElementById("loadingIndicatorProfile").style.display = ''
-        document.getElementById("user-video-forDisplay").src = ''
-        document.getElementById("user-video-forDisplay").style.display = 'none'
+    const container = document.getElementById("friendTags")
+    container.innerHTML = ''
+    document.getElementById("loadingIndicatorProfile").style.display = ''
+    document.getElementById("user-video-forDisplay").src = ''
+    document.getElementById("user-video-forDisplay").style.display = 'none'
     //Old db < NEW🥲
-    fetch(`${srv}/profiles?name=${friend}&authorize=cover`)
+    document.getElementById("showErrorCanvas").style.display = 'none'
+    fetch(`${srv}/social?username=${friend}&todo=tags`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            return response.text();
+            return response.json();
         })
-        .then(coverIMG => {
-            if (coverIMG !== "None") {
-    
-                document.getElementById("user-video-forDisplay").style.display = ''
-                document.getElementById("user-video-forDisplay").src = coverIMG
-                document.getElementById("loadingIndicatorProfile").style.display = 'none'
-            } else {
-                document.getElementById("user-video-forDisplay").src = ''
-                document.getElementById("user-video-forDisplay").style.display = 'none'
-                document.getElementById("loadingIndicatorProfile").style.display = 'none'
-            }
-    
-        }).catch(error => {
-            console.error(error);
-        })
+        .then(data => {
 
-    fetch(`${srv}/canvas/${friend}/has`)
+            //will return current tags
+            if (data.includes('No tags')) {
+                return;
+            }
+            data.forEach((tag) => {
+                var div = document.createElement("div");
+                div.className = "user-tag";
+
+                // Create the SVG element
+                var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                svg.setAttribute("width", "20px");
+                svg.setAttribute("height", "20px");
+                svg.setAttribute("viewBox", "0 0 24 24");
+                svg.setAttribute("fill", "none");
+
+                // Create the path element
+                var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", "M10 4L7 20M17 4L14 20M5 8H20M4 16H19");
+                path.setAttribute("stroke", "#fff");
+                path.setAttribute("stroke-width", "2");
+                path.setAttribute("stroke-linecap", "round");
+
+                // Append the path to the svg
+                svg.appendChild(path);
+
+                // Append the svg to the div
+                div.appendChild(svg);
+
+                // Add the text node "Add Tag"
+                div.appendChild(document.createTextNode(tag));
+
+                // Append the div to the element with ID "userTags"
+                container.appendChild(div);
+            })
+        })
+        .catch(error => {
+            setNetworkStatus('off')
+            console.error('Failed to update tags', error)
+        });
+    //fetch(`${srv}/profiles?name=${friend}&authorize=cover`)
+    //    .then(response => {
+    //        if (!response.ok) {
+    //            throw new Error(`HTTP error! Status: ${response.status}`);
+    //        }
+    //        return response.text();
+    //    })
+    //    .then(coverIMG => {
+    //        return;
+    //        if (coverIMG !== "None") {
+    //
+    //            document.getElementById("user-video-forDisplay").style.display = ''
+    //            document.getElementById("user-video-forDisplay").src = coverIMG
+    //            document.getElementById("loadingIndicatorProfile").style.display = 'none'
+    //        } else {
+    //            document.getElementById("user-video-forDisplay").src = ''
+    //            document.getElementById("user-video-forDisplay").style.display = 'none'
+    //            document.getElementById("loadingIndicatorProfile").style.display = 'none'
+    //
+    //        }
+    //
+    //    }).catch(error => {
+    //        console.error(error);
+    //        document.getElementById("showErrorCanvas").style.display = ''
+    //    })
+
+    fetch(`${srv}/canvas/${friend}.evox/has`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1290,16 +1453,18 @@ function showFriend(element) {
             return response.text();
         })
         .then(canvasStatus => {
-            return;
             if (canvasStatus === 'true') {
-                
+
                 document.getElementById("user-video-forDisplay").style.display = ''
-                document.getElementById("user-video-forDisplay").src = `${srv}/canvas/${friend}`
+                document.getElementById("user-video-forDisplay").src = `${srv}/canvas/${friend}.evox`
                 document.getElementById("user-video-forDisplay").onloadeddata = function () {
                     console.log("Canvas Loaded!");
+                    $("#bggradient").fadeOut("fast")
                     document.getElementById("loadingIndicatorProfile").style.display = 'none'
                 };
-                
+                saveVideoAsBlob(friend, `${srv}/canvas/${friend}.evox`)
+
+
             } else {
                 document.getElementById("user-video-forDisplay").src = ''
                 document.getElementById("user-video-forDisplay").style.display = 'none'
@@ -1307,6 +1472,27 @@ function showFriend(element) {
             }
 
         }).catch(error => {
+            loadPFPget(`${friend}_canvas`)
+                .then(result => {
+                    if (result !== 'Canvas Not Found') {
+                        const blob = new Blob([videoData], { type: 'video/mp4' });
+                        const videoURL = URL.createObjectURL(blob);
+                        document.getElementById("user-video-forDisplay").style.display = ''
+                        document.getElementById("user-video-forDisplay").src = videoURL
+                        document.getElementById("user-video-forDisplay").onloadeddata = function () {
+                            console.log("Canvas Loaded!");
+                            $("#bggradient").fadeOut("fast")
+                            document.getElementById("loadingIndicatorProfile").style.display = 'none'
+                        };
+                    } else {
+                        document.getElementById("loadingIndicatorProfile").style.display = 'none'
+                        document.getElementById("showErrorCanvas").style.display = ''
+                    }
+                }).catch(error => {
+                    setNetworkStatus('off')
+                    console.error(error);
+                });
+
             console.error(error);
         })
 
@@ -1627,7 +1813,9 @@ function updateServiceWorkerCacheAndReload() {
 }
 
 
-let activeTab = 'Explore'
+let activeTab = 'Explore';
+let wasGatewayActionsActive = false;
+let isProfileTabActive = false;
 function enableTab(element) {
     const old = activeTab
     document.getElementById(`tab-${activeTab.toLowerCase()}`).classList.remove("active")
@@ -1638,16 +1826,83 @@ function enableTab(element) {
             updateServiceWorkerCacheAndReload()
         }, 500)
     } else if (element.innerHTML.includes("Explore") && !element.classList.contains("active")) {
+        isProfileTabActive = false
+        if (wasGatewayActionsActive === true) {
+            document.getElementById("gatewayActions").classList.remove("back") //gia tora axristo
+            wasGatewayActionsActive = false
+        } else {
+            document.getElementById("gatewayActions").classList.remove("back")
+        }
         activeTab = 'Explore'
         element.classList.add("active")
-    } else if (element.innerHTML.includes("Profile") && !element.classList.contains("active")) {
+        document.getElementById("profileContainer").classList.remove('active')
+        setTimeout(function () {
+            document.getElementById("profileContainer").style.display = 'none'
+            document.getElementById("gateway").style.display = 'flex'
+            setTimeout(function () {
+                document.getElementById("gateway").style.opacity = '1'
+            }, 50)
+        }, 200)
+        $("#bggradient").fadeIn("slow")
+    } else if (element.innerHTML.includes("Profile") && !element.classList.contains("active") || element.innerHTML.includes("Profile") && element.classList.contains("animate")) {
+        console.log("Attaching Profile")
+        if (isProfileTabActive) {
+            element.classList.add("active")
+            console.log("Reloading Total")
+            loadProfile('reload')
+            return;
+        }
+        isProfileTabActive = true
+        if (document.getElementById("gatewayActions").classList.contains("back")) {
+            wasGatewayActionsActive = true
+        }
+        loadProfile(null, 'withoutCanvas')
+        document.getElementById("gatewayActions").classList.add("back")
         activeTab = 'Profile'
         element.classList.add("active")
+        document.getElementById("gateway").style.opacity = '0'
+        setTimeout(function () {
+            document.getElementById("gateway").style.display = 'none'
+            document.getElementById("profileContainer").style.display = 'flex'
+            setTimeout(function () {
+                document.getElementById("profileContainer").classList.add('active')
+            }, 50)
+        }, 200)
     } else {
         console.log("Nothing found")
         return;
     }
     console.log(`Hit. Changed From ${old} to ${activeTab}`)
+
+}
+
+function showFriendsFromProfile() {
+
+    showSocial(document.getElementById("social-manage"))
+    setTimeout(function () {
+        enableTab(document.getElementById("tab-explore"))
+    }, 350)
+}
+
+function editBirthdate() { //from profile
+
+
+    if (!document.getElementById("birthdatePopup").classList.contains("active")) {
+        const fullDate = document.getElementById("self-birthdate").innerText
+        const years = document.getElementById("self-age").innerText
+        document.getElementById("showBirthText").innerText = getRandomSentence(years)
+        const monthName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][parseInt(fullDate.split('/')[1], 10) - 1];
+        const day = fullDate.split('/')[0];
+        const year = fullDate.split('/').pop();
+        const fullDateText = `It all began on the ${getOrdinal(day)} of ${monthName} ${year}, when you were born.`
+        document.getElementById("moreBirthInfo").innerText = fullDateText
+        document.getElementById("nextBirthday").innerHTML = `You will be ${Number(years) + 1} years old in ${getDaysUntilNextBirthday(fullDate)} days! 🎂`
+        document.getElementById("birthdatePopup").classList.add("active")
+    } else {
+        document.getElementById("birthdatePopup").classList.remove("active")
+    }
+
+
 
 }
 

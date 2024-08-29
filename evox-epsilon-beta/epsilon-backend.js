@@ -1,5 +1,6 @@
 sessionStorage.removeItem("current_sline")
 sessionStorage.removeItem("lastChatInter")
+sessionStorage.removeItem("lastChatMessages")
 //IP Auth
 let ip = "error";
 document.addEventListener("DOMContentLoaded", function () {
@@ -18,9 +19,13 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => {
 
             ip = localStorage.getItem("IPV4") || "offline"
-            console.error("JSONIP IS OFFLINE")
+            console.error("IP Api is offline, ignoring")
+            clientVerified()
             console.log('Error:', error);
         });
+    setTimeout(function () {
+        loadProfile()
+    }, 1500)
 });
 
 function checkForUpdates() {
@@ -39,14 +44,20 @@ function checkForUpdates() {
 
             // Check if a match is found and get the version number
             const version = matche ? matche[1] : null;
-            if(version) {
-                if(appVersion < version) {
-                    console.log("You are using an older version.")
-                } else if(appVersion > version) {
-                    console.log("You are using a debug version.")
-                } else if(appVersion === version) {
-                    console.log("Up to date.")
-                }
+            if (version) {
+                if (appVersion < version) {
+                    $("#updateCheck").html("You are using an older version.")
+                    $("#updateCheck").fadeIn('fast')
+                } else if (appVersion > version) {
+                    $("#updateCheck").html("You are using a debug version.")
+                    $("#updateCheck").fadeIn('fast')
+                } else if (appVersion === version) {
+                    $("#updateCheck").html("Evox is up to date.")
+                    $("#updateCheck").fadeIn('fast')
+                } else { return; }
+                setTimeout(function () {
+                    $("#updateCheck").fadeOut('fast')
+                }, 5000)
             }
         })
         .catch(error => {
@@ -55,7 +66,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '6.1.5'
+const appVersion = '6.3.0'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -134,7 +145,7 @@ function loadBackground() {
 
 }
 //IndexedDB
-function loadPFPget(username) {
+function loadPFPget(username, isCanvas) {
     return new Promise((resolve, reject) => {
         checkUsernameAndGetData(username, function (error, data) {
             if (error) {
@@ -146,7 +157,11 @@ function loadPFPget(username) {
                     // Resolve with data if available
                     console.log(`Retrieved profile picture for user [${username}]`);
                     resolve(data.data);
-                    console.log(`Refreshing picture for ${username}`)
+                    //console.log(`Refreshing picture for ${username}`)
+                    if (isCanvas) {
+                        return;
+                    }
+                    return;
                     fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
                         .then(response => {
                             if (!response.ok) {
@@ -174,6 +189,11 @@ function loadPFPget(username) {
                             reject(error);
                         });
                 } else {
+                    if (isCanvas) {
+                        console.warn("Cannot get a canvas from profiles database. Use saveVideoAsBlob(username, videoUrl).")
+                        resolve('Canvas Not Found')
+                        return;
+                    }
                     console.log(`Loaded profile picture for user [${username}]`);
                     fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
                         .then(response => {
@@ -301,10 +321,73 @@ function profilesLocal(username, img) {
     };
 }
 
+function saveVideoAsBlob(username, videoUrl) {
+    // Fetch the video data from the URL
+    fetch(videoUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.blob(); // Convert the response to a Blob
+        })
+        .then(blob => {
+            // Store the Blob in IndexedDB
+            canvasLocal(username, blob);
+        })
+        .catch(error => {
+            console.error('Error fetching or saving video:', error);
+        });
+}
+
+function canvasLocal(username, imgBlob) {
+    let request = window.indexedDB.open(DB_NAME, DB_VERSION); // Ensure DB_NAME and DB_VERSION are defined
+    const identifier = `${username}_canvas`;
+
+    request.onerror = function (event) {
+        console.error("Database error:", event.target.error);
+    };
+
+    request.onsuccess = function (event) {
+        let db = event.target.result;
+        let transaction = db.transaction(['Profiles'], 'readwrite');
+        let objectStore = transaction.objectStore('Profiles');
+
+        // Ensure the object has the correct key path property
+        let newUser = { data: imgBlob, username: identifier };
+
+        console.log("Putting object into the store:", newUser); // Log the object
+
+        let putRequest = objectStore.put(newUser);
+
+        putRequest.onsuccess = function (event) {
+            console.log(`Operation [${identifier}] succeeded.`);
+        };
+
+        putRequest.onerror = function (event) {
+            console.error("Error adding or updating user:", event.target.error);
+        };
+    };
+
+    request.onupgradeneeded = function (event) {
+        let db = event.target.result;
+
+        if (!db.objectStoreNames.contains('Profiles')) {
+            // Create the object store with 'identifier' as the keyPath
+            let objectStore = db.createObjectStore('Profiles', { keyPath: 'identifier' });
+            console.log("Object store 'Profiles' created with keyPath 'identifier'");
+
+            // Optionally, create indices if needed
+            objectStore.createIndex('identifierIndex', 'identifier', { unique: true });
+        } else {
+            console.log("Object store 'Profiles' already exists.");
+        }
+    };
+}
+
 
 
 //UI
-function attachUi(data, bypassRecommendations) {
+function attachUi(data, bypassRecommendations, onlyCarousel) {
     if (data === "") {
         console.log("No Friends")
         return;
@@ -320,15 +403,49 @@ function attachUi(data, bypassRecommendations) {
         carousel.innerHTML = ''
     }
 
+    if (localStorage.getItem("favorites")) {
+        try {
+            const favoritesJson = JSON.parse(localStorage.getItem("favorites"))
+            if (favoritesJson.length < 5) {
+                favoritesJson.forEach((friend) => {
+                    appendToCarousel(friend)
+                })
+                const remainingToAppend = 5 - favoritesJson.length
+                let counting = 0;
+                data.forEach((friend) => {
+                    if (counting === remainingToAppend) {
+                        return;
+                    }
+                    if (favoritesJson.includes(friend)) {
+                        return;
+                    } else {
+                        counting = counting + 1
+                        appendToCarousel(friend)
+                    }
+                })
+            }
+        } catch (error) {
+            let firstFiveValues = data.slice(0, 5);
+            firstFiveValues.forEach((friend) => {
+                appendToCarousel(friend)
+            })
+        }
+    } else {
+        let firstFiveValues = data.slice(0, 5);
+        firstFiveValues.forEach((friend) => {
+            appendToCarousel(friend)
+        })
+    }
 
-    let firstFiveValues = data.slice(0, 5);
-    firstFiveValues.forEach((friend) => {
-        if (friend === localStorage.getItem("t50-username")) {
+
+
+    function appendToCarousel(friendName) {
+        if (friendName === localStorage.getItem("t50-username")) {
             return;
         }
         const slUserDiv = document.createElement("a");
-        slUserDiv.id = `carousel-${friend}`
-        slUserDiv.href = `#secureline-${friend}`
+        slUserDiv.id = `carousel-${friendName}`
+        slUserDiv.href = `#secureline-${friendName}`
         if (bypassRecommendations) {
             slUserDiv.className = "slUser add";
         } else {
@@ -336,10 +453,10 @@ function attachUi(data, bypassRecommendations) {
         }
         if (localStorage.getItem("favorites")) {
             const previous = JSON.parse(localStorage.getItem("favorites"))
-            if (previous.includes(friend)) {
+            if (previous.includes(friendName)) {
                 slUserDiv.onclick = function () {
                     const json = {
-                        username: friend,
+                        username: friendName,
                         favorite: true
                     }
                     openChat(json, 'home')
@@ -347,7 +464,7 @@ function attachUi(data, bypassRecommendations) {
             } else {
                 slUserDiv.onclick = function () {
                     const json = {
-                        username: friend,
+                        username: friendName,
                         favorite: false
                     }
                     openChat(json, 'home')
@@ -356,7 +473,7 @@ function attachUi(data, bypassRecommendations) {
         } else {
             slUserDiv.onclick = function () {
                 const json = {
-                    username: friend,
+                    username: friendName,
                     favorite: false
                 }
                 openChat(json, 'home')
@@ -374,7 +491,7 @@ function attachUi(data, bypassRecommendations) {
                 fill="#fff" />
         </svg>`
         }
-        loadPFPget(friend)
+        loadPFPget(friendName)
             .then(profileImage => {
                 imgElement.src = profileImage;
             }).catch(error => {
@@ -385,7 +502,11 @@ function attachUi(data, bypassRecommendations) {
 
 
         carousel.appendChild(slUserDiv);
-    })
+    }
+
+    if (onlyCarousel) {
+        return;
+    }
     //Social Info
     const social = document.getElementById("socialInfo");
     if (bypassRecommendations) {
@@ -403,6 +524,10 @@ function attachUi(data, bypassRecommendations) {
 
         const socialUserDiv = document.createElement('div');
         socialUserDiv.className = 'socialUser';
+        socialUserDiv.id = `${friend}_socialHome`
+        socialUserDiv.onclick = function () {
+            showRemoteFriend(this.id)
+        }
 
         // Create the image element
         const img = document.createElement('img');
@@ -938,7 +1063,7 @@ function securelineHome(data, appending) {
                 </path>
             </svg>`
                 if (localStorage.getItem(`${friend}-lastMsg`) === "Chat not created") {
-                    userDiv.style.opacity = '0'
+                    userDiv.style.display = 'none'
                 }
             }
 
@@ -952,7 +1077,7 @@ function securelineHome(data, appending) {
                 .then(lastMsg => {
                     setNetworkStatus('on')
                     localStorage.setItem(`${friend}-lastMsg`, lastMsg)
-                    userDiv.style.opacity = '1'
+                    userDiv.style.display = null
 
                     if (lastMsg === 'Chat not created' && appending === "secureline-users") {
                         console.log(`Stopping Spawn For User ${friend}.`)
@@ -1344,11 +1469,21 @@ function isValidSline(json) {
     return true;
 }
 
-function actionReload(whoto) {
+document.getElementById("message_input").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        send_message()
+    }
+});
+
+let activeChatInterval = null;
+function actionReload(whoto, reloadPage) {
     const container = document.getElementById("messages-container");
     //container.innerHTML = `<p class='centered-text'>Loading ${whoto}..</p>`;
-    container.innerHTML = `<p id='tempTxt' class='centered-text'><img src="EvoxEPSILON.png"></p>`;
-    document.getElementById("tempTxt").style.opacity = '1'
+    if (!reloadPage) {
+        container.innerHTML = `<p id='tempTxt' class='centered-text'><img src="EvoxEPSILON.png"></p>`;
+        document.getElementById("tempTxt").style.opacity = '1'
+    }
+
     console.log(`Reloading user's chat with ${whoto}`);
     sessionStorage.setItem("current_sline", whoto);
     const element = {
@@ -1389,12 +1524,12 @@ function actionReload(whoto) {
                 }
                 return;
             }
-            if (sessionStorage.getItem("lastChatInter") === messages) {
+            if (sessionStorage.getItem("lastChatMessages") === JSON.stringify(messages)) {
                 console.log("No new messages");
                 document.getElementById("bottomActionsSecureline").classList.remove("hidden")
-                //return;
+                return;
             }
-            sessionStorage.setItem("lastChatInter", messages);
+            sessionStorage.setItem("lastChatMessages", JSON.stringify(messages));
             if (messages === "Chat not created") {
                 document.getElementById("messages-container").innerHTML = `<p style="opacity: 1" class='centered-text'>Chat Hasn't Been Created.<button style="margin-top: 20px" id="submit" onclick="create_chat()" class="transparent-button">Create Chat</button></p>`;
                 console.log("Chat Doesn't Exist");
@@ -1440,6 +1575,7 @@ function actionReload(whoto) {
                             } else if (message.content.includes('.mp4')) {
                                 fileSrc = './novus/video.svg';
                                 infoFile = `MP4 &#x2022; unknMB`;
+
                             } else if (message.content.includes('chatgpt')) {
                                 fileSrc = `https://logo.clearbit.com/openai.com`;
                             } else {
@@ -1452,14 +1588,14 @@ function actionReload(whoto) {
                                     <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
                                     <vo>${infoFile}</vo>
                                 </div>
-                                <img class="imgBox" src="./novus/open.svg" style="margin-right: 0px;">`;
+                                <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${message.content}')" style="margin-right: 0px;">`;
                             } else {
                                 messageElement.innerHTML = `<img class="urlImg" style="width: 25px;height:25px" src="./novus/attach.svg">
             <div class="embedCol">
                 <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
                 <vo>${infoFile}</vo>
             </div>
-            <img class="imgBox" src="./novus/open.svg" style="margin-right: 0px;">`;
+            <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${message.content}')" style="margin-right: 0px;">`;
                             }
 
                             // Apply appropriate class based on the sender
@@ -1478,7 +1614,7 @@ function actionReload(whoto) {
                                             <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
                                             <vo>${infoFile}</vo>
                                         </div>
-                                        <img class="imgBox" src="./novus/open.svg" style="margin-right: 0px;">`;
+                                        <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${message.content}')" style="margin-right: 0px;">`;
                                     } else {
                                         if (fileSrc !== false) {
                                             messageElement.innerHTML = `<img class="urlImg" src="${fileSrc}">
@@ -1486,14 +1622,14 @@ function actionReload(whoto) {
                                                 <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
                                                 <vo>${infoFile}</vo>
                                             </div>
-                                            <img class="imgBox" src="./novus/open.svg" style="margin-right: 0px;">`;
+                                            <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${message.content}')" style="margin-right: 0px;">`;
                                         } else {
                                             messageElement.innerHTML = `<img class="urlImg" style="width: 25px;height:25px" src="./novus/attach.svg">
                         <div class="embedCol">
                             <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
                             <vo>${infoFile}</vo>
                         </div>
-                        <img class="imgBox" src="./novus/open.svg" style="margin-right: 0px;">`;
+                        <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${message.content}')" style="margin-right: 0px;">`;
                                         }
                                     }
 
@@ -1746,7 +1882,7 @@ function send_message() {
                 message.value = ""
                 if (data === `Message Sent To ${recipient}`) {
                     console.log("Message Sent")
-                    actionReload(recipient)
+                    actionReload(recipient, 'reloadPage')
                 } else {
                     console.error("Error Sending Message -SLINE ERROR")
                 }
@@ -1960,4 +2096,553 @@ function enableScroll() {
     window.removeEventListener('touchmove', preventDefault, { passive: false });
     scrolling = true
     console.log('E2: New Scrolling:', scrolling)
+}
+
+function getOrdinal(number) {
+    const suffix = ['th', 'st', 'nd', 'rd'];
+    const mod = number % 100;
+    return number + (suffix[(mod - 20) % 10] || suffix[mod] || suffix[0]);
+}
+
+function getDaysUntilNextBirthday(birthdayString) {
+    // Helper function to get the next birthday
+    function getNextBirthday(birthdayString) {
+        const [day, month, year] = birthdayString.split('/').map(Number);
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const birthdayThisYear = new Date(currentYear, month - 1, day);
+
+        if (birthdayThisYear < now) {
+            // If the birthday has already passed this year, set it to the next year
+            birthdayThisYear.setFullYear(currentYear + 1);
+        }
+
+        return birthdayThisYear;
+    }
+
+    const now = new Date();
+    const nextBirthday = getNextBirthday(birthdayString);
+
+    // Calculate the difference in milliseconds
+    const differenceInMilliseconds = nextBirthday - now;
+
+    // Convert milliseconds to days
+    const millisecondsInADay = 24 * 60 * 60 * 1000;
+    const daysLeft = Math.ceil(differenceInMilliseconds / millisecondsInADay);
+
+    return daysLeft;
+}
+
+function getRandomSentence(years) {
+    // List of playful sentences
+    const sentences = [
+        `Look at you, ${years} years of awesomeness on Earth! 🌍`,
+        `${years} trips around the sun and still shining bright! 🌅`,
+        `You've been gracing this planet for ${years} fabulous years! ✨`,
+        `Cheers to ${years} years of being an incredible human! 🎖️`,
+        `${years} years of making the world a cooler place! 😎`,
+        `You've been rocking this Earth for ${years} whole years—way to go! 🚀`,
+        `${years} years of spreading your unique sparkle across the globe! 🌟`,
+        `${years} years in and still making waves on this planet! 🌊`,
+        `Here’s to ${years} years of you being your awesome self! 🎉`,
+        `Congratulations on ${years} years of making this world a better place! 🌟`,
+        `${years} years of experience and still going strong! 💪`,
+        `Cheers to ${years} years of being simply you! 🥂`,
+        `Celebrating ${years} years of you just being you! 🥳`,
+        `Here’s to ${years} years of living life to the fullest! 🎊`,
+        `${years} years in and still making a mark! ✍️`,
+        `Congrats on ${years} years—keep doing your thing! 🎈`
+    ];
+    // Generate a random index to select a sentence
+    const randomIndex = Math.floor(Math.random() * sentences.length);
+
+    // Return the randomly selected sentence
+    return sentences[randomIndex];
+}
+
+function numberToText(number) {
+    const ones = [
+        '', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
+        'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen',
+        'Eighteen', 'Nineteen'
+    ];
+
+    const tens = [
+        '', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'
+    ];
+
+    if (number < 20) {
+        return ones[number];
+    } else {
+        const ten = Math.floor(number / 10);
+        const one = number % 10;
+        return `${tens[ten]}${one ? ' ' + ones[one] : ''}`;
+    }
+}
+
+let isProfileLoading = false;
+function loadProfile(reload, withoutCanvas) {
+
+    if (isProfileLoading === true) {
+        console.log("Profile is already loading. Stopping.")
+        return;
+    }
+    isProfileLoading = true;
+    const username = localStorage.getItem("t50-username")
+    const email = localStorage.getItem("t50-email")
+    if (!withoutCanvas) {
+        $("#canvasOption").fadeOut("fast", function () {
+            $("#loadingIndicatorSelfCanvas").fadeIn("fast")
+        })
+    }
+
+    //What will load: Friends count, username, email, last seen, age, birthdate, cryptox, verified
+    if (reload) {
+        console.warn("Running load profile with reload")
+        //reload gracefully
+    } else if (withoutCanvas) {
+        if(document.getElementById("self-video-forDisplay").src === '') {
+            loadProfile()
+        } else {
+            console.warn("Running load profile withoutCanvas")
+        }
+       
+    } else {
+        console.warn("Running load profile normally")
+    }
+
+    fetch(`${srv}/social?username=${username}&todo=tags`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const container = document.getElementById("userTags")
+            container.innerHTML = ''
+            //will return current tags
+            if(data.includes('No tags')) {
+                return;
+            }
+            data.forEach((tag) => {
+                var div = document.createElement("div");
+                div.className = "user-tag";
+
+                // Create the SVG element
+                var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                svg.setAttribute("width", "20px");
+                svg.setAttribute("height", "20px");
+                svg.setAttribute("viewBox", "0 0 24 24");
+                svg.setAttribute("fill", "none");
+
+                // Create the path element
+                var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", "M10 4L7 20M17 4L14 20M5 8H20M4 16H19");
+                path.setAttribute("stroke", "#fff");
+                path.setAttribute("stroke-width", "2");
+                path.setAttribute("stroke-linecap", "round");
+
+                // Append the path to the svg
+                svg.appendChild(path);
+
+                // Append the svg to the div
+                div.appendChild(svg);
+
+                // Add the text node "Add Tag"
+                div.appendChild(document.createTextNode(tag));
+
+                // Append the div to the element with ID "userTags"
+                container.appendChild(div);
+            })
+        })
+        .catch(error => {
+            setNetworkStatus('off')
+            console.error('Failed to update tags', error)
+        });
+    // Function to handle the canvas status check
+    function checkCanvasStatus() {
+        if (withoutCanvas) {
+            $("#bggradient").fadeOut("fast");
+            document.getElementById("self-video-forDisplay").style.display = '';
+            $("#loadingIndicatorSelfCanvas").fadeOut("fast", function () {
+                $("#canvasOption").fadeIn("fast")
+            })
+            return;
+        }
+        return fetch(`${srv}/canvas/${username}.evox/has`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(canvasStatus => {
+                if (canvasStatus === 'true') {
+                    document.getElementById("self-video-forDisplay").style.display = '';
+                    const ranN = Math.floor(Math.random() * 100000)
+                    document.getElementById("self-video-forDisplay").src = `${srv}/canvas/${username}.evox?v=${ranN}`;
+                    saveVideoAsBlob(username, `${srv}/canvas/${username}.evox?v=${ranN}`)
+                    return new Promise((resolve) => {
+                        document.getElementById("self-video-forDisplay").onloadeddata = function () {
+                            console.log("Canvas Loaded!");
+
+                            if (reload) {
+                                $("#bggradient").fadeOut("fast");
+                            } else {
+                                document.getElementById("tab-profile").classList.add("animate");
+                                document.getElementById("tab-profile").classList.add("active");
+                                setTimeout(function () {
+                                    if (activeTab !== 'Profile') {
+                                        document.getElementById("tab-profile").classList.remove("active");
+                                    }
+                                    setTimeout(function () {
+                                        document.getElementById("tab-profile").classList.remove("animate");
+                                    }, 500);
+                                }, 1500);
+                            }
+                            $("#loadingIndicatorSelfCanvas").fadeOut("fast", function () {
+                                $("#canvasOption").fadeIn("fast")
+                            })
+                            resolve(); // Resolve the promise when canvas is loaded
+                        };
+                    });
+                } else {
+                    document.getElementById("self-video-forDisplay").src = '';
+                    document.getElementById("self-video-forDisplay").style.display = 'none';
+                    $("#loadingIndicatorSelfCanvas").fadeOut("fast")
+                    return Promise.resolve(); // Resolve immediately if no canvas
+                }
+            })
+            .catch(error => {
+                checkUsernameAndGetData(`${username}_canvas`, function (error, data) {
+                    if (error) {
+                        console.error('canvas err:', error);
+                        reject(error);
+                    } else {
+                        console.log("canvas lc data", data)
+                        if (data !== 'None') {
+                            const blob = new Blob([data.data], { type: 'video/mp4' });
+                            const videoURL = URL.createObjectURL(blob);
+                            document.getElementById("self-video-forDisplay").style.display = ''
+                            document.getElementById("self-video-forDisplay").src = videoURL
+                            document.getElementById("self-video-forDisplay").onloadeddata = function () {
+                                console.log("Canvas Loaded!");
+                                $("#bggradient").fadeOut("fast")
+                                $("#loadingIndicatorSelfCanvas").fadeOut("fast")
+                            };
+                        } else {
+                            console.log("Data is None")
+                            $("#loadingIndicatorSelfCanvas").fadeOut("fast")
+                            document.getElementById("selfshowErrorCanvas").style.display = '';
+                        }
+                    }
+                });
+                console.error(error);
+                return Promise.reject(error); // Reject the promise if an error occurs
+            });
+    }
+
+    // Function to handle profile picture loading
+    function loadProfilePicture() {
+        return loadPFPget(username)
+            .then(profileImage => {
+                document.getElementById("self-profile-picture").src = profileImage;
+            })
+            .catch(error => {
+                setNetworkStatus('off');
+                console.error(error);
+                return Promise.reject(error); // Reject the promise if an error occurs
+            });
+    }
+
+    // Function to handle friends count
+    function loadFriends() {
+        return fetch(`${srv}/social?username=${username}&todo=friends`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                setNetworkStatus('on');
+                localStorage.setItem("friends", JSON.stringify(data));
+                document.getElementById("self_friendsCount").innerText = data.length;
+            })
+            .catch(error => {
+                setNetworkStatus('off');
+                const data = localStorage.getItem("friends");
+                if (data) {
+                    console.warn("Server connection failed. Trying local");
+                    securelineHome(JSON.parse(data), 'secureline-users');
+                } else {
+                    console.error('loadSecurelineHome Failed!', error);
+                }
+                return Promise.reject(error); // Reject the promise if an error occurs
+            });
+    }
+
+    // Function to handle last login time
+    function loadLastLogin() {
+        return fetch(`${srv}/accounts?email=${email}&username=${username}&method=last_login`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(last_login => {
+                localStorage.setItem("selfLastLogin", last_login);
+                const today = new Date().toISOString().split('T')[0];
+                const datePart = last_login.split(' ')[0];
+                const timePart = last_login.split(' ')[1].slice(0, 5);
+
+                if (datePart === today) {
+                    console.log(timePart);
+                    document.getElementById("self_lastSeen").innerText = timePart;
+                } else {
+                    if (last_login !== 'Unknown') {
+                        document.getElementById("self_lastSeen").innerText = formatTimeDifference(last_login) + " ago";
+                    } else {
+                        document.getElementById("self_lastSeen").innerText = 'Unknown';
+                    }
+                }
+            })
+            .catch(error => {
+                console.log("Self Load Last Login Failed [3]:", error);
+                return Promise.reject(error); // Reject the promise if an error occurs
+            });
+    }
+
+    // Function to handle birthdate and age
+    function loadBirthdate() {
+        return fetch(`${srv}/accounts?email=${email}&username=${username}&birth=get`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(birthdateString => {
+                if (birthdateString) {
+                    document.getElementById("self-age-block").style.display = '';
+                    document.getElementById("self-birth-block").style.display = '';
+                    let parts = birthdateString.split('/');
+                    let day = parseInt(parts[0]);
+                    let month = parseInt(parts[1]) - 1; // Months are zero-based in JavaScript
+                    let year = parseInt(parts[2]);
+                    let birthdate = new Date(year, month, day);
+                    let today = new Date();
+                    let age = today.getFullYear() - birthdate.getFullYear();
+                    let monthDiff = today.getMonth() - birthdate.getMonth();
+                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthdate.getDate())) {
+                        age--;
+                    }
+
+                    console.log("Age: " + age);
+                    document.getElementById("self-age").innerText = age;
+                    document.getElementById("self-birthdate").innerText = birthdateString;
+                } else {
+                    console.log("No age registered");
+                    document.getElementById("self-age-block").style.display = 'none';
+                    document.getElementById("self-birth-block").style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.log("Self Load Failed [4]:", error);
+                return Promise.reject(error); // Reject the promise if an error occurs
+            });
+    }
+
+    // Function to handle Cryptox status
+    function loadCryptoxStatus() {
+        return fetch(`${srv}/cryptox?method=isCryptoxed&username=${username}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(isCryptoxed => {
+                if (isCryptoxed === 'Enabled') {
+                    localStorage.setItem("isSelfCryptoxed", 'true');
+                    document.getElementById("self-cryptox").innerText = 'Enabled';
+                } else if (isCryptoxed === 'Disabled') {
+                    localStorage.setItem("isSelfCryptoxed", 'false');
+                    document.getElementById("self-cryptox").innerText = 'Disabled';
+                } else {
+                    document.getElementById("self-cryptox").innerText = '🤯';
+                }
+
+            })
+            .catch(error => {
+                const isCryptoxed = localStorage.getItem("isSelfCryptoxed");
+                if (isCryptoxed === 'true') {
+                    document.getElementById("self-cryptox").innerText = 'Enabled';
+                } else if (isCryptoxed === 'false') {
+                    document.getElementById("self-cryptox").innerText = 'Disabled';
+                } else {
+                    document.getElementById("self-cryptox").innerText = '🤯';
+                    console.log('self isCryptoxed failed to load [5]:', error);
+                }
+                return Promise.reject(error); // Reject the promise if an error occurs
+            });
+    }
+
+    // Main function to execute all promises and run code after completion
+    function executeAfterAll() {
+        document.getElementById("self-profile-username").innerText = username;
+
+        // Use Promise.all to wait for all fetch operations and processing to complete
+        Promise.all([
+            checkCanvasStatus(),
+            loadProfilePicture(),
+            loadFriends(),
+            loadLastLogin(),
+            loadBirthdate(),
+            loadCryptoxStatus()
+        ]).then(() => {
+            // Code to run after all promises are resolved
+            console.log("All data loaded successfully");
+            isProfileLoading = false;
+            // Add any additional code that needs to run after all data is loaded here
+        }).catch(error => {
+            console.error("An error occurred while loading data:", error);
+            // Handle any errors that occurred during the promise execution
+        });
+    }
+
+    // Call the main function
+    executeAfterAll();
+}
+
+function setUserCover() {
+    const input = document.getElementById('upload-canvas');
+    const file = input.files[0];
+    document.getElementById("canvasOption").innerHTML = `<svg style="display: inline-flex;
+                    align-items: center;
+                    vertical-align: middle;" version="1.1"
+                    width="25px" height="25px" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+                    style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                    <path fill="#fff"
+                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                    </path>
+                </svg>`
+    if (!file) {
+        alert('Please select a file.');
+        return;
+    }
+
+    // Get the file extension
+    const fileName = file.name;
+    const fileExtension = fileName.split('.').pop().toLowerCase(); // Extract and convert to lowercase
+
+    console.log('File Extension:', fileExtension);
+    if (fileExtension.includes("mov")) {
+        alert("Warning! The file you are uploading is .mov, which may take longer for Evox to process and convert.")
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('method', 'userCoverEpsilon');
+    formData.append('username', localStorage.getItem("t50-username"));
+    formData.append('password', localStorage.getItem("t50pswd")); // Ensure password is encoded if needed
+
+    const startTime = performance.now(); // Capture the start time before sending the request
+
+    fetch(`${srv}/canvas`, {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => {
+            const requestReceivedTime = performance.now(); // Time when the response is received
+            console.log('Request sent at:', startTime);
+            console.log('Response received at:', requestReceivedTime);
+            console.log('Time taken to receive response:', requestReceivedTime - startTime, 'ms');
+            return response.json(); // Parse the response
+        })
+        .then(data => {
+            console.log('Success:', data);
+            isProfileLoading = false;
+            loadProfile('reload')
+            document.getElementById("canvasOption").innerHTML = `Edit Canvas`
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+
+
+    // Reset the input value to allow selecting the same file again
+    input.value = '';
+}
+
+function showCanvasInput() {
+    document.getElementById('upload-canvas').click();
+}
+
+function addTag() {
+    // Display a prompt dialog to the user
+    let userInput = prompt("Please enter a tag:");
+
+    // Check if the user clicked "Cancel" or entered a value
+    if (userInput === null) {
+        alert("You canceled the input.");
+    } else {
+        fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=addTag&tag=${userInput}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const container = document.getElementById("userTags")
+                container.innerHTML = ''
+                //will return current tags
+                if(data.includes('No tags')) {
+                    return;
+                }
+                data.forEach((tag) => {
+                    var div = document.createElement("div");
+                    div.className = "user-tag";
+    
+                    // Create the SVG element
+                    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                    svg.setAttribute("width", "20px");
+                    svg.setAttribute("height", "20px");
+                    svg.setAttribute("viewBox", "0 0 24 24");
+                    svg.setAttribute("fill", "none");
+    
+                    // Create the path element
+                    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    path.setAttribute("d", "M10 4L7 20M17 4L14 20M5 8H20M4 16H19");
+                    path.setAttribute("stroke", "#fff");
+                    path.setAttribute("stroke-width", "2");
+                    path.setAttribute("stroke-linecap", "round");
+    
+                    // Append the path to the svg
+                    svg.appendChild(path);
+    
+                    // Append the svg to the div
+                    div.appendChild(svg);
+    
+                    // Add the text node "Add Tag"
+                    div.appendChild(document.createTextNode(tag));
+    
+                    // Append the div to the element with ID "userTags"
+                    container.appendChild(div);
+                })
+            })
+            .catch(error => {
+                setNetworkStatus('off')
+                console.error('Failed to update tags', error)
+            });
+    }
 }

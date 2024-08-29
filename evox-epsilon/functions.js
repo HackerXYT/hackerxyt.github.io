@@ -1911,34 +1911,53 @@ function showCoverUpBox() {
 	document.getElementById('upload-box-cover').click();
 }
 function setUserCover() {
-    const input = document.getElementById('upload-box-cover');
-    const file = input.files[0];
+	const input = document.getElementById('upload-box-cover');
+	const file = input.files[0];
 
-    if (!file) {
-        alert('Please select a file.');
-        return;
-    }
+	if (!file) {
+		alert('Please select a file.');
+		return;
+	}
 
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('method', 'userCoverEpsilon');
-    formData.append('username', localStorage.getItem("t50-username"));
-    formData.append('password', localStorage.getItem("t50pswd")); // Ensure password is encoded if needed
+	// Get the file extension
+	const fileName = file.name;
+	const fileExtension = fileName.split('.').pop().toLowerCase(); // Extract and convert to lowercase
 
-    fetch(`${srv}/canvas`, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+	console.log('File Extension:', fileExtension);
+	if (fileExtension.includes("mov")) {
+		alert("Warning! The file you are uploading is .mov, which may take longer for Evox to process.")
+	}
 
-    // Reset the input value to allow selecting the same file again
-    input.value = '';
+	const formData = new FormData();
+	formData.append('file', file);
+	formData.append('method', 'userCoverEpsilon');
+	formData.append('username', localStorage.getItem("t50-username"));
+	formData.append('password', localStorage.getItem("t50pswd")); // Ensure password is encoded if needed
+
+	const startTime = performance.now(); // Capture the start time before sending the request
+
+	fetch(`${srv}/canvas`, {
+		method: 'POST',
+		body: formData
+	})
+		.then(response => {
+			const requestReceivedTime = performance.now(); // Time when the response is received
+			console.log('Request sent at:', startTime);
+			console.log('Response received at:', requestReceivedTime);
+			console.log('Time taken to receive response:', requestReceivedTime - startTime, 'ms');
+			return response.json(); // Parse the response
+		})
+		.then(data => {
+			console.log('Success:', data);
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		});
+
+
+
+	// Reset the input value to allow selecting the same file again
+	input.value = '';
 }
 
 
