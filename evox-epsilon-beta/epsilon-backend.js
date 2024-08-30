@@ -23,9 +23,30 @@ document.addEventListener("DOMContentLoaded", function () {
             clientVerified()
             console.log('Error:', error);
         });
-    setTimeout(function () {
-        loadProfile()
-    }, 1500)
+    if (localStorage.getItem("t50pswd")) {
+        setTimeout(function () {
+            loadProfile()
+        }, 1500)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(registration => {
+                navigator.serviceWorker.addEventListener('message', event => {
+                    if (event.data && event.data.action === 'CACHE_UPDATE_STARTED') {
+                        // Show downloading icon
+                        document.getElementById("downloading-icon").classList.add("active")
+                        $("#downloading-icon").fadeIn("fast");
+                        
+                    } else if (event.data && event.data.action === 'CACHE_UPDATE_COMPLETED') {
+                        // Hide downloading icon
+                        $("#downloading-icon").fadeOut("fast", function() {
+                            document.getElementById("downloading-icon").classList.remove("active")
+                        });
+                        
+                    }
+                });
+            });
+        }
+    }
+
 });
 
 function checkForUpdates() {
@@ -46,11 +67,13 @@ function checkForUpdates() {
             const version = matche ? matche[1] : null;
             if (version) {
                 if (appVersion < version) {
-                    $("#updateCheck").html("You are using an older version.")
+                    $("#updateCheck").html("Updating..")
                     $("#updateCheck").fadeIn('fast')
+                    updateServiceWorkerCacheAndReload()
                 } else if (appVersion > version) {
                     $("#updateCheck").html("You are using a debug version.")
                     $("#updateCheck").fadeIn('fast')
+                    updateServiceWorkerCacheAndReload()
                 } else if (appVersion === version) {
                     $("#updateCheck").html("Evox is up to date.")
                     $("#updateCheck").fadeIn('fast')
@@ -66,7 +89,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '6.3.0'
+const appVersion = '6.4.0'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -170,7 +193,7 @@ function loadPFPget(username, isCanvas) {
                             return response.text();
                         })
                         .then(profileimage => {
-                            setNetworkStatus('on')
+                            //setNetworkStatus('on')
                             if (profileimage.indexOf("base64") === -1) {
                                 profileimage = "data:image/jpeg;base64," + profileimage;
                             }
@@ -183,7 +206,7 @@ function loadPFPget(username, isCanvas) {
 
                         })
                         .catch(error => {
-                            setNetworkStatus('off')
+                            //setNetworkStatus('off')
                             console.error("Cannot refresh", username);
                             console.error(error);
                             reject(error);
@@ -203,7 +226,7 @@ function loadPFPget(username, isCanvas) {
                             return response.text();
                         })
                         .then(profileimage => {
-                            setNetworkStatus('on')
+                            //setNetworkStatus('on')
                             if (profileimage.indexOf("base64") === -1) {
                                 profileimage = "data:image/jpeg;base64," + profileimage;
                             }
@@ -212,7 +235,7 @@ function loadPFPget(username, isCanvas) {
                             profilesLocal(username, profileimage);
                         })
                         .catch(error => {
-                            setNetworkStatus('off')
+                            //setNetworkStatus('off')
                             console.error("Cannot set src for", username);
                             console.error(error);
                             reject(error);
@@ -495,7 +518,7 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
             .then(profileImage => {
                 imgElement.src = profileImage;
             }).catch(error => {
-                setNetworkStatus('off')
+                //setNetworkStatus('off')
                 console.error(error);
             });
         slUserDiv.appendChild(imgElement);
@@ -537,7 +560,7 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
             .then(profileImage => {
                 img.src = profileImage;
             }).catch(error => {
-                setNetworkStatus('off')
+                //setNetworkStatus('off')
                 console.error(error);
             });
 
@@ -555,7 +578,7 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
                 return response.text();
             })
             .then(friend_email => {
-                setNetworkStatus('on')
+                //setNetworkStatus('on')
                 fetch(`${srv}/accounts?email=${friend_email}&username=${friend}&method=last_login`)
                     .then(response => {
                         if (!response.ok) {
@@ -564,7 +587,7 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
                         return response.text();
                     })
                     .then(lastLogin => {
-                        setNetworkStatus('on')
+                        //setNetworkStatus('on')
                         localStorage.setItem(`user-${friend}-lastLogin`, lastLogin)
                         console.log(lastLogin)
                         if (lastLogin !== 'Unknown') {
@@ -574,13 +597,13 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
                         }
 
                     }).catch(error => {
-                        setNetworkStatus('off')
+                        //setNetworkStatus('off')
                         span.style.display = 'none'
                         console.error(error);
                     });
 
             }).catch(error => {
-                setNetworkStatus('off')
+                //setNetworkStatus('off')
                 const data = localStorage.getItem(`user-${friend}-lastLogin`)
                 if (data) {
                     console.warn("Server connection failed. Trying local")
@@ -840,12 +863,12 @@ function loadSecurelineHome() {
             return response.json();
         })
         .then(data => {
-            setNetworkStatus('on')
+            //setNetworkStatus('on')
             localStorage.setItem("friends", JSON.stringify(data)); // Ensure data is stored as a JSON string
             securelineHome(data, 'secureline-users')
         })
         .catch(error => {
-            setNetworkStatus('off')
+            //setNetworkStatus('off')
             const data = localStorage.getItem("friends")
             if (data) {
                 console.warn("Server connection failed. Trying local")
@@ -894,7 +917,7 @@ function reloadFavs() {
                             .then(profileImage => {
                                 iconDiv.innerHTML = `<img class="slUserPFP fav-rec" src="${profileImage}">`;
                             }).catch(error => {
-                                setNetworkStatus('off')
+                                //setNetworkStatus('off')
                                 console.error(error);
                             });
 
@@ -1039,7 +1062,7 @@ function securelineHome(data, appending) {
                     img.src = profileImage;
                     resolve(); // Resolve the promise when the image is loaded
                 }).catch(error => {
-                    setNetworkStatus('off')
+                    //setNetworkStatus('off')
                     console.error(error);
                     resolve(); // Resolve the promise even if there is an error
                 });
@@ -1075,7 +1098,7 @@ function securelineHome(data, appending) {
                     return response.text();
                 })
                 .then(lastMsg => {
-                    setNetworkStatus('on')
+                    //setNetworkStatus('on')
                     localStorage.setItem(`${friend}-lastMsg`, lastMsg)
                     userDiv.style.display = null
 
@@ -1120,7 +1143,7 @@ function securelineHome(data, appending) {
                     }
                     resolve(); // Resolve the promise when the message is loaded
                 }).catch(error => {
-                    setNetworkStatus('off')
+                    //setNetworkStatus('off')
                     const lastMsg = localStorage.getItem(`${friend}-lastMsg`)
                     if (data) {
                         console.warn("Server connection failed. Trying local")
@@ -1150,7 +1173,7 @@ function securelineHome(data, appending) {
                                     .then(profileImage => {
                                         iconDiv.innerHTML = `<img class="slUserPFP fav-rec" src="${profileImage}">`;
                                     }).catch(error => {
-                                        setNetworkStatus('off')
+                                        //setNetworkStatus('off')
                                         console.error(error);
                                     });
 
@@ -1303,7 +1326,7 @@ function securelineHome(data, appending) {
 
         })
         .catch(error => {
-            setNetworkStatus('off')
+            //setNetworkStatus('off')
             console.error(error);
         });
 }
@@ -1344,7 +1367,7 @@ function processMessage(data, element) {
     fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${element.id}&password=${atob(localStorage.getItem("t50pswd"))}`)
         .then(response => response.ok ? response.text() : Promise.reject(`HTTP error! Status: ${response.status}`))
         .then(text => {
-            setNetworkStatus('on')
+            //setNetworkStatus('on')
             try {
                 const data = JSON.parse(text);
                 if (!data || !data.messages) throw new Error("Invalid data format");
@@ -1501,7 +1524,7 @@ function actionReload(whoto, reloadPage) {
         .then(messages => {
             //console.log(whoto, 'messages:\n', messages)
 
-            setNetworkStatus('on')
+            //setNetworkStatus('on')
             try {
                 const integrityCheck = JSON.parse(messages);
                 if (integrityCheck.messages.length === 0) {
@@ -1635,7 +1658,7 @@ function actionReload(whoto, reloadPage) {
 
                                     resolve();
                                 }).catch(error => {
-                                    setNetworkStatus('off')
+                                    //setNetworkStatus('off')
                                     console.error(error);
                                     resolve(); // Resolve even if there's an error to ensure all messages are processed
                                 });
@@ -1668,7 +1691,7 @@ function actionReload(whoto, reloadPage) {
 
                     })
                     .catch(error => {
-                        setNetworkStatus('off')
+                        //setNetworkStatus('off')
                         console.error("Error processing messages:", error);
                     });
             } else {
@@ -1676,7 +1699,7 @@ function actionReload(whoto, reloadPage) {
             }
         })
         .catch(error => {
-            setNetworkStatus('off')
+            //setNetworkStatus('off')
             console.error("Error fetching chat messages:", error);
         });
 }
@@ -1914,12 +1937,12 @@ function loadFriendsSocial() {
             return response.json();
         })
         .then(data => {
-            setNetworkStatus('on')
+            //setNetworkStatus('on')
             localStorage.setItem("friends", JSON.stringify(data)); // Ensure data is stored as a JSON string
             loadSocial(data)
         })
         .catch(error => {
-            setNetworkStatus('off')
+            //setNetworkStatus('off')
             const data = localStorage.getItem("friends")
             if (data) {
                 console.warn("Server connection failed. Trying local")
@@ -1956,7 +1979,7 @@ function loadSocial(data) {
             .then(profileImage => {
                 img.src = profileImage;;
             }).catch(error => {
-                setNetworkStatus('off')
+                //setNetworkStatus('off')
                 console.error(error);
             });
         iconDiv.appendChild(img);
@@ -2183,7 +2206,7 @@ function numberToText(number) {
 let isProfileLoading = false;
 function loadProfile(reload, withoutCanvas) {
 
-    if (isProfileLoading === true) {
+    if (isProfileLoading === true && navigator.onLine) {
         console.log("Profile is already loading. Stopping.")
         return;
     }
@@ -2201,12 +2224,13 @@ function loadProfile(reload, withoutCanvas) {
         console.warn("Running load profile with reload")
         //reload gracefully
     } else if (withoutCanvas) {
-        if(document.getElementById("self-video-forDisplay").src === '') {
-            loadProfile()
+        if (document.getElementById("self-video-forDisplay").src === '') {
+            console.warn("asked without canvas but src '' so reloading normally")
+            withoutCanvas = false
         } else {
             console.warn("Running load profile withoutCanvas")
         }
-       
+
     } else {
         console.warn("Running load profile normally")
     }
@@ -2222,7 +2246,7 @@ function loadProfile(reload, withoutCanvas) {
             const container = document.getElementById("userTags")
             container.innerHTML = ''
             //will return current tags
-            if(data.includes('No tags')) {
+            if (data.includes('No tags')) {
                 return;
             }
             data.forEach((tag) => {
@@ -2258,7 +2282,7 @@ function loadProfile(reload, withoutCanvas) {
             })
         })
         .catch(error => {
-            setNetworkStatus('off')
+            //setNetworkStatus('off')
             console.error('Failed to update tags', error)
         });
     // Function to handle the canvas status check
@@ -2351,7 +2375,7 @@ function loadProfile(reload, withoutCanvas) {
                 document.getElementById("self-profile-picture").src = profileImage;
             })
             .catch(error => {
-                setNetworkStatus('off');
+                //setNetworkStatus('off');
                 console.error(error);
                 return Promise.reject(error); // Reject the promise if an error occurs
             });
@@ -2367,12 +2391,12 @@ function loadProfile(reload, withoutCanvas) {
                 return response.json();
             })
             .then(data => {
-                setNetworkStatus('on');
+                //setNetworkStatus('on');
                 localStorage.setItem("friends", JSON.stringify(data));
                 document.getElementById("self_friendsCount").innerText = data.length;
             })
             .catch(error => {
-                setNetworkStatus('off');
+                //setNetworkStatus('off');
                 const data = localStorage.getItem("friends");
                 if (data) {
                     console.warn("Server connection failed. Trying local");
@@ -2605,13 +2629,13 @@ function addTag() {
                 const container = document.getElementById("userTags")
                 container.innerHTML = ''
                 //will return current tags
-                if(data.includes('No tags')) {
+                if (data.includes('No tags')) {
                     return;
                 }
                 data.forEach((tag) => {
                     var div = document.createElement("div");
                     div.className = "user-tag";
-    
+
                     // Create the SVG element
                     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
                     svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
@@ -2619,29 +2643,29 @@ function addTag() {
                     svg.setAttribute("height", "20px");
                     svg.setAttribute("viewBox", "0 0 24 24");
                     svg.setAttribute("fill", "none");
-    
+
                     // Create the path element
                     var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
                     path.setAttribute("d", "M10 4L7 20M17 4L14 20M5 8H20M4 16H19");
                     path.setAttribute("stroke", "#fff");
                     path.setAttribute("stroke-width", "2");
                     path.setAttribute("stroke-linecap", "round");
-    
+
                     // Append the path to the svg
                     svg.appendChild(path);
-    
+
                     // Append the svg to the div
                     div.appendChild(svg);
-    
+
                     // Add the text node "Add Tag"
                     div.appendChild(document.createTextNode(tag));
-    
+
                     // Append the div to the element with ID "userTags"
                     container.appendChild(div);
                 })
             })
             .catch(error => {
-                setNetworkStatus('off')
+                //setNetworkStatus('off')
                 console.error('Failed to update tags', error)
             });
     }

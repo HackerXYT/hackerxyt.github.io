@@ -47,6 +47,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=0.9, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
 
     <!-- Apple splash screen images -->
     <link rel="apple-touch-startup-image"
@@ -291,7 +292,7 @@
                                 fill="#fff" />
                         </svg></a>
                     <p id="welcomeText">Login</p>
-                    <div class="inv-button creds">
+                    <div id="credEmail" class="inv-button creds">
                         <vo class="icon" id="emailIcon"><svg xmlns="http://www.w3.org/2000/svg" width="25px"
                                 height="25px" viewBox="0 0 24 24" fill="none">
                                 <g id="style=stroke">
@@ -320,6 +321,32 @@
                     <div onclick="startLogin()" id="beginLoginBtn" class="inv-button login" style="width: 90%;">
                         Login
                     </div>
+                </div>
+                <div id='formLoginByIP' class="glass login">
+                    <p id="welcomeText">Welcome Back!</p>
+                    <p style="margin: 0;
+                    font-size: 15px;
+                    color: #c1c1c1;margin-bottom: 10px;">We believe you are:</p>
+                    <div class="inv-button ipAcc">
+                        <div class="user">
+                            <div class="icon">
+                                <img id="matchPfp" class="slUserPFP social" src="searching_users.gif">
+                            </div>
+                            <div class="column">
+                                <p id="matchUser">Loading</p>
+                            </div>
+                            <span style="margin-left:auto;float:right;" id="self-ip-lastlogin">5 days</span>
+                        </div>
+                    </div>
+                    <div class="bottomButtons">
+                        <a onclick="attachMatchingUser()" id="beginLoginBtnIP" class="firstChild">
+                            Loading..
+                        </a>
+                        <a onclick="normalLogin()" class="notme">
+                            This is not me
+                        </a>
+                    </div>
+
                 </div>
                 <div id='form2FA' class="glass login">
                     <a onclick="returnToLoginMenuBy2fa()"><svg class="aligned" xmlns="http://www.w3.org/2000/svg"
@@ -370,6 +397,16 @@
             <p id="tab-explore" onclick="enableTab(this)" class="active">Explore</p>
             <p id="tab-profile" onclick="enableTab(this)">Profile</p>
             <span id="networkStatus" class="quickAccess">
+                <div style="margin-right: 5px;display: none;" id="downloading-icon" class="active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                        <path id="arrowDownload"
+                            d="M12.5535 16.5061C12.4114 16.6615 12.2106 16.75 12 16.75C11.7894 16.75 11.5886 16.6615 11.4465 16.5061L7.44648 12.1311C7.16698 11.8254 7.18822 11.351 7.49392 11.0715C7.79963 10.792 8.27402 10.8132 8.55352 11.1189L11.25 14.0682V3C11.25 2.58579 11.5858 2.25 12 2.25C12.4142 2.25 12.75 2.58579 12.75 3V14.0682L15.4465 11.1189C15.726 10.8132 16.2004 10.792 16.5061 11.0715C16.8118 11.351 16.833 11.8254 16.5535 12.1311L12.5535 16.5061Z"
+                            fill="#55565f" />
+                        <path
+                            d="M3.75 15C3.75 14.5858 3.41422 14.25 3 14.25C2.58579 14.25 2.25 14.5858 2.25 15V15.0549C2.24998 16.4225 2.24996 17.5248 2.36652 18.3918C2.48754 19.2919 2.74643 20.0497 3.34835 20.6516C3.95027 21.2536 4.70814 21.5125 5.60825 21.6335C6.47522 21.75 7.57754 21.75 8.94513 21.75H15.0549C16.4225 21.75 17.5248 21.75 18.3918 21.6335C19.2919 21.5125 20.0497 21.2536 20.6517 20.6516C21.2536 20.0497 21.5125 19.2919 21.6335 18.3918C21.75 17.5248 21.75 16.4225 21.75 15.0549V15C21.75 14.5858 21.4142 14.25 21 14.25C20.5858 14.25 20.25 14.5858 20.25 15C20.25 16.4354 20.2484 17.4365 20.1469 18.1919C20.0482 18.9257 19.8678 19.3142 19.591 19.591C19.3142 19.8678 18.9257 20.0482 18.1919 20.1469C17.4365 20.2484 16.4354 20.25 15 20.25H9C7.56459 20.25 6.56347 20.2484 5.80812 20.1469C5.07435 20.0482 4.68577 19.8678 4.40901 19.591C4.13225 19.3142 3.9518 18.9257 3.85315 18.1919C3.75159 17.4365 3.75 16.4354 3.75 15Z"
+                            fill="#55565f" />
+                    </svg>
+                </div>
                 <svg id="onlineStatus" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
                     fill="none">
                     <path d="M4 20V19M8 20V16M12 20V12M16 20V8M20 20V4" stroke="#55565f" stroke-width="2"
@@ -599,7 +636,7 @@
 
         <!--Self user profile-->
         <div class="profileContainer user-profile" id="profileContainer">
-            
+
             <p id="selfshowErrorCanvas" style="display: none;" class="loadingIndicatorSelf">Canvas Failed</p>
             <video autoplay muted loop playsinline id="self-video-forDisplay"
                 style="opacity:0.5;position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;overflow: hidden;">
@@ -662,16 +699,15 @@
                 <p id="loadingIndicatorSelfCanvas" style="margin-bottom: 20px">Canvas Loading <svg style="margin-left: 5px;
                     display: inline-flex;
                     align-items: center;
-                    vertical-align: middle;" version="1.1"
-                    width="20px" height="20px" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
-                    style="enable-background:new 0 0 50 50;" xml:space="preserve">
-                    <path fill="#fff"
-                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
-                        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
-                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
-                    </path>
-                </svg></p>
+                    vertical-align: middle;" version="1.1" width="20px" height="20px"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                        <path fill="#fff"
+                            d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                            <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                                to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                        </path>
+                    </svg></p>
             </div>
 
 
@@ -926,6 +962,14 @@
                             fill="#fff"></path>
                     </svg>
                 </div>
+                <div onclick="logOut()" class="option">
+                    <img src="epsilon-frontend-assets/logout.png"><span>Log Out</span><svg
+                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#fff"></path>
+                    </svg>
+                </div>
                 <!--<div onclick="setup_begin()" class="option">
                         <img src="epsilon-frontend-assets/ipaddresses.png"><span>Logged In & IP Addresses</span><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                             <path d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z" fill="#fff"></path>
@@ -1028,6 +1072,31 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+        <div id="settings-notifications" class="settings-panel" style="display: none;">
+            <div class="buttonsContainer">
+                <div onclick="enableFlorida()" class="option">
+                    <img src="epsilon-frontend-assets/notifications.png"><span>Notifications Status</span>
+                    <div id="florida_status"
+                        style="margin-left: auto;margin-right: 0;transition: transform 0.5s ease-in-out;">
+                        Unknown
+                    </div>
+                    <svg style="margin-left: 0;margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" width="20px"
+                            height="20px" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                                fill="#fff"></path>
+                        </svg>
+                </div>
+                <div class="option">
+                    <img src="epsilon-frontend-assets/personalold.png"><span>Florida ID</span>
+                    <div style="margin-left: auto;margin-right: 10px;transition: transform 0.5s ease-in-out;display: inline-flex;
+                        align-items: center;
+                        vertical-align: middle;">
+                        <span id="deviceId">None</span>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="settings-customize" class="settings-panel" style="display: none;">
@@ -1357,6 +1426,21 @@
         <iframe id="launchApp" style="display:none;background: radial-gradient(circle, #282828, #000000)"
             src="PreloadApp.html"></iframe>
     </div>
+    <div id="clearContainer" class="clearContainer">
+        <div class="clearContainerFlex">
+            <svg version="1.1" width="20px" height="20px" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+                style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                <path fill="#fff"
+                    d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                    <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                        to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                </path>
+            </svg>
+            Deleting Your Files..
+        </div>
+
+    </div>
     <div style="display: none;" id="preNotif"><!--This Part Is Used For Checking New Notifications--></div>
     <noscript>
         <div class="parent-notification-container">
@@ -1389,7 +1473,8 @@
         </div>
 
     </div>
-    <input style="display:none" type="file" id="upload-canvas" accept=".mp4, .mov, .webm, video/mp4, video/quicktime, video/webm" onchange="setUserCover()">
+    <input style="display:none" type="file" id="upload-canvas"
+        accept=".mp4, .mov, .webm, video/mp4, video/quicktime, video/webm" onchange="setUserCover()">
     <div id="invisibleContainer" style="display: none;"></div>
 </body>
 

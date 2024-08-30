@@ -66,7 +66,7 @@ html {
   box-sizing: border-box;
   z-index: 1000;
   background: transparent;
-  
+
   /* Ensures the element stays on top of other content */
 
   /* Initially off-screen to the left */
@@ -123,7 +123,8 @@ html {
 }
 
 .gatewayActions p.animate {
-  letter-spacing: 2px; /* Adjust this value as needed */
+  letter-spacing: 2px;
+  /* Adjust this value as needed */
 }
 
 .gatewayActions p:before {
@@ -399,17 +400,51 @@ body.no-scroll {
 
 @keyframes dotAnimation {
   0% {
-      transform: translate(0, 0);
-      opacity: 1;
+    transform: translate(0, 0);
+    opacity: 1;
   }
+
   50% {
-      transform: translate(-3px, 3px);
-      opacity: 0.5;
+    transform: translate(-3px, 3px);
+    opacity: 0.5;
   }
+
   100% {
-      transform: translate(0, 0);
-      opacity: 1;
+    transform: translate(0, 0);
+    opacity: 1;
   }
+}
+
+
+
+@keyframes downloadAnim {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+
+  55% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+#downloading-icon svg #arrowDownload {
+  transition: transform 1s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+#downloading-icon.active svg #arrowDownload {
+  animation: downloadAnim 2s infinite
 }
 
 
@@ -942,11 +977,14 @@ img {
 }
 
 @keyframes scaleAnimation {
-  0%, 100% {
-      transform: scale(0.9);
+
+  0%,
+  100% {
+    transform: scale(0.9);
   }
+
   50% {
-      transform: scale(1);
+    transform: scale(1);
   }
 }
 
@@ -4454,14 +4492,16 @@ div .Home {
   transition: top 1s ease-in-out, left 1s ease-in-out, transform 1s ease-in-out;
 }*/
 
-input:-webkit-autofill {
+input:-webkit-autofill,
+input:autofill {
   -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
   box-shadow: 0 0 0px 1000px transparent inset !important;
   -webkit-text-fill-color: #fff !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 
-.loginINVENT img {
+
+.loginINVENT img:not(.slUserPFP) {
   width: 50%;
   position: fixed;
   top: 50%;
@@ -4486,7 +4526,9 @@ input:-webkit-autofill {
   color: #777a80;
 }
 
+
 .glass {
+  display: flex;
   width: auto;
   padding-top: 40px;
   padding-bottom: 40px;
@@ -4580,14 +4622,14 @@ input:-webkit-autofill {
 
   display: flex;
   align-items: center;
-  border: 2px solid #1f1f212b;
+  border: 2px solid #1f1f212b !important;
   border-radius: 50px;
   overflow: hidden;
   width: 80%;
   height: auto;
   padding: 15px;
 
-  background-color: rgba(24, 24, 26, 0.805);
+  background-color: rgba(24, 24, 26, 0.805) !important;
   /* Semi-transparent background */
   backdrop-filter: blur(10px);
   /* Adjust the blur amount as needed */
@@ -4599,7 +4641,22 @@ input:-webkit-autofill {
   border-radius: 50px;
 }
 
+.inv-button.ipAcc {
+
+  display: flex;
+  border-radius: 20px;
+  overflow: hidden;
+  width: 90%;
+  height: auto;
+  /* Semi-transparent background */
+  margin-bottom: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 0;
+}
+
 .inv-button.creds .icon {
+  float: left;
   padding: 10px;
   color: #888;
   font-size: 16px;
@@ -4609,14 +4666,16 @@ input:-webkit-autofill {
 }
 
 .inv-button.creds input {
-  background-color: transparent;
-  border: none;
-  outline: none;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
   padding: 10px;
   flex: 1;
   font-size: 16px;
   margin: 0;
-  color: #fff;
+  color: #fff !important;
+
+  filter: none;
 }
 
 .inv-button.creds input::placeholder {
@@ -5788,6 +5847,42 @@ input:-webkit-autofill {
   margin: 0;
 }
 
+.ipAcc .user {
+  background-color: #33333331;
+  padding: 20px 15px;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  border-radius: 25px;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+.ipAcc .user .add-favorite {
+  margin-left: auto;
+  transition: transform 0.1s ease-in-out;
+}
+
+.ipAcc .user .icon {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.ipAcc .user .column {
+  display: flex;
+  flex-direction: column;
+}
+
+.ipAcc .user .column p {
+  font-size: 19px;
+  color: #d1d3d9;
+  font-family: "SF";
+  margin: 0;
+}
+
 .show-user-info {
   margin-left: auto;
   transform: rotate(180deg);
@@ -5983,15 +6078,21 @@ input:-webkit-autofill {
 }
 
 .user-tag {
-  display: inline-flex; /* Use inline-flex to keep the container inline with other text */
-  align-items: center; /* Vertically centers the SVG and text */
-  gap: 2px; /* Adds space between the SVG and text */
+  display: inline-flex;
+  /* Use inline-flex to keep the container inline with other text */
+  align-items: center;
+  /* Vertically centers the SVG and text */
+  gap: 2px;
+  /* Adds space between the SVG and text */
 }
 
 .user-tag svg {
-  vertical-align: middle; /* Ensures SVG is vertically centered */
-  display: inline-block; /* Necessary for proper vertical alignment in some cases */
+  vertical-align: middle;
+  /* Ensures SVG is vertically centered */
+  display: inline-block;
+  /* Necessary for proper vertical alignment in some cases */
 }
+
 .user-tags .user-tag svg {
   display: inline-flex;
   align-items: center;
@@ -6038,7 +6139,8 @@ input:-webkit-autofill {
 
 .infoBlock svg {
   position: relative;
-  transform: translateY(1.35px) rotate(180deg); /* Adjust the value as needed */
+  transform: translateY(1.35px) rotate(180deg);
+  /* Adjust the value as needed */
   margin-left: 0;
 }
 
@@ -6512,6 +6614,7 @@ input:-webkit-autofill {
   align-items: center;
   text-align: center;
 }
+
 .birthdatePopup .birthcard .calendar {
   margin-top: 35px;
 }
@@ -6564,4 +6667,82 @@ input:-webkit-autofill {
   border-radius: 25px;
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
+}
+
+.bottomButtons {
+  margin-top: 10px;
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.glass .bottomButtons .firstChild {
+  margin-right: 5px;
+}
+
+.glass .bottomButtons a {
+  border: 2px solid #1f1f212b;
+  background-color: #101012;
+  color: #fff;
+  display: flex;
+  width: 50%;
+  padding: 15px 5px;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #dbdde3;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  /* Added shadow */
+  transition: transform 0.2s ease-in-out;
+}
+
+.glass .bottomButtons a.notme {
+  border: 2px solid #5e0b0b2b;
+  background-color: #101012;
+  color: #fff;
+  display: flex;
+  width: 50%;
+  padding: 15px 5px;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #dbdde3;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  /* Added shadow */
+  transition: transform 0.2s ease-in-out;
+}
+
+.glass .bottomButtons a svg {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 10px;
+  vertical-align: middle;
+  transition: transform 0.2s ease-in-out;
+}
+
+.clearContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: none;
+  -webkit-overflow-scrolling: touch;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.clearContainerFlex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
 }

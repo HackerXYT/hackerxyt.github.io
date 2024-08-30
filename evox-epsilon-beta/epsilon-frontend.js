@@ -6,19 +6,9 @@ if (localStorage.getItem("currentSrv")) {
 }
 
 //alert(srv)
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function (registrations) {
-        for (let registration of registrations) {
-            registration.unregister();
-        }
-    }).catch(function (error) {
-        console.error('Error unregistering service worker:', error);
-    });
-} else {
-    console.log('Service workers are not supported in this browser.');
-}
 
 function setNetworkStatus(what) {
+    return;
     if (what === "on") {
         $("#offlineStatus").fadeOut("fast")
         $("#onlineStatus").fadeIn("fast")
@@ -26,6 +16,27 @@ function setNetworkStatus(what) {
         $("#onlineStatus").fadeOut("fast")
         $("#offlineStatus").fadeIn("fast")
     }
+}
+
+setInterval(function () {
+    if (navigator.onLine) {
+        $("#offlineStatus").fadeOut("fast", function () {
+            $("#onlineStatus").fadeIn("fast")
+        })
+
+    } else {
+        $("#onlineStatus").fadeOut("fast", function () {
+            $("#offlineStatus").fadeIn("fast")
+        })
+
+    }
+}, 1000)
+
+function shake_me(what) {
+    document.getElementById(`${what}`).classList.add('shake');
+    setTimeout(function () {
+        document.getElementById(`${what}`).classList.remove('shake');
+    }, 500);
 }
 
 let showTime = 0; //miliseconds
@@ -122,7 +133,7 @@ function clientVerified() {
                     return response.text();
                 })
                 .then(data => {
-                    setNetworkStatus('on')
+                    ////setNetworkStatus('on')
                     if (data.includes("Credentials Correct")) {
                         verificationComplete()
                     } else if (data.includes("IP Not Verified")) {
@@ -135,7 +146,7 @@ function clientVerified() {
                                 return response.text();
                             })
                             .then(data => {
-                                setNetworkStatus('on')
+                                ////setNetworkStatus('on')
                                 if (data === "Complete") {
                                     verificationComplete()
                                 } else if (data === "Exists") {
@@ -144,7 +155,7 @@ function clientVerified() {
                                     notice(`Authorization IP Ops Failed`)
                                 }
                             }).catch(error => {
-                                setNetworkStatus('off')
+                                //setNetworkStatus('off')
                                 console.error('Fetch error:', error);
                             });
                     } else {
@@ -155,7 +166,7 @@ function clientVerified() {
                         clientVerified()
                     }
                 }).catch(error => {
-                    setNetworkStatus('off')
+                    //setNetworkStatus('off')
                     warn("Server Connection Failed. Running Offline")
                     verificationComplete()
 
@@ -164,7 +175,25 @@ function clientVerified() {
                 })
         } else {
             console.log("New User.")
-
+            let isIpLoginVerified = false;
+            let ipMatches = null;
+            fetch(`${srv}/authip?method=matchAcc&ip=${ip}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.matches !== "") {
+                        isIpLoginVerified = true
+                        ipMatches = data
+                    }
+                    console.log("IP Login Ready")
+                }).catch(error => {
+                    //setNetworkStatus('off')
+                    console.error('Fetch error:', error);
+                });
             fetch(`${srv}/accounts`)
                 .then(response => {
                     if (!response.ok) {
@@ -173,7 +202,7 @@ function clientVerified() {
                     return response.text();
                 })
                 .then(data => {
-                    setNetworkStatus('on')
+                    ////setNetworkStatus('on')
                     //data is not used, a simple response is fine
                     console.log('%c' + "Server Online!", `color: green; font-size: 16px; font-weight: normal;`)
                     //$("#bggradient").fadeIn("slow")
@@ -184,13 +213,19 @@ function clientVerified() {
                         document.getElementById("epsilonLogoLogin").style.top = "18%"
                         document.getElementById("epsilonLogoLogin").style.transform = "translateX(-50%)"
                         document.getElementById("headerVox").classList.add('active')
+                        if (isIpLoginVerified) {
+                            document.getElementById("loginVox").onclick = function () {
+                                beginLogin('ipLogin', ipMatches)
+                            }
+                        }
+
                         setTimeout(function () {
                             document.getElementById("optionsVox").classList.add('active')
                         }, 100)
                     })
                 })
                 .catch(error => {
-                    setNetworkStatus('off')
+                    //setNetworkStatus('off')
                     notice("Oh Snap! Evox Is Offline.<br>Please Retry Later.")
 
                     console.error('Fetch error:', error);
@@ -217,24 +252,105 @@ var successLogin = new Howl({
 var startup = new Howl({
     src: ['./startup.mp3'],
     volume: 1
-});
+})
 
+function attachMatchingUser(matches) {
+    if (matches) {
+        beginLogin('ipLogin', null, matches.specific)
+    } else {
+        warn("An error occured! attachMatchingUser Function is not updated.")
+    }
 
-function beginLogin() {
-    startup.play()
-    document.getElementById("epsilonLogoLogin").style.top = "200px"
-    document.getElementById("epsilonLogoLogin").style.transform = "translateX(-50%)"
+}
 
-    document.getElementById("headerVox").classList.remove('active')
-    document.getElementById("optionsVox").classList.remove('active')
-    setTimeout(function () {
-        document.getElementById("formLogin").style.display = 'flex'
+function beginLogin(ipLogin, matches, username) {
+    if (ipLogin && matches) {
+        startup.play()
+        document.getElementById("beginLoginBtnIP").innerHTML = `Login as ${matches.specific}`
+        document.getElementById("beginLoginBtnIP").onclick = function () {
+            attachMatchingUser(matches)
+        }
+        document.getElementById("matchUser").innerHTML = matches.specific
+        loadPFPget(matches.specific)
+            .then(profileImage => {
+                document.getElementById("matchPfp").src = profileImage;
+            }).catch(error => {
+                //setNetworkStatus('off')
+                console.error(error);
+            });
+        fetch(`${srv}/accounts?method=getemailbyusername&username=${matches.specific}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(user_email => {
+                fetch(`${srv}/accounts?email=${user_email}&username=${matches.specific}&method=last_login`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(last_login => {
+                        sessionStorage.setItem("matchingUser", JSON.stringify({ 'username': matches.specific, 'email': user_email, 'last_login': last_login }))
+                        if (last_login !== 'Unknown') {
+                            document.getElementById("self-ip-lastlogin").innerText = formatTimeDifference(last_login) + " ago"
+                        } else {
+                            document.getElementById("self-ip-lastlogin").style.display = 'none'
+                        }
+
+                    }).catch(error => {
+                        console.log("User Load Last Login Failed [3]:", error)
+                    })
+            }).catch(error => {
+                console.log("User Load Last Login Failed [3]:", error)
+            })
+        document.getElementById("epsilonLogoLogin").style.top = "200px"
+        document.getElementById("epsilonLogoLogin").style.transform = "translateX(-50%)"
+
+        document.getElementById("headerVox").classList.remove('active')
+        document.getElementById("optionsVox").classList.remove('active')
         setTimeout(function () {
+            document.getElementById("formLoginByIP").style.display = 'flex'
+            setTimeout(function () {
 
-            document.getElementById("formLogin").classList.add('active')
-            //document.getElementById("formLogin").style.paddingBottom = "100px"
-        }, 50)
-    }, 920)
+                document.getElementById("formLoginByIP").classList.add('active')
+                //document.getElementById("formLogin").style.paddingBottom = "100px"
+            }, 50)
+        }, 920)
+    } else {
+        if (ipLogin) {
+            document.getElementById("formLoginByIP").classList.remove('active')
+            if (sessionStorage.getItem("matchingUser")) {
+                const valJ = JSON.parse(sessionStorage.getItem("matchingUser"))
+                document.getElementById("voxEmail").value = valJ.email
+                document.getElementById("credEmail").style.display = 'none'
+            } else {
+                warn("Sorry, IP Login failed.")
+            }
+
+        } else {
+            startup.play()
+        }
+
+        document.getElementById("epsilonLogoLogin").style.top = "200px"
+        document.getElementById("epsilonLogoLogin").style.transform = "translateX(-50%)"
+
+        document.getElementById("headerVox").classList.remove('active')
+        document.getElementById("optionsVox").classList.remove('active')
+        setTimeout(function () {
+            document.getElementById("formLogin").style.display = 'flex'
+            document.getElementById("formLoginByIP").style.display = 'none'
+            setTimeout(function () {
+
+                document.getElementById("formLogin").classList.add('active')
+                //document.getElementById("formLogin").style.paddingBottom = "100px"
+            }, 50)
+        }, 920)
+    }
+
 
 
     //setTimeout(function() {
@@ -264,6 +380,117 @@ function returnToLoginMenu() {
 
         }, 50)
     }, 920)
+}
+
+function normalLogin() {
+    document.getElementById("voxEmail").value = ''
+    document.getElementById("formLoginByIP").classList.remove('active')
+    document.getElementById("epsilonLogoLogin").style.top = "200px"
+    document.getElementById("epsilonLogoLogin").style.transform = "translateX(-50%)"
+
+    document.getElementById("headerVox").classList.remove('active')
+    document.getElementById("optionsVox").classList.remove('active')
+    setTimeout(function () {
+        document.getElementById("formLogin").style.display = 'flex'
+        document.getElementById("formLoginByIP").style.display = 'none'
+        setTimeout(function () {
+
+            document.getElementById("formLogin").classList.add('active')
+            //document.getElementById("formLogin").style.paddingBottom = "100px"
+        }, 50)
+    }, 920)
+}
+
+function logOut() {
+    let userResponse = confirm("Are you sure you want to logout?");
+
+    // Check the user's response
+    if (userResponse) {
+        // OK was clicked
+        console.log("User clicked OK");
+        // Clear localStorage and sessionStorage
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // Hide settings or perform any UI changes
+        document.getElementById("gateway").style.opacity = '0'
+        setTimeout(function () {
+            document.getElementById("gateway").style.display = 'none'
+        }, 200)
+        document.getElementById("settings").classList.remove("active")
+        document.getElementById("gatewayExploreScroll").style.transform = ''
+        document.getElementById("gatewayExploreScroll").style.filter = ''
+        $("#clearContainer").fadeIn("fast")
+
+
+        setTimeout(function () {
+            new Promise((resolve, reject) => {
+                if ('serviceWorker' in navigator) {
+                    // Unregister service workers
+                    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                        console.log('Fetched service worker registrations:', registrations);
+                        if (registrations.length === 0) {
+                            console.log('No service workers to unregister.');
+                            resolve(); // Resolve immediately if no registrations
+                            return;
+                        }
+                        let unregisterPromises = registrations.map(registration => registration.unregister());
+                        return Promise.all(unregisterPromises);
+                    }).then(function (results) {
+                        console.log('Service worker unregistration results:', results);
+                        results.forEach((success, index) => {
+                            if (success) {
+                                console.log(`Service Worker ${index} unregistered successfully.`);
+                            } else {
+                                console.log(`Service Worker ${index} unregistration failed.`);
+                            }
+                        });
+                        // Proceed to unsubscribe from push notifications
+                        return navigator.serviceWorker.ready;
+                    }).then(function (registration) {
+                        console.log('Service worker is ready:', registration);
+                        return registration.pushManager.getSubscription();
+                    }).then(function (subscription) {
+                        if (subscription) {
+                            console.log('Push subscription found:', subscription);
+                            return subscription.unsubscribe().then(function (successful) {
+                                if (successful) {
+                                    console.log('Push notifications unsubscribed successfully.');
+                                } else {
+                                    console.log('Push notifications unsubscription failed.');
+                                }
+                                resolve();  // Resolve after successful unsubscribe
+                            }).catch(function (error) {
+                                console.error('Error unsubscribing from push notifications:', error);
+                                resolve();  // Resolve even if there was an error
+                            });
+                        } else {
+                            console.log('No push notifications subscription found.');
+                            resolve();  // Resolve if no subscription exists
+                        }
+                    }).catch(function (error) {
+                        console.error('Error during service worker operations:', error);
+                        resolve();  // Resolve even if there was an error
+                    });
+                } else {
+                    console.log('Service workers are not supported in this browser.');
+                    resolve(); // Resolve immediately if service workers are not supported
+                }
+            }).then(() => {
+                // Reload the window after all operations are done
+                console.log('All operations completed, reloading the window.');
+                window.location.reload();
+            }).catch(function (error) {
+                console.error('An error occurred during the cleanup process:', error);
+                window.location.reload();  // Ensure the window reloads even if there's an error
+            });
+        }, 1500)
+
+
+    } else {
+        // Cancel was clicked
+        console.log("User clicked Cancel");
+    }
 }
 
 const voxPasswordInput = document.getElementById('voxPassword');
@@ -370,7 +597,7 @@ voxEmailInput.addEventListener('blur', function () {
                 return response.text();
             })
             .then(matchedUser => {
-                setNetworkStatus('on')
+                ////setNetworkStatus('on')
                 if (matchedUser !== "Account Not Found" && !matchedUser.includes("Something Went Wrong")) {
                     document.getElementById("emailIcon").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
                               viewBox="0 0 24 24" fill="none">
@@ -414,12 +641,27 @@ voxEmailInput.addEventListener('blur', function () {
                 }
 
             }).catch(error => {
-                setNetworkStatus('off')
+                //setNetworkStatus('off')
                 console.error(error);
             });
     }, 400)
 
 });
+
+function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
 
 function startLogin() {
     document.getElementById("beginLoginBtn").innerHTML = `<svg version="1.1" width="25px" height="25px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
@@ -445,7 +687,7 @@ function startLogin() {
                 return response.text();
             })
             .then(data => {
-                setNetworkStatus('on')
+                ////setNetworkStatus('on')
                 document.getElementById("beginLoginBtn").innerHTML = `Login`
 
                 var wind = new URL(window.location.href);
@@ -510,7 +752,7 @@ function startLogin() {
                                 return response.text();
                             })
                             .then(data => {
-                                setNetworkStatus('on')
+                                ////setNetworkStatus('on')
                                 if (data === "Complete") {
                                     //window.close()
                                     window.location.href = "ext-ready.html"
@@ -518,12 +760,13 @@ function startLogin() {
                                 return;
 
                             }).catch(error => {
-                                setNetworkStatus('off')
+                                //setNetworkStatus('off')
                                 console.error('Fetch error:', error);
                             });
                         //send to dc that id matches to acc email
                     }
                     console.log("Welcome Abroad")
+                    loadProfile()
                     localStorage.setItem("2fa_status", "On")
                     localStorage.setItem("t50pswd", `${btoa(password)}`)
                     const credentialsString = data;
@@ -554,6 +797,16 @@ function startLogin() {
                     }, 1000)
 
                     //FloridaRun()
+                    console.log("Registering Service Worker..")
+                    if ('serviceWorker' in navigator) {
+                        navigator.serviceWorker.register('./epsilon-serviceWorker.js')
+                            .then(registration => {
+                                console.log('Service Worker registered with scope:', registration.scope);
+                            })
+                            .catch(error => {
+                                console.error('Service Worker registration failed:', error);
+                            });
+                    }
                 } else if (data === "Credentials Incorrect") {
                     shake_me("voxPassword")
                     //fadeError("2")
@@ -579,7 +832,7 @@ function startLogin() {
                 }
             })
             .catch(error => {
-                setNetworkStatus('off')
+                //setNetworkStatus('off')
                 document.getElementById("beginLoginBtn").innerHTML = `Login Failed`
                 console.error('Fetch error:', error);
             });
@@ -641,7 +894,7 @@ function on2FAComplete() {
             return response.text();
         })
         .then(data => {
-            setNetworkStatus('on')
+            ////setNetworkStatus('on')
             if (data === "Complete") {
                 successLogin.play()
                 var wind = new URL(window.location.href);
@@ -655,7 +908,7 @@ function on2FAComplete() {
                             return response.text();
                         })
                         .then(data => {
-                            setNetworkStatus('on')
+                            ////setNetworkStatus('on')
                             if (data === "Complete") {
                                 //window.close()
                                 window.location.href = "ext-ready.html"
@@ -663,7 +916,7 @@ function on2FAComplete() {
                             return;
 
                         }).catch(error => {
-                            setNetworkStatus('off')
+                            //setNetworkStatus('off')
                             console.error('Fetch error:', error);
                         });
                     //send to dc that id matches to acc email
@@ -699,7 +952,17 @@ function on2FAComplete() {
                 sessionStorage.setItem("loggedinpswd", btoa(password))
                 localStorage.setItem("2fa_status", "On")
                 $("#connectionContainer").fadeOut("fast")
+                loadProfile()
                 verificationComplete()
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('./epsilon-serviceWorker.js')
+                        .then(registration => {
+                            console.log('Service Worker registered with scope:', registration.scope);
+                        })
+                        .catch(error => {
+                            console.error('Service Worker registration failed:', error);
+                        });
+                }
             } else if (data === "Exists") {
                 successLogin.play()
                 document.getElementById("form2FA").classList.remove('active')
@@ -742,7 +1005,7 @@ function on2FAComplete() {
             }
             //IF IP EXISTS THEN DONT REQUIRE 2FA, ELSE REQUIRE 2FA
         }).catch(error => {
-            setNetworkStatus('off')
+            //setNetworkStatus('off')
             console.error('Fetch error:', error);
         });
 }
@@ -838,13 +1101,13 @@ function verificationComplete() {
             return response.json();
         })
         .then(data => {
-            setNetworkStatus('on')
+            ////setNetworkStatus('on')
             localStorage.setItem("friends", JSON.stringify(data))
             attachUi(data)
 
         })
         .catch(error => {
-            setNetworkStatus('off')
+            //setNetworkStatus('off')
             const data = localStorage.getItem("friends")
             if (data) {
                 console.warn("Server connection failed. Trying local")
@@ -895,13 +1158,13 @@ function hideChats() {
             return response.json();
         })
         .then(data => {
-            setNetworkStatus('on')
+            ////setNetworkStatus('on')
             localStorage.setItem("friends", JSON.stringify(data))
             attachUi(data, null, 'onlyCarousel')
 
         })
         .catch(error => {
-            setNetworkStatus('off')
+            //setNetworkStatus('off')
             const data = localStorage.getItem("friends")
             if (data) {
                 console.warn("Server connection failed. Trying local")
@@ -1058,7 +1321,7 @@ function openChat(data, location) {
         .then(profileImage => {
             document.getElementById("secureline-pfp").src = profileImage;
         }).catch(error => {
-            setNetworkStatus('off')
+            //setNetworkStatus('off')
             console.error(error);
         });
     actionReload(username)
@@ -1122,7 +1385,7 @@ function goBackMessenger() {
     clearInterval(activeChatInterval)
     activeChatInterval = null;
     sessionStorage.removeItem("current_sline")
-    sessionStorage.removeItem("lastChatInter")
+    sessionStorage.removeItem("lastChatMessages")
     const popup = document.getElementById("secureline")
     popup.classList.add("active")
     document.getElementById("goBackMessenger").classList.remove("visible")
@@ -1164,7 +1427,7 @@ function showRemoteFriend(id) {
         .then(profileImage => {
             img.src = profileImage;;
         }).catch(error => {
-            setNetworkStatus('off')
+            //setNetworkStatus('off')
             console.error(error);
         });
     iconDiv.appendChild(img);
@@ -1230,271 +1493,390 @@ function showFriend(element, duplicate) {
         defaultArrow = document.getElementById(`showUserInfoDiv-${friend}-dup`).innerHTML
     }
 
-
-    console.log("Default arrow", defaultArrow)
-    console.log('Launching:', friend);//
-    document.getElementById("user-profile-picture").src = 'searching_users.gif'
-    loadPFPget(friend)
-        .then(profileImage => {
-            document.getElementById("user-profile-picture").src = profileImage
-        }).catch(error => {
-            setNetworkStatus('off')
-            console.error(error);
-        });
-    document.getElementById("user-profile-username").innerText = friend
-    fetch(`${srv}/cryptox?method=isCryptoxed&username=${friend}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.text();
-        })
-        .then(isCryptoxed => {
-            if (isCryptoxed === 'Enabled') {
-                document.getElementById("user-cryptox").innerText = 'Enabled'
-            } else if (isCryptoxed === 'Disabled') {
-                document.getElementById("user-cryptox").innerText = 'Disabled'
-            } else {
-                document.getElementById("user-cryptox").innerText = '🤯'
-            }
-        }).catch(error => {
-            console.log('userFriends failed to load:', error)
-        })
-    fetch(`${srv}/social?username=${friend}&todo=friends`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.text();
-        })
-        .then(userFriends => {
-            if (userFriends !== '') {
-                const userJsonFriends = JSON.parse(userFriends)
-                console.log(`${friend} friends length: ${userJsonFriends.length}`)
-                if (userJsonFriends.length === 1) {
-                    document.getElementById("friendsCount").innerHTML = `${userJsonFriends.length} <span>Friend</span>`
+    try {
+        console.log("Default arrow", defaultArrow)
+        console.log('Launching:', friend);//
+        document.getElementById("user-profile-picture").src = 'searching_users.gif'
+        loadPFPget(friend)
+            .then(profileImage => {
+                document.getElementById("user-profile-picture").src = profileImage
+            }).catch(error => {
+                //setNetworkStatus('off')
+                console.error(error);
+            });
+        document.getElementById("user-profile-username").innerText = friend
+        fetch(`${srv}/cryptox?method=isCryptoxed&username=${friend}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(isCryptoxed => {
+                if (isCryptoxed === 'Enabled') {
+                    document.getElementById("user-cryptox").innerText = 'Enabled'
+                } else if (isCryptoxed === 'Disabled') {
+                    document.getElementById("user-cryptox").innerText = 'Disabled'
                 } else {
-                    document.getElementById("friendsCount").innerHTML = `${userJsonFriends.length} <span>Friends</span>`
+                    document.getElementById("user-cryptox").innerText = '🤯'
+                }
+            }).catch(error => {
+                document.getElementById("user-cryptox").innerText = 'You are offline'
+                console.log('userFriends failed to load:', error)
+            })
+        fetch(`${srv}/social?username=${friend}&todo=friends`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(userFriends => {
+                document.getElementById("friendsCount").style.display = null
+                if (userFriends !== '') {
+                    const userJsonFriends = JSON.parse(userFriends)
+                    localStorage.setItem(`${friend}_friendCount`, userJsonFriends.length)
+                    console.log(`${friend} friends length: ${userJsonFriends.length}`)
+                    if (userJsonFriends.length === 1) {
+                        document.getElementById("friendsCount").innerHTML = `${userJsonFriends.length} <span>Friend</span>`
+                    } else {
+                        document.getElementById("friendsCount").innerHTML = `${userJsonFriends.length} <span>Friends</span>`
+                    }
+
+                } else {
+                    localStorage.setItem(`${friend}_friendCount`, '0')
+                    document.getElementById("friendsCount").innerHTML = `0 <span>Friends</span>`
                 }
 
-            } else {
-                document.getElementById("friendsCount").innerHTML = `0 <span>Friends</span>`
-            }
-
-        }).catch(error => {
-            console.log('userFriends failed to load:', error)
-        })
-    fetch(`${srv}/accounts?method=getemailbyusername&username=${friend}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.text();
-        })
-        .then(friend_email => {
-            fetch(`${srv}/accounts?email=${friend_email}&username=${friend}&method=last_login`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(last_login => {
-                    if (last_login !== 'Unknown') {
-                        document.getElementById("user-lastSeen").innerText = formatTimeDifference(last_login) + " ago"
+            }).catch(error => {
+                document.getElementById("friendsCount").style.display = null
+                const friendCount = localStorage.getItem(`${friend}_friendCount`)
+                console.log(`${friend} friends length: ${friendCount} [OFFLINE]`)
+                if (friendCount) {
+                    if (friendCount === 1) {
+                        document.getElementById("friendsCount").innerHTML = `${friendCount} <span>Friend</span>`
                     } else {
-                        document.getElementById("user-lastSeen").innerText = 'Unknown'
+                        document.getElementById("friendsCount").innerHTML = `${friendCount} <span>Friends</span>`
                     }
+                } else {
+                    document.getElementById("friendsCount").style.display = 'none'
+                }
 
-                }).catch(error => {
-                    console.log("User Load Last Login Failed [3]:", error)
-                })
-            fetch(`${srv}/accounts?email=${friend_email}&username=${friend}&birth=get`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.text();
-                })
-                .then(birthdateString => {
-                    if (birthdateString) {
-                        document.getElementById("user-age-block").style.display = ''
-                        document.getElementById("user-birth-block").style.display = ''
-                        let parts = birthdateString.split('/');
-                        let day = parseInt(parts[0]);
-                        let month = parseInt(parts[1]) - 1; // Months are zero-based in JavaScript
-                        let year = parseInt(parts[2]);
-                        let birthdate = new Date(year, month, day);
-                        let today = new Date();
-                        let age = today.getFullYear() - birthdate.getFullYear();
-                        let monthDiff = today.getMonth() - birthdate.getMonth();
-                        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthdate.getDate())) {
-                            age--;
+                console.log('userFriends failed to load:', error)
+            })
+        fetch(`${srv}/accounts?method=getemailbyusername&username=${friend}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(friend_email => {
+                fetch(`${srv}/accounts?email=${friend_email}&username=${friend}&method=last_login`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(last_login => {
+                        if (last_login !== 'Unknown') {
+                            document.getElementById("user-lastSeen").innerText = formatTimeDifference(last_login) + " ago"
+                        } else {
+                            document.getElementById("user-lastSeen").innerText = 'Unknown'
                         }
 
-                        console.log("Age: " + age);
-                        document.getElementById("user-age").innerText = age
-                        document.getElementById("user-birthdate").innerText = birthdateString
+                    }).catch(error => {
+                        console.log("User Load Last Login Failed [3]:", error)
+                    })
+                fetch(`${srv}/accounts?email=${friend_email}&username=${friend}&birth=get`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(birthdateString => {
+                        localStorage.setItem(`user-${friend}-birthdate`, birthdateString)
+                        if (birthdateString) {
+                            document.getElementById("user-age-block").style.display = ''
+                            document.getElementById("user-birth-block").style.display = ''
+                            let parts = birthdateString.split('/');
+                            let day = parseInt(parts[0]);
+                            let month = parseInt(parts[1]) - 1; // Months are zero-based in JavaScript
+                            let year = parseInt(parts[2]);
+                            let birthdate = new Date(year, month, day);
+                            let today = new Date();
+                            let age = today.getFullYear() - birthdate.getFullYear();
+                            let monthDiff = today.getMonth() - birthdate.getMonth();
+                            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthdate.getDate())) {
+                                age--;
+                            }
+
+                            console.log("Age: " + age);
+                            document.getElementById("user-age").innerText = age
+                            document.getElementById("user-birthdate").innerText = birthdateString
+                        } else {
+                            console.log("No age registered")
+                            document.getElementById("user-age-block").style.display = 'none'
+                            document.getElementById("user-birth-block").style.display = 'none'
+                        }
+
+                        document.getElementById("user-profile").classList.add('active')
+
+                        const socialPopup = document.getElementById("social")
+                        socialPopup.classList.remove("active")
+                        document.getElementById("social-back").style.opacity = '0'
+                        setTimeout(function () {
+                            document.getElementById("social-back").style.display = 'none'
+                        }, 200)
+                        document.getElementById("bottomActionsSocial").classList.remove("visible")
+
+                        if (!duplicate) {
+                            setTimeout(() => {
+                                document.getElementById(`showUserInfoDiv-${friend}`).innerHTML = defaultArrow
+                            }, 250);
+                        }
+
+                    }).catch(error => {
+                        console.log("User Load Failed [2]:", error)
+                    })
+            }).catch(error => {
+                const data = localStorage.getItem(`user-${friend}-lastLogin`)
+                if (data) {
+                    console.warn("Server connection failed. Trying local")
+                    const lastLogin = data
+                    if (lastLogin !== 'Unknown') {
+                        document.getElementById("user-lastSeen").innerText = formatTimeDifference(lastLogin);
                     } else {
-                        console.log("No age registered")
-                        document.getElementById("user-age-block").style.display = 'none'
-                        document.getElementById("user-birth-block").style.display = 'none'
+                        document.getElementById("user-lastSeen").innerText = 'none'
+                    }
+                } else {
+                    console.log("User load failed [1]:", error)
+                }
+
+                //Birth
+
+                const birthdateString = localStorage.getItem(`user-${friend}-birthdate`)
+                if (birthdateString) {
+                    document.getElementById("user-age-block").style.display = ''
+                    document.getElementById("user-birth-block").style.display = ''
+                    let parts = birthdateString.split('/');
+                    let day = parseInt(parts[0]);
+                    let month = parseInt(parts[1]) - 1; // Months are zero-based in JavaScript
+                    let year = parseInt(parts[2]);
+                    let birthdate = new Date(year, month, day);
+                    let today = new Date();
+                    let age = today.getFullYear() - birthdate.getFullYear();
+                    let monthDiff = today.getMonth() - birthdate.getMonth();
+                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthdate.getDate())) {
+                        age--;
                     }
 
-                    document.getElementById("user-profile").classList.add('active')
+                    console.log("Age: " + age);
+                    document.getElementById("user-age").innerText = age
+                    document.getElementById("user-birthdate").innerText = birthdateString
+                } else {
+                    console.log("No age registered")
+                    document.getElementById("user-age-block").style.display = 'none'
+                    document.getElementById("user-birth-block").style.display = 'none'
+                }
 
-                    const socialPopup = document.getElementById("social")
-                    socialPopup.classList.remove("active")
-                    document.getElementById("social-back").style.opacity = '0'
-                    setTimeout(function () {
-                        document.getElementById("social-back").style.display = 'none'
-                    }, 200)
-                    document.getElementById("bottomActionsSocial").classList.remove("visible")
+                document.getElementById("user-profile").classList.add('active')
 
-                    if (!duplicate) {
-                        setTimeout(() => {
-                            document.getElementById(`showUserInfoDiv-${friend}`).innerHTML = defaultArrow
-                        }, 250);
-                    }
+                const socialPopup = document.getElementById("social")
+                socialPopup.classList.remove("active")
+                document.getElementById("social-back").style.opacity = '0'
+                setTimeout(function () {
+                    document.getElementById("social-back").style.display = 'none'
+                }, 200)
+                document.getElementById("bottomActionsSocial").classList.remove("visible")
 
-                }).catch(error => {
-                    console.log("User Load Failed [2]:", error)
-                })
-        }).catch(error => {
-            console.log("User load failed [1]:", error)
-        })
-    const container = document.getElementById("friendTags")
-    container.innerHTML = ''
-    document.getElementById("loadingIndicatorProfile").style.display = ''
-    document.getElementById("user-video-forDisplay").src = ''
-    document.getElementById("user-video-forDisplay").style.display = 'none'
-    //Old db < NEW🥲
-    document.getElementById("showErrorCanvas").style.display = 'none'
-    fetch(`${srv}/social?username=${friend}&todo=tags`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
+                if (!duplicate) {
+                    setTimeout(() => {
+                        document.getElementById(`showUserInfoDiv-${friend}`).innerHTML = defaultArrow
+                    }, 250);
+                }
 
-            //will return current tags
-            if (data.includes('No tags')) {
-                return;
-            }
-            data.forEach((tag) => {
-                var div = document.createElement("div");
-                div.className = "user-tag";
-
-                // Create the SVG element
-                var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-                svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-                svg.setAttribute("width", "20px");
-                svg.setAttribute("height", "20px");
-                svg.setAttribute("viewBox", "0 0 24 24");
-                svg.setAttribute("fill", "none");
-
-                // Create the path element
-                var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                path.setAttribute("d", "M10 4L7 20M17 4L14 20M5 8H20M4 16H19");
-                path.setAttribute("stroke", "#fff");
-                path.setAttribute("stroke-width", "2");
-                path.setAttribute("stroke-linecap", "round");
-
-                // Append the path to the svg
-                svg.appendChild(path);
-
-                // Append the svg to the div
-                div.appendChild(svg);
-
-                // Add the text node "Add Tag"
-                div.appendChild(document.createTextNode(tag));
-
-                // Append the div to the element with ID "userTags"
-                container.appendChild(div);
             })
-        })
-        .catch(error => {
-            setNetworkStatus('off')
-            console.error('Failed to update tags', error)
-        });
-    //fetch(`${srv}/profiles?name=${friend}&authorize=cover`)
-    //    .then(response => {
-    //        if (!response.ok) {
-    //            throw new Error(`HTTP error! Status: ${response.status}`);
-    //        }
-    //        return response.text();
-    //    })
-    //    .then(coverIMG => {
-    //        return;
-    //        if (coverIMG !== "None") {
-    //
-    //            document.getElementById("user-video-forDisplay").style.display = ''
-    //            document.getElementById("user-video-forDisplay").src = coverIMG
-    //            document.getElementById("loadingIndicatorProfile").style.display = 'none'
-    //        } else {
-    //            document.getElementById("user-video-forDisplay").src = ''
-    //            document.getElementById("user-video-forDisplay").style.display = 'none'
-    //            document.getElementById("loadingIndicatorProfile").style.display = 'none'
-    //
-    //        }
-    //
-    //    }).catch(error => {
-    //        console.error(error);
-    //        document.getElementById("showErrorCanvas").style.display = ''
-    //    })
+        const container = document.getElementById("friendTags")
+        container.innerHTML = ''
+        document.getElementById("loadingIndicatorProfile").style.display = ''
+        document.getElementById("user-video-forDisplay").src = ''
+        document.getElementById("user-video-forDisplay").style.display = 'none'
+        //Old db < NEW🥲
+        document.getElementById("showErrorCanvas").style.display = 'none'
+        fetch(`${srv}/social?username=${friend}&todo=tags`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                localStorage.setItem(`user-${friend}-tags`, JSON.stringify(data))
 
-    fetch(`${srv}/canvas/${friend}.evox/has`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.text();
-        })
-        .then(canvasStatus => {
-            if (canvasStatus === 'true') {
+                //will return current tags
+                if (data.includes('No tags')) {
+                    return;
+                }
+                data.forEach((tag) => {
+                    var div = document.createElement("div");
+                    div.className = "user-tag";
 
-                document.getElementById("user-video-forDisplay").style.display = ''
-                document.getElementById("user-video-forDisplay").src = `${srv}/canvas/${friend}.evox`
-                document.getElementById("user-video-forDisplay").onloadeddata = function () {
-                    console.log("Canvas Loaded!");
-                    $("#bggradient").fadeOut("fast")
-                    document.getElementById("loadingIndicatorProfile").style.display = 'none'
-                };
-                saveVideoAsBlob(friend, `${srv}/canvas/${friend}.evox`)
+                    // Create the SVG element
+                    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                    svg.setAttribute("width", "20px");
+                    svg.setAttribute("height", "20px");
+                    svg.setAttribute("viewBox", "0 0 24 24");
+                    svg.setAttribute("fill", "none");
 
+                    // Create the path element
+                    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    path.setAttribute("d", "M10 4L7 20M17 4L14 20M5 8H20M4 16H19");
+                    path.setAttribute("stroke", "#fff");
+                    path.setAttribute("stroke-width", "2");
+                    path.setAttribute("stroke-linecap", "round");
 
-            } else {
-                document.getElementById("user-video-forDisplay").src = ''
-                document.getElementById("user-video-forDisplay").style.display = 'none'
-                document.getElementById("loadingIndicatorProfile").style.display = 'none'
-            }
+                    // Append the path to the svg
+                    svg.appendChild(path);
 
-        }).catch(error => {
-            loadPFPget(`${friend}_canvas`)
-                .then(result => {
-                    if (result !== 'Canvas Not Found') {
-                        const blob = new Blob([videoData], { type: 'video/mp4' });
-                        const videoURL = URL.createObjectURL(blob);
-                        document.getElementById("user-video-forDisplay").style.display = ''
-                        document.getElementById("user-video-forDisplay").src = videoURL
-                        document.getElementById("user-video-forDisplay").onloadeddata = function () {
-                            console.log("Canvas Loaded!");
-                            $("#bggradient").fadeOut("fast")
-                            document.getElementById("loadingIndicatorProfile").style.display = 'none'
-                        };
-                    } else {
-                        document.getElementById("loadingIndicatorProfile").style.display = 'none'
-                        document.getElementById("showErrorCanvas").style.display = ''
+                    // Append the svg to the div
+                    div.appendChild(svg);
+
+                    // Add the text node "Add Tag"
+                    div.appendChild(document.createTextNode(tag));
+
+                    // Append the div to the element with ID "userTags"
+                    container.appendChild(div);
+                })
+            })
+            .catch(error => {
+                const data_string = localStorage.getItem(`user-${friend}-tags`)
+                if (data_string) {
+                    const data = JSON.parse(data_string)
+                    if (data.includes('No tags')) {
+                        return;
                     }
-                }).catch(error => {
-                    setNetworkStatus('off')
-                    console.error(error);
-                });
+                    data.forEach((tag) => {
+                        var div = document.createElement("div");
+                        div.className = "user-tag";
 
-            console.error(error);
-        })
+                        // Create the SVG element
+                        var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                        svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                        svg.setAttribute("width", "20px");
+                        svg.setAttribute("height", "20px");
+                        svg.setAttribute("viewBox", "0 0 24 24");
+                        svg.setAttribute("fill", "none");
+
+                        // Create the path element
+                        var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                        path.setAttribute("d", "M10 4L7 20M17 4L14 20M5 8H20M4 16H19");
+                        path.setAttribute("stroke", "#fff");
+                        path.setAttribute("stroke-width", "2");
+                        path.setAttribute("stroke-linecap", "round");
+
+                        // Append the path to the svg
+                        svg.appendChild(path);
+
+                        // Append the svg to the div
+                        div.appendChild(svg);
+
+                        // Add the text node "Add Tag"
+                        div.appendChild(document.createTextNode(tag));
+
+                        // Append the div to the element with ID "userTags"
+                        container.appendChild(div);
+                    })
+                } else {
+                    console.error(`Failed to get tags for user ${friend}`, error)
+                }
+
+
+            });
+        //fetch(`${srv}/profiles?name=${friend}&authorize=cover`)
+        //    .then(response => {
+        //        if (!response.ok) {
+        //            throw new Error(`HTTP error! Status: ${response.status}`);
+        //        }
+        //        return response.text();
+        //    })
+        //    .then(coverIMG => {
+        //        return;
+        //        if (coverIMG !== "None") {
+        //
+        //            document.getElementById("user-video-forDisplay").style.display = ''
+        //            document.getElementById("user-video-forDisplay").src = coverIMG
+        //            document.getElementById("loadingIndicatorProfile").style.display = 'none'
+        //        } else {
+        //            document.getElementById("user-video-forDisplay").src = ''
+        //            document.getElementById("user-video-forDisplay").style.display = 'none'
+        //            document.getElementById("loadingIndicatorProfile").style.display = 'none'
+        //
+        //        }
+        //
+        //    }).catch(error => {
+        //        console.error(error);
+        //        document.getElementById("showErrorCanvas").style.display = ''
+        //    })
+
+        fetch(`${srv}/canvas/${friend}.evox/has`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(canvasStatus => {
+                if (canvasStatus === 'true') {
+
+                    document.getElementById("user-video-forDisplay").style.display = ''
+                    document.getElementById("user-video-forDisplay").src = `${srv}/canvas/${friend}.evox`
+                    document.getElementById("user-video-forDisplay").onloadeddata = function () {
+                        console.log("Canvas Loaded!");
+                        $("#bggradient").fadeOut("fast")
+                        document.getElementById("loadingIndicatorProfile").style.display = 'none'
+                    };
+                    saveVideoAsBlob(friend, `${srv}/canvas/${friend}.evox`)
+
+
+                } else {
+                    document.getElementById("user-video-forDisplay").src = ''
+                    document.getElementById("user-video-forDisplay").style.display = 'none'
+                    document.getElementById("loadingIndicatorProfile").style.display = 'none'
+                }
+
+            }).catch(error => {
+                loadPFPget(`${friend}_canvas`)
+                    .then(result => {
+                        if (result !== 'Canvas Not Found') {
+                            const blob = new Blob([videoData], { type: 'video/mp4' });
+                            const videoURL = URL.createObjectURL(blob);
+                            document.getElementById("user-video-forDisplay").style.display = ''
+                            document.getElementById("user-video-forDisplay").src = videoURL
+                            document.getElementById("user-video-forDisplay").onloadeddata = function () {
+                                console.log("Canvas Loaded!");
+                                $("#bggradient").fadeOut("fast")
+                                document.getElementById("loadingIndicatorProfile").style.display = 'none'
+                            };
+                        } else {
+                            document.getElementById("loadingIndicatorProfile").style.display = 'none'
+                            document.getElementById("showErrorCanvas").style.display = ''
+                        }
+                    }).catch(error => {
+                        //setNetworkStatus('off')
+                        console.error(error);
+                    });
+
+                console.error(error);
+            })
+    } catch (error) {
+        document.getElementById(`showUserInfoDiv-${friend}`).innerHTML = defaultArrow
+        console.error("EVX Error:", error)
+    }
+
 
 
 
@@ -1647,6 +2029,7 @@ function settingsOpen(panel) {
     document.getElementById("settings-personal").style.display = 'none'
     document.getElementById("settings-customize").style.display = 'none'
     document.getElementById("settings-about").style.display = 'none'
+    document.getElementById("settings-notifications").style.display = 'none'
     if (document.getElementById("changeBackgroundSlider").classList.contains("expanded")) {
         changeBackgroundSlider(document.getElementById("changeBackgroundSlider"))
     }
@@ -1656,6 +2039,8 @@ function settingsOpen(panel) {
     settingsGrabCloseTrigger = 694
     hideThreshold = 100
     if (panel === 'security') {
+        document.getElementById("settings").style.height = '285px'
+        settingsGrabCloseTrigger = 662
         document.getElementById("accountSettingsIcon").style.transform = 'rotate(40deg)'
         setTimeout(function () {
             document.getElementById("accountSettingsIcon").style.transform = 'rotate(0deg)'
@@ -1731,7 +2116,6 @@ function attachSettingsData(data, container) {// data -> personal, security, cyp
                 $(hiding).fadeOut("fast", function () {
                     $(`#settings-${data}`).fadeIn("fast")
                 })
-
                 if (data === 'customize') {
                     settingsGrabCloseTrigger = 726
                     document.getElementById("settings").style.height = '200px'
@@ -1741,16 +2125,167 @@ function attachSettingsData(data, container) {// data -> personal, security, cyp
                     settingsGrabCloseTrigger = 520
                     hideThreshold = 618
                     document.getElementById("settings").style.height = '435px'
-
+                }
+                if (data === 'notifications') {
+                    loadFlorida()
                 }
             } else {
                 console.log("EBETA404")
                 warn(`Cannot attach ${data} on settings.<br>Error Code: EBETA404`)
             }
-
         }
     }, 100)
+}
 
+
+function getOS() {
+    const userAgent = navigator.userAgent;
+    let operatingSystem = 'Unknown';
+
+    if (userAgent.includes('Windows NT')) {
+        operatingSystem = 'Windows';
+    } else if (userAgent.includes('Mac OS')) {
+        operatingSystem = 'macOS';
+    } else if (userAgent.includes('Linux')) {
+        operatingSystem = 'Linux';
+    } else if (userAgent.includes('Android')) {
+        operatingSystem = 'Android';
+    } else if (userAgent.includes('iOS')) {
+        operatingSystem = 'iOS';
+    }
+
+    return operatingSystem;
+}
+
+function getOSVersion() {
+    const userAgent = navigator.userAgent;
+    let osVersion = 'Unknown';
+
+    if (userAgent.includes('Windows NT')) {
+        osVersion = userAgent.split('Windows NT ')[1].split(';')[0];
+    } else if (userAgent.includes('Mac OS')) {
+        osVersion = userAgent.split('Mac OS ')[1].split(')')[0];
+    } else if (userAgent.includes('Linux')) {
+        osVersion = 'Linux'; // Linux doesn't typically have a version string in userAgent
+    } else if (userAgent.includes('Android')) {
+        osVersion = userAgent.split('Android ')[1].split(';')[0];
+    } else if (userAgent.includes('iPhone OS')) {
+        osVersion = userAgent.split('iPhone OS ')[1].split(' ')[0].replace(/_/g, '.');
+    } else if (userAgent.includes('iPad OS')) {
+        osVersion = userAgent.split('iPad OS ')[1].split(' ')[0].replace(/_/g, '.');
+    }
+
+    return osVersion;
+}
+
+// Example usage:
+const os = getOS();
+const osVersion = getOSVersion();
+
+console.log('Operating System:', os);
+console.log('Operating System Version:', osVersion);
+
+function loadFlorida() {
+    if (localStorage.getItem("extV")) {
+        if ('serviceWorker' in navigator && 'PushManager' in window) {
+            navigator.serviceWorker.register('./epsilon-serviceWorker.js')
+                .then(function (swReg) {
+                    console.log('Service Worker is registered', swReg);
+
+                    // Request permission for notifications
+                    return swReg.pushManager.getSubscription()
+                        .then(function (subscription) {
+                            if (!subscription) {
+                                return swReg.pushManager.subscribe({
+                                    userVisibleOnly: true,
+                                    applicationServerKey: urlBase64ToUint8Array('BA15u7YIY1VPm9ulrTmaG_dTL1tJj59pso6K46lc2i45u-r1bmdl1t6KOrHxMmzyn8ZDQelik0mGn_blW9gAhg4')
+                                });
+                            }
+                            return subscription;
+                        });
+                })
+                .then(function (subscription) {
+                    console.log('User is subscribed:', subscription);
+                    document.getElementById('florida_status').innerHTML = 'Active'
+                    document.getElementById("deviceId").innerHTML = localStorage.getItem("extV")
+                })
+                .catch(function (error) {
+                    console.error('Service Worker Error', error);
+                });
+        }
+    }
+}
+
+function enableFlorida() {
+    console.log("Working")
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+        navigator.serviceWorker.register('./epsilon-serviceWorker.js')
+            .then(function (swReg) {
+                console.log('Service Worker is registered', swReg);
+
+                // Request permission for notifications
+                return swReg.pushManager.getSubscription()
+                    .then(function (subscription) {
+                        if (!subscription) {
+                            return swReg.pushManager.subscribe({
+                                userVisibleOnly: true,
+                                applicationServerKey: urlBase64ToUint8Array('BA15u7YIY1VPm9ulrTmaG_dTL1tJj59pso6K46lc2i45u-r1bmdl1t6KOrHxMmzyn8ZDQelik0mGn_blW9gAhg4')
+                            });
+                        }
+                        return subscription;
+                    });
+            })
+            .then(function (subscription) {
+                console.log('User is subscribed:', subscription);
+
+                if (!localStorage.getItem("extV")) {
+                    const url = `${srv}/floridaV?getWhat=anId&forUser=${localStorage.getItem("t50-username")}&os1=${os}&osVersion=${osVersion}`;
+                    fetch(url)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.text();
+                        })
+                        .then(data => {
+                            localStorage.setItem("extV", data)
+                            console.log('Fetched data:', data);
+                            const evoxJson = {
+                                'subscription': subscription,
+                                'username': localStorage.getItem("t50-username"),
+                                'email': localStorage.getItem("t50-email"),
+                                'id': data
+                            }
+                            document.getElementById("deviceId").innerHTML = data
+                            // Send subscription to server
+                            fetch('https://florida.evoxs.xyz/subscribe', {
+                                method: 'POST',
+                                body: JSON.stringify(evoxJson),
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                            .then(() => {
+                                loadFlorida()
+                                console.log('Request completed');
+                                warn("Welcome To Florida")
+                            })
+                            .catch(error => {
+                                warn('There was a problem with the fetch operation:', error);
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Fetch error:', error);
+                        });
+                } else {
+                    console.log("Id exists", localStorage.getItem("extV"));
+                }
+
+            })
+            .catch(function (error) {
+                console.error('Service Worker Error', error);
+            });
+    }
 }
 
 let openSlider = false
@@ -1800,16 +2335,37 @@ function updateServiceWorkerCache() {
 }
 
 function updateServiceWorkerCacheAndReload() {
-    try {
-        updateServiceWorkerCache()
-    } catch (error) {
-        warn("Service Worker Update Failed.<br>Evox Is Reloading..")
+    return new Promise((resolve, reject) => {
+        if (!navigator.serviceWorker.controller) {
+            console.log('No active service worker found.');
+            return reject(new Error('No active service worker found.'));
+        }
 
-    }
+        function onMessage(event) {
+            if (event.data && event.data.action === 'CACHE_UPDATED') {
+                navigator.serviceWorker.removeEventListener('message', onMessage);
+                resolve();
+            }
+        }
 
-    setTimeout(function () {
-        window.location.reload()
-    }, 500)
+        navigator.serviceWorker.addEventListener('message', onMessage);
+
+        // Initiate cache update
+        updateServiceWorkerCache();
+
+        // Handle potential issues
+        setTimeout(() => {
+            navigator.serviceWorker.removeEventListener('message', onMessage);
+            reject(new Error('Cache update timed out.'));
+        }, 10000); // 10 seconds timeout
+    }).then(() => {
+        // Reload the page after cache update is confirmed
+        window.location.reload();
+    }).catch(error => {
+        console.warn('Service Worker Update Failed.<br>Evox Is Reloading..');
+        console.error(error);
+        window.location.reload(); // Fallback to reload even on error
+    });
 }
 
 
