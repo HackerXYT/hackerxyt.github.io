@@ -34,13 +34,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Show downloading icon
                         document.getElementById("downloading-icon").classList.add("active")
                         $("#downloading-icon").fadeIn("fast");
-                        
+
                     } else if (event.data && event.data.action === 'CACHE_UPDATE_COMPLETED') {
                         // Hide downloading icon
-                        $("#downloading-icon").fadeOut("fast", function() {
+                        $("#downloading-icon").fadeOut("fast", function () {
                             document.getElementById("downloading-icon").classList.remove("active")
                         });
-                        
+
                     }
                 });
             });
@@ -89,7 +89,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '6.4.0'
+const appVersion = '6.4.1'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -326,6 +326,7 @@ function profilesLocal(username, img) {
 
         putRequest.onsuccess = function (event) {
             console.log(`Operation [${username}] Profile Picture Succeeded.`);
+           
         };
 
         putRequest.onerror = function (event) {
@@ -384,6 +385,11 @@ function canvasLocal(username, imgBlob) {
 
         putRequest.onsuccess = function (event) {
             console.log(`Operation [${identifier}] succeeded.`);
+            if(username === `${localStorage.getItem("t50-username")}`) {
+                $("#downloading-icon").fadeOut("fast", function () {
+                    document.getElementById("downloading-icon").classList.remove("active")
+                });
+            }
         };
 
         putRequest.onerror = function (event) {
@@ -1514,7 +1520,7 @@ function actionReload(whoto, reloadPage) {
     };
     pfp = document.getElementById(`${whoto}-pfp-secureline`);
 
-    fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}&password=${atob(localStorage.getItem("t50pswd"))}`)
+    fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}&password=${atob(localStorage.getItem("t50pswd"))}&v=${Math.floor(Math.random() * 100000)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2235,7 +2241,7 @@ function loadProfile(reload, withoutCanvas) {
         console.warn("Running load profile normally")
     }
 
-    fetch(`${srv}/social?username=${username}&todo=tags`)
+    fetch(`${srv}/social?username=${username}&todo=tags&v=${Math.floor(Math.random() * 100000)}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2245,7 +2251,7 @@ function loadProfile(reload, withoutCanvas) {
         .then(data => {
             const container = document.getElementById("userTags")
             container.innerHTML = ''
-            //will return current tags
+            // will return current tags
             if (data.includes('No tags')) {
                 return;
             }
@@ -2281,10 +2287,22 @@ function loadProfile(reload, withoutCanvas) {
                 container.appendChild(div);
             })
         })
+        .then(() => {
+            // Code to run after the fetch request and the tags have been processed
+            //console.log('Tags updated successfully');
+            const container = document.getElementById("userTags")
+            var div = document.createElement("div");
+            div.className = "user-tag";
+            div.appendChild(document.createTextNode('+'));
+//
+            // Append the div to the element with ID "userTags"
+            container.appendChild(div);
+        })
         .catch(error => {
             //setNetworkStatus('off')
             console.error('Failed to update tags', error)
         });
+
     // Function to handle the canvas status check
     function checkCanvasStatus() {
         if (withoutCanvas) {
@@ -2669,4 +2687,19 @@ function addTag() {
                 console.error('Failed to update tags', error)
             });
     }
+}
+
+//Discover
+function epsilonDiscover() {
+    //friends === 0: You are registered to Evox for X months/weeks. Let's add some friends!
+
+
+    //friends >= 50%: You are friends with (more than) 50% of Evox's users. Good Job!
+
+
+    //friends > 80%: You are friends with (more than) 50% of Evox's users. Good Job!
+    $("#loadingDiscover").fadeOut("fast",function() {
+        $("#mainDiscover").fadeIn("fast")
+    })
+    
 }

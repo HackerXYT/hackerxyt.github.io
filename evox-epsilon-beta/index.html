@@ -585,8 +585,8 @@
                             Manage
 
                         </a>
-                        <a href="#social-discover">
-                            <svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="25px"
+                        <a onclick="showSocial(this)" href="#social-discover">
+                            <svg id="discover-home-svg" style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="25px"
                                 height="25px" viewBox="0 0 24 24" fill="none">
                                 <path opacity="0.15" fill-rule="evenodd" clip-rule="evenodd"
                                     d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM15.5355 8.46448L9.87868 9.87869L8.46446 15.5355L14.1213 14.1213L15.5355 8.46448Z"
@@ -647,13 +647,7 @@
                 <img id="self-profile-picture" class="slUserPFP profile" src="evox-logo-apple.png">
             </div>
             <h3 id="self-profile-username">Username</h3>
-            <div id="self-tags" style="margin-top: 10px;flex-direction:row;display:flex"><!--Self-->
-                <vox style="display: flex;
-                flex-direction: row;
-                
-                white-space: nowrap;" id="userTags">
-
-                </vox>
+            <div id="userTags" ><!--Self-->
                 <div onclick="addTag()" class="user-tag">
                     <!--<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path d="M10 4L7 20M17 4L14 20M5 8H20M4 16H19" stroke="#fff" stroke-width="2"
@@ -880,6 +874,24 @@
                             to="360 25 25" dur="0.6s" repeatCount="indefinite" />
                     </path>
                 </svg>
+            </div>
+
+        </div>
+        <div id="social-discover" style="display: none;" class="social-users-discover">
+            <div id="loadingDiscover" class="loadingContainer">
+                <h3>Loading Discover..</h3>
+                <svg version="1.1" width="30px" height="30px" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+                    style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                    <path fill="#fff"
+                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                    </path>
+                </svg>
+            </div>
+            <div class="mainDiscover" style="display: none;" id="mainDiscover">
+                <p>You might know</p>
             </div>
 
         </div>
@@ -1227,13 +1239,7 @@
         </div>
         <p class="friendsCounterUser" id="friendsCount">0 <span>Friends</span></p>
         <h3 id="user-profile-username">Username</h3>
-        <div id="friend-tags" style="margin-top: 10px;flex-direction:row;display:flex"><!--Self-->
-            <vox style="display: flex;
-            flex-direction: row;
-            
-            white-space: nowrap;" id="friendTags">
-
-            </vox>
+        <div id="friendTags"><!--Self-->
         </div>
         <!--<div style="display: none;"  class="user-tags">
             <div class="user-tag">
@@ -1481,7 +1487,7 @@
 
 
 <script src="../scripts/jquery-3.7.0.js"></script>
-<script src="florida.js"></script>
+<!--<script src="florida.js"></script>Merged with epsilon-->
 <script src="epsilon-frontend.js"></script>
 <script src="epsilon-backend.js"></script>
 

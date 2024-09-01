@@ -5810,6 +5810,8 @@ input:autofill {
   width: 100%;
 }
 
+
+
 .social-users .user {
   background-color: #33333331;
   padding: 20px 15px;
@@ -6075,6 +6077,13 @@ input:autofill {
   padding-bottom: 5px;
   border-radius: 10px;
   margin-right: 5px;
+  
+
+  display: inline-flex; /* Allows for flexbox properties inside each tag */
+  align-items: center; /* Vertically centers the content within each tag */
+  margin-top: 5px;
+  line-height: 1; /* Resets line height to avoid discrepancies */
+  vertical-align: middle; /* Ensures baseline alignment of inline-flex elements */
 }
 
 .user-tag {
@@ -6082,7 +6091,7 @@ input:autofill {
   /* Use inline-flex to keep the container inline with other text */
   align-items: center;
   /* Vertically centers the SVG and text */
-  gap: 2px;
+  
   /* Adds space between the SVG and text */
 }
 
@@ -6745,4 +6754,42 @@ input:autofill {
   text-align: center;
   width: 100%;
   height: 100%;
+}
+
+#userTags {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center; /* Ensures vertical alignment within the flex container */
+  padding-top: 0;
+}
+
+#friendTags {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  
+  justify-content: center;
+  align-items: center; /* Ensures vertical alignment within the flex container */
+  padding-top: 0;
+}
+
+.mainDiscover {
+  display: flex;
+  flex-direction: column;
+}
+
+.social-users-discover {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.mainDiscover .center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

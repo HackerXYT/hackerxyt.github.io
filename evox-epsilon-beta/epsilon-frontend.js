@@ -99,6 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+    document.getElementById("downloading-icon").classList.add("active")
+    $("#downloading-icon").fadeIn("fast");
 });
 
 //if (!window.location.href.includes("https")) {
@@ -135,6 +137,16 @@ function clientVerified() {
                 .then(data => {
                     ////setNetworkStatus('on')
                     if (data.includes("Credentials Correct")) {
+                        const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b/;
+                        const serverEmail = data.match(emailRegex);
+
+                        if (serverEmail) {
+                            console.log('Server Email:', serverEmail[0]);
+                            if (serverEmail !== serverEmail[0]) {
+                                console.log("Local Email Doesn't Match Server. Changing..")
+                                localStorage.setItem("t50-email", serverEmail[0])
+                            }
+                        }
                         verificationComplete()
                     } else if (data.includes("IP Not Verified")) {
                         console.log("Account Verified But IP is Unknown")
@@ -1339,21 +1351,56 @@ function openChat(data, location) {
 function showSocial(el) {
     el.style.transform = 'scale(0.96)'
     const socialPopup = document.getElementById("social")
-    socialPopup.classList.add("active")
+    
 
-    setTimeout(function () {
-        //workingElem.style.transform = 'rotate(0deg)'
-        el.style.transform = 'scale(1)'
-        $("#container").fadeOut("fast")
-        document.getElementById("social-back").style.display = 'flex'
+    if(el.innerText.toString().includes("Manage")) {
+        socialPopup.classList.add("active")
         setTimeout(function () {
-            document.getElementById("social-back").style.opacity = '1'
+            //workingElem.style.transform = 'rotate(0deg)'
+            el.style.transform = 'scale(1)'
+            $("#container").fadeOut("fast")
+            document.getElementById("social-back").style.display = 'flex'
+            setTimeout(function () {
+                document.getElementById("social-back").style.opacity = '1'
+            }, 200)
+            document.getElementById("social-discover").style.display = 'none'
+            document.getElementById("social-users").style.display = null
+            document.getElementById("menu-discover").classList.remove("active")
+            loadFriendsSocial()
+            setTimeout(function () {
+                document.getElementById("bottomActionsSocial").classList.add("visible")
+            }, 150)
         }, 200)
-        loadFriendsSocial()
+    } else if(el.innerText.toString().includes("Discover")) {
+        epsilonDiscover()
+        document.getElementById("social-users").style.display = 'none'
+        document.getElementById("social-discover").style.display = null
+        document.getElementById("menu-manage").classList.remove("active")
+            document.getElementById("menu-discover").classList.add("active")
+            const workingElem = document.getElementById("discover-home-svg")
+        workingElem.style.transform = 'rotate(180deg) scale(1.1)'
         setTimeout(function () {
-            document.getElementById("bottomActionsSocial").classList.add("visible")
-        }, 150)
-    }, 200)
+            workingElem.style.transform = 'rotate(0deg) scale(1)'
+        }, 550)
+        setTimeout(function () {
+            socialPopup.classList.add("active")
+            
+            //workingElem.style.transform = 'rotate(0deg)'
+            el.style.transform = 'scale(1)'
+            $("#container").fadeOut("fast")
+            document.getElementById("social-back").style.display = 'flex'
+            setTimeout(function () {
+                document.getElementById("social-back").style.opacity = '1'
+            }, 200)
+            
+
+            
+            setTimeout(function () {
+                document.getElementById("bottomActionsSocial").classList.add("visible")
+            }, 150)
+        }, 200)
+    }
+    
 
 
 }
@@ -1409,76 +1456,30 @@ function goBackMessenger() {
 
 function showRemoteFriend(id) {
     const friend = id.replace('_socialHome', '');
-    const container = document.getElementById("invisibleContainer")
-    container.innerHTML = ''
-    const userDiv = document.createElement('div');
-    userDiv.className = 'user';
-    userDiv.id = `remote-${friend}-div`
-    userDiv.onclick = function () {
-        showFriend(this, 'dup')
-    }
-    const iconDiv = document.createElement('div');
-    iconDiv.className = 'icon';
+    $("#container").fadeOut("fast", function () {
+        showFriend(null, friend)
+    })
+    loadFriendsSocial()
 
-    const img = document.createElement('img');
-    img.className = 'slUserPFP social';
-    img.src = 'searching_users.gif';
-    loadPFPget(friend)
-        .then(profileImage => {
-            img.src = profileImage;;
-        }).catch(error => {
-            //setNetworkStatus('off')
-            console.error(error);
-        });
-    iconDiv.appendChild(img);
-
-    // Create the column div with username and message
-    const columnDiv = document.createElement('div');
-    columnDiv.className = 'column';
-
-    const usernameP = document.createElement('p');
-    usernameP.textContent = friend;
-    columnDiv.appendChild(usernameP);
-
-
-    // Create the show-user-info div with SVG
-    const showUserInfoDiv = document.createElement('div');
-    showUserInfoDiv.className = 'show-user-info';
-    showUserInfoDiv.id = `showUserInfoDiv-${friend}-dup`
-    showUserInfoDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-                <g clip-path="url(#clip0_429_11257)">
-                <path d="M14 7L9 12" stroke="#7d7e87" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M9 12L14 17" stroke="#7d7e87" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </g>
-                <defs>
-                <clipPath>
-                <rect width="24" height="24" fill="white"/>
-                </clipPath>
-                </defs>
-                </svg>`
-
-    // Append all created elements to the userDiv
-    userDiv.appendChild(iconDiv);
-    userDiv.appendChild(columnDiv);
-    userDiv.appendChild(showUserInfoDiv);
-
-    // Append the userDiv to the target container
-    container.appendChild(userDiv);
-    showSocial(document.getElementById("social-manage"))
-    document.getElementById(`remote-${friend}-div`).click()
 
 
 }
 
-function showFriend(element, duplicate) {
+function showFriend(element, remote) {
     document.getElementById("userProfile-back").style.display = 'flex'
     setTimeout(function () {
         document.getElementById("userProfile-back").style.opacity = '1'
     }, 200)
-    const pElement = element.querySelector('.column p');
-    const friend = pElement.textContent;
+    let friend;
+    if (!remote) {
+        const pElement = element.querySelector('.column p');
+        friend = pElement.textContent;
+    } else {
+        friend = remote
+    }
+
     let defaultArrow;
-    if (!duplicate) {
+    if (!remote) {
         defaultArrow = document.getElementById(`showUserInfoDiv-${friend}`).innerHTML
         document.getElementById(`showUserInfoDiv-${friend}`).innerHTML = `<svg version="1.1" width="25px" height="25px" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
@@ -1489,8 +1490,6 @@ function showFriend(element, duplicate) {
                     to="360 25 25" dur="0.6s" repeatCount="indefinite" />
             </path>
         </svg>`
-    } else {
-        defaultArrow = document.getElementById(`showUserInfoDiv-${friend}-dup`).innerHTML
     }
 
     try {
@@ -1632,7 +1631,7 @@ function showFriend(element, duplicate) {
                         }, 200)
                         document.getElementById("bottomActionsSocial").classList.remove("visible")
 
-                        if (!duplicate) {
+                        if (!remote) {
                             setTimeout(() => {
                                 document.getElementById(`showUserInfoDiv-${friend}`).innerHTML = defaultArrow
                             }, 250);
@@ -1692,7 +1691,7 @@ function showFriend(element, duplicate) {
                 }, 200)
                 document.getElementById("bottomActionsSocial").classList.remove("visible")
 
-                if (!duplicate) {
+                if (!remote) {
                     setTimeout(() => {
                         document.getElementById(`showUserInfoDiv-${friend}`).innerHTML = defaultArrow
                     }, 250);
@@ -1706,7 +1705,7 @@ function showFriend(element, duplicate) {
         document.getElementById("user-video-forDisplay").style.display = 'none'
         //Old db < NEW🥲
         document.getElementById("showErrorCanvas").style.display = 'none'
-        fetch(`${srv}/social?username=${friend}&todo=tags`)
+        fetch(`${srv}/social?username=${friend}&todo=tags&v=${Math.floor(Math.random() * 100000)}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2265,14 +2264,14 @@ function enableFlorida() {
                                     'Content-Type': 'application/json'
                                 }
                             })
-                            .then(() => {
-                                loadFlorida()
-                                console.log('Request completed');
-                                warn("Welcome To Florida")
-                            })
-                            .catch(error => {
-                                warn('There was a problem with the fetch operation:', error);
-                            });
+                                .then(() => {
+                                    loadFlorida()
+                                    console.log('Request completed');
+                                    warn("Welcome To Florida")
+                                })
+                                .catch(error => {
+                                    warn('There was a problem with the fetch operation:', error);
+                                });
                         })
                         .catch(error => {
                             console.error('Fetch error:', error);
