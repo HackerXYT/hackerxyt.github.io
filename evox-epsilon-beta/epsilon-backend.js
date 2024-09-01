@@ -89,7 +89,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '6.4.1'
+const appVersion = '6.4.5'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -326,7 +326,7 @@ function profilesLocal(username, img) {
 
         putRequest.onsuccess = function (event) {
             console.log(`Operation [${username}] Profile Picture Succeeded.`);
-           
+
         };
 
         putRequest.onerror = function (event) {
@@ -385,7 +385,7 @@ function canvasLocal(username, imgBlob) {
 
         putRequest.onsuccess = function (event) {
             console.log(`Operation [${identifier}] succeeded.`);
-            if(username === `${localStorage.getItem("t50-username")}`) {
+            if (username === `${localStorage.getItem("t50-username")}`) {
                 $("#downloading-icon").fadeOut("fast", function () {
                     document.getElementById("downloading-icon").classList.remove("active")
                 });
@@ -417,9 +417,12 @@ function canvasLocal(username, imgBlob) {
 
 //UI
 function attachUi(data, bypassRecommendations, onlyCarousel) {
-    if (data === "") {
-        console.log("No Friends")
-        return;
+    if (data.length === 0) {
+        console.log("No Friends on attachUI")
+        //return;
+        if (!bypassRecommendations) {
+            attachRecommendations(data)
+        }
     } else {
         console.log("User has friends", data)
         if (data.length <= 3 && !bypassRecommendations) {
@@ -464,6 +467,8 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
         firstFiveValues.forEach((friend) => {
             appendToCarousel(friend)
         })
+        
+        
     }
 
 
@@ -537,12 +542,13 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
         return;
     }
     //Social Info
+    
     const social = document.getElementById("socialInfo");
     if (bypassRecommendations) {
         return;
     }
     social.innerHTML = ''
-
+    
     data.sort(() => 0.5 - Math.random());
     let random3Values = data.slice(0, 3);
     random3Values.forEach((friend) => {
@@ -628,6 +634,9 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
         socialUserDiv.appendChild(span);
         social.appendChild(socialUserDiv)
     })
+    if (data.length === 1) {
+        document.getElementById("socialInfo").innerHTML = '<vox style="text-align:center;margin-bottom:5px;">No Friends!</vox>'
+    }
 }
 
 function attachRecommendations(friends) {
@@ -1036,6 +1045,9 @@ function reloadFavs() {
 function securelineHome(data, appending) {
     if (data.length === 0) {
         console.log("No Friends");
+        document.getElementById(appending).innerHTML = '<vox style="text-align:center;margin-top:5px;">No Friends!</vox>'
+        const targetDiv = document.getElementById('favorites-recommended');
+        targetDiv.innerHTML =''
         return;
     }
 
@@ -1934,6 +1946,18 @@ function truncateString(str, length) {
 
 //Social
 function loadFriendsSocial() {
+    document.getElementById("social-users").innerHTML = `<div class="loadingContainer">
+                <h3>Loading Friends..</h3>
+                <svg version="1.1" width="30px" height="30px" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
+                    style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                    <path fill="#fff"
+                        d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                        <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                            to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                    </path>
+                </svg>
+            </div>`
 
     fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
         .then(response => {
@@ -1966,6 +1990,9 @@ function loadSocial(data) {
     socialUsersContainer.innerHTML = ''
     if (data.length === 0) {
         console.log("No Friends");
+        socialUsersContainer.innerHTML = `<div class="loadingContainer">
+                <p>It's quiet here..<br>You should add some friends.</p>
+            </div>`
         return;
     }
 
@@ -2294,7 +2321,7 @@ function loadProfile(reload, withoutCanvas) {
             var div = document.createElement("div");
             div.className = "user-tag";
             div.appendChild(document.createTextNode('+'));
-//
+            //
             // Append the div to the element with ID "userTags"
             container.appendChild(div);
         })
@@ -2691,6 +2718,8 @@ function addTag() {
 
 //Discover
 function epsilonDiscover() {
+    document.getElementById("mainDiscover").style.display = 'none'
+    document.getElementById("loadingDiscover").style.display = null
     //friends === 0: You are registered to Evox for X months/weeks. Let's add some friends!
 
 
@@ -2698,8 +2727,245 @@ function epsilonDiscover() {
 
 
     //friends > 80%: You are friends with (more than) 50% of Evox's users. Good Job!
-    $("#loadingDiscover").fadeOut("fast",function() {
-        $("#mainDiscover").fadeIn("fast")
-    })
+    const username = localStorage.getItem("t50-username")
+    fetch(`${srv}/social?username=${username}&todo=friends`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(friends => {
+            let spawned = []
+            localStorage.setItem("friends", JSON.stringify(friends)); // Ensure data is stored as a JSON string
+            fetch(`${srv}/social?todo=getDiscoverFeed&username=${username}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data_A => {
+                    const ageBased = data_A.sameAgeCategory
+                    const socialUsersContainer = document.getElementById('ageBased');
+                    socialUsersContainer.innerHTML = ''
+                    if (ageBased === 'none') {
+                        console.log("No Age");
+                    } else {
+                        console.log(ageBased)
+                        ageBased.forEach(friend => {
+                            if (friends.includes(friend)) {
+                                return;
+                            }
+                            spawned.push(friend)
+                            const userDiv = document.createElement('div');
+                            userDiv.className = 'user';
+                            userDiv.onclick = function () {
+                                showFriend(this)
+                            }
+                            const iconDiv = document.createElement('div');
+                            iconDiv.className = 'icon';
     
+                            const img = document.createElement('img');
+                            img.className = 'slUserPFP social';
+                            img.src = 'searching_users.gif';
+                            loadPFPget(friend)
+                                .then(profileImage => {
+                                    img.src = profileImage;;
+                                }).catch(error => {
+                                    //setNetworkStatus('off')
+                                    console.error(error);
+                                });
+                            iconDiv.appendChild(img);
+    
+                            // Create the column div with username and message
+                            const columnDiv = document.createElement('div');
+                            columnDiv.className = 'column';
+    
+                            const usernameP = document.createElement('p');
+                            usernameP.textContent = friend;
+                            columnDiv.appendChild(usernameP);
+    
+    
+                            // Create the show-user-info div with SVG
+                            const showUserInfoDiv = document.createElement('div');
+                            showUserInfoDiv.className = 'show-user-info';
+                            showUserInfoDiv.id = `showUserInfoDiv-${friend}`
+                            showUserInfoDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+                        <g clip-path="url(#clip0_429_11257)">
+                        <path d="M14 7L9 12" stroke="#7d7e87" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 12L14 17" stroke="#7d7e87" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </g>
+                        <defs>
+                        <clipPath>
+                        <rect width="24" height="24" fill="white"/>
+                        </clipPath>
+                        </defs>
+                        </svg>`
+    
+                            // Append all created elements to the userDiv
+                            userDiv.appendChild(iconDiv);
+                            userDiv.appendChild(columnDiv);
+                            userDiv.appendChild(showUserInfoDiv);
+    
+                            // Append the userDiv to the target container
+                            socialUsersContainer.appendChild(userDiv);
+                        })
+                    }
+                    
+
+                    if (spawned.length === 0) {
+                        console.log("Length is 0!")
+                        document.getElementById("ageBasedDiv").style.display = 'none'
+                        $("#percentage").fadeIn("fast")
+                    }
+
+
+                    fetch(`${srv}/accounts?method=getAllEvoxUsers`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(allFriends => {
+                            const friendsLength = friends.length 
+                            const evoxUsersLength = allFriends.length - 1
+                            const percentage = parseInt((100*friendsLength)/evoxUsersLength)
+                            console.log("User is friends with", percentage, "% of evox users")
+                            if(percentage >= 50) {
+                                document.getElementById("percentageFriends").innerText = 'over 50%'
+                            }
+                            if(percentage >= 75) {
+                                document.getElementById("percentageFriends").innerText = 'over 75%'
+                            }
+                            if(percentage >= 80) {
+                                document.getElementById("percentageFriends").innerText = 'over 80%'
+                            }
+                            if(percentage >= 90) {
+                                document.getElementById("percentageFriends").innerText = 'over 90%'
+                            }
+                            if(percentage <= 40) {
+                                document.getElementById("percentage").style.display = 'none'
+                                if(friendsLength === 1) {
+                                    document.getElementById("howmanypeople").innerText = '1 person'
+                                    $("#onlySomeFriends").fadeIn("fast")
+                                } else if (friendsLength === 0) {
+                                    $("#noFriends").fadeIn("fast")
+                                } else {
+                                    document.getElementById("howmanypeople").innerText = `${friendsLength} people`
+                                    $("#onlySomeFriends").fadeIn("fast")
+                                }
+                            }
+                            let friends_withUser = friends
+                            friends_withUser.push(username)
+                            const excludedValues = friends;
+                            // Filter out the excluded values
+                            const filteredFriends = allFriends.filter(friend => !excludedValues.includes(friend));
+                            // Shuffle the filtered array randomly
+                            //const shuffled = filteredFriends.sort(() => 0.5 - Math.random());
+                            // Get the first 3 elements from the shuffled array
+                            //const selectedValues = shuffled.slice(0, 3);
+                            const selectedValues = filteredFriends
+                            const socialUsersContainer = document.getElementById('otherBased');
+                            socialUsersContainer.innerHTML = ''
+
+                            selectedValues.forEach(friend => {
+                                if (friends.includes(friend)) {
+                                    return;
+                                }
+                                console.log("Checking", friend)
+                                const array = spawned;
+
+                                // Convert the array to a text string
+                                const text = array.join(', '); // You can choose any separator you like
+
+                                // Output the result
+                                console.log(text);
+                                console.log(spawned)
+                                if (spawned.includes(friend)) {
+                                    console.log("Spawned includes the friend!")
+                                    return;
+                                }
+                                const userDiv = document.createElement('div');
+                                userDiv.className = 'user';
+                                userDiv.onclick = function () {
+                                    showFriend(this, null, 'notFriends!')
+                                }
+                                const iconDiv = document.createElement('div');
+                                iconDiv.className = 'icon';
+
+                                const img = document.createElement('img');
+                                img.className = 'slUserPFP social';
+                                img.src = 'searching_users.gif';
+                                loadPFPget(friend)
+                                    .then(profileImage => {
+                                        img.src = profileImage;;
+                                    }).catch(error => {
+                                        //setNetworkStatus('off')
+                                        console.error(error);
+                                    });
+                                iconDiv.appendChild(img);
+
+                                // Create the column div with username and message
+                                const columnDiv = document.createElement('div');
+                                columnDiv.className = 'column';
+
+                                const usernameP = document.createElement('p');
+                                usernameP.textContent = friend;
+                                columnDiv.appendChild(usernameP);
+
+
+                                // Create the show-user-info div with SVG
+                                const showUserInfoDiv = document.createElement('div');
+                                showUserInfoDiv.className = 'show-user-info';
+                                showUserInfoDiv.id = `showUserInfoDiv-${friend}`
+                                showUserInfoDiv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+                            <g clip-path="url(#clip0_429_11257)">
+                            <path d="M14 7L9 12" stroke="#7d7e87" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9 12L14 17" stroke="#7d7e87" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </g>
+                            <defs>
+                            <clipPath>
+                            <rect width="24" height="24" fill="white"/>
+                            </clipPath>
+                            </defs>
+                            </svg>`
+
+                                // Append all created elements to the userDiv
+                                userDiv.appendChild(iconDiv);
+                                userDiv.appendChild(columnDiv);
+                                userDiv.appendChild(showUserInfoDiv);
+
+                                // Append the userDiv to the target container
+                                socialUsersContainer.appendChild(userDiv);
+                            })
+
+                            $("#loadingDiscover").fadeOut("fast", function () {
+                                $("#mainDiscover").fadeIn("fast")
+                            })
+
+
+                        }).catch(error => {
+                            console.error('attachRecommendations error:', error);
+                        })
+                }).catch(error => {
+                    document.getElementById("user-cryptox").innerText = 'You are offline'
+                    console.log('userFriends failed to load:', error)
+                })
+
+
+
+
+
+        })
+        .catch(error => {
+
+            console.error('epsilonDiscover Failed!', error);
+        });
+
+
+
+
+
 }

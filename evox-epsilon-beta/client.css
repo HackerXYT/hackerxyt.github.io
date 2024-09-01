@@ -18,6 +18,11 @@ html {
   touch-action: manipulation;
   /* For modern browsers */
   -webkit-tap-highlight-color: transparent;
+  overflow: -moz-scrollbars-none; /* For Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 #onesignal-bell-container {
@@ -6678,6 +6683,10 @@ input:autofill {
   -webkit-backdrop-filter: blur(25px);
 }
 
+.addFriend {
+  position: absolute;
+  bottom: 20px;
+}
 .bottomButtons {
   margin-top: 10px;
   width: 90%;
@@ -6792,4 +6801,8 @@ input:autofill {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }

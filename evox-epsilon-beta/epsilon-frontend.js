@@ -1465,7 +1465,7 @@ function showRemoteFriend(id) {
 
 }
 
-function showFriend(element, remote) {
+function showFriend(element, remote, notFriends) {
     document.getElementById("userProfile-back").style.display = 'flex'
     setTimeout(function () {
         document.getElementById("userProfile-back").style.opacity = '1'
@@ -1795,6 +1795,10 @@ function showFriend(element, remote) {
 
 
             });
+            if(notFriends) {
+                $("#addFriend").fadeIn("fast")
+                sessionStorage.setItem("addFriendItem", friend)
+            }
         //fetch(`${srv}/profiles?name=${friend}&authorize=cover`)
         //    .then(response => {
         //        if (!response.ok) {
@@ -1881,7 +1885,16 @@ function showFriend(element, remote) {
 
 }
 
+function addFriend(el) {
+    el.innerHTML = "Sorry, Beta Doesn't Support That Yet."
+    setTimeout(function() {
+        el.innerHTML = "Add Friend"
+    }, 6000)
+}
+
 function hideUserProfile() {
+    $("#addFriend").fadeOut("fast")
+    sessionStorage.removeItem("addFriendItem")
     //$("#bggradient").fadeIn("slow")
     loadBackground()
     document.getElementById("userProfile-back").style.opacity = '0'
@@ -1909,6 +1922,10 @@ function clickNanimate(part) {
         }, 150)
         menu_discover.classList.remove("active")
         menu_manage.classList.add("active")
+        $("#social-discover").fadeOut("fast",function() {
+            $("#social-users").fadeIn("fast")
+        })
+        loadFriendsSocial()
     } else if (part === 'discover') {
         const workingElem = document.getElementById("discover-svg")
         workingElem.style.transform = 'rotate(180deg) scale(1.2)'
@@ -1917,6 +1934,10 @@ function clickNanimate(part) {
         }, 250)
         menu_discover.classList.add("active")
         menu_manage.classList.remove("active")
+        $("#social-users").fadeOut("fast",function() {
+            $("#social-discover").fadeIn("fast")
+        })
+        epsilonDiscover()
     }
 }
 

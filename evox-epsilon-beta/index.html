@@ -879,7 +879,7 @@
         </div>
         <div id="social-discover" style="display: none;" class="social-users-discover">
             <div id="loadingDiscover" class="loadingContainer">
-                <h3>Loading Discover..</h3>
+                <h3>Uncovering Evox..</h3>
                 <svg version="1.1" width="30px" height="30px" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50"
                     style="enable-background:new 0 0 50 50;" xml:space="preserve">
@@ -891,7 +891,32 @@
                 </svg>
             </div>
             <div class="mainDiscover" style="display: none;" id="mainDiscover">
-                <p>You might know</p>
+                <div id="ageBasedNotif" style="display: none;text-align: center;">
+                    <p>You've added all users in your age group.<br>Great job!</p>
+                </div>
+                <div id="percentage" style="display: none;text-align: center;">
+                    <p>🎖️<br>You are friends with <vox id="percentageFriends">over 0% 🤯</vox> of Evox users!<br>Great job!</p>
+                </div>
+                <div id="noFriends" style="display: none;text-align: center;">
+                    <p>Let's add some friends!?</p>
+                </div>
+                <div id="onlySomeFriends" style="display: none;text-align: center;">
+                    <p>🤯<br>You are friends with only <vox id="howmanypeople">2 people</vox>!<br>Let's add some friends!?</p>
+                </div>
+                <div id="ageBasedDiv">
+                    <p>You might know</p>
+                    <div class="social-users" id="ageBased" style="margin-top: 5px;">
+    
+                    </div>
+                </div>
+                
+                <div id="otherBasedDiv">
+                    <p>Other users</p>
+                    <div class="social-users" id="otherBased" style="margin-top: 5px;">
+    
+                    </div>
+                </div>
+                
             </div>
 
         </div>
@@ -1289,6 +1314,9 @@
                 <p>Verified</p>
                 <span>Yes</span>
             </div>
+        </div>
+        <div class="profileOptions addFriend" id="addFriend" onclick="addFriend(this)" style="display: none;">
+            Add Friend
         </div>
 
     </div>
