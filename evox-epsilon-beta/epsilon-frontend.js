@@ -101,6 +101,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.getElementById("downloading-icon").classList.add("active")
     $("#downloading-icon").fadeIn("fast");
+
+    const soundsStatus = localStorage.getItem("epsilonSounds")
+    if(soundsStatus === 'false') {
+        document.getElementById("sounds-status").innerText = 'Off'
+    } else if(!soundsStatus || soundsStatus === 'true') {
+        document.getElementById("sounds-status").innerText = 'On'
+    }
 });
 
 //if (!window.location.href.includes("https")) {
@@ -2725,3 +2732,15 @@ function animateM(e) {
 //        document.body.classList.remove('no-scroll');
 //    }
 //});
+
+function toogleSounds() {
+    play('confirm')
+    const soundsStatus = localStorage.getItem("epsilonSounds")
+    if(soundsStatus === 'false') {
+        localStorage.setItem("epsilonSounds", 'true')
+        document.getElementById("sounds-status").innerText = 'On'
+    } else if(!soundsStatus || soundsStatus === 'true') {
+        localStorage.setItem("epsilonSounds", 'false')
+        document.getElementById("sounds-status").innerText = 'Off'
+    }
+}

@@ -98,7 +98,11 @@ var sounds = {
     closeSettings: new Howl({
         src: ['./sounds/closeSettings.mp3'],
         loop: false
-    })
+    }),
+    confirm: new Howl({
+        src: ['./sounds/confirm.mp3'],
+        loop: false
+    }),
 };
 
 function play(soundName) {
@@ -154,7 +158,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '6.4.5'
+const appVersion = '6.5.0'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
