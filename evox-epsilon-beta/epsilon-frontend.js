@@ -185,6 +185,21 @@ function clientVerified() {
 
                     console.error('Server Connection Failed!', error)
                 })
+            //Check for any newSentRequests Updates
+            fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(sent_req => {
+                    if (sent_req !== "None") {
+                        localStorage.setItem(`${localStorage.getItem("t50-username")}-sentRequests`, sent_req)
+                    }
+                }).catch(error => {
+                    console.error(error);
+                });
         } else {
             console.log("New User.")
             let isIpLoginVerified = false;
@@ -1140,6 +1155,7 @@ function verificationComplete() {
 
 
 function hideChats() {
+    play('rocket_push')
 
     const securelinePopup = document.querySelector('#secureline');
     removeScrollListener(securelinePopup)
@@ -1188,10 +1204,12 @@ function hideChats() {
         });
 }
 function showChats() {
+    
     loadSecurelineHome()
     const animate = document.getElementById("rocketIcon")
     animate.style.transform = 'rotate(45deg)'
     setTimeout(function () {
+        play('rocket')
         const oldHtml = animate.innerHTML
         animate.innerHTML = `<path fill-rule="evenodd" clip-rule="evenodd" d="M15.5023 14.3674L20.5319 9.35289C21.2563 8.63072 21.6185 8.26963 21.8092 7.81046C22 7.3513 22 6.84065 22 5.81937V5.33146C22 3.76099 22 2.97576 21.5106 2.48788C21.0213 2 20.2337 2 18.6585 2H18.1691C17.1447 2 16.6325 2 16.172 2.19019C15.7114 2.38039 15.3493 2.74147 14.6249 3.46364L9.59522 8.47817C8.74882 9.32202 8.224 9.84526 8.02078 10.3506C7.95657 10.5103 7.92446 10.6682 7.92446 10.8339C7.92446 11.5238 8.48138 12.0791 9.59522 13.1896L9.74492 13.3388L11.4985 11.5591C11.7486 11.3053 12.1571 11.3022 12.4109 11.5523C12.6647 11.8024 12.6678 12.2109 12.4177 12.4647L10.6587 14.2499L10.7766 14.3674C11.8905 15.4779 12.4474 16.0331 13.1394 16.0331C13.2924 16.0331 13.4387 16.006 13.5858 15.9518C14.1048 15.7607 14.6345 15.2325 15.5023 14.3674ZM17.8652 8.47854C17.2127 9.12904 16.1548 9.12904 15.5024 8.47854C14.8499 7.82803 14.8499 6.77335 15.5024 6.12284C16.1548 5.47233 17.2127 5.47233 17.8652 6.12284C18.5177 6.77335 18.5177 7.82803 17.8652 8.47854Z" fill="#dbdde3"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M2.77409 12.4814C3.07033 12.778 3.07004 13.2586 2.77343 13.5548L2.61779 13.7103C2.48483 13.8431 2.48483 14.058 2.61779 14.1908C2.75125 14.3241 2.96801 14.3241 3.10147 14.1908L4.8136 12.4807C5.1102 12.1845 5.59079 12.1848 5.88704 12.4814C6.18328 12.778 6.18298 13.2586 5.88638 13.5548L4.17426 15.2648C3.4481 15.9901 2.27116 15.9901 1.545 15.2648C0.818334 14.5391 0.818333 13.362 1.545 12.6362L1.70065 12.4807C1.99725 12.1845 2.47784 12.1848 2.77409 12.4814ZM7.29719 16.696C7.5903 16.9957 7.58495 17.4762 7.28525 17.7693L5.55508 19.4614C5.25538 19.7545 4.77481 19.7491 4.48171 19.4494C4.1886 19.1497 4.19395 18.6692 4.49365 18.3761L6.22382 16.684C6.52352 16.3909 7.00409 16.3963 7.29719 16.696ZM11.4811 18.118C11.7774 18.4146 11.7771 18.8952 11.4805 19.1915L9.76834 20.9015C9.63539 21.0343 9.63539 21.2492 9.76834 21.382C9.9018 21.5153 10.1186 21.5153 10.252 21.382L10.4077 21.2265C10.7043 20.9303 11.1849 20.9306 11.4811 21.2272C11.7774 21.5238 11.7771 22.0044 11.4805 22.3006L11.3248 22.4561C10.5987 23.1813 9.42171 23.1813 8.69556 22.4561C7.96889 21.7303 7.96889 20.5532 8.69556 19.8274L10.4077 18.1174C10.7043 17.8211 11.1849 17.8214 11.4811 18.118Z" fill="#dbdde3"/>
@@ -1205,11 +1223,13 @@ function showChats() {
 </g>`
         animate.style.marginLeft = "250px"
         setTimeout(function () {
+            
             const securelinePopup = document.querySelector('#secureline');
             addScrollListener(securelinePopup)
             const popup = document.getElementById("secureline")
             popup.classList.add("active")
             document.getElementById("secureline-back").style.display = 'flex'
+            
             setTimeout(function () {
                 document.getElementById("secureline-back").style.opacity = '1'
                 animate.innerHTML = oldHtml
@@ -1283,6 +1303,7 @@ function add_favorite(event, element, customColor, customDimen) {
 }
 
 function openChat(data, location) {
+    play('rocket')
     document.getElementById("bottomActionsSecureline").classList.add("hidden")
     console.log('Chat opened');
 
@@ -1349,11 +1370,12 @@ function openChat(data, location) {
 }
 
 function showSocial(el) {
+    play('openPanel')
     el.style.transform = 'scale(0.96)'
     const socialPopup = document.getElementById("social")
-    
 
-    if(el.innerText.toString().includes("Manage")) {
+
+    if (el.innerText.toString().includes("Manage")) {
         socialPopup.classList.add("active")
         setTimeout(function () {
             //workingElem.style.transform = 'rotate(0deg)'
@@ -1371,20 +1393,20 @@ function showSocial(el) {
                 document.getElementById("bottomActionsSocial").classList.add("visible")
             }, 150)
         }, 200)
-    } else if(el.innerText.toString().includes("Discover")) {
+    } else if (el.innerText.toString().includes("Discover")) {
         epsilonDiscover()
         document.getElementById("social-users").style.display = 'none'
         document.getElementById("social-discover").style.display = null
         document.getElementById("menu-manage").classList.remove("active")
-            document.getElementById("menu-discover").classList.add("active")
-            const workingElem = document.getElementById("discover-home-svg")
+        document.getElementById("menu-discover").classList.add("active")
+        const workingElem = document.getElementById("discover-home-svg")
         workingElem.style.transform = 'rotate(180deg) scale(1.1)'
         setTimeout(function () {
             workingElem.style.transform = 'rotate(0deg) scale(1)'
         }, 550)
         setTimeout(function () {
             socialPopup.classList.add("active")
-            
+
             //workingElem.style.transform = 'rotate(0deg)'
             el.style.transform = 'scale(1)'
             $("#container").fadeOut("fast")
@@ -1392,20 +1414,21 @@ function showSocial(el) {
             setTimeout(function () {
                 document.getElementById("social-back").style.opacity = '1'
             }, 200)
-            
 
-            
+
+
             setTimeout(function () {
                 document.getElementById("bottomActionsSocial").classList.add("visible")
             }, 150)
         }, 200)
     }
-    
+
 
 
 }
 
 function hideSocial() {
+    play('closePanel')
     const socialPopup = document.getElementById("social")
     socialPopup.classList.remove("active")
     document.getElementById("social-back").style.opacity = '0'
@@ -1429,6 +1452,7 @@ window.addEventListener('load', setFullHeight);
 window.addEventListener('resize', setFullHeight);
 
 function goBackMessenger() {
+    play("closePanel")
     clearInterval(activeChatInterval)
     activeChatInterval = null;
     sessionStorage.removeItem("current_sline")
@@ -1454,10 +1478,16 @@ function goBackMessenger() {
     }, 200)
 }
 
-function showRemoteFriend(id) {
+function showRemoteFriend(id, notFriend) {
     const friend = id.replace('_socialHome', '');
     $("#container").fadeOut("fast", function () {
-        showFriend(null, friend)
+        
+        if (notFriend) {
+            showFriend(null, friend, true)
+        } else {
+            showFriend(null, friend)
+        }
+
     })
     loadFriendsSocial()
 
@@ -1515,7 +1545,7 @@ function showFriend(element, remote, notFriends) {
                 if (isCryptoxed === 'Enabled') {
                     document.getElementById("user-cryptox").innerText = 'Enabled'
                 } else if (isCryptoxed === 'Disabled') {
-                    document.getElementById("user-cryptox").innerText = 'Disabled'
+                    document.getElementById("user-cryptox").innerText = 'Unset'
                 } else {
                     document.getElementById("user-cryptox").innerText = '🤯'
                 }
@@ -1622,7 +1652,9 @@ function showFriend(element, remote, notFriends) {
                         }
 
                         document.getElementById("user-profile").classList.add('active')
-
+                        if(remote) {
+                            play('openPanel')
+                        }
                         const socialPopup = document.getElementById("social")
                         socialPopup.classList.remove("active")
                         document.getElementById("social-back").style.opacity = '0'
@@ -1795,10 +1827,39 @@ function showFriend(element, remote, notFriends) {
 
 
             });
-            if(notFriends) {
+        if (notFriends) {
+            try {
+                if (localStorage.getItem(`${localStorage.getItem("t50-username")}-sentRequests`).includes(friend)) {
+                    $("#requestSent").fadeIn("fast")
+                } else {
+                    $("#addFriend").fadeIn("fast")
+                    sessionStorage.setItem("addFriendItem", friend)
+                }
+            } catch (error) {
                 $("#addFriend").fadeIn("fast")
                 sessionStorage.setItem("addFriendItem", friend)
             }
+            fetch(`${srv}/social?username=${friend}&todo=sentRequests`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(sent_req => {
+                    if (sent_req !== "None") {
+                        if (sent_req.includes(localStorage.getItem('t50-username'))) {
+                            console.log("Request is sent by this user. 200")
+                            document.getElementById("addFriend").style.display = 'none'
+                            document.getElementById("requestSent").style.display = 'none'
+                            $("#acceptRequest").fadeIn("fast")
+                        }
+                    }
+                }).catch(error => {
+                    console.error(error);
+                });
+
+        }
         //fetch(`${srv}/profiles?name=${friend}&authorize=cover`)
         //    .then(response => {
         //        if (!response.ok) {
@@ -1886,14 +1947,89 @@ function showFriend(element, remote, notFriends) {
 }
 
 function addFriend(el) {
-    el.innerHTML = "Sorry, Beta Doesn't Support That Yet."
-    setTimeout(function() {
-        el.innerHTML = "Add Friend"
-    }, 6000)
+    el.innerHTML = `<svg version="1.1" width="25px" height="25px"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                        <path fill="#fff"
+                            d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                            <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                                to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                        </path>
+                    </svg>`
+    const toAdd = sessionStorage.getItem("addFriendItem")
+    fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=friendRequest&who=${toAdd}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            if (data === "Success") {
+                el.innerHTML = `Request Sent.`
+                fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(sent_req => {
+                        if (sent_req !== "None") {
+                            localStorage.setItem(`${localStorage.getItem("t50-username")}-sentRequests`, sent_req)
+                            if (sent_req.includes(toAdd)) {
+                                console.log("Change confirmed. 200")
+                            }
+                        }
+                    }).catch(error => {
+                        console.error(error);
+                    });
+            } else {
+                el.innerHTML = `An error occured`
+            }
+        }).catch(error => {
+            el.innerHTML = `Request failed.`
+            console.error(error);
+        });
+}
+
+function acceptFriend(el) {
+    el.innerHTML = `<svg version="1.1" width="25px" height="25px"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                        <path fill="#fff"
+                            d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                            <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                                to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                        </path>
+                    </svg>`
+    const toAdd = sessionStorage.getItem("addFriendItem")
+    console.log("Accepting Request From", toAdd)
+    fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&todo=acceptRequest&who=${toAdd}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log(data)
+            $("#acceptRequest").fadeOut("fast", function () {
+                el.innerHTML = 'Accept Request'
+            })
+
+
+        }).catch(error => {
+            console.error(error)
+        })
+
 }
 
 function hideUserProfile() {
+    play("closePanel")
     $("#addFriend").fadeOut("fast")
+    $("#requestSent").fadeOut("fast")
+    $("#acceptRequest").fadeOut("fast")
     sessionStorage.removeItem("addFriendItem")
     //$("#bggradient").fadeIn("slow")
     loadBackground()
@@ -1922,7 +2058,7 @@ function clickNanimate(part) {
         }, 150)
         menu_discover.classList.remove("active")
         menu_manage.classList.add("active")
-        $("#social-discover").fadeOut("fast",function() {
+        $("#social-discover").fadeOut("fast", function () {
             $("#social-users").fadeIn("fast")
         })
         loadFriendsSocial()
@@ -1934,7 +2070,7 @@ function clickNanimate(part) {
         }, 250)
         menu_discover.classList.add("active")
         menu_manage.classList.remove("active")
-        $("#social-users").fadeOut("fast",function() {
+        $("#social-users").fadeOut("fast", function () {
             $("#social-discover").fadeIn("fast")
         })
         epsilonDiscover()
@@ -2043,6 +2179,7 @@ function backgroundSwitch(colorScheme) { //purple, blue, default
 }
 
 function settingsOpen(panel) {
+    play('openSettings')
     //panel -> security or epsilon
 
     //hiding previous may shown divs
@@ -2104,7 +2241,16 @@ function settingsOpen(panel) {
     }
 }
 
+let hasSoundPlayed = false
 function hideSettings() {
+    if(!hasSoundPlayed) {
+        play('closeSettings')
+        hasSoundPlayed = true
+        setTimeout(function() {
+            hasSoundPlayed = false
+        }, 1000)
+    }
+   
     document.getElementById("gatewayExploreScroll").style.transform = ''
     document.getElementById("gatewayExploreScroll").style.filter = ''
     const popup = document.getElementById("settings")
@@ -2403,6 +2549,7 @@ function enableTab(element) {
         }, 500)
     } else if (element.innerHTML.includes("Explore") && !element.classList.contains("active")) {
         isProfileTabActive = false
+        play('closeProfile')
         if (wasGatewayActionsActive === true) {
             document.getElementById("gatewayActions").classList.remove("back") //gia tora axristo
             wasGatewayActionsActive = false
@@ -2436,6 +2583,7 @@ function enableTab(element) {
         document.getElementById("gatewayActions").classList.add("back")
         activeTab = 'Profile'
         element.classList.add("active")
+        play("openProfile")
         document.getElementById("gateway").style.opacity = '0'
         setTimeout(function () {
             document.getElementById("gateway").style.display = 'none'
@@ -2461,7 +2609,7 @@ function showFriendsFromProfile() {
 }
 
 function editBirthdate() { //from profile
-
+    play('clickProfile')
 
     if (!document.getElementById("birthdatePopup").classList.contains("active")) {
         const fullDate = document.getElementById("self-birthdate").innerText
@@ -2474,6 +2622,7 @@ function editBirthdate() { //from profile
         document.getElementById("moreBirthInfo").innerText = fullDateText
         document.getElementById("nextBirthday").innerHTML = `You will be ${Number(years) + 1} years old in ${getDaysUntilNextBirthday(fullDate)} days! 🎂`
         document.getElementById("birthdatePopup").classList.add("active")
+        
     } else {
         document.getElementById("birthdatePopup").classList.remove("active")
     }

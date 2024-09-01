@@ -643,7 +643,7 @@
                 <source src="" id="user-video-self" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <div class="slUser">
+            <div onclick="changeSelfPFP()" class="slUser">
                 <img id="self-profile-picture" class="slUserPFP profile" src="evox-logo-apple.png">
             </div>
             <h3 id="self-profile-username">Username</h3>
@@ -669,7 +669,7 @@
                     <p>Age</p>
                     <span id="self-age">Loading</span>
                 </div>
-                <div class="infoBlock">
+                <div onclick="enableCryptox()" class="infoBlock">
                     <p>Cryptox</p>
                     <span id="self-cryptox">No</span>
                 </div>
@@ -1256,7 +1256,7 @@
         <p id="showErrorCanvas" class="loadingIndicatorProfile">Canvas Failed</p>
         <video autoplay muted loop playsinline id="user-video-forDisplay"
             style="opacity:0.5;position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;overflow: hidden;">
-            <source src="5512609-hd_1080_1920_25fps.mp4" id="user-video" type="video/mp4">
+            <source src="" id="user-video" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         <div class="slUser">
@@ -1317,6 +1317,12 @@
         </div>
         <div class="profileOptions addFriend" id="addFriend" onclick="addFriend(this)" style="display: none;">
             Add Friend
+        </div>
+        <div class="profileOptions addFriend" id="requestSent" style="display: none;">
+            Request Sent
+        </div>
+        <div class="profileOptions addFriend" onclick="acceptFriend(this)" id="acceptRequest" style="display: none;">
+            Accept Request
         </div>
 
     </div>

@@ -1,6 +1,7 @@
 sessionStorage.removeItem("current_sline")
 sessionStorage.removeItem("lastChatInter")
 sessionStorage.removeItem("lastChatMessages")
+sessionStorage.removeItem("addFriendItem")
 //IP Auth
 let ip = "error";
 document.addEventListener("DOMContentLoaded", function () {
@@ -48,6 +49,70 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
+
+var sounds = {
+    ambient: new Howl({
+        src: ['./sounds/ambient.mp3'],
+        loop: true
+    }),
+    openPanel: new Howl({
+        src: ['./sounds/openPanel.mp3'],
+        loop: false
+    }),
+    closePanel: new Howl({
+        src: ['./sounds/closePanel.mp3'],
+        loop: false
+    }),
+    rocket: new Howl({
+        src: ['./sounds/pop.mp3'],
+        loop: false
+    }),
+    rocket_push: new Howl({
+        src: ['./sounds/push.mp3'],
+        loop: false
+    }),
+    openProfile: new Howl({
+        src: ['./sounds/openProfile.mp3'],
+        loop: false
+    }),
+    closeProfile: new Howl({
+        src: ['./sounds/closeProfile.mp3'],
+        loop: false
+    }),
+    clickProfile: new Howl({
+        src: ['./sounds/clickProfile.mp3'],
+        loop: false
+    }),
+    submitProfile: new Howl({
+        src: ['./sounds/submitProfile.mp3'],
+        loop: false
+    }),
+    completeProfile: new Howl({
+        src: ['./sounds/completeProfile.mp3'],
+        loop: false
+    }),
+    openSettings: new Howl({
+        src: ['./sounds/openSettings.mp3'],
+        loop: false
+    }),
+    closeSettings: new Howl({
+        src: ['./sounds/closeSettings.mp3'],
+        loop: false
+    })
+};
+
+function play(soundName) {
+    if (sounds[soundName]) {  // Check if the sound exists in the map
+        try {
+            sounds[soundName].play();  // Play the sound
+        } catch (error) {
+            console.warn("Error playing sound.", error);
+        }
+    } else {
+        console.warn("Sound not found:", soundName);
+    }
+}
+
 
 function checkForUpdates() {
     fetch(`https://evoxs.xyz/evox-epsilon-beta/epsilon-backend.js?v=${Math.floor(Math.random() * 100000)}`)
@@ -184,24 +249,37 @@ function loadPFPget(username, isCanvas) {
                     if (isCanvas) {
                         return;
                     }
-                    return;
-                    fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+                    fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&randomNodeUser=${username}&pfp=getRandomNode`)
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error(`HTTP error! Status: ${response.status}`);
                             }
                             return response.text();
                         })
-                        .then(profileimage => {
-                            //setNetworkStatus('on')
-                            if (profileimage.indexOf("base64") === -1) {
-                                profileimage = "data:image/jpeg;base64," + profileimage;
-                            }
-                            if (profileimage !== data.data) {
-                                console.log(`Found new picture for user ${username}`)
-                                profilesLocal(username, profileimage);
+                        .then(ranChar => {
+                            if (data.data.includes(ranChar)) {
+                                console.log("No refresh needed for user", username)
                             } else {
-                                console.log(`Client has latest picture for ${username}`)
+                                console.log(`Match not found in ${username}'s data. Refreshing`)
+                                fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${username}`)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error(`HTTP error! Status: ${response.status}`);
+                                        }
+                                        return response.text();
+                                    })
+                                    .then(profileimage => {
+                                        //setNetworkStatus('on')
+                                        if (profileimage.indexOf("base64") === -1) {
+                                            profileimage = "data:image/jpeg;base64," + profileimage;
+                                        }
+                                        profilesLocal(username, profileimage);
+                                    })
+                                    .catch(error => {
+                                        //setNetworkStatus('off')
+                                        console.error(error);
+                                        reject(error);
+                                    });
                             }
 
                         })
@@ -467,8 +545,8 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
         firstFiveValues.forEach((friend) => {
             appendToCarousel(friend)
         })
-        
-        
+
+
     }
 
 
@@ -505,13 +583,25 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
                 }
             }
         } else {
-            slUserDiv.onclick = function () {
-                const json = {
-                    username: friendName,
-                    favorite: false
+            if (bypassRecommendations) {
+                slUserDiv.onclick = function () {
+                    showRemoteFriend(friendName, 'notFriend')
+                    epsilonDiscover()
+                    document.getElementById("social-users").style.display = 'none'
+                    document.getElementById("social-discover").style.display = null
+                    document.getElementById("menu-manage").classList.remove("active")
+                    document.getElementById("menu-discover").classList.add("active")
                 }
-                openChat(json, 'home')
+            } else {
+                slUserDiv.onclick = function () {
+                    const json = {
+                        username: friendName,
+                        favorite: false
+                    }
+                    openChat(json, 'home')
+                }
             }
+
         }
 
         const imgElement = document.createElement("img");
@@ -542,13 +632,13 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
         return;
     }
     //Social Info
-    
+
     const social = document.getElementById("socialInfo");
     if (bypassRecommendations) {
         return;
     }
     social.innerHTML = ''
-    
+
     data.sort(() => 0.5 - Math.random());
     let random3Values = data.slice(0, 3);
     random3Values.forEach((friend) => {
@@ -1047,7 +1137,7 @@ function securelineHome(data, appending) {
         console.log("No Friends");
         document.getElementById(appending).innerHTML = '<vox style="text-align:center;margin-top:5px;">No Friends!</vox>'
         const targetDiv = document.getElementById('favorites-recommended');
-        targetDiv.innerHTML =''
+        targetDiv.innerHTML = ''
         return;
     }
 
@@ -1934,6 +2024,73 @@ function send_message() {
 
 }
 
+function enableCryptox() {
+    play('clickProfile')
+    const cryptoxText = document.getElementById("self-cryptox")
+    cryptoxText.innerHTML = `<svg version="1.1" width="25px" height="25px"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                        <path fill="#fff"
+                            d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                            <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                                to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                        </path>
+                    </svg>`
+    if (cryptoxText.innerText === 'Unset') {
+        fetch(`${srv}/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(cryptoxcheck => {
+                if (cryptoxcheck === "Cryptox Already Enabled" || cryptoxcheck === "Cryptox Enabled") {
+                    console.log("I can proceed!")
+                    localStorage.setItem("isSelfCryptoxed", 'true');
+                    cryptoxText.innerText = 'Enabled';
+
+                } else {
+                    console.error(cryptoxcheck)
+                }
+            }).catch(error => {
+                console.error(error);
+            });
+    } else {
+        fetch(`${srv}/cryptox?method=isCryptoxed&username=${localStorage.getItem("t50-username")}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(isCryptoxed => {
+                if (isCryptoxed === 'Enabled') {
+                    localStorage.setItem("isSelfCryptoxed", 'true');
+                    document.getElementById("self-cryptox").innerText = 'Enabled';
+                } else if (isCryptoxed === 'Disabled') {
+                    localStorage.setItem("isSelfCryptoxed", 'false');
+                    document.getElementById("self-cryptox").innerText = 'Unset';
+                } else {
+                    document.getElementById("self-cryptox").innerText = '🤯';
+                }
+
+            })
+            .catch(error => {
+                const isCryptoxed = localStorage.getItem("isSelfCryptoxed");
+                if (isCryptoxed === 'true') {
+                    document.getElementById("self-cryptox").innerText = 'Enabled';
+                } else if (isCryptoxed === 'false') {
+                    document.getElementById("self-cryptox").innerText = 'Unset';
+                } else {
+                    document.getElementById("self-cryptox").innerText = '🤯';
+                    console.log('self isCryptoxed failed to load [5]:', error);
+                }
+            });
+    }
+
+}
+
 function truncateString(str, length) {
     // Check if the string length is greater than 51 characters
     if (str.length > length) {
@@ -2249,6 +2406,23 @@ function loadProfile(reload, withoutCanvas) {
     if (!withoutCanvas) {
         $("#canvasOption").fadeOut("fast", function () {
             $("#loadingIndicatorSelfCanvas").fadeIn("fast")
+            fetch(`${srv}/canvas/${username}.evox/has`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(canvasStatus => {
+                    if (canvasStatus === "false") {
+                        $("#loadingIndicatorSelfCanvas").fadeOut("fast")
+                    }
+
+                })
+                .catch(error => {
+                    $("#loadingIndicatorSelfCanvas").fadeIn("fast")
+                })
+
         })
     }
 
@@ -2333,7 +2507,7 @@ function loadProfile(reload, withoutCanvas) {
     // Function to handle the canvas status check
     function checkCanvasStatus() {
         if (withoutCanvas) {
-            $("#bggradient").fadeOut("fast");
+            //$("#bggradient").fadeOut("fast");
             document.getElementById("self-video-forDisplay").style.display = '';
             $("#loadingIndicatorSelfCanvas").fadeOut("fast", function () {
                 $("#canvasOption").fadeIn("fast")
@@ -2348,6 +2522,7 @@ function loadProfile(reload, withoutCanvas) {
                 return response.text();
             })
             .then(canvasStatus => {
+                console.log("canvasStatus is", canvasStatus)
                 if (canvasStatus === 'true') {
                     document.getElementById("self-video-forDisplay").style.display = '';
                     const ranN = Math.floor(Math.random() * 100000)
@@ -2381,10 +2556,14 @@ function loadProfile(reload, withoutCanvas) {
                     document.getElementById("self-video-forDisplay").src = '';
                     document.getElementById("self-video-forDisplay").style.display = 'none';
                     $("#loadingIndicatorSelfCanvas").fadeOut("fast")
+                    console.log("abcnu")
+                    $("#canvasOption").fadeIn("fast")
+                    document.getElementById("loadingIndicatorSelfCanvas").style.display = 'none'
                     return Promise.resolve(); // Resolve immediately if no canvas
                 }
             })
             .catch(error => {
+                console.warn("An error occured on has canvas")
                 checkUsernameAndGetData(`${username}_canvas`, function (error, data) {
                     if (error) {
                         console.error('canvas err:', error);
@@ -2540,7 +2719,7 @@ function loadProfile(reload, withoutCanvas) {
                     document.getElementById("self-cryptox").innerText = 'Enabled';
                 } else if (isCryptoxed === 'Disabled') {
                     localStorage.setItem("isSelfCryptoxed", 'false');
-                    document.getElementById("self-cryptox").innerText = 'Disabled';
+                    document.getElementById("self-cryptox").innerText = 'Unset';
                 } else {
                     document.getElementById("self-cryptox").innerText = '🤯';
                 }
@@ -2551,7 +2730,7 @@ function loadProfile(reload, withoutCanvas) {
                 if (isCryptoxed === 'true') {
                     document.getElementById("self-cryptox").innerText = 'Enabled';
                 } else if (isCryptoxed === 'false') {
-                    document.getElementById("self-cryptox").innerText = 'Disabled';
+                    document.getElementById("self-cryptox").innerText = 'Unset';
                 } else {
                     document.getElementById("self-cryptox").innerText = '🤯';
                     console.log('self isCryptoxed failed to load [5]:', error);
@@ -2575,6 +2754,21 @@ function loadProfile(reload, withoutCanvas) {
         ]).then(() => {
             // Code to run after all promises are resolved
             console.log("All data loaded successfully");
+            fetch(`${srv}/canvas/${username}.evox/has`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(canvasStatus => {
+                    if (canvasStatus === 'false') {
+                        document.getElementById("loadingIndicatorSelfCanvas").style.display = 'none'
+                    }
+                })
+                .catch(error => {
+                    console.warn("An error occured on has canvas not recovering.")
+                })
             isProfileLoading = false;
             // Add any additional code that needs to run after all data is loaded here
         }).catch(error => {
@@ -2602,6 +2796,7 @@ function setUserCover() {
                             to="360 25 25" dur="0.6s" repeatCount="indefinite" />
                     </path>
                 </svg>`
+    play("submitProfile")
     if (!file) {
         alert('Please select a file.');
         return;
@@ -2637,6 +2832,7 @@ function setUserCover() {
         })
         .then(data => {
             console.log('Success:', data);
+            play("completeProfile")
             isProfileLoading = false;
             loadProfile('reload')
             document.getElementById("canvasOption").innerHTML = `Edit Canvas`
@@ -2652,6 +2848,7 @@ function setUserCover() {
 }
 
 function showCanvasInput() {
+    play('clickProfile')
     document.getElementById('upload-canvas').click();
 }
 
@@ -2761,11 +2958,11 @@ function epsilonDiscover() {
                             const userDiv = document.createElement('div');
                             userDiv.className = 'user';
                             userDiv.onclick = function () {
-                                showFriend(this)
+                                showFriend(this, null, true)
                             }
                             const iconDiv = document.createElement('div');
                             iconDiv.className = 'icon';
-    
+
                             const img = document.createElement('img');
                             img.className = 'slUserPFP social';
                             img.src = 'searching_users.gif';
@@ -2777,16 +2974,16 @@ function epsilonDiscover() {
                                     console.error(error);
                                 });
                             iconDiv.appendChild(img);
-    
+
                             // Create the column div with username and message
                             const columnDiv = document.createElement('div');
                             columnDiv.className = 'column';
-    
+
                             const usernameP = document.createElement('p');
                             usernameP.textContent = friend;
                             columnDiv.appendChild(usernameP);
-    
-    
+
+
                             // Create the show-user-info div with SVG
                             const showUserInfoDiv = document.createElement('div');
                             showUserInfoDiv.className = 'show-user-info';
@@ -2802,18 +2999,21 @@ function epsilonDiscover() {
                         </clipPath>
                         </defs>
                         </svg>`
-    
+
                             // Append all created elements to the userDiv
                             userDiv.appendChild(iconDiv);
                             userDiv.appendChild(columnDiv);
                             userDiv.appendChild(showUserInfoDiv);
-    
+
                             // Append the userDiv to the target container
                             socialUsersContainer.appendChild(userDiv);
                         })
                     }
-                    
 
+
+                    $("#noFriends").fadeOut("fast")
+                    $("#percentage").fadeOut("fast")
+                    $("#onlySomeFriends").fadeOut("fast")
                     if (spawned.length === 0) {
                         console.log("Length is 0!")
                         document.getElementById("ageBasedDiv").style.display = 'none'
@@ -2829,25 +3029,25 @@ function epsilonDiscover() {
                             return response.json();
                         })
                         .then(allFriends => {
-                            const friendsLength = friends.length 
+                            const friendsLength = friends.length
                             const evoxUsersLength = allFriends.length - 1
-                            const percentage = parseInt((100*friendsLength)/evoxUsersLength)
+                            const percentage = parseInt((100 * friendsLength) / evoxUsersLength)
                             console.log("User is friends with", percentage, "% of evox users")
-                            if(percentage >= 50) {
+                            if (percentage >= 50) {
                                 document.getElementById("percentageFriends").innerText = 'over 50%'
                             }
-                            if(percentage >= 75) {
+                            if (percentage >= 75) {
                                 document.getElementById("percentageFriends").innerText = 'over 75%'
                             }
-                            if(percentage >= 80) {
+                            if (percentage >= 80) {
                                 document.getElementById("percentageFriends").innerText = 'over 80%'
                             }
-                            if(percentage >= 90) {
+                            if (percentage >= 90) {
                                 document.getElementById("percentageFriends").innerText = 'over 90%'
                             }
-                            if(percentage <= 40) {
+                            if (percentage <= 40) {
                                 document.getElementById("percentage").style.display = 'none'
-                                if(friendsLength === 1) {
+                                if (friendsLength === 1) {
                                     document.getElementById("howmanypeople").innerText = '1 person'
                                     $("#onlySomeFriends").fadeIn("fast")
                                 } else if (friendsLength === 0) {
@@ -2953,19 +3153,61 @@ function epsilonDiscover() {
                     document.getElementById("user-cryptox").innerText = 'You are offline'
                     console.log('userFriends failed to load:', error)
                 })
-
-
-
-
-
         })
         .catch(error => {
-
             console.error('epsilonDiscover Failed!', error);
         });
+}
 
+function changeSelfPFP() {
+    document.getElementById('upload-box').click();
+    play('clickProfile')
+}
 
+function handleFileSelect() {
+    const input = document.getElementById('upload-box');
+    const file = input.files[0];
+    play("submitProfile")
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const base64String = e.target.result;
+            // Now you have the base64 representation of the selected image
+            //console.log(base64String);
+            document.getElementById("self-profile-picture").src = "./reloading.gif"
+            fetch(`${srv}/profiles`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: localStorage.getItem("t50-username"),
+                    pfp: base64String
+                })
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    if (data === "done") {
+                        play("completeProfile")
+                        document.getElementById("self-profile-picture").src = base64String
+                        loadPFPget(localStorage.getItem("t50-username"))
+                            .then(profileImage => {
+                                //document.getElementById("self-profile-picture").src = profileImage;
+                            }).catch(error => {
+                                //setNetworkStatus('off')
+                                console.error(error);
+                            });
 
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        };
+        reader.readAsDataURL(file);
+    }
 
-
+    // Reset the input value to allow selecting the same file again
+    input.value = '';
 }
