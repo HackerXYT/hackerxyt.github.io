@@ -106,15 +106,21 @@ var sounds = {
 };
 
 function play(soundName) {
-    if (sounds[soundName]) {  // Check if the sound exists in the map
-        try {
-            sounds[soundName].play();  // Play the sound
-        } catch (error) {
-            console.warn("Error playing sound.", error);
+    const soundsStatus = localStorage.getItem("epsilonSounds")
+    if (soundsStatus === 'true' || !soundsStatus) {
+        if (sounds[soundName]) {  // Check if the sound exists in the map
+            try {
+                sounds[soundName].play();  // Play the sound
+            } catch (error) {
+                console.warn("Error playing sound.", error);
+            }
+        } else {
+            console.warn("Sound not found:", soundName);
         }
     } else {
-        console.warn("Sound not found:", soundName);
+        console.log(`Sounds are disabled. Not playing ${soundName}`)
     }
+
 }
 
 
@@ -158,7 +164,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '6.5.0'
+const appVersion = '6.5.5'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -2463,6 +2469,9 @@ function loadProfile(reload, withoutCanvas) {
             data.forEach((tag) => {
                 var div = document.createElement("div");
                 div.className = "user-tag";
+                div.onclick = function () {
+                    editTag(tag)
+                }
 
                 // Create the SVG element
                 var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -2498,6 +2507,9 @@ function loadProfile(reload, withoutCanvas) {
             const container = document.getElementById("userTags")
             var div = document.createElement("div");
             div.className = "user-tag";
+            div.onclick = function () {
+                addTag()
+            }
             div.appendChild(document.createTextNode('+'));
             //
             // Append the div to the element with ID "userTags"
@@ -2856,65 +2868,197 @@ function showCanvasInput() {
     document.getElementById('upload-canvas').click();
 }
 
-function addTag() {
-    // Display a prompt dialog to the user
-    let userInput = prompt("Please enter a tag:");
+function getRandomTags(tags, count) {
+    const shuffledTags = tags.sort(() => 0.5 - Math.random());
+    return shuffledTags.slice(0, count);
+}
 
-    // Check if the user clicked "Cancel" or entered a value
-    if (userInput === null) {
-        alert("You canceled the input.");
+let selectedTags = []
+
+function submitTags(el) {
+    if (el.innerText.includes("Pick Some Tags")) {
+        console.warn("No tags selected. Skipping")
+        return;
     } else {
-        fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=addTag&tag=${userInput}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
+        console.log("Adding tags to profile.", selectedTags)
+        if (selectedTags.length > 0) {
+            selectedTags.forEach((tag) => {
+                setTimeout(function () {
+                    fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=addTag&tag=${tag}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! Status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            document.getElementById(`tag-temp-${tag}`).style.display = 'none'
+                            const container = document.getElementById("userTags")
+                            container.innerHTML = ''
+                            //will return current tags
+                            if (data.includes('No tags')) {
+                                return;
+                            }
+                            data.forEach((tag) => {
+                                var div = document.createElement("div");
+                                div.className = "user-tag";
+                                div.onclick = function () {
+                                    editTag(tag)
+                                }
+
+                                // Create the SVG element
+                                var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                                svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                                svg.setAttribute("width", "20px");
+                                svg.setAttribute("height", "20px");
+                                svg.setAttribute("viewBox", "0 0 24 24");
+                                svg.setAttribute("fill", "none");
+
+                                // Create the path element
+                                var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                                path.setAttribute("d", "M10 4L7 20M17 4L14 20M5 8H20M4 16H19");
+                                path.setAttribute("stroke", "#fff");
+                                path.setAttribute("stroke-width", "2");
+                                path.setAttribute("stroke-linecap", "round");
+
+                                // Append the path to the svg
+                                svg.appendChild(path);
+
+                                // Append the svg to the div
+                                div.appendChild(svg);
+
+                                // Add the text node "Add Tag"
+                                div.appendChild(document.createTextNode(tag));
+
+                                // Append the div to the element with ID "userTags"
+                                container.appendChild(div);
+                            })
+                        }).then(() => {
+                            // Code to run after the fetch request and the tags have been processed
+                            //console.log('Tags updated successfully');
+                            const container = document.getElementById("userTags")
+                            var div = document.createElement("div");
+                            div.className = "user-tag";
+                            div.onclick = function () {
+                                addTag()
+                            }
+                            div.appendChild(document.createTextNode('+'));
+                            //
+                            // Append the div to the element with ID "userTags"
+                            container.appendChild(div);
+                            addTag()
+
+                        })
+                        .catch(error => {
+                            //setNetworkStatus('off')
+                            console.error('Failed to update tags', error)
+                        });
+                }, 500)
+
             })
-            .then(data => {
-                const container = document.getElementById("userTags")
-                container.innerHTML = ''
-                //will return current tags
-                if (data.includes('No tags')) {
-                    return;
-                }
-                data.forEach((tag) => {
-                    var div = document.createElement("div");
-                    div.className = "user-tag";
+        }
 
-                    // Create the SVG element
-                    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-                    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-                    svg.setAttribute("width", "20px");
-                    svg.setAttribute("height", "20px");
-                    svg.setAttribute("viewBox", "0 0 24 24");
-                    svg.setAttribute("fill", "none");
-
-                    // Create the path element
-                    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                    path.setAttribute("d", "M10 4L7 20M17 4L14 20M5 8H20M4 16H19");
-                    path.setAttribute("stroke", "#fff");
-                    path.setAttribute("stroke-width", "2");
-                    path.setAttribute("stroke-linecap", "round");
-
-                    // Append the path to the svg
-                    svg.appendChild(path);
-
-                    // Append the svg to the div
-                    div.appendChild(svg);
-
-                    // Add the text node "Add Tag"
-                    div.appendChild(document.createTextNode(tag));
-
-                    // Append the div to the element with ID "userTags"
-                    container.appendChild(div);
-                })
-            })
-            .catch(error => {
-                //setNetworkStatus('off')
-                console.error('Failed to update tags', error)
-            });
     }
+}
+function pickTag(el) {
+    play('clickProfile')
+    const vox = el.querySelector('vox');
+    const span = el.querySelector('span');
+
+    if (vox.style.transform.includes('0')) {
+        const newArray = selectedTags.filter(item => item !== span.innerText);
+        selectedTags = newArray
+        vox.style.opacity = '0'
+        vox.style.transform = 'rotate(-180deg)'
+        vox.style.marginRight = '0'
+        setTimeout(function () {
+            vox.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path d="M10 4L7 20M17 4L14 20M5 8H20M4 16H19" stroke="#fff" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>`
+        }, 100)
+        setTimeout(function () {
+
+            vox.style.opacity = '1'
+            vox.style.transform = ''
+        }, 190)
+    } else {
+        selectedTags.push(span.innerText)
+        vox.style.marginRight = '2px'
+        vox.style.opacity = '0'
+        vox.style.transform = 'rotate(180deg)'
+        setTimeout(function () {
+            vox.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+    <path d="M12 2C6.49 2 2 6.49 2 12C2 17.51 6.49 22 12 22C17.51 22 22 17.51 22 12C22 6.49 17.51 2 12 2ZM16.78 9.7L11.11 15.37C10.97 15.51 10.78 15.59 10.58 15.59C10.38 15.59 10.19 15.51 10.05 15.37L7.22 12.54C6.93 12.25 6.93 11.77 7.22 11.48C7.51 11.19 7.99 11.19 8.28 11.48L10.58 13.78L15.72 8.64C16.01 8.35 16.49 8.35 16.78 8.64C17.07 8.93 17.07 9.4 16.78 9.7Z" fill="#fff"/>
+    </svg>`
+        }, 100)
+        setTimeout(function () {
+
+            vox.style.opacity = '1'
+            vox.style.transform = 'rotate(0)'
+        }, 190)
+    }
+    if (selectedTags.length > 1) {
+        document.getElementById("addTagButton").innerText = 'Add Tags'
+    } else if (selectedTags.length === 1) {
+        document.getElementById("addTagButton").innerText = 'Add Tag'
+    } else {
+        document.getElementById("addTagButton").innerText = 'Pick Some Tags'
+    }
+
+}
+
+
+function addTag() {
+    play('clickProfile')
+    selectedTags = []
+    console.log(document.getElementById("tagsPopup"))
+    if (!document.getElementById("tagsPopup").classList.contains("active")) {
+        document.getElementById("tagsPopup").classList.add("active")
+        disableScroll()
+    } else {
+        document.getElementById("tagsPopup").classList.remove("active")
+        enableScroll()
+        return;
+    }
+    fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=tags&v=${Math.floor(Math.random() * 100000)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(currentTags => {
+            // will return current tags
+            if (currentTags.includes('No tags')) {
+                return;
+            }
+            const recommendedTags = ["Gaming", "Athens", "SKG", "EDS", "School", "Services", "Music", "Programming", "Tech", "Education", "Sports", "Art", "Media", "Film", "Science", "Math", "Design", "Coding", "Software", "Hardware", "Engineering", "Fitness", "Business", "AI", "T50"]
+            const filteredTags = recommendedTags.filter(tag => !currentTags.includes(tag));
+
+            const tagsContainer = document.getElementById("recommendedTags")
+            tagsContainer.innerHTML = ''
+            console.log(recommendedTags, filteredTags)
+            const randomTags = getRandomTags(filteredTags, 12);
+            randomTags.forEach((tag) => {
+                tagsContainer.innerHTML = tagsContainer.innerHTML + `<div id="tag-temp-${tag}" onclick="pickTag(this)" class="user-tag">
+                                <vox class="svgIconAnimated">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path d="M10 4L7 20M17 4L14 20M5 8H20M4 16H19" stroke="#fff" stroke-width="2"
+                                        stroke-linecap="round" />
+                                </svg>
+                                </vox>
+                                <span>${tag}<span>
+                            </div>`
+            })
+        })
+        .catch(error => {
+            //setNetworkStatus('off')
+            console.error('Failed to update tags', error)
+        });
+
 }
 
 //Discover
@@ -3214,4 +3358,148 @@ function handleFileSelect() {
 
     // Reset the input value to allow selecting the same file again
     input.value = '';
+}
+
+
+const tagsPop = document.getElementById('tagsPopup');
+const grabTags = document.getElementById('grabTags');
+
+let startYTags, startTopTags;
+const thresholdTags = 515; // Threshold in pixels from the top where dragging upwards is allowed
+
+let tagsGrabCloseTrigger = 574;
+let tagshideThreshold = 511;
+
+grabTags.addEventListener('touchstart', function (e) {
+    const touch = e.touches[0];
+    startYTags = touch.clientY;
+    startTopTags = parseInt(window.getComputedStyle(tagsPop).top, 10);
+    document.addEventListener('touchmove', moveDivTags);
+    document.addEventListener('touchend', stopMoveDivTags);
+});
+
+let hasTagsTriggered = false
+
+function moveDivTags(e) {
+    const touch = e.touches[0];
+    const deltaY = touch.clientY - startYTags;
+
+    // Calculate the new top position
+    let newTop = startTopTags + deltaY;
+
+    console.log(newTop);
+
+    // Restrict movement downwards only
+    if (newTop < thresholdTags) {
+        console.log("Restricted upwards movement!");
+        return;
+    }
+    if (newTop > tagsGrabCloseTrigger) {
+        console.log("Now Will Hide");
+        if (hasTagsTriggered === false) {
+            addTag()
+            hasTagsTriggered = true
+            setTimeout(function () {
+                tagsPop.style.top = '';
+                hasTagsTriggered = false
+            }, 1000)
+        }
+
+        return;
+    }
+
+    tagsPop.style.top = newTop + 'px';
+}
+
+function stopMoveDivTags() {
+    document.removeEventListener('touchmove', moveDivTags);
+    document.removeEventListener('touchend', stopMoveDivTags);
+
+    const elementId = "tagsPopup";
+    const isOutsideViewport = isElementOutsideViewport(tagsPop);
+
+    if (isOutsideViewport) {
+        console.log("Element with ID '" + elementId + "' is outside the viewport.");
+        console.log("will hide");
+        setTimeout(function () {
+            tagsPop.style.top = '';
+        }, 500);
+    } else {
+        console.log("Element with ID '" + elementId + "' is inside the viewport.");
+    }
+}
+
+function editTag(tag) {
+    if (confirm(`Do you want to delete the tag [${tag}]`)) {
+        fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=removeTag&tag=${tag}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                play('clickProfile')
+                const container = document.getElementById("userTags")
+                container.innerHTML = ''
+                //will return current tags
+                if (data.includes('No tags')) {
+                    return;
+                }
+                data.forEach((tag) => {
+                    var div = document.createElement("div");
+                    div.className = "user-tag";
+                    div.onclick = function () {
+                        editTag(tag)
+                    }
+
+                    // Create the SVG element
+                    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+                    svg.setAttribute("width", "20px");
+                    svg.setAttribute("height", "20px");
+                    svg.setAttribute("viewBox", "0 0 24 24");
+                    svg.setAttribute("fill", "none");
+
+                    // Create the path element
+                    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    path.setAttribute("d", "M10 4L7 20M17 4L14 20M5 8H20M4 16H19");
+                    path.setAttribute("stroke", "#fff");
+                    path.setAttribute("stroke-width", "2");
+                    path.setAttribute("stroke-linecap", "round");
+
+                    // Append the path to the svg
+                    svg.appendChild(path);
+
+                    // Append the svg to the div
+                    div.appendChild(svg);
+
+                    // Add the text node "Add Tag"
+                    div.appendChild(document.createTextNode(tag));
+
+                    // Append the div to the element with ID "userTags"
+                    container.appendChild(div);
+                })
+            }).then(() => {
+                // Code to run after the fetch request and the tags have been processed
+                //console.log('Tags updated successfully');
+                const container = document.getElementById("userTags")
+                var div = document.createElement("div");
+                div.className = "user-tag";
+                div.onclick = function () {
+                    addTag()
+                }
+                div.appendChild(document.createTextNode('+'));
+                //
+                // Append the div to the element with ID "userTags"
+                container.appendChild(div);
+            })
+            .catch(error => {
+                //setNetworkStatus('off')
+                console.error('Failed to update tags', error)
+            });
+    } else {
+        // Code to execute if the user clicks "Cancel"
+        console.log("User clicked Cancel");
+    }
 }

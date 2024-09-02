@@ -156,6 +156,8 @@
       <img style="display: none" id="app-mti" src="mt.jpg" class="astrax">
       <img style="display: none" id="app-images" src="t50-img.png" class="astrax">
       <img style="display: none" id="app-tasco" src="../tasco/tasco-app.png" class="astrax">
+      <img style="display: none" id="app-oasa" src="../oasaMobile/apple.png" class="astrax">
+      <img style="display: none" id="app-deluxe" src="../tascoTasks/tasco.png" class="astrax">
       <p class="gds-text--body-sm" style="font-weight: 550;">Launching <span style="text-transform: capitalize;" id="appname"></span>..
       </p>
       <!--<p class="gds-text--body-sm"></p>-->
@@ -165,7 +167,7 @@
           let app = sessionStorage.getItem("EmitApp")
           if(app) {
             custombg()
-            let ids = ['app-chatvia', "app-evox", "app-mti", "app-images", "app-tasco"]
+            let ids = ['app-chatvia', "app-evox", "app-mti", "app-images", "app-tasco", "app-oasa", "app-deluxe"]
             ids.forEach(function(id) {
               document.getElementById(id).style.display = "none"
             })

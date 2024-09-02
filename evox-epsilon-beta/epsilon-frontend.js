@@ -103,9 +103,9 @@ document.addEventListener('DOMContentLoaded', () => {
     $("#downloading-icon").fadeIn("fast");
 
     const soundsStatus = localStorage.getItem("epsilonSounds")
-    if(soundsStatus === 'false') {
+    if (soundsStatus === 'false') {
         document.getElementById("sounds-status").innerText = 'Off'
-    } else if(!soundsStatus || soundsStatus === 'true') {
+    } else if (!soundsStatus || soundsStatus === 'true') {
         document.getElementById("sounds-status").innerText = 'On'
     }
 });
@@ -1105,7 +1105,7 @@ function verificationComplete() {
         zoomableDiv.id = `Zapp${newC}`;
         zoomableDiv.className = 'zoomable';
         zoomableDiv.onclick = function () {
-            animateM(this)
+            animateM(this, app)
         }
 
         // Create the image element
@@ -1211,7 +1211,7 @@ function hideChats() {
         });
 }
 function showChats() {
-    
+
     loadSecurelineHome()
     const animate = document.getElementById("rocketIcon")
     animate.style.transform = 'rotate(45deg)'
@@ -1230,13 +1230,13 @@ function showChats() {
 </g>`
         animate.style.marginLeft = "250px"
         setTimeout(function () {
-            
+
             const securelinePopup = document.querySelector('#secureline');
             addScrollListener(securelinePopup)
             const popup = document.getElementById("secureline")
             popup.classList.add("active")
             document.getElementById("secureline-back").style.display = 'flex'
-            
+
             setTimeout(function () {
                 document.getElementById("secureline-back").style.opacity = '1'
                 animate.innerHTML = oldHtml
@@ -1488,7 +1488,7 @@ function goBackMessenger() {
 function showRemoteFriend(id, notFriend) {
     const friend = id.replace('_socialHome', '');
     $("#container").fadeOut("fast", function () {
-        
+
         if (notFriend) {
             showFriend(null, friend, true)
         } else {
@@ -1659,7 +1659,7 @@ function showFriend(element, remote, notFriends) {
                         }
 
                         document.getElementById("user-profile").classList.add('active')
-                        if(remote) {
+                        if (remote) {
                             play('openPanel')
                         }
                         const socialPopup = document.getElementById("social")
@@ -2117,6 +2117,10 @@ function bottomButtonPress(which, el) {
         setTimeout(function () {
             //workingElem.style.transform = 'rotate(0deg)'
             el.style.transform = 'scale(1)'
+            if (activeAPP) {
+                console.log("active app found, launching", activeAPP)
+                launchAppN(activeAPP)
+            }
             setTimeout(function () {
                 document.getElementById("launchDisk").style.transform = 'rotate(0deg)'
                 const dotElement = document.querySelector('.dot');
@@ -2132,6 +2136,98 @@ function bottomButtonPress(which, el) {
         const dotElement = document.querySelector('.dot');
         dotElement.style.animation = null;
     }
+}
+
+function processAppUrl(appName) {
+    const appsDictionary = {
+        "oasa": {
+            "src": '/oasaMobile/',
+            'name': "Oasa Reloaded"
+        },
+        "tasco": {
+            "src": '/tasco/',
+            'name': "Tasco"
+        },
+        "deluxe": {
+            "src": '/tascoTasks/',
+            'name': "Tasco Deluxe"
+        }
+    }
+    if (appName) {
+        const match = appsDictionary[appName]
+        if (match) {
+            return match.src
+        }
+    }
+}
+
+function launchAppN(app) {
+    sessionStorage.setItem("EmitApp", app);
+    sessionStorage.removeItem("extRun");
+    setTimeout(function () {
+        document.getElementById("launchApp").src = processAppUrl(app)
+    }, 1100)
+    $("#iframeContainer").fadeIn("slow")
+    $("#launchApp").fadeIn("slow")
+    setTimeout(function() {
+        const appFrame = setInterval(() => {
+            if (sessionStorage.getItem("extRun") === "back" ||
+                (document.getElementById("launchApp").contentWindow.location.href.includes("PreloadApp.html"))) {
+    
+                console.log("Hiding App Frame User Returned To Gateway");
+                activeInterval = null;
+    
+                document.getElementById("launchApp").src = "PreloadApp.html";
+                $("#launchApp").fadeOut("slow");
+    
+                $("#iframeContainer").fadeOut("slow");
+    
+                sessionStorage.removeItem("extRun");
+                clearInterval(appFrame);
+            } else {
+                console.log(`Current: ${document.getElementById("launchApp").contentWindow.location.href}`);
+            }
+        }, 100);
+    }, 2000)
+    
+    setTimeout(function() {
+        const dotElement = document.querySelector('.dot');
+        dotElement.style.animation = null;
+        var imgElement = activeAppThis.querySelector('img');
+        imgElement.style.borderRadius = null
+        imgElement.overflow = null
+        document.getElementById("gatewayExploreScroll").style.marginTop = '70px'
+        $("#bottomButtonsFocus").fadeOut("fast", function () {
+            $("#bottomButtonsDefault").fadeIn("fast")
+    
+        })
+        activeAppThis.classList.remove('fullscreen');
+        document.body.classList.remove('no-scroll');
+        document.getElementById("gatewayActions").classList.remove("top")
+        document.getElementById("card-secureline").style.transform = null
+        document.getElementById("card-social").style.transform = null
+        document.getElementById("card-settings").style.transform = null
+        const attr = activeAppThis.id
+        setTimeout(function () {
+            if (attr.includes("1")) {
+                //item1
+                $("#app2").fadeIn("fast")
+                $("#app3").fadeIn("fast")
+                add = 'app1'
+            } else if (attr.includes("2")) {
+                $("#app1").fadeIn("fast")
+                $("#app3").fadeIn("fast")
+                add = 'app2'
+            } else if (attr.includes("3")) {
+                $("#app1").fadeIn("fast")
+                $("#app2").fadeIn("fast")
+                add = 'app3'
+            }
+        }, 500)
+        activeAPP = null
+        activeAppThis = null
+    }, 1200)
+    
 }
 
 function openPanel(which) {
@@ -2250,14 +2346,14 @@ function settingsOpen(panel) {
 
 let hasSoundPlayed = false
 function hideSettings() {
-    if(!hasSoundPlayed) {
+    if (!hasSoundPlayed) {
         play('closeSettings')
         hasSoundPlayed = true
-        setTimeout(function() {
+        setTimeout(function () {
             hasSoundPlayed = false
         }, 1000)
     }
-   
+
     document.getElementById("gatewayExploreScroll").style.transform = ''
     document.getElementById("gatewayExploreScroll").style.filter = ''
     const popup = document.getElementById("settings")
@@ -2629,7 +2725,7 @@ function editBirthdate() { //from profile
         document.getElementById("moreBirthInfo").innerText = fullDateText
         document.getElementById("nextBirthday").innerHTML = `You will be ${Number(years) + 1} years old in ${getDaysUntilNextBirthday(fullDate)} days! 🎂`
         document.getElementById("birthdatePopup").classList.add("active")
-        
+
     } else {
         document.getElementById("birthdatePopup").classList.remove("active")
     }
@@ -2638,7 +2734,9 @@ function editBirthdate() { //from profile
 
 }
 
-function animateM(e) {
+let activeAPP = null
+let activeAppThis = null
+function animateM(e, app) {
     const item = e
     const isZoomed = item.classList.contains('fullscreen');
     const attr = item.id
@@ -2652,6 +2750,8 @@ function animateM(e) {
 
     // Toggle the fullscreen state
     if (!isZoomed) {
+        activeAPP = app
+        activeAppThis = e
         const dotElement = document.querySelector('.dot');
         dotElement.style.animation = 'dotAnimation 1s infinite';
         item.classList.add('fullscreen');
@@ -2686,6 +2786,8 @@ function animateM(e) {
         }, 500)
 
     } else {
+        activeAPP = null
+        activeAppThis = null
         const dotElement = document.querySelector('.dot');
         dotElement.style.animation = null;
         var imgElement = item.querySelector('img');
@@ -2734,13 +2836,16 @@ function animateM(e) {
 //});
 
 function toogleSounds() {
-    play('confirm')
+
     const soundsStatus = localStorage.getItem("epsilonSounds")
-    if(soundsStatus === 'false') {
+    if (soundsStatus === 'false') {
         localStorage.setItem("epsilonSounds", 'true')
         document.getElementById("sounds-status").innerText = 'On'
-    } else if(!soundsStatus || soundsStatus === 'true') {
+        play('confirm')
+    } else if (!soundsStatus || soundsStatus === 'true') {
+        play('confirm')
         localStorage.setItem("epsilonSounds", 'false')
         document.getElementById("sounds-status").innerText = 'Off'
+
     }
 }

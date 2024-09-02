@@ -300,8 +300,9 @@ body::-webkit-scrollbar {
 .zoomable.fullscreen img {
   position: relative;
 
-  width: 120%;
+  width: 80%;
   height: 100%;
+  
 
 }
 
@@ -6050,12 +6051,18 @@ input:autofill {
 }
 
 .user-tags {
-  padding-left: 50px;
-  padding-right: 50px;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
   margin-top: 10px;
-  white-space: nowrap;
+}
+
+.user-tags.addTags {
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .user-tags .user-tag {
@@ -6071,6 +6078,8 @@ input:autofill {
   margin-right: 5px;
 }
 
+
+
 .user-tag {
   background-color: #37373765;
   backdrop-filter: blur(25px);
@@ -6082,13 +6091,19 @@ input:autofill {
   padding-bottom: 5px;
   border-radius: 10px;
   margin-right: 5px;
-  
-
   display: inline-flex; /* Allows for flexbox properties inside each tag */
   align-items: center; /* Vertically centers the content within each tag */
   margin-top: 5px;
   line-height: 1; /* Resets line height to avoid discrepancies */
   vertical-align: middle; /* Ensures baseline alignment of inline-flex elements */
+}
+
+.user-tags.addTags .user-tag {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 19px;
 }
 
 .user-tag {
@@ -6769,7 +6784,7 @@ input:autofill {
   margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center; /* Ensures vertical alignment within the flex container */
   padding-top: 0;
 }
@@ -6805,4 +6820,108 @@ input:autofill {
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+
+.tagsPopup {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 435px;
+  display: block;
+  padding: 0 30px 30px 30px;
+  align-items: center;
+  scroll-behavior: smooth;
+  touch-action: auto;
+  justify-content: center;
+  background: #0c0d16d9;
+  z-index: 1000;
+  box-sizing: border-box;
+  opacity: 1;
+  visibility: hidden;
+  transform: translateY(100%);
+  transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 0.5s ease-in-out;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  overflow-x: hidden;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+
+.tagsPopup.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateY(0);
+  /* Slide the popup into view */
+}
+
+
+.tagsPopup .grabbable {
+  position: sticky;
+  background-color: #3c3e46;
+  height: 5px;
+  width: 15%;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50px;
+  transition: background-color 1s ease-out;
+  z-index: 999;
+}
+
+.tagsPopup .grabbable::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  /* Extend clickable area upwards */
+  left: -30px;
+  /* Extend clickable area to the left */
+  right: -30px;
+  /* Extend clickable area to the right */
+  bottom: -30px;
+  /* Extend clickable area downwards */
+  background: transparent;
+  /* Ensure it's transparent */
+  cursor: pointer;
+  /* Make sure the cursor changes */
+}
+
+.tagsPopup .grabbable:active {
+  cursor: grabbing;
+}
+
+.tagsPopup .tagcard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.tagsPopup .tagcard .infoHeader {
+  margin-top: 35px;
+}
+
+.tagsPopup .editButton {
+  position: absolute;
+  bottom: 20px;
+  margin-top: 15px;
+  background-color: #43434331;
+  padding: 20px 20px;
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  vertical-align: middle;
+  margin-bottom: 10px;
+  border-radius: 25px;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+}
+
+vox.svgIconAnimated {
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out, margin 0.5s ease-in-out;
 }

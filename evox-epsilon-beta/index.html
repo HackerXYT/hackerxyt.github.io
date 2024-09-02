@@ -586,8 +586,8 @@
 
                         </a>
                         <a onclick="showSocial(this)" href="#social-discover">
-                            <svg id="discover-home-svg" style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="25px"
-                                height="25px" viewBox="0 0 24 24" fill="none">
+                            <svg id="discover-home-svg" style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg"
+                                width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                                 <path opacity="0.15" fill-rule="evenodd" clip-rule="evenodd"
                                     d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21ZM15.5355 8.46448L9.87868 9.87869L8.46446 15.5355L14.1213 14.1213L15.5355 8.46448Z"
                                     fill="#dbdde3" />
@@ -647,7 +647,7 @@
                 <img id="self-profile-picture" class="slUserPFP profile" src="evox-logo-apple.png">
             </div>
             <h3 id="self-profile-username">Username</h3>
-            <div id="userTags" ><!--Self-->
+            <div id="userTags" class="user-tags"><!--Self-->
                 <div onclick="addTag()" class="user-tag">
                     <!--<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path d="M10 4L7 20M17 4L14 20M5 8H20M4 16H19" stroke="#fff" stroke-width="2"
@@ -727,8 +727,21 @@
                     </div>
 
                 </div>
+            </div>
+            <div class="tagsPopup" id="tagsPopup"> <!--duplicate styles to prevent css overflow-->
+                <div id="grabTags" class="grabbable"></div>
+                <div class="tagcard">
+                    <!--Collumn-->
+                    <p class="infoHeader">Tags connect you with others on Evox.<br>Choose a suggested tag or add your
+                        own.</p>
+                    <div id="recommendedTags" class="user-tags addTags"><!--Max 20 Tags-->
+                       
+                    </div>
+                    <div onclick="submitTags(this)" class="editButton" id="addTagButton">
+                        Pick Some Tags
+                    </div>
 
-
+                </div>
             </div>
 
         </div>
@@ -895,28 +908,30 @@
                     <p>You've added all users in your age group.<br>Great job!</p>
                 </div>
                 <div id="percentage" style="display: none;text-align: center;">
-                    <p>🎖️<br>You are friends with <vox id="percentageFriends">over 0% 🤯</vox> of Evox users!<br>Great job!</p>
+                    <p>🎖️<br>You are friends with <vox id="percentageFriends">over 0% 🤯</vox> of Evox users!<br>Great
+                        job!</p>
                 </div>
                 <div id="noFriends" style="display: none;text-align: center;">
                     <p>Let's add some friends!?</p>
                 </div>
                 <div id="onlySomeFriends" style="display: none;text-align: center;">
-                    <p>🤯<br>You are friends with only <vox id="howmanypeople">2 people</vox>!<br>Let's add some friends!?</p>
+                    <p>🤯<br>You are friends with only <vox id="howmanypeople">2 people</vox>!<br>Let's add some
+                        friends!?</p>
                 </div>
                 <div id="ageBasedDiv">
                     <p>You might know</p>
                     <div class="social-users" id="ageBased" style="margin-top: 5px;">
-    
+
                     </div>
                 </div>
-                
+
                 <div id="otherBasedDiv">
                     <p>Other users</p>
                     <div class="social-users" id="otherBased" style="margin-top: 5px;">
-    
+
                     </div>
                 </div>
-                
+
             </div>
 
         </div>
@@ -1136,11 +1151,11 @@
                         Unknown
                     </div>
                     <svg style="margin-left: 0;margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" width="20px"
-                            height="20px" viewBox="0 0 24 24" fill="none">
-                            <path
-                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                                fill="#fff"></path>
-                        </svg>
+                        height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#fff"></path>
+                    </svg>
                 </div>
                 <div class="option">
                     <img src="epsilon-frontend-assets/personalold.png"><span>Florida ID</span>

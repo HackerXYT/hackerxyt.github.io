@@ -59,12 +59,16 @@
 </script>
 
 <body>
+    
     <!--<div class="testing"></div>-->
     <div class="home" id="homeCont">
-        <h4 class="head">Hello <span class="nameHead">Gregory 👋</span></h4>
+        <h4 class="head">Hello <span id="usernameName" class="nameHead">None? 👋</span></h4>
         <h2 class="motd">
             Manage Your Daily Tasks
         </h2>
+        <script>
+            document.getElementById("usernameName").innerText = `${localStorage.getItem("t50-username")} 👋`
+        </script>
         <div class="boxes">
             <div class="vertical">
                 <img src="phone-telephone.svg">
