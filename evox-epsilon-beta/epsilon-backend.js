@@ -92,17 +92,41 @@ var sounds = {
         loop: false
     }),
     openSettings: new Howl({
-        src: ['./sounds/openSettings.mp3'],
+        src: ['./sounds/newSettingsOpen.mp3'],
+        volume: 0.5,
         loop: false
     }),
     closeSettings: new Howl({
-        src: ['./sounds/closeSettings.mp3'],
+        src: ['./sounds/newSettingsClose.mp3'],
+        volume: 0.5,
         loop: false
     }),
     confirm: new Howl({
         src: ['./sounds/confirm.mp3'],
         loop: false
     }),
+    pickCatA: new Howl({
+        src: ['./sounds/pickCategory1.mp3'],
+        loop: false,
+        volume: 0.5
+    }),
+    pickCatB: new Howl({
+        src: ['./sounds/pickCategory2.mp3'],
+        loop: false,
+        volume: 0.5
+    }),
+    error: new Howl({
+        src: ['./sounds/error.mp3'],
+        loop: false
+    }),
+    launch: new Howl({
+        src: ['./sounds/launch.mp3'],
+        loop: false
+    }),
+    quit: new Howl({
+        src: ['./sounds/quitApp.mp3'],
+        loop: false
+    })
 };
 
 function play(soundName) {
@@ -164,7 +188,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '6.5.6'
+const appVersion = '6.6.0'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {

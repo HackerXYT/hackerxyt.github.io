@@ -1310,6 +1310,7 @@ function add_favorite(event, element, customColor, customDimen) {
 }
 
 function openChat(data, location) {
+    sessionStorage.removeItem("current_sline")
     play('rocket')
     document.getElementById("bottomActionsSecureline").classList.add("hidden")
     console.log('Chat opened');
@@ -1659,9 +1660,7 @@ function showFriend(element, remote, notFriends) {
                         }
 
                         document.getElementById("user-profile").classList.add('active')
-                        if (remote) {
-                            play('openPanel')
-                        }
+                        play('openPanel')
                         const socialPopup = document.getElementById("social")
                         socialPopup.classList.remove("active")
                         document.getElementById("social-back").style.opacity = '0'
@@ -1986,6 +1985,7 @@ function addFriend(el) {
                             localStorage.setItem(`${localStorage.getItem("t50-username")}-sentRequests`, sent_req)
                             if (sent_req.includes(toAdd)) {
                                 console.log("Change confirmed. 200")
+                                play("completeProfile")
                             }
                         }
                     }).catch(error => {
@@ -2058,6 +2058,7 @@ function clickNanimate(part) {
     const menu_manage = document.getElementById("menu-manage")
     const menu_discover = document.getElementById("menu-discover")
     if (part === 'manage') {
+        play("pickCatA")
         const workingElem = document.getElementById("manage-svg")
         workingElem.style.transform = 'scale(1.2)'
         setTimeout(function () {
@@ -2070,6 +2071,7 @@ function clickNanimate(part) {
         })
         loadFriendsSocial()
     } else if (part === 'discover') {
+        play("pickCatB")
         const workingElem = document.getElementById("discover-svg")
         workingElem.style.transform = 'rotate(180deg) scale(1.2)'
         setTimeout(function () {
@@ -2162,6 +2164,7 @@ function processAppUrl(appName) {
 }
 
 function launchAppN(app) {
+    play('launch')
     sessionStorage.setItem("EmitApp", app);
     sessionStorage.removeItem("extRun");
     setTimeout(function () {
@@ -2176,6 +2179,7 @@ function launchAppN(app) {
     
                 console.log("Hiding App Frame User Returned To Gateway");
                 activeInterval = null;
+                play("quit")
     
                 document.getElementById("launchApp").src = "PreloadApp.html";
                 $("#launchApp").fadeOut("slow");
@@ -2390,7 +2394,8 @@ function attachSettingsData(data, container) {// data -> personal, security, cyp
                     document.getElementById("settings").style.height = '200px'
                 }
                 if (data === 'personal') {
-                    //settingsGrabCloseTrigger = 726
+                    settingsGrabCloseTrigger = 527
+                    loadPersonal()
                     document.getElementById("settings").style.height = '400px'
                 }
                 if (data === 'about') {
@@ -2410,6 +2415,42 @@ function attachSettingsData(data, container) {// data -> personal, security, cyp
     }, 100)
 }
 
+function loadPersonal() {
+    const myUser = localStorage.getItem("t50-username")
+    fetch(`${srv}/accounts?method=getName&username=${myUser}`)
+        .then(response => response.text())
+        .then(name => {
+            document.getElementById("name-preview").innerHTML = document.getElementById("name-preview").innerHTML.replace("null", name)
+        })
+        .catch(error => {
+            console.log('Name Error:', error);
+        });
+    document.getElementById("email-preview").innerHTML = document.getElementById("email-preview").innerHTML.replace("null", localStorage.getItem("t50-email"))
+    document.getElementById("username-preview").innerHTML = document.getElementById("username-preview").innerHTML.replace("null", localStorage.getItem("t50-username"))
+    fetch(`${srv}/accounts?what=getPhone&username=${myUser}&password=${atob(localStorage.getItem("t50pswd"))}`)
+    .then(response => response.text())
+    .then(phone => {
+        const number = phone.replace("+30-", '')
+        document.getElementById("phone-preview").innerHTML = document.getElementById("phone-preview").innerHTML.replace("null", number)
+    })
+    .catch(error => {
+        console.log('phone Error:', error);
+    });
+    fetch(`${srv}/authip?method=Eget&email=${localStorage.getItem("t50-email")}&ip=null&username=${myUser}&password=${atob(localStorage.getItem("t50pswd"))}`)
+    .then(response => response.text())
+    .then(status => {
+        if(status === 'IP is Mapped') {
+            document.getElementById("2fa-preview").innerHTML = document.getElementById("2fa-preview").innerHTML.replace("Unknown", 'Disabled')
+        } else {
+            console.log("Status 2fa:", status)
+            document.getElementById("2fa-preview").innerHTML = document.getElementById("2fa-preview").innerHTML.replace("Unknown", 'Enabled')
+        }
+        
+    })
+    .catch(error => {
+        console.log('phone Error:', error);
+    });
+}
 
 function getOS() {
     const userAgent = navigator.userAgent;

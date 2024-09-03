@@ -412,7 +412,7 @@ function dbload() {
                     console.log("Image not found in IndexedDB, loading from network", error);
 
                     // Fallback to network URL
-                    img.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access&v=${Math.floor(Math.random() * 10001)                    }`;
+                    img.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access&v=${Math.floor(Math.random() * 10001)}`;
 
                     // Fetch and cache the image
                     fetch(img.src).then(response => {
@@ -685,30 +685,32 @@ function Boot() {
 
                 }
                 document.getElementById("me").src = "notyetloaded.gif";
-                fetch(`${srv}/profiles?authorize=351c3669b3760b20615808bdee568f33&pfp=${localStorage.getItem("t50-username")}`)
-                    .then(response => {
+                loadImageFromIndexedDB(`selfPfp`).then(imageSrc => {
+                    console.log("PFP Found! Loading From IndexedDB");
+                    document.getElementById("me").src = imageSrc; // Set image source to Blob URL from IndexedDB
+                }).catch(error => {
+                    console.log("PFP not found in IndexedDB, loading from network", error);
+
+                    // Fallback to network URL
+                    document.getElementById("me").src = `${srv}/profiles?authorize=imagePfp&name=${localStorage.getItem("t50-username")}`;
+
+                    // Fetch and cache the image
+                    fetch(img.src).then(response => {
                         if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
+                            throw new Error('Network response was not ok');
                         }
-                        return response.text();
-                    })
-                    .then(profileimage => {
-                        if (profileimage.indexOf("base64") === -1) {
-                            ////console.log("Fixing Base64");
-                            profileimage = "data:image/jpeg;base64," + profileimage;
-                        }
-                        // Resolve with profile image
-                        document.getElementById("me").src = profileimage
-                    })
-                    .catch(error => {
-                        console.error("Cannot set src for", username);
-                        console.error(error);
-                        reject(error);
+                        return response.blob(); // Get the image as a Blob
+                    }).then(blob => {
+                        // Cache the image in IndexedDB
+                        cacheImage(URL.createObjectURL(blob), `selfPfp`);
+                    }).catch(fetchError => {
+                        console.error('Error fetching or caching PFP:', fetchError);
                     });
+                })
 
             }).catch(error => {
                 // Handle errors
-                alert(`Debug.\nClient responded as ${navigator.onLine} on request for navigator.onLine,\nbut authorization request failed with error:\n${error}\n\nClient will continue with function 'loadStories()'.`)
+                alert(`Debug.\nClient responded as ${navigator.onLine} on request for navigator.onLine,\nbut authorization request failed with error:\n${error}\n\nClient will continue with function 'loadStories()'.\n\n\nIf you are not authorized to use Hologram please be advised that your IP has been sent to Evox servers and is ready for analysis.`)
                 loadStories()
                 console.warn('Profile Picture Failed To Load:', error)
                 console.error('Error:', error);
@@ -721,15 +723,23 @@ function Boot() {
         })
             .then(response => response.json())
             .then(data => {
-                types = data
-                localStorage.setItem("types", JSON.stringify(data))
-                loadStories()
+                if (data !== 'Denied') {
+                    console.log("Types 200")
+                    types = data
+                    localStorage.setItem("types", JSON.stringify(data))
+                    loadStories()
+                } else {
+                    console.log("Types Forbidden")
+                }
+
             }).catch(error => {
                 // Handle errors
                 if (localStorage.getItem("types")) {
                     const data = JSON.parse(localStorage.getItem("types"))
                     types = data
                     loadStories()
+                } else {
+                    alert("Types Value Doesn't Exist In Local Db!")
                 }
 
 
@@ -738,7 +748,38 @@ function Boot() {
                 console.error('Error:', error);
             });
     } else {
-        loadStories()
+        fetch(`${srv}/images-database?method=getTypes&password=${atob(localStorage.getItem("t50pswd"))}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json', // Modify this based on your API's requirements
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data !== 'Denied') {
+                    console.log("Types 200")
+                    types = data
+                    localStorage.setItem("types", JSON.stringify(data))
+                    loadStories()
+                } else {
+                    console.log("Types Forbidden")
+                }
+
+            }).catch(error => {
+                // Handle errors
+                if (localStorage.getItem("types")) {
+                    const data = JSON.parse(localStorage.getItem("types"))
+                    types = data
+                    loadStories()
+                } else {
+                    alert("Types Value Doesn't Exist In Local Db!")
+                }
+
+
+
+                //alert('getTypes rejected', error);
+                console.error('Error:', error);
+            });
         console.log("The user is offline.");
     }
     fetch(`${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&method=getInfo`, {
@@ -1956,7 +1997,7 @@ function upload() {
                             document.getElementById("uploadFileButton").innerText = 'Tagging..'
                             console.log()
                             const fileName = xhr.responseText.split(", ")[1];
-                            console.log('fileName:',fileName)
+                            console.log('fileName:', fileName)
                             fetch(`${srv}/images-database?method=setType&image=${fileName.toLowerCase()}&format=${selectedTag.toLowerCase()}&password=${password}`)
                                 .then(response => response.text())
                                 .then(data => {

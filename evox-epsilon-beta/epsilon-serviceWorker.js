@@ -13,8 +13,8 @@ self.addEventListener('notificationclick', function (event) {
   );
 });
 
-const STATIC_CACHE_NAME = 'epsilon-cache-v5';
-const APP_CACHE_NAME = 'epsilon-app-cache-v5';
+const STATIC_CACHE_NAME = 'epsilon-cache-v6';
+const APP_CACHE_NAME = 'epsilon-app-cache-v6';
 const CACHE_STATIC = [
   '/evox-epsilon-beta/epsilon-frontend-assets/epsilon.png',
   '/evox-epsilon-beta/epsilon-frontend-assets/customize.png',
@@ -67,7 +67,11 @@ const CACHE_STATIC = [
   '/evox-epsilon-beta/sounds/closePanel.mp3',
   '/evox-epsilon-beta/sounds/completeProfile.mp3',
   '/evox-epsilon-beta/sounds/openSettings.mp3',
-  '/evox-epsilon-beta/sounds/rocket.mp3'
+  '/evox-epsilon-beta/sounds/rocket.mp3',
+  '/evox-epsilon-beta/sounds/pickCategory1.mp3',
+  '/evox-epsilon-beta/sounds/pickCategory2.mp3',
+  '/evox-epsilon-beta/sounds/launch.mp3',
+  '/evox-epsilon-beta/sounds/quitApp.mp3'
 ];
 const CACHE_APP = [
   '/evox-epsilon-beta/epsilon-backend.js',
