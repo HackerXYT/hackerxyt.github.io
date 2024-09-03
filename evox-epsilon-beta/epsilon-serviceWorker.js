@@ -13,8 +13,8 @@ self.addEventListener('notificationclick', function (event) {
   );
 });
 
-const STATIC_CACHE_NAME = 'epsilon-cache-v4';
-const APP_CACHE_NAME = 'epsilon-app-cache-v4';
+const STATIC_CACHE_NAME = 'epsilon-cache-v5';
+const APP_CACHE_NAME = 'epsilon-app-cache-v5';
 const CACHE_STATIC = [
   '/evox-epsilon-beta/epsilon-frontend-assets/epsilon.png',
   '/evox-epsilon-beta/epsilon-frontend-assets/customize.png',
@@ -53,7 +53,21 @@ const CACHE_STATIC = [
   '/evox-epsilon-beta/epsilon-frontend-assets/serviceWorker.png',
   '/evox-epsilon-beta/epsilon-frontend-assets/offlineMode.png',
   '/evox-epsilon-beta/epsilon-frontend-assets/update.png',
-  '/evox-epsilon-beta/epsilon-frontend-assets/version.png'
+  '/evox-epsilon-beta/epsilon-frontend-assets/version.png',
+  '/evox-epsilon-beta/sounds/ambient.mp3',
+  '/evox-epsilon-beta/sounds/closeProfile.mp3',
+  '/evox-epsilon-beta/sounds/confirm.mp3',
+  '/evox-epsilon-beta/sounds/openPanel.mp3',
+  '/evox-epsilon-beta/sounds/pop.mp3',
+  '/evox-epsilon-beta/sounds/submitProfile.mp3',
+  '/evox-epsilon-beta/sounds/clickProfile.mp3',
+  '/evox-epsilon-beta/sounds/closeSettings.mp3',
+  '/evox-epsilon-beta/sounds/openProfile.mp3',
+  '/evox-epsilon-beta/sounds/push.mp3',
+  '/evox-epsilon-beta/sounds/closePanel.mp3',
+  '/evox-epsilon-beta/sounds/completeProfile.mp3',
+  '/evox-epsilon-beta/sounds/openSettings.mp3',
+  '/evox-epsilon-beta/sounds/rocket.mp3'
 ];
 const CACHE_APP = [
   '/evox-epsilon-beta/epsilon-backend.js',

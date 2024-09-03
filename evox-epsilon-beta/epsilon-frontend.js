@@ -2389,6 +2389,10 @@ function attachSettingsData(data, container) {// data -> personal, security, cyp
                     settingsGrabCloseTrigger = 726
                     document.getElementById("settings").style.height = '200px'
                 }
+                if (data === 'personal') {
+                    //settingsGrabCloseTrigger = 726
+                    document.getElementById("settings").style.height = '400px'
+                }
                 if (data === 'about') {
                     loadAppAbout()
                     settingsGrabCloseTrigger = 520
