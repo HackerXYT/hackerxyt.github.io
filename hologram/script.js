@@ -1956,11 +1956,17 @@ function upload() {
                             document.getElementById("uploadFileButton").innerText = 'Tagging..'
                             console.log()
                             const fileName = xhr.responseText.split(", ")[1];
-                            fetch(`${srv}/images-database?method=setType&image=${fileName.toLowerCase()}&format=${selectedTag}&password=${password}`)
+                            console.log('fileName:',fileName)
+                            fetch(`${srv}/images-database?method=setType&image=${fileName.toLowerCase()}&format=${selectedTag.toLowerCase()}&password=${password}`)
                                 .then(response => response.text())
                                 .then(data => {
                                     if (data === 'work') {
                                         pickTag(document.getElementById("op0a"))
+                                        progressBar.style.width = 0 + '%';
+                                        removeFile()
+                                        progressText.textContent = `0 MB of 0 MB uploaded`;
+                                        document.getElementById("preProgress").style.display = 'none'
+                                        document.getElementById("progress-text").style.display = 'none'
                                         document.getElementById("uploadFileButton").innerText = 'Upload'
                                     } else {
                                         alert(`DB Error ${data}`)
