@@ -31,8 +31,8 @@
 //});
 
 
-const STATIC_CACHE_NAME = 'static-cache-v3';
-const APP_CACHE_NAME = 'app-cache-v3';
+const STATIC_CACHE_NAME = 'static-cache-v4';
+const APP_CACHE_NAME = 'app-cache-v4';
 const CACHE_STATIC = [
   "/hologram/",
   "/hologram/index.html",
