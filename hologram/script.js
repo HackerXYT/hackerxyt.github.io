@@ -412,7 +412,7 @@ function dbload() {
                     console.log("Image not found in IndexedDB, loading from network", error);
 
                     // Fallback to network URL
-                    img.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                    img.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access&v=${Math.floor(Math.random() * 10001)                    }`;
 
                     // Fetch and cache the image
                     fetch(img.src).then(response => {
