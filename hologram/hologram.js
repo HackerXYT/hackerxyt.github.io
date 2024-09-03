@@ -31,8 +31,8 @@
 //});
 
 
-const STATIC_CACHE_NAME = 'static-cache-v1';
-const APP_CACHE_NAME = 'app-cache-v1';
+const STATIC_CACHE_NAME = 'static-cache-v3';
+const APP_CACHE_NAME = 'app-cache-v3';
 const CACHE_STATIC = [
   "/hologram/",
   "/hologram/index.html",
@@ -53,6 +53,7 @@ const CACHE_STATIC = [
   "/hologram/sline.png",
   "/hologram/hologramW.png",
   "/hologram/arrow-down.svg",
+  "/hologram/splash/apple-splash-640-1136.png",
   "/evox-epsilon-beta/ohNoEvoxError.html" // Ensure this is cached
 ];
 const CACHE_APP = [
@@ -112,7 +113,7 @@ self.addEventListener("fetch", e => {
               return networkResponse;
           }).catch(() => {
               // Fallback URL for offline scenarios
-              return caches.match("/hologram/ohNoEvoxError.html");
+              return caches.match("/evox-epsilon-beta/ohNoEvoxError.html");
           });
       })
   );

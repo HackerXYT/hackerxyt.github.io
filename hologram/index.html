@@ -225,7 +225,7 @@
         <p class="title">You might like</p>
         <div class="gallery" id="images-container">
             <div class="image">
-                <img src="apple.png">
+                <img src="./splash/apple-splash-640-1136.png">
                 <vo><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M11.993 5.09691C11.0387 4.25883 9.78328 3.75 8.40796 3.75C5.42122 3.75 3 6.1497 3 9.10988C3 10.473 3.50639 11.7242 4.35199 12.67L12 20.25L19.4216 12.8944L19.641 12.6631C20.4866 11.7172 21 10.473 21 9.10988C21 6.1497 18.5788 3.75 15.592 3.75C14.2167 3.75 12.9613 4.25883 12.007 5.09692L12 5.08998L11.993 5.09691ZM12 7.09938L12.0549 7.14755L12.9079 6.30208L12.9968 6.22399C13.6868 5.61806 14.5932 5.25 15.592 5.25C17.763 5.25 19.5 6.99073 19.5 9.10988C19.5 10.0813 19.1385 10.9674 18.5363 11.6481L18.3492 11.8453L12 18.1381L5.44274 11.6391C4.85393 10.9658 4.5 10.0809 4.5 9.10988C4.5 6.99073 6.23699 5.25 8.40796 5.25C9.40675 5.25 10.3132 5.61806 11.0032 6.22398L11.0921 6.30203L11.9452 7.14752L12 7.09938Z"
@@ -234,19 +234,19 @@
 
             </div>
             <div class="image">
-                <img src="nexusEpsilon.png">
+                <img src="./splash/apple-splash-640-1136.png">
             </div>
             <div class="image">
-                <img src="nexusIMG.png">
+                <img src="./splash/apple-splash-640-1136.png">
             </div>
             <div class="image">
-                <img src="apple.png">
+                <img src="./splash/apple-splash-640-1136.png">
             </div>
             <div class="image">
-                <img src="mails.png">
+                <img src="./splash/apple-splash-640-1136.png">
             </div>
             <div class="image">
-                <img src="dc.png">
+                <img src="./splash/apple-splash-640-1136.png">
             </div>
         </div>
         <footer id="footer" style="font-size: xx-small;padding: 10px;display: none;">online mode: <code
@@ -381,6 +381,9 @@
         <div id="files-list" class="files-list">
             <!--File items will spawn here-->
         </div>
+        <div class="selectFileButton format" id="dbFormat" onclick="frontFormat()">
+            Format Database
+        </div>
 
     </div>
 
@@ -388,7 +391,7 @@
         <div id="main_settings">
             <h2 class="title" style="margin-top: 0;padding-left: 30px;"><img src="hologramW.png" height="15px"></h2>
             <h2 style="padding-left: 30px;">Settings</h2>
-    
+
             <div class="userProfile">
                 <div class="icon">
                     <img src="sline.png">
@@ -400,15 +403,27 @@
             </div>
             <div class="settings">
                 <div onclick="setupPin()" class="settings-item">
-                    PIN<span><vox id="pin-status">No</vox><img src='arrow-down.svg'
-                            style="vertical-align: middle;width: 20px;height: 20px;transform: rotate(-90deg);"></span>
+                    PIN<span>
+                        <vox id="pin-status">No</vox><img src='arrow-down.svg'
+                            style="vertical-align: middle;width: 20px;height: 20px;transform: rotate(-90deg);">
+                    </span>
                 </div>
                 <div class="settings-item">
-                    Service Worker<span><vox id="sw-status">No</vox><img src='arrow-down.svg'
-                            style="vertical-align: middle;width: 20px;height: 20px;transform: rotate(-90deg);"></span>
+                    Service Worker<span>
+                        <vox id="sw-status">No</vox><img src='arrow-down.svg'
+                            style="vertical-align: middle;width: 20px;height: 20px;transform: rotate(-90deg);">
+                    </span>
                 </div>
                 <div class="settings-item">
-                    Local Database<span><vox id="indexdb-status">No</vox><img src='arrow-down.svg'
+                    Local Database<span>
+                        <vox id="indexdb-status">No</vox><img src='arrow-down.svg'
+                            style="vertical-align: middle;width: 20px;height: 20px;transform: rotate(-90deg);">
+                    </span>
+                </div>
+            </div>
+            <div class="settings">
+                <div onclick="uploadFile()" class="settings-item">
+                    Upload A File<span><img src='arrow-down.svg'
                             style="vertical-align: middle;width: 20px;height: 20px;transform: rotate(-90deg);"></span>
                 </div>
             </div>
@@ -420,24 +435,112 @@
                     Status<span id="pin-status-set">Unset</span>
                 </div>
                 <div class="input-container">
-                    <input id="holosetpin" type="text" 
-                           pattern="\d{4}"
-                           inputmode="decimal"
-                           placeholder="Enter your 4-digit PIN here." 
-                           maxlength="4" 
-                           title="PIN must be 4 digits" 
-                           oninput="validatePIN(this)">
+                    <input id="holosetpin" type="text" pattern="\d{4}" inputmode="decimal"
+                        placeholder="Enter your 4-digit PIN here." maxlength="4" title="PIN must be 4 digits"
+                        oninput="validatePIN(this)">
                     <div id="info-div" class="info-div">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M11 4C10.4477 4 10 4.44772 10 5V8H15.0658C15.9523 7.99995 16.7161 7.99991 17.3278 8.08215C17.9833 8.17028 18.6117 8.36902 19.1213 8.87868C19.631 9.38835 19.8297 10.0167 19.9179 10.6722C20.0001 11.2839 20.0001 12.0477 20 12.9342V17.0658C20.0001 17.9523 20.0001 18.7161 19.9179 19.3278C19.8297 19.9833 19.631 20.6117 19.1213 21.1213C18.6117 21.631 17.9833 21.8297 17.3278 21.9179C16.7161 22.0001 15.9523 22.0001 15.0658 22H8.93414C8.04767 22.0001 7.28387 22.0001 6.67222 21.9179C6.0167 21.8297 5.38835 21.631 4.87869 21.1213C4.36902 20.6117 4.17028 19.9833 4.08215 19.3278C3.99991 18.7161 3.99995 17.9523 4 17.0658V12.9342C3.99995 12.0477 3.99991 11.2839 4.08215 10.6722C4.17028 10.0167 4.36902 9.38835 4.87869 8.87868C5.38835 8.36902 6.0167 8.17028 6.67222 8.08214C7.05704 8.03041 7.50208 8.01124 8.00001 8.00415V5C8.00001 3.34315 9.34316 2 11 2H13.0625C14.6848 2 16 3.31516 16 4.9375V5C16 5.55228 15.5523 6 15 6C14.4477 6 14 5.55228 14 5V4.9375C14 4.41973 13.5803 4 13.0625 4H11ZM12 13C10.8954 13 10 13.8954 10 15C10 16.1046 10.8954 17 12 17C13.1046 17 14 16.1046 14 15C14 13.8954 13.1046 13 12 13Z" fill="#dcdcdc"/>
-                            </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M11 4C10.4477 4 10 4.44772 10 5V8H15.0658C15.9523 7.99995 16.7161 7.99991 17.3278 8.08215C17.9833 8.17028 18.6117 8.36902 19.1213 8.87868C19.631 9.38835 19.8297 10.0167 19.9179 10.6722C20.0001 11.2839 20.0001 12.0477 20 12.9342V17.0658C20.0001 17.9523 20.0001 18.7161 19.9179 19.3278C19.8297 19.9833 19.631 20.6117 19.1213 21.1213C18.6117 21.631 17.9833 21.8297 17.3278 21.9179C16.7161 22.0001 15.9523 22.0001 15.0658 22H8.93414C8.04767 22.0001 7.28387 22.0001 6.67222 21.9179C6.0167 21.8297 5.38835 21.631 4.87869 21.1213C4.36902 20.6117 4.17028 19.9833 4.08215 19.3278C3.99991 18.7161 3.99995 17.9523 4 17.0658V12.9342C3.99995 12.0477 3.99991 11.2839 4.08215 10.6722C4.17028 10.0167 4.36902 9.38835 4.87869 8.87868C5.38835 8.36902 6.0167 8.17028 6.67222 8.08214C7.05704 8.03041 7.50208 8.01124 8.00001 8.00415V5C8.00001 3.34315 9.34316 2 11 2H13.0625C14.6848 2 16 3.31516 16 4.9375V5C16 5.55228 15.5523 6 15 6C14.4477 6 14 5.55228 14 5V4.9375C14 4.41973 13.5803 4 13.0625 4H11ZM12 13C10.8954 13 10 13.8954 10 15C10 16.1046 10.8954 17 12 17C13.1046 17 14 16.1046 14 15C14 13.8954 13.1046 13 12 13Z"
+                                fill="#dcdcdc" />
+                        </svg>
                     </div>
                 </div>
             </div>
-            
-        </div>
-        
 
+        </div>
+
+
+    </div>
+    <div id="uploadContainer" class="uploadContainer">
+        <div class="topContain">
+            <p class="uploadTextBox">Upload</p>
+            <p>Hologram</p>
+
+        </div>
+        <div onclick="hideUploadFile()" class="closeUpload"><svg xmlns="http://www.w3.org/2000/svg" width="25px"
+                height="25px" viewBox="0 0 24 24" fill="none">
+                <path d="M19 5L5 19M5.00001 5L19 19" stroke="#fff" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg></div>
+        <div class="line"></div>
+
+        <div class="uploadBox">
+            <div id="mainUp">
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40px"
+                    height="40px" viewBox="0 0 24 24" version="1.1">
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g>
+                            <rect fill-rule="nonzero" x="0" y="0" width="24" height="24">
+
+                            </rect>
+                            <line x1="12" y1="5" x2="12" y2="15" stroke="#fff" stroke-width="2" stroke-linecap="round">
+
+                            </line>
+                            <line x1="19" y1="20" x2="5" y2="20" stroke="#fff" stroke-width="2" stroke-linecap="round">
+
+                            </line>
+                            <path d="M7,9 L11.2929,4.70711 C11.6834,4.31658 12.3166,4.31658 12.7071,4.70711 L17,9"
+                                stroke="#fff" stroke-width="2" stroke-linecap="round">
+
+                            </path>
+                        </g>
+                    </g>
+                </svg>
+                <p>Select A File To Upload</p>
+                <span>Maximum 20GB</span>
+                <div onclick="pickInput()" class="selectFileButton">
+                    Select A File
+                </div>
+                <input style="display: none;" type="file" id="fileInput" accept="image/*">
+            </div>
+            <img id="imgPreview" src="">
+            <p class="uploadTextBox" onclick="removeFile()" id="removeButton"
+                style="position: absolute;justify-content: center;align-items: center;display: none;">Remove</p>
+        </div>
+        <div>
+            <p class="textonleft">Pick A Tag For The File</p>
+            <div class="filter" style="flex-wrap: wrap;"> <!---->
+                <div onclick="pickTag(this)" id="op0a" class="option active">
+                    None
+                </div>
+                <div onclick="pickTag(this)" id="op1a" class="option">
+                    1
+                </div>
+                <div onclick="pickTag(this)" id="op2a" class="option">
+                    2
+                </div>
+                <div onclick="pickTag(this)" id="op3a" class="option">
+                    3
+                </div>
+                <div onclick="pickTag(this)" id="op4a" class="option">
+                    4
+                </div>
+                <div onclick="pickTag(this)" id="op5a" class="option">
+                    5
+                </div>
+                <div onclick="addCustomTag()" id="customTag" class="option">
+                    Custom Tag
+                </div>
+            </div>
+            <div id="preProgress" class="preProgressBarCont" style="display: none;">
+                <div id="progress-bar-container">
+                    <div id="progress-bar"></div>
+                </div>
+            </div>
+            <div id="progress-text" style="display: none;">0 MB of 0 MB uploaded</div>
+        </div>
+        <div class="commit">
+            <div class="line"></div>
+            <p>File Size:&nbsp;<span id="mbdata">0.00MB</span></p>
+            <div onclick="upload()" id="uploadFileButton" class="uploadFileButton">
+                Upload
+            </div>
+
+        </div>
     </div>
 
 </body>

@@ -273,6 +273,82 @@ function loadImageFromIndexedDB(imageName) {
     });
 }
 
+function deleteDatabase() {
+    return new Promise((resolve, reject) => {
+        const deleteRequest = indexedDB.deleteDatabase('imagesDB');
+
+        deleteRequest.onsuccess = function () {
+            console.log('IndexedDB "imagesDB" deleted successfully');
+            resolve();
+        };
+
+        deleteRequest.onerror = function (event) {
+            console.error('Error deleting IndexedDB:', event.target.errorCode);
+            reject('Error deleting IndexedDB:', event.target.errorCode);
+        };
+
+        deleteRequest.onblocked = function () {
+            console.warn('Delete operation blocked. Close all connections to the database first.');
+            reject('Delete operation blocked');
+        };
+    });
+}
+
+function closeAllConnections(dbName) {
+    return new Promise((resolve, reject) => {
+        const openRequest = indexedDB.open(dbName);
+
+        openRequest.onsuccess = function (event) {
+            const db = event.target.result;
+            db.close(); // Close the connection to the database
+            resolve();
+        };
+
+        openRequest.onerror = function (event) {
+            reject('Error opening database:', event.target.errorCode);
+        };
+    });
+}
+
+async function attemptDeleteDatabase(dbName) {
+    try {
+        // Close any open connections first
+        await closeAllConnections(dbName);
+
+        // Attempt to delete the database
+        await deleteDatabase(dbName);
+    } catch (error) {
+        console.error('Failed to delete database:', error);
+    }
+}
+
+function frontFormat() {
+    document.getElementById("dbFormat").innerHTML = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" width="20px"
+                height="20px" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                <path fill="#fff"
+                    d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                    <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                        to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                </path>
+            </svg>`
+    attemptDeleteDatabase('imagesDB').then(() => {
+        console.log('Database deleted successfully');
+        document.getElementById("dbFormat").innerHTML = `Format Complete`
+        navigate(document.getElementById("files"), 'reload')
+        setTimeout(function () {
+            document.getElementById("dbFormat").innerHTML = `Format Database`
+        }, 5000)
+    }).catch(error => {
+        console.error('Failed to delete database:', error);
+        document.getElementById("dbFormat").innerHTML = `Failed to delete database`
+        alert(`Failed to delete database:, ${error}`)
+        setTimeout(function () {
+            document.getElementById("dbFormat").innerHTML = `Format Database`
+        }, 5000)
+    });
+}
+
 
 let postCount = 0
 let loaded = []
@@ -748,9 +824,9 @@ function clickPIN(element) {
                         $("#lock").fadeOut("fast", function () {
                             $("#mainContainer").fadeIn("fast")
                         })
-                        if (localStorage.getItem("remPIN") === "true") {
-                            sessionStorage.setItem("remUnlocked", "true")
-                        }
+                        //if (localStorage.getItem("remPIN") === "true") {
+                        sessionStorage.setItem("remUnlocked", "true")
+                        //}
                         Boot()
                     })
                 } else {
@@ -1121,6 +1197,7 @@ function loadStories() {
                 let number = iconPfp.match(/\d+/)[0];
                 start = start + 1;
                 document.getElementById(`op${start}`).innerText = `${type}`
+                document.getElementById(`op${start}a`).innerText = `${type}`
 
                 const imageElement = document.getElementById(`u${start}`);
                 imageElement.onclick = function () {
@@ -1177,6 +1254,7 @@ function loadStories() {
                     let number = iconPfp.match(/\d+/)[0];
                     start = start + 1;
                     document.getElementById(`op${start}`).innerText = `${type}`
+                    document.getElementById(`op${start}a`).innerText = `${type}`
 
                     const imageElement = document.getElementById(`u${start}`);
                     imageElement.onclick = function () {
@@ -1587,8 +1665,8 @@ function checkIndexedDBExists(dbName) {
 }
 
 let activeId = 'discover'
-function navigate(e) {
-    if (e.classList.contains("active")) {
+function navigate(e, reload) {
+    if (e.classList.contains("active") && !reload) {
         $("#setupPin").fadeOut("fast", function () {
             $("#main_settings").fadeIn("fast")
         })
@@ -1753,4 +1831,172 @@ function setupPin() {
     $("#main_settings").fadeOut("fast", function () {
         $("#setupPin").fadeIn("fast")
     })
+}
+
+function uploadFile() {
+    document.getElementById("uploadContainer").classList.add("active")
+    document.getElementById("nav-container").style.display = 'none'
+}
+
+function hideUploadFile() {
+    document.getElementById("uploadContainer").classList.remove("active")
+    document.getElementById("nav-container").style.display = null
+}
+
+
+function calculateImageSize(base64String) {
+    const base64WithoutPrefix = base64String.replace(/^data:image\/[a-z]+;base64,/, '');
+    const binaryData = atob(base64WithoutPrefix);
+    const fileSizeInMB = binaryData.length / (1024 * 1024);
+    return fileSizeInMB;
+}
+function pickInput() {
+    document.getElementById("fileInput").click()
+}
+let selectedTag = null
+function pickTag(el) {
+    let x = 6;
+
+    for (let i = 0; i < x; i++) {
+        console.log("This is loop iteration number " + (i + 1));
+        document.getElementById(`op${i}a`).classList.remove("active")
+    }
+    if (el.innerText === 'None') {
+        selectedTag = null
+    } else {
+        selectedTag = el.innerText
+    }
+    el.classList.add('active')
+    console.log("Selected:", selectedTag)
+}
+
+document.getElementById('fileInput').addEventListener('change', function (event) {
+    const file = event.target.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const imagePreview = document.getElementById('imgPreview');
+            imagePreview.src = e.target.result;
+            document.getElementById("removeButton").style.display = 'block'
+            document.getElementById("mainUp").style.display = 'none'
+            imagePreview.style.display = 'block';  // Show the image
+            const base64Text = reader.result.split(',')[1];
+            const final = `data:image/png;base64,${base64Text}`;
+            const totalSizeInMB = calculateImageSize(final);
+            document.getElementById('mbdata').innerText = totalSizeInMB.toFixed(2) + 'MB'
+        };
+
+        reader.readAsDataURL(file);
+    }
+});
+
+function removeFile() {
+    const imagePreview = document.getElementById('imgPreview');
+    document.getElementById("removeButton").style.display = 'none'
+    document.getElementById("mainUp").style.display = null
+    imagePreview.style.display = 'none';
+    imagePreview.src = ''
+    document.getElementById('fileInput').value = '';
+    document.getElementById('mbdata').innerText = '0.00MB'
+
+}
+
+function upload() {
+    const input = document.getElementById('fileInput');
+    const file = input.files[0];
+
+    if (!file) {
+        alert("Please select a file!");
+        return;
+    }
+    document.getElementById("uploadFileButton").innerText = 'Uploading..'
+    document.getElementById("preProgress").style.display = null
+    document.getElementById("progress-text").style.display = null
+
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        const base64Text = reader.result.split(',')[1];
+        const final = `data:image/png;base64,${base64Text}`;
+        const password = atob(localStorage.getItem('t50pswd'));
+        const totalSizeInMB = calculateImageSize(final);
+
+        const postData = {
+            image: final,
+            password: password,
+            method: "upload"
+        };
+
+        // Initialize the progress bar
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+
+        // Create a new XMLHttpRequest
+        const xhr = new XMLHttpRequest();
+
+        // Track the upload progress
+        xhr.upload.addEventListener('progress', function (event) {
+            if (event.lengthComputable) {
+                const uploadedMB = (event.loaded / (1024 * 1024)).toFixed(2); // Convert bytes to MB
+                const progressPercent = (event.loaded / event.total) * 100;
+                progressBar.style.width = progressPercent + '%';
+                progressText.textContent = `${uploadedMB} MB of ${totalSizeInMB.toFixed(2)} MB uploaded`;
+            }
+        });
+
+        // Handle the response from the server
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) { // Request is complete
+                if (xhr.status === 200) { // Success
+                    if (xhr.responseText.includes('Complete')) {
+
+                        if (selectedTag) {
+                            document.getElementById("uploadFileButton").innerText = 'Tagging..'
+                            console.log()
+                            const fileName = xhr.responseText.split(", ")[1];
+                            fetch(`${srv}/images-database?method=setType&image=${fileName.toLowerCase()}&format=${selectedTag}&password=${password}`)
+                                .then(response => response.text())
+                                .then(data => {
+                                    if (data === 'work') {
+                                        pickTag(document.getElementById("op0a"))
+                                        document.getElementById("uploadFileButton").innerText = 'Upload'
+                                    } else {
+                                        alert(`DB Error ${data}`)
+                                    }
+                                })
+                                .catch(error => {
+                                    alert("An otp error occured!", error)
+                                    console.error(error);
+                                });
+
+                        } else {
+                            progressBar.style.width = 0 + '%';
+                            removeFile()
+                            progressText.textContent = `0 MB of 0 MB uploaded`;
+                            document.getElementById("preProgress").style.display = 'none'
+                            document.getElementById("progress-text").style.display = 'none'
+                            document.getElementById("uploadFileButton").innerText = 'Upload'
+                        }
+                    } else {
+                        alert(`Upload complete with unknown response. Server responded with: ${xhr.responseText}`);
+                    }
+                } else {
+                    alert(`Upload failed. Server responded with status: ${xhr.status}`);
+                }
+            }
+        };
+
+        // Open the connection
+        xhr.open('POST', 'https://data.evoxs.xyz/images-database', true);
+
+        // Set the request header to accept JSON
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        // Send the request with the JSON payload
+        xhr.send(JSON.stringify(postData));
+    };
+
+    reader.readAsDataURL(file);
 }
