@@ -99,8 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-    document.getElementById("downloading-icon").classList.add("active")
-    $("#downloading-icon").fadeIn("fast");
+    //document.getElementById("downloading-icon").classList.add("active")
+    //$("#downloading-icon").fadeIn("fast");
 
     const soundsStatus = localStorage.getItem("epsilonSounds")
     if (soundsStatus === 'false') {

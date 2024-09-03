@@ -125,6 +125,19 @@ self.addEventListener('activate', event => {
           cacheNames.map(cacheName => {
             if (cacheName !== STATIC_CACHE_NAME && cacheName !== APP_CACHE_NAME) {
               console.log('Deleting old cache:', cacheName);
+              self.clients.matchAll().then(clients => {
+                clients.forEach(client => {
+                  client.postMessage({ action: 'CACHE_UPDATE_STARTED' });
+                });
+              });
+              setTimeout(function() {
+                self.clients.matchAll().then(clients => {
+                  clients.forEach(client => {
+                    client.postMessage({ action: 'CACHE_UPDATE_COMPLETED' });
+                  });
+                });
+              }, 4000)
+              
               return caches.delete(cacheName);
             }
           })

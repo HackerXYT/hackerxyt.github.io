@@ -474,9 +474,9 @@ function canvasLocal(username, imgBlob) {
         putRequest.onsuccess = function (event) {
             console.log(`Operation [${identifier}] succeeded.`);
             if (username === `${localStorage.getItem("t50-username")}`) {
-                $("#downloading-icon").fadeOut("fast", function () {
-                    document.getElementById("downloading-icon").classList.remove("active")
-                });
+                //$("#downloading-icon").fadeOut("fast", function () {
+                //    document.getElementById("downloading-icon").classList.remove("active")
+                //});
             }
         };
 
