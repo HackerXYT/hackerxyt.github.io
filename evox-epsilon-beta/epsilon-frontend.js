@@ -1892,7 +1892,7 @@ function showFriend(element, remote, notFriends) {
         //        document.getElementById("showErrorCanvas").style.display = ''
         //    })
 
-        fetch(`${srv}/canvas/${friend}.evox/has`)
+        fetch(`${srv}/canvas/${friend}.evox/has?v=${Math.floor(Math.random() * 100000)}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2172,20 +2172,20 @@ function launchAppN(app) {
     }, 1100)
     $("#iframeContainer").fadeIn("slow")
     $("#launchApp").fadeIn("slow")
-    setTimeout(function() {
+    setTimeout(function () {
         const appFrame = setInterval(() => {
             if (sessionStorage.getItem("extRun") === "back" ||
                 (document.getElementById("launchApp").contentWindow.location.href.includes("PreloadApp.html"))) {
-    
+
                 console.log("Hiding App Frame User Returned To Gateway");
                 activeInterval = null;
                 play("quit")
-    
+
                 document.getElementById("launchApp").src = "PreloadApp.html";
                 $("#launchApp").fadeOut("slow");
-    
+
                 $("#iframeContainer").fadeOut("slow");
-    
+
                 sessionStorage.removeItem("extRun");
                 clearInterval(appFrame);
             } else {
@@ -2193,8 +2193,8 @@ function launchAppN(app) {
             }
         }, 100);
     }, 2000)
-    
-    setTimeout(function() {
+
+    setTimeout(function () {
         const dotElement = document.querySelector('.dot');
         dotElement.style.animation = null;
         var imgElement = activeAppThis.querySelector('img');
@@ -2203,7 +2203,7 @@ function launchAppN(app) {
         document.getElementById("gatewayExploreScroll").style.marginTop = '70px'
         $("#bottomButtonsFocus").fadeOut("fast", function () {
             $("#bottomButtonsDefault").fadeIn("fast")
-    
+
         })
         activeAppThis.classList.remove('fullscreen');
         document.body.classList.remove('no-scroll');
@@ -2231,7 +2231,7 @@ function launchAppN(app) {
         activeAPP = null
         activeAppThis = null
     }, 1200)
-    
+
 }
 
 function openPanel(which) {
@@ -2294,6 +2294,7 @@ function settingsOpen(panel) {
     document.getElementById("settings-customize").style.display = 'none'
     document.getElementById("settings-about").style.display = 'none'
     document.getElementById("settings-notifications").style.display = 'none'
+    document.getElementById("settings-name").style.display = 'none'
     if (document.getElementById("changeBackgroundSlider").classList.contains("expanded")) {
         changeBackgroundSlider(document.getElementById("changeBackgroundSlider"))
     }
@@ -2380,6 +2381,8 @@ function attachSettingsData(data, container) {// data -> personal, security, cyp
                 let hiding = null
                 if (container === 1) {
                     hiding = "#settings-security"
+                } else if (container === 3) {
+                    hiding = "#settings-personal"
                 } else if (container === 2) {
                     hiding = "#settings-epsilon"
                 } else {
@@ -2397,6 +2400,10 @@ function attachSettingsData(data, container) {// data -> personal, security, cyp
                     settingsGrabCloseTrigger = 527
                     loadPersonal()
                     document.getElementById("settings").style.height = '400px'
+                }
+                if (data === 'name') {
+                    settingsGrabCloseTrigger = 726
+                    document.getElementById("settings").style.height = '250px'
                 }
                 if (data === 'about') {
                     loadAppAbout()
@@ -2421,6 +2428,12 @@ function loadPersonal() {
         .then(response => response.text())
         .then(name => {
             document.getElementById("name-preview").innerHTML = document.getElementById("name-preview").innerHTML.replace("null", name)
+            if (name !== 'Unknown') {
+                const parts = name.split(' ');
+                const result = [`${parts[0]} `, parts[1]];
+                document.getElementById("nameInput").value = result[0]
+                document.getElementById("lastInput").value = result[1]
+            }
         })
         .catch(error => {
             console.log('Name Error:', error);
@@ -2428,28 +2441,28 @@ function loadPersonal() {
     document.getElementById("email-preview").innerHTML = document.getElementById("email-preview").innerHTML.replace("null", localStorage.getItem("t50-email"))
     document.getElementById("username-preview").innerHTML = document.getElementById("username-preview").innerHTML.replace("null", localStorage.getItem("t50-username"))
     fetch(`${srv}/accounts?what=getPhone&username=${myUser}&password=${atob(localStorage.getItem("t50pswd"))}`)
-    .then(response => response.text())
-    .then(phone => {
-        const number = phone.replace("+30-", '')
-        document.getElementById("phone-preview").innerHTML = document.getElementById("phone-preview").innerHTML.replace("null", number)
-    })
-    .catch(error => {
-        console.log('phone Error:', error);
-    });
+        .then(response => response.text())
+        .then(phone => {
+            const number = phone.replace("+30-", '')
+            document.getElementById("phone-preview").innerHTML = document.getElementById("phone-preview").innerHTML.replace("null", number)
+        })
+        .catch(error => {
+            console.log('phone Error:', error);
+        });
     fetch(`${srv}/authip?method=Eget&email=${localStorage.getItem("t50-email")}&ip=null&username=${myUser}&password=${atob(localStorage.getItem("t50pswd"))}`)
-    .then(response => response.text())
-    .then(status => {
-        if(status === 'IP is Mapped') {
-            document.getElementById("2fa-preview").innerHTML = document.getElementById("2fa-preview").innerHTML.replace("Unknown", 'Disabled')
-        } else {
-            console.log("Status 2fa:", status)
-            document.getElementById("2fa-preview").innerHTML = document.getElementById("2fa-preview").innerHTML.replace("Unknown", 'Enabled')
-        }
-        
-    })
-    .catch(error => {
-        console.log('phone Error:', error);
-    });
+        .then(response => response.text())
+        .then(status => {
+            if (status === 'IP is Mapped') {
+                document.getElementById("2fa-preview").innerHTML = document.getElementById("2fa-preview").innerHTML.replace("Unknown", 'Disabled')
+            } else {
+                console.log("Status 2fa:", status)
+                document.getElementById("2fa-preview").innerHTML = document.getElementById("2fa-preview").innerHTML.replace("Unknown", 'Enabled')
+            }
+
+        })
+        .catch(error => {
+            console.log('phone Error:', error);
+        });
 }
 
 function getOS() {

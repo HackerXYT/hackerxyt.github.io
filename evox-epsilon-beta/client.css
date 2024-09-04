@@ -6423,6 +6423,25 @@ input:autofill {
   transition: background-color 0.2s ease-in-out, padding 0.2s ease-in-out, height 0.5s ease-in-out;
 }
 
+.option vo {
+  margin-left: auto;
+  margin-right: 10px;
+  /* Adjust the spacing as needed */
+  font-weight: lighter;
+  color: #8b8b8b;
+}
+
+vo input {
+  color: #8b8b8b;
+  background-color: transparent;
+  float: right;
+  width: auto;
+  border: none;
+  box-shadow: none;
+  text-align: right;
+  margin-right: 15px;
+}
+
 .buttonsContainer .option.expanded {
   height: 50px;
   /* Adjust as needed to fit the bgBox */

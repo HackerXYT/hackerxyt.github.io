@@ -1041,7 +1041,7 @@
         <div id="settings-personal" class="settings-panel" style="display: none;">
             <!--<p>Will get:<br>-Emails<br>-Phone number<br>-2FA Stats<br><br>Will Show:<br>-Change password (button)</p>-->
             <div class="buttonsContainer">
-                <div class="option">
+                <div onclick="attachSettingsData('name', 3)" class="option">
                     <span>Name</span>
                     <div style="margin-left: auto;margin-right: 10px;"><vo id="name-preview" style="display: inline-flex;
                         align-items: center;
@@ -1126,6 +1126,22 @@
                 </div>-->
 
             </div>
+        </div>
+        <div id="settings-name" class="settings-panel" style="display: none;">
+            <div style="margin-top: 20px;" class="buttonsContainer">
+                <div class="option">
+                    <span>First Name</span>
+                    <vo style="margin-right: 0;"><input id="nameInput" placeholder="required"></vo>
+                </div>
+                <div class="option">
+                    <span>Family Name</span>
+                    <vo style="margin-right: 0;"><input id="lastInput" placeholder="optional"></vo>
+                </div>
+                
+
+            </div>
+            <span
+                    style="font-size: 15px;color: red"><code>names are not yet saved.(<6.6.1)</code>.</span>
         </div>
         <!-- Epsilon Settings -->
         <div id="settings-epsilon" class="settings-panel" style="display: none;">

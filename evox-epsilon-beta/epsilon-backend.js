@@ -188,7 +188,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '6.6.0'
+const appVersion = '6.6.1'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -3034,6 +3034,16 @@ function pickTag(el) {
 }
 
 
+const buttons = document.querySelectorAll('.option');
+
+// Iterating over each element in the NodeList
+buttons.forEach(function(button) {
+  // Adding a click event listener to each individual element
+  button.addEventListener('click', function() {
+    play('clickProfile')
+    console.log('Button clicked:', button);
+  });
+});
 function addTag() {
     play('clickProfile')
     selectedTags = []
