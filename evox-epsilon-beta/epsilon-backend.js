@@ -2,6 +2,23 @@ sessionStorage.removeItem("current_sline")
 sessionStorage.removeItem("lastChatInter")
 sessionStorage.removeItem("lastChatMessages")
 sessionStorage.removeItem("addFriendItem")
+
+//let lastFrameTime = performance.now();
+//function monitorFPS() {
+//    let currentFrameTime = performance.now();
+//    let delta = currentFrameTime - lastFrameTime;
+//    let fps = 1000 / delta;
+//    lastFrameTime = currentFrameTime;
+//    
+//    if (fps < 30) {
+//        console.log(`Low FPS detected: ${fps}`);
+//    }
+//
+//    requestAnimationFrame(monitorFPS);
+//}
+//
+//requestAnimationFrame(monitorFPS);
+
 //IP Auth
 let ip = "error";
 document.addEventListener("DOMContentLoaded", function () {
@@ -26,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     if (localStorage.getItem("t50pswd")) {
         setTimeout(function () {
+            console.log("Running loadProfile because user is logged in")
             loadProfile()
         }, 1500)
         if ('serviceWorker' in navigator) {
@@ -188,7 +206,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '6.6.1'
+const appVersion = '7'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -233,7 +251,7 @@ function loadAppAbout() {
 function loadBackground() {
     const gradient = localStorage.getItem("customEpsilonGradient")
     let colorScheme;
-    console.log("Grad:", gradient)
+    console.log("customEpsilonGradient:", gradient)
     const root = document.documentElement;
     if (gradient === 'purple') {
         console.log("Setting Purple")
@@ -357,7 +375,6 @@ function loadPFPget(username, isCanvas) {
         });
     });
 }
-
 function checkUsernameAndGetData(username, getDataCallback) {
     let request = window.indexedDB.open('EvoxSocial');
 
@@ -366,7 +383,6 @@ function checkUsernameAndGetData(username, getDataCallback) {
     };
 
     request.onsuccess = function (event) {
-        // Database has been opened successfully
         let db = event.target.result;
 
         if (!db.objectStoreNames.contains('Profiles')) {
@@ -395,25 +411,32 @@ function checkUsernameAndGetData(username, getDataCallback) {
             // If the 'Profiles' object store exists, proceed with retrieving data
             let transaction = db.transaction(['Profiles'], 'readonly');
             let objectStore = transaction.objectStore('Profiles');
-            let getRequest = objectStore.get(username);
 
-            getRequest.onsuccess = function (event) {
-                let result = event.target.result;
-                if (result) {
-                    // Username exists, run the getDataCallback function to retrieve the data
-                    getDataCallback(null, result);
-                } else {
-                    getDataCallback(null, "None");
-                    //console.log("Username not found: " + username);
-                }
-            };
+            // Ensure that the key is valid (it should be a string)
+            if (typeof username === 'string' && username.trim() !== '') {
+                let getRequest = objectStore.get(username);
 
-            getRequest.onerror = function (event) {
-                console.log("Error checking username:", event.target.error);
-            };
+                getRequest.onsuccess = function (event) {
+                    let result = event.target.result;
+                    if (result) {
+                        // Username exists, run the getDataCallback function to retrieve the data
+                        getDataCallback(null, result);
+                    } else {
+                        getDataCallback(null, "None");
+                    }
+                };
+
+                getRequest.onerror = function (event) {
+                    console.log("Error checking username:", event.target.error);
+                };
+            } else {
+                console.log("Invalid username key:", username);
+                getDataCallback(new Error("Invalid username key"), null);
+            }
         }
     };
 }
+
 
 const DB_NAME = 'EvoxSocial';
 const DB_VERSION = 3; // Update this number if you make schema changes
@@ -2429,7 +2452,6 @@ function numberToText(number) {
 
 let isProfileLoading = false;
 function loadProfile(reload, withoutCanvas) {
-
     if (isProfileLoading === true && navigator.onLine) {
         console.log("Profile is already loading. Stopping.")
         return;
@@ -2437,6 +2459,12 @@ function loadProfile(reload, withoutCanvas) {
     isProfileLoading = true;
     const username = localStorage.getItem("t50-username")
     const email = localStorage.getItem("t50-email")
+    if(!username || !email) {
+        console.warn("loadProfile Cancelled, null values")
+        isProfileLoading = false;
+        return;
+    }
+    console.log("Loading Profile!", username, email)
     if (!withoutCanvas) {
         $("#canvasOption").fadeOut("fast", function () {
             $("#loadingIndicatorSelfCanvas").fadeIn("fast")
@@ -2596,7 +2624,6 @@ function loadProfile(reload, withoutCanvas) {
                     document.getElementById("self-video-forDisplay").src = '';
                     document.getElementById("self-video-forDisplay").style.display = 'none';
                     $("#loadingIndicatorSelfCanvas").fadeOut("fast")
-                    console.log("abcnu")
                     $("#canvasOption").fadeIn("fast")
                     document.getElementById("loadingIndicatorSelfCanvas").style.display = 'none'
                     return Promise.resolve(); // Resolve immediately if no canvas
@@ -2682,21 +2709,27 @@ function loadProfile(reload, withoutCanvas) {
                 return response.text();
             })
             .then(last_login => {
-                localStorage.setItem("selfLastLogin", last_login);
-                const today = new Date().toISOString().split('T')[0];
-                const datePart = last_login.split(' ')[0];
-                const timePart = last_login.split(' ')[1].slice(0, 5);
-
-                if (datePart === today) {
-                    console.log(timePart);
-                    document.getElementById("self_lastSeen").innerText = timePart;
-                } else {
-                    if (last_login !== 'Unknown') {
-                        document.getElementById("self_lastSeen").innerText = formatTimeDifference(last_login) + " ago";
+                try {
+                    localStorage.setItem("selfLastLogin", last_login);
+                    const today = new Date().toISOString().split('T')[0];
+                    const datePart = last_login.split(' ')[0];
+                    const timePart = last_login.split(' ')[1].slice(0, 5);
+    
+                    if (datePart === today) {
+                        console.log(timePart);
+                        document.getElementById("self_lastSeen").innerText = timePart;
                     } else {
-                        document.getElementById("self_lastSeen").innerText = 'Unknown';
+                        if (last_login !== 'Unknown') {
+                            document.getElementById("self_lastSeen").innerText = formatTimeDifference(last_login) + " ago";
+                        } else {
+                            document.getElementById("self_lastSeen").innerText = 'Unknown';
+                        }
                     }
+                } catch (error) {
+                    console.warn("Something went wrong with last login", error)
+                    document.getElementById("self_lastSeen").innerText = 'Unknown';
                 }
+                
             })
             .catch(error => {
                 console.log("Self Load Last Login Failed [3]:", error);

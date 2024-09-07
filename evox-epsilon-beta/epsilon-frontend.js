@@ -186,6 +186,7 @@ function clientVerified() {
                     }
                 }).catch(error => {
                     //setNetworkStatus('off')
+                    pickRandFromDict('offline')
                     warn("Server Connection Failed. Running Offline")
                     verificationComplete()
 
@@ -351,9 +352,13 @@ function beginLogin(ipLogin, matches, username) {
             setTimeout(function () {
 
                 document.getElementById("formLoginByIP").classList.add('active')
+                setTimeout(function() {
+                    aitPlay('welcome_back_loginByIp')
+                }, 500)
                 //document.getElementById("formLogin").style.paddingBottom = "100px"
             }, 50)
         }, 920)
+        
     } else {
         if (ipLogin) {
             document.getElementById("formLoginByIP").classList.remove('active')
@@ -440,6 +445,7 @@ function logOut() {
 
     // Check the user's response
     if (userResponse) {
+        aitPlay('signing_out')
         // OK was clicked
         console.log("User clicked OK");
         // Clear localStorage and sessionStorage
@@ -800,7 +806,7 @@ function startLogin() {
                         //send to dc that id matches to acc email
                     }
                     console.log("Welcome Abroad")
-                    loadProfile()
+                    
                     localStorage.setItem("2fa_status", "On")
                     localStorage.setItem("t50pswd", `${btoa(password)}`)
                     const credentialsString = data;
@@ -829,6 +835,7 @@ function startLogin() {
                         $("#connectionContainer").fadeOut("fast")
                         verificationComplete()
                     }, 1000)
+                    loadProfile()
 
                     //FloridaRun()
                     console.log("Registering Service Worker..")
@@ -1079,6 +1086,14 @@ function returnToLoginMenuBy2fa() {
 
 const stockApps = ['tasco', 'oasa', 'deluxe'];
 function verificationComplete() {
+    console.log("Verification Complete.")
+    const isAccepted = aitPlay('good_day_AIT_intro')
+    if(isAccepted === false) {
+        console.log("Welcome Back Audio")
+        pickRandFromDict('welcomeBack')
+    } else {
+        console.log("Welcome Audio", isAccepted)
+    }
     $("#connectionContainer").fadeOut("fast")
 
     const appsElement = document.getElementById('apps');
@@ -1211,7 +1226,7 @@ function hideChats() {
         });
 }
 function showChats() {
-
+    aitPlay('secureline_desc')
     loadSecurelineHome()
     const animate = document.getElementById("rocketIcon")
     animate.style.transform = 'rotate(45deg)'
@@ -2397,6 +2412,7 @@ function attachSettingsData(data, container) {// data -> personal, security, cyp
                     document.getElementById("settings").style.height = '200px'
                 }
                 if (data === 'personal') {
+                    pickRandFromDict('personal_info')
                     settingsGrabCloseTrigger = 527
                     loadPersonal()
                     document.getElementById("settings").style.height = '400px'
@@ -2709,6 +2725,7 @@ function enableTab(element) {
             updateServiceWorkerCacheAndReload()
         }, 500)
     } else if (element.innerHTML.includes("Explore") && !element.classList.contains("active")) {
+        
         isProfileTabActive = false
         play('closeProfile')
         if (wasGatewayActionsActive === true) {
@@ -2729,6 +2746,7 @@ function enableTab(element) {
         }, 200)
         $("#bggradient").fadeIn("slow")
     } else if (element.innerHTML.includes("Profile") && !element.classList.contains("active") || element.innerHTML.includes("Profile") && element.classList.contains("animate")) {
+        pickRandFromDict('profile')
         console.log("Attaching Profile")
         if (isProfileTabActive) {
             element.classList.add("active")

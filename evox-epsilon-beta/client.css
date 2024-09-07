@@ -6869,6 +6869,8 @@ vo input {
 }
 
 
+
+
 .tagsPopup.active {
   opacity: 1;
   /* Show the popup */
@@ -6944,3 +6946,84 @@ vo input {
 vox.svgIconAnimated {
   transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out, margin 0.5s ease-in-out;
 }
+
+.aitContainer {
+  display: flex;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 1;
+  bottom: 30px; /* Adjust the distance from the bottom */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%) translateY(500px); /* Correct centering for horizontal and animate */
+  transition: transform 0.6s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 0.5s ease-in-out;
+}
+
+.aitContainer.active {
+  transform: translateX(-50%) translateY(0); /* Moves up when active */
+}
+
+.aitContainer.right {
+  left: 70px;
+  transform: translateX(-50%) translateY(0); /* Moves up when active */
+}
+
+.opa {
+  animation-fill-mode: both;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  background: #0000002d;
+}
+.opa p {
+  padding-left: 10px;
+  padding-right: 10px;
+  white-space: nowrap;
+}
+
+#ait {
+  width: 70px;
+  height: 70px;
+  animation-fill-mode: both;
+  /*animation: bigsmall 2s infinite;*/
+}
+
+
+@keyframes floating {
+  0%, 100% {
+    transform: translate3d(0, -1px, 0);
+  }
+  50% {
+    transform: translate3d(0, 1px, 0);
+  }
+}
+
+@keyframes flickr {
+  0%, 100% {
+    opacity: 1;
+    transform: translate3d(-5px, 0px, 0) scale(1.05);
+  }
+  25%, 75% {
+     opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate3d(5px, 0px, 0) scale(1);
+  }
+}
+
+@keyframes bigsmall {
+  50% {
+    transform: scale(1.09);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+

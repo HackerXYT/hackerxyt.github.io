@@ -8,7 +8,8 @@
             if (successLoad === false) {
                 try {
                     play('error')
-                } catch(error) {
+                    pickRandFromDict('error')
+                } catch (error) {
                     console.error(error)
                 }
                 warn(`An error occurred: ${message} at ${source}:${lineno}:${colno}`)
@@ -20,7 +21,8 @@
             if (successLoad === false) {
                 try {
                     play('error')
-                } catch(error) {
+                    pickRandFromDict('error')
+                } catch (error) {
                     console.error(error)
                 }
                 warn(`An error occurred: ${source}:${lineno}:${colno}`)
@@ -743,7 +745,7 @@
                     <p class="infoHeader">Tags connect you with others on Evox.<br>Choose a suggested tag or add your
                         own.</p>
                     <div id="recommendedTags" class="user-tags addTags"><!--Max 20 Tags-->
-                       
+
                     </div>
                     <div onclick="submitTags(this)" class="editButton" id="addTagButton">
                         Pick Some Tags
@@ -1043,50 +1045,61 @@
             <div class="buttonsContainer">
                 <div onclick="attachSettingsData('name', 3)" class="option">
                     <span>Name</span>
-                    <div style="margin-left: auto;margin-right: 10px;"><vo id="name-preview" style="display: inline-flex;
+                    <div style="margin-left: auto;margin-right: 10px;">
+                        <vo id="name-preview" style="display: inline-flex;
                         align-items: center;
                         margin-left: auto;
                         vertical-align: middle;margin-right: 0;">null<svg style="margin-left: 0;"
-                            xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                            <path
-                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                                fill="#fff"></path>
-                        </svg></vo></div>
+                                xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path
+                                    d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                                    fill="#fff"></path>
+                            </svg></vo>
+                    </div>
                 </div>
                 <div class="option">
                     <span>Username</span>
-                    <div style="margin-left: auto;margin-right: 10px;"><vo style="display: inline-flex;
+                    <div style="margin-left: auto;margin-right: 10px;">
+                        <vo style="display: inline-flex;
                         align-items: center;
                         margin-left: auto;
-                        vertical-align: middle;margin-right: 0;" id="username-preview" >null<svg style="margin-left: 0;"
-                            xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                            <path
-                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                                fill="#fff"></path>
-                        </svg></vo></div>
+                        vertical-align: middle;margin-right: 0;" id="username-preview">null<svg style="margin-left: 0;"
+                                xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path
+                                    d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                                    fill="#fff"></path>
+                            </svg></vo>
+                    </div>
                 </div>
                 <div class="option">
                     <span>Emails</span>
-                    <div style="margin-left: auto;margin-right: 10px;"><vo id="email-preview" style="display: inline-flex;
+                    <div style="margin-left: auto;margin-right: 10px;">
+                        <vo id="email-preview" style="display: inline-flex;
                         align-items: center;
                         margin-left: auto;
                         vertical-align: middle;margin-right: 0;">null<svg style="margin-left: 0;"
-                            xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                            <path
-                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                                fill="#fff"></path>
-                        </svg></vo></div>
+                                xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path
+                                    d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                                    fill="#fff"></path>
+                            </svg></vo>
+                    </div>
                 </div>
                 <div class="option">
-                    <span>Phone Number</span><vo id="phone-preview" style="display: inline-flex;
+                    <span>Phone Number</span>
+                    <vo id="phone-preview" style="display: inline-flex;
                     align-items: center;
                     margin-left: auto;
                     vertical-align: middle;margin-right: 0;">null<svg style="margin-left: 0;"
-                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#fff"></path>
-                    </svg></vo>
+                            xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                                fill="#fff"></path>
+                        </svg></vo>
                 </div>
                 <!--<div onclick="setup_begin()" class="option">
                     <img src="epsilon-frontend-assets/ipaddresses.png"><span>Logged In & IP Addresses</span><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
@@ -1098,26 +1111,31 @@
             <div class="buttonsContainer">
                 <div class="option">
                     <img src="epsilon-frontend-assets/signin.png"><span>2FA</span>
-                    <div style="margin-left: auto;margin-right: 10px;"><vo id="2fa-preview" style="display: inline-flex;
+                    <div style="margin-left: auto;margin-right: 10px;">
+                        <vo id="2fa-preview" style="display: inline-flex;
                         align-items: center;
                         margin-left: auto;
                         vertical-align: middle;margin-right: 0;">Unknown<svg style="margin-left: 0;"
-                            xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                            <path
-                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                                fill="#fff"></path>
-                        </svg></vo></div>
+                                xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path
+                                    d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                                    fill="#fff"></path>
+                            </svg></vo>
+                    </div>
                 </div>
                 <div class="option"><!--When the password was last changed.-->
-                    <span>Password</span><vo style="display: inline-flex;
+                    <span>Password</span>
+                    <vo style="display: inline-flex;
                     align-items: center;
                     margin-left: auto;
                     vertical-align: middle;margin-right: 0;"><svg style="margin-left: 0;"
-                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                            fill="#fff"></path>
-                    </svg></vo>
+                            xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                                fill="#fff"></path>
+                        </svg></vo>
                 </div>
                 <!--<div onclick="setup_begin()" class="option">
                     <img src="epsilon-frontend-assets/ipaddresses.png"><span>Logged In & IP Addresses</span><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
@@ -1137,11 +1155,10 @@
                     <span>Family Name</span>
                     <vo style="margin-right: 0;"><input id="lastInput" placeholder="optional"></vo>
                 </div>
-                
+
 
             </div>
-            <span
-                    style="font-size: 15px;color: red"><code>names are not yet saved.(<6.6.1)</code>.</span>
+            <span style="font-size: 15px;color: red"><code>names are not yet saved.(<6.6.1)</code>.</span>
         </div>
         <!-- Epsilon Settings -->
         <div id="settings-epsilon" class="settings-panel" style="display: none;">
@@ -1657,14 +1674,48 @@
     <input style="display:none" type="file" id="upload-canvas"
         accept=".mp4, .mov, .webm, video/mp4, video/quicktime, video/webm" onchange="setUserCover()">
     <div id="invisibleContainer" style="display: none;"></div>
+    <div class="aitContainer" id="aitContainer">
+        <div class="opa">
+            <canvas id="ait"></canvas>
+            <p style="display: none;">AIT speaking</p>
+        </div>
+    </div>
+    <!--<canvas id="ait"></canvas>
+    <style>
+        canvas {
+            width: 100px;
+            height: 100px;
+            position: fixed;
+            bottom: 5px;
+            left: 10px;
+            z-index: 9999;
+            transition: top 0.5s ease-in-out, left 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        canvas.center {
+            width: 300px;
+            height: 300px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+    </style>-->
+
 </body>
 
 
 
 <script src="../scripts/jquery-3.7.0.js"></script>
+<script src="aitBackend.js"></script>
+<script src="ait.js"></script>
 <!--<script src="florida.js"></script>Merged with epsilon-->
 <script src="epsilon-frontend.js"></script>
 <script src="epsilon-backend.js"></script>
+
+
+
 
 <script defer>
     //if (window.location.href.includes("https://")) {
