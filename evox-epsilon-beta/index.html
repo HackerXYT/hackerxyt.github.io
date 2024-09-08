@@ -292,7 +292,7 @@
                     <div id="loginVox" onclick="beginLogin()" class="inv-button login">
                         Login
                     </div>
-                    <p id="trademarkVox">Evox® Epsilon by Evox Communications.</p>
+                    <p id="trademarkVox">Powered by Evox®</p>
                 </div>
                 <div id='formLogin' class="glass login">
                     <a onclick="returnToLoginMenu()"><svg class="aligned" xmlns="http://www.w3.org/2000/svg"
@@ -1674,7 +1674,7 @@
     <input style="display:none" type="file" id="upload-canvas"
         accept=".mp4, .mov, .webm, video/mp4, video/quicktime, video/webm" onchange="setUserCover()">
     <div id="invisibleContainer" style="display: none;"></div>
-    <div class="aitContainer" id="aitContainer">
+    <div onclick="stopAit()" class="aitContainer" id="aitContainer">
         <div class="opa">
             <canvas id="ait"></canvas>
             <p style="display: none;">AIT speaking</p>
@@ -1708,7 +1708,7 @@
 
 
 <script src="../scripts/jquery-3.7.0.js"></script>
-<script src="aitBackend.js"></script>
+<!--<script src="aitBackend.js"></script>-->
 <script src="ait.js"></script>
 <!--<script src="florida.js"></script>Merged with epsilon-->
 <script src="epsilon-frontend.js"></script>

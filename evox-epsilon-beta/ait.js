@@ -398,14 +398,44 @@ var aitSounds = {
         src: ['./ait_assets/you have new friend requests.mp3'],
         loop: false,
         volume: 0.5
+    }),
+    unexpected: new Howl({
+        src: ['./ait_assets/unexpected.mp3'],
+        loop: false,
+        volume: 0.5
+    }),
+    mind_changed: new Howl({
+        src: ['./ait_assets/mind_changed.mp3'],
+        loop: false,
+        volume: 0.5
+    }),
+    uh: new Howl({
+        src: ['./ait_assets/uh.mp3'],
+        loop: false,
+        volume: 0.5
+    }),
+    beta_intro: new Howl({
+        src: ['./ait_assets/beta_intro.mp3'],
+        loop: false,
+        volume: 0.5
+    }),
+    okay_sorry: new Howl({
+        src: ['./ait_assets/okay_sorry.mp3'],
+        loop: false,
+        volume: 0.5
+    }),
+    got_it: new Howl({
+        src: ['./ait_assets/got_it.mp3'],
+        loop: false,
+        volume: 0.5
     })
 };
 
 const aitReplay = {
     AIT_chat: 2, //times that can be replayed
-    ait_deactivated: true,
+    ait_deactivated: true, //can be replayed infinitely
     already_back: 5,
-    good_day_AIT_intro: false,
+    good_day_AIT_intro: false, // can be played once
     good_evening: 2,
     good_morning: 2,
     how_to_deactivate_AIT: false,
@@ -413,14 +443,14 @@ const aitReplay = {
     launching_deluxe: true,
     launching_oasa: true,
     launching_tasco: true,
-    lets_add_some_friends: true,
+    lets_add_some_friends: 2,
     login_taker_longer: true,
     max_tags: true,
     new_canvas: true,
     new_messages: true,
     nice_exp_yesterday: true,
     no_friends: true,
-    no_messages_with_user: 5,
+    no_messages_with_user: true,
     oh_no_cryptox_disabled: true,
     params_saved: true,
     personal_info_section_w_desc: 3,
@@ -449,7 +479,13 @@ const aitReplay = {
     user_has_cryptox_disabled: true,
     welcome_back_loginByIp: true,
     welcome_back_to_do_today: 4,
-    you_have_new_friend_requests: true
+    you_have_new_friend_requests: true,
+    unexpected: true,
+    mind_changed: true,
+    uh: true,
+    beta_intro: true,
+    okay_sorry: true,
+    got_it: true
 };
 
 
@@ -496,7 +532,7 @@ function is200(sound) {
         } else if (aitAnalytics[sound].canReplay === false) {
             console.warn("Sound cannot be replayed")
             return false;
-        } else if(aitAnalytics[sound].canReplay > aitAnalytics[sound].count) {
+        } else if (aitAnalytics[sound].canReplay > aitAnalytics[sound].count) {
             aitAnalytics[sound].count = aitAnalytics[sound].count + 1
             console.warn(`Sound can be replayed for ${aitAnalytics[sound].canReplay - aitAnalytics[sound].count} more times`)
             return true;
@@ -514,16 +550,57 @@ function is200(sound) {
     }
 }
 
+let aitAttached = false;
+function loadAit() {
+    if (localStorage.getItem("aitDev") === 'accepted') {
+        console.warn("Attaching AIT Beta")
+        aitAttached = true
+    }
+    const username = localStorage.getItem("t50-username")
+    fetch('https://data.evoxs.xyz/ait')
+        .then(response => response.json())
+        .then(accepted => {
+            if (accepted.evox_users.includes(username)) {
+                localStorage.setItem("aitDev", "accepted")
+                if (aitAttached !== true) {
+                    console.warn("Attaching AIT Beta")
+                    aitAttached = true
+                }
+
+            } else {
+                aitAttached = false
+            }
+        })
+        .catch(error => {
+            console.warn("Ignoring ait fetch error")
+        });
+
+}
+loadAit()
+
+
+
+let pendingSound = null;
+let cancelOutshow = false;
 let soundPlaying = false;
+const globalSounds = ['welcome_back_loginByIp', 'unexpected', 'mind_changed', 'uh', 'beta_intro']
 function aitPlay(soundName) {
     console.log("aitPlay")
-    if (aitSounds[soundName]) {  // Check if the sound exists in the map
+    if (aitSounds[soundName] && aitAttached || aitSounds[soundName] && globalSounds.includes(soundName)) {  // Check if the sound exists in the map
         try {
-            if (is200(soundName) === true && soundPlaying === false) {
+            if (is200(soundName) === true) {
+                if (soundPlaying === true) {
+                    cancelOutshow = true;
+                    currentSoundPlaying.stop()
+                    pendingSound = soundName
+                    aitSounds['uh'].play();
+                    animateAIT('uh');
+                    return;
+                }
                 console.log(`Sound ${soundName} can be played`)
                 soundPlaying = true;
                 animateAIT(soundName);
-                if(soundName.includes('profile')) {
+                if (soundName.includes('profile')) {
                     document.getElementById("aitContainer").classList.add("right")
                 } else {
                     document.getElementById("aitContainer").classList.add("active")
@@ -531,7 +608,7 @@ function aitPlay(soundName) {
                 aitSounds[soundName].play();  // Play the sound
                 aitAnalytics.countPlayed++
                 localStorage.setItem("aitAnalytics", JSON.stringify(aitAnalytics))
-                
+
                 return true;
             } else {
                 console.log(`Sound ${soundName} cannot be played`)
@@ -543,16 +620,26 @@ function aitPlay(soundName) {
             return false;
         }
     } else {
-        console.warn("Sound not found:", soundName);
-        return false;
+        if (aitAttached !== false) {
+            console.warn("Sound not found:", soundName);
+            return false;
+        } else {
+            console.warn("AIT Developer Beta Is Disabled. File Requested:", soundName)
+            return false;
+        }
+
     }
 }
 
+
+
+let currentSoundPlaying = null;
 function animateAIT(soundName) {
     var div = document.getElementById('ait');
 
     // Get the Howler sound object
     var sound = aitSounds[soundName];
+    currentSoundPlaying = sound
 
     // Create an audio context and analyser
     var audioContext = Howler.ctx;
@@ -587,10 +674,32 @@ function animateAIT(soundName) {
     // Attach an onend callback to know when the sound finishes
     sound.once('end', function () {
         soundPlaying = false;
-        document.getElementById("aitContainer").classList.remove("active")
-        document.getElementById("aitContainer").classList.remove("right")
-        console.log("Sound has finished playing");
-        // You can stop or reset the animation here if needed
-        div.style.transform = 'scale(1)';
+        currentSoundPlaying = null;
+        if (!cancelOutshow) {
+            document.getElementById("aitContainer").classList.remove("active")
+            document.getElementById("aitContainer").classList.remove("right")
+            console.log("Sound has finished playing");
+            // You can stop or reset the animation here if needed
+            div.style.transform = 'scale(1)';
+        } else {
+            cancelOutshow = false
+        }
+
+        if (soundName === 'uh') {
+            setTimeout(function () {
+                aitPlay(pendingSound)
+                pendingSound = null;
+            }, 500)
+        }
+
     });
+}
+
+function stopAit() {
+    cancelOutshow = false;
+    currentSoundPlaying.stop()
+    //aitSounds['okay_sorry'].play();
+    //animateAIT('okay_sorry');
+    aitSounds['got_it'].play();
+    animateAIT('got_it');
 }

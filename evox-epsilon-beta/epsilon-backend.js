@@ -773,6 +773,7 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
                         span.style.display = 'none'
                     }
                 } else {
+                    //pickRandFromDict('offline')
                     console.error('Last Login Failed! Server Offline.', error);
                 }
             });
@@ -1663,6 +1664,7 @@ document.getElementById("message_input").addEventListener("keypress", function (
     }
 });
 
+let aitNoMsgPlayed = false;
 let activeChatInterval = null;
 function actionReload(whoto, reloadPage) {
     const container = document.getElementById("messages-container");
@@ -1694,6 +1696,11 @@ function actionReload(whoto, reloadPage) {
                 const integrityCheck = JSON.parse(messages);
                 if (integrityCheck.messages.length === 0) {
                     document.getElementById("messages-container").innerHTML = `<p id="tempTextNoMsg" class='centered-text'>No messages!</p>`;
+                    if(aitNoMsgPlayed === false) {
+                        aitPlay("no_messages_with_user")
+                        aitNoMsgPlayed = true
+                    }
+                    
                     document.getElementById("tempTextNoMsg").style.opacity = '1'
                     document.getElementById("bottomActionsSecureline").classList.remove("hidden")
 
@@ -2906,6 +2913,7 @@ function setUserCover() {
         .then(data => {
             console.log('Success:', data);
             play("completeProfile")
+            aitPlay("new_canvas")
             isProfileLoading = false;
             loadProfile('reload')
             document.getElementById("canvasOption").innerHTML = `Edit Canvas`
@@ -3244,6 +3252,7 @@ function epsilonDiscover() {
                             return response.json();
                         })
                         .then(allFriends => {
+                            aitPlay("lets_add_some_friends")
                             const friendsLength = friends.length
                             const evoxUsersLength = allFriends.length - 1
                             const percentage = parseInt((100 * friendsLength) / evoxUsersLength)
@@ -3263,11 +3272,13 @@ function epsilonDiscover() {
                             if (percentage <= 40) {
                                 document.getElementById("percentage").style.display = 'none'
                                 if (friendsLength === 1) {
+                                    
                                     document.getElementById("howmanypeople").innerText = '1 person'
                                     $("#onlySomeFriends").fadeIn("fast")
                                 } else if (friendsLength === 0) {
                                     $("#noFriends").fadeIn("fast")
                                 } else {
+                                    //aitPlay("lets_add_some_friends")
                                     document.getElementById("howmanypeople").innerText = `${friendsLength} people`
                                     $("#onlySomeFriends").fadeIn("fast")
                                 }
@@ -3405,6 +3416,7 @@ function handleFileSelect() {
                     console.log(data);
                     if (data === "done") {
                         play("completeProfile")
+                        aitPlay("pfp_updated")
                         document.getElementById("self-profile-picture").src = base64String
                         loadPFPget(localStorage.getItem("t50-username"))
                             .then(profileImage => {
@@ -3507,6 +3519,7 @@ function editTag(tag) {
             })
             .then(data => {
                 play('clickProfile')
+                aitPlay("tag_removed")
                 const container = document.getElementById("userTags")
                 container.innerHTML = ''
                 //will return current tags

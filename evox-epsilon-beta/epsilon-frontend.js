@@ -186,7 +186,7 @@ function clientVerified() {
                     }
                 }).catch(error => {
                     //setNetworkStatus('off')
-                    pickRandFromDict('offline')
+                    //pickRandFromDict('offline')
                     warn("Server Connection Failed. Running Offline")
                     verificationComplete()
 
@@ -352,13 +352,13 @@ function beginLogin(ipLogin, matches, username) {
             setTimeout(function () {
 
                 document.getElementById("formLoginByIP").classList.add('active')
-                setTimeout(function() {
+                setTimeout(function () {
                     aitPlay('welcome_back_loginByIp')
                 }, 500)
                 //document.getElementById("formLogin").style.paddingBottom = "100px"
             }, 50)
         }, 920)
-        
+
     } else {
         if (ipLogin) {
             document.getElementById("formLoginByIP").classList.remove('active')
@@ -405,7 +405,11 @@ function beginLogin(ipLogin, matches, username) {
 
 }
 
-function returnToLoginMenu() {
+function returnToLoginMenu(nosound) {
+    if (!nosound) {
+        aitPlay('mind_changed')
+    }
+
     document.getElementById("formLogin").classList.remove('active')
     setTimeout(function () {
         document.getElementById("formLogin").style.display = 'none'
@@ -422,6 +426,7 @@ function returnToLoginMenu() {
 }
 
 function normalLogin() {
+    aitPlay("unexpected")
     document.getElementById("voxEmail").value = ''
     document.getElementById("formLoginByIP").classList.remove('active')
     document.getElementById("epsilonLogoLogin").style.top = "200px"
@@ -524,7 +529,7 @@ function logOut() {
                 console.error('An error occurred during the cleanup process:', error);
                 window.location.reload();  // Ensure the window reloads even if there's an error
             });
-        }, 1500)
+        }, 3500)
 
 
     } else {
@@ -806,7 +811,7 @@ function startLogin() {
                         //send to dc that id matches to acc email
                     }
                     console.log("Welcome Abroad")
-                    
+
                     localStorage.setItem("2fa_status", "On")
                     localStorage.setItem("t50pswd", `${btoa(password)}`)
                     const credentialsString = data;
@@ -830,10 +835,12 @@ function startLogin() {
                         restart()
                         return;
                     }
-                    returnToLoginMenu()
+                    returnToLoginMenu('nosound')
+                    loadAit()
                     setTimeout(function () {
                         $("#connectionContainer").fadeOut("fast")
                         verificationComplete()
+                        aitPlay('beta_intro')
                     }, 1000)
                     loadProfile()
 
@@ -995,6 +1002,10 @@ function on2FAComplete() {
                 $("#connectionContainer").fadeOut("fast")
                 loadProfile()
                 verificationComplete()
+                loadAit()
+                setTimeout(function () {
+                    aitPlay('beta_intro')
+                }, 1000)
                 if ('serviceWorker' in navigator) {
                     navigator.serviceWorker.register('./epsilon-serviceWorker.js')
                         .then(registration => {
@@ -1031,6 +1042,10 @@ function on2FAComplete() {
                 localStorage.setItem("2fa_status", "On")
                 $("#connectionContainer").fadeOut("fast")
                 verificationComplete()
+                loadAit()
+                setTimeout(function () {
+                    aitPlay('beta_intro')
+                }, 1000)
             } else if (data === "Wrong Code") {
                 shake_me("ver_code")
                 document.getElementById("form2FA").style.paddingBottom = '50px'
@@ -1079,7 +1094,8 @@ function returnToLoginMenuBy2fa() {
         setTimeout(function () {
             document.getElementById("epsilonLogoLogin").style.top = "18%"
             document.getElementById("epsilonLogoLogin").style.transform = "translateX(-50%)"
-            returnToLoginMenu()
+            returnToLoginMenu('nosound')
+            loadAit()
         }, 50)
     }, 920)
 }
@@ -1087,13 +1103,7 @@ function returnToLoginMenuBy2fa() {
 const stockApps = ['tasco', 'oasa', 'deluxe'];
 function verificationComplete() {
     console.log("Verification Complete.")
-    const isAccepted = aitPlay('good_day_AIT_intro')
-    if(isAccepted === false) {
-        console.log("Welcome Back Audio")
-        pickRandFromDict('welcomeBack')
-    } else {
-        console.log("Welcome Audio", isAccepted)
-    }
+
     $("#connectionContainer").fadeOut("fast")
 
     const appsElement = document.getElementById('apps');
@@ -1153,12 +1163,20 @@ function verificationComplete() {
             ////setNetworkStatus('on')
             localStorage.setItem("friends", JSON.stringify(data))
             attachUi(data)
+            const isAccepted = aitPlay('good_day_AIT_intro')
+            if (isAccepted === false) {
+                console.log("Welcome Back Audio")
+                pickRandFromDict('welcomeBack')
+            } else {
+                console.log("Welcome Audio", isAccepted)
+            }
 
         })
         .catch(error => {
             //setNetworkStatus('off')
             const data = localStorage.getItem("friends")
             if (data) {
+                pickRandFromDict('offline')
                 console.warn("Server connection failed. Trying local")
                 attachUi(JSON.parse(data))
             } else {
@@ -1499,6 +1517,7 @@ function goBackMessenger() {
     setTimeout(function () {
         document.getElementById("secureline-back").style.opacity = '1'
     }, 200)
+    aitNoMsgPlayed = false
 }
 
 function showRemoteFriend(id, notFriend) {
@@ -1988,6 +2007,7 @@ function addFriend(el) {
         .then(data => {
             if (data === "Success") {
                 el.innerHTML = `Request Sent.`
+                aitPlay("request_sent")
                 fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=sentRequests`)
                     .then(response => {
                         if (!response.ok) {
@@ -2136,6 +2156,9 @@ function bottomButtonPress(which, el) {
             el.style.transform = 'scale(1)'
             if (activeAPP) {
                 console.log("active app found, launching", activeAPP)
+                if (stockApps.includes(activeAPP)) {
+                    aitPlay(`launching_${activeAPP}`)
+                }
                 launchAppN(activeAPP)
             }
             setTimeout(function () {
@@ -2179,7 +2202,10 @@ function processAppUrl(appName) {
 }
 
 function launchAppN(app) {
-    play('launch')
+    if (aitAttached === false) {
+        play('launch')
+    }
+
     sessionStorage.setItem("EmitApp", app);
     sessionStorage.removeItem("extRun");
     setTimeout(function () {
@@ -2612,6 +2638,7 @@ function enableFlorida() {
                                     loadFlorida()
                                     console.log('Request completed');
                                     warn("Welcome To Florida")
+                                    aitPlay('push_notifications_enabled')
                                 })
                                 .catch(error => {
                                     warn('There was a problem with the fetch operation:', error);
@@ -2721,11 +2748,12 @@ function enableTab(element) {
     if (element.innerHTML.includes("Ask") && !element.classList.contains("active")) {
         activeTab = 'Ask'
         element.classList.add("active")
+        aitPlay("reloading")
         setTimeout(function () {
             updateServiceWorkerCacheAndReload()
-        }, 500)
+        }, 1400)
     } else if (element.innerHTML.includes("Explore") && !element.classList.contains("active")) {
-        
+
         isProfileTabActive = false
         play('closeProfile')
         if (wasGatewayActionsActive === true) {
