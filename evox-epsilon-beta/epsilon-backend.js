@@ -206,7 +206,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '7'
+const appVersion = '7.0.5'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
