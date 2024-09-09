@@ -206,7 +206,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '7.0.5'
+const appVersion = '7.0.6'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -1696,11 +1696,11 @@ function actionReload(whoto, reloadPage) {
                 const integrityCheck = JSON.parse(messages);
                 if (integrityCheck.messages.length === 0) {
                     document.getElementById("messages-container").innerHTML = `<p id="tempTextNoMsg" class='centered-text'>No messages!</p>`;
-                    if(aitNoMsgPlayed === false) {
+                    if (aitNoMsgPlayed === false) {
                         aitPlay("no_messages_with_user")
                         aitNoMsgPlayed = true
                     }
-                    
+
                     document.getElementById("tempTextNoMsg").style.opacity = '1'
                     document.getElementById("bottomActionsSecureline").classList.remove("hidden")
 
@@ -2091,6 +2091,7 @@ function send_message() {
 function enableCryptox() {
     play('clickProfile')
     const cryptoxText = document.getElementById("self-cryptox")
+    const prevText = cryptoxText.innerText
     cryptoxText.innerHTML = `<svg version="1.1" width="25px" height="25px"
                         xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                         viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
@@ -2100,7 +2101,8 @@ function enableCryptox() {
                                 to="360 25 25" dur="0.6s" repeatCount="indefinite" />
                         </path>
                     </svg>`
-    if (cryptoxText.innerText === 'Unset') {
+    console.log(prevText)
+    if (prevText === 'Unset') {
         fetch(`${srv}/cryptox?method=create&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}`)
             .then(response => {
                 if (!response.ok) {
@@ -2466,7 +2468,7 @@ function loadProfile(reload, withoutCanvas) {
     isProfileLoading = true;
     const username = localStorage.getItem("t50-username")
     const email = localStorage.getItem("t50-email")
-    if(!username || !email) {
+    if (!username || !email) {
         console.warn("loadProfile Cancelled, null values")
         isProfileLoading = false;
         return;
@@ -2721,7 +2723,7 @@ function loadProfile(reload, withoutCanvas) {
                     const today = new Date().toISOString().split('T')[0];
                     const datePart = last_login.split(' ')[0];
                     const timePart = last_login.split(' ')[1].slice(0, 5);
-    
+
                     if (datePart === today) {
                         console.log(timePart);
                         document.getElementById("self_lastSeen").innerText = timePart;
@@ -2736,7 +2738,7 @@ function loadProfile(reload, withoutCanvas) {
                     console.warn("Something went wrong with last login", error)
                     document.getElementById("self_lastSeen").innerText = 'Unknown';
                 }
-                
+
             })
             .catch(error => {
                 console.log("Self Load Last Login Failed [3]:", error);
@@ -3078,12 +3080,12 @@ function pickTag(el) {
 const buttons = document.querySelectorAll('.option');
 
 // Iterating over each element in the NodeList
-buttons.forEach(function(button) {
-  // Adding a click event listener to each individual element
-  button.addEventListener('click', function() {
-    play('clickProfile')
-    console.log('Button clicked:', button);
-  });
+buttons.forEach(function (button) {
+    // Adding a click event listener to each individual element
+    button.addEventListener('click', function () {
+        play('clickProfile')
+        console.log('Button clicked:', button);
+    });
 });
 function addTag() {
     play('clickProfile')
@@ -3107,7 +3109,7 @@ function addTag() {
         .then(currentTags => {
             // will return current tags
             if (currentTags.includes('No tags')) {
-                return;
+                //return;
             }
             const recommendedTags = ["Gaming", "Athens", "SKG", "EDS", "School", "Services", "Music", "Programming", "Tech", "Education", "Sports", "Art", "Media", "Film", "Science", "Math", "Design", "Coding", "Software", "Hardware", "Engineering", "Fitness", "Business", "AI", "T50"]
             const filteredTags = recommendedTags.filter(tag => !currentTags.includes(tag));
@@ -3272,7 +3274,7 @@ function epsilonDiscover() {
                             if (percentage <= 40) {
                                 document.getElementById("percentage").style.display = 'none'
                                 if (friendsLength === 1) {
-                                    
+
                                     document.getElementById("howmanypeople").innerText = '1 person'
                                     $("#onlySomeFriends").fadeIn("fast")
                                 } else if (friendsLength === 0) {

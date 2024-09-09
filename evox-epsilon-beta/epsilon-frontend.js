@@ -1103,6 +1103,38 @@ function returnToLoginMenuBy2fa() {
 const stockApps = ['tasco', 'oasa', 'deluxe'];
 function verificationComplete() {
     console.log("Verification Complete.")
+    console.log("Scanning For Query Notifications")
+    let hasPendingNotification = false;
+    function getQueryParams() {
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
+        const showNotification = params.get('showNotification');
+        const title = params.get('title');
+        const content = params.get('content');
+
+        if (showNotification === 'true') {
+            hasPendingNotification = true
+            console.log('showNotification:', showNotification);
+            console.log('title:', title);
+            console.log('content:', content);
+            document.getElementById("currentNotif").innerText = `${title}`
+            document.getElementById("currentNotif-desc").innerText = content
+            const logoUrl = `https://evoxs.xyz/notifications_assets/${title}.png`
+            checkUrlAccessibility(logoUrl)
+                .then(not404 => {
+                    const el = document.getElementById("iconRow")
+                    console.log(not404, "not404 res")
+                    if (not404 === true) {
+                        document.getElementById("iconRow").innerHTML = `<img src="${logoUrl}">`
+                    }
+                }).catch(error => {
+                    //setNetworkStatus('off')
+                    console.error(error);
+                });
+        }
+
+    }
+    getQueryParams();
 
     $("#connectionContainer").fadeOut("fast")
 
@@ -1185,11 +1217,18 @@ function verificationComplete() {
 
         });
     $("#loading-text").fadeOut("fast")
-    document.getElementById("gateway").style.display = 'flex'
-    setTimeout(function () {
-        document.getElementById("gateway").style.opacity = '1'
-        $("#gatewayActions").fadeIn("fast")
-    }, 50)
+    if (!hasPendingNotification) {
+        document.getElementById("gateway").style.display = 'flex'
+        setTimeout(function () {
+            document.getElementById("gateway").style.opacity = '1'
+            $("#gatewayActions").fadeIn("fast")
+        }, 50)
+    } else {
+        console.log("pending notification found")
+        document.getElementById("container").style.display = 'none'
+        document.getElementById("notification-center").classList.add("active")
+    }
+
 
 }
 
@@ -2167,6 +2206,28 @@ function bottomButtonPress(which, el) {
                 dotElement.style.animation = 'dotAnimation 1s infinite';
             }, 1150)
         }, 200)
+    } else if (which === 'dismissNotification') {
+        el.style.transform = 'scale(0.96)'
+        setTimeout(function () {
+            //workingElem.style.transform = 'rotate(0deg)'
+            el.style.transform = 'scale(1)'
+        }, 200)
+        const dotElement = document.querySelector('.dot');
+        dotElement.style.animation = null;
+        const url = new URL(window.location.href);
+
+        // Create a new URL with only the desired path
+        const newUrl = url.origin + url.pathname.split('?')[0];
+
+        // Update the URL without reloading
+        window.history.replaceState({}, document.title, newUrl);
+        document.getElementById("container").style.display = null
+        document.getElementById("notification-center").classList.remove("active")
+        document.getElementById("gateway").style.display = 'flex'
+        setTimeout(function () {
+            document.getElementById("gateway").style.opacity = '1'
+            $("#gatewayActions").fadeIn("fast")
+        }, 50)
     } else {
         el.style.transform = 'scale(0.96)'
         setTimeout(function () {

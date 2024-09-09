@@ -7,14 +7,21 @@ self.addEventListener('push', function (event) {
 });
 
 self.addEventListener('notificationclick', function (event) {
+  // Access notification data (title and content)
+  const title = event.notification.data.title;
+  const content = event.notification.data.content;
+
+  // Construct the URL with query parameters
+  const url = `https://evoxs.xyz/evox-epsilon-beta/?showNotification=true&title=${encodeURIComponent(title)}&content=${encodeURIComponent(content)}`;
+
   event.notification.close();
   event.waitUntil(
-    clients.openWindow('https://evoxs.xyz/evox-epsilon-beta/')
+    clients.openWindow(url)
   );
 });
 
-const STATIC_CACHE_NAME = 'epsilon-cache-v9';
-const APP_CACHE_NAME = 'epsilon-app-cache-v9';
+const STATIC_CACHE_NAME = 'epsilon-cache-v10';
+const APP_CACHE_NAME = 'epsilon-app-cache-v10';
 const CACHE_STATIC = [
   '/evox-epsilon-beta/epsilon-frontend-assets/epsilon.png',
   '/evox-epsilon-beta/epsilon-frontend-assets/customize.png',

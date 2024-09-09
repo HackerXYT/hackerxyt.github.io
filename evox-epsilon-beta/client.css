@@ -18,7 +18,8 @@ html {
   touch-action: manipulation;
   /* For modern browsers */
   -webkit-tap-highlight-color: transparent;
-  overflow: -moz-scrollbars-none; /* For Firefox */
+  overflow: -moz-scrollbars-none;
+  /* For Firefox */
 }
 
 body::-webkit-scrollbar {
@@ -302,7 +303,7 @@ body::-webkit-scrollbar {
 
   width: 80%;
   height: 100%;
-  
+
 
 }
 
@@ -545,6 +546,16 @@ body.no-scroll {
   color: #dbdde3;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   /* Added shadow */
+  transition: transform 0.2s ease-in-out;
+}
+
+.bottomButtonsSline.changeColors a {
+  background-color: rgba(0, 0, 0, 0.894);
+}
+
+.bottomButtonsSline.changeColors>*:first-child {
+  margin-right: 10px;
+  /* Adjust as needed */
 }
 
 .bottomButtonsSline a .icon-wrapper {
@@ -6091,11 +6102,15 @@ input:autofill {
   padding-bottom: 5px;
   border-radius: 10px;
   margin-right: 5px;
-  display: inline-flex; /* Allows for flexbox properties inside each tag */
-  align-items: center; /* Vertically centers the content within each tag */
+  display: inline-flex;
+  /* Allows for flexbox properties inside each tag */
+  align-items: center;
+  /* Vertically centers the content within each tag */
   margin-top: 5px;
-  line-height: 1; /* Resets line height to avoid discrepancies */
-  vertical-align: middle; /* Ensures baseline alignment of inline-flex elements */
+  line-height: 1;
+  /* Resets line height to avoid discrepancies */
+  vertical-align: middle;
+  /* Ensures baseline alignment of inline-flex elements */
 }
 
 .user-tags.addTags .user-tag {
@@ -6111,7 +6126,7 @@ input:autofill {
   /* Use inline-flex to keep the container inline with other text */
   align-items: center;
   /* Vertically centers the SVG and text */
-  
+
   /* Adds space between the SVG and text */
 }
 
@@ -6721,6 +6736,7 @@ vo input {
   position: absolute;
   bottom: 20px;
 }
+
 .bottomButtons {
   margin-top: 10px;
   width: 90%;
@@ -6804,7 +6820,8 @@ vo input {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center; /* Ensures vertical alignment within the flex container */
+  align-items: center;
+  /* Ensures vertical alignment within the flex container */
   padding-top: 0;
 }
 
@@ -6812,9 +6829,10 @@ vo input {
   margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
-  
+
   justify-content: center;
-  align-items: center; /* Ensures vertical alignment within the flex container */
+  align-items: center;
+  /* Ensures vertical alignment within the flex container */
   padding-top: 0;
 }
 
@@ -6954,19 +6972,24 @@ vox.svgIconAnimated {
   align-items: center;
   z-index: 1000;
   opacity: 1;
-  bottom: 30px; /* Adjust the distance from the bottom */
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%) translateY(500px); /* Correct centering for horizontal and animate */
+  bottom: 30px;
+  /* Adjust the distance from the bottom */
+  left: 50%;
+  /* Center horizontally */
+  transform: translateX(-50%) translateY(500px);
+  /* Correct centering for horizontal and animate */
   transition: transform 0.6s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 0.5s ease-in-out;
 }
 
 .aitContainer.active {
-  transform: translateX(-50%) translateY(0); /* Moves up when active */
+  transform: translateX(-50%) translateY(0);
+  /* Moves up when active */
 }
 
 .aitContainer.right {
   left: 70px;
-  transform: translateX(-50%) translateY(0); /* Moves up when active */
+  transform: translateX(-50%) translateY(0);
+  /* Moves up when active */
 }
 
 .opa {
@@ -6981,6 +7004,7 @@ vox.svgIconAnimated {
   -webkit-backdrop-filter: blur(25px);
   background: #0000002d;
 }
+
 .opa p {
   padding-left: 10px;
   padding-right: 10px;
@@ -6996,22 +7020,30 @@ vox.svgIconAnimated {
 
 
 @keyframes floating {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate3d(0, -1px, 0);
   }
+
   50% {
     transform: translate3d(0, 1px, 0);
   }
 }
 
 @keyframes flickr {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     transform: translate3d(-5px, 0px, 0) scale(1.05);
   }
-  25%, 75% {
-     opacity: 1;
+
+  25%,
+  75% {
+    opacity: 1;
   }
+
   50% {
     opacity: 0.5;
     transform: translate3d(5px, 0px, 0) scale(1);
@@ -7022,8 +7054,118 @@ vox.svgIconAnimated {
   50% {
     transform: scale(1.09);
   }
+
   100% {
     transform: scale(1);
   }
 }
 
+
+.notification-center {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  scroll-behavior: smooth;
+  touch-action: auto;
+  align-items: center;
+  text-align: left;
+  background: #1f1f1f5a;
+  z-index: 1000;
+  box-sizing: border-box;
+  opacity: 1;
+  visibility: hidden;
+  transform: translateY(100%);
+  transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 0.5s ease-in-out;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  overflow-x: hidden;
+  backdrop-filter: blur(55px);
+  -webkit-backdrop-filter: blur(55px);
+}
+
+.notification-center.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateY(0);
+  /* Slide the popup into view */
+}
+
+.notification-center .header {
+  font-size: 19px;
+  color: #ffffffa5;
+  margin-right: auto;
+}
+
+.notification-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #313131b5;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  padding: 20px;
+}
+
+.notification-card.b {
+  display: flex;
+  flex-direction: column;
+  background-color: #4a4a4a54;
+  
+  border-radius: 0;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  padding: 20px;
+}
+
+.topRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.iconRow {
+  margin-right: 20px;
+}
+
+.iconRow img{
+  width: 35px;
+  height: 35px;
+  border-radius: 10px;
+  vertical-align: middle;
+  justify-content: center;
+}
+
+.textRow {
+  font-size: 25px;
+}
+
+.arrowRow {
+  margin-left: auto;
+  margin-right: 10px;
+  transition: transform 0.5s ease-in-out;
+}
+
+.notification-info {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  justify-content: center;
+}
+
+.aNotification {
+  width: 100%;
+  z-index: 100;
+}
+
+.aNotification.more {
+  position: relative;
+  margin-top: -80px;
+  z-index: 99;
+  opacity: 0.5;
+}
