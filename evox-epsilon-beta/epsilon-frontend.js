@@ -1100,8 +1100,18 @@ function returnToLoginMenuBy2fa() {
     }, 920)
 }
 
+// Function to convert localStorage to a JSON string
+function saveLocalStorageToCookie() {
+    // Get all localStorage keys and values
+    const localStorageData = JSON.stringify(localStorage);
+
+    // Set a cookie with the localStorage data
+    document.cookie = `localStorageData=${encodeURIComponent(localStorageData)}; path=/; domain=ait.evoxs.xyz; SameSite=Lax; Secure;`;
+}
+
 const stockApps = ['tasco', 'oasa', 'deluxe'];
 function verificationComplete() {
+
     console.log("Verification Complete.")
     console.log("Scanning For Query Notifications")
     let hasPendingNotification = false;
@@ -1230,6 +1240,8 @@ function verificationComplete() {
     }
 
 
+    // Save localStorage to cookie when needed
+    saveLocalStorageToCookie();
 }
 
 
