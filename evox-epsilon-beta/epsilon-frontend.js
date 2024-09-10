@@ -1106,12 +1106,19 @@ function saveLocalStorageToCookie() {
     const localStorageData = JSON.stringify(localStorage);
 
     // Set a cookie with the localStorage data
-    document.cookie = `localStorageData=${encodeURIComponent(localStorageData)}; path=/; domain=ait.evoxs.xyz; SameSite=Lax; Secure;`;
+    document.cookie = `localStorageData=${encodeURIComponent(localStorageData)}; path=/; domain=.evoxs.xyz; SameSite=Lax; Secure;`;
 }
+
 
 const stockApps = ['tasco', 'oasa', 'deluxe'];
 function verificationComplete() {
-
+    // Save localStorage to cookie when needed
+    try {
+        saveLocalStorageToCookie();
+    } catch (error) {
+        console.error("Cookies Failed!")
+    }
+    
     console.log("Verification Complete.")
     console.log("Scanning For Query Notifications")
     let hasPendingNotification = false;
@@ -1240,8 +1247,7 @@ function verificationComplete() {
     }
 
 
-    // Save localStorage to cookie when needed
-    saveLocalStorageToCookie();
+
 }
 
 
