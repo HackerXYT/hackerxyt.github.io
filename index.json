@@ -1,0 +1,96 @@
+{
+    "name": "Evox Apps",
+    "short_name": "Evox",
+    "description": "Quick access to Evox community apps",
+    "icons": [
+      {
+        "src": "./evox-epsilon-beta/evox-logo-apple-simple.png",
+        "sizes": "300x180",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#0d0d0d",
+    "theme_color": "#0d0d0d",
+    "shortcuts": [
+      {
+        "name": "Epsilon",
+        "short_name": "Epsilon",
+        "description": "Enhanced connectivity and new features for Evox",
+        "url": "./evox-epsilon/",
+        "icons": [
+          {
+            "src": "./evox-epsilon/nexusBeta.png",
+            "sizes": "300x180",
+            "type": "image/png"
+          }
+        ]
+      },
+      {
+        "name": "Epsilon Nexus",
+        "short_name": "Nexus",
+        "description": "Manage Evox apps and chats securely",
+        "url": "./evox-epsilon-beta/",
+        "icons": [
+          {
+            "src": "./evox-epsilon-beta/epsilon-assets/apple-splash-dark-2360-1640.png",
+            "sizes": "300x180",
+            "type": "image/png"
+          }
+        ]
+      },
+      {
+        "name": "Evox Gateway",
+        "short_name": "Gateway",
+        "description": "Streamlined communication via T50 gateway",
+        "url": "./t50-gateway-alpha/",
+        "icons": [
+          {
+            "src": "./t50-gateway-alpha/t50gatewayalpha.png",
+            "sizes": "300x180",
+            "type": "image/png"
+          }
+        ]
+      },
+      {
+        "name": "OASA Reloaded",
+        "short_name": "OASA",
+        "description": "Offline timetables and notifications for buses",
+        "url": "./oasaMobile/",
+        "icons": [
+          {
+            "src": "./oasaMobile/spoiler.png",
+            "sizes": "300x180",
+            "type": "image/png"
+          }
+        ]
+      },
+      {
+        "name": "Tasco Deluxe",
+        "short_name": "Tasco",
+        "description": "Accessible via Epsilon Nexus",
+        "url": "./evox-epsilon-beta/",
+        "icons": [
+          {
+            "src": "./tascoDeluxeSpoiler.png",
+            "sizes": "300x180",
+            "type": "image/png"
+          }
+        ]
+      },
+      {
+        "name": "Hologram",
+        "short_name": "Hologram",
+        "description": "Accessible via Epsilon Nexus",
+        "url": "./evox-epsilon-beta/",
+        "icons": [
+          {
+            "src": "./hologram/splash/apple-splash-2360-1640.png",
+            "sizes": "300x180",
+            "type": "image/png"
+          }
+        ]
+      }
+    ]
+  }

@@ -6,6 +6,21 @@
   src: url('./evox-epsilon-beta/SFUIText-Medium.ttf');
 }
 
+@font-face {
+  font-family: "Light";
+  src: url('Urbanist-Regular.ttf');
+}
+
+@font-face {
+  font-family: "Bold";
+  src: url('Urbanist-Bold.ttf');
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+
 @layer base {
   :root {
     color-scheme: light dark;
@@ -51,7 +66,7 @@
 
   body {
     -webkit-font-smoothing: antialiased;
-    background-color: var(--surface-1);
+    background-color: var(--surface-1); /**/
     color: var(--text-1);
     font-size: var(--font-size-body);
     line-height: var(--line-height-body);
@@ -254,3 +269,270 @@
 .card:hover {
   transform: scale(1.02);
 }
+
+.warning {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background-color: aliceblue;
+  color: #000;
+  border-radius: 10px;
+  padding: 20px;
+  justify-content: center;
+  max-width: 500px;
+  border: #dfdfe1 1px solid;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(200px);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+
+
+.warning.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.warning .topRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.warning .topRow .icon {
+  padding: 1px;
+  background-color: #dfdfe1;
+  margin-right: 5px;
+  border-radius: 5px;
+}
+.warning .topRow .icon svg path {
+  stroke: #f09010;
+}
+.warning .topRow .text {
+  font-size: 1rem;
+  color: #000;
+}
+.warning .topRow .dismiss {
+  cursor: pointer;
+  margin-left: auto;
+  transition: transform 0.2s ease-in-out;
+}
+
+.warning .info {
+  margin-top: 10px;
+  color: #575a64;
+}
+
+.bottomRow {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.warning .bottomRow .buttonCta {
+  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+  padding: 3px;
+  border: #d0d0d0 1px solid;
+  border-radius: 5px;
+  font-size: 15px;
+  transition: background-color 0.3s ease-in-out, font-size 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  margin-left: 5px;
+}
+
+.warning .bottomRow .buttonCta.redirect {
+  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+  padding: 3px;
+  border: #00ffc3 1px solid;
+  border-radius: 5px;
+  font-size: 15px;
+  transition: background-color 0.3s ease-in-out, font-size 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  margin-left: 5px;
+}
+
+.warning .bottomRow>*:first-child {
+  margin-left: 0;
+}
+
+.warning .bottomRow .buttonCta:hover {
+  background-color: #d0d0d0;
+  font-size: 17px;
+}
+
+.warning .bottomRow .buttonCta.redirect:hover {
+  background-color: #00ffc3;
+  font-size: 16px;
+}
+
+.head2 {
+  align-items: center;
+  padding: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 0;
+  font-family: "Light";
+}
+#head2 .row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.row .collumn {
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.row .collumn vox {
+  font-weight: lighter;
+  font-size: 25px;
+}
+
+.row .collumn span {
+  font-family: "Bold";
+  margin-top: 5px;
+  color: #c0c0c0;
+}
+
+.collumn.right {
+  position: absolute;
+  right: 20px;
+}
+
+.collumn.right img {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media only screen and (max-width: 769px) {
+  .warning {
+    width: 90%;
+    height: auto;
+    bottom: 20px;
+    right: inherit;
+  }
+
+  .mobileContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  #collumnMobile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #collumnMobile vox, 
+  #collumnMobile span {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+  }
+  
+  #collumnMobile vox {
+    margin-right: 5px;
+  }
+  
+  #collumnMobile span {
+    font-size: 25px;
+  }
+}
+
+/* here we customize the transition, these are the shared styles for the old and new view*/      
+::view-transition-new(root),
+::view-transition-old(root) {
+  animation-duration: 300ms;
+  animation-timing-function: ease-out;
+  animation-direction: normal;
+}
+
+/* old view slides out to the left */
+::view-transition-old(root) {
+  animation-name: slide-out;
+}
+
+/* new view slides in from the right */
+::view-transition-new(root) {
+  animation-name: slide-in;
+  mix-blend-mode: normal;
+}
+
+/* class "back-transition" is added to the html element 
+ * to customize the back transition 
+ * new view
+ */
+.back-transition::view-transition-new(root) {
+  animation-name: slide-out-reverse;
+}
+
+/* customized back transition for old view */
+.back-transition::view-transition-old(root) {
+  animation-name: slide-in-reverse;
+  mix-blend-mode: normal;
+  z-index: 1;
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-20%);
+  }
+}
+
+@keyframes slide-out-reverse {
+  from {
+    transform: translateX(-20%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-reverse {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}      
