@@ -37,6 +37,23 @@ if (username && email && password) {
                 //IP Unk
                 document.getElementById("head1").style.display = 'none'
                 document.getElementById("head2").style.display = null
+                fetch(`https://data.evoxs.xyz/accounts?method=getFirstName&username=${username}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(name => {
+                        if (name !== 'Unknown') {
+                            document.getElementById("name").innerText = name
+                        } else {
+                            document.getElementById("name").innerText = username
+                        }
+                        document.getElementById("me").src = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${username}`;
+                    }).catch(error => {
+                        console.error('Server Connection Failed!', error)
+                    })
                 document.getElementById("headerText").innerText = `Welcome back, ${username}!`
             } else {
                 //Incorrect
