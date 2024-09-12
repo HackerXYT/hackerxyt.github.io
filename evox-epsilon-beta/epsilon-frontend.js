@@ -1129,11 +1129,12 @@ function verificationComplete() {
         const title = params.get('title');
         const content = params.get('content');
 
-        if (showNotification === 'true') {
+        if (showNotification) {
             hasPendingNotification = true
             console.log('showNotification:', showNotification);
             console.log('title:', title);
             console.log('content:', content);
+            alert(`Pending notification attached: ${title},${content}`)
             document.getElementById("currentNotif").innerText = `${title}`
             document.getElementById("currentNotif-desc").innerText = content
             const logoUrl = `https://evoxs.xyz/notifications_assets/${title}.png`
