@@ -5683,18 +5683,18 @@ input:autofill {
   flex-grow: 1;
   overflow-y: auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
 }
 
-.secureline-messages>*:first-child {
+.secureline-messages>*:last-child {
   margin-top: 90px;
   /* Adjust as needed */
 }
 
-.secureline-messages>*:last-child {
+.secureline-messages>*:first-child {
   margin-bottom: 100px;
   /* Adjust as needed */
 }
