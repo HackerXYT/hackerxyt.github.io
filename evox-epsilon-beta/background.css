@@ -1,8 +1,11 @@
 :root {
   --color-bg1: rgba(76, 0, 162, 0);
   --color-bg2: rgba(0, 82, 59, 0);
-  /*--color-bg1: rgb(108, 0, 162);
-    --color-bg2: rgb(0, 17, 82);*/
+
+  --color-bgd1: rgba(76, 0, 162, 0);
+  --color-bgd2: rgba(0, 82, 59, 0);
+  /*--color-bgd1: rgb(108, 0, 162);
+    --color-bgd2: rgb(0, 17, 82);*/
   --color1: 9, 43, 109;
   --color2: 0, 105, 224;
   --color3: 76, 223, 229;
@@ -10,9 +13,7 @@
   --color5: 17, 19, 26;
   --color-interactive: 140, 100, 255;
 
-
-
-  --circle-size: 80%;
+  --circle-size: 40%;
   --blending: hard-light;
 }
 
@@ -63,11 +64,11 @@
   height: 100%;
   position: fixed;
   overflow: hidden;
-  background: linear-gradient(40deg, var(--color-bg1), var(--color-bg2));
+  background: linear-gradient(40deg, var(--color-bgd1), var(--color-bgd2));
   top: 0;
   left: 0;
   z-index: -999;
-  filter: brightness(0.4);
+  filter: brightness(0.5);
 }
 
 .gradient-bg svg {
@@ -75,7 +76,7 @@
 }
 
 .gradient-bg .gradients-container {
-  filter: url(#goo) blur(40px);
+  filter: url(#goo) blur(5px);
   width: 100%;
   height: 100%;
 }
@@ -154,4 +155,111 @@
   top: -50%;
   left: -50%;
   opacity: 1;
+}
+
+
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+  to{
+    transform: rotate(359deg);
+  }
+}
+
+@keyframes spin3D {
+  from {
+    transform: rotate3d(.5,.5,.5, 360deg);
+  }
+  to{
+    transform: rotate3d(0deg);
+  }
+}
+
+@keyframes configure-clockwise {
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes configure-xclockwise {
+  0% {
+    transform: rotate(45deg);
+  }
+  25% {
+    transform: rotate(-45deg);
+  }
+  50% {
+    transform: rotate(-135deg);
+  }
+  75% {
+    transform: rotate(-225deg);
+  }
+  100% {
+    transform: rotate(-315deg);
+  }
+}
+
+@keyframes pulse {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: .25;
+    transform: scale(.75);
+  }
+}
+
+.spinner-box {
+  width: 35px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+}
+
+
+
+/* PULSE BUBBLES */
+
+.pulse-container {
+  width: 65px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pulse-bubble {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(43, 205, 255, 1);
+}
+
+.pulse-bubble.think {
+  background-color: rgb(43, 255, 195);
+}
+
+.pulse-bubble-1 {
+    animation: pulse .4s ease 0s infinite alternate;
+}
+.pulse-bubble-2 {
+    animation: pulse .4s ease .2s infinite alternate;
+}
+.pulse-bubble-3 {
+    animation: pulse .4s ease .4s infinite alternate;
 }

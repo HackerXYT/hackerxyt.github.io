@@ -446,6 +446,28 @@ body.no-scroll {
   }
 }
 
+@keyframes downloadAnimBig {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(5px);
+    opacity: 0;
+  }
+
+  55% {
+    transform: translateY(-5px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 #downloading-icon svg #arrowDownload {
   transition: transform 1s ease-in-out, opacity 0.5s ease-in-out;
 }
@@ -454,6 +476,13 @@ body.no-scroll {
   animation: downloadAnim 2s infinite
 }
 
+#downloading-icon-big svg #arrowDownload {
+  transition: transform 0.5s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+#downloading-icon-big.active svg #arrowDownload {
+  animation: downloadAnimBig 2s infinite
+}
 
 .securelineCarousel .slUser.add svg {
   position: absolute;
@@ -7003,6 +7032,7 @@ vox.svgIconAnimated {
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   background: #0000002d;
+  transition: transform 0.6s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 0.5s ease-in-out;
 }
 
 .opa p {
@@ -7103,6 +7133,10 @@ vox.svgIconAnimated {
   margin-right: auto;
 }
 
+.header.default {
+  margin-right: 0;
+}
+
 .notification-card {
   display: flex;
   flex-direction: column;
@@ -7168,4 +7202,11 @@ vox.svgIconAnimated {
   margin-top: -80px;
   z-index: 99;
   opacity: 0.5;
+}
+
+.rowCentered {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

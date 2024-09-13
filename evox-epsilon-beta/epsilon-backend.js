@@ -51,14 +51,32 @@ document.addEventListener("DOMContentLoaded", function () {
                 navigator.serviceWorker.addEventListener('message', event => {
                     if (event.data && event.data.action === 'CACHE_UPDATE_STARTED') {
                         // Show downloading icon
-                        document.getElementById("downloading-icon").classList.add("active")
-                        $("#downloading-icon").fadeIn("fast");
+
+                        //if(manualUpdate === true) {
+                            //manualUpdate = 'active'
+                            document.getElementById("update-center").classList.add("active")
+                            $("#container").fadeOut("fast")
+                            $("#gatewayExploreScroll").fadeOut("fast")
+                        //} else {
+                            document.getElementById("downloading-icon").classList.add("active")
+                            $("#downloading-icon").fadeIn("fast");
+                        //}
+                        
 
                     } else if (event.data && event.data.action === 'CACHE_UPDATE_COMPLETED') {
                         // Hide downloading icon
-                        $("#downloading-icon").fadeOut("fast", function () {
-                            document.getElementById("downloading-icon").classList.remove("active")
-                        });
+                        
+                        //if(manualUpdate === 'active') {
+                            //manualUpdate = false
+                            document.getElementById("update-center").classList.remove("active")
+                            $("#container").fadeIn("fast")
+                            $("#gatewayExploreScroll").fadeIn("fast")
+                        //} else {
+                            $("#downloading-icon").fadeOut("fast", function () {
+                                document.getElementById("downloading-icon").classList.remove("active")
+                            });
+                        //}
+                        
 
                     }
                 });
@@ -206,7 +224,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '7.0.9'
+const appVersion = '7.1.0'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -1666,7 +1684,9 @@ document.getElementById("message_input").addEventListener("keypress", function (
 
 let aitNoMsgPlayed = false;
 let activeChatInterval = null;
-function actionReload(whoto, reloadPage) {
+
+function actionReload(whoto, reloadPage, isAIT) {
+
     const container = document.getElementById("messages-container");
     //container.innerHTML = `<p class='centered-text'>Loading ${whoto}..</p>`;
     if (!reloadPage) {
@@ -1884,6 +1904,19 @@ function actionReload(whoto, reloadPage) {
                                 var contentDiv = document.getElementById('messages-container');
                                 contentDiv.scrollTop = contentDiv.scrollHeight;
                                 console.log("All messages have been processed and displayed.");
+                                if (isAIT) {
+                                    const container = document.getElementById('messages-container');
+                                    const newMessage = document.createElement('div');
+                                    newMessage.className = 'message'
+                                    newMessage.innerHTML = `<div class="spinner-box"><div class="pulse-container"><div class="pulse-bubble pulse-bubble-1 think"></div><div class="pulse-bubble pulse-bubble-2 think"></div><div class="pulse-bubble pulse-bubble-3 think"></div></div></div>`;
+
+                                    // Insert the new element at the top
+                                    if (container.firstChild) {
+                                        container.insertBefore(newMessage, container.firstChild);
+                                    } else {
+                                        container.appendChild(newMessage); // If no children, just append
+                                    }
+                                }
 
                             })
                             .catch(error => {
@@ -2089,10 +2122,21 @@ function send_message() {
     recipient = sessionStorage.getItem("current_sline")
     message = document.getElementById("message_input")
     console.log("Sending message to", recipient)
-    if(recipient === 'AIT') {
-        
-    }
+
     if (message.value != "") {
+        if (recipient === 'AIT') {
+            const container = document.getElementById('messages-container');
+            const newMessage = document.createElement('div');
+            newMessage.className = 'message'
+            newMessage.innerHTML = `<div class="spinner-box"><div class="pulse-container"><div class="pulse-bubble pulse-bubble-1"></div><div class="pulse-bubble pulse-bubble-2"></div><div class="pulse-bubble pulse-bubble-3"></div></div></div>`;
+
+            // Insert the new element at the top
+            if (container.firstChild) {
+                container.insertBefore(newMessage, container.firstChild);
+            } else {
+                container.appendChild(newMessage); // If no children, just append
+            }
+        }
         //if (sessionStorage.getItem("sending") === "true") {
         //    shake_me("message_input")
         //    return;
@@ -2110,12 +2154,12 @@ function send_message() {
                 message.value = ""
                 if (data === `Message Sent To ${recipient}`) {
                     console.log("Message Sent")
-                    if(recipient === 'AIT') {
+                    if (recipient === 'AIT') {
                         actionReload(recipient, 'reloadPage', "AITRequested")
                     } else {
                         actionReload(recipient, 'reloadPage')
                     }
-                    
+
                 } else {
                     console.error("Error Sending Message -SLINE ERROR")
                 }

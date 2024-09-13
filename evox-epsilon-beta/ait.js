@@ -1,157 +1,166 @@
-var canvas = document.getElementById('ait');
-var ctx = canvas.getContext('2d');
-
-var SIZE = Math.min(document.documentElement.clientWidth, document.documentElement.clientHeight);
-canvas.setAttribute("width", SIZE);
-canvas.setAttribute("height", SIZE);
-
-var WIDTH = SIZE;
-var HEIGHT = SIZE;
-
-var lines = [];
-var totalTentacles = 200;
-
-function Line(x, y) {
-    this.x = WIDTH / 2;
-    this.y = HEIGHT / 2;
-
-    this.endAngle = Math.floor(Math.random() * 360);
-    this.endSpeed = (Math.floor(Math.random() * 10) + 1) / 50;
-    this.endDir = Math.floor(Math.random() * 2) == 0 ? -1 : 1;
-    this.endChangeFreq = Math.floor(Math.random() * 200) + 1;
-
-    this.c1Angle = Math.floor(Math.random() * 360);
-    this.c1Speed = (Math.floor(Math.random() * 10) + 1) / 20;
-    this.c1Dir = Math.floor(Math.random() * 2) == 0 ? -1 : 1;
-    this.c1ChangeFreq = Math.floor(Math.random() * 200) + 1;
-
-    this.c2Angle = Math.floor(Math.random() * 360);
-    this.c2Speed = (Math.floor(Math.random() * 10) + 1) / 20;
-    this.c2Dir = Math.floor(Math.random() * 2) == 0 ? -1 : 1;
-    this.c2ChangeFreq = Math.floor(Math.random() * 200) + 1;
-
-    this.c1;
-    this.end;
-    this.c2;
-    this.color = "rgba(43, 205, 255, 0.1)";
-    this.width = 10;  // Initial width
-    this.targetWidth = this.width;
-    this.startWidth = this.width;
-    this.widthAnimationStartTime = null;
-
-    this.definePoints();
-    this.draw();
-}
-
-Line.prototype.animateWidthTo = function (targetWidth, duration) {
-    console.log("Attaching")
-    this.startWidth = this.width;
-    this.targetWidth = targetWidth;
-    this.widthAnimationDuration = duration;
-    this.widthAnimationStartTime = performance.now(); // Start time of animation
-};
-
-Line.prototype.move = function () {
-    const currentTime = performance.now();
-    if (this.widthAnimationStartTime !== null) {
-        const elapsedTime = currentTime - this.widthAnimationStartTime;
-        const progress = Math.min(elapsedTime / this.widthAnimationDuration, 1); // Cap progress at 1
-
-        // Smoothly animate the width (ease-in-out cubic easing function)
-        this.width = easeInOutCubic(progress, this.startWidth, this.targetWidth - this.startWidth, 1);
-
-        if (progress >= 1) {
-            this.widthAnimationStartTime = null; // Stop animation once done
-        }
+let aitLines = 'rgba(43, 205, 255, 0.1)'
+function attachAIT(bgg) {
+    if(bgg) {
+        aitLines = bgg
     }
+    var canvas = document.getElementById('ait');
+    var ctx = canvas.getContext('2d');
 
-    this.endChangeFreq--;
-    if (this.endChangeFreq == 0) {
-        this.endDir *= -1;
+    var SIZE = Math.min(document.documentElement.clientWidth, document.documentElement.clientHeight);
+    canvas.setAttribute("width", SIZE);
+    canvas.setAttribute("height", SIZE);
+
+    var WIDTH = SIZE;
+    var HEIGHT = SIZE;
+
+    var lines = [];
+    var totalTentacles = 200;
+
+    function Line(x, y) {
+        this.x = WIDTH / 2;
+        this.y = HEIGHT / 2;
+
+        this.endAngle = Math.floor(Math.random() * 360);
+        this.endSpeed = (Math.floor(Math.random() * 10) + 1) / 50;
+        this.endDir = Math.floor(Math.random() * 2) == 0 ? -1 : 1;
         this.endChangeFreq = Math.floor(Math.random() * 200) + 1;
-    }
 
-    this.c1ChangeFreq--;
-    if (this.c1ChangeFreq == 0) {
-        this.c1Dir *= -1;
+        this.c1Angle = Math.floor(Math.random() * 360);
+        this.c1Speed = (Math.floor(Math.random() * 10) + 1) / 20;
+        this.c1Dir = Math.floor(Math.random() * 2) == 0 ? -1 : 1;
         this.c1ChangeFreq = Math.floor(Math.random() * 200) + 1;
-    }
 
-    this.c2ChangeFreq--;
-    if (this.c2ChangeFreq == 0) {
-        this.c2Dir *= -1;
+        this.c2Angle = Math.floor(Math.random() * 360);
+        this.c2Speed = (Math.floor(Math.random() * 10) + 1) / 20;
+        this.c2Dir = Math.floor(Math.random() * 2) == 0 ? -1 : 1;
         this.c2ChangeFreq = Math.floor(Math.random() * 200) + 1;
+
+        this.c1;
+        this.end;
+        this.c2;
+        //this.color = "rgba(43, 205, 255, 0.1)";
+        this.color = aitLines;
+        this.width = 10;  // Initial width
+        this.targetWidth = this.width;
+        this.startWidth = this.width;
+        this.widthAnimationStartTime = null;
+
+        this.definePoints();
+        this.draw();
     }
 
-    this.c1Angle += this.c1Dir * this.c1Speed;
-    this.c2Angle += this.c2Dir * this.c2Speed;
-    this.endAngle += this.endDir * this.endSpeed;
+    Line.prototype.animateWidthTo = function (targetWidth, duration) {
+        console.log("Attaching")
+        this.startWidth = this.width;
+        this.targetWidth = targetWidth;
+        this.widthAnimationDuration = duration;
+        this.widthAnimationStartTime = performance.now(); // Start time of animation
+    };
 
-    this.definePoints();
-    this.draw();
-};
+    Line.prototype.move = function () {
+        const currentTime = performance.now();
+        if (this.widthAnimationStartTime !== null) {
+            const elapsedTime = currentTime - this.widthAnimationStartTime;
+            const progress = Math.min(elapsedTime / this.widthAnimationDuration, 1); // Cap progress at 1
 
-Line.prototype.definePoints = function () {
-    if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/Android/i)) {
-        this.c1 = aroundPoint(this.x, this.y, 100, this.c1Angle);  // Increase to 200 (from 100)
-        this.end = aroundPoint(this.x, this.y, 150, this.endAngle); // Increase to 300 (from 150)
-        this.c2 = aroundPoint(this.end.x, this.end.y, 100, this.c2Angle); // Increase to 200 (from 100)
-    } else {
-        this.c1 = aroundPoint(this.x, this.y, 200, this.c1Angle);  // Increase to 200 (from 100)
-        this.end = aroundPoint(this.x, this.y, 300, this.endAngle); // Increase to 300 (from 150)
-        this.c2 = aroundPoint(this.end.x, this.end.y, 200, this.c2Angle); // Increase to 200 (from 100)
+            // Smoothly animate the width (ease-in-out cubic easing function)
+            this.width = easeInOutCubic(progress, this.startWidth, this.targetWidth - this.startWidth, 1);
+
+            if (progress >= 1) {
+                this.widthAnimationStartTime = null; // Stop animation once done
+            }
+        }
+
+        this.endChangeFreq--;
+        if (this.endChangeFreq == 0) {
+            this.endDir *= -1;
+            this.endChangeFreq = Math.floor(Math.random() * 200) + 1;
+        }
+
+        this.c1ChangeFreq--;
+        if (this.c1ChangeFreq == 0) {
+            this.c1Dir *= -1;
+            this.c1ChangeFreq = Math.floor(Math.random() * 200) + 1;
+        }
+
+        this.c2ChangeFreq--;
+        if (this.c2ChangeFreq == 0) {
+            this.c2Dir *= -1;
+            this.c2ChangeFreq = Math.floor(Math.random() * 200) + 1;
+        }
+
+        this.c1Angle += this.c1Dir * this.c1Speed;
+        this.c2Angle += this.c2Dir * this.c2Speed;
+        this.endAngle += this.endDir * this.endSpeed;
+
+        this.definePoints();
+        this.draw();
+    };
+
+    Line.prototype.definePoints = function () {
+        if (navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/Android/i)) {
+            this.c1 = aroundPoint(this.x, this.y, 100, this.c1Angle);  // Increase to 200 (from 100)
+            this.end = aroundPoint(this.x, this.y, 150, this.endAngle); // Increase to 300 (from 150)
+            this.c2 = aroundPoint(this.end.x, this.end.y, 100, this.c2Angle); // Increase to 200 (from 100)
+        } else {
+            this.c1 = aroundPoint(this.x, this.y, 200, this.c1Angle);  // Increase to 200 (from 100)
+            this.end = aroundPoint(this.x, this.y, 300, this.endAngle); // Increase to 300 (from 150)
+            this.c2 = aroundPoint(this.end.x, this.end.y, 200, this.c2Angle); // Increase to 200 (from 100)
+        }
+    };
+
+    Line.prototype.draw = function () {
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        ctx.bezierCurveTo(this.c1.x, this.c1.y, this.c2.x, this.c2.y, this.end.x, this.end.y);
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = this.width;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+        ctx.closePath();
+    };
+
+    function aroundPoint(x, y, dist, ang) {
+        var point = [];
+        var angle = degToRad(ang);
+        point.x = x + Math.cos(angle) * dist;
+        point.y = y + Math.sin(angle) * dist;
+        return point;
     }
-};
 
-Line.prototype.draw = function () {
-    ctx.beginPath();
-    ctx.moveTo(this.x, this.y);
-    ctx.bezierCurveTo(this.c1.x, this.c1.y, this.c2.x, this.c2.y, this.end.x, this.end.y);
-    ctx.strokeStyle = this.color;
-    ctx.lineWidth = this.width;
-    ctx.lineCap = 'round';
-    ctx.stroke();
-    ctx.closePath();
-};
-
-function aroundPoint(x, y, dist, ang) {
-    var point = [];
-    var angle = degToRad(ang);
-    point.x = x + Math.cos(angle) * dist;
-    point.y = y + Math.sin(angle) * dist;
-    return point;
-}
-
-function degToRad(deg) {
-    return deg * (Math.PI / 180);
-}
-
-function easeInOutCubic(t, b, c, d) {
-    t /= d / 2;
-    if (t < 1) return c / 2 * t * t * t + b;
-    t -= 2;
-    return c / 2 * (t * t * t + 2) + b;
-}
-
-function init() {
-    for (var i = 0; i < totalTentacles; i++) {
-        lines.push(new Line());
-    }
-    animate();
-
-}
-
-function animate() {
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
-
-    for (var i in lines) {
-        lines[i].move();
+    function degToRad(deg) {
+        return deg * (Math.PI / 180);
     }
 
-    requestAnimationFrame(animate);
+    function easeInOutCubic(t, b, c, d) {
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t * t + b;
+        t -= 2;
+        return c / 2 * (t * t * t + 2) + b;
+    }
+
+    function init() {
+        for (var i = 0; i < totalTentacles; i++) {
+            lines.push(new Line());
+        }
+        animate();
+
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+        for (var i in lines) {
+            lines[i].move();
+        }
+
+        requestAnimationFrame(animate);
+    }
+
+    init();
 }
 
-init();
+attachAIT()
 
 // Example: Change the width of a random line after 2 seconds
 //setTimeout(function () {
@@ -428,6 +437,11 @@ var aitSounds = {
         src: ['./ait_assets/got_it.mp3'],
         loop: false,
         volume: 0.5
+    }),
+    performance: new Howl({
+        src: ['./ait_assets/performance.mp3'],
+        loop: false,
+        volume: 0.5
     })
 };
 
@@ -485,7 +499,8 @@ const aitReplay = {
     uh: true,
     beta_intro: true,
     okay_sorry: true,
-    got_it: true
+    got_it: true,
+    performance: true
 };
 
 
@@ -515,7 +530,7 @@ function pickRandFromDict(sound) {
         'settings': ['settings_section_w_desc'],
         'error': ['something_wen_wrong_w_program', 'something_went_wrong_w_program_reload', 'something_went_wrong_reload'],
         'offline': ['server_failed_activating_offline', 'switch_to_offline'],
-        'welcomeBack': ['welcome_back_to_do_today', 'its_been_a_while']
+        'welcomeBack': ['welcome_back_to_do_today']
     };
 
     const sounds = soundsDict[sound] || [];
@@ -583,7 +598,7 @@ loadAit()
 let pendingSound = null;
 let cancelOutshow = false;
 let soundPlaying = false;
-const globalSounds = ['welcome_back_loginByIp', 'unexpected', 'mind_changed', 'uh', 'beta_intro']
+const globalSounds = ['welcome_back_loginByIp', 'unexpected', 'mind_changed', 'uh', 'beta_intro', 'performance']
 function aitPlay(soundName) {
     console.log("aitPlay")
     if (aitSounds[soundName] && aitAttached || aitSounds[soundName] && globalSounds.includes(soundName)) {  // Check if the sound exists in the map

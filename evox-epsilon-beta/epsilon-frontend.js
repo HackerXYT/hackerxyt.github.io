@@ -1216,7 +1216,11 @@ function verificationComplete() {
             const isAccepted = aitPlay('good_day_AIT_intro')
             if (isAccepted === false) {
                 console.log("Welcome Back Audio")
-                pickRandFromDict('welcomeBack')
+                if(!sessionStorage.getItem("saidWelcomeBack?")) {
+                    pickRandFromDict('welcomeBack')
+                    sessionStorage.setItem("saidWelcomeBack?", "true")
+                }
+                
             } else {
                 console.log("Welcome Audio", isAccepted)
             }
@@ -2784,6 +2788,8 @@ function updateServiceWorkerCache() {
     }
 }
 
+let manualUpdate = false;
+
 function updateServiceWorkerCacheAndReload() {
     return new Promise((resolve, reject) => {
         if (!navigator.serviceWorker.controller) {
@@ -2802,6 +2808,7 @@ function updateServiceWorkerCacheAndReload() {
 
         // Initiate cache update
         updateServiceWorkerCache();
+        manualUpdate = true;
 
         // Handle potential issues
         setTimeout(() => {
@@ -2810,7 +2817,19 @@ function updateServiceWorkerCacheAndReload() {
         }, 10000); // 10 seconds timeout
     }).then(() => {
         // Reload the page after cache update is confirmed
-        window.location.reload();
+        function verifyRel() {
+            if(document.getElementById("update-center").classList.includes("active")) {
+                verifyRel()
+            } else {
+                setTimeout(function() {
+                    window.location.reload();
+                }, 1500)
+                
+            }
+        }
+        verifyRel()
+        
+        
     }).catch(error => {
         console.warn('Service Worker Update Failed.<br>Evox Is Reloading..');
         console.error(error);
