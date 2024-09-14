@@ -2,6 +2,8 @@ let aitLines = 'rgba(43, 205, 255, 0.1)'
 function attachAIT(bgg) {
     if(bgg) {
         aitLines = bgg
+    } else {
+        aitLines = 'rgba(43, 205, 255, 0.1)'
     }
     var canvas = document.getElementById('ait');
     var ctx = canvas.getContext('2d');
@@ -442,6 +444,11 @@ var aitSounds = {
         src: ['./ait_assets/performance.mp3'],
         loop: false,
         volume: 0.5
+    }),
+    performance_off: new Howl({
+        src: ['./ait_assets/performance_off.mp3'],
+        loop: false,
+        volume: 0.5
     })
 };
 
@@ -500,7 +507,8 @@ const aitReplay = {
     beta_intro: true,
     okay_sorry: true,
     got_it: true,
-    performance: true
+    performance: true,
+    performance_off: true
 };
 
 
@@ -598,7 +606,7 @@ loadAit()
 let pendingSound = null;
 let cancelOutshow = false;
 let soundPlaying = false;
-const globalSounds = ['welcome_back_loginByIp', 'unexpected', 'mind_changed', 'uh', 'beta_intro', 'performance']
+const globalSounds = ['welcome_back_loginByIp', 'unexpected', 'mind_changed', 'uh', 'beta_intro', 'performance', 'performance_off']
 function aitPlay(soundName) {
     console.log("aitPlay")
     if (aitSounds[soundName] && aitAttached || aitSounds[soundName] && globalSounds.includes(soundName)) {  // Check if the sound exists in the map

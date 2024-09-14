@@ -22,7 +22,7 @@ sessionStorage.removeItem("addFriendItem")
 //IP Auth
 let ip = "error";
 document.addEventListener("DOMContentLoaded", function () {
-    fetch('https://jsonip.com/')
+    fetch('https://api.ipify.org?format=json') //https://jsonip.com/
         .then(response => response.json())
         .then(geo => {
             console.log("IP Modifications:", localStorage.getItem("IPV4") !== geo.ip)
@@ -33,10 +33,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             ip = geo.ip;
             clientVerified()
+            document.getElementById("deviceIP").innerText = ip
         })
         .catch(error => {
 
             ip = localStorage.getItem("IPV4") || "offline"
+            document.getElementById("deviceIP").innerText = ip
             console.error("IP Api is offline, ignoring")
             clientVerified()
             console.log('Error:', error);
@@ -53,30 +55,30 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Show downloading icon
 
                         //if(manualUpdate === true) {
-                            //manualUpdate = 'active'
-                            document.getElementById("update-center").classList.add("active")
-                            $("#container").fadeOut("fast")
-                            $("#gatewayExploreScroll").fadeOut("fast")
+                        //manualUpdate = 'active'
+                        document.getElementById("update-center").classList.add("active")
+                        $("#container").fadeOut("fast")
+                        $("#gatewayExploreScroll").fadeOut("fast")
                         //} else {
-                            document.getElementById("downloading-icon").classList.add("active")
-                            $("#downloading-icon").fadeIn("fast");
+                        document.getElementById("downloading-icon").classList.add("active")
+                        $("#downloading-icon").fadeIn("fast");
                         //}
-                        
+
 
                     } else if (event.data && event.data.action === 'CACHE_UPDATE_COMPLETED') {
                         // Hide downloading icon
-                        
+
                         //if(manualUpdate === 'active') {
-                            //manualUpdate = false
-                            document.getElementById("update-center").classList.remove("active")
-                            $("#container").fadeIn("fast")
-                            $("#gatewayExploreScroll").fadeIn("fast")
+                        //manualUpdate = false
+                        document.getElementById("update-center").classList.remove("active")
+                        $("#container").fadeIn("fast")
+                        $("#gatewayExploreScroll").fadeIn("fast")
                         //} else {
-                            $("#downloading-icon").fadeOut("fast", function () {
-                                document.getElementById("downloading-icon").classList.remove("active")
-                            });
+                        $("#downloading-icon").fadeOut("fast", function () {
+                            document.getElementById("downloading-icon").classList.remove("active")
+                        });
                         //}
-                        
+
 
                     }
                 });
@@ -224,7 +226,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '7.1.0'
+const appVersion = '7.1.1'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -1685,259 +1687,188 @@ document.getElementById("message_input").addEventListener("keypress", function (
 let aitNoMsgPlayed = false;
 let activeChatInterval = null;
 
-function actionReload(whoto, reloadPage, isAIT) {
-
+async function actionReload(whoto, reloadPage, isAIT, firstLoad) {
     const container = document.getElementById("messages-container");
-    //container.innerHTML = `<p class='centered-text'>Loading ${whoto}..</p>`;
     if (!reloadPage) {
-        container.innerHTML = `<p id='tempTxt' class='centered-text'><img src="EvoxEPSILON.png"></p>`;
-        document.getElementById("tempTxt").style.opacity = '1'
+        container.innerHTML = `<p id='tempTxt' class='centered-text'><img style="margin-bottom: 10px;" src="EvoxEPSILON.png"><span id="infoSlineLoad">Decrypting..</span></p>`;
+        document.getElementById("tempTxt").style.opacity = '1';
     }
 
     console.log(`Reloading user's chat with ${whoto}`);
     sessionStorage.setItem("current_sline", whoto);
-    const element = {
-        "id": whoto
-    };
-    pfp = document.getElementById(`${whoto}-pfp-secureline`);
 
-    fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}&password=${atob(localStorage.getItem("t50pswd"))}&v=${Math.floor(Math.random() * 100000)}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.text();
-        })
-        .then(messages => {
-            //console.log(whoto, 'messages:\n', messages)
+    try {
+        const response = await fetch(`https://data.evoxs.xyz/secureline?method=MyChats&username=${localStorage.getItem("t50-username")}&recipient_username=${whoto}&password=${atob(localStorage.getItem("t50pswd"))}&v=${Math.floor(Math.random() * 100000)}`);
 
-            //setNetworkStatus('on')
-            try {
-                const integrityCheck = JSON.parse(messages);
+        if (!response.ok) {
+            if (!reloadPage) { document.getElementById("infoSlineLoad").innerText = 'Secureline Failed!' }
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-                if (integrityCheck.messages.length === 0) {
-                    document.getElementById("messages-container").innerHTML = `<p id="tempTextNoMsg" class='centered-text'>No messages!</p>`;
-                    if (aitNoMsgPlayed === false) {
-                        aitPlay("no_messages_with_user")
-                        aitNoMsgPlayed = true
-                    }
+        const messages = await response.text();
+        if (!reloadPage) { document.getElementById("infoSlineLoad").innerText = 'Spawning..' }
+        try {
+            const integrityCheck = JSON.parse(messages);
 
-                    document.getElementById("tempTextNoMsg").style.opacity = '1'
-                    document.getElementById("bottomActionsSecureline").classList.remove("hidden")
+            if (integrityCheck.messages.length === 0) {
+                document.getElementById("messages-container").innerHTML = `<p id="tempTextNoMsg" class='centered-text'>No messages!</p>`;
 
-                    return;
-                } else {
-                    console.log("Messages length:", integrityCheck.messages.length)
+                if (aitNoMsgPlayed === false) {
+                    aitPlay("no_messages_with_user");
+                    aitNoMsgPlayed = true;
                 }
-            } catch (error) {
-                console.error("Possible Account Verification Error:", messages, error);
-                if (messages === "Chat not created") {
-                    document.getElementById("messages-container").innerHTML = `
+                document.getElementById("tempTextNoMsg").style.opacity = '1';
+                document.getElementById("bottomActionsSecureline").classList.remove("hidden");
+
+                return 'Done';
+            }
+
+        } catch (error) {
+            console.error("Possible Account Verification Error:", messages, error);
+            if (messages === "Chat not created") {
+                document.getElementById("messages-container").innerHTML = `
                     <p style="opacity: 1" class='centered-text'>Chat Hasn't Been Created.
                     <button style="margin-top: 20px" id="submit" onclick="create_chat()" class="transparent-button">Create Chat</button></p>`;
-                    document.getElementById("bottomActionsSecureline").classList.add("hidden")
-                    return;
-                }
-                return;
-            }
-            if (sessionStorage.getItem("lastChatMessages") === JSON.stringify(messages)) {
-                console.log("No new messages");
-                document.getElementById("bottomActionsSecureline").classList.remove("hidden")
-                return;
-            }
-            sessionStorage.setItem("lastChatMessages", JSON.stringify(messages));
-            if (messages === "Chat not created") {
-                document.getElementById("messages-container").innerHTML = `<p style="opacity: 1" class='centered-text'>Chat Hasn't Been Created.<button style="margin-top: 20px" id="submit" onclick="create_chat()" class="transparent-button">Create Chat</button></p>`;
-                console.log("Chat Doesn't Exist");
-                document.getElementById("bottomActionsSecureline").classList.add("hidden")
-                return;
-            }
-            let jsonData_unWork = { messages: null };
-            let jsonData = JSON.parse(messages);
+                document.getElementById("bottomActionsSecureline").classList.add("hidden");
 
-            console.log("Started:", jsonData);
-            console.log("Messages Passed integrity Check", jsonData);
+                return 'Done';
+            }
+            return;
+        }
 
-            console.log("Conversion done.");
+        if (sessionStorage.getItem("lastChatMessages") === JSON.stringify(messages)) {
+            console.log("No new messages");
+            document.getElementById("bottomActionsSecureline").classList.remove("hidden");
+            return 'Done';
+        }
 
-            Promise.resolve(jsonData.messages)
-                .then((messageArray) => {
-                    if (!Array.isArray(messageArray)) {
-                        throw new Error("Messages is not an array.");
+        sessionStorage.setItem("lastChatMessages", JSON.stringify(messages));
+
+        const jsonData = JSON.parse(messages);
+        const sortedMessages = jsonData.messages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        const messagesContainer = document.getElementById('messages-container');
+        messagesContainer.innerHTML = "";
+
+        const messagePromises = sortedMessages.map(message => {
+            return new Promise((resolve, reject) => {
+                const messageElement = document.createElement('div');
+
+                if (message.content.includes("http") || message.content.includes("https")) {
+                    const url = new URL(message.content);
+                    const logoUrl = `https://logo.clearbit.com/${url.hostname}`;
+
+                    let infoFile = 'URL';
+                    let fileSrc = false;
+                    const filenameWithoutExtension = message.content.split('/').pop().replace(/\.[^.]+$/, '');
+
+                    if (message.content.includes('.pdf')) {
+                        fileSrc = './novus/pdf.svg';
+                        infoFile = `PDF &#x2022; unknMB`;
+                    } else if (message.content.includes('.png')) {
+                        fileSrc = message.content;
+                        infoFile = `PNG &#x2022; unknMB`;
+                    } else if (message.content.includes('.jpg')) {
+                        fileSrc = message.content;
+                        infoFile = `JPG &#x2022; unknMB`;
+                    } else if (message.content.includes('.webp')) {
+                        fileSrc = message.content;
+                        infoFile = `WEBP &#x2022; unknMB`;
+                    } else if (message.content.includes('.gif')) {
+                        fileSrc = message.content;
+                        infoFile = `GIF &#x2022; unknMB`;
+                    } else if (message.content.includes('.mp4')) {
+                        fileSrc = './novus/video.svg';
+                        infoFile = `MP4 &#x2022; unknMB`;
+                    } else if (message.content.includes('chatgpt')) {
+                        fileSrc = `https://logo.clearbit.com/openai.com`;
+                    } else {
+                        infoFile = 'URL';
                     }
 
-                    console.log("Messages before reversing:", messageArray.map(msg => msg.message_id));
+                    if (fileSrc !== false) {
+                        messageElement.innerHTML = `<img class="urlImg" src="${fileSrc}">
+                            <div class="embedCol">
+                                <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
+                                <vo>${infoFile}</vo>
+                            </div>
+                            <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${message.content}')" style="margin-right: 0px;">`;
+                    } else {
+                        messageElement.innerHTML = `<img class="urlImg" style="width: 25px;height:25px" src="./novus/attach.svg">
+                            <div class="embedCol">
+                                <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
+                                <vo>${infoFile}</vo>
+                            </div>
+                            <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${message.content}')" style="margin-right: 0px;">`;
+                    }
 
-                    // Perform the reverse operation
-                    messageArray.reverse();
+                    if (message.sender === localStorage.getItem("t50-username")) {
+                        messageElement.classList.add('message-me');
+                    } else {
+                        messageElement.classList.add('message');
+                    }
+                    messagesContainer.appendChild(messageElement);
 
-                    console.log("Messages after reversing:", messageArray.map(msg => msg.message_id));
-                    //const jsonData = { messages: messageArray.map(msg => msg.message_id) }
-                    console.log(jsonData)
-                    // Check if jsonData and jsonData.messages are defined before sorting
-                    if (jsonData && jsonData.messages) {
-                        const messagesContainer = document.getElementById('messages-container');
-                        messagesContainer.innerHTML = "";
-
-                        // Sort messages by timestamp
-                        //const sortedMessages = jsonData.messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-                        const sortedMessages = jsonData.messages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-
-                        // Create an array of promises to handle URL accessibility checks
-                        const messagePromises = sortedMessages.map(message => {
-                            return new Promise((resolve, reject) => {
-                                const messageElement = document.createElement('div');
-                                console.log("Message Content:", message.content)
-                                if (message.content.includes("http") || message.content.includes("https")) {
-                                    const url = new URL(message.content);
-                                    const logoUrl = `https://logo.clearbit.com/${url.hostname}`;
-
-                                    let infoFile = 'URL';
-                                    let fileSrc = false;
-                                    const filenameWithoutExtension = message.content.split('/').pop().replace(/\.[^.]+$/, '');
-                                    if (message.content.includes('.pdf')) {
-                                        fileSrc = './novus/pdf.svg';
-                                        infoFile = `PDF &#x2022; unknMB`; //${getFileSize(url)}
-                                    } else if (message.content.includes('.png')) {
-                                        fileSrc = message.content;
-                                        infoFile = `PNG &#x2022; unknMB`;
-                                    } else if (message.content.includes('.jpg')) {
-                                        fileSrc = message.content;
-                                        infoFile = `JPG &#x2022; unknMB`;
-                                    } else if (message.content.includes('.webp')) {
-                                        fileSrc = message.content;
-                                        infoFile = `WEBP &#x2022; unknMB`;
-                                    } else if (message.content.includes('.gif')) {
-                                        fileSrc = message.content;
-                                        infoFile = `GIF &#x2022; unknMB`;
-                                    } else if (message.content.includes('.mp4')) {
-                                        fileSrc = './novus/video.svg';
-                                        infoFile = `MP4 &#x2022; unknMB`;
-
-                                    } else if (message.content.includes('chatgpt')) {
-                                        fileSrc = `https://logo.clearbit.com/openai.com`;
-                                    } else {
-                                        infoFile = 'URL';
-                                    }
-
-                                    if (fileSrc !== false) {
-                                        messageElement.innerHTML = `<img class="urlImg" src="${fileSrc}">
-                        <div class="embedCol">
-                            <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
-                            <vo>${infoFile}</vo>
-                        </div>
-                        <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${message.content}')" style="margin-right: 0px;">`;
-                                    } else {
-                                        messageElement.innerHTML = `<img class="urlImg" style="width: 25px;height:25px" src="./novus/attach.svg">
-    <div class="embedCol">
-        <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
-        <vo>${infoFile}</vo>
-    </div>
-    <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${message.content}')" style="margin-right: 0px;">`;
-                                    }
-
-                                    // Apply appropriate class based on the sender
-                                    if (message.sender === localStorage.getItem("t50-username")) {
-                                        messageElement.classList.add('message-me');
-                                    } else {
-                                        messageElement.classList.add('message');
-                                    }
-                                    messagesContainer.appendChild(messageElement);
-
-                                    checkUrlAccessibility(logoUrl)
-                                        .then(not404 => {
-                                            if (not404 === true) {
-                                                messageElement.innerHTML = `<img class="urlImg" src="${logoUrl}">
-                                <div class="embedCol">
-                                    <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
-                                    <vo>${infoFile}</vo>
-                                </div>
-                                <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${message.content}')" style="margin-right: 0px;">`;
-                                            } else {
-                                                if (fileSrc !== false) {
-                                                    messageElement.innerHTML = `<img class="urlImg" src="${fileSrc}">
+                    checkUrlAccessibility(logoUrl)
+                        .then(not404 => {
+                            if (not404 === true) {
+                                messageElement.innerHTML = `<img class="urlImg" src="${logoUrl}">
                                     <div class="embedCol">
                                         <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
                                         <vo>${infoFile}</vo>
                                     </div>
                                     <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${message.content}')" style="margin-right: 0px;">`;
-                                                } else {
-                                                    messageElement.innerHTML = `<img class="urlImg" style="width: 25px;height:25px" src="./novus/attach.svg">
-                <div class="embedCol">
-                    <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
-                    <vo>${infoFile}</vo>
-                </div>
-                <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${message.content}')" style="margin-right: 0px;">`;
-                                                }
-                                            }
-
-                                            resolve();
-                                        }).catch(error => {
-                                            //setNetworkStatus('off')
-                                            console.error(error);
-                                            resolve(); // Resolve even if there's an error to ensure all messages are processed
-                                        });
+                            } else {
+                                if (fileSrc !== false) {
+                                    messageElement.innerHTML = `<img class="urlImg" src="${fileSrc}">
+                                        <div class="embedCol">
+                                            <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
+                                            <vo>${infoFile}</vo>
+                                        </div>
+                                        <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${message.content}')" style="margin-right: 0px;">`;
                                 } else {
-                                    // Create a new message element
-                                    messageElement.textContent = message.content;
-
-                                    // Apply appropriate class based on the sender
-                                    if (message.sender === localStorage.getItem("t50-username")) {
-                                        messageElement.classList.add('message-me');
-                                    } else {
-                                        messageElement.classList.add('message');
-                                    }
-
-                                    // Append the message element to the messages container
-                                    messagesContainer.appendChild(messageElement);
-                                    document.getElementById("bottomActionsSecureline").classList.remove("hidden")
-                                    resolve();
+                                    messageElement.innerHTML = `<img class="urlImg" style="width: 25px;height:25px" src="./novus/attach.svg">
+                                        <div class="embedCol">
+                                            <span>${url.hostname.match(/(?:www\.)?([a-zA-Z0-9-]+)\./)[1]}</span>
+                                            <vo>${infoFile}</vo>
+                                        </div>
+                                        <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${message.content}')" style="margin-right: 0px;">`;
                                 }
-                            });
+                            }
+                            resolve();
+                        }).catch(error => {
+                            console.error(error);
+                            resolve();
                         });
-
-                        // Wait for all promises to complete
-                        Promise.all(messagePromises)
-                            .then(() => {
-                                // Scroll to the bottom of the messages container
-                                var contentDiv = document.getElementById('messages-container');
-                                contentDiv.scrollTop = contentDiv.scrollHeight;
-                                console.log("All messages have been processed and displayed.");
-                                if (isAIT) {
-                                    const container = document.getElementById('messages-container');
-                                    const newMessage = document.createElement('div');
-                                    newMessage.className = 'message'
-                                    newMessage.innerHTML = `<div class="spinner-box"><div class="pulse-container"><div class="pulse-bubble pulse-bubble-1 think"></div><div class="pulse-bubble pulse-bubble-2 think"></div><div class="pulse-bubble pulse-bubble-3 think"></div></div></div>`;
-
-                                    // Insert the new element at the top
-                                    if (container.firstChild) {
-                                        container.insertBefore(newMessage, container.firstChild);
-                                    } else {
-                                        container.appendChild(newMessage); // If no children, just append
-                                    }
-                                }
-
-                            })
-                            .catch(error => {
-                                //setNetworkStatus('off')
-                                console.error("Error processing messages:", error);
-                            });
-                    } else {
-                        console.error("JSON data or messages array is undefined.");
-                    }
-                })
-                .catch((err) => {
-                    console.error("Error during reversion:", err.message);
-                });
-
-
-        })
-        .catch(error => {
-            //setNetworkStatus('off')
-            console.error("Error fetching chat messages:", error);
+                } else {
+                    messageElement.textContent = message.content;
+                    messageElement.classList.add(message.sender === localStorage.getItem("t50-username") ? 'message-me' : 'message');
+                    messagesContainer.appendChild(messageElement);
+                    document.getElementById("bottomActionsSecureline").classList.remove("hidden");
+                    resolve();
+                }
+            });
         });
+
+        await Promise.all(messagePromises);
+
+        const contentDiv = document.getElementById('messages-container');
+        contentDiv.scrollTop = contentDiv.scrollHeight;
+        console.log("All messages have been processed and displayed.");
+
+        if (isAIT) {
+            const newMessage = document.createElement('div');
+            newMessage.className = 'message';
+            newMessage.innerHTML = `<div class="spinner-box"><div class="pulse-container"><div class="pulse-bubble pulse-bubble-1 think"></div><div class="pulse-bubble pulse-bubble-2 think"></div><div class="pulse-bubble pulse-bubble-3 think"></div></div></div>`;
+            container.insertBefore(newMessage, container.firstChild);
+        }
+
+        return 'Done';
+    } catch (error) {
+        console.error("Error fetching chat messages:", error);
+    }
 }
+
 
 function create_chat() {
     document.getElementById("messages-container").innerHTML = `<p style="opacity: 1" class='centered-text'>Creating Chat

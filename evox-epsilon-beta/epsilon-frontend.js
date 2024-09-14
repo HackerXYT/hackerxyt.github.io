@@ -1118,7 +1118,7 @@ function verificationComplete() {
     } catch (error) {
         console.error("Cookies Failed!")
     }
-    
+
     console.log("Verification Complete.")
     console.log("Scanning For Query Notifications")
     let hasPendingNotification = false;
@@ -1216,11 +1216,11 @@ function verificationComplete() {
             const isAccepted = aitPlay('good_day_AIT_intro')
             if (isAccepted === false) {
                 console.log("Welcome Back Audio")
-                if(!sessionStorage.getItem("saidWelcomeBack?")) {
+                if (!sessionStorage.getItem("saidWelcomeBack?")) {
                     pickRandFromDict('welcomeBack')
                     sessionStorage.setItem("saidWelcomeBack?", "true")
                 }
-                
+
             } else {
                 console.log("Welcome Audio", isAccepted)
             }
@@ -1460,10 +1460,22 @@ function openChat(data, location) {
             //setNetworkStatus('off')
             console.error(error);
         });
-    actionReload(username)
-    activeChatInterval = setInterval(function () {
-        actionReload(username, 'reloadPage')
-    }, 1700)
+    actionReload(username, null, null, 'firstLoad').then((res) => {
+        //alert(`First action done! ${res}`)
+        activeChatInterval = setInterval(function () {
+            actionReload(username, 'reloadPage')
+        }, 1700)
+    }).catch(error => {
+        console.error(error);
+        actionReload(username, null, null, 'firstLoad').then(() => {
+            activeChatInterval = setInterval(function () {
+                actionReload(username, 'reloadPage')
+            }, 1700)
+        }).catch(error => {
+            console.error(error);
+        });
+    });
+
     console.warn("Running Secureline For", username)
     setTimeout(function () {
         document.getElementById("secureline-input").value = ''
@@ -2818,18 +2830,18 @@ function updateServiceWorkerCacheAndReload() {
     }).then(() => {
         // Reload the page after cache update is confirmed
         function verifyRel() {
-            if(document.getElementById("update-center").classList.includes("active")) {
+            if (document.getElementById("update-center").classList.includes("active")) {
                 verifyRel()
             } else {
-                setTimeout(function() {
+                setTimeout(function () {
                     window.location.reload();
                 }, 1500)
-                
+
             }
         }
         verifyRel()
-        
-        
+
+
     }).catch(error => {
         console.warn('Service Worker Update Failed.<br>Evox Is Reloading..');
         console.error(error);
