@@ -226,7 +226,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '7.1.1'
+const appVersion = '7.1.5'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -273,6 +273,9 @@ function loadBackground() {
     let colorScheme;
     console.log("customEpsilonGradient:", gradient)
     const root = document.documentElement;
+    if(gradient) {
+        syncOptions("background", gradient)
+    }
     if (gradient === 'purple') {
         console.log("Setting Purple")
         root.style.setProperty('--color-bg1', 'rgba(108, 0, 162, 1)');
@@ -296,6 +299,44 @@ function loadBackground() {
     } else if (gradient === 'default') {
         console.log("Leaving Default -> Got from storage")
     } else {
+        fetch(`${srv}/options?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}&optionType=background&switchMethod=get`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(optionsRes => {
+
+                if (optionsRes === 'purple') {
+                    console.log("Setting Purple")
+                    root.style.setProperty('--color-bg1', 'rgba(108, 0, 162, 1)');
+                    root.style.setProperty('--color-bg2', 'rgba(0, 17, 82, 1)');
+                    root.style.setProperty('--color1', '76, 0, 162');
+                    root.style.setProperty('--color2', '0, 82, 139');
+                    root.style.setProperty('--color3', '0, 160, 176');
+                    root.style.setProperty('--color4', '103, 93, 98');
+                    root.style.setProperty('--color5', '17, 19, 26');
+                    root.style.setProperty('--color-interactive', '140, 100, 255');
+                } else if (optionsRes === 'blue') {
+                    console.log("Setting Blue")
+                    root.style.setProperty('--color-bg1', 'rgba(0, 17, 82, 1)');
+                    root.style.setProperty('--color-bg2', 'rgba(0, 105, 224, 1)');
+                    root.style.setProperty('--color1', '0, 43, 109');
+                    root.style.setProperty('--color2', '0, 82, 139');
+                    root.style.setProperty('--color3', '0, 160, 224');
+                    root.style.setProperty('--color4', '68, 85, 104');
+                    root.style.setProperty('--color5', '15, 18, 35');
+                    root.style.setProperty('--color-interactive', '60, 160, 255');
+                } else if (optionsRes === 'default') {
+                    console.log("Leaving Default -> Got from sync")
+                } else if (optionsRes === 'None') {
+                    console.log("Leaving Default, Sync is null")
+                }
+                localStorage.setItem("customEpsilonGradient", optionsRes)
+            }).catch(error => {
+                console.error(error);
+            });
         console.log("Leaving Default")
     }
 
@@ -593,6 +634,7 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
     if (localStorage.getItem("favorites")) {
         try {
             const favoritesJson = JSON.parse(localStorage.getItem("favorites"))
+            syncOptions("favorites", JSON.stringify(favoritesJson))
             if (favoritesJson.length < 5) {
                 favoritesJson.forEach((friend) => {
                     appendToCarousel(friend)
@@ -618,10 +660,54 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
             })
         }
     } else {
-        let firstFiveValues = data.slice(0, 5);
-        firstFiveValues.forEach((friend) => {
-            appendToCarousel(friend)
-        })
+        fetch(`${srv}/options?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}&optionType=favorites&switchMethod=get`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(optionsRes => {
+                if(optionsRes !== 'None') {
+                    const reparse = JSON.parse(optionsRes)
+                    localStorage.setItem('favorites', JSON.stringify(reparse))
+                    try {
+                        const favoritesJson = JSON.parse(localStorage.getItem("favorites"))
+                        syncOptions("favorites", JSON.stringify(favoritesJson))
+                        if (favoritesJson.length < 5) {
+                            favoritesJson.forEach((friend) => {
+                                appendToCarousel(friend)
+                            })
+                            const remainingToAppend = 5 - favoritesJson.length
+                            let counting = 0;
+                            data.forEach((friend) => {
+                                if (counting === remainingToAppend) {
+                                    return;
+                                }
+                                if (favoritesJson.includes(friend)) {
+                                    return;
+                                } else {
+                                    counting = counting + 1
+                                    appendToCarousel(friend)
+                                }
+                            })
+                        }
+                    } catch (error) {
+                        let firstFiveValues = data.slice(0, 5);
+                        firstFiveValues.forEach((friend) => {
+                            appendToCarousel(friend)
+                        })
+                    }
+                } else {
+                    let firstFiveValues = data.slice(0, 5);
+                    firstFiveValues.forEach((friend) => {
+                        appendToCarousel(friend)
+                    })
+                }
+            }).catch(error => {
+                console.error(error);
+            });
+        
 
 
     }

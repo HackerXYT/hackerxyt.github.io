@@ -7,6 +7,7 @@ html {
   scroll-behavior: smooth;
 }
 
+
 @font-face {
   font-family: 'SFLight';
   src: url('./internal/SFProDisplay-Light.ttf') format('truetype');
@@ -150,6 +151,11 @@ body::-webkit-scrollbar {
   opacity: 0;
   /* Initially hidden */
   transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.gatewayActions p.color:before {
+  background-color: #ef3535;
+  transition: width 1s ease-in-out, opacity 0.2s ease-in-out;
 }
 
 .gatewayActions p.animate:before {
@@ -2648,22 +2654,43 @@ a {
 
 
 .message-me {
-  background-color: #191919;
+  
   max-width: 50%;
   margin-top: 0;
   margin-left: auto;
   border-radius: 20px 20px 2px 20px;
   /* Adjust border-radius as needed */
   margin-right: 20px;
+  background-color: #007bffac;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 .message {
+  background-color: #191919c8;
   max-width: 50%;
   margin-right: auto;
   margin-left: 20px;
   border-radius: 20px 20px 20px 2px;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   /* Adjust border-radius as needed */
 }
+
+/*@media only screen and (min-width: 768px) {
+  .message-me {
+    background-color: #007aff;
+  }
+
+  .message {
+    background-color: #191919;
+    max-width: 50%;
+    margin-top: 0;
+    margin-left: auto;
+    border-radius: 20px 20px 2px 20px;
+    margin-right: 20px;
+  }
+}*/
 
 
 .apple-input-sl {
@@ -5719,7 +5746,7 @@ input:autofill {
 }
 
 .secureline-messages>*:last-child {
-  margin-top: 90px;
+  margin-top: 190px;
   /* Adjust as needed */
 }
 
@@ -7150,7 +7177,7 @@ vox.svgIconAnimated {
   display: flex;
   flex-direction: column;
   background-color: #4a4a4a54;
-  
+
   border-radius: 0;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
@@ -7167,7 +7194,7 @@ vox.svgIconAnimated {
   margin-right: 20px;
 }
 
-.iconRow img{
+.iconRow img {
   width: 35px;
   height: 35px;
   border-radius: 10px;

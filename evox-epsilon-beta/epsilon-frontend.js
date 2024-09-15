@@ -1360,9 +1360,11 @@ function add_favorite(event, element, customColor, customDimen) {
             console.log(previous)
             previous.push(element.getAttribute("data-name"))
             localStorage.setItem('favorites', JSON.stringify(previous))
+            syncOptions("favorites", JSON.stringify(previous))
         } else {
             const json = [element.getAttribute("data-name")]
             localStorage.setItem('favorites', JSON.stringify(json))
+            syncOptions("favorites", JSON.stringify(json))
         }
         element.setAttribute("data-status", 'fav')
         element.style.transform = 'scale(1.2)'
@@ -1385,6 +1387,7 @@ function add_favorite(event, element, customColor, customDimen) {
             }
             console.log("Updated:", previous)
             localStorage.setItem('favorites', JSON.stringify(previous))
+            syncOptions("favorites", JSON.stringify(previous))
         }
         element.setAttribute("data-status", 'default')
         element.style.transform = 'scale(1.2)'
@@ -2788,6 +2791,7 @@ function changeBackground(event, background) {
     document.getElementById(`grad-${background}`).classList.add('current')
     backgroundSwitch(background) //purple, blue, default
     localStorage.setItem('customEpsilonGradient', background)
+    syncOptions("background", background)
 }
 
 function updateServiceWorkerCache() {
@@ -2856,8 +2860,10 @@ let isProfileTabActive = false;
 function enableTab(element) {
     const old = activeTab
     document.getElementById(`tab-${activeTab.toLowerCase()}`).classList.remove("active")
-    if (element.innerHTML.includes("Ask") && !element.classList.contains("active")) {
-        activeTab = 'Ask'
+    if (element.innerHTML.includes("svg") && !element.classList.contains("active")) {
+        activeTab = 'svg'
+        //element.style.transform = 'rotate(490deg)'
+        element.classList.add("color")
         element.classList.add("active")
         aitPlay("reloading")
         setTimeout(function () {
@@ -3062,5 +3068,39 @@ function toogleSounds() {
         localStorage.setItem("epsilonSounds", 'false')
         document.getElementById("sounds-status").innerText = 'Off'
 
+    }
+}
+
+function syncOptions(container, stringified) {
+    if (container === 'favorites') {
+        fetch(`${srv}/options?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}&optionType=favorites&optionValue=${stringified}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(optionsRes => {
+                if(optionsRes) {
+                    console.log("Sync With Server Complete [Favs]")
+                }
+            }).catch(error => {
+                console.error(error);
+            });
+    } else if(container === 'background') {
+        fetch(`${srv}/options?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}&optionType=background&optionValue=${stringified}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(optionsRes => {
+                if(optionsRes) {
+                    console.log("Sync With Server Complete [Bg]")
+                }
+            }).catch(error => {
+                console.error(error);
+            });
     }
 }
