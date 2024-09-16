@@ -2266,6 +2266,27 @@ function bottomButtonPress(which, el) {
             document.getElementById("gateway").style.opacity = '1'
             $("#gatewayActions").fadeIn("fast")
         }, 50)
+    } else if (which === 'deleteSlineMessage') {
+        el.style.transform = 'scale(0.96)'
+        setTimeout(function () {
+            //workingElem.style.transform = 'rotate(0deg)'
+            el.style.transform = 'scale(1)'
+        }, 200)
+
+        deleteMessage()
+
+    } else if (which === 'dismissSlineMessage') {
+
+        sessionStorage.removeItem("pendingDeletion_message")
+        sessionStorage.removeItem("pendingDeletion_username")
+        el.style.transform = 'scale(0.96)'
+        setTimeout(function () {
+            //workingElem.style.transform = 'rotate(0deg)'
+            el.style.transform = 'scale(1)'
+            document.getElementById("message-edit-center").classList.remove("active")
+        }, 200)
+
+
     } else {
         el.style.transform = 'scale(0.96)'
         setTimeout(function () {
@@ -2794,6 +2815,18 @@ function changeBackground(event, background) {
     syncOptions("background", background)
 }
 
+function editMessage(event, elem, id, sender) {
+    //message-${type}${countMessages}-${message.sender}
+    event.stopPropagation();
+    const innerHtml = document.getElementById(id).innerHTML
+    document.getElementById("message-edit-center").classList.add("active")
+    sessionStorage.setItem("pendingDeletion_message", innerHtml)
+    sessionStorage.setItem("pendingDeletion_username", sender)
+    document.getElementById("message-edit-inner").innerHTML = innerHtml
+    document.getElementById("msgBy").innerText = `Message By ${sender}`
+    console.log("Success", innerHtml)
+}
+
 function updateServiceWorkerCache() {
     if (navigator.serviceWorker.controller) {
         navigator.serviceWorker.controller.postMessage({
@@ -3081,13 +3114,13 @@ function syncOptions(container, stringified) {
                 return response.text();
             })
             .then(optionsRes => {
-                if(optionsRes) {
+                if (optionsRes) {
                     console.log("Sync With Server Complete [Favs]")
                 }
             }).catch(error => {
                 console.error(error);
             });
-    } else if(container === 'background') {
+    } else if (container === 'background') {
         fetch(`${srv}/options?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}&optionType=background&optionValue=${stringified}`)
             .then(response => {
                 if (!response.ok) {
@@ -3096,11 +3129,86 @@ function syncOptions(container, stringified) {
                 return response.text();
             })
             .then(optionsRes => {
-                if(optionsRes) {
+                if (optionsRes) {
                     console.log("Sync With Server Complete [Bg]")
                 }
             }).catch(error => {
                 console.error(error);
             });
     }
+}
+
+function deleteMessage() {
+    const baseSVG = `<svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                    viewBox="0 0 24 24" fill="none">
+                    <path d="M4 7H20" stroke="#dbdde3" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M6 7V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V7" stroke="#dbdde3"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#dbdde3"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>`
+    //document.getElementById("animate1").style.transform = 'rotate(20deg)'
+    document.getElementById("animateAMessDel").classList.add("shakeEasy")
+    function runFinal() {
+        fetch(`https://data.evoxs.xyz/secureline?method=DeleteMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${sessionStorage.getItem("current_sline")}&whosentit=${sentItBy}&message=${message}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+
+                if (data === "Deleted Message") {
+
+                } else if (data === "Complete") {
+
+                    //deleted all messages
+                } else if (data === "Cannot delete sender's message") {
+
+                    setTimeout(function () {
+                        document.getElementById("animateAMessDel").classList.remove("shakeEasy")
+                    }, 750)
+                    document.getElementById("deletingMessage").innerHTML = 'Failed!'
+                    setTimeout(function () {
+                        document.getElementById("deletingMessage").innerHTML = 'Delete'
+                    }, 5000)
+                    return;
+
+                } else {
+
+                }
+
+                setTimeout(function () {
+                    document.getElementById("animateAMessDel").classList.remove("shakeEasy")
+                    document.getElementById("message-edit-center").classList.remove("active")
+                }, 750)
+
+                
+                sessionStorage.removeItem("pendingDeletion_message")
+                sessionStorage.removeItem("pendingDeletion_username")
+
+
+            }).catch(error => {
+                setTimeout(function () {
+                    document.getElementById("animateAMessDel").classList.remove("shakeEasy")
+                }, 750)
+                console.error(error)
+            })
+
+    }
+    const message = sessionStorage.getItem("pendingDeletion_message")
+    let sentItBy = sessionStorage.getItem("pendingDeletion_username")
+    if (sentItBy === localStorage.getItem("t50-username")) {
+        sentItBy = 'me'
+        runFinal()
+    } else {
+        runFinal()
+    }
+
+
+
+
+
 }

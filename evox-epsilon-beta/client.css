@@ -564,6 +564,16 @@ body.no-scroll {
   align-items: center;
 }
 
+.bottomButtonsSline.msgEdit {
+  position: absolute;
+  bottom: 25px;
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .bottomButtonsSline a {
   display: flex;
   width: 87%;
@@ -2603,6 +2613,7 @@ a {
   /* Preserve white spaces and wrap text */
   word-break: break-word;
   /* Break long words to prevent overflow */
+  transition: width 0.5s ease-in-out, max-width 0.5s ease-in-out, height 0.5s ease-in-out;
 }
 
 .message .urlImg,
@@ -2654,7 +2665,7 @@ a {
 
 
 .message-me {
-  
+
   max-width: 50%;
   margin-top: 0;
   margin-left: auto;
@@ -7236,4 +7247,88 @@ vox.svgIconAnimated {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.optionsBoxMsg {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  /* Or relative, depending on your layout */
+  margin-left: -5px;
+  /* Adjust the initial position */
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, margin-left 0.5s ease-in-out;
+}
+
+.enlarged .optionsBoxMsg {
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+  /* Or use absolute if it fits your layout better */
+  margin-left: 5px;
+  /* Target position */
+}
+
+#message-edit-center {
+  padding-bottom: 100px;
+}
+
+#animateAMessDel svg {
+  transition: transform 0.5s ease-in-out;
+}
+
+#animateAMessDel svg path {
+  transition: transform 0.5s ease-in-out;
+}
+
+#animateAMessDel.shakeEasy svg path {
+  animation-name: shakeEasy;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite; /* Makes the animation repeat indefinitely */
+}
+
+@keyframes shakeEasy {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  10% {
+    transform: translate(-1px, -0.5px) rotate(-1deg);
+  }
+
+  20% {
+    transform: translate(1px, 1px) rotate(1deg);
+  }
+
+  30% {
+    transform: translate(-1px, -1.5px) rotate(-1deg);
+  }
+
+  40% {
+    transform: translate(1px, 1px) rotate(1deg);
+  }
+
+  50% {
+    transform: translate(-1px, -0.5px) rotate(-1deg);
+  }
+
+  60% {
+    transform: translate(1px, 0) rotate(1deg);
+  }
+
+  70% {
+    transform: translate(-1px, 0.5px) rotate(-1deg);
+  }
+
+  80% {
+    transform: translate(1px, -0.5px) rotate(1deg);
+  }
+
+  90% {
+    transform: translate(-1px, 1px) rotate(-1deg);
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
 }

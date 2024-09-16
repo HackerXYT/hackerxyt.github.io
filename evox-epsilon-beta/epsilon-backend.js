@@ -226,7 +226,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '7.1.5'
+const appVersion = '7.2.0'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -273,7 +273,7 @@ function loadBackground() {
     let colorScheme;
     console.log("customEpsilonGradient:", gradient)
     const root = document.documentElement;
-    if(gradient) {
+    if (gradient) {
         syncOptions("background", gradient)
     }
     if (gradient === 'purple') {
@@ -668,7 +668,7 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
                 return response.text();
             })
             .then(optionsRes => {
-                if(optionsRes !== 'None') {
+                if (optionsRes !== 'None') {
                     const reparse = JSON.parse(optionsRes)
                     localStorage.setItem('favorites', JSON.stringify(reparse))
                     try {
@@ -707,7 +707,7 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
             }).catch(error => {
                 console.error(error);
             });
-        
+
 
 
     }
@@ -1648,6 +1648,7 @@ function processMessage(data, element) {
                 container.innerHTML = "";
 
                 data.messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)).forEach(message => {
+
                     const messageContainer = document.createElement("div");
                     messageContainer.className = "chat-message";
 
@@ -1726,7 +1727,7 @@ function processMessage(data, element) {
 
                         const msgContent = document.createElement("p");
                         msgContent.className = "msgCont";
-                        msgContent.textContent = message.content;
+                        msgContent.innerHTML = message.content;
 
                         content.appendChild(name);
                         content.appendChild(msgContent);
@@ -1835,9 +1836,38 @@ async function actionReload(whoto, reloadPage, isAIT, firstLoad) {
 
         const messagesContainer = document.getElementById('messages-container');
         messagesContainer.innerHTML = "";
-
-        const messagePromises = sortedMessages.map(message => {
+        let countMessages = 0
+        const messagePromises = sortedMessages.map(message_0 => {
             return new Promise((resolve, reject) => {
+                countMessages++
+                function isCorruptedText(text) {
+                    // This is a simple heuristic check - adjust as needed for your use case
+                    return /[�]/.test(text); // If the text contains replacement characters (�), it likely needs fixing
+                }
+
+                // Function to convert newlines to <br> for HTML rendering
+                function addLineBreaks(text) {
+                    return text.replace(/\n/g, '<br>');
+                }
+
+                function addLineBreaksAtPunctuation(text) {
+                    return text.replace(/([.,;!?])\s*/g, '$1<br>'); // Adds <br> after punctuation followed by space
+                }
+
+                let message = message_0;
+
+                if (isCorruptedText(message_0.content)) {
+                    let decoder = new TextDecoder('utf-8');
+                    let byteArray = new Uint8Array([...message_0.content].map(c => c.charCodeAt(0)));
+                    message.content = decoder.decode(byteArray);
+                } else {
+                    message.content = message_0.content; // Keep original text if it doesn't need decoding
+                }
+
+                // Add line breaks for HTML rendering
+                message.content = addLineBreaks(message.content);
+
+                console.log("Decoded message with line breaks:", message.content);
                 const messageElement = document.createElement('div');
 
                 if (message.content.includes("http") || message.content.includes("https")) {
@@ -1893,6 +1923,9 @@ async function actionReload(whoto, reloadPage, isAIT, firstLoad) {
                     } else {
                         messageElement.classList.add('message');
                     }
+                    messageElement.onclick = function () {
+                        enlargeMessage(this)
+                    }
                     messagesContainer.appendChild(messageElement);
 
                     checkUrlAccessibility(logoUrl)
@@ -1927,7 +1960,14 @@ async function actionReload(whoto, reloadPage, isAIT, firstLoad) {
                             resolve();
                         });
                 } else {
-                    messageElement.textContent = message.content;
+                    console.log("Spawning Default with innerHTML as", message.content)
+                    const type = message.sender === localStorage.getItem("t50-username") ? 'message-me' : 'message'
+                    messageElement.innerHTML = `<span id="message-${type}${countMessages}-${message.sender}">${message.content}</span><div onclick="editMessage(event, this, 'message-${type}${countMessages}-${message.sender}', '${message.sender}')" class="optionsBoxMsg"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path d="M10 9H17M10 13H17M7 9H7.01M7 13H7.01M21 20L17.6757 18.3378C17.4237 18.2118 17.2977 18.1488 17.1656 18.1044C17.0484 18.065 16.9277 18.0365 16.8052 18.0193C16.6672 18 16.5263 18 16.2446 18H6.2C5.07989 18 4.51984 18 4.09202 17.782C3.71569 17.5903 3.40973 17.2843 3.21799 16.908C3 16.4802 3 15.9201 3 14.8V7.2C3 6.07989 3 5.51984 3.21799 5.09202C3.40973 4.71569 3.71569 4.40973 4.09202 4.21799C4.51984 4 5.0799 4 6.2 4H17.8C18.9201 4 19.4802 4 19.908 4.21799C20.2843 4.40973 20.5903 4.71569 20.782 5.09202C21 5.51984 21 6.0799 21 7.2V20Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>`;
+                    messageElement.onclick = function () {
+                        enlargeMessage(this)
+                    }
                     messageElement.classList.add(message.sender === localStorage.getItem("t50-username") ? 'message-me' : 'message');
                     messagesContainer.appendChild(messageElement);
                     document.getElementById("bottomActionsSecureline").classList.remove("hidden");
@@ -1955,6 +1995,20 @@ async function actionReload(whoto, reloadPage, isAIT, firstLoad) {
     }
 }
 
+function enlargeMessage(el) {
+    if (el.classList.contains("enlarged")) {
+        console.log("got enlarge")
+        el.classList.remove("enlarged")
+        //el.setAttribute("isEnlarged", null)
+        el.style.maxWidth = '50%'
+    } else {
+        el.classList.add("enlarged")
+        console.log("got enlarge")
+        //el.setAttribute("isEnlarged", 'true')
+        el.style.maxWidth = '80%'
+    }
+
+}
 
 function create_chat() {
     document.getElementById("messages-container").innerHTML = `<p style="opacity: 1" class='centered-text'>Creating Chat
@@ -2139,7 +2193,6 @@ function send_message() {
     recipient = sessionStorage.getItem("current_sline")
     message = document.getElementById("message_input")
     console.log("Sending message to", recipient)
-
     if (message.value != "") {
         if (recipient === 'AIT') {
             const container = document.getElementById('messages-container');
