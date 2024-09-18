@@ -1411,7 +1411,7 @@ function openChat(data, location) {
     sessionStorage.removeItem("current_sline")
     play('rocket')
     document.getElementById("bottomActionsSecureline").classList.add("hidden")
-    console.log('Chat opened');
+    console.log('Chat opened for user', data);
 
     const username = data.username
     const isFavorite = data.favorite//true-false
@@ -1976,6 +1976,9 @@ function showFriend(element, remote, notFriends) {
                     console.error(error);
                 });
 
+        } else {
+            $("#openMessages").fadeIn("fast")
+            document.getElementById("openMessages").setAttribute("data-c", friend)
         }
         //fetch(`${srv}/profiles?name=${friend}&authorize=cover`)
         //    .then(response => {
@@ -2144,8 +2147,26 @@ function acceptFriend(el) {
 
 }
 
-function hideUserProfile() {
-    play("closePanel")
+function openMessages(e) {
+    if (e && e.getAttribute("data-c") !== 'none') {
+        console.log('Got attribute:', e.getAttribute("data-c"))
+        const attr = e.getAttribute("data-c")
+        hideUserProfile('nosound')
+        //setTimeout(function() {
+        //    hideSocial()
+        //}, 300)
+        hideSocial()
+        const json = { username: attr, favorite: JSON.parse(localStorage.getItem("favorites") || "[]").includes(attr) };
+        openChat(json, 'home')
+    }
+}
+
+function hideUserProfile(nos) {
+    if (!nos) {
+        play("closePanel")
+    }
+    $("#openMessages").fadeOut("fast")
+    document.getElementById("openMessages").setAttribute("data-c", 'none')
     $("#addFriend").fadeOut("fast")
     $("#requestSent").fadeOut("fast")
     $("#acceptRequest").fadeOut("fast")
@@ -3185,7 +3206,7 @@ function deleteMessage() {
                     document.getElementById("message-edit-center").classList.remove("active")
                 }, 750)
 
-                
+
                 sessionStorage.removeItem("pendingDeletion_message")
                 sessionStorage.removeItem("pendingDeletion_username")
 

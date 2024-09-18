@@ -224,9 +224,9 @@ body::-webkit-scrollbar {
   border-radius: 20px;
   background-color: rgba(31, 31, 46, 0.64);
   /* Semi-transparent background */
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(1px);
   /* Adjust the blur amount as needed */
-  -webkit-backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(1px);
 }
 
 .gatewayExplore .card .bottomButtons {
