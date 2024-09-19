@@ -1,0 +1,32 @@
+{
+    "Monday": {
+        "todo": {
+            "one": "Miss Elia, 1 hours",
+            "two": "School, 6.5 hours",
+            "three": "Στρατιδακης 0.1 hours",
+            "four": "Χημεια 1 hours"
+        }
+    },
+    "Tuesday": {
+        "todo": {
+            "one": "Miss Elia, 1 hours",
+            "two": "School, 6.5 hours",
+            "three": "Στρατιδακης 0.1 hours",
+            "four": "Χημεια 1 hours"
+        }
+    },
+    "Thursday": {
+        "todo": {
+            "one": "null",
+            "two": "null",
+            "three": "null",
+            "four": "null",
+            "five": "null",
+            "six": "null",
+            "seven": "null",
+            "eight": "null",
+            "nine": "null",
+            "ten": "null"
+        }
+    }
+}

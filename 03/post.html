@@ -1,0 +1,50 @@
+<html>
+
+<head>
+	<title>XX</title>
+</head>
+
+<body>
+	<p>welcome to x server</p>
+	<input id="username"></input>
+	<input id="password"></input>
+	<button onclick="sendMessage()">Send</button>
+</body>
+
+</html>
+<script>
+	const xhr = new XMLHttpRequest();
+
+// Open a connection to the server
+xhr.open('GET', 'https://post-requests-server.memeguy21.repl.co/hello');
+
+// Send the request
+xhr.send();
+
+// Handle the response
+xhr.onload = () => {
+  if (xhr.status === 200) {
+    // Store the response in a variable
+    const myValue = xhr.response;
+
+    // Use the value in your code
+    console.log(JSON.parse(myValue));
+  }
+};
+
+
+
+	
+	function sendMessage() {
+		var username = document.getElementById("username").value
+		var password = document.getElementById("password").value
+		const request = new XMLHttpRequest();
+		request.open("POST", "https://post-requests-server.memeguy21.repl.co/");
+		request.setRequestHeader('Content-type', 'text/plain');
+		const params = {
+			username: username,
+			password: password
+		}
+		request.send(JSON.stringify(params));
+	}
+</script>

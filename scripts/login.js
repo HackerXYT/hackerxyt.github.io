@@ -13,7 +13,7 @@ function readTextFile(file, callback) {
 }
 
 localStorage.setItem("emoji", "😂")
-const BtnLog = document.getElementById("submit");
+const BtnLog = document.getElementById("login");
 BtnLog.addEventListener("click", (e) => {
     e.preventDefault();
     document.getElementById("info").style.display = "block"
@@ -21,7 +21,7 @@ BtnLog.addEventListener("click", (e) => {
     document.getElementById("info").innerHTML = `Παρακαλω Περιμενετε..`
     const username = document.getElementById("username").value
     const password = document.getElementById("password").value
-    readTextFile("https://03.memeguy21.repl.co/users.json", function (text) {
+    readTextFile("./03/users.json", function (text) {
         var user = JSON.parse(text)
         if(username === user.u1.username) {
                                     if(password === user.u1.password) {

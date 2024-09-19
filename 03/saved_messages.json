@@ -1,0 +1,28 @@
+{
+	"user_id": "Γρηγορης",
+	"slot1": {
+		"user": "κενο",
+		"message": "κενο",
+		"time_sent": "κενο"
+	},
+	"slot2": {
+		"user": "κενο",
+		"message": "κενο",
+		"time_sent": "κενο"
+	},
+	"slot3": {
+		"user": "κενο",
+		"message": "κενο",
+		"time_sent": "κενο"
+		},
+	"slot4": {
+		"user": "κενο",
+		"message": "κενο",
+		"time_sent": "κενο"
+	},
+	"slot5": {
+		"user": "κενο",
+		"message": "κενο",
+		"time_sent": "κενο"
+		}
+}
