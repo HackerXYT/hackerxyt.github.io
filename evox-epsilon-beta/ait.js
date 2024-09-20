@@ -471,7 +471,7 @@ const aitReplay = {
     new_messages: true,
     nice_exp_yesterday: true,
     no_friends: true,
-    no_messages_with_user: true,
+    no_messages_with_user: 3,
     oh_no_cryptox_disabled: true,
     params_saved: true,
     personal_info_section_w_desc: 3,

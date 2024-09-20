@@ -3231,11 +3231,18 @@ function pickTag(el) {
 
 const buttons = document.querySelectorAll('.option');
 
+let countBtnClick = 0
 // Iterating over each element in the NodeList
 buttons.forEach(function (button) {
     // Adding a click event listener to each individual element
     button.addEventListener('click', function () {
         play('clickProfile')
+        if(button.id === "appver") {
+            countBtnClick++
+            if(countBtnClick > 9) {
+                alert("enabling")
+            }
+        }
         console.log('Button clicked:', button);
     });
 });

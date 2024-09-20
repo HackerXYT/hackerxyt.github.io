@@ -2533,6 +2533,7 @@ function settingsOpen(panel) {
 
 let hasSoundPlayed = false
 function hideSettings() {
+    countBtnClick = 0
     if (!hasSoundPlayed) {
         play('closeSettings')
         hasSoundPlayed = true
