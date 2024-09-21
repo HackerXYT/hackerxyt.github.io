@@ -21,7 +21,7 @@ function setNetworkStatus(what) {
 setInterval(function () {
     if (navigator.onLine) {
         $("#offlineStatus").fadeOut("fast", function () {
-            $("#onlineStatus").fadeIn("fast")
+            //$("#onlineStatus").fadeIn("fast")
         })
 
     } else {
@@ -2914,12 +2914,28 @@ let wasGatewayActionsActive = false;
 let isProfileTabActive = false;
 function enableTab(element) {
     const old = activeTab
-    document.getElementById(`tab-${activeTab.toLowerCase()}`).classList.remove("active")
-    if (element.innerHTML.includes("svg") && !element.classList.contains("active")) {
+    if (element.innerHTML !== 'svg') {
+        document.getElementById(`tab-${activeTab.toLowerCase()}`).classList.remove("active")
+    }
+
+    if (element.innerHTML.includes("svg")) {// && !element.classList.contains("active")
         activeTab = 'svg'
+        element.mirror.innerHTML = `Settings <svg id='awn' style="margin-left: 3px;
+                        display: none;
+                        align-items: center;
+                        vertical-align: middle;" version="1.1" width="20px" height="20px"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                            <path fill="#fff"
+                                d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                                <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                                    to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                            </path>
+                        </svg>`
+        $("#awn").fadeIn("fast")
         //element.style.transform = 'rotate(490deg)'
-        element.classList.add("color")
-        element.classList.add("active")
+        //element.classList.add("color")
+        //element.classList.add("active")
         aitPlay("reloading")
         setTimeout(function () {
             updateServiceWorkerCacheAndReload()
@@ -2971,6 +2987,27 @@ function enableTab(element) {
                 document.getElementById("profileContainer").classList.add('active')
             }, 50)
         }, 200)
+    } else if (element.innerHTML.includes("News") && !element.classList.contains("active") || element.innerHTML.includes("News") && element.classList.contains("animate")) {
+        isProfileTabActive = false
+        play('closeProfile')
+        if (wasGatewayActionsActive === true) {
+            document.getElementById("gatewayActions").classList.remove("back") //gia tora axristo
+            wasGatewayActionsActive = false
+        } else {
+            document.getElementById("gatewayActions").classList.remove("back")
+        }
+        activeTab = 'News'
+        element.classList.add("active")
+        document.getElementById("profileContainer").classList.remove('active')
+        setTimeout(function () {
+            document.getElementById("profileContainer").classList.remove('active')
+            //document.getElementById("profileContainer").style.display = 'none'
+            //document.getElementById("gateway").style.display = 'flex'
+            //setTimeout(function () {
+            //    document.getElementById("gateway").style.opacity = '1'
+            //}, 50)
+        }, 200)
+        $("#bggradient").fadeIn("slow")
     } else {
         console.log("Nothing found")
         return;
@@ -3013,6 +3050,7 @@ function editBirthdate() { //from profile
 let activeAPP = null
 let activeAppThis = null
 function animateM(e, app) {
+    document.getElementById("gatewayExploreScroll").style.overflow = 'hidden'
     const item = e
     const isZoomed = item.classList.contains('fullscreen');
     const attr = item.id
@@ -3062,6 +3100,7 @@ function animateM(e, app) {
         }, 500)
 
     } else {
+        document.getElementById("gatewayExploreScroll").style.overflow = null
         activeAPP = null
         activeAppThis = null
         const dotElement = document.querySelector('.dot');

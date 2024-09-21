@@ -72,6 +72,7 @@ body::-webkit-scrollbar {
   /* Full width of the viewport */
   box-sizing: border-box;
   z-index: 1000;
+  font-family: 'SFLight';
   background: transparent;
 
   /* Ensures the element stays on top of other content */
@@ -121,16 +122,15 @@ body::-webkit-scrollbar {
 .gatewayActions p {
   font-size: 20px;
   margin-right: 20px;
-  font-family: "SF";
-  font-weight: bold;
-  color: #55565f;
+  font-family: 'SFLight';
+  color: #696a74;
   position: relative;
-  transition: color 0.5s ease-in-out, letter-spacing 1s ease-in-out, transform 1s ease-in-out, background-color 1s ease-in-out;
-  letter-spacing: 0px;
+  transition: color 0.5s ease-in-out, letter-spacing 1s ease-in-out, transform 1s ease-in-out, background-color 1s ease-in-out, font-weight 0.5s ease-in-out;
+  letter-spacing: 2px;
 }
 
 .gatewayActions p.animate {
-  letter-spacing: 2px;
+  letter-spacing: 6px;
   /* Adjust this value as needed */
 }
 
@@ -166,7 +166,7 @@ body::-webkit-scrollbar {
   width: 0;
   /* Initially hidden */
   height: 4px;
-  background-color: #55565f7d;
+  background-color: #696a747d;
   /*border-top-left-radius: 5px;*/
   /*border-top-right-radius: 5px;*/
   border-radius: 5px;
@@ -174,15 +174,16 @@ body::-webkit-scrollbar {
   transform: translateX(-50%);
   opacity: 0;
   /* Initially hidden */
-  transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  transition: width 0.5s ease-in-out, opacity 0.5s ease-in-out, font-weight 0.5s ease-in-out;
 }
 
 .gatewayActions p.active {
   color: #d0d1d9;
+  font-weight: bolder;
 }
 
 .gatewayActions p.animate.active {
-  color: #55565f;
+  color: #959599;
 }
 
 .gatewayActions p.active:before {
