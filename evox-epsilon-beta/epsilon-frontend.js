@@ -1,5 +1,6 @@
 if (localStorage.getItem("currentSrv")) {
     srv = localStorage.getItem("currentSrv")
+    //alert(`Switch server to ${srv}`)
 } else {
     localStorage.setItem("currentSrv", "https://data.evoxs.xyz")
     srv = "https://data.evoxs.xyz"
@@ -1256,7 +1257,7 @@ function verificationComplete() {
 }
 let previousHeight = null
 function showHideGalaxy(e) {
-    if(e.getAttribute('data-c') === 'false') {
+    if (e.getAttribute('data-c') === 'false') {
         //hidden
         previousHeight = document.getElementById("secureline").style.height
         document.getElementById("secureline").style.height = '50px'
@@ -1268,6 +1269,7 @@ function showHideGalaxy(e) {
 }
 
 function hideChats() {
+    chatsVisible = false
     $("#bggradient").fadeIn("fast")
     $("#galaxy").fadeOut("fast")
     play('rocket_push')
@@ -1318,7 +1320,9 @@ function hideChats() {
 
         });
 }
+let chatsVisible = false
 function showChats() {
+    chatsVisible = true
     aitPlay('secureline_desc')
     loadSecurelineHome()
     const animate = document.getElementById("rocketIcon")
@@ -1352,7 +1356,8 @@ function showChats() {
             }, 200)
             $("#container").fadeOut("fast")
         }, 200)
-        $("#bggradient").fadeOut("fast")
+        //$("#bggradient").fadeOut("fast")
+        sessionStorage.setItem("attachGalaxy", true)
         $("#galaxy").fadeIn("fast")
         //attachGalaxy()
     }, 200)
@@ -1423,6 +1428,9 @@ function add_favorite(event, element, customColor, customDimen) {
 }
 
 function openChat(data, location) {
+    chatsVisible = false
+    $("#galaxy").fadeOut("fast")
+    $("#bggradient").fadeIn("fast")
     sessionStorage.removeItem("current_sline")
     play('rocket')
     document.getElementById("bottomActionsSecureline").classList.add("hidden")
@@ -1585,6 +1593,8 @@ window.addEventListener('load', setFullHeight);
 window.addEventListener('resize', setFullHeight);
 
 function goBackMessenger() {
+    $("#galaxy").fadeIn("fast")
+    //$("#bggradient").fadeOut("fast")
     play("closePanel")
     clearInterval(activeChatInterval)
     activeChatInterval = null;
@@ -3282,9 +3292,22 @@ function deleteMessage() {
     } else {
         runFinal()
     }
-
-
-
-
-
 }
+
+//window.addEventListener('scroll', function () {
+//    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+//    let documentHeight = document.documentElement.scrollHeight;
+//    let windowHeight = window.innerHeight;
+//
+//    if (scrollTop > 0) {
+//        console.log('Scrolling...');
+//        if(chatsVisible === true) {
+//            showHideGalaxy(document.getElementById("showHideClick"))
+//        }
+//        
+//    }
+//
+//    if (scrollTop + windowHeight >= documentHeight) {
+//        console.log('Reached the bottom!');
+//    }
+//});

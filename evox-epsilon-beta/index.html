@@ -792,9 +792,10 @@
                 </clipPath>
             </defs>
         </svg></button>
+        <div id="customRefreshIndicator" style="opacity: 0;">Pull to Refresh...</div>
     <div class="securelinePopup" id="secureline">
 
-        <div class="grabbable" onclick="showHideGalaxy(this)" data-c="false"></div>
+        <div class="grabbable" onclick="showHideGalaxy(this)" id="showHideClick" data-c="false"></div>
         <div class="secureline-row">
             <div class="secureline-search">
                 <div class="search">
@@ -1827,12 +1828,12 @@
 
     </div>
     <div class="galaxy" id="galaxy">
-        <iframe style="width: 100%;
+        <iframe id="galaxyIframe" style="width: 100%;
         height: 100%;
         border: none;
         margin: 0;
         padding: 0;"
-            src="../obsidian/vanilla.html"></iframe>
+            src="./epsilon-galaxy/vanilla.html"></iframe>
     </div>
     <div onclick="stopAit()" class="aitContainer" id="aitContainer">
         <div class="opa" id="opa">
