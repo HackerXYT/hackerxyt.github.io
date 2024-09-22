@@ -226,7 +226,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '7.3.2'
+const appVersion = '7.3.3'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -1080,22 +1080,46 @@ function runSearch(inputValue) {
 let lastScrollTop = 0; // Variable to keep track of the last scroll position
 let isListening = false;
 
+let isGalaxied = false
+
 function handleScroll(event) {
     const securelinePopup = document.querySelector('#secureline');
     const elem = event.target;
     const currentScrollTop = elem.scrollTop;
 
     if (currentScrollTop > 100) {
-        //console.log('Scrolled down by more than', 100, 'pixels');
 
+        console.log('Scrolled down by more than', 100, 'pixels');
+        return;
     } else if (currentScrollTop <= 0) {
-        //console.log('Back at the top');
-        //securelinePopup.style.height = "60%"
+        console.log('Back at the top');
+        //alert("back at the top")
+        if(isGalaxied === false) {
+            const e = document.getElementById("showHideClick")
+            //previousHeight = document.getElementById("secureline").style.height
+            document.getElementById("secureline").style.height = '50px'
+            isGalaxied = true
+            e.setAttribute('data-c', 'true')
+            //securelinePopup.style.height = "60%"
+            return;
+        } else {
+            const e = document.getElementById("showHideClick")
+            //previousHeight = document.getElementById("secureline").style.height
+            document.getElementById("secureline").style.height = null
+            isGalaxied = false
+            e.setAttribute('data-c', 'false')
+            //securelinePopup.style.height = "60%"
+            return;
+        }
+        
     }
+
+    console.warn("Will continue execution")
 
     if (currentScrollTop > lastScrollTop) {
         //console.log('Scrolling down');
         securelinePopup.style.height = "80%"
+        //isGalaxied = false
         const viewportHeight = window.innerHeight;
 
         // Set the height to be at most 80% of the viewport height
@@ -1570,27 +1594,36 @@ function securelineHome(data, appending) {
 
             // Get any offsets or margins from the viewport height if applicable
             // Adjust these values as needed for your specific layout
-            const topOffset = 20; // example value, adjust based on actual layout
-            const bottomOffset = 20; // example value, adjust based on actual layout
 
-            // Calculate the available height for the #secureline element
-            const availableHeight = viewportHeight - topOffset - bottomOffset;
 
-            // Calculate the maximum height for the element (80% of the viewport height)
-            const maxHeight = viewportHeight * 0.8;
 
-            // Calculate the content height
-            const contentHeight = securelinePopup.scrollHeight;
 
-            // Determine the new height to set
-            const newHeight = Math.min(availableHeight, maxHeight, contentHeight);
 
-            // Set the height if the new height is different from the current height
-            const currentHeight = parseFloat(window.getComputedStyle(securelinePopup).height);
+            if (data.length >= 1 && data.length <= 15) {
+                securelinePopup.style.height = `${250 + (data.length * 50)}px`;
+            } else {
+                const topOffset = 20; // example value, adjust based on actual layout
+                const bottomOffset = 20; // example value, adjust based on actual layout
+                //// Calculate the available height for the #secureline element
+                const availableHeight = viewportHeight - topOffset - bottomOffset;
 
-            if (newHeight !== currentHeight) {
-                securelinePopup.style.height = newHeight + 'px';
+                //// Calculate the maximum height for the element (80% of the viewport height)
+                const maxHeight = viewportHeight * 0.8;
+
+                //// Calculate the content height
+                const contentHeight = securelinePopup.scrollHeight;
+
+                //// Determine the new height to set
+                const newHeight = Math.min(availableHeight, maxHeight, contentHeight);
+
+                //// Set the height if the new height is different from the current height
+                const currentHeight = parseFloat(window.getComputedStyle(securelinePopup).height);
+                if (newHeight !== currentHeight) {
+                    securelinePopup.style.height = newHeight + 'px';
+                }
             }
+
+
             $(`#${appending}`).fadeIn("fast")
             if (appending === 'secureline-users') {
                 $("#favorites-recommended").fadeIn("fast")
@@ -3237,9 +3270,9 @@ buttons.forEach(function (button) {
     // Adding a click event listener to each individual element
     button.addEventListener('click', function () {
         play('clickProfile')
-        if(button.id === "appver") {
+        if (button.id === "appver") {
             countBtnClick++
-            if(countBtnClick > 9) {
+            if (countBtnClick > 9) {
                 alert("enabling")
             }
         }

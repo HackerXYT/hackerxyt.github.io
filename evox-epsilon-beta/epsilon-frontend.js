@@ -1265,6 +1265,7 @@ function showHideGalaxy(e) {
     } else {
         document.getElementById("secureline").style.height = previousHeight
         e.setAttribute('data-c', 'false')
+        isGalaxied = false
     }
 }
 
