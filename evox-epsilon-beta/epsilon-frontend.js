@@ -1254,9 +1254,22 @@ function verificationComplete() {
 
 
 }
-
+let previousHeight = null
+function showHideGalaxy(e) {
+    if(e.getAttribute('data-c') === 'false') {
+        //hidden
+        previousHeight = document.getElementById("secureline").style.height
+        document.getElementById("secureline").style.height = '50px'
+        e.setAttribute('data-c', 'true')
+    } else {
+        document.getElementById("secureline").style.height = previousHeight
+        e.setAttribute('data-c', 'false')
+    }
+}
 
 function hideChats() {
+    $("#bggradient").fadeIn("fast")
+    $("#galaxy").fadeOut("fast")
     play('rocket_push')
 
     const securelinePopup = document.querySelector('#secureline');
@@ -1339,7 +1352,9 @@ function showChats() {
             }, 200)
             $("#container").fadeOut("fast")
         }, 200)
-
+        $("#bggradient").fadeOut("fast")
+        $("#galaxy").fadeIn("fast")
+        //attachGalaxy()
     }, 200)
 
     setTimeout(function () {

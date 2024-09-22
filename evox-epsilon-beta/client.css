@@ -389,11 +389,11 @@ body.no-scroll {
 
 
 .securelineCarousel .slUser {
-  flex: 0 0 125px;
+  flex: 0 0 155px;
   border-radius: 10px;
   margin-left: 5px;
-  width: 125px;
-  height: 125px;
+  width: 155px;
+  height: 155px;
   /* Maintain aspect ratio */
   border-radius: 20px;
   background-color: rgba(0, 0, 0, 0.5);
@@ -521,9 +521,9 @@ body.no-scroll {
 }
 
 .slUserPFP {
-  width: 80px;
+  width: 110px;
   /* Set the desired width */
-  height: 80px;
+  height: 110px;
   /* Set the desired height */
   border-radius: 50%;
   /* Make it a circle */
@@ -7332,4 +7332,15 @@ vox.svgIconAnimated {
   100% {
     transform: translate(0, 0) rotate(0deg);
   }
+}
+
+.galaxy {
+  display: none;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
