@@ -188,7 +188,7 @@
             let {renderer: e} = this
               , t = this.getSize();
             return new PIXI.TextStyle({
-                fontSize: 14 + t / 4,
+                fontSize: 14, //vanilla text size, no zoom
                 fill: e.colors.text.rgb,
                 fontFamily: 'ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft YaHei Light", sans-serif',
                 wordWrap: !0,
@@ -199,6 +199,7 @@
         render() {
             if (!this.rendered)
                 return;
+            
             let {renderer: e, x: t, y: n, circle: r, highlight: i, text: s, fadeAlpha: f, moveText: b} = this
               , m = this.getSize()
               , T = this.getFillColor()
@@ -347,6 +348,8 @@
         render() {
             if (!this.rendered)
                 return;
+            
+            
             let {px: e, line: t, arrow: n, renderer: r, source: i, target: s} = this
               , f = r.getHighlightNode()
               , b = i === f || s === f
@@ -1182,11 +1185,31 @@
         setScale(e) {
             let {hanger: t} = this;
             this.scale = e,
-            this.nodeScale = Math.sqrt(1 / e);
+            this.nodeScale = Math.sqrt(1); // remove /e
             let n = Math.log(e) / Math.log(2);
             this.textAlpha = Math.clamp(n + 1 - this.fTextShowMult, 0, 1),
             t && (t.scale.x = t.scale.y = e)
         }
+        //Old
+        //setScale(e) {
+        //    let {hanger: t} = this;
+        //    this.scale = e,
+        //    this.nodeScale = Math.sqrt(1 / e);
+        //    let n = Math.log(e) / Math.log(2);
+        //    this.textAlpha = Math.clamp(n + 1 - this.fTextShowMult, 0, 1),
+        //    t && (t.scale.x = t.scale.y = e)
+        //}
+        //New
+        //setScale(e) {
+        //    let { hanger: t } = this;
+        //    this.scale = e;
+        //
+        //    // Ensure nodeScale is affected by device pixel ratio
+        //    this.nodeScale = Math.sqrt(1 / e) * window.devicePixelRatio; 
+        //    this.textAlpha = Math.clamp(Math.log(e) / Math.log(2) + 1 - this.fTextShowMult, 0, 1);
+        //    
+        //    t && (t.scale.x = t.scale.y = e);
+        //}
         changed() {
             this.idleFrames = 0,
             this.queueRender()
@@ -1507,21 +1530,20 @@
             });
             o.then(async () => {
                 let n = await t;
-                document.fonts && await document.fonts.ready,
+                if (document.fonts) await document.fonts.ready; // Properly awaiting font loading
                 $.empty();
-                let r = new re($,!1,!0,n);
+                let r = new re($, !1, !0, n);
                 r.setRenderOptions({
                     textFadeMultiplier: -2,
                     lineSizeMultiplier: 2
-                }),
-                r.targetScale = 1 / 4 * window.devicePixelRatio,
-                r.setScale(r.targetScale),
+                });
+                r.targetScale = 1 / 4 * window.devicePixelRatio;
+                r.setScale(r.targetScale);
                 r.setData({
                     nodes: e
-                }),
-                new ResizeObserver( () => r.onResize()).observe($)
-            }
-            )
+                });
+                new ResizeObserver(() => r.onResize()).observe($);
+            });
         }
         )
     }

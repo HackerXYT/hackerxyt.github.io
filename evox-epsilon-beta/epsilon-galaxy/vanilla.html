@@ -178,6 +178,24 @@ if (self) {
             isShown = true
         }
     }, 200)
+    allowAttachment()
+    
+    function startGalaxyRotation(graphicsApp) {
+    let angle = 0;
+
+    function rotate() {
+        angle += 0.01; // Adjust rotation speed as needed
+
+        // Apply rotation to the whole canvas (or specific elements)
+        graphicsApp.hanger.rotation = angle; // Assuming 'hanger' is the main container for your graphics
+
+        graphicsApp.queueRender(); // Request a new render to apply changes
+
+        requestAnimationFrame(rotate); // Continue the animation
+    }
+
+    rotate(); // Start the rotation
+}
 </script>
 <script src="fish.js"></script><!--static-->
 <!--<script src="download.js"></script>-->
