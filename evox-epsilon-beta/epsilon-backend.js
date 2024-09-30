@@ -21,6 +21,7 @@ sessionStorage.removeItem("addFriendItem")
 
 //IP Auth
 let ip = "error";
+let activeDevice = null
 document.addEventListener("DOMContentLoaded", function () {
     fetch('https://api.ipify.org?format=json') //https://jsonip.com/
         .then(response => response.json())
@@ -50,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 1500)
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.ready.then(registration => {
+                activeDevice = localStorage.getItem("extV")
                 navigator.serviceWorker.addEventListener('message', event => {
                     if (event.data && event.data.action === 'CACHE_UPDATE_STARTED') {
                         // Show downloading icon
@@ -2246,7 +2248,7 @@ function send_message() {
         //}
         //message.disabled = true
         //sessionStorage.setItem("sending", "true")
-        fetch(`https://data.evoxs.xyz/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${message.value}`)
+        fetch(`https://data.evoxs.xyz/secureline?method=SendMessage&username=${localStorage.getItem("t50-username")}&recipient_username=${recipient}&message=${message.value}&floridaCurrent=${activeDevice}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);

@@ -4676,7 +4676,7 @@ input:autofill {
   background-color: #18181a;
 }
 
-.glass p {
+.glass p,a {
   margin: 0;
   font-size: 15px;
   color: #777a80;
