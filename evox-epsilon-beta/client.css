@@ -1337,6 +1337,11 @@ img {
   }
 }
 
+#epsilonLogoLogin {
+  width: 220px;
+  height: auto;
+}
+
 .popup-close {
   position: fixed;
   top: 30px;
@@ -4560,6 +4565,20 @@ div .Home {
   /* Ensure it is above other elements */
 }
 
+@media (min-width: 1024px) {
+  .pcAdjustments {
+    position: fixed; /* Fixes the parent container relative to the viewport */
+    bottom: 2px; /* Aligns it to the bottom of the viewport */
+    left: 50%; /* Move the left edge to the center */
+    transform: translateX(-50%); /* Shift it back by half of its width */
+    width: 100%; /* Make the parent container full width */
+    max-width: 600px; /* Limit the width of the parent container to 800px */
+    z-index: 1000; /* Ensure it is above other elements */
+  }
+}
+
+
+
 /* Other styles */
 .loginINVENT {
   position: relative;
@@ -4689,6 +4708,7 @@ input:autofill {
   padding-top: 30px;
   padding-bottom: 30px;
   border-radius: 50px;
+  cursor: pointer;
 }
 
 .inv-button.create {

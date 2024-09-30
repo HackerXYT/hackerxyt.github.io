@@ -6,7 +6,7 @@
 
     body {
         font-family: "SF";
-        background-color: #000;
+        background-color: #1e1e1e;
         color: #fff;
     }
 
@@ -15,13 +15,17 @@
         /* Dark background */
         padding: 20px;
         border-radius: 8px;
-        
+        max-width: 800px;
         margin: auto;
+        transition: max-width 1s ease-in-out, margin 1s ease-in-out;
     }
+
+
 
     @media (min-width: 600px) {
         [data-custom-class='body'] {
-            max-width: 800px;
+            max-width: 100%;
+            margin: 0;
         }
     }
 
@@ -73,8 +77,116 @@
         background-color: transparent;
         text-decoration: underline;
     }
+
+    .evox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .evox img {
+        width: 300px;
+        height: 300px;
+        transition: width 1s ease-in-out, height 1s ease-in-out, opacity 1s ease-in-out;
+    }
+
+    .external {
+        position: fixed;
+        /* Set SVG as absolute */
+        top: 50%;
+        /* Center vertically */
+        left: 50%;
+        /* Center horizontally */
+        transform: translate(-50%, -50%);
+    }
 </style>
-<span id="g" ></span>
+<script>
+    setTimeout(function () {
+
+    }, 1000)
+    document.addEventListener('DOMContentLoaded', (event) => {
+        console.log('DOM fully loaded and parsed');
+        if (window.innerWidth > 1000) {
+            setTimeout(function () {
+                document.body.style.backgroundColor = '#1e1e1e'
+                const customBody = document.querySelector("[data-custom-class='body']");
+                if (customBody) {
+                    customBody.style.maxWidth = "800px";
+                    customBody.style.margin = "0 auto";
+                }
+                document.getElementById("logo").style.width = "1000px"
+                document.getElementById("logo").style.height = "1000px"
+                document.getElementById("logo").style.opacity = "0"
+                setTimeout(function () {
+                    document.getElementById("logo").style.display = "none"
+                }, 1100)
+            }, 100)
+            console.log(window.innerWidth)
+
+        } else {
+            document.getElementById("logo").style.width = "1000px"
+            document.getElementById("logo").style.height = "1000px"
+            document.getElementById("logo").style.opacity = "0"
+            setTimeout(function () {
+                document.getElementById("logo").style.display = "none"
+            }, 1100)
+        }
+
+
+    });
+
+    function handleResize() {
+        //const width = window.innerWidth;
+        //const height = window.innerHeight;
+        console.log(`Dimensions Changed.`);
+        document.getElementById("logo").style.display = "flex"
+        document.getElementById("logo").style.width = "300px"
+        document.getElementById("logo").style.height = "300px"
+        document.getElementById("logo").style.opacity = "1"
+        setTimeout(function () {
+        if (window.innerWidth > 1000) {
+            setTimeout(function () {
+                document.body.style.backgroundColor = '#1e1e1e'
+                const customBody = document.querySelector("[data-custom-class='body']");
+                if (customBody) {
+                    customBody.style.maxWidth = "800px";
+                    customBody.style.margin = "0 auto";
+                }
+                document.getElementById("logo").style.width = "1000px"
+                document.getElementById("logo").style.height = "1000px"
+                document.getElementById("logo").style.opacity = "0"
+                setTimeout(function () {
+                    document.getElementById("logo").style.display = "none"
+                }, 1100)
+            }, 100)
+            console.log(window.innerWidth)
+
+        } else {
+            document.getElementById("logo").style.width = "1000px"
+            document.getElementById("logo").style.height = "1000px"
+            document.getElementById("logo").style.opacity = "0"
+            setTimeout(function () {
+                document.getElementById("logo").style.display = "none"
+            }, 1100)
+        }
+    }, 100)
+    }
+
+    // Add the event listener for resize
+    window.addEventListener('resize', handleResize);
+
+    // Initial call to handleResize to get the current size
+    handleResize();
+
+
+</script>
+<div class="external">
+    <div class="evox">
+        <img id="logo" src="../evox-epsilon-beta/EvoxEPSILON.png">
+    </div>
+</div>
+
 
 <div data-custom-class="body">
     <div><strong><span style="font-size: 26px;"><span data-custom-class="title">
