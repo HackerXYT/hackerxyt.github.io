@@ -343,6 +343,8 @@
 			// Check if the username is valid
 			if (username) {
 				document.title = `@${username} on Evox`;
+				document.body.style.backgroundColor = "#000";
+document.documentElement.style.backgroundColor = "#000";
 				// Hide the room element and show the iframe
 				document.getElementById("room").style.display = 'none';
 				document.getElementById("iframe").style.display = 'block';
