@@ -131,6 +131,42 @@ function clientVerified() {
         const username = localStorage.getItem("t50-username")
         const email = localStorage.getItem("t50-email")
         const password = atob(localStorage.getItem("t50pswd"))
+        if (new URLSearchParams(new URL(window.location.href).search).has('showProfile')) {
+            const username = new URLSearchParams(new URL(window.location.href).search).get('showProfile')
+            console.log("The parameter exists");
+
+
+
+            fetch(`${srv}/accounts?method=getemailbyusername&username=${username}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    if (data === 'none') {
+                        console.log("Requested account doesnt exist")
+                        document.getElementById("user-profile").classList.remove('active')
+                        document.getElementById("accountUserProfileUsername").innerText = username
+                        document.getElementById("showProfileError").style.display = 'block'
+                        document.getElementById("acceptRequest").style.opacity = '0'
+                    } else {
+                        showFriend(null, username, true)
+                        document.getElementById("user-profile").classList.add('active')
+                        document.getElementById("userProfile-back").style.display = 'none'
+                        document.getElementById("addFriend").style.display = 'none'
+                        document.getElementById("acceptRequest").style.opacity = '0'
+
+                    }
+                }).catch(error => {
+                    console.error('Server Connection Failed!', error)
+                })
+
+            loadBackground()
+            $("#loading-text").fadeOut("fast")
+            return;
+        }
         if (username && email && password) {
             console.log("Returning User.")
             //$("#bggradient").fadeIn("slow")
@@ -3305,7 +3341,7 @@ function deleteMessage() {
 //        if(chatsVisible === true) {
 //            showHideGalaxy(document.getElementById("showHideClick"))
 //        }
-//        
+//
 //    }
 //
 //    if (scrollTop + windowHeight >= documentHeight) {

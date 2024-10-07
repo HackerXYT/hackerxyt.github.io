@@ -3,11 +3,12 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Evox 404</title>
+	<title>Accessing Evox</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 
 </head>
+
 <style>
 	@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
@@ -300,7 +301,7 @@
 
 <body>
 	<!-- partial:index.partial.html -->
-	<div class="room">
+	<div id="room" class="room">
 		<div class="cuboid">
 			<div class="side"></div>
 			<div class="side"></div>
@@ -322,8 +323,40 @@
 			</div>
 		</div>
 	</div>
+	<iframe id="iframe" src=""
+		style="display:none;position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden; z-index:999999;">
+		Your browser doesn't support iframes
+	</iframe>
 	<!-- partial -->
 
+	<script>
+		// Check if the URL contains an "@" character
+		if (window.location.href.includes("@")) {
+			
+			console.log("is user profile");
+
+			// Extract the username from the URL
+			const urlParts = window.location.href.split("/");
+			const profilePart = urlParts.find(part => part.includes("@"));
+			const username = profilePart ? profilePart.substring(1) : ""; // Extract username, removing "@" character
+
+			// Check if the username is valid
+			if (username) {
+				document.title = `@${username} on Evox`;
+				// Hide the room element and show the iframe
+				document.getElementById("room").style.display = 'none';
+				document.getElementById("iframe").style.display = 'block';
+
+				// Set the iframe source with the extracted username
+				document.getElementById("iframe").src = `./evox-epsilon-beta/index.html?showProfile=${username}`;
+			} else {
+				console.error("Username could not be extracted from the URL.");
+			}
+		} else {
+			document.title = `Evox 404`;
+			console.log("Not a user profile");
+		}
+	</script>
 </body>
 
 </html>

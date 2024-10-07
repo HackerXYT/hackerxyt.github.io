@@ -20,6 +20,7 @@ sessionStorage.removeItem("addFriendItem")
 //requestAnimationFrame(monitorFPS);
 
 //IP Auth
+
 let ip = "error";
 let activeDevice = null
 document.addEventListener("DOMContentLoaded", function () {
@@ -44,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
             clientVerified()
             console.log('Error:', error);
         });
+    
     if (localStorage.getItem("t50pswd")) {
         setTimeout(function () {
             console.log("Running loadProfile because user is logged in")
@@ -228,7 +230,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '7.3.4'
+const appVersion = '7.3.6'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -1096,7 +1098,7 @@ function handleScroll(event) {
     } else if (currentScrollTop <= 0) {
         console.log('Back at the top');
         //alert("back at the top")
-        if(isGalaxied === false) {
+        if (isGalaxied === false) {
             const e = document.getElementById("showHideClick")
             //previousHeight = document.getElementById("secureline").style.height
             document.getElementById("secureline").style.height = '50px'
@@ -1113,7 +1115,7 @@ function handleScroll(event) {
             //securelinePopup.style.height = "60%"
             return;
         }
-        
+
     }
 
     console.warn("Will continue execution")
