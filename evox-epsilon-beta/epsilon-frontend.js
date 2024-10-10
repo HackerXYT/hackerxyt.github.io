@@ -2018,7 +2018,7 @@ function showFriend(element, remote, notFriends) {
                 $("#addFriend").fadeIn("fast")
                 sessionStorage.setItem("addFriendItem", friend)
             }
-            fetch(`${srv}/social?username=${friend}&todo=sentRequests`)
+            fetch(`${srv}/social?username=${friend}&todo=sentRequests&v=${Math.floor(Math.random() * 100000)}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -2026,6 +2026,7 @@ function showFriend(element, remote, notFriends) {
                     return response.text();
                 })
                 .then(sent_req => {
+                    //alert(sent_req)
                     if (sent_req !== "None") {
                         if (sent_req.includes(localStorage.getItem('t50-username'))) {
                             console.log("Request is sent by this user. 200")

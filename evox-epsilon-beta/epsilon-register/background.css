@@ -1,0 +1,280 @@
+:root {
+    --color-bg1: rgba(76, 0, 162, 0);
+    --color-bg2: rgba(0, 82, 59, 0);
+
+    --color-bgd1: rgba(76, 0, 162, 0);
+    --color-bgd2: rgba(0, 82, 59, 0);
+    --color1: 209, 223, 255;
+    --color2: 200, 230, 255;
+    --color4: 223, 213, 218;
+
+
+    --circle-size: 60%;
+    --blending: hard-light;
+}
+
+@keyframes moveInCircle {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes moveVertical {
+    0% {
+        transform: translateY(-50%);
+    }
+
+    50% {
+        transform: translateY(50%);
+    }
+
+    100% {
+        transform: translateY(-50%);
+    }
+}
+
+@keyframes moveHorizontal {
+    0% {
+        transform: translateX(-50%) translateY(-10%);
+    }
+
+    50% {
+        transform: translateX(50%) translateY(10%);
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(-10%);
+    }
+}
+
+.gradient-bg {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow: hidden;
+    background: linear-gradient(40deg, var(--color-bgd1), var(--color-bgd2));
+    top: 0;
+    left: 0;
+    z-index: -999;
+    filter: brightness(0.5);
+}
+
+#background {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    pointer-events: none;
+}
+
+.gradient-bg svg {
+    display: none;
+}
+
+.gradient-bg .gradients-container {
+    filter: url(#goo) blur(10px);
+    width: 100%;
+    height: 100%;
+}
+
+.gradient-bg .g1,
+.g2,
+.g3,
+.g4,
+.g5 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color1), 0.8) 0, rgba(var(--color1), 0) 50%) no-repeat;
+    mix-blend-mode: var(--blending);
+    width: var(--circle-size);
+    height: var(--circle-size);
+    top: calc(50% - var(--circle-size) / 2);
+    left: calc(50% - var(--circle-size) / 2);
+    transform-origin: center center;
+    opacity: 1;
+}
+
+/* Responsive for Mobile */
+@media only screen and (max-width: 768px) {
+    .gradient-bg .gradients-container {
+        filter: url(#goo) blur(15px);
+    }
+
+    .gradient-bg .g1,
+    .gradient-bg .g2,
+    .gradient-bg .g3,
+    .gradient-bg .g4,
+    .gradient-bg .g5 {
+        width: 80%;
+        height: 80%;
+    }
+}
+
+.gradient-bg .g1 {
+    animation: moveVertical 60s ease infinite;
+}
+
+.gradient-bg .g2 {
+    transform-origin: calc(50% - 400px);
+    animation: moveInCircle 30s reverse infinite;
+}
+
+.gradient-bg .g3 {
+    top: calc(50% - var(--circle-size) / 2 + 200px);
+    left: calc(50% - var(--circle-size) / 2 - 500px);
+    transform-origin: calc(50% + 400px);
+    animation: moveInCircle 50s linear infinite;
+}
+
+.gradient-bg .g4 {
+    transform-origin: calc(50% - 200px);
+    animation: moveHorizontal 50s ease infinite;
+    opacity: 0.7;
+}
+
+.gradient-bg .g5 {
+    width: calc(var(--circle-size) * 2);
+    height: calc(var(--circle-size) * 2);
+    top: calc(50% - var(--circle-size));
+    left: calc(50% - var(--circle-size));
+    transform-origin: calc(50% - 800px) calc(50% + 200px);
+    animation: moveInCircle 30s ease infinite;
+}
+
+.gradient-bg .interactive {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color-interactive), 0.8) 0, rgba(var(--color-interactive), 0) 50%) no-repeat;
+    mix-blend-mode: var(--blending);
+    width: 100%;
+    height: 100%;
+    top: -50%;
+    left: -50%;
+    opacity: 1;
+}
+
+
+
+
+@keyframes spin {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+@keyframes spin3D {
+    from {
+        transform: rotate3d(.5, .5, .5, 360deg);
+    }
+
+    to {
+        transform: rotate3d(0deg);
+    }
+}
+
+@keyframes configure-clockwise {
+    0% {
+        transform: rotate(0);
+    }
+
+    25% {
+        transform: rotate(90deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    75% {
+        transform: rotate(270deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes configure-xclockwise {
+    0% {
+        transform: rotate(45deg);
+    }
+
+    25% {
+        transform: rotate(-45deg);
+    }
+
+    50% {
+        transform: rotate(-135deg);
+    }
+
+    75% {
+        transform: rotate(-225deg);
+    }
+
+    100% {
+        transform: rotate(-315deg);
+    }
+}
+
+@keyframes pulse {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: .25;
+        transform: scale(.75);
+    }
+}
+
+.spinner-box {
+    width: 35px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+}
+
+
+
+/* PULSE BUBBLES */
+
+.pulse-container {
+    width: 65px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pulse-bubble {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(43, 205, 255, 1);
+}
+
+.pulse-bubble.think {
+    background-color: rgb(43, 255, 195);
+}
+
+.pulse-bubble-1 {
+    animation: pulse .4s ease 0s infinite alternate;
+}
+
+.pulse-bubble-2 {
+    animation: pulse .4s ease .2s infinite alternate;
+}
+
+.pulse-bubble-3 {
+    animation: pulse .4s ease .4s infinite alternate;
+}

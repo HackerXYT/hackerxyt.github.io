@@ -230,7 +230,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '7.3.6'
+const appVersion = '7.3.8'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -900,7 +900,7 @@ function attachUi(data, bypassRecommendations, onlyCarousel) {
 function attachRecommendations(friends) {
     friends.push(localStorage.getItem("t50-username"))
     console.log('Attaching Recommendations')
-    fetch(`${srv}/accounts?method=getAllEvoxUsers`)
+    fetch(`${srv}/accounts?method=getAllEvoxUsers&origin=${localStorage.getItem("t50-username")}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1387,6 +1387,11 @@ function securelineHome(data, appending) {
             </svg>`
                 if (localStorage.getItem(`${friend}-lastMsg`) === "Chat not created") {
                     userDiv.style.display = 'none'
+                    //but if
+                    if (data.length < 5) {
+                        userDiv.style.display = 'none'
+                        console.log("User doesn't have many friends.")
+                    }
                 }
             }
 
@@ -3442,7 +3447,7 @@ function epsilonDiscover() {
                     }
 
 
-                    fetch(`${srv}/accounts?method=getAllEvoxUsers`)
+                    fetch(`${srv}/accounts?method=getAllEvoxUsers&origin=${localStorage.getItem("t50-username")}`)
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error(`HTTP error! Status: ${response.status}`);

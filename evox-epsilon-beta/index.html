@@ -35,6 +35,24 @@
             originalConsoleLog.apply(console, args);
         };
 
+        // Store the original fetch function
+        //const originalFetch = window.fetch;
+//
+        //// Override the fetch function
+        //window.fetch = function (input, init) {
+        //    // Check if the input (URL or Request object) contains 'DENYWORD'
+        //    let url = typeof input === 'string' ? input : input.url;
+//
+        //    if (url.includes('DENYWORD')) {
+        //        console.log('Fetch request cancelled: URL contains "DENYWORD"');
+        //        // Return a rejected promise to simulate the cancellation
+        //        return Promise.reject(new Error('Fetch request cancelled due to "DENYWORD" in the URL'));
+        //    }
+//
+        //    // Otherwise, call the original fetch
+        //    return originalFetch(input, init);
+        //};
+
     </script>
     <meta charset="UTF-8">
     <title>Epsilon</title>
@@ -282,120 +300,122 @@
         <div id="newLogin" class="loginINVENT">
             <img id="epsilonLogoLogin" src="EvoxEPSILON.png">
             <div class="pcAdjustments">
-            <div class="bottomINVENT">
-                <div id='headerVox' class="glass head">
-                    <h2>Nexus</h2>
-                    <p>Evox Epsilon</p>
-                </div>
-                <div id='optionsVox' class="glass options">
-                    <div id="createVox" class="inv-button create">
-                        Create An Account
+                <div class="bottomINVENT">
+                    <div id='headerVox' class="glass head">
+                        <h2>Nexus</h2>
+                        <p>Evox Epsilon</p>
                     </div>
-                    <div id="loginVox" onclick="beginLogin()" class="inv-button login">
-                        Login
+                    <div id='optionsVox' class="glass options">
+                        <div id="createVox" class="inv-button create">
+                            Create An Account
+                        </div>
+                        <div id="loginVox" onclick="beginLogin()" class="inv-button login">
+                            Login
+                        </div>
+                        <a href="../privacy/index.html" id="trademarkVox">Powered by Evox®</a>
                     </div>
-                    <a href="../privacy/index.html" id="trademarkVox">Powered by Evox®</a>
-                </div>
-                <div id='formLogin' class="glass login">
-                    <a style="cursor: pointer;" onclick="returnToLoginMenu()"><svg class="aligned" xmlns="http://www.w3.org/2000/svg"
-                            width="35px" height="35px" viewBox="0 0 24 24" fill="none">
-                            <path
-                                d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
-                                fill="#fff" />
-                        </svg></a>
-                    <p id="welcomeText">Login</p>
-                    <div id="credEmail" class="inv-button creds">
-                        <vo class="icon" id="emailIcon"><svg xmlns="http://www.w3.org/2000/svg" width="25px"
-                                height="25px" viewBox="0 0 24 24" fill="none">
-                                <g id="style=stroke">
-                                    <g>
-                                        <path id="vector (Stroke)" fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M3.88534 5.2371C3.20538 5.86848 2.75 6.89295 2.75 8.5V15.5C2.75 17.107 3.20538 18.1315 3.88534 18.7629C4.57535 19.4036 5.61497 19.75 7 19.75H17C18.385 19.75 19.4246 19.4036 20.1147 18.7629C20.7946 18.1315 21.25 17.107 21.25 15.5V8.5C21.25 6.89295 20.7946 5.86848 20.1147 5.2371C19.4246 4.59637 18.385 4.25 17 4.25H7C5.61497 4.25 4.57535 4.59637 3.88534 5.2371ZM2.86466 4.1379C3.92465 3.15363 5.38503 2.75 7 2.75H17C18.615 2.75 20.0754 3.15363 21.1353 4.1379C22.2054 5.13152 22.75 6.60705 22.75 8.5V15.5C22.75 17.393 22.2054 18.8685 21.1353 19.8621C20.0754 20.8464 18.615 21.25 17 21.25H7C5.38503 21.25 3.92465 20.8464 2.86466 19.8621C1.79462 18.8685 1.25 17.393 1.25 15.5V8.5C1.25 6.60705 1.79462 5.13152 2.86466 4.1379Z"
-                                            fill="#fff" />
-                                        <path id="vector (Stroke)_2" fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M19.3633 7.31026C19.6166 7.63802 19.5562 8.10904 19.2285 8.3623L13.6814 12.6486C12.691 13.4138 11.3089 13.4138 10.3185 12.6486L4.77144 8.3623C4.44367 8.10904 4.38328 7.63802 4.63655 7.31026C4.88982 6.98249 5.36083 6.9221 5.6886 7.17537L11.2356 11.4616C11.6858 11.8095 12.3141 11.8095 12.7642 11.4616L18.3113 7.17537C18.6391 6.9221 19.1101 6.98249 19.3633 7.31026Z"
-                                            fill="#fff" />
-                                    </g>
-                                </g>
-                            </svg></vo>
-                        <input type="email" id="voxEmail" placeholder="Email">
-                    </div>
-                    <div class="inv-button creds">
-                        <vo class="icon" id="eyeIcon" onclick="showPasswd()"><svg xmlns="http://www.w3.org/2000/svg"
-                                width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <div id='formLogin' class="glass login">
+                        <a style="cursor: pointer;" onclick="returnToLoginMenu()"><svg class="aligned"
+                                xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24"
+                                fill="none">
                                 <path
-                                    d="M12 14.5V16.5M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10.0288"
-                                    stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg></vo>
+                                    d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                                    fill="#fff" />
+                            </svg></a>
+                        <p id="welcomeText">Login</p>
+                        <div id="credEmail" class="inv-button creds">
+                            <vo class="icon" id="emailIcon"><svg xmlns="http://www.w3.org/2000/svg" width="25px"
+                                    height="25px" viewBox="0 0 24 24" fill="none">
+                                    <g id="style=stroke">
+                                        <g>
+                                            <path id="vector (Stroke)" fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M3.88534 5.2371C3.20538 5.86848 2.75 6.89295 2.75 8.5V15.5C2.75 17.107 3.20538 18.1315 3.88534 18.7629C4.57535 19.4036 5.61497 19.75 7 19.75H17C18.385 19.75 19.4246 19.4036 20.1147 18.7629C20.7946 18.1315 21.25 17.107 21.25 15.5V8.5C21.25 6.89295 20.7946 5.86848 20.1147 5.2371C19.4246 4.59637 18.385 4.25 17 4.25H7C5.61497 4.25 4.57535 4.59637 3.88534 5.2371ZM2.86466 4.1379C3.92465 3.15363 5.38503 2.75 7 2.75H17C18.615 2.75 20.0754 3.15363 21.1353 4.1379C22.2054 5.13152 22.75 6.60705 22.75 8.5V15.5C22.75 17.393 22.2054 18.8685 21.1353 19.8621C20.0754 20.8464 18.615 21.25 17 21.25H7C5.38503 21.25 3.92465 20.8464 2.86466 19.8621C1.79462 18.8685 1.25 17.393 1.25 15.5V8.5C1.25 6.60705 1.79462 5.13152 2.86466 4.1379Z"
+                                                fill="#fff" />
+                                            <path id="vector (Stroke)_2" fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M19.3633 7.31026C19.6166 7.63802 19.5562 8.10904 19.2285 8.3623L13.6814 12.6486C12.691 13.4138 11.3089 13.4138 10.3185 12.6486L4.77144 8.3623C4.44367 8.10904 4.38328 7.63802 4.63655 7.31026C4.88982 6.98249 5.36083 6.9221 5.6886 7.17537L11.2356 11.4616C11.6858 11.8095 12.3141 11.8095 12.7642 11.4616L18.3113 7.17537C18.6391 6.9221 19.1101 6.98249 19.3633 7.31026Z"
+                                                fill="#fff" />
+                                        </g>
+                                    </g>
+                                </svg></vo>
+                            <input type="email" id="voxEmail" placeholder="Email">
+                        </div>
+                        <div class="inv-button creds">
+                            <vo class="icon" id="eyeIcon" onclick="showPasswd()"><svg xmlns="http://www.w3.org/2000/svg"
+                                    width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M12 14.5V16.5M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10.0288"
+                                        stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg></vo>
 
-                        <input id="voxPassword" type="password" placeholder="Password">
+                            <input id="voxPassword" type="password" placeholder="Password">
+                        </div>
+                        <div onclick="startLogin()" id="beginLoginBtn" class="inv-button login" style="width: 90%;">
+                            Login
+                        </div>
                     </div>
-                    <div onclick="startLogin()" id="beginLoginBtn" class="inv-button login" style="width: 90%;">
-                        Login
-                    </div>
-                </div>
-                <div id='formLoginByIP' class="glass login">
-                    <p id="welcomeText">Welcome Back!</p>
-                    <p style="margin: 0;
+                    <div id='formLoginByIP' class="glass login">
+                        <p id="welcomeText">Welcome Back!</p>
+                        <p style="margin: 0;
                     font-size: 15px;
                     color: #c1c1c1;margin-bottom: 10px;">We believe you are:</p>
-                    <div class="inv-button ipAcc">
-                        <div class="user">
-                            <div class="icon">
-                                <img id="matchPfp" class="slUserPFP social" src="searching_users.gif">
+                        <div class="inv-button ipAcc">
+                            <div class="user">
+                                <div class="icon">
+                                    <img id="matchPfp" class="slUserPFP social" src="searching_users.gif">
+                                </div>
+                                <div class="column">
+                                    <p id="matchUser">Loading</p>
+                                </div>
+                                <span style="margin-left:auto;float:right;" id="self-ip-lastlogin">5 days</span>
                             </div>
-                            <div class="column">
-                                <p id="matchUser">Loading</p>
-                            </div>
-                            <span style="margin-left:auto;float:right;" id="self-ip-lastlogin">5 days</span>
                         </div>
-                    </div>
-                    <div class="bottomButtons">
-                        <a onclick="attachMatchingUser()" id="beginLoginBtnIP" class="firstChild">
-                            Loading..
-                        </a>
-                        <a onclick="normalLogin()" class="notme">
-                            This is not me
-                        </a>
-                    </div>
+                        <div class="bottomButtons">
+                            <a onclick="attachMatchingUser()" id="beginLoginBtnIP" class="firstChild">
+                                Loading..
+                            </a>
+                            <a onclick="normalLogin()" class="notme">
+                                This is not me
+                            </a>
+                        </div>
 
-                </div>
-                <div id='form2FA' class="glass login">
-                    <a style="cursor: pointer;" onclick="returnToLoginMenuBy2fa()"><svg class="aligned" xmlns="http://www.w3.org/2000/svg"
-                            width="35px" height="35px" viewBox="0 0 24 24" fill="none">
-                            <path
-                                d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
-                                fill="#fff" />
-                        </svg></a>
-                    <p id="welcomeText">Verification</p>
-                    <div class="boxesContainer">
-                        <div class="boxPut">
-                            <input id="2faIn1" type="number" maxlength="1"
-                                oninput="this.value = this.value.slice(0, this.maxLength);" />
-                        </div>
-                        <div class="boxPut">
-                            <input id="2faIn2" type="number" maxlength="1"
-                                oninput="this.value = this.value.slice(0, this.maxLength);" />
-                        </div>
-                        <div class="boxPut">
-                            <input id="2faIn3" type="number" maxlength="1"
-                                oninput="this.value = this.value.slice(0, this.maxLength);" />
-                        </div>
-                        <div class="boxPut">
-                            <input id="2faIn4" type="number" maxlength="1"
-                                oninput="this.value = this.value.slice(0, this.maxLength);" />
-                        </div>
-                        <div class="boxPut">
-                            <input id="2faIn5" type="number" maxlength="1"
-                                oninput="this.value = this.value.slice(0, this.maxLength);" />
-                        </div>
-                        <div class="boxPut">
-                            <input id="2faIn6" type="number" maxlength="1"
-                                oninput="this.value = this.value.slice(0, this.maxLength);" />
+                    </div>
+                    <div id='form2FA' class="glass login">
+                        <a style="cursor: pointer;" onclick="returnToLoginMenuBy2fa()"><svg class="aligned"
+                                xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path
+                                    d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                                    fill="#fff" />
+                            </svg></a>
+                        <p id="welcomeText">Verification</p>
+                        <div class="boxesContainer">
+                            <div class="boxPut">
+                                <input id="2faIn1" type="number" maxlength="1"
+                                    oninput="this.value = this.value.slice(0, this.maxLength);" />
+                            </div>
+                            <div class="boxPut">
+                                <input id="2faIn2" type="number" maxlength="1"
+                                    oninput="this.value = this.value.slice(0, this.maxLength);" />
+                            </div>
+                            <div class="boxPut">
+                                <input id="2faIn3" type="number" maxlength="1"
+                                    oninput="this.value = this.value.slice(0, this.maxLength);" />
+                            </div>
+                            <div class="boxPut">
+                                <input id="2faIn4" type="number" maxlength="1"
+                                    oninput="this.value = this.value.slice(0, this.maxLength);" />
+                            </div>
+                            <div class="boxPut">
+                                <input id="2faIn5" type="number" maxlength="1"
+                                    oninput="this.value = this.value.slice(0, this.maxLength);" />
+                            </div>
+                            <div class="boxPut">
+                                <input id="2faIn6" type="number" maxlength="1"
+                                    oninput="this.value = this.value.slice(0, this.maxLength);" />
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
 
@@ -406,10 +426,10 @@
     <div id="container">
 
         <div id="gatewayActions" class="gatewayActions" style="display: none;">
-            <p id="tab-ask" style="display: none;" onclick="enableTab(this)"><svg xmlns:dc="http://purl.org/dc/elements/1.1/"
-                    xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-                    xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 16 16" version="1.1"
-                    id="svg6190">
+            <p id="tab-ask" style="display: none;" onclick="enableTab(this)"><svg
+                    xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#"
+                    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg"
+                    width="25px" height="25px" viewBox="0 0 16 16" version="1.1" id="svg6190">
 
                     <g transform="translate(5.025 -1037.1)" id="layer1">
 
@@ -424,7 +444,7 @@
             <p id="tab-explore" onclick="enableTab(this)" class="active">Explore</p>
             <p style="display: none;" id="tab-news" onclick="enableTab(this)">News</p>
             <p id="tab-profile" onclick="enableTab(this)">Profile</p>
-            
+
             <span id="networkStatus" class="quickAccess">
                 <div style="margin-right: 5px;display: none;" id="downloading-icon" class="active">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -442,8 +462,8 @@
                         d="M12.7201 5.00061C10.5554 5.00061 9.01215 5.6562 7.90342 6.76129C6.8225 7.83867 6.22656 9.27424 5.79786 10.6926L5.09996 13.0017H2.75244C2.33823 13.0017 2.00244 13.3375 2.00244 13.7517C2.00244 15.0958 2.76576 16.2358 3.87482 16.8523L3.286 18.2845C2.8733 19.2883 3.351 20.4379 4.35504 20.8518C4.59247 20.9497 4.84678 21.0001 5.1036 21.0001H7.29769C8.05963 21.0001 8.75239 20.5594 9.07629 19.8701L9.78265 18.3668C11.7527 18.6396 13.7511 18.6428 15.7219 18.3764L16.4237 19.8701C16.7476 20.5594 17.4404 21.0001 18.2023 21.0001H20.3745C20.6317 21.0001 20.8863 20.9496 21.124 20.8514C22.1278 20.437 22.6049 19.2871 22.1917 18.2835L21.6633 17H24C25.0127 17 26.0002 16.2166 26.0002 15.114V14C26.0002 12.2943 24.5196 11.0029 22.8184 11.0029H19.8693L19.7752 10.692C19.3422 9.2608 18.7117 7.82699 17.5966 6.7523C16.4579 5.65486 14.8869 5.00061 12.7201 5.00061ZM21.2299 15.5L20.3231 12.5029H22.8184C23.8033 12.5029 24.5002 13.2306 24.5002 14V15.114C24.5002 15.2492 24.3304 15.5 24 15.5H21.2299ZM17.2556 18.1133C18.2376 17.9086 19.2089 17.6358 20.1625 17.2948L20.8047 18.8546C20.9032 19.0939 20.789 19.3669 20.5516 19.4649C20.4954 19.4881 20.4353 19.5001 20.3745 19.5001H18.2023C18.0225 19.5001 17.8583 19.3961 17.7813 19.2322L17.2556 18.1133ZM5.53095 17.3368C6.42433 17.6505 7.33301 17.9046 8.25116 18.099L7.71869 19.2322C7.64168 19.3961 7.47745 19.5001 7.29769 19.5001H5.1036C5.04295 19.5001 4.98286 19.4882 4.92673 19.465C4.68931 19.3672 4.57492 19.0942 4.67332 18.8549L5.30602 17.316C5.38044 17.325 5.45543 17.3319 5.53095 17.3368ZM4.6466 14.5017L4.3755 15.3987C4.05269 15.1646 3.8034 14.8534 3.65535 14.5017H4.6466Z"
                         fill="#55565f" />
                 </svg>
-                <svg style="display: none;" id="onlineStatus" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
-                    fill="none">
+                <svg style="display: none;" id="onlineStatus" xmlns="http://www.w3.org/2000/svg" width="25px"
+                    height="25px" viewBox="0 0 24 24" fill="none">
                     <path d="M4 20V19M8 20V16M12 20V12M16 20V8M20 20V4" stroke="#55565f" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
@@ -794,7 +814,7 @@
                 </clipPath>
             </defs>
         </svg></button>
-        <div id="customRefreshIndicator" style="opacity: 0;">Pull to Refresh...</div>
+    <div id="customRefreshIndicator" style="opacity: 0;">Pull to Refresh...</div>
     <div class="securelinePopup" id="secureline">
 
         <div class="grabbable" onclick="showHideGalaxy(this)" id="showHideClick" data-c="false"></div>
@@ -1522,7 +1542,8 @@
                 <span>Yes</span>
             </div>
         </div>
-        <div class="profileOptions addFriend" id="openMessages" data-c="none" onclick="openMessages(this)" style="display: none;">
+        <div class="profileOptions addFriend" id="openMessages" data-c="none" onclick="openMessages(this)"
+            style="display: none;">
             Send Message
         </div>
         <div class="profileOptions addFriend" id="addFriend" onclick="addFriend(this)" style="display: none;">
@@ -1810,15 +1831,16 @@
         </div>
         <div class="bottomButtonsSline changeColors msgEdit">
             <a onclick="bottomButtonPress('deleteSlineMessage', this)" class="firstChild" href="#deleteSlineMessage">
-                <span id="animateAMessDel"><svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
-                    viewBox="0 0 24 24" fill="none">
-                    <path d="M4 7H20" stroke="#dbdde3" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                    <path id="animate2" desc="rubbishCanBody" d="M6 7V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V7" stroke="#dbdde3"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <path id="animate1" d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#dbdde3"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg></span>
+                <span id="animateAMessDel"><svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg"
+                        width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path d="M4 7H20" stroke="#dbdde3" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path id="animate2" desc="rubbishCanBody"
+                            d="M6 7V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V7" stroke="#dbdde3"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path id="animate1" d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z"
+                            stroke="#dbdde3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg></span>
                 <span id="deletingMessage">Delete</span>
             </a>
             <a onclick="bottomButtonPress('dismissSlineMessage', this)" href="#dismissSlineMessage">
@@ -1834,8 +1856,7 @@
         height: 100%;
         border: none;
         margin: 0;
-        padding: 0;"
-            src="./epsilon-galaxy/vanilla.html"></iframe>
+        padding: 0;" src="./epsilon-galaxy/vanilla.html"></iframe>
     </div>
     <div onclick="stopAit()" class="aitContainer" id="aitContainer">
         <div class="opa" id="opa">
@@ -1849,7 +1870,8 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    color: #dbdde3;text-wrap: nowrap; display: none;">@<span id="accountUserProfileUsername"></span> was not found on Evox</p>
+    color: #dbdde3;text-wrap: nowrap; display: none;">@<span id="accountUserProfileUsername"></span> was not found on
+        Evox</p>
     <!--<canvas id="ait"></canvas>
     <style>
         canvas {

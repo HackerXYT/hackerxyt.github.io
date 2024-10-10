@@ -68,7 +68,7 @@ if (self) {
             return response.json();
         })
         .then(data => { // data contains user's friends
-            return fetch(`https://data.evoxs.xyz/accounts?method=getAllEvoxUsers`)
+            return fetch(`https://data.evoxs.xyz/accounts?method=getAllEvoxUsers&origin=${localStorage.getItem("t50-username")}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! Status: ${response.status}`);
