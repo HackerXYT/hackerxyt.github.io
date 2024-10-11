@@ -5,6 +5,8 @@
 
 html {
   scroll-behavior: smooth;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 
@@ -4567,13 +4569,20 @@ div .Home {
 
 @media (min-width: 1024px) {
   .pcAdjustments {
-    position: fixed; /* Fixes the parent container relative to the viewport */
-    bottom: 2px; /* Aligns it to the bottom of the viewport */
-    left: 50%; /* Move the left edge to the center */
-    transform: translateX(-50%); /* Shift it back by half of its width */
-    width: 100%; /* Make the parent container full width */
-    max-width: 600px; /* Limit the width of the parent container to 800px */
-    z-index: 1000; /* Ensure it is above other elements */
+    position: fixed;
+    /* Fixes the parent container relative to the viewport */
+    bottom: 2px;
+    /* Aligns it to the bottom of the viewport */
+    left: 50%;
+    /* Move the left edge to the center */
+    transform: translateX(-50%);
+    /* Shift it back by half of its width */
+    width: 100%;
+    /* Make the parent container full width */
+    max-width: 600px;
+    /* Limit the width of the parent container to 800px */
+    z-index: 1000;
+    /* Ensure it is above other elements */
   }
 }
 
@@ -4695,7 +4704,8 @@ input:autofill {
   background-color: #18181a;
 }
 
-.glass p,a {
+.glass p,
+a {
   margin: 0;
   font-size: 15px;
   color: #777a80;
@@ -7291,9 +7301,11 @@ vox.svgIconAnimated {
   /* Target position */
 }
 
-#message-edit-center {
+#message-edit-center,
+#install-app {
   padding-bottom: 100px;
 }
+
 
 #animateAMessDel svg {
   transition: transform 0.5s ease-in-out;
@@ -7307,7 +7319,8 @@ vox.svgIconAnimated {
   animation-name: shakeEasy;
   animation-duration: 0.5s;
   animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite; /* Makes the animation repeat indefinitely */
+  animation-iteration-count: infinite;
+  /* Makes the animation repeat indefinitely */
 }
 
 @keyframes shakeEasy {

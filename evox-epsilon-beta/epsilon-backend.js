@@ -3,6 +3,23 @@ sessionStorage.removeItem("lastChatInter")
 sessionStorage.removeItem("lastChatMessages")
 sessionStorage.removeItem("addFriendItem")
 
+function isPWA() {
+    return window.navigator.standalone === true;
+}
+
+function isMobileDevice() {
+    const isMobileUA = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isMobileScreen = window.matchMedia("(max-width: 768px)").matches;
+    
+    return isMobileUA || isMobileScreen;
+  }
+
+let stopForPWA = false;
+if(!isPWA() && isMobileDevice()) {
+    //alert("must alert")
+    //document.getElementById("install-app").classList.add("active")
+    stopForPWA = true
+}
 //let lastFrameTime = performance.now();
 //function monitorFPS() {
 //    let currentFrameTime = performance.now();
@@ -45,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
             clientVerified()
             console.log('Error:', error);
         });
-    
+
     if (localStorage.getItem("t50pswd")) {
         setTimeout(function () {
             console.log("Running loadProfile because user is logged in")
@@ -230,7 +247,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '7.3.8'
+const appVersion = '7.3.9'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {

@@ -873,6 +873,7 @@ function startLogin() {
                         return;
                     }
                     returnToLoginMenu('nosound')
+                    localStorage.removeItem("aitAnalytics")
                     loadAit()
                     setTimeout(function () {
                         $("#connectionContainer").fadeOut("fast")
@@ -1039,6 +1040,8 @@ function on2FAComplete() {
                 $("#connectionContainer").fadeOut("fast")
                 loadProfile()
                 verificationComplete()
+                localStorage.removeItem("aitAnalytics")
+
                 loadAit()
                 setTimeout(function () {
                     aitPlay('beta_intro')

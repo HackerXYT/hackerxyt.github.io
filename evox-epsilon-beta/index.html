@@ -37,18 +37,18 @@
 
         // Store the original fetch function
         //const originalFetch = window.fetch;
-//
+        //
         //// Override the fetch function
         //window.fetch = function (input, init) {
         //    // Check if the input (URL or Request object) contains 'DENYWORD'
         //    let url = typeof input === 'string' ? input : input.url;
-//
+        //
         //    if (url.includes('DENYWORD')) {
         //        console.log('Fetch request cancelled: URL contains "DENYWORD"');
         //        // Return a rejected promise to simulate the cancellation
         //        return Promise.reject(new Error('Fetch request cancelled due to "DENYWORD" in the URL'));
         //    }
-//
+        //
         //    // Otherwise, call the original fetch
         //    return originalFetch(input, init);
         //};
@@ -1714,10 +1714,8 @@
     </div>
     <div style="display: none;" id="preNotif"><!--This Part Is Used For Checking New Notifications--></div>
     <noscript>
-        <div class="parent-notification-container">
-            <div class="apple-style active">
-                <span>Evox Operations Failed</span>
-            </div>
+        <div class="apple-style" style="height: 35px;">
+            <span style="margin-top: 10px;">Evox Operations Failed. Enable JavaScript</span>
         </div>
         <style type="text/css">
             .noScript {
@@ -1737,9 +1735,9 @@
             information
             associated with your account.</p>
         <div class="parent-notification-container" style="height: auto;">
-            <a href="../evox-epsilon-beta/index.html" class="apple-button-withicon" style="max-width: 251px;"><img
-                    style="width: auto; height: 20px;border-radius: 7px;" src="ZKZx.gif">
-                <div class="centered-text" style="height: auto;">Reload Page</div>
+            <a href="../evox-epsilon-beta/index.html" class="apple-button-withicon" style="width: auto;"><img
+                    style="width: auto; height: 20px;border-radius: 7px;margin-right: 10px" src="ZKZx.gif">
+                Reload Page
             </a>
         </div>
 
@@ -1848,9 +1846,38 @@
                 Dismiss
             </a>
         </div>
+    </div>
+
+    <div style="width: 100%;height: 100%;backdrop-filter: blur(5px);display: none;z-index: 1999;position: fixed;"></div>
+    <div class="notification-center" id="install-app" style="height: auto">
+        <img style="width: auto;height: 80px;border-radius: 19px;" src="evox-logo-apple.png">
+        <p style="text-align: center;align-items: center;" class="header default">Evox is better in the app.</p>
+        <div class="rowCentered" style="text-align: center;">
+            Would you like to install the Evox Nexus app to your device?
+        </div>
+        <div class="bottomButtonsSline changeColors msgEdit">
+            <a class="firstChild">
+                <span><svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                        viewBox="0 0 24 24" fill="none">
+                        <path d="M4 7H20" stroke="#dbdde3" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path id="animate2" desc="rubbishCanBody"
+                            d="M6 7V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V7" stroke="#dbdde3"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path id="animate1" d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z"
+                            stroke="#dbdde3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg></span>
+                <span>Delete</span>
+            </a>
+            <a>
+
+                Dismiss
+            </a>
+        </div>
 
 
     </div>
+
     <div class="galaxy" id="galaxy">
         <iframe id="galaxyIframe" style="width: 100%;
         height: 100%;
