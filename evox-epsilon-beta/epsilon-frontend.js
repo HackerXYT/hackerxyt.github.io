@@ -127,7 +127,7 @@ function restart() {
     window.location.reload()
 }
 function clientVerified() {
-    if (ip !== 'error') {
+    if (ip !== 'error' || blockMoves === true) {
         const username = localStorage.getItem("t50-username")
         const email = localStorage.getItem("t50-email")
         const password = atob(localStorage.getItem("t50pswd"))
@@ -306,7 +306,10 @@ function clientVerified() {
         }
 
     } else {
-        notice("IP Verification Failed!")
+        if (ip !== 'error') {
+            notice("IP Verification Failed!")
+        }
+
     }
 }
 
@@ -482,6 +485,24 @@ function normalLogin() {
     }, 920)
 }
 
+async function deleteAllCookiesAsync() {
+    return new Promise((resolve, reject) => {
+        try {
+            // Get all cookies for the current document
+            const cookies = document.cookie.split("; ");
+            for (let cookie of cookies) {
+                // Get the cookie name
+                const cookieName = cookie.split("=")[0];
+                // Set the cookie's expiration date to the past
+                document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
+            }
+            resolve('All cookies deleted successfully!');
+        } catch (error) {
+            reject('Error deleting cookies: ' + error);
+        }
+    });
+}
+
 function logOut() {
     let userResponse = confirm("Are you sure you want to logout?");
 
@@ -560,8 +581,11 @@ function logOut() {
                 }
             }).then(() => {
                 // Reload the window after all operations are done
-                console.log('All operations completed, reloading the window.');
-                window.location.reload();
+                console.log('All operations completed, clearing cookies cache.');
+                deleteAllCookiesAsync()
+                    .then(message => window.location.reload())
+                    .catch(error => console.error(error));
+                
             }).catch(function (error) {
                 console.error('An error occurred during the cleanup process:', error);
                 window.location.reload();  // Ensure the window reloads even if there's an error
@@ -881,6 +905,7 @@ function startLogin() {
                         aitPlay('beta_intro')
                     }, 1000)
                     loadProfile()
+                    PWACheck()
 
                     //FloridaRun()
                     console.log("Registering Service Worker..")
@@ -1055,6 +1080,7 @@ function on2FAComplete() {
                             console.error('Service Worker registration failed:', error);
                         });
                 }
+                PWACheck()
             } else if (data === "Exists") {
                 successLogin.play()
                 document.getElementById("form2FA").classList.remove('active')
@@ -1086,8 +1112,9 @@ function on2FAComplete() {
                 setTimeout(function () {
                     aitPlay('beta_intro')
                 }, 1000)
+                PWACheck()
             } else if (data === "Wrong Code") {
-                shake_me("ver_code")
+                //shake_me("ver_code")
                 document.getElementById("form2FA").style.paddingBottom = '50px'
                 document.getElementById("2faIn1").value = ""
                 document.getElementById("2faIn2").value = ""
@@ -2374,6 +2401,79 @@ function bottomButtonPress(which, el) {
         }, 200)
 
 
+    } else if (which === 'downloadIOS') {
+        el.style.transform = 'scale(0.96)'
+
+        //backend testing
+        const os_b = getOS();
+        const osVersion_b = getOSVersion();
+
+        if (os_b === 'IOS' || os_b === 'macOS') {
+            setTimeout(function () {
+                //workingElem.style.transform = 'rotate(0deg)'
+                //el.style.transform = 'scale(1)'
+                //document.getElementById("install-app").classList.remove("active")
+                //setTimeout(function () {
+                //    window.location.href = './internal/ios.mobileconfig'
+                //}, 200)
+                el.style.transform = 'scale(1)'
+                document.getElementById("install-app").classList.remove("active")
+                setTimeout(function () {
+                    document.getElementById("gateway").style.filter = 'blur(7px)'
+                    document.getElementById("gatewayActions").classList.add('top')
+                    document.getElementById("cmn").style.display = 'none'
+                    document.getElementById("cmn_1").innerHTML = `Install On IOS`
+                    document.getElementById("cmn_dl").style.display = 'none'
+                    document.getElementById("cmn_dis").innerHTML = 'Done'
+                    document.getElementById("cmn_2").innerHTML = `1. Tap the Share button at the bottom of the screen.<br><br>2. In the share menu, scroll down and look for the "Add to Home Screen" option. Tap it.<br><br>3. Tap "Add"<br><br>4. The Evox App will appear on your home screen.`
+                    document.getElementById("install-app").classList.add("active")
+                }, 400)
+            }, 200)
+        } else if (os_b === 'Android' || os_b === 'Linux') {
+            el.style.transform = 'scale(1)'
+            document.getElementById("install-app").classList.remove("active")
+            setTimeout(function () {
+                document.getElementById("gateway").style.filter = 'blur(7px)'
+                document.getElementById("gatewayActions").classList.add('top')
+                document.getElementById("cmn").style.display = 'none'
+                document.getElementById("cmn_1").innerHTML = `${os_b} requires some steps`
+                document.getElementById("cmn_dl").style.display = 'none'
+                document.getElementById("cmn_dis").innerHTML = 'Done'
+                document.getElementById("cmn_2").innerHTML = `1. Tap the three vertical dots in the upper-right corner of your screen.<br><br>2. Select "Add to Home Screen."<br><br> 3. Tap "Add," and the Evox icon will appear on your home screen.`
+                document.getElementById("install-app").classList.add("active")
+            }, 400)
+            //press the three dots on the top right of the screen
+            //select Add to home screen
+        } else {
+            //hm. it looks like %os_b% isnt supported..
+            el.style.transform = 'scale(1)'
+            document.getElementById("install-app").classList.remove("active")
+            setTimeout(function () {
+                document.getElementById("gateway").style.filter = 'blur(7px)'
+                document.getElementById("gatewayActions").classList.add('top')
+                document.getElementById("cmn").style.display = 'none'
+                document.getElementById("cmn_1").innerHTML = `Hmm, it looks like ${os_b} isn't supported`
+                document.getElementById("cmn_dl").style.display = 'none'
+                document.getElementById("cmn_dis").innerHTML = 'Dismiss'
+                document.getElementById("cmn_2").innerHTML = `To install the Evox Nexus app you need a mobile device.<br><br>The Evox App cannot be installed on desktops or non-mobile devices.<br><br>If the issue persists contact support.`
+                document.getElementById("install-app").classList.add("active")
+            }, 400)
+        }
+
+
+
+
+    } else if (which === 'dismissDownload') {
+        el.style.transform = 'scale(0.96)'
+        setTimeout(function () {
+            //workingElem.style.transform = 'rotate(0deg)'
+            el.style.transform = 'scale(1)'
+            document.getElementById("install-app").classList.remove("active")
+            document.getElementById("gateway").style.filter = ''
+            document.getElementById("gatewayActions").classList.remove('top')
+        }, 200)
+
+
     } else {
         el.style.transform = 'scale(0.96)'
         setTimeout(function () {
@@ -2754,8 +2854,6 @@ function getOSVersion() {
 
     return osVersion;
 }
-
-// Example usage:
 const os = getOS();
 const osVersion = getOSVersion();
 

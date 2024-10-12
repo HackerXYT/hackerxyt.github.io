@@ -10,16 +10,86 @@ function isPWA() {
 function isMobileDevice() {
     const isMobileUA = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const isMobileScreen = window.matchMedia("(max-width: 768px)").matches;
-    
+
     return isMobileUA || isMobileScreen;
-  }
+}
+
+function getCookie(name) {
+    // Find the cookie in document.cookie string
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+
+    if (parts.length === 2) {
+        // Return the decoded cookie value
+        return decodeURIComponent(parts.pop().split(';').shift());
+    }
+    return null;  // If the cookie doesn't exist
+}
+
+const cookieValue = getCookie('userData');
+
+let blockMoves = false
+if (cookieValue && isPWA() && !localStorage.getItem("hasRetrievedCookie")) {
+    // Parse the JSON string back into a JavaScript object
+    const userData = JSON.parse(cookieValue);
+
+
+    console.log(userData); // Access the JSON data
+    //alert(userData)
+    if (userData) {
+        blockMoves = true
+        document.getElementById("update-center").classList.add("active")
+        $("#container").fadeOut("fast")
+        $("#gatewayExploreScroll").fadeOut("fast")
+        //} else {
+        document.getElementById("downloading-icon").classList.add("active")
+        $("#downloading-icon").fadeIn("fast");
+        localStorage.setItem("t50-username", userData.username)
+        localStorage.setItem("t50-email", userData.email)
+        localStorage.setItem("t50pswd", userData.password)
+        localStorage.setItem("hasRetrievedCookie", "true")
+        setTimeout(function () {
+            document.getElementById("update-center").classList.remove("active")
+            //aitPlay("reloading")
+            setTimeout(() => {
+                window.location.reload()
+            }, 300);
+            
+        }, 1300)
+    }
+    //console.log(`Username: ${userData.username}`);
+    //console.log(`Email: ${userData.email}`);
+}
+
 
 let stopForPWA = false;
-if(!isPWA() && isMobileDevice()) {
-    //alert("must alert")
-    //document.getElementById("install-app").classList.add("active")
-    stopForPWA = true
+function PWACheck() {
+    if (!isPWA() && isMobileDevice() && localStorage.getItem("t50pswd")) {
+        //alert("must alert")
+        document.getElementById("install-app").classList.add("active")
+        stopForPWA = true
+        const jsonData = {
+            "isLoggedIn": true,
+            "username": localStorage.getItem("t50-username"),
+            "password": localStorage.getItem("t50pswd"),
+            "email": localStorage.getItem("t50-email")
+        };
+
+        // Convert JSON to a string
+        const jsonString = JSON.stringify(jsonData);
+
+        // Set an expiration date for the cookie (e.g., 7 days)
+        const expires = new Date();
+        expires.setTime(expires.getTime() + (7 * 24 * 60 * 60 * 1000)); // Expires in 7 days
+
+        // Set the cookie accessible from all subdomains
+        document.cookie = `userData=${encodeURIComponent(jsonString)}; expires=${expires.toUTCString()}; path=/; domain=evoxs.xyz; samesite=strict`;
+        //alert("cookie set")
+
+
+    }
 }
+PWACheck()
 //let lastFrameTime = performance.now();
 //function monitorFPS() {
 //    let currentFrameTime = performance.now();
@@ -207,6 +277,7 @@ function play(soundName) {
 }
 
 
+
 function checkForUpdates() {
     fetch(`https://evoxs.xyz/evox-epsilon-beta/epsilon-backend.js?v=${Math.floor(Math.random() * 100000)}`)
         .then(response => {
@@ -247,7 +318,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '7.3.9'
+const appVersion = '7.4.0'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
