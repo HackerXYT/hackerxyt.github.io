@@ -29,7 +29,7 @@ function getCookie(name) {
 const cookieValue = getCookie('userData');
 
 let blockMoves = false
-if (cookieValue && isPWA() && !localStorage.getItem("hasRetrievedCookie")) {
+if (cookieValue && isPWA() && !localStorage.getItem("hasRetrievedCookie") && !localStorage.getItem("t50pswd")) {
     // Parse the JSON string back into a JavaScript object
     const userData = JSON.parse(cookieValue);
 
