@@ -1177,7 +1177,7 @@ function saveLocalStorageToCookie() {
 }
 
 
-const stockApps = ['tasco', 'oasa', 'deluxe'];
+const stockApps = ['tasco', 'oasa', 'gateway', 'deluxe'];
 function verificationComplete() {
     // Save localStorage to cookie when needed
     try {
@@ -2498,6 +2498,10 @@ function processAppUrl(appName) {
         "deluxe": {
             "src": '/tascoTasks/',
             'name': "Tasco Deluxe"
+        },
+        "gateway": {
+            "src": '/t50-gateway-alpha/',
+            'name': "Evox Gateway"
         }
     }
     if (appName) {
@@ -2565,15 +2569,23 @@ function launchAppN(app) {
                 //item1
                 $("#app2").fadeIn("fast")
                 $("#app3").fadeIn("fast")
+                $("#app4").fadeIn("fast")
                 add = 'app1'
             } else if (attr.includes("2")) {
                 $("#app1").fadeIn("fast")
                 $("#app3").fadeIn("fast")
+                $("#app4").fadeIn("fast")
                 add = 'app2'
             } else if (attr.includes("3")) {
                 $("#app1").fadeIn("fast")
                 $("#app2").fadeIn("fast")
+                $("#app4").fadeIn("fast")
                 add = 'app3'
+            } else if (attr.includes("4")) {
+                $("#app1").fadeIn("fast")
+                $("#app2").fadeIn("fast")
+                $("#app3").fadeIn("fast")
+                add = 'app4'
             }
         }, 500)
         activeAPP = null
@@ -3248,15 +3260,23 @@ function animateM(e, app) {
             //item1
             $("#app2").fadeOut("fast")
             $("#app3").fadeOut("fast")
+            $("#app4").fadeOut("fast")
             add = 'app1'
         } else if (attr.includes("2")) {
             $("#app1").fadeOut("fast")
             $("#app3").fadeOut("fast")
+            $("#app4").fadeOut("fast")
             add = 'app2'
         } else if (attr.includes("3")) {
             $("#app1").fadeOut("fast")
             $("#app2").fadeOut("fast")
+            $("#app4").fadeOut("fast")
             add = 'app3'
+        } else if (attr.includes("4")) {
+            $("#app1").fadeOut("fast")
+            $("#app2").fadeOut("fast")
+            $("#app3").fadeOut("fast")
+            add = 'app4'
         }
         setTimeout(function () {
 
@@ -3288,15 +3308,23 @@ function animateM(e, app) {
                 //item1
                 $("#app2").fadeIn("fast")
                 $("#app3").fadeIn("fast")
+                $("#app4").fadeIn("fast")
                 add = 'app1'
             } else if (attr.includes("2")) {
                 $("#app1").fadeIn("fast")
                 $("#app3").fadeIn("fast")
+                $("#app4").fadeIn("fast")
                 add = 'app2'
             } else if (attr.includes("3")) {
                 $("#app1").fadeIn("fast")
                 $("#app2").fadeIn("fast")
+                $("#app4").fadeIn("fast")
                 add = 'app3'
+            } else if (attr.includes("4")) {
+                $("#app1").fadeIn("fast")
+                $("#app2").fadeIn("fast")
+                $("#app3").fadeIn("fast")
+                add = 'app4'
             }
         }, 500)
 

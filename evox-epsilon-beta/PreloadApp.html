@@ -127,23 +127,27 @@
     cursor: pointer;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
   }
-  .bottom-logo {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 132px;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.364));
-}
 
-.astrax {
-  height: 75px;width:75px;border-radius: 15px;
-}
+  .bottom-logo {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 132px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.364));
+  }
+
+  .astrax {
+    height: 75px;
+    width: 75px;
+    border-radius: 15px;
+  }
 </style>
 
 <body class="dark-mode">
   <div id="background">
-    <div id="bgimaget" class="background" style="background: radial-gradient(circle, #121212, #121212)"></div><!--#282828-000-->
+    <div id="bgimaget" class="background" style="background: radial-gradient(circle, #121212, #121212)"></div>
+    <!--#282828-000-->
   </div>
 
   <!--<div class="background" style="background-image: url('./evox-bg.jpg');background-size: cover;background-position: center;filter: blur(5px);"></div>-->
@@ -158,30 +162,34 @@
       <img style="display: none" id="app-tasco" src="../tasco/tasco-app.png" class="astrax">
       <img style="display: none" id="app-oasa" src="../oasaMobile/apple.png" class="astrax">
       <img style="display: none" id="app-deluxe" src="../tascoTasks/tasco.png" class="astrax">
-      <p class="gds-text--body-sm" style="font-weight: 550;">Launching <span style="text-transform: capitalize;" id="appname"></span>..
+      <img style="display: none" id="app-gateway" src="../t50-gateway-alpha/evox-logo-apple-old.png" class="astrax">
+      <p class="gds-text--body-sm" style="font-weight: 550;">Launching <span style="text-transform: capitalize;"
+          id="appname"></span>..
       </p>
       <!--<p class="gds-text--body-sm"></p>-->
-      
+
       <script>
-        setInterval(function() {
-          let app = sessionStorage.getItem("EmitApp")
-          if(app) {
-            custombg()
-            let ids = ['app-chatvia', "app-evox", "app-mti", "app-images", "app-tasco", "app-oasa", "app-deluxe"]
-            ids.forEach(function(id) {
-              document.getElementById(id).style.display = "none"
-            })
-            document.getElementById(`app-${app}`).style.display = ""
-            document.getElementById("appname").innerHTML = app
-            sessionStorage.removeItem("EmitApp")
-          }
-        }, 10)
+        document.addEventListener('DOMContentLoaded', function () {
+          setInterval(function () {
+            let app = sessionStorage.getItem("EmitApp")
+            if (app) {
+              custombg()
+              let ids = ['app-chatvia', "app-evox", "app-mti", "app-images", "app-tasco", "app-oasa", "app-deluxe", "app-gateway"]
+              ids.forEach(function (id) {
+                document.getElementById(id).style.display = "none"
+              })
+              document.getElementById(`app-${app}`).style.display = ""
+              document.getElementById("appname").innerHTML = app
+              sessionStorage.removeItem("EmitApp")
+            }
+          }, 100)
+        })
       </script>
     </div>
   </div>
   <!--<img style="user-drag: none;user-select: none;" id="bottom-logo" src="evox-logo-t.png"
         alt="Another Logo" class="bottom-logo">-->
-        <div id="stuck" style="position: fixed;
+  <div id="stuck" style="position: fixed;
     top: 30px;
     right: 20px;
     width: 30px;
@@ -192,19 +200,19 @@
     justify-content: center;
     cursor: pointer;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;">
-        <!--onclick="fix()" id="stuck"-->
-        <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
-        <!-- You can customize the icon or text inside the button -->
-        <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
-            xml:space="preserve">
-            <path fill="#fff"
-                d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
-                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25"
-                    to="360 25 25" dur="0.6s" repeatCount="indefinite" />
-            </path>
-        </svg>
-    </div>
+    <!--onclick="fix()" id="stuck"-->
+    <!-- onclick='$( "#settings" ).fadeOut( "slow", function() {})'-->
+    <!-- You can customize the icon or text inside the button -->
+    <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+      x="0px" y="0px" width="40px" height="40px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+      xml:space="preserve">
+      <path fill="#fff"
+        d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z">
+        <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25"
+          dur="0.6s" repeatCount="indefinite" />
+      </path>
+    </svg>
+  </div>
 </body>
 <script>
 
