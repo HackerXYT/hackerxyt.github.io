@@ -9,6 +9,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <style>
+  @font-face {
+    font-family: 'SFLight';
+    src: url('./internal/SFProDisplay-Light.ttf') format('truetype');
+    /* Adjust path and format */
+  }
+
   .gds-layout__container {
     min-height: 100vh;
   }
@@ -140,53 +146,64 @@
   .astrax {
     height: 75px;
     width: 75px;
-    border-radius: 15px;
+    border-radius: 20px;
+    
+  }
+
+  body {
+    font-family: 'SFLight';
+    letter-spacing: 1.3px;
   }
 </style>
 
 <body class="dark-mode">
-  <div id="background">
-    <div id="bgimaget" class="background" style="background: radial-gradient(circle, #121212, #121212)"></div>
-    <!--#282828-000-->
+  <div>
+    <div id="bgimaget2" class="background"></div>
   </div>
 
-  <!--<div class="background" style="background-image: url('./evox-bg.jpg');background-size: cover;background-position: center;filter: blur(5px);"></div>-->
   <div
     class="gds-layout__container gds-layout__container--full-width gds-flex gds-flex--justify-center gds-flex--content-center">
     <div class="-text-center -color-tx-lt-5">
-      <!--<i class="fal fa-2x fa-cog rotating"></i>-->
-      <img style="display: none" id="app-chatvia" src="chatvia-img.png" class="astrax">
-      <img style="display: none" id="app-evox" src="evox-logo-apple.png" class="astrax">
-      <img style="display: none" id="app-mti" src="mt.jpg" class="astrax">
-      <img style="display: none" id="app-images" src="t50-img.png" class="astrax">
-      <img style="display: none" id="app-tasco" src="../tasco/tasco-app.png" class="astrax">
-      <img style="display: none" id="app-oasa" src="../oasaMobile/apple.png" class="astrax">
-      <img style="display: none" id="app-deluxe" src="../tascoTasks/tasco.png" class="astrax">
-      <img style="display: none" id="app-gateway" src="../t50-gateway-alpha/evox-logo-apple-old.png" class="astrax">
+      <div id="spawnImage"></div> <!-- Image will spawn here -->
       <p class="gds-text--body-sm" style="font-weight: 550;">Launching <span style="text-transform: capitalize;"
-          id="appname"></span>..
-      </p>
-      <!--<p class="gds-text--body-sm"></p>-->
+          id="appname"></span>..</p>
 
       <script>
         document.addEventListener('DOMContentLoaded', function () {
+          const appImages = {
+            chatvia: 'chatvia-img.png',
+            evox: 'evox-logo-apple.png',
+            mti: 'mt.jpg',
+            images: 't50-img.png',
+            tasco: '../tasco/tasco-app.png',
+            oasa: '../oasaMobile/apple.png',
+            deluxe: '../tascoTasks/tasco.png',
+            gateway: '../t50-gateway-alpha/evox-logo-apple-old.png',
+            home: './home.png'
+          };
+
           setInterval(function () {
-            let app = sessionStorage.getItem("EmitApp")
-            if (app) {
-              custombg()
-              let ids = ['app-chatvia', "app-evox", "app-mti", "app-images", "app-tasco", "app-oasa", "app-deluxe", "app-gateway"]
-              ids.forEach(function (id) {
-                document.getElementById(id).style.display = "none"
-              })
-              document.getElementById(`app-${app}`).style.display = ""
-              document.getElementById("appname").innerHTML = app
-              sessionStorage.removeItem("EmitApp")
+            let app = sessionStorage.getItem("EmitApp");
+            if (app && appImages[app]) {
+              document.getElementById("appname").innerHTML = app;
+
+              // Remove any previously displayed image
+              document.getElementById("spawnImage").innerHTML = '';
+
+              // Create and display the new image above the text
+              const img = document.createElement('img');
+              img.src = appImages[app];
+              img.classList.add('astrax');
+              document.getElementById("spawnImage").appendChild(img);
+
+              sessionStorage.removeItem("EmitApp");
             }
-          }, 100)
-        })
+          }, 100);
+        });
       </script>
     </div>
   </div>
+
   <!--<img style="user-drag: none;user-select: none;" id="bottom-logo" src="evox-logo-t.png"
         alt="Another Logo" class="bottom-logo">-->
   <div id="stuck" style="position: fixed;
@@ -214,54 +231,5 @@
     </svg>
   </div>
 </body>
-<script>
-
-  function custombg() {
-    let blur = localStorage.getItem("cbg-blur")
-    if (localStorage.getItem("cbg")) {
-      let name = localStorage.getItem("cbg")
-      if (name === "default_bg.png") {
-        document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="background: radial-gradient(circle, #400000, #000000)"></div>`
-      } else if (name === "stock1.jpg") {
-        if (blur) {
-          document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock1.jpg');background-size: cover;background-position: center;filter: blur(${blur}px);"></div>`
-        } else {
-          document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock1.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
-        }
-
-      } else if (name === "stock2.jpg") {
-        //document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
-        if (blur) {
-          document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(${blur}px);"></div>`
-        } else {
-          document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock2.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
-        }
-      } else if (name === "stock4.jpg") {
-        //document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
-        if (blur) {
-          document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(${blur}px);"></div>`
-        } else {
-          document.getElementById("background").innerHTML = `<div class="background" id="bgimaget" style="background-image: url('./bgs/stock4.jpg');background-size: cover;background-position: center;filter: blur(10px);"></div>`
-        }
-      } else if (name.includes("#")) {
-        document.getElementById("background").innerHTML = `<div  id="bgimaget" class="background" id="bgimaget" style="background: radial-gradient(circle, ${name}, #000000)"></div>`
-      } else {
-        //document.getElementById("background").innerHTML = `<div class="background" style="background-image: url('${name}');background-size: cover;background-position: center;filter: blur(10px);"></div>`
-        if (blur) {
-          document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="filter: blur(${blur}px);background-image: url('${name}');background-size: cover;background-position: center;"></div>`
-        } else {
-          document.getElementById("background").innerHTML = `<div id="bgimaget" class="background" style="filter: blur(10px);background-image: url('${name}');background-size: cover;background-position: center;"></div>`
-        }
-        //base64
-      }
-
-    } else {
-      //No Custom BG
-    }
-
-  }
-
-  custombg()
-</script>
 
 </html>

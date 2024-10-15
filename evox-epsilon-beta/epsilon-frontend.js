@@ -585,7 +585,7 @@ function logOut() {
                 deleteAllCookiesAsync()
                     .then(message => window.location.reload())
                     .catch(error => console.error(error));
-                
+
             }).catch(function (error) {
                 console.error('An error occurred during the cleanup process:', error);
                 window.location.reload();  // Ensure the window reloads even if there's an error
@@ -1177,7 +1177,8 @@ function saveLocalStorageToCookie() {
 }
 
 
-const stockApps = ['tasco', 'oasa', 'gateway', 'deluxe'];
+let stockApps = null;
+let acd = null
 function verificationComplete() {
     // Save localStorage to cookie when needed
     try {
@@ -1223,50 +1224,84 @@ function verificationComplete() {
 
     $("#connectionContainer").fadeOut("fast")
 
-    const appsElement = document.getElementById('apps');
-    appsElement.innerHTML = ''
-    let countApps = 0
-    stockApps.forEach((app) => {
-        const evoxAppDiv = document.createElement('div');
-        evoxAppDiv.className = 'evoxApp';
-        const newC = countApps + 1
-        countApps = newC
-
-        //evoxAppDiv.onclick = function () {
-        //    showApp(app)
-        //}
-        //const imgElement = document.createElement('img');
-        //imgElement.src = `./posters/${app}.png`;
-        //evoxAppDiv.appendChild(imgElement);
-        const appDiv = document.createElement('div');
-        appDiv.id = `app${newC}`;
-        appDiv.className = 'evoxApp';
-
-        // Create the inner div with id 'Zapp1', class 'zoomable', and an onclick event
-        const zoomableDiv = document.createElement('div');
-        zoomableDiv.id = `Zapp${newC}`;
-        zoomableDiv.className = 'zoomable';
-        zoomableDiv.onclick = function () {
-            animateM(this, app)
-        }
-
-        // Create the image element
-        const img = document.createElement('img');
-        img.src = `./posters/${app}.png`;
-        img.alt = `${app.toUpperCase()} Image`;
-
-        // Append the image to the zoomable div
-        zoomableDiv.appendChild(img);
-
-        // Create the paragraph element with text content
 
 
-        // Append the zoomable div and paragraph to the outer div
-        appDiv.appendChild(zoomableDiv);
 
-        // Append the entire structure to the container
-        appsElement.appendChild(appDiv);
-    })
+    function appsLoad() {
+        const appsElement = document.getElementById('apps');
+        appsElement.innerHTML = ''
+        let countApps = 0
+        console.log("Spawning Apps")
+        stockApps.forEach((app) => {
+            const evoxAppDiv = document.createElement('div');
+            evoxAppDiv.className = 'evoxApp';
+            const newC = countApps + 1
+            countApps = newC
+
+            //evoxAppDiv.onclick = function () {
+            //    showApp(app)
+            //}
+            //const imgElement = document.createElement('img');
+            //imgElement.src = `./posters/${app}.png`;
+            //evoxAppDiv.appendChild(imgElement);
+            const appDiv = document.createElement('div');
+            appDiv.id = `app${newC}`;
+            appDiv.className = 'evoxApp';
+
+            // Create the inner div with id 'Zapp1', class 'zoomable', and an onclick event
+            const zoomableDiv = document.createElement('div');
+            zoomableDiv.id = `Zapp${newC}`;
+            zoomableDiv.className = 'zoomable';
+            zoomableDiv.onclick = function () {
+                animateM(this, app)
+            }
+
+            // Create the image element
+            const img = document.createElement('img');
+            img.src = `./posters/${app}.png`;
+            img.alt = `${app.toUpperCase()} Image`;
+
+            // Append the image to the zoomable div
+            zoomableDiv.appendChild(img);
+
+            // Create the paragraph element with text content
+
+
+            // Append the zoomable div and paragraph to the outer div
+            appDiv.appendChild(zoomableDiv);
+
+            // Append the entire structure to the container
+            appsElement.appendChild(appDiv);
+        })
+    }
+    acd = appsLoad
+    fetch(`${srv}/applications?method=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(apps => {
+            localStorage.setItem("apps_epsilon", JSON.stringify(apps))
+            stockApps = apps
+            appsLoad()
+        })
+        .catch(error => {
+            //setNetworkStatus('off')
+            const data = localStorage.getItem("apps_epsilon")
+            if (data) {
+                console.warn("Server connection failed. Trying local")
+                pickRandFromDict('offline')
+                stockApps = JSON.parse(localStorage.getItem("apps_epsilon"))
+
+                appsLoad()
+            } else {
+                console.error('Appload Failed!', error);
+            }
+
+        });
+
 
 
     fetch(`${srv}/social?username=${localStorage.getItem("t50-username")}&todo=friends`)
@@ -2502,6 +2537,10 @@ function processAppUrl(appName) {
         "gateway": {
             "src": '/t50-gateway-alpha/',
             'name': "Evox Gateway"
+        },
+        "home": {
+            "src": './Home/dist/index.html?code=21',
+            'name': "Home"
         }
     }
     if (appName) {
@@ -2530,6 +2569,7 @@ function launchAppN(app) {
                 (document.getElementById("launchApp").contentWindow.location.href.includes("PreloadApp.html"))) {
 
                 console.log("Hiding App Frame User Returned To Gateway");
+                
                 activeInterval = null;
                 play("quit")
 
@@ -2540,6 +2580,8 @@ function launchAppN(app) {
 
                 sessionStorage.removeItem("extRun");
                 clearInterval(appFrame);
+                acd()
+                $("#apps").fadeIn("fast")
             } else {
                 console.log(`Current: ${document.getElementById("launchApp").contentWindow.location.href}`);
             }
@@ -2565,28 +2607,25 @@ function launchAppN(app) {
         document.getElementById("card-settings").style.transform = null
         const attr = activeAppThis.id
         setTimeout(function () {
-            if (attr.includes("1")) {
-                //item1
-                $("#app2").fadeIn("fast")
-                $("#app3").fadeIn("fast")
-                $("#app4").fadeIn("fast")
-                add = 'app1'
-            } else if (attr.includes("2")) {
-                $("#app1").fadeIn("fast")
-                $("#app3").fadeIn("fast")
-                $("#app4").fadeIn("fast")
-                add = 'app2'
-            } else if (attr.includes("3")) {
-                $("#app1").fadeIn("fast")
-                $("#app2").fadeIn("fast")
-                $("#app4").fadeIn("fast")
-                add = 'app3'
-            } else if (attr.includes("4")) {
-                $("#app1").fadeIn("fast")
-                $("#app2").fadeIn("fast")
-                $("#app3").fadeIn("fast")
-                add = 'app4'
+            // Assuming attr is a string that includes a number (e.g., "1", "2", etc.)
+            let totalApps = stockApps.length;  // You can change this number depending on how many apps you have
+
+            // Get the number from the attr variable
+            let selectedApp = attr.match(/\d+/)[0];
+
+            // Hide all apps initially
+            $("[id^='app']").hide();
+
+            // Fade in all apps except the selected one
+            for (let i = 1; i <= totalApps; i++) {
+                if (i != selectedApp) {
+                    $(`#app${i}`).fadeIn("fast");
+                }
             }
+
+            // Set the `add` variable to the selected app ID
+            add = `app${selectedApp}`;
+
         }, 500)
         activeAPP = null
         activeAppThis = null
@@ -3256,28 +3295,21 @@ function animateM(e, app) {
         document.getElementById("card-social").style.transform = 'translateY(150%)'
         document.getElementById("card-settings").style.transform = 'translateY(150%)'
         let add = null
-        if (attr.includes("1")) {
-            //item1
-            $("#app2").fadeOut("fast")
-            $("#app3").fadeOut("fast")
-            $("#app4").fadeOut("fast")
-            add = 'app1'
-        } else if (attr.includes("2")) {
-            $("#app1").fadeOut("fast")
-            $("#app3").fadeOut("fast")
-            $("#app4").fadeOut("fast")
-            add = 'app2'
-        } else if (attr.includes("3")) {
-            $("#app1").fadeOut("fast")
-            $("#app2").fadeOut("fast")
-            $("#app4").fadeOut("fast")
-            add = 'app3'
-        } else if (attr.includes("4")) {
-            $("#app1").fadeOut("fast")
-            $("#app2").fadeOut("fast")
-            $("#app3").fadeOut("fast")
-            add = 'app4'
+        let totalApps = stockApps.length;  // Set the number of apps you have
+
+        // Get the number from the attr variable
+        let selectedApp = attr.match(/\d+/)[0];
+
+        // Fade out all apps except the selected one
+        for (let i = 1; i <= totalApps; i++) {
+            if (i != selectedApp) {
+                $(`#app${i}`).fadeOut("fast");
+            }
         }
+
+        // Set the `add` variable to the selected app ID
+        add = `app${selectedApp}`;
+
         setTimeout(function () {
 
             document.getElementById("apps").insertBefore(document.getElementById(add), document.getElementById("apps").firstChild);
@@ -3304,28 +3336,21 @@ function animateM(e, app) {
         document.getElementById("card-social").style.transform = null
         document.getElementById("card-settings").style.transform = null
         setTimeout(function () {
-            if (attr.includes("1")) {
-                //item1
-                $("#app2").fadeIn("fast")
-                $("#app3").fadeIn("fast")
-                $("#app4").fadeIn("fast")
-                add = 'app1'
-            } else if (attr.includes("2")) {
-                $("#app1").fadeIn("fast")
-                $("#app3").fadeIn("fast")
-                $("#app4").fadeIn("fast")
-                add = 'app2'
-            } else if (attr.includes("3")) {
-                $("#app1").fadeIn("fast")
-                $("#app2").fadeIn("fast")
-                $("#app4").fadeIn("fast")
-                add = 'app3'
-            } else if (attr.includes("4")) {
-                $("#app1").fadeIn("fast")
-                $("#app2").fadeIn("fast")
-                $("#app3").fadeIn("fast")
-                add = 'app4'
+            let totalApps = stockApps.length;  // Set the number of apps you have
+
+            // Get the number from the attr variable
+            let selectedApp = attr.match(/\d+/)[0];
+
+            // Fade in all apps except the selected one
+            for (let i = 1; i <= totalApps; i++) {
+                if (i != selectedApp) {
+                    $(`#app${i}`).fadeIn("fast");
+                }
             }
+
+            // Set the `add` variable to the selected app ID
+            add = `app${selectedApp}`;
+
         }, 500)
 
 
