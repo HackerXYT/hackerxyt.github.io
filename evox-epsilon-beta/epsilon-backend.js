@@ -64,7 +64,7 @@ if (cookieValue && isPWA() && !localStorage.getItem("hasRetrievedCookie") && !lo
 
 let stopForPWA = false;
 function PWACheck() {
-    if (!isPWA() && isMobileDevice() && localStorage.getItem("t50pswd")) {
+    if (!isPWA() && isMobileDevice() && localStorage.getItem("t50pswd") && !localStorage.getItem("trusted_web")) {
         //alert("must alert")
         document.getElementById("install-app").classList.add("active")
         stopForPWA = true
@@ -318,7 +318,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '7.5.0'
+const appVersion = '7.5.2'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {

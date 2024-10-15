@@ -332,11 +332,22 @@ body.no-scroll {
 
 .evoxApp img {
   width: 125px;
-  height: auto;
+  height: 187px;
   /* Maintain aspect ratio */
   display: block;
   object-fit: cover;
+  justify-content: center;
+  align-items: center;
   border-radius: 20px;
+}
+
+.fullWidth {
+  width: 100%;
+  height: 187px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .evoxApp.disabled p {

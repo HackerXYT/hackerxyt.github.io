@@ -1180,6 +1180,7 @@ function saveLocalStorageToCookie() {
 let stockApps = null;
 let acd = null
 function verificationComplete() {
+
     // Save localStorage to cookie when needed
     try {
         saveLocalStorageToCookie();
@@ -1225,54 +1226,68 @@ function verificationComplete() {
     $("#connectionContainer").fadeOut("fast")
 
 
-    document.getElementById('apps').innerHTML = ''
+    //document.getElementById('apps').innerHTML = ''
 
     function appsLoad() {
         const appsElement = document.getElementById('apps');
-        appsElement.innerHTML = ''
-        let countApps = 0
-        console.log("Spawning Apps")
-        stockApps.forEach((app) => {
-            const evoxAppDiv = document.createElement('div');
-            evoxAppDiv.className = 'evoxApp';
-            const newC = countApps + 1
-            countApps = newC
-
-            //evoxAppDiv.onclick = function () {
-            //    showApp(app)
-            //}
-            //const imgElement = document.createElement('img');
-            //imgElement.src = `./posters/${app}.png`;
-            //evoxAppDiv.appendChild(imgElement);
-            const appDiv = document.createElement('div');
-            appDiv.id = `app${newC}`;
-            appDiv.className = 'evoxApp';
-
-            // Create the inner div with id 'Zapp1', class 'zoomable', and an onclick event
-            const zoomableDiv = document.createElement('div');
-            zoomableDiv.id = `Zapp${newC}`;
-            zoomableDiv.className = 'zoomable';
-            zoomableDiv.onclick = function () {
-                animateM(this, app)
-            }
-
-            // Create the image element
-            const img = document.createElement('img');
-            img.src = `./posters/${app}.png`;
-            img.alt = `${app.toUpperCase()} Image`;
-
-            // Append the image to the zoomable div
-            zoomableDiv.appendChild(img);
-
-            // Create the paragraph element with text content
-
-
-            // Append the zoomable div and paragraph to the outer div
-            appDiv.appendChild(zoomableDiv);
-
-            // Append the entire structure to the container
-            appsElement.appendChild(appDiv);
+        $("#apps").fadeOut("fast", function() {
+            appsElement.innerHTML = ''
+            let countApps = 0
+            console.log("Spawning Apps")
+            stockApps.forEach((app) => {
+                const evoxAppDiv = document.createElement('div');
+                evoxAppDiv.className = 'evoxApp';
+                const newC = countApps + 1
+                countApps = newC
+    
+                //evoxAppDiv.onclick = function () {
+                //    showApp(app)
+                //}
+                //const imgElement = document.createElement('img');
+                //imgElement.src = `./posters/${app}.png`;
+                //evoxAppDiv.appendChild(imgElement);
+                const appDiv = document.createElement('div');
+                appDiv.id = `app${newC}`;
+                appDiv.className = 'evoxApp';
+    
+                // Create the inner div with id 'Zapp1', class 'zoomable', and an onclick event
+                const zoomableDiv = document.createElement('div');
+                zoomableDiv.id = `Zapp${newC}`;
+                zoomableDiv.className = 'zoomable';
+                zoomableDiv.onclick = function () {
+                    animateM(this, app)
+                }
+    
+                // Create the image element
+                const img = document.createElement('img');
+                if (appsDictionary) {//[app].custom === 'true'
+                    if (appsDictionary[app].custom === 'true') {
+                        img.src = appsDictionary[app].appPoster;
+                    } else {
+                        img.src = `./posters/${app}.png`;
+                    }
+    
+                } else {
+                    img.src = `./posters/${app}.png`;
+                }
+    
+                img.alt = `${app.toUpperCase()} Image`;
+    
+                // Append the image to the zoomable div
+                zoomableDiv.appendChild(img);
+    
+                // Create the paragraph element with text content
+    
+    
+                // Append the zoomable div and paragraph to the outer div
+                appDiv.appendChild(zoomableDiv);
+    
+                // Append the entire structure to the container
+                appsElement.appendChild(appDiv);
+            })
+            $("#apps").fadeIn("fast")
         })
+        
     }
     acd = appsLoad
     fetch(`${srv}/applications?method=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
@@ -1285,7 +1300,15 @@ function verificationComplete() {
         .then(apps => {
             localStorage.setItem("apps_epsilon", JSON.stringify(apps))
             stockApps = apps
-            appsLoad()
+            createDictionary()
+                .then(dict => {
+                    console.log("Dictionary ready:", dict);
+                    appsLoad()
+                })
+                .catch(error => {
+                    console.error("Failed to create dictionary:", error);
+                });
+            
         })
         .catch(error => {
             //setNetworkStatus('off')
@@ -2520,36 +2543,73 @@ function bottomButtonPress(which, el) {
     }
 }
 
-function processAppUrl(appName) {
-    const appsDictionary = {
-        "oasa": {
-            "src": '/oasaMobile/',
-            'name': "Oasa Reloaded"
-        },
-        "tasco": {
-            "src": '/tasco/',
-            'name': "Tasco"
-        },
-        "deluxe": {
-            "src": '/tascoTasks/',
-            'name': "Tasco Deluxe"
-        },
-        "gateway": {
-            "src": '/t50-gateway-alpha/',
-            'name': "Evox Gateway"
-        },
-        "home": {
-            "src": './Home/dist/index.html?code=21',
-            'name': "Home"
-        }
-    }
-    if (appName) {
-        const match = appsDictionary[appName]
-        if (match) {
-            return match.src
-        }
-    }
+
+let appsDictionary = null
+let dictionary_ready = false
+function createDictionary() {
+    console.log(appsDictionary);
+
+    const email = localStorage.getItem("t50-email");
+    const url = `${srv}/applications?method=dictionary&apps=${encodeURIComponent(JSON.stringify(stockApps))}&email=${encodeURIComponent(email)}`;
+
+    return new Promise((resolve, reject) => {
+        fetch(url)
+            .then(response => response.json())
+            .then(dict => {
+                localStorage.setItem("last_dictionary", JSON.stringify(dict));
+                appsDictionary = dict;
+                dictionary_ready = true;
+                resolve(dict);  // Resolve the promise with the dictionary
+            })
+            .catch(error => {
+                console.log('Dictionary Error:', error);
+                const cachedDictionary = localStorage.getItem("last_dictionary");
+
+                if (cachedDictionary) {
+                    appsDictionary = JSON.parse(cachedDictionary);
+                    dictionary_ready = true;
+                    resolve(appsDictionary);  // Resolve with cached dictionary
+                } else {
+                    console.error("Cannot reach the server to get app dictionary");
+                    reject("Cannot reach the server and no cached dictionary found");  // Reject the promise on failure
+                }
+            });
+    });
 }
+
+function processAppUrl(appName) {
+    return new Promise((resolve, reject) => {
+        if (dictionary_ready) {
+            if (appName) {
+                const match = appsDictionary[appName];
+                if (match) {
+                    return resolve(match.src);  // Resolve the promise immediately if dictionary is ready
+                } else {
+                    return reject(new Error("App not found in dictionary"));
+                }
+            }
+        } else {
+            // Create the dictionary and check for readiness
+            createDictionary();
+
+            const bIn = setInterval(function () {
+                if (dictionary_ready === true) {
+                    if (appName) {
+                        const match = appsDictionary[appName];
+                        if (match) {
+                            clearInterval(bIn); // Clear the interval once the dictionary is ready
+                            return resolve(match.src); // Resolve the promise with the match src
+                        } else {
+                            clearInterval(bIn);
+                            return reject(new Error("App not found in dictionary"));
+                        }
+                    }
+                }
+            }, 50); // Check every 50ms
+        }
+    });
+}
+
 
 function launchAppN(app) {
     if (aitAttached === false) {
@@ -2559,7 +2619,13 @@ function launchAppN(app) {
     sessionStorage.setItem("EmitApp", app);
     sessionStorage.removeItem("extRun");
     setTimeout(function () {
-        document.getElementById("launchApp").src = processAppUrl(app)
+        processAppUrl(app)
+            .then((url) => {
+                document.getElementById("launchApp").src = url;
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+            });
     }, 1100)
     $("#iframeContainer").fadeIn("slow")
     $("#launchApp").fadeIn("slow")
