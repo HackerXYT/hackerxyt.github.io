@@ -1225,7 +1225,7 @@ function verificationComplete() {
     $("#connectionContainer").fadeOut("fast")
 
 
-
+    document.getElementById('apps').innerHTML = ''
 
     function appsLoad() {
         const appsElement = document.getElementById('apps');
@@ -2569,7 +2569,7 @@ function launchAppN(app) {
                 (document.getElementById("launchApp").contentWindow.location.href.includes("PreloadApp.html"))) {
 
                 console.log("Hiding App Frame User Returned To Gateway");
-                
+
                 activeInterval = null;
                 play("quit")
 
