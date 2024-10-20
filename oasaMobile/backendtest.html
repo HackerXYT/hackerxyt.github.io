@@ -1,0 +1,292 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>oasa 2</title>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple21.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="apple21.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="apple21.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="apple21.png">
+    <link rel="apple-touch-icon-precomposed" href="apple21.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: dark)">
+    <meta name="application-name" content="oasa 2">
+</head>
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        background-color: #f5f5f7;
+        padding: 10px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    button {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #007aff;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        text-transform: lowercase;
+        /* Ensures all letters are lowercase */
+        text-transform: capitalize;
+        /* Capitalizes the first letter of each word */
+        margin-bottom: 10px;
+    }
+
+
+
+    button.red {
+        background-color: #d41212;
+    }
+
+    button:hover {
+        background-color: #005bbb;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    button:active {
+        background-color: #003e7e;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transform: translateY(2px);
+    }
+
+    input {
+        padding: 12px 24px;
+        font-size: 16px;
+        border: 2px solid #d1d1d6;
+        border-radius: 12px;
+        background-color: #fff;
+        color: #333;
+        transition: all 0.3s ease;
+        outline: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    input:focus {
+        border-color: #007aff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    input::placeholder {
+        color: #c7c7cc;
+    }
+
+    input:hover {
+        border-color: #b0b0b5;
+    }
+
+    input:active {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transform: translateY(2px);
+    }
+
+    .centeredTop {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+</style>
+
+<body>
+    <div class="centeredTop">
+        <img src="doodle - Copy.png" style="height: 50px;">
+    </div>
+    <input type="text" id="getBusInput" placeholder="Εισάγετε γραμμή λεωφορείου">
+    <button id="backIndex" style="display: none;margin-bottom: 15px;" onclick="back()" class="red">Πίσω</button>
+    <div id="spawnHere">
+
+    </div>
+    <div style="display: none;" id="spawnStopsHere">
+
+    </div>
+</body>
+<script>
+    function capitalizeWords(str) {
+        return str
+            .toLowerCase() // Ensure the rest of the letters are lowercase
+            .replace(/h/g, 'η') // Replace all lowercase "h" with "η"
+            .split(' ') // Split the string into an array of words
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+            .join(' '); // Join the words back into a single string
+    }
+
+    console.log("Welcome.")
+    fullLine = null
+    //https://telematics.oasa.gr/api/?act=webGetLines
+    //https://telematics.oasa.gr/api/?act=getLineName&p1=1076
+    const allLines = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetLines&keyOrigin=evoxEpsilon`);
+
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
+        .then(response => response.json())
+        .then(data => {
+            fullLine = data
+            if (data) {
+                data.forEach(eachLine => {
+                    const logger = `${eachLine.LineDescr} [${eachLine.LineID}]`
+                    //console.log(logger)
+                    document.getElementById("spawnHere").innerHTML = `${document.getElementById("spawnHere").innerHTML}<button onclick="findBus('${eachLine.LineID}', this)">${capitalizeWords(eachLine.LineDescr)} [${eachLine.LineID}]</button>`
+                });
+            }
+
+        })
+        .catch(error => {
+            console.log("All Lines Get Error:", error)
+        })
+
+    function findBus(id, el) {
+        const lineIdToFind = id;
+        const matchingLines = fullLine.filter(line => line.LineID === lineIdToFind);
+
+        // Log the LineDescr of each matching line
+        matchingLines.forEach(line => {
+            console.log("here", line)
+            console.log(line.LineDescr);
+            console.log('Line Code:', line.LineCode);
+
+            if (matchingLines.length > 1) {
+                if (el) {
+                    matchingLines.forEach(handle => {
+                        const toFind = `${capitalizeWords(handle.LineDescr)} [${id}]`
+                        if (el.innerHTML === toFind) {
+                            findStops(handle.LineCode)
+                            console.log(`Found ${toFind} in ${handle.LineDescr} so will choose that`)
+                        } else {
+                            console.warn(`${toFind} !== ${handle.LineDescr}`)
+                        }
+                    })
+                } else {
+                    if (matchingLines[0].LineDescr.length < matchingLines[1].LineDescr.length) {
+                        findStops(matchingLines[0].LineCode)
+                    } else {
+                        findStops(matchingLines[1].LineCode)
+                    }
+                }
+
+
+                console.log("Will handle multiple");
+            } else {
+                findStops(line.LineCode)
+            }
+        });
+
+        // Optional: If you want to handle the case where no matches are found
+        if (matchingLines.length === 0) {
+            console.log("No matching lines found.");
+            alert("No matching lines found.")
+        }
+    }
+    let pending = null
+    function findStops(lineCode) {
+        const getStops = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`);
+        fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${getStops}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    const working = data[0].route_code
+                    console.log(working)//
+                    document.getElementById("spawnHere").style.display = 'none'
+                    document.getElementById("spawnStopsHere").style.display = 'block'
+                    document.getElementById("backIndex").style.display = 'block'
+                    document.getElementById("spawnStopsHere").innerHTML = ''
+                    const stopsFinal = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${working}&keyOrigin=evoxEpsilon`);
+                    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stopsFinal}`)
+                        .then(response => response.json())
+                        .then(bata => {
+                            bata.stops.forEach(stop => {
+                                document.getElementById("spawnStopsHere").innerHTML = `${document.getElementById("spawnStopsHere").innerHTML}<button onclick="getStop('${stop.StopCode}', '${lineCode}')">${capitalizeWords(stop.StopDescr)}</button>` //{${stop.StopCode}}
+                                console.log(stop.StopDescr)
+                            });
+
+                        })
+                        .catch(error => {
+                            console.log("FindStops [2] error:", error)
+                        })
+                }
+
+            })
+            .catch(error => {
+                console.log("FindStops [1] error:", error)
+            })
+
+    }
+
+    function getStop(stopCode, lineCode) {
+        console.log("Line Code:", lineCode)
+        const one = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutes&p1=${lineCode}&keyOrigin=evoxEpsilon`);
+        fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${one}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    console.log(data)
+                    const work = data[0].RouteCode
+
+                    const stop_url = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`);
+                    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url}`)
+                        .then(response => response.json())
+                        .then(arrivals => {
+                            let matchFound = false; // Flag to track if a match is found
+
+                            arrivals.forEach(arrive => {
+                                if (arrive.route_code === work) {
+                                    alert(arrive.btime2);
+                                    matchFound = true; // Set flag to true if a match is found
+                                }
+                            });
+
+                            // If no match was found, alert the user
+                            if (!matchFound) {
+                                alert("No matches found for the specified route.");
+                            }
+                        })
+                        .catch(error => {
+                            console.log("getStop [2] error:", error);
+                        });
+                } else {
+                    alert("No arrivals")
+                }
+
+            })
+            .catch(error => {
+                console.log("getStop [1] error:", error)
+            })
+
+    }
+
+    function back() {
+        document.getElementById("spawnHere").style.display = 'block'
+        document.getElementById("spawnStopsHere").style.display = 'none'
+        document.getElementById("spawnStopsHere").innerHTML = ''
+        document.getElementById("backIndex").style.display = 'none'
+    }
+
+    const inputElement = document.getElementById("getBusInput");
+
+    // Add an event listener for the 'keydown' event
+    inputElement.addEventListener("keydown", function (event) {
+        // Check if the pressed key is 'Enter'
+        if (event.key === "Enter") {
+            // Prevent default form submission (if it's inside a form)
+            event.preventDefault();
+            findBus(inputElement.value)
+
+            // You can add additional logic here
+        }
+    });
+</script>
+
+</html>

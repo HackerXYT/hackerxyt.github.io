@@ -352,6 +352,7 @@ function showInfo(bus, isInt) {
     currentBus = bus
     document.getElementById("904live1").style.display = 'none'
     disableOverflow()
+    document.getElementById("phone").style.transform = "scale(0.95)"
     document.getElementById("main-wrapper").style.overflow = 'hidden'
     if (!document.getElementById("popIt").classList.contains("active") && isInt) {
         console.log(`Resolved Interval Bug [info: busReq: ${bus}, stoppedBy: classList]`)
@@ -377,13 +378,17 @@ function showInfo(bus, isInt) {
     document.getElementById("popIt").classList.add("active")
     document.getElementById("whatBus").innerHTML = bus
     document.getElementById("16defTime").style.display = "none"
+    document.getElementById("16gounTime").style.display = "none"
     document.getElementById("049live1").style.display = "none"
     document.getElementById("049live2").style.display = "none"
+    document.getElementById("831live1").style.display = "none"
     sessionStorage.setItem("currentWatch", bus)
     const targetUrl = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=400254&keyOrigin=evoxEpsilon`);
     const targetUrlKeranhs = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=400110&keyOrigin=evoxEpsilon`);
     const targetUrlDhm = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=400506&keyOrigin=evoxEpsilon`);
     const targetUrlKor = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=400004&keyOrigin=evoxEpsilon`);
+    const targetUrlGoun = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=400452&keyOrigin=evoxEpsilon`);
+    const targetUrlEthn831 = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=400451&keyOrigin=evoxEpsilon`);
 
     document.getElementById("evoxBased").innerHTML = ""
     if (bus === "16") {
@@ -403,7 +408,24 @@ function showInfo(bus, isInt) {
       repeatCount="indefinite"/>
     </path>
   </svg>`
+        document.getElementById("basedGoun").innerHTML = `<svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+   width="15px" height="15px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+  <path opacity="0.2" fill="#fff" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+    s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+    c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+  <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+    C22.32,8.481,24.301,9.057,26.013,10.047z">
+    <animateTransform attributeType="xml"
+      attributeName="transform"
+      type="rotate"
+      from="0 20 20"
+      to="360 20 20"
+      dur="0.3s"
+      repeatCount="indefinite"/>
+    </path>
+  </svg>`
         document.getElementById("16defTime").style.display = ""
+        document.getElementById("16gounTime").style.display = ""
         const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
         const remains = getNextBusesPanagitsa(times)
         console.log(remains)
@@ -437,6 +459,28 @@ function showInfo(bus, isInt) {
             // Optionally, append the timeBox to the body or another element in the DOM
             document.getElementById("evoxBased").appendChild(timeBox);
         })
+        fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${targetUrlGoun}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("netStats").innerHTML = onlineSvg
+
+                const result = data.find(item => item.route_code === "2079");
+                const btime2 = result ? result.btime2 : null;
+                if (btime2) {
+                    document.getElementById("basedGoun").innerHTML = `${btime2} λεπτά`
+                    if (btime2 === 1) {
+                        document.getElementById("basedGoun").innerHTML = `${btime2} λεπτό`
+                    }
+                } else {
+                    document.getElementById("basedGoun").innerHTML = `Κανένα`
+                }
+
+            })
+            .catch(error => {
+                document.getElementById("basedGoun").innerHTML = `<img src="snap.png" width="25px">`
+                document.getElementById("netStats").innerHTML = offlineSvg
+                console.log("an error occured.")
+            })
         fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${targetUrl}`)
             .then(response => response.json())
             .then(data => {
@@ -462,6 +506,7 @@ function showInfo(bus, isInt) {
                     console.log(remains)
                     document.getElementById("based").innerHTML = `<img src="snap.png" width="25px">`
                     document.getElementById("16defTime").style.display = ""
+                    document.getElementById("16gounTime").style.display = ""
                     remains.forEach(function (remainTime) {
                         // Create the main div element with the class 'timeBox'
                         var timeBox = document.createElement('div');
@@ -546,6 +591,7 @@ function showInfo(bus, isInt) {
                 } else {
                     console.log("VV:", bus)
                     document.getElementById("16defTime").style.display = "none"
+                    document.getElementById("16gounTime").style.display = "none"
                     const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
                     const remains = getNextBuses(times)
                     console.log(remains)
@@ -588,11 +634,11 @@ function showInfo(bus, isInt) {
                     }
                     console.log("Interval Countdown:", countThis1)
                 }, 1000)
-                currentInt = 
-                
-                (function () {
-                    showInfo(bus, 'interval')
-                }, 25000)
+                currentInt =
+
+                    (function () {
+                        showInfo(bus, 'interval')
+                    }, 25000)
 
             });
     } else if (bus === "049") {
@@ -789,10 +835,89 @@ function showInfo(bus, isInt) {
 
 
         })
+    } else if(bus === "831") {
+        document.getElementById("based831Ethn").innerHTML = `<svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+   width="15px" height="15px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+  <path opacity="0.2" fill="#fff" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+    s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+    c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+  <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+    C22.32,8.481,24.301,9.057,26.013,10.047z">
+    <animateTransform attributeType="xml"
+      attributeName="transform"
+      type="rotate"
+      from="0 20 20"
+      to="360 20 20"
+      dur="0.3s"
+      repeatCount="indefinite"/>
+    </path>
+  </svg>`
+        fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${targetUrlEthn831}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("netStats").innerHTML = onlineSvg
+                if (data) {
+                    try {
+                        const result = data.find(obj => obj.route_code === "1886");
+                        document.getElementById("based831Ethn").innerHTML = `${result.btime2} λεπτά`
+                        if (result.btime2 === 1) {
+                            document.getElementById("based831Ethn").innerHTML = `${result.btime2} λεπτό`
+                        }
+                    } catch (error) {
+                        document.getElementById("based831Ethn").innerHTML = `Κανένα`
+                    }
+
+                } else {
+                    document.getElementById("based831Ethn").innerHTML = `Κανένα`
+                }
+
+            })
+            .catch(error => {
+                document.getElementById("netStats").innerHTML = offlineSvg
+                console.log("Ethnikis live error", error)
+                document.getElementById("based831Ethn").innerHTML = `<img src="snap.png" width="25px">`
+                document.getElementById("based831Ethn").style.display = ""
+            })
+        document.getElementById("831live1").style.display = ""
+        const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
+        const remains = getNextBuses(times)
+        console.log(remains)
+        remains.forEach(function (remainTime) {
+            // Create the main div element with the class 'timeBox'
+            var timeBox = document.createElement('div');
+            timeBox.className = 'timeBox';
+            timeBox.onclick = function () {
+                handleTimeBoxClick(this)
+            }
+
+            var textNode = document.createTextNode('Πειραιάς');
+
+            // Append the text node to the main div element
+            timeBox.appendChild(textNode);
+
+            // Create the span element and set its content to '10m'
+            var span = document.createElement('span');
+            span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
+
+            // Append the span element to the main div element
+            timeBox.appendChild(span);
+            timeBox.style.fontSize = "16px";
+
+            var optDiv = document.createElement('div');
+            optDiv.style.display = 'none'
+            optDiv.style.height = 'auto'
+            timeBox.appendChild(optDiv);
+            // Optionally, append the timeBox to the body or another element in the DOM
+            document.getElementById("evoxBased").appendChild(timeBox);
+
+
+        })
     } else {
         document.getElementById("16defTime").style.display = "none"
+        document.getElementById("16gounTime").style.display = "none"
         document.getElementById("049live1").style.display = "none"
         document.getElementById("049live2").style.display = "none"
+        document.getElementById("831live1").style.display = "none"
         const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
         const remains = getNextBuses(times)
         console.log(remains)
@@ -808,6 +933,8 @@ function showInfo(bus, isInt) {
             if (bus === "420") {
                 textNode = document.createTextNode('Πειραιάς');
             } else if (bus === "831") {
+                textNode = document.createTextNode('Πειραιάς');
+            } else if (bus === "828") {
                 textNode = document.createTextNode('Πειραιάς');
             } else {
                 textNode = document.createTextNode('Transition');
@@ -951,6 +1078,7 @@ function getNextBusesPanagitsa(times) {
 }
 
 function goBack() {
+    document.getElementById("phone").style.transform = ""
     document.getElementById("Businfo").innerHTML = `⛳`
     document.getElementById("Businfo").style.opacity = '0'
     enableOverflow()
@@ -1221,7 +1349,7 @@ function florida() {
 }
 
 function loadActive() {
-    if(!localStorage.getItem("t50-username")) {
+    if (!localStorage.getItem("t50-username")) {
         console.log("<spans style='color: red'>Cancelled active schedo check due to lcstorage username being null!</span>")
         return;
     }
@@ -1242,7 +1370,7 @@ function loadActive() {
                 console.log(filteredData)
                 const container = document.getElementById("pendingContainer")
                 container.innerHTML = ''
-                if(filteredData.length === 0) {
+                if (filteredData.length === 0) {
                     document.getElementById("pendingNotifications").style.display = 'none'
                     return;
                 }
@@ -2923,7 +3051,7 @@ function showDeviceDiscover() {
     const terminalBT = document.getElementById("terminalbutton")
     const deviceBT = document.getElementById("devicebutton")
     console.log(innera.style.display)
-    if(innera.style.display !== "none") {
+    if (innera.style.display !== "none") {
         console.log('Will show B')
         innerb.style.display = "flex"
         innera.style.display = "none"
