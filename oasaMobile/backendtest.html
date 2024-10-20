@@ -187,7 +187,7 @@
         // Optional: If you want to handle the case where no matches are found
         if (matchingLines.length === 0) {
             console.log("No matching lines found.");
-            alert("No matching lines found.")
+            alert("Δεν βρέθηκαν αντίστοιχες λεωφορειακές γραμμές.")
         }
     }
     let pending = null
@@ -243,21 +243,23 @@
 
                             arrivals.forEach(arrive => {
                                 if (arrive.route_code === work) {
-                                    alert(arrive.btime2);
+
+                                    alert(`${arrive.btime2} λεπτά`);
                                     matchFound = true; // Set flag to true if a match is found
                                 }
                             });
 
                             // If no match was found, alert the user
                             if (!matchFound) {
-                                alert("No matches found for the specified route.");
+                                alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [!matchFound]");
                             }
                         })
                         .catch(error => {
+                            alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]");
                             console.log("getStop [2] error:", error);
                         });
                 } else {
-                    alert("No arrivals")
+                    alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [null]")
                 }
 
             })
