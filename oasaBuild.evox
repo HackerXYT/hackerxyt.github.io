@@ -1,5 +1,5 @@
 {
-    "buildNumber": "1.01",
+    "buildNumber": "1.02",
     "date": "24 October 2024/ OASA Reloaded Stable finally released. Global bus discovery is now available inside oasa using 2 projects: OASA Reloaded and [NEW] OASA Live. You can now access live time remaining for any bus to a station.",
     "previous": "6 August 2024/ Added support for transition type notifications! Known bugs: 16 transition or panagitsa not stable"
 }

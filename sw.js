@@ -9,19 +9,19 @@ self.addEventListener('push', function (event) {
 self.addEventListener('notificationclick', function (event) {
   event.notification.close();
   event.waitUntil(
-    clients.openWindow('https://evoxs.xyz/evox-epsilon/')
+    clients.openWindow('https://evoxs.xyz/oasaMobile/')
   );
 });
 
-const CACHE_NAME = 'oasa-cache-v4';
-const CACHE_VERSION = 'v4'; // Change this version string when updating the cache
+const CACHE_NAME = 'oasa-cache-v5';
+const CACHE_VERSION = 'v5'; // Change this version string when updating the cache
 
 const urlsToCache = [
 
 ];
 
-const STATIC_CACHE_NAME = 'static-cache-v4';
-const APP_CACHE_NAME = 'app-cache-v4';
+const STATIC_CACHE_NAME = 'static-cache-v5';
+const APP_CACHE_NAME = 'app-cache-v5';
 const CACHE_STATIC = [
   '/oasaMobile/',
   '/oasaMobile/index.html',

@@ -127,6 +127,17 @@ function formatTime2(dateString) {
     return hours + ':' + minutes;
 }
 
+function errorIconTime() {
+    const currentDate = new Date();
+    const currentHour = currentDate.getHours();
+
+    if (currentHour >= 23 || currentHour < 6) {
+        return 'zzz.png';
+    } else {
+        return 'snap.png';
+    }
+}
+
 function getBus(num) {
     console.log("Get Bus NUM", num)
     const dict = JSON.stringify(dictionary)
@@ -156,7 +167,7 @@ function getBus(num) {
                         displayRemainingTimeLC(nextBusTime);
                     } else {
                         console.log("nextBusTime Unavailable For", num)
-                        document.getElementById(`remain${num}`).innerHTML = `<img width="15px" height="15px" src='snap.png'>`
+                        document.getElementById(`remain${num}`).innerHTML = `<img width="auto" height="18px" src='${errorIconTime()}'>`
                         console.log("<span style='color: yellow'>nextBusTime possible upcoming crash. check if GR time is 11:50PM-12:05AM!</span>")
                         const theLcBackup = JSON.parse(localStorage.getItem(`${num}_Timetable`))
                         var timesLC = theLcBackup.go.map(item => {
@@ -206,7 +217,7 @@ function getBus(num) {
                 } else {
                     //displayRemainingTimeLC('00:21');
                     console.log("nextBusTime Unavailable For", num)
-                    document.getElementById(`remain${num}`).innerHTML = `<img width="15px" height="15px" src='snap.png'>`
+                    document.getElementById(`remain${num}`).innerHTML = `<img width="auto" height="18px" src='${errorIconTime()}'>`
                     console.log("<span style='color: yellow'>nextBusTime possible upcoming crash. check if GR time is 11:50PM-12:05AM!</span>")
 
                     const theLcBackup = JSON.parse(localStorage.getItem(`${num}_Timetable`))
@@ -238,7 +249,7 @@ function getBus(num) {
                     } else {
                         //displayRemainingTimeLC('00:21');
                         console.log("nextBusTime Unavailable For", num)
-                        document.getElementById(`remain${num}`).innerHTML = `<img width="15px" height="15px" src='snap.png'>`
+                        document.getElementById(`remain${num}`).innerHTML = `<img width="auto" height="18px" src='${errorIconTime()}'>`
                         const theLcBackup = JSON.parse(localStorage.getItem(`${num}_Timetable`))
                         var timesLC = theLcBackup.go.map(item => {
                             //console.log("sde_start1:", item.sde_start1); // Debug log
