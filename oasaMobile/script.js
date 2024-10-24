@@ -3779,12 +3779,14 @@ function getNextBusStart(code, busid) {
                 localStorage.setItem(`${busid}_Timetable`, JSON.stringify(data));
                 localStorage.setItem(`${busid}_Times`, JSON.stringify(times));
                 displayRemainingTimeLIVE(nextBusTime, id);
+            } else {
+                document.getElementById(id).innerHTML = `<img width="auto" height="18px" src='${errorIconTime()}'>`;
             }
         })
         .catch(error => {
-            console.log(error)
-            document.getElementById("netStats").innerHTML = offlineSvg
-            document.getElementById(elid).innerHTML = `Σφάλμα <img width="15px" height="15px" src='snap.png'>`;
+            console.log('Load Favorite Times Error:',error)
+            //document.getElementById("netStats").innerHTML = offlineSvg
+            document.getElementById(`${id}`).innerHTML = `<img width="auto" height="18px" src='${errorIconTime()}'>`;
 
         });
 

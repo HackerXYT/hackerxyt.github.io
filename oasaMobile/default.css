@@ -232,6 +232,7 @@ input {
 }
 
 #apps-container>a>.label>.url {
+
     font-size: 0.7rem;
     color: rgb(255 255 255 / 50%);
 }

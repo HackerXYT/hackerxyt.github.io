@@ -439,6 +439,9 @@ input {
 #custom-container>a>.label>.url {
   font-size: 0.7rem;
   color: rgb(255 255 255 / 50%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 #custom-container>a:is(:hover, :focus) {
