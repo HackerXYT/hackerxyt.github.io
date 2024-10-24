@@ -13,15 +13,15 @@ self.addEventListener('notificationclick', function (event) {
   );
 });
 
-const CACHE_NAME = 'oasa-cache-v1';
+const CACHE_NAME = 'oasa-cache-v3';
 const CACHE_VERSION = 'v1'; // Change this version string when updating the cache
 
 const urlsToCache = [
 
 ];
 
-const STATIC_CACHE_NAME = 'static-cache-v2';
-const APP_CACHE_NAME = 'app-cache-v2';
+const STATIC_CACHE_NAME = 'static-cache-v3';
+const APP_CACHE_NAME = 'app-cache-v3';
 const CACHE_STATIC = [
   '/oasaMobile/',
   '/oasaMobile/index.html',

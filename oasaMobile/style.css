@@ -19,6 +19,7 @@ html, body {
   touch-action: manipulation;
   overflow: hidden;
   height: 100%; /* Ensure the height is 100% */
+  font-family: "SF";
 }
 * {
   touch-action: manipulation; /* Prevent double-tap zoom */
@@ -274,7 +275,7 @@ input {
   display: grid;
   gap: 0.2rem;
   grid-template-columns: repeat(2, 50%);
-  margin: 3rem 0rem;
+  margin: 1.3rem 0rem;
 }
 
 #apps-container>a {
@@ -368,6 +369,80 @@ input {
 #apps-container>a:last-child {
   color: rgb(15, 118, 14);
   border-bottom-right-radius: 0.5rem;
+}
+
+
+#custom-container {
+  display: grid;
+  gap: 0.2rem;
+  grid-template-columns: 1fr; /* Single column by default */
+  margin: 1.3rem 0rem;
+}
+
+#custom-container:has(> a:nth-child(4)) {
+  grid-template-columns: repeat(2, 50%);
+}
+
+#custom-container:has(> a:nth-child(n+4)) > a:last-child:nth-child(odd) {
+  grid-column: span 2; /* Make it span both columns (single column style) */
+}
+#custom-container a {
+  border-radius: 1rem;
+}
+
+#custom-container>a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(255, 255, 255, 8%);
+  padding: 1rem 0.75rem;
+ 
+  text-decoration: none;
+}
+
+#custom-container>a>i {
+  height: 2rem;
+  width: 2rem;
+  flex-shrink: 0;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  text-align: center;
+}
+
+#custom-container p {
+  font-family: "Noto Sans", sans-serif;
+  font-weight: bold;
+  text-shadow: rgba(0, 0, 0, 0.341) 0px 2px 5px;
+
+}
+
+#custom-container>a>.label {
+  margin-left: var(--isOldDevice);
+  width: calc(100% - 2.5rem);
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  overflow: hidden;
+}
+
+#custom-container>a>.label> :is(.name, .url) {
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+#custom-container>a>.label>.name {
+  font-size: 0.8rem;
+}
+
+#custom-container>a>.label>.url {
+  font-size: 0.7rem;
+  color: rgb(255 255 255 / 50%);
+}
+
+#custom-container>a:is(:hover, :focus) {
+  background-color: rgba(255, 255, 255, 0.088);
 }
 
 #discover-container {
@@ -480,9 +555,6 @@ input {
 }
 
 @media(max-width: 500px) {
-  body {
-    overflow: hidden;
-  }
 
   #phone {
     height: 100vh;
@@ -543,7 +615,7 @@ input {
   border-top-left-radius: 2rem;
   border-top-right-radius: 2rem;
   /* Transition for sliding effect, opacity, and visibility */
-  overflow: hidden;
+  overflow: auto;
 }
 
 @media(min-width: 500px) {
@@ -552,6 +624,8 @@ input {
   
 
 }
+
+
 
 .popup.active {
   opacity: 1;

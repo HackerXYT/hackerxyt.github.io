@@ -1,6 +1,9 @@
 
 sessionStorage.setItem("currentBuild", currentBuild)
 let currentBus;
+let fullLine = null
+let activeBusPage = null;
+let activeBusNamePage = null
 fetch(`../oasaBuild.evox`)
     .then(response => response.json())
     .then(data => {
@@ -68,9 +71,6 @@ function enableScroll() {
     window.removeEventListener('scroll', preventDefault, { passive: false });
     window.removeEventListener('touchmove', preventDefault, { passive: false });
 }
-
-// Call disableScroll() to disable scrolling
-disableScroll();
 
 // Function to format time
 function formatTime2(dateString) {
@@ -347,9 +347,18 @@ getBus('828')
 getBus('049')
 getBus('904')
 getBus('420')
+
+let howManyShowed = null
+function loadMore() {
+    const theBus = currentBus
+    const show = howManyShowed + 5
+    showInfo(theBus, null, show)
+}
+
 let currentInt;
-function showInfo(bus, isInt) {
+function showInfo(bus, isInt, more) {
     currentBus = bus
+    howManyShowed = more ?? 7
     document.getElementById("904live1").style.display = 'none'
     disableOverflow()
     document.getElementById("phone").style.transform = "scale(0.95)"
@@ -361,19 +370,6 @@ function showInfo(bus, isInt) {
     if (sessionStorage.getItem("currentWatch") !== bus && isInt) {
         console.log(`Resolved Interval Bug [info: busReq: ${bus}, stoppedBy: currentWatch]`)
         return;
-    }
-
-    if (bus === "16") {
-        document.getElementById("Businfo").innerHTML = `Ε.Ω.Α:<br>3-8 λεπτά από αφετηρία`
-        document.getElementById("Businfo").style.opacity = '1'
-    }
-    if (bus === "831") {
-        document.getElementById("Businfo").innerHTML = `Ε.Ω.Α:<br>9-15 λεπτά από αφετηρία<br>[Αφετ.]->[Εθν. Αντιστάσεως]`
-        document.getElementById("Businfo").style.opacity = '1'
-    }
-    if (bus === "420") {
-        document.getElementById("Businfo").innerHTML = `Ε.Ω.Α:<br>~11 λεπτά από αφετηρία<br>[Αφετ.]->[Εθν. Αντιστάσεως]`
-        document.getElementById("Businfo").style.opacity = '1'
     }
     document.getElementById("popIt").classList.add("active")
     document.getElementById("whatBus").innerHTML = bus
@@ -427,7 +423,7 @@ function showInfo(bus, isInt) {
         document.getElementById("16defTime").style.display = ""
         document.getElementById("16gounTime").style.display = ""
         const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
-        const remains = getNextBusesPanagitsa(times)
+        const remains = getNextBusesPanagitsa(times, more)
         console.log(remains)
         remains.forEach(function (remainTime) {
             // Create the main div element with the class 'timeBox'
@@ -502,7 +498,7 @@ function showInfo(bus, isInt) {
                 document.getElementById("evoxBased").innerHTML = ""
                 if (bus === "16") {
                     const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
-                    const remains = getNextBusesPanagitsa(times)
+                    const remains = getNextBusesPanagitsa(times, more)
                     console.log(remains)
                     document.getElementById("based").innerHTML = `<img src="snap.png" width="25px">`
                     document.getElementById("16defTime").style.display = ""
@@ -557,7 +553,8 @@ function showInfo(bus, isInt) {
                     document.getElementById("based049Dhm").innerHTML = document.getElementById("based049").innerHTML
                     document.getElementById("049live1").style.display = ""
                     const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
-                    const remains = getNextBuses(times)
+                    const remains = getNextBuses(times, more)
+                    
                     console.log(remains)
                     remains.forEach(function (remainTime) {
                         // Create the main div element with the class 'timeBox'
@@ -593,7 +590,7 @@ function showInfo(bus, isInt) {
                     document.getElementById("16defTime").style.display = "none"
                     document.getElementById("16gounTime").style.display = "none"
                     const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
-                    const remains = getNextBuses(times)
+                    const remains = getNextBuses(times, more)
                     console.log(remains)
                     remains.forEach(function (remainTime) {
                         // Create the main div element with the class 'timeBox'
@@ -723,7 +720,7 @@ function showInfo(bus, isInt) {
         document.getElementById("049live1").style.display = ""
         document.getElementById("049live2").style.display = ""
         const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
-        const remains = getNextBuses(times)
+        const remains = getNextBuses(times, more)
         console.log(remains)
         remains.forEach(function (remainTime) {
             // Create the main div element with the class 'timeBox'
@@ -803,7 +800,8 @@ function showInfo(bus, isInt) {
             })
         document.getElementById("904live1").style.display = ""
         const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
-        const remains = getNextBuses(times)
+        const remains = getNextBuses(times, more)
+        console.log("KOAGUN", times)
         console.log(remains)
         remains.forEach(function (remainTime) {
             // Create the main div element with the class 'timeBox'
@@ -835,7 +833,7 @@ function showInfo(bus, isInt) {
 
 
         })
-    } else if(bus === "831") {
+    } else if (bus === "831") {
         document.getElementById("based831Ethn").innerHTML = `<svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
    width="15px" height="15px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
   <path opacity="0.2" fill="#fff" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
@@ -880,7 +878,7 @@ function showInfo(bus, isInt) {
             })
         document.getElementById("831live1").style.display = ""
         const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
-        const remains = getNextBuses(times)
+        const remains = getNextBuses(times, more)
         console.log(remains)
         remains.forEach(function (remainTime) {
             // Create the main div element with the class 'timeBox'
@@ -919,7 +917,7 @@ function showInfo(bus, isInt) {
         document.getElementById("049live2").style.display = "none"
         document.getElementById("831live1").style.display = "none"
         const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
-        const remains = getNextBuses(times)
+        const remains = getNextBuses(times, more)
         console.log(remains)
         remains.forEach(function (remainTime) {
             // Create the main div element with the class 'timeBox'
@@ -974,7 +972,14 @@ function showInfo(bus, isInt) {
 
 }
 
-function getNextBuses(times) {
+function getNextBuses(times, more) {
+
+    let countToLoad = null
+    if(more) {
+        countToLoad = more
+    } else {
+        countToLoad = 7
+    }
     const now = new Date();
     const currentTime = now.getHours() * 60 + now.getMinutes(); // Current time in minutes since midnight
 
@@ -986,47 +991,76 @@ function getNextBuses(times) {
             time,
             remainingTime: diff >= 0 ? diff : diff + 24 * 60 // Adjust for next day if time is negative
         };
-    }).filter(bus => bus.remainingTime >= 0); // Only keep times that are in the future
+    });
 
-    busTimes.sort((a, b) => a.remainingTime - b.remainingTime); // Sort the times in ascending order
+    // Separate future and past bus times
+    const futureBuses = busTimes.filter(bus => bus.remainingTime >= 0);
+    const pastBuses = busTimes.filter(bus => bus.remainingTime < 0);
 
-    let recon = false
-    // Convert remaining times to the desired format
-    const nextBuses = busTimes.slice(0, 7).map((bus, index) => {
+    // Sort future buses by remaining time
+    futureBuses.sort((a, b) => a.remainingTime - b.remainingTime);
+
+    // Find the nearest previous bus time
+    let nearestPreviousBus = null;
+    if (pastBuses.length > 0) {
+        pastBuses.sort((a, b) => b.remainingTime - a.remainingTime); // Sort past buses in descending order
+        nearestPreviousBus = pastBuses[0]; // Nearest previous bus (largest negative remaining time)
+    }
+
+    // Convert remaining times to the desired format for future buses
+
+    
+    const nextBuses = futureBuses.slice(0, countToLoad).map((bus) => {
         const diff = bus.remainingTime;
         let formattedRemainingTime;
+
         if (diff > 60) {
             let hours = Math.floor(diff / 60);
             let remainingMinutes = diff % 60;
-            if (hours === 1) {
-                formattedRemainingTime = `${hours} ώρα, ${remainingMinutes} λεπτά`;
+            if(hours >= 1) {
+                formattedRemainingTime = hours === 1 
+                ? `${hours} ώρα`
+                : `${hours} ώρες`;
+                return `${bus.time} ~ ${formattedRemainingTime}`;
             } else {
-                formattedRemainingTime = `${hours} ώρες, ${remainingMinutes} λεπτά`;
+                formattedRemainingTime = hours === 1 
+                ? `${hours} ώρα, ${remainingMinutes} λεπτά`
+                : `${hours} ώρες, ${remainingMinutes} λεπτά`;
+                return `${bus.time} - ${formattedRemainingTime}`;
             }
-            if (hours >= 1) {
-                recon = true
-            }
+            
+            
         } else {
             formattedRemainingTime = `${diff} λεπτά`;
-        }
-
-        if (recon) {
-            return `${bus.time}`;
-        } else {
             return `${bus.time} - ${formattedRemainingTime}`;
         }
 
+        
     });
+
+    // If there's a nearest previous bus, format it and prepend to nextBuses
+    if (nearestPreviousBus) {
+        const previousDiff = Math.abs(nearestPreviousBus.remainingTime); // Use absolute value for formatting
+        const previousFormattedTime = `${nearestPreviousBus.time} - πρίν ${previousDiff} λεπτά`;
+        nextBuses.unshift(previousFormattedTime);
+    }
 
     // Log the original bus times
     busTimes.slice(0, 5).forEach(bus => {
         console.log(`Scheduled time: ${bus.time}`);
     });
 
-    return nextBuses; // Return the next 5 buses
+    return nextBuses; // Return the next buses including the previous one
 }
 
-function getNextBusesPanagitsa(times) {
+
+function getNextBusesPanagitsa(times, more) {
+    let countToLoad = null
+    if(more) {
+        countToLoad = more
+    } else {
+        countToLoad = 7
+    }
     const now = new Date();
     const currentTime = now.getHours() * 60 + now.getMinutes(); // Current time in minutes since midnight
 
@@ -1043,7 +1077,7 @@ function getNextBusesPanagitsa(times) {
     busTimes.sort((a, b) => a.remainingTime - b.remainingTime); // Sort the times in ascending order
     let recon2 = false
     // Convert remaining times to the desired format
-    const nextBuses = busTimes.slice(0, 7).map((bus, index) => {
+    const nextBuses = busTimes.slice(0, countToLoad).map((bus, index) => {
 
         const diff = bus.remainingTime;
         let formattedRemainingTime;
@@ -1078,6 +1112,7 @@ function getNextBusesPanagitsa(times) {
 }
 
 function goBack() {
+    howManyShowed = null
     document.getElementById("phone").style.transform = ""
     document.getElementById("Businfo").innerHTML = `⛳`
     document.getElementById("Businfo").style.opacity = '0'
@@ -1342,6 +1377,7 @@ function enableOverflow() {
 }
 
 function florida() {
+    disableScroll()
     document.getElementById("phone").style.transform = "scale(0.95)"
     document.getElementById("floridaCont").classList.add("active")
     document.getElementById("main-wrapper").style.overflow = 'hidden'
@@ -1474,9 +1510,11 @@ function fl_moveDiv(e) {
     if (newTop > 120) {
         //document.getElementById("main-wrapper").style.overflow = 'auto'
         document.getElementById("floridaCont").classList.remove("active")
+        
         document.getElementById("phone").style.transform = "scale(1)"
         setTimeout(function () {
             floridaCont.style.top = '';
+            enableScroll()
         }, 500)
     }
     if (newTop > fl_startTop) {
@@ -2837,9 +2875,404 @@ function openFullScreen() {
     }, 1000)
     scrollToBottom2()
 }
+//OASA LIVE
+function findBus(id, el) {
+
+    if (el) {
+        el.querySelector('.loadingIndicatorNOCLASS').innerHTML = `<svg class="fade-in-slide-up" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px"
+                            viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+                            <path opacity="0.2" fill="#fff"
+                                d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                         s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                         c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" />
+                            <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                         C22.32,8.481,24.301,9.057,26.013,10.047z">
+                                <animateTransform attributeType="xml" attributeName="transform" type="rotate"
+                                    from="0 20 20" to="360 20 20" dur="0.3s" repeatCount="indefinite" />
+                            </path>
+                        </svg>`
+    }
+
+    const lineIdToFind = id;
+    const matchingLines = fullLine.filter(line => line.LineID === lineIdToFind);
+    activeBusPage = id
+    // Log the LineDescr of each matching line
+    matchingLines.forEach(line => {
+        console.log("here", line)
+        console.log(line.LineDescr);
+        console.log('Line Code:', line.LineCode);
+
+        if (matchingLines.length > 1) {
+            if (el) {
+                matchingLines.forEach(handle => {
+                    const toFind = `${capitalizeWords(handle.LineDescr)}`
+                    if (el.querySelector('.button-text').innerHTML === toFind) {
+                        findStops(handle.LineCode, el)
+                        console.log(`Found ${toFind} in ${handle.LineDescr} so will choose that`)
+                        activeBusNamePage = line.LineDescr
+                    } else {
+                        console.warn(`${toFind} !== ${handle.LineDescr}`)
+                    }
+                })
+                console.log("El ok")
+            } else {
+                if (matchingLines[0].LineDescr.length < matchingLines[1].LineDescr.length) {
+                    findStops(matchingLines[0].LineCode, el)
+                    activeBusNamePage = line.LineDescr
+                } else {
+                    findStops(matchingLines[1].LineCode, el)
+                    activeBusNamePage = line.LineDescr
+                }
+            }
+
+
+            console.log("Will handle multiple");
+        } else {
+            findStops(line.LineCode)
+            activeBusNamePage = line.LineDescr
+        }
+    });
+
+    // Optional: If you want to handle the case where no matches are found
+    if (matchingLines.length === 0) {
+        console.log("No matching lines found.");
+        alert("Δεν βρέθηκαν αντίστοιχες λεωφορειακές γραμμές.")
+    }
+}
+
+function capitalizeWords(str) {
+    return str
+        .toLowerCase() // Ensure the rest of the letters are lowercase
+        .replace(/h/g, 'η') // Replace all lowercase "h" with "η"
+        .split(' ') // Split the string into an array of words
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+        .join(' '); // Join the words back into a single string
+}
+
+function isNearEvery3Hours(proximityInMinutes = 5) {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinutes = now.getMinutes();
+
+    // Find the closest multiple of 3 to the current hour
+    const closest3HourMark = Math.round(currentHour / 3) * 3;
+
+    // Create a Date object for that time (using today's date)
+    const closest3HourTime = new Date(now);
+    closest3HourTime.setHours(closest3HourMark, 0, 0, 0); // Set to nearest 3-hour mark, with minutes and seconds as 0
+
+    // Calculate the difference in minutes
+    const diffInMilliseconds = Math.abs(now - closest3HourTime);
+    const diffInMinutes = Math.floor(diffInMilliseconds / 60000); // 60000 ms = 1 minute
+
+    // Return true if the time is within the proximity
+    return diffInMinutes <= proximityInMinutes;
+}
+
+function getStop(stopCode, lineCode, elementForLoading, busName) {
+    console.log("Line Code:", lineCode)
+    //activeBusNamePage = capitalizeWords(busName)
+    document.getElementById('alert').classList.remove('active')
+
+    document.getElementById("busLine").innerText = activeBusPage
+    document.getElementById("activeBuses").innerHTML = ''
+    elementForLoading.querySelector('.loadingIndicatorNOCLASS').innerHTML = `<svg class="fade-in-slide-up" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px"
+                            viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+                            <path opacity="0.2" fill="#fff"
+                                d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                         s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                         c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" />
+                            <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                         C22.32,8.481,24.301,9.057,26.013,10.047z">
+                                <animateTransform attributeType="xml" attributeName="transform" type="rotate"
+                                    from="0 20 20" to="360 20 20" dur="0.3s" repeatCount="indefinite" />
+                            </path>
+                        </svg>`
+    const one = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutes&p1=${lineCode}&keyOrigin=evoxEpsilon`);
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${one}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("alert").classList.add("active")
+            if (data) {
+
+                console.log(data)
+                const work = data[0].RouteCode
+
+                const stop_url = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`);
+                fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url}`)
+                    .then(response => response.json())
+                    .then(arrivals => {
+                        let matchFound = false; // Flag to track if a match is found
+
+                        arrivals.forEach(arrive => {
+                            if (arrive.route_code === work) {
+                                document.getElementById("activeBuses").innerHTML = `${document.getElementById("activeBuses").innerHTML}${arrive.btime2} λεπτά<br>`
+                                //alert(`${arrive.btime2} λεπτά`);
+                                matchFound = true; // Set flag to true if a match is found
+                            }
+                        });
+
+                        elementForLoading.querySelector('.loadingIndicatorNOCLASS').innerHTML = ''
+
+                        // If no match was found, alert the user
+                        if (!matchFound) {
+                            document.getElementById("activeBuses").innerHTML = `Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [!matchFound]`
+                            //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [!matchFound]");
+                        }
+                    })
+                    .catch(error => {
+                        document.getElementById("activeBuses").innerHTML = `Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]`
+                        //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]");
+                        console.log("getStop [2] error:", error);
+                    });
+            } else {
+                document.getElementById("activeBuses").innerHTML = `Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [null]`
+                //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [null]")
+            }
+
+        })
+        .catch(error => {
+            console.log("getStop [1] error:", error)
+            if (error.toString().includes('Unexpected token')) {
+                //alert("OASA SQL error. Δοκιμάστε ξανά.")
+                console.warn("Attempting to fix")
+                getStop(stopCode, lineCode)
+            }
+        })
+
+}
+
+let pending = null
+let currentLineCode = null
+function findStops(lineCode, sentElementByfindBus) {
+    currentLineCode = lineCode
+    const getStops = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`);
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${getStops}`)
+        .then(response => response.json())
+        .then(data => {
+
+            if (data) {
+                const working = data[0].route_code
+                console.log(working)//
+                $("#allBusesContainer").fadeOut("fast")
+
+                document.getElementById("spawnStopsHere").style.display = 'flex'
+                document.getElementById("searchHere").style.display = 'none'
+                document.getElementById("spawnHere").style.display = 'none'
+                let randomId = Math.floor(1000000000 + Math.random() * 9000000000);
+                const lc = localStorage.getItem("oasa_favorites")
+                document.getElementById("favoriteBusButton").style.display = 'block'
+                document.getElementById("goback").style.display = 'block'
+                if (lc) {
+                    const fav = document.getElementById("favoriteBusButton")
+                    const string = lc
+                    console.log(string)
+                    if (string.includes(`"${activeBusPage}"`)) {
+                        //alert("is favorite")
+
+                        fav.setAttribute("data-f", "true")
+                        fav.innerHTML = `Αφαίρεση ${activeBusPage} από αγαπημένα`
+                        fav.classList.remove("red")
+                        fav.classList.add("favoriteBus")
+                    } else {
+                        fav.setAttribute("data-f", "false")
+                        fav.innerHTML = `Προσθήκη ${activeBusPage} στα αγαπημένα`
+                        fav.classList.add("red")
+                        fav.classList.remove("favoriteBus")
+                    }
+
+                }
+                document.getElementById("spawnStopsHere").innerHTML = `<svg id="${randomId}" class="fade-in-slide-up" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="25px"
+                                viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+                                <path opacity="0.2" fill="#fff"
+                                    d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                             s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                             c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" />
+                                <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                             C22.32,8.481,24.301,9.057,26.013,10.047z">
+                                    <animateTransform attributeType="xml" attributeName="transform" type="rotate"
+                                        from="0 20 20" to="360 20 20" dur="0.3s" repeatCount="indefinite" />
+                                </path>
+                            </svg>`
+                if (sentElementByfindBus) {
+                    sentElementByfindBus.querySelector('.loadingIndicatorNOCLASS').innerHTML = ''
+                }
+                const stopsFinal = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${working}&keyOrigin=evoxEpsilon`);
+                fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stopsFinal}`)
+                    .then(response => response.json())
+                    .then(bata => {
+                        let stopPromises = bata.stops.map(stop => {
+                            return new Promise((resolve, reject) => {
+                                // Spawn the element
+                                const element = document.getElementById("spawnStopsHere");
+                                element.innerHTML = `${element.innerHTML}<button class="fade-in-slide-up oasaButton" onclick="getStop('${stop.StopCode}', '${lineCode}', this, '${stop.StopDescr}')">${capitalizeWords(stop.StopDescr)}<vox class="loadingIndicatorNOCLASS"></vox></button>`;
+
+                                console.log(stop.StopDescr);
+
+                                // Resolve the promise after the stop is processed
+                                resolve();
+                            });
+                        });
+
+                        // Wait for all promises to resolve (i.e., all stops are spawned)
+                        Promise.all(stopPromises)
+                            .then(() => {
+                                // Code to run after all elements are spawned
+                                console.log('All stops have been spawned!');
+                                let element_b = document.getElementById(randomId);
+                                if (element_b) {
+                                    element_b.remove();
+                                }
+                                // Add additional functionality here
+                            })
+                            .catch(err => {
+                                console.error('An error occurred while spawning stops:', err);
+                            });
+
+
+                    })
+                    .catch(error => {
+                        console.log("FindStops [2] error:", error)
+                        if (error.toString().includes('Unexpected token')) {
+                            //alert("OASA SQL error. Δοκιμάστε ξανά.")
+                            console.warn("Attempting to fix")
+                            findStops(lineCode, sentElementByfindBus)
+                        }
+                    })
+            }
+
+        })
+        .catch(error => {
+            console.log("FindStops [1] error:", error)
+            if (error.toString().includes('Unexpected token')) {
+                //alert("OASA SQL error. Δοκιμάστε ξανά.")
+                console.warn("Attempting to fix")
+                findStops(lineCode, sentElementByfindBus)
+            }
+        })
+
+}
+
+function back() {
+    reloadFavorites()
+    document.getElementById("favoriteBusButton").style.display = 'none'
+    document.getElementById("goback").style.display = 'none'
+    document.getElementById('alert').classList.remove('active')
+    document.getElementById("spawnHere").style.display = 'flex'
+    document.getElementById("spawnStopsHere").style.display = 'none'
+    document.getElementById("searchHere").style.display = 'none'
+    document.getElementById("spawnStopsHere").innerHTML = ''
+
+    const spawnHere = document.getElementById("spawnHere");
+
+    // Get all child elements within the selected element
+    let lc = localStorage.getItem("oasa_favorites")
+    if (lc) {
+        lc = JSON.parse(lc)
+    }
+    const childElements = spawnHere.children;
+
+    // Loop through each child element
+    for (let i = 0; i < childElements.length; i++) {
+        const child = childElements[i];
+
+        // Check if the child has the class 'favoriteBus'
+        if (child.classList.contains("favoriteBus")) {
+            // Do something if it has the class
+            if (lc && !lc.includes(child.querySelector('.lineNOCLASS').innerHTML)) {
+                child.classList.remove("favoriteBus")
+            }
+            // You can add any action you want to perform here
+        } else {
+            if (lc && lc.includes(child.querySelector('.lineNOCLASS').innerHTML)) {
+                child.classList.add("favoriteBus")
+            }
+        }
+    }
+}
+
+document.getElementById('receiveEnter').addEventListener('input', function () {
+    console.log('Input value changed:', document.getElementById('receiveEnter').value);
+    $("#allBusesContainer").fadeOut("fast")
+    back()
+    const substring = document.getElementById('receiveEnter').value
+
+    const targetDivId = 'searchHere'
+
+    const sourceDiv = document.getElementById('spawnHere');
+    if (document.getElementById('receiveEnter').value === '') {
+        document.getElementById("spawnHere").style.display = 'none'
+        $("#allBusesContainer").fadeIn("fast")
+        $("#svgClear").fadeOut("fast")
+    } else {
+        $("#svgClear").fadeIn("fast")
+        // Select all button elements in the source div
+        const buttons = sourceDiv.querySelectorAll('button[data-bus]');
+
+        // Select the target div by ID (create if it doesn't exist)
+        let targetDiv = document.getElementById(targetDivId);
+        sourceDiv.style.display = 'none'
+        targetDiv.style.display = 'flex'
+
+
+        // Clear the target div (optional)
+        targetDiv.innerHTML = '';
+
+        // Loop through each button and append it to the target div if the attribute contains the substring
+        buttons.forEach(button => {
+            const busValue = button.getAttribute('data-bus');
+            if (busValue.includes(substring)) {
+                // Clone the button to preserve the original
+                const buttonClone = button.cloneNode(true);
+                targetDiv.appendChild(buttonClone);
+            }
+        });
+    }
+});
+
+document.getElementById('receiveEnter').addEventListener('focus', function () {
+    back()
+    if (document.getElementById('receiveEnter').value === '') {
+        const sourceDiv = document.getElementById('spawnHere');
+        sourceDiv.style.display = 'flex'
+        $("#allBusesContainer").fadeOut("fast")
+    }
+    $("#svgClear").fadeIn("fast")
+
+
+});
+
+function unfocus(event) {
+    const sourceDiv = document.getElementById('spawnHere');
+    sourceDiv.style.display = 'none'
+    const searchHere = document.getElementById('searchHere');
+    searchHere.style.display = 'none'
+    document.getElementById('receiveEnter').value = ''
+    $("#allBusesContainer").fadeIn("fast")
+    $("#svgClear").fadeOut("fast")
+    $("#spawnStopsHere").fadeOut("fast")
+    $("#favoriteBusButton").fadeOut("fast")
+    $("#goback").fadeOut("fast")
+    reloadFavorites()
+    event.preventDefault();
+
+}
+document.getElementById('receiveEnter').addEventListener('blur', function () {
+    //const sourceDiv = document.getElementById('spawnHere');
+    //sourceDiv.style.display = 'none'
+    //if (document.getElementById('receiveEnter').value === '') {
+    //    $("#apps-container").fadeIn("fast")
+    //}
+
+});
 
 document.getElementById('receiveEnter').addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
+        findBus(document.getElementById('receiveEnter').value)
+        return;
         let cleanedLoc = window.location.href.replace(/#/g, '');
 
         const url = `${cleanedLoc}${document.getElementById('receiveEnter').value}`;
@@ -2876,6 +3309,64 @@ document.getElementById('receiveEnter').addEventListener('keydown', function (ev
         // You can add more actions here
     }
 });
+
+function favoriteCurrent() {
+    if (!activeBusPage) return; // Check at the beginning
+    const fav = document.getElementById("favoriteBusButton");
+
+    if (fav.getAttribute('data-f') === 'false') {
+        const lc = localStorage.getItem("oasa_favorites");
+
+        if (lc) {
+            let json;
+            try {
+                json = JSON.parse(lc);
+            } catch (error) {
+                console.error("Error parsing JSON:", error);
+                return; // Handle error gracefully
+            }
+            json.push(activeBusPage); // Add the new favorite
+            localStorage.setItem("oasa_favorites", JSON.stringify(json)); // Save back to localStorage
+            const busname = capitalizeWords(activeBusNamePage.split(" - ")[0])
+            localStorage.setItem(`OASA_${activeBusPage}_Info`, busname)
+            localStorage.setItem(`OASA_${activeBusPage}_Code`, currentLineCode)
+
+        } else {
+            const newJson = [activeBusPage];
+            localStorage.setItem("oasa_favorites", JSON.stringify(newJson));
+            const busname = capitalizeWords(activeBusNamePage.split(" - ")[0])
+            localStorage.setItem(`OASA_${activeBusPage}_Info`, busname)
+            localStorage.setItem(`OASA_${activeBusPage}_Code`, currentLineCode)
+        }
+
+        fav.setAttribute("data-f", "true");
+        fav.innerHTML = `Αφαίρεση ${activeBusPage} από αγαπημένα`
+        fav.classList.remove("red")
+        fav.classList.add("favoriteBus")
+    } else {
+        const lc = localStorage.getItem("oasa_favorites");
+
+        if (lc) {
+            let json;
+            try {
+                json = JSON.parse(lc);
+            } catch (error) {
+                console.error("Error parsing JSON:", error);
+                return; // Handle error gracefully
+            }
+
+            const newArray = json.filter(item => item !== activeBusPage);
+            localStorage.setItem("oasa_favorites", JSON.stringify(newArray));
+            localStorage.removeItem(`OASA_${activeBusPage}_Info`)
+            localStorage.removeItem(`OASA_${activeBusPage}_Code`)
+        }
+
+        fav.setAttribute("data-f", "false");
+        fav.innerHTML = `Προσθήκη ${activeBusPage} στα αγαπημένα`
+        fav.classList.add("red")
+        fav.classList.remove("favoriteBus")
+    }
+}
 
 let numstartto = 0; // Initialize the variable numstartto
 let jsonForBTNIndex = {}; // Initialize the JSON object to store elements by ID
@@ -3068,4 +3559,223 @@ function showDeviceDiscover() {
         terminalBT.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
         deviceBT.style.backgroundColor = "transparent";
     }
+}
+
+//OASA LIVE
+
+
+//https://telematics.oasa.gr/api/?act=webGetLines
+//https://telematics.oasa.gr/api/?act=getLineName&p1=1076
+const allLines = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetLines&keyOrigin=evoxEpsilon`);
+
+fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
+    .then(response => response.json())
+    .then(data => {
+        fullLine = data
+        if (data) {
+            //data.forEach(eachLine => {
+            //});
+            let lc = localStorage.getItem("oasa_favorites")
+            if (lc) {
+                lc = JSON.parse(lc)
+            }
+            let linesPromises = data.map(eachLine => {
+                return new Promise((resolve, reject) => {
+                    const logger = `${eachLine.LineDescr} [${eachLine.LineID}]`
+
+                    //console.log(logger)
+                    if (lc && lc.includes(eachLine.LineID)) {
+                        document.getElementById("spawnHere").innerHTML = `${document.getElementById("spawnHere").innerHTML}<button data-bus="${eachLine.LineID}" class="fade-in-slide-up favoriteBus oasaButton" onclick="findBus('${eachLine.LineID}', this)"><span class="lineNOCLASS">${eachLine.LineID}</span><span class="button-text">${capitalizeWords(eachLine.LineDescr)}</span><vox class="loadingIndicatorNOCLASS"></vox></button>`
+                    } else {
+                        document.getElementById("spawnHere").innerHTML = `${document.getElementById("spawnHere").innerHTML}<button data-bus="${eachLine.LineID}" class="fade-in-slide-up oasaButton" onclick="findBus('${eachLine.LineID}', this)"><span class="lineNOCLASS">${eachLine.LineID}</span><span class="button-text">${capitalizeWords(eachLine.LineDescr)}</span><vox class="loadingIndicatorNOCLASS"></vox></button>`
+                    }
+
+
+                    // Resolve the promise after the stop is processed
+                    resolve();
+                });
+            });
+
+            // Wait for all promises to resolve (i.e., all stops are spawned)
+            Promise.all(linesPromises)
+                .then(() => {
+                    // Code to run after all elements are spawned
+                    console.log('All lines have been spawned!');
+                    let element_b = document.getElementById('indexLoading');
+                    if (element_b) {
+                        element_b.remove();
+                    }
+
+
+                    // Add additional functionality here
+                })
+                .catch(err => {
+                    console.error('An error occurred while spawning stops:', err);
+                });
+        }
+
+    })
+    .catch(error => {
+        console.log("All Lines Get Error:", error)
+        if (isNearEvery3Hours()) {
+            //alert(`Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.`)
+            document.getElementById("spawnHere").innerHTML = 'Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.'
+        } else {
+            //alert(`Δεν ηταν δυνατη η συνδεση στον διακομιστη.\nΑγνωστο σφαλμα`)
+            document.getElementById("spawnHere").innerHTML = 'Δεν ηταν δυνατη η συνδεση στον διακομιστη.<br>Αγνωστο σφαλμα'
+        }
+        if (error.toString().includes('Unexpected token')) {
+            alert("OASA SQL error. Δοκιμάστε ξανά.")
+            document.getElementById("spawnHere").innerHTML = "OASA SQL error. Δοκιμάστε ξανά."
+        }
+
+    })
+
+function getNextBusStart(code, busid) {
+    //OASA LIVE
+    const id = `favoriteOASALIVE_${busid}`
+    document.getElementById(id).innerHTML = `<svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+               width="15px" height="15px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+              <path opacity="0.2" fill="#fff" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+              <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                C22.32,8.481,24.301,9.057,26.013,10.047z">
+                <animateTransform attributeType="xml"
+                  attributeName="transform"
+                  type="rotate"
+                  from="0 20 20"
+                  to="360 20 20"
+                  dur="0.3s"
+                  repeatCount="indefinite"/>
+                </path>
+              </svg>`
+    const targetUrl = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${code}&keyOrigin=evoxEpsilon`);
+    function displayRemainingTimeLIVE(nextBusTime, elid) {
+        console.log("Running", JSON.stringify(nextBusTime), "for", elid);
+        const currentTime = new Date();
+        const nextBusDate = new Date();
+        nextBusDate.setHours(nextBusTime.hour, nextBusTime.minutes, 0);
+
+        const remainingTimeMs = nextBusDate - currentTime;
+        const remainingMinutes = Math.floor(remainingTimeMs / 1000 / 60);
+        const remainingHours = Math.floor(remainingMinutes / 60);
+        const displayMinutes = remainingMinutes % 60;
+
+        const remainingTimeText = `${remainingHours > 0 ? `${remainingHours}h ` : ''}${displayMinutes}m`;
+        document.getElementById(elid).innerText = `Επόμενο: ${remainingTimeText}`;
+    }
+    function getNextBusTimeLIVE(times) {
+        console.log("getting times", times);
+        const currentTime = new Date();
+        const currentHour = currentTime.getHours();
+        const currentMinutes = currentTime.getMinutes();
+
+        for (let time of times) {
+            const [hour, minutes] = time.split(':').map(Number);
+            if (hour > currentHour || (hour === currentHour && minutes > currentMinutes)) {
+                return { hour, minutes };
+            }
+        }
+        return null;
+    }
+    function formatTime(dateTimeString) {
+        if (!dateTimeString) {
+            console.error("Invalid dateTimeString:", dateTimeString);
+            return "Invalid";
+        }
+
+        const parts = dateTimeString.split(' ');
+        if (parts.length !== 2) {
+            console.error("Invalid dateTimeString format:", dateTimeString);
+            return "Invalid";
+        }
+
+        const timePart = parts[1]; // "HH:MM:SS"
+        const timeParts = timePart.split(':');
+        if (timeParts.length !== 3) {
+            console.error("Invalid time format:", timePart);
+            return "Invalid";
+        }
+
+        const hours = timeParts[0];
+        const minutes = timeParts[1];
+
+        if (hours.length !== 2 || minutes.length !== 2) {
+            console.error("Invalid time components:", hours, minutes);
+            return "Invalid";
+        }
+
+        return `${hours}:${minutes}`;
+    }
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${targetUrl}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("The data:", data)
+            if (!data.come && !data.go) {
+                console.log(data)
+                return;
+            } else {
+                console.log("Come and go for ", busid, "\n", data)
+            }
+            document.getElementById("netStats").innerHTML = onlineSvg
+            console.log("Success", code)
+
+            var times = data.go.map(item => {
+                //console.log("sde_start1:", item.sde_start1); // Debug log
+                return formatTime(item.sde_start1);
+            });
+
+            console.log("Formatted times:", times); // Debug log
+
+            const nextBusTime = getNextBusTimeLIVE(times);
+
+            if (nextBusTime) {
+                localStorage.setItem(`${busid}_Timetable`, JSON.stringify(data));
+                localStorage.setItem(`${busid}_Times`, JSON.stringify(times));
+                displayRemainingTimeLIVE(nextBusTime, id);
+            }
+        })
+        .catch(error => {
+            console.log(error)
+            document.getElementById("netStats").innerHTML = offlineSvg
+            document.getElementById(elid).innerHTML = `Σφάλμα <img width="15px" height="15px" src='snap.png'>`;
+
+        });
+
+}
+function reloadFavorites() {
+    const lc = localStorage.getItem("oasa_favorites")
+    if (lc) {
+        const json = JSON.parse(lc)
+        if (json.length !== 0) {
+            document.getElementById("custom-container").innerHTML = ''
+            $("#favs-p").fadeIn("fast")
+            $("#custom-container").fadeIn("fast")
+
+            json.forEach(favbus => {
+                let add = favbus;
+                if (favbus.length === 2) {
+                    add = add + `<span class="invisible-number">&nbsp;</span>`
+                }
+                document.getElementById("custom-container").innerHTML = `${document.getElementById("custom-container").innerHTML}
+                                        <a href="#" onclick="showInfoFav('${favbus}')">
+                                        <p>${add}</p>
+                                        <div class="label">
+                                            <span class="name">${localStorage.getItem(`OASA_${favbus}_Info`)}</span>
+                                            <span id="favoriteOASALIVE_${favbus}" class="url">Loading..</span>
+                                        </div>
+                                    </a>`
+                getNextBusStart(localStorage.getItem(`OASA_${favbus}_Code`), favbus)
+            });
+        }
+
+    }
+}
+reloadFavorites()
+
+
+function showInfoFav(busId) {
+    findBus(busId)
+    $("#svgClear").fadeIn("fast")
 }
