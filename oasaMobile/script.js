@@ -15,6 +15,40 @@ fetch(`../oasaBuild.evox`)
     .catch(error => {
         console.error("Failed to check for updates")
     })
+
+function doodle() {
+    if (navigator.onLine) {
+        const prev = localStorage.getItem('previousRan')
+        const ran = Math.floor(Math.random() * 8) + 1
+        if (prev === ran) {
+            const ran2 = Math.floor(Math.random() * 8) + 1
+            document.getElementById("logo").src = `./illu/${ran2}.png`
+            localStorage.setItem("previousRan", ran2)
+        } else {
+            document.getElementById("logo").src = `./illu/${ran}.png`
+            localStorage.setItem("previousRan", ran)
+        }
+    }
+}
+
+if(!localStorage.getItem("disableDoodle")) {
+    doodle()
+}
+
+
+function toggleDoodle() {
+    const lcl = localStorage.getItem("disableDoodle")
+    if (lcl) { //disabled, enable it
+        localStorage.removeItem("disableDoodle")
+        doodle()
+        console.log("disabled, enabling doodle")
+    } else { //enabled
+        
+        localStorage.setItem("disableDoodle", 'yes')
+        document.getElementById("logo").src = 'doodle.png'
+        console.log("enabled. disabling doodle")
+    }
+}
 if (sessionStorage.getItem("pfp") && sessionStorage.getItem("pfp").includes('<!DOCTYPE html>')) {
     console.log(`PFP: DOCTYPE 404`)
     sessionStorage.removeItem("pfp")
@@ -554,7 +588,7 @@ function showInfo(bus, isInt, more) {
                     document.getElementById("049live1").style.display = ""
                     const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
                     const remains = getNextBuses(times, more)
-                    
+
                     console.log(remains)
                     remains.forEach(function (remainTime) {
                         // Create the main div element with the class 'timeBox'
@@ -975,7 +1009,7 @@ function showInfo(bus, isInt, more) {
 function getNextBuses(times, more) {
 
     let countToLoad = null
-    if(more) {
+    if (more) {
         countToLoad = more
     } else {
         countToLoad = 7
@@ -1009,7 +1043,7 @@ function getNextBuses(times, more) {
 
     // Convert remaining times to the desired format for future buses
 
-    
+
     const nextBuses = futureBuses.slice(0, countToLoad).map((bus) => {
         const diff = bus.remainingTime;
         let formattedRemainingTime;
@@ -1017,25 +1051,25 @@ function getNextBuses(times, more) {
         if (diff > 60) {
             let hours = Math.floor(diff / 60);
             let remainingMinutes = diff % 60;
-            if(hours >= 1) {
-                formattedRemainingTime = hours === 1 
-                ? `${hours} ώρα`
-                : `${hours} ώρες`;
+            if (hours >= 1) {
+                formattedRemainingTime = hours === 1
+                    ? `${hours} ώρα`
+                    : `${hours} ώρες`;
                 return `${bus.time} ~ ${formattedRemainingTime}`;
             } else {
-                formattedRemainingTime = hours === 1 
-                ? `${hours} ώρα, ${remainingMinutes} λεπτά`
-                : `${hours} ώρες, ${remainingMinutes} λεπτά`;
+                formattedRemainingTime = hours === 1
+                    ? `${hours} ώρα, ${remainingMinutes} λεπτά`
+                    : `${hours} ώρες, ${remainingMinutes} λεπτά`;
                 return `${bus.time} - ${formattedRemainingTime}`;
             }
-            
-            
+
+
         } else {
             formattedRemainingTime = `${diff} λεπτά`;
             return `${bus.time} - ${formattedRemainingTime}`;
         }
 
-        
+
     });
 
     // If there's a nearest previous bus, format it and prepend to nextBuses
@@ -1056,7 +1090,7 @@ function getNextBuses(times, more) {
 
 function getNextBusesPanagitsa(times, more) {
     let countToLoad = null
-    if(more) {
+    if (more) {
         countToLoad = more
     } else {
         countToLoad = 7
@@ -1510,7 +1544,7 @@ function fl_moveDiv(e) {
     if (newTop > 120) {
         //document.getElementById("main-wrapper").style.overflow = 'auto'
         document.getElementById("floridaCont").classList.remove("active")
-        
+
         document.getElementById("phone").style.transform = "scale(1)"
         setTimeout(function () {
             floridaCont.style.top = '';

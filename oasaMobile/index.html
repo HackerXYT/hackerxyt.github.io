@@ -155,7 +155,7 @@
 
 
     <script>
-        var currentBuild = "1.00"
+        var currentBuild = "1.01"
         console.log(`%cCurrent Build: ${currentBuild}`, "color: green; font-family:sans-serif; font-size: 25px");
         window.onerror = function (message, source, lineno, colno, error) {
             try {
@@ -307,7 +307,7 @@
                             href="#">ενημέρωση</a>
                     </div>
                     <div id="header-container">
-                        <img id="logo" src="doodle.png" />
+                        <img onclick="toggleDoodle()" id="logo" src="doodle.png" />
 
                     </div>
                     <div id="search-container">
