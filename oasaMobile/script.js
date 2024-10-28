@@ -394,10 +394,18 @@ getBus('904')
 getBus('420')
 
 let howManyShowed = null
+let isCustom = false
 function loadMore() {
-    const theBus = currentBus
-    const show = howManyShowed + 5
-    showInfo(theBus, null, show)
+    if(isCustom === true) {
+        const theBus = currentBus
+        const show = howManyShowed + 5
+        showInfoCSTM(theBus, null, show)
+    } else {
+        const theBus = currentBus
+        const show = howManyShowed + 5
+        showInfo(theBus, null, show)
+    }
+    
 }
 
 let currentInt;
@@ -2687,6 +2695,9 @@ function handleSwipeGestureView() {
 
     if (swipeDistance > swipeThreshold) {
         console.log('Swiped down!');
+        document.getElementById('phone').style.transform = ''
+        document.getElementById("main-wrapper").style.overflow = 'auto'
+        isCustom = false
         goBack()
     } else {
         console.log('Swipe too short or swiped up.');
@@ -3109,6 +3120,7 @@ function findStops(lineCode, sentElementByfindBus) {
                 let randomId = Math.floor(1000000000 + Math.random() * 9000000000);
                 const lc = localStorage.getItem("oasa_favorites")
                 document.getElementById("favoriteBusButton").style.display = 'block'
+                document.getElementById("dailytimetable").style.display = 'block'
                 document.getElementById("goback").style.display = 'block'
                 if (lc) {
                     const fav = document.getElementById("favoriteBusButton")
@@ -3204,6 +3216,7 @@ function findStops(lineCode, sentElementByfindBus) {
 function back() {
     reloadFavorites()
     document.getElementById("favoriteBusButton").style.display = 'none'
+    document.getElementById("dailytimetable").style.display = 'none'
     document.getElementById("goback").style.display = 'none'
     document.getElementById('alert').classList.remove('active')
     document.getElementById("spawnHere").style.display = 'flex'
@@ -3300,6 +3313,7 @@ function unfocus(event) {
     $("#svgClear").fadeOut("fast")
     $("#spawnStopsHere").fadeOut("fast")
     $("#favoriteBusButton").fadeOut("fast")
+    $("#dailytimetable").fadeOut("fast")
     $("#goback").fadeOut("fast")
     reloadFavorites()
     event.preventDefault();
@@ -3825,4 +3839,172 @@ reloadFavorites()
 function showInfoFav(busId) {
     findBus(busId)
     $("#svgClear").fadeIn("fast")
+}
+
+function showInfoCSTM(bus, isInt, more) {
+    isCustom = true
+    currentBus = bus
+    howManyShowed = more ?? 7
+    document.getElementById("904live1").style.display = 'none'
+    disableOverflow()
+    document.getElementById("phone").style.transform = "scale(0.95)"
+    document.getElementById("main-wrapper").style.overflow = 'hidden'
+    if (!document.getElementById("popIt").classList.contains("active") && isInt) {
+        console.log(`Resolved Interval Bug [info: busReq: ${bus}, stoppedBy: classList]`)
+        return;
+    }
+    if (sessionStorage.getItem("currentWatch") !== bus && isInt) {
+        console.log(`Resolved Interval Bug [info: busReq: ${bus}, stoppedBy: currentWatch]`)
+        return;
+    }
+    document.getElementById("popIt").classList.add("active")
+    document.getElementById("whatBus").innerHTML = bus
+    document.getElementById("16defTime").style.display = "none"
+    document.getElementById("16gounTime").style.display = "none"
+    document.getElementById("049live1").style.display = "none"
+    document.getElementById("049live2").style.display = "none"
+    document.getElementById("831live1").style.display = "none"
+    sessionStorage.setItem("currentWatch", bus)
+
+    document.getElementById("evoxBased").innerHTML = ""
+    document.getElementById("16defTime").style.display = "none"
+    document.getElementById("16gounTime").style.display = "none"
+    document.getElementById("049live1").style.display = "none"
+    document.getElementById("049live2").style.display = "none"
+    document.getElementById("831live1").style.display = "none"
+    function getNextBusTimeLIVE(times) {
+        console.log("getting times", times);
+        const currentTime = new Date();
+        const currentHour = currentTime.getHours();
+        const currentMinutes = currentTime.getMinutes();
+
+        for (let time of times) {
+            const [hour, minutes] = time.split(':').map(Number);
+            if (hour > currentHour || (hour === currentHour && minutes > currentMinutes)) {
+                return { hour, minutes };
+            }
+        }
+        return null;
+    }
+    function formatTime(dateTimeString) {
+        if (!dateTimeString) {
+            console.error("Invalid dateTimeString:", dateTimeString);
+            return "Invalid";
+        }
+
+        const parts = dateTimeString.split(' ');
+        if (parts.length !== 2) {
+            console.error("Invalid dateTimeString format:", dateTimeString);
+            return "Invalid";
+        }
+
+        const timePart = parts[1]; // "HH:MM:SS"
+        const timeParts = timePart.split(':');
+        if (timeParts.length !== 3) {
+            console.error("Invalid time format:", timePart);
+            return "Invalid";
+        }
+
+        const hours = timeParts[0];
+        const minutes = timeParts[1];
+
+        if (hours.length !== 2 || minutes.length !== 2) {
+            console.error("Invalid time components:", hours, minutes);
+            return "Invalid";
+        }
+
+        return `${hours}:${minutes}`;
+    }
+    //const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
+    const targetUrl = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${currentLineCode}&keyOrigin=evoxEpsilon`);
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${targetUrl}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("The data:", data)
+            if (!data.come && !data.go) {
+                console.log(data)
+                return;
+            } else {
+                console.log("Come and go for ", currentBus, "\n", data)
+            }
+            document.getElementById("netStats").innerHTML = onlineSvg
+            console.log("Success", currentLineCode)
+
+            var times = data.go.map(item => {
+                //console.log("sde_start1:", item.sde_start1); // Debug log
+                return formatTime(item.sde_start1);
+            });
+
+            console.log("Formatted times:", times); // Debug log
+            console.warn(data)
+
+            const nextBusTime = getNextBusTimeLIVE(times);
+
+            if (nextBusTime) {
+                localStorage.setItem(`${currentBus}_Timetable`, JSON.stringify(data));
+                localStorage.setItem(`${currentBus}_Times`, JSON.stringify(times));
+                const remains = getNextBuses(times, more)
+                console.log(remains)
+                remains.forEach(function (remainTime) {
+                    // Create the main div element with the class 'timeBox'
+                    var timeBox = document.createElement('div');
+                    timeBox.className = 'timeBox';
+                    timeBox.onclick = function () {
+                        handleTimeBoxClick(this)
+                    }
+
+                    let textNode;
+                    textNode = document.createTextNode((capitalizeWords(activeBusNamePage.split(" - ")[0]).length > 13 ? capitalizeWords(activeBusNamePage.split(" - ")[0]).substring(0, 11) + ".." : capitalizeWords(activeBusNamePage.split(" - ")[0])));
+
+
+                    // Append the text node to the main div element
+                    timeBox.appendChild(textNode);
+
+                    // Create the span element and set its content to '10m'
+                    var span = document.createElement('span');
+                    span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
+
+                    // Append the span element to the main div element
+                    timeBox.appendChild(span);
+                    var optDiv = document.createElement('div');
+                    optDiv.style.display = 'none'
+                    optDiv.style.height = 'auto'
+                    timeBox.appendChild(optDiv);
+
+                    // Optionally, append the timeBox to the body or another element in the DOM
+                    document.getElementById("evoxBased").appendChild(timeBox);
+                })
+                let countThis2 = 25;
+                count2 = setInterval(function () {
+                    countThis2 = countThis2 - 1
+                    if (countThis2 === -1) {
+                        countThis2 = 25
+                        console.log("Interval Countdown:", '25')
+                    }
+                    console.log("Interval Countdown:", countThis2)
+                }, 1000)
+                currentInt = setInterval(function () {
+                    showInfoSX(bus, 'interval')
+                }, 25000)
+            } else {
+                alert("Δεν υπάρχουν διαθέσιμες αφίξεις για την επιλεγμένη γραμμή.")
+                document.getElementById("popIt").classList.remove("active")
+                document.getElementById('phone').style.transform = ''
+                document.getElementById("main-wrapper").style.overflow = 'auto'
+                isCustom = false
+                console.error(times)
+                //document.getElementById(id).innerHTML = `<img width="auto" height="18px" src='${errorIconTime()}'>`;
+            }
+        })
+        .catch(error => {
+            console.log('Load Favorite Times Error:', error)
+            //document.getElementById("netStats").innerHTML = offlineSvg
+            alert("Something Failed [14]")
+            //document.getElementById(`${id}`).innerHTML = `<img width="auto" height="18px" src='${errorIconTime()}'>`;
+
+        });
+}
+
+function timetable() {
+    showInfoCSTM(activeBusPage)
 }

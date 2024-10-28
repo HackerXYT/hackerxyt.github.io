@@ -155,7 +155,7 @@
 
 
     <script>
-        var currentBuild = "1.03"
+        var currentBuild = "1.21"
         console.log(`%cCurrent Build: ${currentBuild}`, "color: green; font-family:sans-serif; font-size: 25px");
         window.onerror = function (message, source, lineno, colno, error) {
             try {
@@ -363,6 +363,7 @@
                     </div>
                     <button data-f="false" onclick="favoriteCurrent()" class="fade-in-slide-up oasaButton red" id="favoriteBusButton" style="margin-top: 10px;display: none;">Προσθηκή Λεωφορείου Στα Αγαπημένα</button>
                     <button onclick="back()" class="fade-in-slide-up oasaButton red" id="goback" style="display: none;">Πίσω</button>
+                    <button onclick="timetable()" class="fade-in-slide-up oasaButton 🚩" id="dailytimetable" style="display: none;">Προβολή Όλων των Δρομολογίων</button>
                     <div style="display: none;" class="stopsSpawn" id="spawnStopsHere">
 
                     </div>
