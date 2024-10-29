@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Jean D'arc</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+
+<body>
+    <div id="loginContainer" class="login">
+        <div id="topImg" class="topImg">
+            <video id="video" loop muted playsinline>
+                <source src="c.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="welcome">
+
+            <div id="loginSection" class="loginSection">
+
+                <p class="head logo">Καλωσορίσατε!<img src="logo.png" class="logoImg"></p>
+                <p class="info">Ας συνδεθούμε</p>
+                <div class="inputs">
+                    <vo style="margin-right: 0;"><input id="nameInput" placeholder="Όνομα ή επώνυμο"></vo>
+                </div>
+                <p class="problem">Πρόβλημα? Πατήστε εδώ.</p>
+            </div>
+        </div>
+        <div class="multimatch" id="multimatch">
+            <div class="socialUser"><img class="slUserPFP social"
+                    src="https://data.evoxs.xyz/profiles?authorize=imagePfp&name=K">
+                <p>IEPBypass</p><span>4 days</span>
+            </div>
+        </div>
+        <div class="centerLogin">
+            <div onclick="find()" id="loginButton" class="loginButton">Σύνδεση</div>
+        </div>
+
+    </div>
+
+    <div id="tasks" class="tasks">
+        <div class="loading">
+            <div class="loading-spinner"></div>
+        </div>
+        <p class="loading-text" id="loadText">Περιμένετε..</p>
+    </div>
+
+    <div style="display: none;" id="lock">
+        <img src="logo.png" height="55px">
+        <p>Εισάγετε το PIN του λογαριασμού σας</p>
+
+        <div id="pin-input" class="pin-input">
+            <svg id="PINload" style="display: none;" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" width="25px"
+                height="25px" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                <path fill="#dedede"
+                    d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                    <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                        to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                </path>
+            </svg>
+            <div id="PINdots">
+                <span id="ps1"></span>
+                <span id="ps2"></span>
+                <span id="ps3"></span>
+                <span id="ps4"></span>
+            </div>
+
+        </div>
+        <div class="pin-pad">
+            <button onclick="clickPIN(this)">1</button>
+            <button onclick="clickPIN(this)">2</button>
+            <button onclick="clickPIN(this)">3</button>
+            <button onclick="clickPIN(this)">4</button>
+            <button onclick="clickPIN(this)">5</button>
+            <button onclick="clickPIN(this)">6</button>
+            <button onclick="clickPIN(this)">7</button>
+            <button onclick="clickPIN(this)">8</button>
+
+            <button onclick="clickPIN(this)">9</button>
+            <button class="delete-button" style="background: transparent;"></button>
+
+
+            <button onclick="clickPIN(this)">0</button><button onclick="deletePIN()" class="delete-button"
+                style="background: transparent;"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                    viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M12.0004 9.5L17.0004 14.5M17.0004 9.5L12.0004 14.5M4.50823 13.9546L7.43966 17.7546C7.79218 18.2115 7.96843 18.44 8.18975 18.6047C8.38579 18.7505 8.6069 18.8592 8.84212 18.9253C9.10766 19 9.39623 19 9.97336 19H17.8004C18.9205 19 19.4806 19 19.9084 18.782C20.2847 18.5903 20.5907 18.2843 20.7824 17.908C21.0004 17.4802 21.0004 16.9201 21.0004 15.8V8.2C21.0004 7.0799 21.0004 6.51984 20.7824 6.09202C20.5907 5.71569 20.2847 5.40973 19.9084 5.21799C19.4806 5 18.9205 5 17.8004 5H9.97336C9.39623 5 9.10766 5 8.84212 5.07467C8.6069 5.14081 8.38579 5.2495 8.18975 5.39534C7.96843 5.55998 7.79218 5.78846 7.43966 6.24543L4.50823 10.0454C3.96863 10.7449 3.69883 11.0947 3.59505 11.4804C3.50347 11.8207 3.50347 12.1793 3.59505 12.5196C3.69883 12.9053 3.96863 13.2551 4.50823 13.9546Z"
+                        stroke="#dedede" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg></button>
+        </div>
+        <div class="version">Evox. All rights reserved.</div>
+    </div>
+</body>
+<script src="../scripts/jquery-3.7.0.js"></script>
+
+<script>
+    
+
+    const disableScroll = (e) => {
+        // For wheel events
+        if (e.deltaY !== 0) {
+            // Allow vertical scroll, prevent horizontal scroll
+            e.preventDefault();
+        }
+    };
+
+    // For touch events, we prevent default only if the touch movement is horizontal
+    const touchMoveHandler = (e) => {
+        const touch = e.touches[0];
+        const startX = touch.clientX;
+        const startY = touch.clientY;
+
+        const moveHandler = (e) => {
+            const moveX = e.touches[0].clientX - startX;
+            const moveY = e.touches[0].clientY - startY;
+
+            if (Math.abs(moveX) > Math.abs(moveY)) {
+                e.preventDefault(); // Prevent horizontal movement
+            }
+        };
+
+        window.addEventListener('touchmove', moveHandler, { passive: false });
+
+        // Remove the event listener when the touch ends
+        window.addEventListener('touchend', () => {
+            window.removeEventListener('touchmove', moveHandler);
+        }, { once: true });
+    };
+
+    // Attach the event listeners
+    window.addEventListener('wheel', disableScroll, { passive: false });
+    window.addEventListener('touchstart', touchMoveHandler, { passive: false });
+
+
+    let foundName = null;
+    function returnFromMultimatch() {
+        const multimatchElement = document.getElementById("multimatch");
+        const topImgElement = document.getElementById("topImg");
+        const loginSectionElement = document.getElementById("loginSection");
+        const loginButtonElement = document.getElementById("loginButton");
+
+        // Step 1: Remove the active class from multimatch
+        multimatchElement.classList.remove("active");
+
+        // Step 2: Start fading out the top image and login section
+        topImgElement.style.opacity = '0';
+        loginSectionElement.style.opacity = '0';
+
+        // Step 3: Wait for the fade out to finish before changing display properties
+        setTimeout(function () {
+            topImgElement.style.display = null; // Hide after fade out
+            loginSectionElement.style.display = 'block'; // Show the login section
+            loginSectionElement.classList.add('active'); // Add active class to login section
+
+            // Step 4: Fade in the login section and button
+            loginSectionElement.style.opacity = '1'; // Fade in login section
+
+            // Handle login button
+            topImgElement.style.opacity = '1'
+            loginButtonElement.style.opacity = '0';
+            loginButtonElement.style.display = 'block'; // Ensure it's displayed
+            setTimeout(() => {
+                loginButtonElement.style.opacity = '1'; // Fade in login button
+            }, 50); // Short delay to ensure the element is visible before fading in
+        }, 500); // Match this duration with your CSS transition duration
+    }
+
+    function selectCustom(name) {
+        foundName = name
+        const video = document.getElementById("video");
+        video.play()
+        document.getElementById("loadText").innerHTML = ``
+        document.getElementById("tasks").style.display = null
+        document.getElementById("tasks").style.opacity = '1'
+        document.getElementById("multimatch").classList.remove('active')
+        document.getElementById("loginButton").style.opacity = '0'
+        setTimeout(function () {
+            document.getElementById("topImg").style.display = null
+            document.getElementById("topImg").style.opacity = '1'
+            setTimeout(function () {
+                document.getElementById("loadText").style.display = null
+                document.getElementById("loadText").style.opacity = '0'
+                setTimeout(function () {
+                    document.getElementById("loadText").innerHTML = `Επιτυχία`
+                    document.getElementById("loadText").style.opacity = '1'
+                    setTimeout(function () {
+                        document.getElementById("loadText").style.opacity = '0'
+                        setTimeout(function () {
+                            document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${foundName.split(' ')[0].replace(/[σς]+$/, '')}`
+                            document.getElementById("loadText").style.opacity = '1'
+                            setTimeout(function () {
+                                document.getElementById("topImg").style.opacity = '0'
+                                $("#tasks").fadeOut("fast", function () {
+                                    $("#loginContainer").fadeOut("fast", function () {
+                                        document.getElementById("loginContainer").style.display = 'none'
+                                    })
+                                    $("#lock").fadeIn("fast")
+                                })
+
+                            }, 1200)
+                        }, 340)
+                    }, 900)
+                }, 340)
+
+
+            }, 500);
+
+        }, 100)
+    }
+
+
+    function find() {
+        if (document.getElementById('nameInput').value === '') {
+            shake_me('nameInput')
+            return;
+        }
+        document.getElementById("loginSection").classList.remove('active')
+        document.getElementById("loginButton").style.opacity = '0'
+        setTimeout(function () {
+            document.getElementById("topImg").style.opacity = '1'
+            setTimeout(function () {
+
+                document.getElementById("loadText").innerText = 'Αναζήτηση..'
+                document.getElementById("tasks").style.display = null
+                setTimeout(function () {
+                    document.getElementById("tasks").style.opacity = '1'
+                }, 550)
+                video.play()
+                const searchInput = document.getElementById('nameInput').value; // Replace with any input you want to test
+                const matchedNames = findFullNames(searchInput);
+                console.log(matchedNames);
+                setTimeout(() => {
+                    if (matchedNames.length === 0) {
+                        document.getElementById("loadText").style.opacity = '0'
+                        setTimeout(function () {
+                            document.getElementById("loadText").innerText = 'Δεν βρέθηκαν αντιστοιχίες'
+                            document.getElementById("loadText").style.opacity = '1'
+                        }, 340)
+
+                        document.getElementById("tasks").style.opacity = '1'
+                        setTimeout(function () {
+                            document.getElementById("tasks").style.opacity = '0'
+                            setTimeout(function () {
+                                document.getElementById("tasks").style.display = 'none'
+                            }, 550)
+                            document.getElementById("loginSection").classList.add('active')
+                            document.getElementById("loginButton").style.opacity = '1'
+                        }, 1000)
+                    } else {
+                        if (matchedNames.length > 1) {
+                            const video = document.getElementById("video");
+                            video.play();
+                            document.getElementById("loadText").style.opacity = '0'
+                            setTimeout(function () {
+                                document.getElementById("loadText").innerHTML = `Πολλαπλές αντιστοιχίες`
+                                document.getElementById("loadText").style.opacity = '1'
+                                document.getElementById("loginButton").style.display = 'none'
+                                setTimeout(function () {
+                                    //document.getElementById("loadText").style.opacity = '0'
+                                    document.getElementById("tasks").style.opacity = '0'
+                                    setTimeout(function () {
+                                        document.getElementById("tasks").style.display = 'none'
+                                    }, 550)
+                                    setTimeout(function () {
+                                        document.getElementById("topImg").style.opacity = '0'
+                                        document.getElementById("multimatch").innerHTML = `<p>Επιλέξτε ένα από τα παρακάτω ονόματα:</p>`
+                                        let count = 0
+                                        matchedNames.forEach(name => {
+                                            count++
+                                            const firstChar = (str) => str.split(' ')[1]?.charAt(0) || null;
+                                            document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
+                                            <div onclick="selectCustom('${name}')" class="socialUser"><img class="slUserPFP social"
+                    src="https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${firstChar(name)}">
+                <p>${name}</p><span>Επιλογή</span>
+            </div>`
+                                            if (count === matchedNames.length) {
+                                                document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
+                                                <div class="centerLogin">
+            <div onclick="returnFromMultimatch()" class="loginButton">Ακύρωση</div>
+        </div>`
+                                            }
+
+                                        });
+                                        setTimeout(function () {
+                                            document.getElementById("topImg").style.display = 'none'
+                                            document.getElementById("loginSection").style.display = 'none'
+                                            document.getElementById("multimatch").classList.add("active")
+                                        }, 500)
+
+                                        //document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')}`
+                                        //document.getElementById("loadText").style.opacity = '1'
+                                        //setTimeout(function () {
+                                        //    
+                                        //}, 1200)
+                                    }, 340)
+                                }, 900)
+                            }, 340)
+                        } else {
+                            foundName = matchedNames[0]
+                            document.getElementById("loadText").style.opacity = '0'
+                            setTimeout(function () {
+                                document.getElementById("loadText").innerHTML = `Επιτυχία`
+                                document.getElementById("loadText").style.opacity = '1'
+                                setTimeout(function () {
+                                    document.getElementById("loadText").style.opacity = '0'
+                                    setTimeout(function () {
+                                        document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')}`
+                                        document.getElementById("loadText").style.opacity = '1'
+                                        setTimeout(function () {
+                                            document.getElementById("topImg").style.opacity = '0'
+                                            $("#tasks").fadeOut("fast", function () {
+                                                $("#loginContainer").fadeOut("fast", function () {
+                                                    document.getElementById("loginContainer").style.display = 'none'
+                                                })
+                                                $("#lock").fadeIn("fast")
+                                            })
+                                        }, 1200)
+                                    }, 340)
+                                }, 900)
+                            }, 340)
+                        }
+
+
+                    }
+                }, 500);
+
+            }, 100)
+
+        }, 500)
+
+    }
+
+
+    function findFullNames(input) {
+        const results = [];
+        const variations = Object.values(namesData.names).flat();
+
+        for (const [fullName, nameVariations] of Object.entries(namesData.names)) {
+            // Check if the input matches any of the name variations (case insensitive)
+            if (nameVariations.some(variation => variation.toLowerCase() === input.toLowerCase())) {
+                results.push(fullName);
+            }
+        }
+
+        return results;
+    }
+
+    // Example usage:
+
+
+    let namesData = null
+    let ip = null
+    document.addEventListener("DOMContentLoaded", function () {
+        if (!localStorage.getItem("jeanDarc_data")) {
+
+        }
+
+        const video = document.getElementById("video");
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(geo => {
+                console.log("IP:", geo.ip)
+                ip = geo.ip
+                document.getElementById("loadText").innerText = 'Αναγνωριστικό Έτοιμο'
+
+                fetch('https://data.evoxs.xyz/jeandarc?metode=merrniEmrat')
+                    .then(response => response.json())
+                    .then(names => {
+                        namesData = names
+                        setTimeout(function () {
+
+                            document.getElementById("loadText").innerText = 'Έγινε σύνδεση'
+                            setTimeout(function () {
+                                document.getElementById("topImg").style.opacity = '1'
+                                setTimeout(function () {
+                                    document.getElementById("loginContainer").style.opacity = '1'
+                                    document.getElementById("loginSection").classList.add('active')
+                                    document.getElementById("tasks").style.opacity = '0'
+                                    setTimeout(function () {
+                                        document.getElementById("tasks").style.display = 'none'
+                                    }, 550)
+                                    video.play()
+                                    setTimeout(function () {
+                                        //let playbackRate = 1.0;
+                                        //
+                                        //const slowDown = setInterval(() => {
+                                        //    playbackRate -= 0.1; // Gradually decrease the speed
+                                        //    if (playbackRate <= 0.1) {
+                                        //        clearInterval(slowDown);
+                                        //        video.pause(); // Pause when playbackRate is near zero
+                                        //        video.playbackRate = 1.0; // Reset speed for next play
+                                        //    } else {
+                                        //        video.playbackRate = playbackRate;
+                                        //    }
+                                        //}, 50);
+                                    }, 2650)
+                                }, 100)
+
+                            }, 500)
+                        }, 500)
+
+
+
+                    }).catch(error => {
+                        console.error("Evox Database is offline.")
+                        console.log('Error:', error);
+                    });
+
+
+
+
+            })
+            .catch(error => {
+                console.error("IP Api is offline, ignoring")
+                console.log('Error:', error);
+            });
+    });
+
+    document.getElementById('nameInput').addEventListener('focus', function () {
+        video.playbackRate = 1.0; // Ensure normal speed on play
+        video.play();
+
+
+    });
+
+    document.getElementById('nameInput').addEventListener('blur', function () {
+        //let playbackRate = 1.0;
+        //
+        //const slowDown = setInterval(() => {
+        //    playbackRate -= 0.1; // Gradually decrease the speed
+        //    if (playbackRate <= 0.1) {
+        //        clearInterval(slowDown);
+        //        video.pause(); // Pause when playbackRate is near zero
+        //        video.playbackRate = 1.0; // Reset speed for next play
+        //    } else {
+        //        video.playbackRate = playbackRate;
+        //    }
+        //}, 50);
+
+
+    });
+
+    document.getElementById('nameInput').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            find()
+        }
+    })
+
+
+
+    let pin = "";
+    let proccessingPIN = false
+    function clickPIN(element) {
+        let number = element.innerHTML
+        //console.log(number)
+
+        if (pin.length <= 3) {
+            if (pin.length == 0) {
+                document.getElementById("ps1").style.width = "10px"
+                document.getElementById("ps1").style.height = "10px"
+            } else if (pin.length == 1) {
+                document.getElementById("ps2").style.width = "10px"
+                document.getElementById("ps2").style.height = "10px"
+            } else if (pin.length == 2) {
+                document.getElementById("ps3").style.width = "10px"
+                document.getElementById("ps3").style.height = "10px"
+            } else if (pin.length == 3) {
+                document.getElementById("ps4").style.width = "10px"
+                document.getElementById("ps4").style.height = "10px"
+            }
+            //not full
+            pin = `${pin}${number}`
+            //console.log("Pin Got:", pin)
+            if (pin.length == 4) {
+                proccessingPIN = true
+                $("#PINdots").fadeOut("fast", function () {
+                    $("#PINload").fadeIn("fast")
+                })
+                setTimeout(function () {
+                    fetch(`https://data.evoxs.xyz/jeandarc?metode=pin&pin=${pin}&emri=${foundName}`)
+                        .then(response => response.text())
+                        .then(status => {
+                            if (status === 'Granted') {
+
+                                proccessingPIN = false
+                                //console.log("Correct")
+                                $("#PINload").fadeOut("fast", function () {
+                                    //document.body.style.overflow = 'auto';
+                                    document.body.style.touchAction = '';
+                                    $("#lock").fadeOut("fast", function () {
+                                        document.getElementById("loadText").innerHTML = `Έχετε συνδεθεί.`
+                                        const accData = {
+                                            "name": foundName,
+                                            "pin": btoa(pin),
+                                            "latestIp": ip
+                                        }
+                                        localStorage.setItem("jeanDarc_accountData", JSON.stringify(accData))
+                                        $("#tasks").fadeIn("fast")
+                                    })
+                                    //if (localStorage.getItem("remPIN") === "true") {
+                                    sessionStorage.setItem("remUnlocked", "true")
+                                    //}
+                                })
+                            } else {
+
+                                proccessingPIN = false
+                                deletePIN()
+                                deletePIN()
+                                deletePIN()
+                                deletePIN()
+                                $("#PINload").fadeOut("fast", function () {
+                                    $("#PINdots").fadeIn("fast", function () {
+                                        shake_me("pin-input")
+                                    })
+                                })
+                            }
+                        }).catch(error => {
+                            console.error("Evox Database is offline.")
+                            console.log('Error:', error);
+                        });
+
+                }, 900)
+            }
+        }
+        // else {    
+        // Complete here    
+        //    //console.log("Pin Final:", pin)
+        //}
+    }
+
+    function shake_me(what) {
+        document.getElementById(`${what}`).classList.add('shake');
+        setTimeout(function () {
+            document.getElementById(`${what}`).classList.remove('shake');
+        }, 500);
+    }
+
+
+    function deletePIN() {
+        if (proccessingPIN === true) {
+            shake_me("pin-input")
+            return;
+        }
+        if (pin.length == 0) {
+            document.getElementById("ps1").style.width = "5px"
+            document.getElementById("ps1").style.height = "5px"
+        } else if (pin.length == 1) {
+            document.getElementById("ps1").style.width = "5px"
+            document.getElementById("ps1").style.height = "5px"
+        } else if (pin.length == 2) {
+            document.getElementById("ps2").style.width = "5px"
+            document.getElementById("ps2").style.height = "5px"
+        } else if (pin.length == 3) {
+            document.getElementById("ps3").style.width = "5px"
+            document.getElementById("ps3").style.height = "5px"
+        } else if (pin.length == 4) {
+            document.getElementById("ps4").style.width = "5px"
+            document.getElementById("ps4").style.height = "5px"
+        }
+
+        pin = pin.slice(0, -1);
+        //console.log("Removed last", pin)
+    }
+
+
+
+    ////
+
+</script>
+
+</html>
