@@ -11,7 +11,7 @@
     <div id="loginContainer" class="login">
         <div id="topImg" class="topImg">
             <video id="video" loop muted playsinline>
-                <source src="c.mp4" type="video/mp4">
+                <source id="videoSRC" src="m.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
@@ -96,7 +96,7 @@
 <script src="../scripts/jquery-3.7.0.js"></script>
 
 <script>
-    
+
 
     const disableScroll = (e) => {
         // For wheel events
@@ -188,18 +188,21 @@
                     setTimeout(function () {
                         document.getElementById("loadText").style.opacity = '0'
                         setTimeout(function () {
-                            document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${foundName.split(' ')[0].replace(/[σς]+$/, '')}`
+                            const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
+                            const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
+                            document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
                             document.getElementById("loadText").style.opacity = '1'
                             setTimeout(function () {
                                 document.getElementById("topImg").style.opacity = '0'
                                 $("#tasks").fadeOut("fast", function () {
                                     $("#loginContainer").fadeOut("fast", function () {
                                         document.getElementById("loginContainer").style.display = 'none'
+                                        $("#lock").fadeIn("fast")
                                     })
-                                    $("#lock").fadeIn("fast")
+
                                 })
 
-                            }, 1200)
+                            }, 2500)
                         }, 340)
                     }, 900)
                 }, 340)
@@ -212,6 +215,7 @@
 
 
     function find() {
+        video.playbackRate = 1;
         if (document.getElementById('nameInput').value === '') {
             shake_me('nameInput')
             return;
@@ -273,7 +277,7 @@
                                             document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
                                             <div onclick="selectCustom('${name}')" class="socialUser"><img class="slUserPFP social"
                     src="https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${firstChar(name)}">
-                <p>${name}</p><span>Επιλογή</span>
+                <p>${name}</p><span>></span>
             </div>`
                                             if (count === matchedNames.length) {
                                                 document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
@@ -305,18 +309,21 @@
                                 document.getElementById("loadText").style.opacity = '1'
                                 setTimeout(function () {
                                     document.getElementById("loadText").style.opacity = '0'
-                                    setTimeout(function () {
-                                        document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')}`
+                                    setTimeout(function () { //
+                                        const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
+                                        const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
+                                        document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
                                         document.getElementById("loadText").style.opacity = '1'
                                         setTimeout(function () {
                                             document.getElementById("topImg").style.opacity = '0'
                                             $("#tasks").fadeOut("fast", function () {
                                                 $("#loginContainer").fadeOut("fast", function () {
                                                     document.getElementById("loginContainer").style.display = 'none'
+                                                    $("#lock").fadeIn("fast")
                                                 })
-                                                $("#lock").fadeIn("fast")
+
                                             })
-                                        }, 1200)
+                                        }, 2500)
                                     }, 340)
                                 }, 900)
                             }, 340)
@@ -363,7 +370,7 @@
             .then(geo => {
                 console.log("IP:", geo.ip)
                 ip = geo.ip
-                document.getElementById("loadText").innerText = 'Αναγνωριστικό Έτοιμο'
+                document.getElementById("loadText").innerText = 'Αναγνωριστικό έτοιμο'
 
                 fetch('https://data.evoxs.xyz/jeandarc?metode=merrniEmrat')
                     .then(response => response.json())
@@ -419,13 +426,14 @@
     });
 
     document.getElementById('nameInput').addEventListener('focus', function () {
-        video.playbackRate = 1.0; // Ensure normal speed on play
+        video.playbackRate = 1.5; // Ensure normal speed on play
         video.play();
 
 
     });
 
     document.getElementById('nameInput').addEventListener('blur', function () {
+        video.playbackRate = 1.0;
         //let playbackRate = 1.0;
         //
         //const slowDown = setInterval(() => {
