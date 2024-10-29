@@ -4,6 +4,11 @@ let currentBus;
 let fullLine = null
 let activeBusPage = null;
 let activeBusNamePage = null
+
+let activeStop = {
+    "name": null,
+    "code": null
+}
 fetch(`../oasaBuild.evox`)
     .then(response => response.json())
     .then(data => {
@@ -31,7 +36,7 @@ function doodle() {
     }
 }
 
-if(!localStorage.getItem("disableDoodle")) {
+if (!localStorage.getItem("disableDoodle")) {
     doodle()
 }
 
@@ -43,7 +48,7 @@ function toggleDoodle() {
         doodle()
         console.log("disabled, enabling doodle")
     } else { //enabled
-        
+
         localStorage.setItem("disableDoodle", 'yes')
         document.getElementById("logo").src = 'doodle.png'
         console.log("enabled. disabling doodle")
@@ -396,16 +401,20 @@ getBus('420')
 let howManyShowed = null
 let isCustom = false
 function loadMore() {
-    if(isCustom === true) {
+    if (isCustom === true) {
         const theBus = currentBus
         const show = howManyShowed + 5
         showInfoCSTM(theBus, null, show)
+
     } else {
         const theBus = currentBus
         const show = howManyShowed + 5
         showInfo(theBus, null, show)
+        const div = document.getElementById("popIt");
+        div.scrollTop = div.scrollHeight;
     }
-    
+
+
 }
 
 let currentInt;
@@ -1165,6 +1174,7 @@ function getNextBusesPanagitsa(times, more) {
 }
 
 function goBack() {
+    document.getElementById("showMore").style.display = null
     howManyShowed = null
     document.getElementById("phone").style.transform = ""
     document.getElementById("Businfo").innerHTML = `⛳`
@@ -3026,12 +3036,17 @@ function isNearEvery3Hours(proximityInMinutes = 5) {
     return diffInMinutes <= proximityInMinutes;
 }
 
-function getStop(stopCode, lineCode, elementForLoading, busName) {
+function getStop(stopCode, lineCode, elementForLoading, stopName) {
     console.log("Line Code:", lineCode)
     //activeBusNamePage = capitalizeWords(busName)
     document.getElementById('alert').classList.remove('active')
+    activeStop = {
+        "name": stopName,
+        "code": stopCode
+    }
 
     document.getElementById("busLine").innerText = activeBusPage
+    document.getElementById("stopName").innerText = capitalizeWords(stopName)
     document.getElementById("activeBuses").innerHTML = ''
     elementForLoading.querySelector('.loadingIndicatorNOCLASS').innerHTML = `<svg class="fade-in-slide-up" version="1.1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px"
@@ -3082,6 +3097,7 @@ function getStop(stopCode, lineCode, elementForLoading, busName) {
                         document.getElementById("activeBuses").innerHTML = `Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]`
                         //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]");
                         console.log("getStop [2] error:", error);
+                        elementForLoading.querySelector('.loadingIndicatorNOCLASS').innerHTML = ''
                     });
             } else {
                 document.getElementById("activeBuses").innerHTML = `Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [null]`
@@ -3091,6 +3107,7 @@ function getStop(stopCode, lineCode, elementForLoading, busName) {
         })
         .catch(error => {
             console.log("getStop [1] error:", error)
+            elementForLoading.querySelector('.loadingIndicatorNOCLASS').innerHTML = ''
             if (error.toString().includes('Unexpected token')) {
                 //alert("OASA SQL error. Δοκιμάστε ξανά.")
                 console.warn("Attempting to fix")
@@ -3204,6 +3221,9 @@ function findStops(lineCode, sentElementByfindBus) {
         })
         .catch(error => {
             console.log("FindStops [1] error:", error)
+            if (sentElementByfindBus) {
+                sentElementByfindBus.querySelector('.loadingIndicatorNOCLASS').innerHTML = ''
+            }
             if (error.toString().includes('Unexpected token')) {
                 //alert("OASA SQL error. Δοκιμάστε ξανά.")
                 console.warn("Attempting to fix")
@@ -3798,7 +3818,7 @@ function getNextBusStart(code, busid) {
             }
         })
         .catch(error => {
-            console.log('Load Favorite Times Error:',error)
+            console.log('Load Favorite Times Error:', error)
             //document.getElementById("netStats").innerHTML = offlineSvg
             document.getElementById(`${id}`).innerHTML = `<img width="auto" height="18px" src='${errorIconTime()}'>`;
 
@@ -3983,8 +4003,10 @@ function showInfoCSTM(bus, isInt, more) {
                     }
                     console.log("Interval Countdown:", countThis2)
                 }, 1000)
+                const div = document.getElementById("popIt");
+                div.scrollTop = div.scrollHeight;
                 currentInt = setInterval(function () {
-                    showInfoSX(bus, 'interval')
+                    showInfoCSTM(bus, 'interval')
                 }, 25000)
             } else {
                 alert("Δεν υπάρχουν διαθέσιμες αφίξεις για την επιλεγμένη γραμμή.")
@@ -4007,4 +4029,118 @@ function showInfoCSTM(bus, isInt, more) {
 
 function timetable() {
     showInfoCSTM(activeBusPage)
+}
+
+function showCurrentStop() {
+    const stopCode = activeStop.code
+    const stopName = activeStop.name
+
+    //https://telematics.oasa.gr/api/?act=webRoutesForStop&p1=400452
+
+    const stop_url_1 = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webRoutesForStop&p1=${stopCode}&keyOrigin=evoxEpsilon`);
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url_1}`)
+        .then(response => response.json())
+        .then(stop => {
+            let start = {}
+            let isReady = false
+            let count = 0
+
+            let finale = ''
+
+
+            const stop_url = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`);
+            fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url}`)
+                .then(response => response.json())
+                .then(arrivals => {
+                    document.getElementById("904live1").style.display = 'none'
+                    disableOverflow()
+                    document.getElementById("phone").style.transform = "scale(0.95)"
+                    document.getElementById("main-wrapper").style.overflow = 'hidden'
+                    document.getElementById("popIt").classList.add("active")
+                    document.getElementById("showMore").style.display = 'none'
+                    document.getElementById("16defTime").style.display = "none"
+                    document.getElementById("16gounTime").style.display = "none"
+                    document.getElementById("049live1").style.display = "none"
+                    document.getElementById("049live2").style.display = "none"
+                    document.getElementById("831live1").style.display = "none"
+                    document.getElementById("whatBus").innerHTML = `Κανένα<br>Στάση: ${capitalizeWords(stopName)}`
+                    document.getElementById("evoxBased").innerHTML = ""
+                    document.getElementById("16defTime").style.display = "none"
+                    document.getElementById("16gounTime").style.display = "none"
+                    document.getElementById("049live1").style.display = "none"
+                    document.getElementById("049live2").style.display = "none"
+                    document.getElementById("831live1").style.display = "none"
+                    document.getElementById('alert').classList.remove('active')
+                    let matchFound = false; // Flag to track if a match is found
+
+
+
+                    stop.forEach(data => {
+                        count++
+                        start[data.LineID] = {
+                            "desc": data.LineDescr,
+                            "lineCode": data.LineCode,
+                            "routeCode": data.RouteCode,
+                            "id": data.LineID
+                        }
+                        if (count === stop.length) {
+                            isReady = true
+                            //const work = THEROUTECODE
+                        }
+
+                        arrivals.forEach(arrive => {
+                            if (arrive.route_code === data.RouteCode) {
+                                finale = `${finale}${data.LineID} (${data.LineDescr}): ${arrive.btime2}\n`
+                                var timeBox = document.createElement('div');
+                                timeBox.className = 'timeBox';
+
+                                let textNode;
+                                textNode = document.createTextNode(data.LineID);
+
+
+                                // Append the text node to the main div element
+                                timeBox.appendChild(textNode);
+
+                                // Create the span element and set its content to '10m'
+                                var span = document.createElement('span');
+                                span.innerHTML = arrive.btime2 + " λεπτά";
+
+                                // Append the span element to the main div element
+                                timeBox.appendChild(span);
+                                var optDiv = document.createElement('div');
+                                optDiv.style.display = 'none'
+                                optDiv.style.height = 'auto'
+                                timeBox.appendChild(optDiv);
+
+                                // Optionally, append the timeBox to the body or another element in the DOM
+                                document.getElementById("evoxBased").appendChild(timeBox);
+                                //alert(`${arrive.btime2} λεπτά`);
+                                matchFound = true; // Set flag to true if a match is found
+                            }
+                        });
+                    })
+
+                    //alert(finale)
+
+
+                    // Create the main div element with the class 'timeBox'
+
+
+
+                })
+                .catch(error => {
+                    //document.getElementById("activeBuses").innerHTML = `Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]`
+                    //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]");
+                    console.log("getStop [65] error:", error);
+                    document.getElementById("evoxBased").innerHTML = 'Κανένα Λεωφορείο Δεν Ερχέται Στην Τρέχουσα Στάση.'
+                });
+
+
+
+        })
+        .catch(error => {
+            //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]");
+            console.log("getStop [63] error:", error);
+        });
+
 }

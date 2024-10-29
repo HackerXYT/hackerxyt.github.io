@@ -273,6 +273,8 @@ body::-webkit-scrollbar {
 }
 
 .appCarousel {
+  scroll-snap-type: x mandatory; /* Enables snap scrolling */
+  scroll-behavior: smooth;
   border-radius: 20px;
   display: flex;
   flex-direction: row;
@@ -281,6 +283,7 @@ body::-webkit-scrollbar {
 
 
 .appCarousel .evoxApp {
+  scroll-snap-align: center;
   border-radius: 10px;
   margin-left: 10px;
   position: relative;
@@ -395,6 +398,9 @@ body.no-scroll {
 
 .securelineCarousel {
   border-radius: 20px;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 50%; /* Centers items in the viewport */
+  scroll-behavior: smooth;
   display: flex;
   flex-direction: row;
   overflow-x: auto;
@@ -402,20 +408,16 @@ body.no-scroll {
 
 
 .securelineCarousel .slUser {
+  scroll-snap-align: center; /* Or use 'start' for more flexibility */
   flex: 0 0 155px;
-  border-radius: 10px;
   margin-left: 5px;
+  
   width: 155px;
   height: 155px;
-  /* Maintain aspect ratio */
   border-radius: 20px;
   background-color: rgba(0, 0, 0, 0.5);
-  /* Semi-transparent background */
   backdrop-filter: blur(5px);
-  /* Adjust the blur amount as needed */
-  -webkit-backdrop-filter: blur(5px);
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -7314,7 +7316,7 @@ vox.svgIconAnimated {
 
 #message-edit-center,
 #install-app {
-  padding-bottom: 100px;
+  padding-bottom: 160px;
 }
 
 

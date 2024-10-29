@@ -162,7 +162,8 @@ button.oasaButton:active {
 }
 
 .alert span {
-    font-size: 25px;
+    text-align: center;
+    font-size: 23px;
     position: absolute;
     top: 20px;
     font-weight: bold;

@@ -2532,6 +2532,18 @@ function bottomButtonPress(which, el) {
         }, 200)
 
 
+    } else if (which === 'dismissDownloadDontAsk') {
+        el.style.transform = 'scale(0.96)'
+        setTimeout(function () {
+            //workingElem.style.transform = 'rotate(0deg)'
+            el.style.transform = 'scale(1)'
+            localStorage.setItem("trusted_web", 'true')
+            document.getElementById("install-app").classList.remove("active")
+            document.getElementById("gateway").style.filter = ''
+            document.getElementById("gatewayActions").classList.remove('top')
+        }, 200)
+
+
     } else {
         el.style.transform = 'scale(0.96)'
         setTimeout(function () {
