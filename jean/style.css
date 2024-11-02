@@ -535,6 +535,12 @@ vo input::placeholder {
     font-size: 15px;
 }
 
+.app .topBar .wlcmTxt .bottomTxt {
+    font-size: 16px;
+    font-family: "SF";
+
+}
+
 .app .topBar .rightItem {
     display: flex;
     flex-direction: column;
