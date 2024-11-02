@@ -1,27 +1,31 @@
 @font-face {
+    font-family: "Inter";
+    src: url('Inter-VariableFont_opsz,wght.ttf');
+}
+@font-face {
     font-family: "SF";
     src: url('SFUIText-Medium.ttf');
 }
 
+
 * {
     touch-action: manipulation;
-    overflow: hidden;
 }
 html,
 body {
     height: 100%;
     width: 100%;
-    font-family: "SF";
+    font-family: "Inter";
     background-color: #000;
     padding: 0;
     margin: 0;
     color: #fff;
-    overflow: hidden; /* Disable scrolling */
+    overflow: hidden; /* Optional: keep this for body-level overflow control */
     touch-action: manipulation;
-    display: flex; /* Use flexbox for centering */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    box-sizing: border-box; /* Include padding and borders in width/height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
 }
 
 *,
@@ -498,7 +502,8 @@ vo input::placeholder {
     display: flex;
     display: none;
     flex-direction: column;
-    padding: 25px;
+    padding: 5px;
+    padding-top: 15px;
     position: relative;
 }
 
@@ -547,46 +552,40 @@ vo input::placeholder {
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 100%;
+    overflow-x: auto; /* Allow horizontal scrolling */
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* For Firefox */
+}
+
+.app .stories::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Edge */
+}
+
+.app .stories .plus, .app .stories .story {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    flex-shrink: 0; /* Important for horizontal scrolling */
+    scroll-snap-align: center; /* Aligns item to center when scrolling */
+    margin-right: 10px;
 }
 
 .app .stories .plus {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    width: 70px;
-    height: 70px;
     background-color: #40363f;
-    margin-right: 10px;
-    
 }
 
 .app .stories .story {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    width: 70px;
-    height: 70px;
-    margin-right: 10px;
-    border: none;
-    /* Remove the border to use the pseudo-element for the effect */
-    position: relative;
-    /* Ensure positioning for the pseudo-element */
+    background: linear-gradient(to right top, rgb(255, 5, 5), rgb(255, 89, 0));
+    padding: 3px;
+    transition: opacity 0.5s ease-in-out;
 }
-.app .stories .story::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 2px solid rgb(255, 119, 0);
-    box-sizing: border-box;
-}
+
 
 .app .stories .story img {
     border-radius: 50%;
@@ -605,4 +604,84 @@ vo input::placeholder {
     to {
         transform: rotate(360deg);
     }
+}
+.progress {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+/* Card Style */
+.progress-card {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(145deg, #3c3b3f, #6f586c);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 2px 2px 16px #141414, -2px -2px 16px #28282e;
+    max-width: 400px; /* Optional: Set max-width */
+    width: 100%;
+    border: 2px #6f586cd2 solid;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+/* Circular Progress */
+.progress-ring {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    margin-right: 15px;
+    flex-shrink: 0; /* Prevents shrinking */
+}
+.progress-ring svg {
+    width: 100%;
+    height: 100%;
+}
+.progress-ring circle {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+}
+.progress-ring circle.track {
+    stroke: #33334d;
+}
+.progress-ring circle.progress {
+    stroke: #ff8bcb;
+    stroke-dasharray: 176;
+    stroke-dashoffset: calc(176 - (176 * var(--progress)) / 100); /* Use CSS variable */
+    transform: rotate(-90deg); /* Start from the top */
+    transform-origin: 50% 50%;
+}
+
+/* Centering the Percentage */
+.percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Text Content */
+.text-content {
+    display: flex;
+    flex-direction: column;
+    max-width: 250px; /* Limits text width */
+}
+.message {
+    margin-top: 5px;
+}
+.message vo {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+    font-family: "SF";
+    
+}
+.message span {
+    font-size: 14px;
+    opacity: 0.8;
 }

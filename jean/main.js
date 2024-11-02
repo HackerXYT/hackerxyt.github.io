@@ -36,6 +36,10 @@ window.addEventListener('wheel', disableScroll, { passive: false });
 window.addEventListener('touchstart', touchMoveHandler, { passive: false });
 
 
+function getRandomColor() {
+    return `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+}
+
 let foundName = null;
 function returnFromMultimatch() {
     const multimatchElement = document.getElementById("multimatch");
@@ -250,7 +254,13 @@ function findFullNames(input) {
     return results;
 }
 
-// Example usage:
+function storiesSpawned() {
+    document.querySelectorAll('.app .stories .story').forEach(story => {
+        const color1 = getRandomColor();
+        const color2 = getRandomColor();
+        story.style.background = `linear-gradient(to right top, ${color1}, ${color2})`;
+    });
+}
 
 
 let namesData = null
