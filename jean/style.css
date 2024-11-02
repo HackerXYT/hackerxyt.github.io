@@ -2,6 +2,7 @@
     font-family: "Inter";
     src: url('Inter-VariableFont_opsz,wght.ttf');
 }
+
 @font-face {
     font-family: "SF";
     src: url('SFUIText-Medium.ttf');
@@ -11,6 +12,7 @@
 * {
     touch-action: manipulation;
 }
+
 html,
 body {
     height: 100%;
@@ -20,7 +22,8 @@ body {
     padding: 0;
     margin: 0;
     color: #fff;
-    overflow: hidden; /* Optional: keep this for body-level overflow control */
+    overflow: hidden;
+    /* Optional: keep this for body-level overflow control */
     touch-action: manipulation;
     display: flex;
     justify-content: center;
@@ -28,21 +31,80 @@ body {
     box-sizing: border-box;
 }
 
+.background-gradient {
+    background-color: #000;
+
+    /* Background gradient to simulate light */
+    background: radial-gradient(
+      circle at top,           /* Glow effect from the top */
+      rgba(128, 0, 128, 0.15), /* Light purple with low opacity */
+      rgba(0, 0, 0, 0) 60%
+    ),
+    radial-gradient(
+      circle at bottom,        /* Glow effect from the bottom */
+      rgba(128, 0, 128, 0.1),  /* Slightly lighter purple with lower opacity */
+      rgba(0, 0, 0, 0) 60%
+    ),
+    #000; /* Base background color */
+
+    /* Apply a blur filter to soften the edges of the "light" */
+    filter: blur(10px);
+
+    /* Cover the entire screen */
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    position: absolute;
+    z-index: 0;
+}
+
 *,
 *:before,
 *:after {
-    box-sizing: inherit; /* Apply box-sizing to all elements */
+    box-sizing: inherit;
+    /* Apply box-sizing to all elements */
 }
 
+.warning {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    z-index: 999;
+}
+
+.warning p {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #d6cb00;
+    text-align: center;
+}
+
+.warning span {
+    text-align: center;
+}
+
+.warning .qr {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
 .login {
     opacity: 0;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center items horizontally */
-    justify-content: center; /* Center items vertically */
+    align-items: center;
+    /* Center items horizontally */
+    justify-content: center;
+    /* Center items vertically */
     transition: all 0.5s ease-in-out;
     width: 100%;
-    max-width: 400px; /* Optional: limit width for better layout */
+    max-width: 400px;
+    /* Optional: limit width for better layout */
 }
 
 .topImg {
@@ -116,7 +178,7 @@ body {
     flex-direction: column;
     position: absolute;
     /* Position it relative to its nearest positioned ancestor */
-    bottom: 15px;
+    bottom: 25px;
     /* Stick to the bottom */
     left: 0;
     width: 100%;
@@ -139,26 +201,35 @@ body {
 
 vo input {
     margin-bottom: 15px;
-    background-color: rgba(255, 255, 255, 0.1); /* Light transparent background */
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Light transparent background */
     width: 100%;
     max-width: 100%;
-    border: 2px solid transparent; /* Make border transparent initially */
+    border: 2px solid transparent;
+    /* Make border transparent initially */
     border-radius: 14px;
     box-sizing: border-box;
-    padding: 15px 20px; /* Adjust padding for consistency */
-    color: #ffffff; /* Change text color for contrast */
+    padding: 15px 20px;
+    /* Adjust padding for consistency */
+    color: #ffffff;
+    /* Change text color for contrast */
     font-size: 18px;
-    outline: none; /* Remove default outline */
-    transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transitions */
+    outline: none;
+    /* Remove default outline */
+    transition: border-color 0.3s, box-shadow 0.3s;
+    /* Smooth transitions */
 }
 
 vo input:focus {
-    border-color: #4710b7; /* Change border color on focus */
-    box-shadow: 0 0 10px rgba(0, 191, 255, 0.5); /* Glowing effect */
+    border-color: #4710b7;
+    /* Change border color on focus */
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+    /* Glowing effect */
 }
 
 vo input::placeholder {
-    color: rgba(255, 255, 255, 0.5); /* Lighter placeholder color */
+    color: rgba(255, 255, 255, 0.5);
+    /* Lighter placeholder color */
 }
 
 
@@ -261,7 +332,7 @@ vo input::placeholder {
 }
 
 .welcome {
-    
+
     display: flex;
     width: 90%;
     height: 100vh;
@@ -272,7 +343,7 @@ vo input::placeholder {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    
+
 }
 
 .multimatch {
@@ -489,8 +560,8 @@ vo input::placeholder {
 
 .problem {
     text-align: center;
-    margin:0;
-    color:#c0c0c0a5;
+    margin: 0;
+    color: #c0c0c0a5;
     font-size: 12px;
     margin-top: 10px;
     margin-bottom: -10px;
@@ -527,7 +598,7 @@ vo input::placeholder {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
+
 }
 
 .app .topBar .wlcmTxt .topTxt {
@@ -559,26 +630,32 @@ vo input::placeholder {
     flex-direction: row;
     align-items: center;
     width: 100%;
-    overflow-x: auto; /* Allow horizontal scrolling */
+    overflow-x: auto;
+    /* Allow horizontal scrolling */
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* For Firefox */
+    scrollbar-width: none;
+    /* For Firefox */
 }
 
 .app .stories::-webkit-scrollbar {
-    display: none; /* For Chrome, Safari, and Edge */
+    display: none;
+    /* For Chrome, Safari, and Edge */
 }
 
-.app .stories .plus, .app .stories .story {
+.app .stories .plus,
+.app .stories .story {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    flex-shrink: 0; /* Important for horizontal scrolling */
-    scroll-snap-align: center; /* Aligns item to center when scrolling */
+    flex-shrink: 0;
+    /* Important for horizontal scrolling */
+    scroll-snap-align: center;
+    /* Aligns item to center when scrolling */
     margin-right: 10px;
 }
 
@@ -611,6 +688,7 @@ vo input::placeholder {
         transform: rotate(360deg);
     }
 }
+
 .progress {
     width: 100%;
     padding: 10px;
@@ -625,7 +703,7 @@ vo input::placeholder {
     border-radius: 15px;
     padding: 20px;
     box-shadow: 2px 2px 16px #141414, -2px -2px 16px #28282e;
-    max-width: 400px; /* Optional: Set max-width */
+    /* Optional: Set max-width */
     width: 100%;
     border: 2px #6f586cd2 solid;
     backdrop-filter: blur(5px);
@@ -638,25 +716,32 @@ vo input::placeholder {
     width: 70px;
     height: 70px;
     margin-right: 15px;
-    flex-shrink: 0; /* Prevents shrinking */
+    flex-shrink: 0;
+    /* Prevents shrinking */
 }
+
 .progress-ring svg {
     width: 100%;
     height: 100%;
 }
+
 .progress-ring circle {
     fill: none;
     stroke-width: 6;
     stroke-linecap: round;
 }
+
 .progress-ring circle.track {
     stroke: #33334d;
 }
+
 .progress-ring circle.progress {
     stroke: #ff8bcb;
     stroke-dasharray: 176;
-    stroke-dashoffset: calc(176 - (176 * var(--progress)) / 100); /* Use CSS variable */
-    transform: rotate(-90deg); /* Start from the top */
+    stroke-dashoffset: calc(176 - (176 * var(--progress)) / 100);
+    /* Use CSS variable */
+    transform: rotate(-90deg);
+    /* Start from the top */
     transform-origin: 50% 50%;
 }
 
@@ -675,19 +760,218 @@ vo input::placeholder {
 .text-content {
     display: flex;
     flex-direction: column;
-    max-width: 250px; /* Limits text width */
+    max-width: 250px;
+    /* Limits text width */
 }
+
 .message {
     margin-top: 5px;
 }
+
 .message vo {
     display: block;
     font-size: 16px;
     margin-bottom: 5px;
     font-family: "SF";
-    
+
 }
+
 .message span {
     font-size: 14px;
     opacity: 0.8;
 }
+
+.card {
+    position: relative;
+    /* This is fine for stacking context */
+    display: flex;
+    flex-direction: column-reverse;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Optional: semi-transparent background for readability */
+    border-radius: 30px;
+    width: 100%;
+    height: 190px;
+    padding: 20px;
+    overflow: hidden;
+    /* Prevent overflow from the video */
+}
+
+.card .background {
+    position: absolute;
+    /* Positioned behind other elements */
+    top: 50%;
+    /* Center vertically */
+    left: 50%;
+    /* Center horizontally */
+    width: auto;
+    /* Allow width to adjust based on aspect ratio */
+    height: 100%;
+    /* Full height of the card */
+    min-width: 100%;
+    /* Ensure it covers full width */
+    min-height: auto;
+    /* Allow height to adjust */
+    transform: translate(-50%, -50%);
+    /* Center the video */
+
+    z-index: 1;
+    /* Set a lower z-index so it's behind content */
+}
+
+.card .background video {
+    filter: brightness(0.8);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Cover the area without distortion */
+}
+
+.card>* {
+    position: relative;
+    /* Ensure child elements are on top of the video */
+    z-index: 2;
+    /* Higher z-index to be above the video */
+}
+
+.cards-container {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+}
+
+.tag {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 15px;
+    font-size: 13px;
+    padding: 5px 12px;
+    display: inline;
+    align-self: flex-start;
+}
+
+.tag.green {
+    background-color: #10b76fc5;
+}
+
+.tag.settings {
+    background-color: #5c605ec5;
+}
+
+.card .arrow {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #fff;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.card .arrow svg {
+    transition: transform 0.5s ease-in-out;
+}
+
+.card .title {
+    font-size: 25px;
+    margin-top: 12px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+    /* Subtle shadow */
+}
+
+.progress-bar {
+    margin-top: 15px;
+    position: relative;
+    width: 100%;
+    height: 5px;
+    background-color: #ffffff48;
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.progress-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #ffffff48;
+    border-radius: 25px;
+}
+
+.progress-each {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 50%;
+    background-color: #fff;
+    border-radius: 25px;
+}
+
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+        /* Adjust the Y value for how far the element slides up */
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-slide-up {
+    animation: fadeInSlideUp 0.5s ease forwards;
+    /* Adjust duration and timing function as needed */
+}
+
+
+.navigation {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 100%;
+}
+
+.navigation .bar {
+    width: 150px;
+    height: 70px;
+    border-radius: 50px;
+    background-color: #33334d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navigation .bar .item {
+    padding: 5px;
+    border-radius: 50px;
+    width: 60px;
+    height: 60px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+
+.navigation .bar .item.active {
+    background-color: #000;
+}
+
+.navigation .bar .item svg {
+    width: 30px;
+    height: 30px;
+}
+
+

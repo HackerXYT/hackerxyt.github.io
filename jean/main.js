@@ -266,68 +266,80 @@ function storiesSpawned() {
 let namesData = null
 let ip = null
 document.addEventListener("DOMContentLoaded", function () {
-    if (localStorage.getItem("jeanDarc_accountData")) {
-        autoLogin()
-    } else {
-        const video = document.getElementById("video");
-        fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(geo => {
-                console.log("IP:", geo.ip)
-                ip = geo.ip
-                document.getElementById("loadText").innerText = 'Αναγνωριστικό έτοιμο'
-
-                fetch('https://data.evoxs.xyz/jeandarc?metode=merrniEmrat')
-                    .then(response => response.json())
-                    .then(names => {
-                        namesData = names
-                        setTimeout(function () {
-
-                            document.getElementById("loadText").innerText = 'Έγινε σύνδεση'
-                            setTimeout(function () {
-                                document.getElementById("topImg").style.opacity = '1'
-                                setTimeout(function () {
-                                    document.getElementById("loginContainer").style.opacity = '1'
-                                    document.getElementById("loginSection").classList.add('active')
-                                    setTimeout(function () {
-                                        $("#tasks").fadeOut("fast")
-                                    }, 550)
-                                    video.play()
-                                    setTimeout(function () {
-                                        //let playbackRate = 1.0;
-                                        //
-                                        //const slowDown = setInterval(() => {
-                                        //    playbackRate -= 0.1; // Gradually decrease the speed
-                                        //    if (playbackRate <= 0.1) {
-                                        //        clearInterval(slowDown);
-                                        //        video.pause(); // Pause when playbackRate is near zero
-                                        //        video.playbackRate = 1.0; // Reset speed for next play
-                                        //    } else {
-                                        //        video.playbackRate = playbackRate;
-                                        //    }
-                                        //}, 50);
-                                    }, 2650)
-                                }, 100)
-
-                            }, 500)
-                        }, 500)
-
-
-
-                    }).catch(error => {
-                        console.error("Evox Database is offline.")
-                        console.log('Error:', error);
-                    });
-
-
-
-
+    if (window.innerWidth > 768) {
+        //console.log("This is not a mobile device");
+        $("#tasks").fadeOut("fast", function() {
+            $("#loginContainer").fadeOut("fast", function() {
+                $("#device-warning").fadeIn("fast")
             })
-            .catch(error => {
-                console.error("IP Api is offline, ignoring")
-                console.log('Error:', error);
-            });
+            
+        })
+
+    } else {
+        if (localStorage.getItem("jeanDarc_accountData")) {
+            autoLogin()
+        } else {
+            const video = document.getElementById("video");
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(geo => {
+                    console.log("IP:", geo.ip)
+                    ip = geo.ip
+                    document.getElementById("loadText").innerText = 'Αναγνωριστικό έτοιμο'
+
+                    fetch('https://data.evoxs.xyz/jeandarc?metode=merrniEmrat')
+                        .then(response => response.json())
+                        .then(names => {
+                            namesData = names
+                            setTimeout(function () {
+
+                                document.getElementById("loadText").innerText = 'Έγινε σύνδεση'
+                                setTimeout(function () {
+                                    document.getElementById("topImg").style.opacity = '1'
+                                    setTimeout(function () {
+                                        document.getElementById("loginContainer").style.opacity = '1'
+                                        document.getElementById("loginSection").classList.add('active')
+                                        setTimeout(function () {
+                                            $("#tasks").fadeOut("fast")
+                                        }, 550)
+                                        video.play()
+                                        setTimeout(function () {
+                                            //let playbackRate = 1.0;
+                                            //
+                                            //const slowDown = setInterval(() => {
+                                            //    playbackRate -= 0.1; // Gradually decrease the speed
+                                            //    if (playbackRate <= 0.1) {
+                                            //        clearInterval(slowDown);
+                                            //        video.pause(); // Pause when playbackRate is near zero
+                                            //        video.playbackRate = 1.0; // Reset speed for next play
+                                            //    } else {
+                                            //        video.playbackRate = playbackRate;
+                                            //    }
+                                            //}, 50);
+                                        }, 2650)
+                                    }, 100)
+
+                                }, 500)
+                            }, 500)
+
+
+
+                        }).catch(error => {
+                            console.error("Evox Database is offline.")
+                            console.log('Error:', error);
+                        });
+
+
+
+
+                })
+                .catch(error => {
+                    console.error("IP Api is offline, ignoring")
+                    console.log('Error:', error);
+                });
+        }
     }
+
 
 
 });
@@ -509,12 +521,12 @@ function attach() {
         const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
         const f = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
         console.log(f.length)
-        if(f.length > 1) {
+        if (f.length > 1) {
             document.getElementById("emri").innerText = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a}`
         } else {
             document.getElementById("emri").innerText = f
         }
-        
+
         $("#app").fadeIn("fast")
     })
 }
@@ -551,4 +563,18 @@ function deletePIN() {
 
     pin = pin.slice(0, -1);
     //console.log("Removed last", pin)
+}
+
+function reset(e) {
+    const svgElement = e.querySelector('svg');
+
+    if (svgElement) {
+        svgElement.style.transform = 'rotate(360deg)'
+        setTimeout(function() {
+            localStorage.removeItem("jeanDarc_accountData")
+            window.location.reload()
+        }, 600)
+    } else {
+        console.log("No SVG found in this div.");
+    }
 }
