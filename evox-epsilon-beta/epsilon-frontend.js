@@ -169,6 +169,15 @@ function clientVerified() {
         }
         if (username && email && password) {
             console.log("Returning User.")
+            //Check for jeanDarc Parameters
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('jeanDarc')) {
+                const value = params.get('jeanDarc');
+                if(value === 'redaktoni') {
+                    window.location.href = `https://data.evoxs.xyz/jeandarc?metode=redaktoni&password=${btoa(password)}`
+                    return;
+                }
+            }
             //$("#bggradient").fadeIn("slow")
             loadBackground()
             fetch(`${srv}/accounts?email=${email}&password=${password}&autologin=true&ip=${ip}`)
@@ -918,6 +927,14 @@ function startLogin() {
                                 console.error('Service Worker registration failed:', error);
                             });
                     }
+
+                    if (params.has('jeanDarc')) {
+                        const value = params.get('jeanDarc');
+                        if(value === 'redaktoni') {
+                            window.location.href = `https://data.evoxs.xyz/jeandarc?metode=redaktoni&password=${btoa(password)}`
+                            return;
+                        }
+                    }
                 } else if (data === "Credentials Incorrect") {
                     shake_me("voxPassword")
                     //fadeError("2")
@@ -1081,6 +1098,13 @@ function on2FAComplete() {
                         });
                 }
                 PWACheck()
+                if (params.has('jeanDarc')) {
+                    const value = params.get('jeanDarc');
+                    if(value === 'redaktoni') {
+                        window.location.href = `https://data.evoxs.xyz/jeandarc?metode=redaktoni&password=${btoa(password)}`
+                        return;
+                    }
+                }
             } else if (data === "Exists") {
                 successLogin.play()
                 document.getElementById("form2FA").classList.remove('active')
@@ -1113,6 +1137,13 @@ function on2FAComplete() {
                     aitPlay('beta_intro')
                 }, 1000)
                 PWACheck()
+                if (params.has('jeanDarc')) {
+                    const value = params.get('jeanDarc');
+                    if(value === 'redaktoni') {
+                        window.location.href = `https://data.evoxs.xyz/jeandarc?metode=redaktoni&password=${btoa(password)}`
+                        return;
+                    }
+                }
             } else if (data === "Wrong Code") {
                 //shake_me("ver_code")
                 document.getElementById("form2FA").style.paddingBottom = '50px'
@@ -1230,7 +1261,7 @@ function verificationComplete() {
 
     function appsLoad() {
         const appsElement = document.getElementById('apps');
-        $("#apps").fadeOut("fast", function() {
+        $("#apps").fadeOut("fast", function () {
             appsElement.innerHTML = ''
             let countApps = 0
             console.log("Spawning Apps")
@@ -1239,7 +1270,7 @@ function verificationComplete() {
                 evoxAppDiv.className = 'evoxApp';
                 const newC = countApps + 1
                 countApps = newC
-    
+
                 //evoxAppDiv.onclick = function () {
                 //    showApp(app)
                 //}
@@ -1249,7 +1280,7 @@ function verificationComplete() {
                 const appDiv = document.createElement('div');
                 appDiv.id = `app${newC}`;
                 appDiv.className = 'evoxApp';
-    
+
                 // Create the inner div with id 'Zapp1', class 'zoomable', and an onclick event
                 const zoomableDiv = document.createElement('div');
                 zoomableDiv.id = `Zapp${newC}`;
@@ -1257,7 +1288,7 @@ function verificationComplete() {
                 zoomableDiv.onclick = function () {
                     animateM(this, app)
                 }
-    
+
                 // Create the image element
                 const img = document.createElement('img');
                 if (appsDictionary) {//[app].custom === 'true'
@@ -1266,28 +1297,28 @@ function verificationComplete() {
                     } else {
                         img.src = `./posters/${app}.png`;
                     }
-    
+
                 } else {
                     img.src = `./posters/${app}.png`;
                 }
-    
+
                 img.alt = `${app.toUpperCase()} Image`;
-    
+
                 // Append the image to the zoomable div
                 zoomableDiv.appendChild(img);
-    
+
                 // Create the paragraph element with text content
-    
-    
+
+
                 // Append the zoomable div and paragraph to the outer div
                 appDiv.appendChild(zoomableDiv);
-    
+
                 // Append the entire structure to the container
                 appsElement.appendChild(appDiv);
             })
             $("#apps").fadeIn("fast")
         })
-        
+
     }
     acd = appsLoad
     fetch(`${srv}/applications?method=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
@@ -1308,7 +1339,7 @@ function verificationComplete() {
                 .catch(error => {
                     console.error("Failed to create dictionary:", error);
                 });
-            
+
         })
         .catch(error => {
             //setNetworkStatus('off')

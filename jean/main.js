@@ -102,7 +102,9 @@ function selectCustom(name) {
                             $("#tasks").fadeOut("fast", function () {
                                 $("#loginContainer").fadeOut("fast", function () {
                                     document.getElementById("loginContainer").style.display = 'none'
-                                    $("#lock").fadeIn("fast")
+                                    $("#multimatch").fadeOut("fast", function () {
+                                        $("#lock").fadeIn("fast")
+                                    })
                                 })
 
                             })
@@ -120,123 +122,131 @@ function selectCustom(name) {
 
 
 function find() {
-    video.playbackRate = 1;
+    //video.playbackRate = 1;
     if (document.getElementById('nameInput').value === '') {
-        shake_me('nameInput')
+        //shake_me('nameInput')
         return;
     }
-    document.getElementById("loginSection").classList.remove('active')
-    document.getElementById("loginButton").style.opacity = '0'
-    setTimeout(function () {
-        document.getElementById("topImg").style.opacity = '1'
-        setTimeout(function () {
+    //document.getElementById("evoxContainer").classList.remove('active')
+    //document.getElementById("loginButton").style.opacity = '0'
+    // document.getElementById("topImg").style.opacity = '1'
 
-            document.getElementById("loadText").innerText = 'Αναζήτηση..'
-            $("#tasks").fadeIn("fast")
-            video.play()
-            const searchInput = document.getElementById('nameInput').value; // Replace with any input you want to test
-            const matchedNames = findFullNames(searchInput);
-            console.log(matchedNames);
-            setTimeout(() => {
-                if (matchedNames.length === 0) {
-                    document.getElementById("loadText").style.opacity = '0'
+    //document.getElementById("loadText").innerText = 'Αναζήτηση..'
+    //$("#tasks").fadeIn("fast")
+    //video.play()
+    document.getElementById("accessButton").innerHTML = loadingHTML
+    const searchInput = document.getElementById('nameInput').value;
+    const matchedNames = findFullNames(searchInput);
+    console.log(matchedNames);
+    setTimeout(() => {
+        if (matchedNames.length === 0) {
+            //document.getElementById("loadText").style.opacity = '0'
+            setTimeout(function () {
+                //document.getElementById("loadText").innerText = 'Δεν βρέθηκαν αντιστοιχίες'
+                //document.getElementById("loadText").style.opacity = '1'
+                //document.getElementById("accessButton").innerHTML = 'Δεν βρέθηκαν αντιστοιχίες'
+
+                $("#matchNotFound").fadeIn("fast", function () {
                     setTimeout(function () {
-                        document.getElementById("loadText").innerText = 'Δεν βρέθηκαν αντιστοιχίες'
-                        document.getElementById("loadText").style.opacity = '1'
-                    }, 340)
+                        $("#matchNotFound").fadeOut("fast")
+                    }, 2000)
+                })
+                document.getElementById("accessButton").innerHTML = 'Σύνδεση'
+            }, 340)
+        } else {
+            if (matchedNames.length > 1) {
+                document.getElementById("accessButton").innerHTML = `Βρέθηκε εμπόδιο`
+                setTimeout(function () {
 
+                    document.getElementById("evoxContainer").classList.remove("active")
                     $("#tasks").fadeIn("fast")
+                    document.getElementById("loadText").innerHTML = ''
+                    //document.getElementById("loadText").innerHTML = `Πολλαπλές αντιστοιχίες`
+                    //document.getElementById("loadText").style.opacity = '1'
+                    //document.getElementById("loginButton").style.display = 'none'
                     setTimeout(function () {
-                        setTimeout(function () {
-                            $("#tasks").fadeOut("fast")
-                        }, 550)
-                        document.getElementById("loginSection").classList.add('active')
-                        document.getElementById("loginButton").style.opacity = '1'
-                    }, 1000)
-                } else {
-                    if (matchedNames.length > 1) {
-                        const video = document.getElementById("video");
-                        video.play();
-                        document.getElementById("loadText").style.opacity = '0'
-                        setTimeout(function () {
-                            document.getElementById("loadText").innerHTML = `Πολλαπλές αντιστοιχίες`
-                            document.getElementById("loadText").style.opacity = '1'
-                            document.getElementById("loginButton").style.display = 'none'
-                            setTimeout(function () {
-                                //document.getElementById("loadText").style.opacity = '0'
-                                setTimeout(function () {
-                                    $("#tasks").fadeOut("fast")
-                                }, 550)
-                                setTimeout(function () {
-                                    document.getElementById("topImg").style.opacity = '0'
-                                    document.getElementById("multimatch").innerHTML = `<p>Επιλέξτε ένα από τα παρακάτω ονόματα:</p>`
-                                    let count = 0
-                                    matchedNames.forEach(name => {
-                                        count++
-                                        const firstChar = (str) => str.split(' ')[1]?.charAt(0) || null;
-                                        document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
+                        //document.getElementById("topImg").style.opacity = '0'
+                        document.getElementById("multimatch").innerHTML = `<h1>Βρέθηκαν πολλαπλές αντιστοιχίες με το ίδιο όνομα</h1><br><p>Επίλεξε ένα από τα παρακάτω ονόματα:</p>`
+                        let count = 0
+
+                        matchedNames.forEach(name => {
+                            count++
+                            const firstChar = (str) => str.split(' ')[1]?.charAt(0) || null;
+                            document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
                                         <div onclick="selectCustom('${name}')" class="socialUser"><img class="slUserPFP social"
                 src="https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${firstChar(name)}">
             <p>${name}</p><span>></span>
         </div>`
-                                        if (count === matchedNames.length) {
-                                            document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
+                            if (count === matchedNames.length) {
+                                document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
                                             <div class="centerLogin">
         <div onclick="returnFromMultimatch()" class="loginButton">Ακύρωση</div>
     </div>`
-                                        }
+                            }
 
-                                    });
-                                    setTimeout(function () {
-                                        document.getElementById("topImg").style.display = 'none'
-                                        document.getElementById("loginSection").style.display = 'none'
-                                        document.getElementById("multimatch").classList.add("active")
-                                    }, 500)
-
-                                    //document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')}`
-                                    //document.getElementById("loadText").style.opacity = '1'
-                                    //setTimeout(function () {
-                                    //    
-                                    //}, 1200)
-                                }, 340)
-                            }, 900)
-                        }, 340)
-                    } else {
-                        foundName = matchedNames[0]
-                        document.getElementById("loadText").style.opacity = '0'
+                        });
                         setTimeout(function () {
-                            document.getElementById("loadText").innerHTML = `Επιτυχία`
-                            document.getElementById("loadText").style.opacity = '1'
-                            setTimeout(function () {
-                                document.getElementById("loadText").style.opacity = '0'
-                                setTimeout(function () { //
-                                    const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
-                                    const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
-                                    document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
-                                    document.getElementById("loadText").style.opacity = '1'
-                                    setTimeout(function () {
-                                        document.getElementById("topImg").style.opacity = '0'
-                                        $("#tasks").fadeOut("fast", function () {
-                                            $("#loginContainer").fadeOut("fast", function () {
-                                                document.getElementById("loginContainer").style.display = 'none'
+                            //document.getElementById("topImg").style.display = 'none'
+                            //document.getElementById("loginSection").style.display = 'none'
+                            $("#loginContainer").fadeOut("fast", function () {
+                                $("#multimatch").fadeIn("fast")
+                                $("#tasks").fadeOut("fast")
+                                document.getElementById("multimatch").classList.add("active")
+                            })
+
+                        }, 500)
+
+                        //document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')}`
+                        //document.getElementById("loadText").style.opacity = '1'
+                        //setTimeout(function () {
+                        //    
+                        //}, 1200)
+                    }, 340)
+                }, 340)
+            } else {
+                foundName = matchedNames[0]
+                //document.getElementById("loadText").style.opacity = '0'
+                setTimeout(function () {
+                    //document.getElementById("loadText").innerHTML = `Επιτυχία`
+                    document.getElementById("accessButton").innerHTML = `Επιτυχία`
+                    document.getElementById("loadText").style.opacity = '1'
+                    document.getElementById("evoxContainer").classList.remove("active")
+                    $("#tasks").fadeIn("fast", function () {
+                        setTimeout(function () {
+                            //document.getElementById("loadText").style.opacity = '0'
+                            setTimeout(function () { //
+                                const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
+                                const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
+                                document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
+                                document.getElementById("loadText").style.opacity = '1'
+                                setTimeout(function () {
+                                    document.getElementById("topImg").style.opacity = '0'
+                                    $("#tasks").fadeOut("fast", function () {
+                                        $("#loginContainer").fadeOut("fast", function () {
+                                            document.getElementById("loginContainer").style.display = 'none'
+                                            $("#multimatch").fadeOut("fast", function () {
                                                 $("#lock").fadeIn("fast")
                                             })
-
                                         })
-                                    }, 2500)
-                                }, 340)
-                            }, 900)
-                        }, 340)
-                    }
+
+                                    })
+                                }, 2500)
+                            }, 340)
+                        }, 900)
+                    })
 
 
-                }
-            }, 500);
+                }, 340)
+            }
 
-        }, 100)
 
-    }, 500)
+        }
+    }, 100);
 
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
 
@@ -248,6 +258,15 @@ function findFullNames(input) {
         // Check if the input matches any of the name variations (case insensitive)
         if (nameVariations.some(variation => variation.toLowerCase() === input.toLowerCase())) {
             results.push(fullName);
+        } else {
+            console.log(input.length)
+            if (JSON.stringify(nameVariations).includes(input) || JSON.stringify(nameVariations).includes(input.toLowerCase()) || JSON.stringify(nameVariations).includes(capitalizeFirstLetter(input))) {
+                if (input.length > 2) {
+                    console.log("Found included")
+                    results.push(fullName);
+                }
+
+            }
         }
     }
 
@@ -262,24 +281,91 @@ function storiesSpawned() {
     });
 }
 
+const reloadThreshold = 2;
+const timeWindow = 5000;
+
+let reloadCount = sessionStorage.getItem('reloadCount') ? parseInt(sessionStorage.getItem('reloadCount')) : 0;
+let lastReloadTime = sessionStorage.getItem('lastReloadTime') ? parseInt(sessionStorage.getItem('lastReloadTime')) : Date.now();
+let spammingDetected = sessionStorage.getItem('spammingDetected') === 'true';
+
+if (spammingDetected) {
+    //alert("Spamming reload was already detected earlier.");
+} else {
+    window.onbeforeunload = function () {
+        const currentTime = Date.now();
+
+        if (currentTime - lastReloadTime < timeWindow) {
+            reloadCount++;
+        } else {
+            reloadCount = 1;
+        }
+
+        sessionStorage.setItem('reloadCount', reloadCount);
+        sessionStorage.setItem('lastReloadTime', currentTime);
+
+        if (reloadCount > reloadThreshold) {
+            console.log("Spamming reload detected!");
+            sessionStorage.setItem('spammingDetected', 'true');
+            //return false;
+        }
+
+        return undefined;
+    };
+}
+
+function continueToLogin() {
+    $("#case1").fadeOut("fast", function () {
+        document.getElementById("evoxContainer").style.height = '420px'
+        $("#loginForm").fadeIn("fast")
+    })
+}
+
+
 
 let namesData = null
 let ip = null
 document.addEventListener("DOMContentLoaded", function () {
     if (window.innerWidth > 768) {
         //console.log("This is not a mobile device");
-        $("#tasks").fadeOut("fast", function() {
-            $("#loginContainer").fadeOut("fast", function() {
+        $("#tasks").fadeOut("fast", function () {
+            $("#loginContainer").fadeOut("fast", function () {
                 $("#device-warning").fadeIn("fast")
             })
-            
+
         })
 
+    } else if (spammingDetected) {
+        $("#tasks").fadeOut("fast", function () {
+            $("#loginContainer").fadeOut("fast", function () {
+                $("#spamStop").fadeIn("fast")
+                let stopTime = 10
+                if (sessionStorage.getItem("countdown")) {
+                    const nn = Number(sessionStorage.getItem("countdown"))
+
+                    sessionStorage.setItem("countdown", Math.floor(nn + 50 / 100 * nn))
+                    stopTime = Math.floor(nn + 50 / 100 * nn)
+                }
+                sessionStorage.setItem("countdown", stopTime)
+                document.getElementById("countdown").innerText = stopTime
+                setInterval(function () {
+                    const num = Number(document.getElementById("countdown").innerText) - 1
+                    document.getElementById("countdown").innerText = num
+                    sessionStorage.setItem("countdown", num)
+                    if (num < 1) {
+                        sessionStorage.removeItem('spammingDetected')
+                        sessionStorage.removeItem("countdown")
+                        window.location.reload()
+                    }
+                }, 1000)
+            })
+
+        })
     } else {
+
         if (localStorage.getItem("jeanDarc_accountData")) {
             autoLogin()
         } else {
-            const video = document.getElementById("video");
+            //const video = document.getElementById("video");
             fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
                 .then(geo => {
@@ -295,14 +381,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
                                 document.getElementById("loadText").innerText = 'Έγινε σύνδεση'
                                 setTimeout(function () {
-                                    document.getElementById("topImg").style.opacity = '1'
+                                    document.getElementById("setupPage").style.display = ''
+                                    //document.getElementById("topImg").style.opacity = '1'
                                     setTimeout(function () {
-                                        document.getElementById("loginContainer").style.opacity = '1'
-                                        document.getElementById("loginSection").classList.add('active')
+                                        //document.getElementById("loginContainer").style.opacity = '1'
+                                        //document.getElementById("loginSection").classList.add('active')
+                                        document.getElementById("bgGrd").style.transform = 'scale(0.95)'
+                                        document.getElementById("evoxContainer").classList.add("active")
                                         setTimeout(function () {
                                             $("#tasks").fadeOut("fast")
                                         }, 550)
-                                        video.play()
+                                        //video.play()
                                         setTimeout(function () {
                                             //let playbackRate = 1.0;
                                             //
@@ -326,6 +415,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         }).catch(error => {
                             console.error("Evox Database is offline.")
+                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα`
                             console.log('Error:', error);
                         });
 
@@ -343,6 +433,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 });
+
+const loadingHTML = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" width="25px"
+                height="25px" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+                <path fill="#dedede"
+                    d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                    <animateTransform attributeType="XML" attributeName="transform" type="rotate" from="0 25 25"
+                        to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                </path>
+            </svg>`
+function startSetup(e) {
+    e.innerHTML = loadingHTML
+    document.getElementById("bgGrd").style.transform = ''
+    document.getElementById("evoxContainer").classList.remove("active")
+    document.getElementById("loadText").innerText = 'Περιμένετε..'
+    setTimeout(function () {
+        $("#tasks").fadeIn("fast", function () {
+            document.getElementById("setupPage").style.display = ''
+            document.getElementById("newUser").style.display = 'none'
+            document.getElementById("case1").style.display = ''
+            setTimeout(function () {
+                document.getElementById("evoxContainer").classList.add("active")
+                document.getElementById("bgGrd").style.transform = 'scale(0.95)'
+            }, 1000)
+        })
+    }, 550)
+}
 
 document.getElementById('nameInput').addEventListener('focus', function () {
     video.playbackRate = 1.5; // Ensure normal speed on play
@@ -405,52 +522,164 @@ function clickPIN(element) {
             $("#PINdots").fadeOut("fast", function () {
                 $("#PINload").fadeIn("fast")
             })
-            setTimeout(function () {
-                fetch(`https://data.evoxs.xyz/jeandarc?metode=pin&pin=${pin}&emri=${foundName}`)
-                    .then(response => response.text())
-                    .then(status => {
-                        if (status === 'Granted') {
-                            console.log("Success")
+            if (pinAction === null) {
+                setTimeout(function () {
+                    fetch(`https://data.evoxs.xyz/jeandarc?metode=pin&pin=${pin}&emri=${foundName}`)
+                        .then(response => response.text())
+                        .then(status => {
+                            if (status === 'Granted') {
+                                console.log("Success")
 
-                            proccessingPIN = false
-                            //console.log("Correct")
-                            $("#PINload").fadeOut("fast", function () {
-                                //document.body.style.overflow = 'auto';
-                                document.body.style.touchAction = '';
-                                $("#lock").fadeOut("fast", function () {
-                                    document.getElementById("loadText").innerHTML = `Έχετε συνδεθεί.`
-                                    const accData = {
-                                        "name": foundName,
-                                        "pin": btoa(pin),
-                                        "latestIp": ip
-                                    }
-                                    localStorage.setItem("jeanDarc_accountData", JSON.stringify(accData))
-                                    $("#tasks").fadeIn("fast")
+                                proccessingPIN = false
+                                //console.log("Correct")
+                                $("#PINload").fadeOut("fast", function () {
+                                    //document.body.style.overflow = 'auto';
+                                    document.body.style.touchAction = '';
+                                    $("#lock").fadeOut("fast", function () {
+                                        document.getElementById("loadText").innerHTML = `Περιμένετε..`
+                                        const accData = {
+                                            "name": foundName,
+                                            "pin": btoa(pin),
+                                            "latestIp": ip
+                                        }
+                                        localStorage.setItem("jeanDarc_accountData", JSON.stringify(accData))
+                                        $("#tasks").fadeIn("fast")
+
+                                        autoLogin()
+
+                                    })
+                                    //if (localStorage.getItem("remPIN") === "true") {
+                                    sessionStorage.setItem("remUnlocked", "true")
+                                    //}
+                                })
+                            } else {
+
+                                proccessingPIN = false
+                                deletePIN()
+                                deletePIN()
+                                deletePIN()
+                                deletePIN()
+                                $("#PINload").fadeOut("fast", function () {
+                                    $("#PINdots").fadeIn("fast", function () {
+                                        shake_me("pin-input")
+                                    })
+                                })
+                            }
+                        }).catch(error => {
+                            console.error("Evox Database is offline.")
+                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα`
+                            console.log('Error:', error);
+                        });
+
+                }, 900)
+            } else if (pinAction === 'old') {
+                setTimeout(function () {
+                    fetch(`https://data.evoxs.xyz/jeandarc?metode=pin&pin=${pin}&emri=${foundName}`)
+                        .then(response => response.text())
+                        .then(status => {
+                            if (status === 'Granted') {
+                                console.log("Success")
+
+                                proccessingPIN = false
+                                //console.log("Correct")
+                                $("#PINload").fadeOut("fast", function () {
+                                    document.getElementById("pinText").innerHTML = 'Επιτυχία'
+                                    pinAction = 'new'
+                                    $("#PINdots").fadeIn("fast")
+                                    $("#lock").fadeIn("fast")
+                                    setTimeout(function () {
+                                        deletePIN()
+                                        deletePIN()
+                                        deletePIN()
+                                        deletePIN()
+                                        document.getElementById("pinText").innerHTML = 'Εισάγετε το νέο PIN'
+                                    }, 500)
 
                                 })
-                                //if (localStorage.getItem("remPIN") === "true") {
-                                sessionStorage.setItem("remUnlocked", "true")
-                                //}
-                            })
-                        } else {
+                            } else {
 
-                            proccessingPIN = false
-                            deletePIN()
-                            deletePIN()
-                            deletePIN()
-                            deletePIN()
-                            $("#PINload").fadeOut("fast", function () {
-                                $("#PINdots").fadeIn("fast", function () {
-                                    shake_me("pin-input")
+                                proccessingPIN = false
+                                deletePIN()
+                                deletePIN()
+                                deletePIN()
+                                deletePIN()
+                                $("#PINload").fadeOut("fast", function () {
+                                    $("#PINdots").fadeIn("fast", function () {
+                                        shake_me("pin-input")
+                                    })
                                 })
-                            })
-                        }
-                    }).catch(error => {
-                        console.error("Evox Database is offline.")
-                        console.log('Error:', error);
-                    });
+                            }
+                        }).catch(error => {
+                            console.error("Evox Database is offline.")
+                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα`
+                            console.log('Error:', error);
+                        });
 
-            }, 900)
+                }, 500)
+            } else if (pinAction === 'new') {
+                setTimeout(function () {
+                    fetch(`https://data.evoxs.xyz/jeandarc?metode=pinChange&pin=${atob(JSON.parse(localStorage.getItem('jeanDarc_accountData')).pin)}&emri=${foundName}&pinNew=${pin}`)
+                        .then(response => response.text())
+                        .then(status => {
+                            if (status === 'Complete') {
+                                console.log("Success")
+
+                                proccessingPIN = false
+                                //console.log("Correct")
+                                $("#PINload").fadeOut("fast", function () {
+                                    //document.body.style.overflow = 'auto';
+                                    document.body.style.touchAction = '';
+                                    $("#lock").fadeOut("fast", function () {
+                                        document.getElementById("loadText").innerHTML = `Περιμένετε..`
+                                        const accData = {
+                                            "name": foundName,
+                                            "pin": btoa(pin),
+                                            "latestIp": ip
+                                        }
+                                        localStorage.setItem("jeanDarc_accountData", JSON.stringify(accData))
+                                        $("#tasks").fadeIn("fast")
+                                        pinAction = null
+
+                                        setTimeout(function () {
+                                            $("#loadText").fadeOut("fast", function () {
+                                                document.getElementById("loadText").innerHTML = 'Το PIN ανανεώθηκε με επιτυχία'
+                                                $("#loadText").fadeIn("fast")
+
+                                                setTimeout(function () {
+                                                    $("#tasks").fadeOut("fast")
+                                                    $("#app").fadeIn("fast")
+                                                }, 1200)
+                                            })
+                                        }, 500)
+
+
+                                    })
+                                    //if (localStorage.getItem("remPIN") === "true") {
+                                    sessionStorage.setItem("remUnlocked", "true")
+                                    //}
+                                })
+                            } else {
+
+                                proccessingPIN = false
+                                deletePIN()
+                                deletePIN()
+                                deletePIN()
+                                deletePIN()
+                                $("#PINload").fadeOut("fast", function () {
+                                    $("#PINdots").fadeIn("fast", function () {
+                                        shake_me("pin-input")
+                                    })
+                                })
+                            }
+                        }).catch(error => {
+                            console.error("Evox Database is offline.")
+                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα`
+                            console.log('Error:', error);
+                        });
+
+                }, 500)
+            }
+
         }
     }
     // else {    
@@ -487,6 +716,7 @@ function autoLogin() {
                             $("#tasks").fadeIn("fast")
                             document.getElementById("loadText").innerText = 'Επιτυχία'
                             sessionStorage.setItem("remUnlocked", "true")
+
                             setTimeout(function () {
                                 attach()
                             }, 1200)
@@ -496,13 +726,17 @@ function autoLogin() {
                             $("#tasks").fadeOut("fast", function () {
                                 $("#loginContainer").fadeOut("fast", function () {
                                     document.getElementById("loginContainer").style.display = 'none'
-                                    $("#lock").fadeIn("fast")
+
+                                    $("#multimatch").fadeOut("fast", function () {
+                                        $("#lock").fadeIn("fast")
+                                    })
                                 })
 
                             })
                         }
                     }).catch(error => {
                         console.error("Evox Database is offline.")
+                        document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα`
                         console.log('Error:', error);
                     });
             })
@@ -516,6 +750,10 @@ function autoLogin() {
 }
 
 function attach() {
+    if (atob(JSON.parse(localStorage.getItem("jeanDarc_accountData")).pin) === '0000') {
+        console.log("Request PIN Change")
+        document.getElementById("notice").classList.add("active")
+    }
     $("#tasks").fadeOut("fast", function () {
         const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
         const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
@@ -528,6 +766,7 @@ function attach() {
         }
 
         $("#app").fadeIn("fast")
+
     })
 }
 
@@ -570,11 +809,35 @@ function reset(e) {
 
     if (svgElement) {
         svgElement.style.transform = 'rotate(360deg)'
-        setTimeout(function() {
+        setTimeout(function () {
             localStorage.removeItem("jeanDarc_accountData")
             window.location.reload()
         }, 600)
     } else {
         console.log("No SVG found in this div.");
     }
+}
+
+function dismissPINChange() {
+    document.getElementById("notice").classList.remove("active")
+}
+
+let pinAction = null;
+function changePin(e) {
+    e.innerHTML = loadingHTML
+    $("#PINdots").fadeIn("fast")
+    deletePIN()
+    deletePIN()
+    deletePIN()
+    deletePIN()
+    $("#app").fadeOut("fast", function () {
+        document.getElementById("notice").classList.remove("active")
+        setTimeout(function () {
+
+            document.getElementById("pinText").innerHTML = 'Εισάγετε το παλιό σας PIN'
+            pinAction = 'old'
+            $("#lock").fadeIn("fast")
+        }, 500)
+    })
+
 }
