@@ -17,38 +17,38 @@ html,
 body {
     height: 100%;
     width: 100%;
-    font-family: "Inter";
-    background-color: #000;
+    font-family: "SF";
+    background-color: #100e00;
+    
     padding: 0;
     margin: 0;
     color: #fff;
-    overflow: hidden;
     /* Optional: keep this for body-level overflow control */
     touch-action: manipulation;
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .background-gradient {
-    background-color: #000;
-
     /* Background gradient to simulate light */
-    background: radial-gradient(
-      circle at top,           /* Glow effect from the top */
-      rgba(128, 0, 128, 0.15), /* Light purple with low opacity */
-      rgba(0, 0, 0, 0) 60%
-    ),
-    radial-gradient(
-      circle at bottom,        /* Glow effect from the bottom */
-      rgba(128, 0, 128, 0.1),  /* Slightly lighter purple with lower opacity */
-      rgba(0, 0, 0, 0) 60%
-    ),
-    #000; /* Base background color */
+    background: radial-gradient(circle at top,
+            /* Glow effect from the top */
+            rgba(122, 108, 0, 0.2),
+            /* Light purple with low opacity */
+            rgba(0, 0, 0, 0) 60%),
+        radial-gradient(circle at bottom,
+            /* Glow effect from the bottom */
+            rgba(200, 182, 45, 0.1),
+            /* Slightly lighter purple with lower opacity */
+            rgba(0, 0, 0, 0) 50%),
+        #000;
+    /* Base background color */
 
     /* Apply a blur filter to soften the edges of the "light" */
-    filter: blur(10px);
+    
 
     /* Cover the entire screen */
     min-height: 100vh;
@@ -57,7 +57,6 @@ body {
     position: absolute;
     z-index: 0;
     transition: transform 0.6s ease-out;
-    border-radius: 10px;
 }
 
 *,
@@ -95,6 +94,7 @@ body {
     top: 20px;
     right: 20px;
 }
+
 .login {
     opacity: 0;
     display: flex;
@@ -588,12 +588,17 @@ vo input::placeholder {
     padding: 5px;
     padding-top: 15px;
     position: relative;
+    overflow:hidden;
+    overflow-y: auto;
 }
 
 .app .topBar {
     display: flex;
     flex-direction: row;
     align-items: center;
+    padding: 10px;
+    padding-bottom: 0;
+    padding-top: 0;
 }
 
 .app .topBar .pfp img {
@@ -711,13 +716,13 @@ vo input::placeholder {
 .progress-card {
     display: flex;
     align-items: center;
-    background: linear-gradient(145deg, #3c3b3f, #6f586c);
+    background: linear-gradient(145deg, #3c3b3f, #6e6f58);
     border-radius: 15px;
     padding: 20px;
     box-shadow: 2px 2px 16px #141414, -2px -2px 16px #28282e;
     /* Optional: Set max-width */
     width: 100%;
-    border: 2px #6f586cd2 solid;
+    border: 2px #6e6f58 solid;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
 }
@@ -748,7 +753,7 @@ vo input::placeholder {
 }
 
 .progress-ring circle.progress {
-    stroke: #ff8bcb;
+    stroke: #18d66e;
     stroke-dasharray: 176;
     stroke-dashoffset: calc(176 - (176 * var(--progress)) / 100);
     /* Use CSS variable */
@@ -806,6 +811,7 @@ vo input::placeholder {
     padding: 20px;
     overflow: hidden;
     /* Prevent overflow from the video */
+    margin-bottom: 10px;
 }
 
 .card .background {
@@ -831,7 +837,15 @@ vo input::placeholder {
 }
 
 .card .background video {
-    filter: brightness(0.8);
+    filter: brightness(0.5);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Cover the area without distortion */
+}
+
+.card .background img {
+    filter: brightness(0.5);
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -859,6 +873,7 @@ vo input::placeholder {
     padding: 5px 12px;
     display: inline;
     align-self: flex-start;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .tag.green {
@@ -880,7 +895,7 @@ vo input::placeholder {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
 }
 
 .card .arrow svg {
@@ -890,7 +905,7 @@ vo input::placeholder {
 .card .title {
     font-size: 25px;
     margin-top: 12px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.55);
     /* Subtle shadow */
 }
 
@@ -921,7 +936,8 @@ vo input::placeholder {
     left: 0;
     height: 100%;
     width: 50%;
-    background-color: #fff;
+    background-color: #ffffff; /*Bar Color*/
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     border-radius: 25px;
 }
 
@@ -969,7 +985,7 @@ vo input::placeholder {
     border-radius: 50px;
     width: 60px;
     height: 60px;
-    
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1015,4 +1031,152 @@ vo input::placeholder {
 
 .spamStop .countdown {
     font-size: 30px;
+}
+
+.topActions {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    
+}
+
+.topActions .backArrow {
+    padding: 10px;
+    background-color: #000;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.topActions .topMoreOpt {
+    margin-left: auto;
+    padding: 10px;
+    background-color: #000;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.assets {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.banner img {
+    width: 100%;
+    height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: cover;
+}
+
+.darc-user-self {
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -50px;
+    border: 4px solid black;
+    margin-bottom: 20px;
+}
+
+.darc-user-self img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+
+.assets p span {
+    font-size: 20px;
+    font-weight: bolder;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.assets p svg {
+    margin-left: 5px;
+}
+
+.assets span {
+    font-size: 17px;
+    padding: 10px;
+}
+
+.assets .moreInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%; 
+    margin-top: 0;  
+}
+
+.moreInfo .anInfo {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.anInfo svg {
+    margin-right: 5px;
+}
+
+.anInfo span {
+    font-size: 16px;
+}
+
+.buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.buttons .message {
+    background-color: #1e1e1e;
+    padding: 10px 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #323232;
+    border-radius: 50px;
+    height: 50px;
+}
+
+.buttons .social {
+    background-color: #1e1e1e;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #323232;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
 }

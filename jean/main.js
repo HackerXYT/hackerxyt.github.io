@@ -1,39 +1,39 @@
 
 
-const disableScroll = (e) => {
-    // For wheel events
-    if (e.deltaY !== 0) {
-        // Allow vertical scroll, prevent horizontal scroll
-        e.preventDefault();
-    }
-};
+//const disableScroll = (e) => {
+//    // For wheel events
+//    if (e.deltaY !== 0) {
+//        // Allow vertical scroll, prevent horizontal scroll
+//        e.preventDefault();
+//    }
+//};
 
 // For touch events, we prevent default only if the touch movement is horizontal
-const touchMoveHandler = (e) => {
-    const touch = e.touches[0];
-    const startX = touch.clientX;
-    const startY = touch.clientY;
-
-    const moveHandler = (e) => {
-        const moveX = e.touches[0].clientX - startX;
-        const moveY = e.touches[0].clientY - startY;
-
-        if (Math.abs(moveX) > Math.abs(moveY)) {
-            e.preventDefault(); // Prevent horizontal movement
-        }
-    };
-
-    window.addEventListener('touchmove', moveHandler, { passive: false });
-
-    // Remove the event listener when the touch ends
-    window.addEventListener('touchend', () => {
-        window.removeEventListener('touchmove', moveHandler);
-    }, { once: true });
-};
-
-// Attach the event listeners
-window.addEventListener('wheel', disableScroll, { passive: false });
-window.addEventListener('touchstart', touchMoveHandler, { passive: false });
+//const touchMoveHandler = (e) => {
+//    const touch = e.touches[0];
+//    const startX = touch.clientX;
+//    const startY = touch.clientY;
+//
+//    const moveHandler = (e) => {
+//        const moveX = e.touches[0].clientX - startX;
+//        const moveY = e.touches[0].clientY - startY;
+//
+//        if (Math.abs(moveX) > Math.abs(moveY)) {
+//            e.preventDefault(); // Prevent horizontal movement
+//        }
+//    };
+//
+//    window.addEventListener('touchmove', moveHandler, { passive: false });
+//
+//    // Remove the event listener when the touch ends
+//    window.addEventListener('touchend', () => {
+//        window.removeEventListener('touchmove', moveHandler);
+//    }, { once: true });
+//};
+//
+//// Attach the event listeners
+//window.addEventListener('wheel', disableScroll, { passive: false });
+//window.addEventListener('touchstart', touchMoveHandler, { passive: false });
 
 
 function getRandomColor() {
@@ -174,7 +174,7 @@ function find() {
                             const firstChar = (str) => str.split(' ')[1]?.charAt(0) || null;
                             document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
                                         <div onclick="selectCustom('${name}')" class="socialUser"><img class="slUserPFP social"
-                src="https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${firstChar(name)}">
+                src="https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${foundName}_jeanDarc">
             <p>${name}</p><span>></span>
         </div>`
                             if (count === matchedNames.length) {
@@ -386,7 +386,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     setTimeout(function () {
                                         //document.getElementById("loginContainer").style.opacity = '1'
                                         //document.getElementById("loginSection").classList.add('active')
-                                        document.getElementById("bgGrd").style.transform = 'scale(0.95)'
+                                        //document.getElementById("bgGrd").style.transform = 'scale(0.95)'
                                         document.getElementById("evoxContainer").classList.add("active")
                                         setTimeout(function () {
                                             $("#tasks").fadeOut("fast")
@@ -445,7 +445,7 @@ const loadingHTML = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
             </svg>`
 function startSetup(e) {
     e.innerHTML = loadingHTML
-    document.getElementById("bgGrd").style.transform = ''
+    //document.getElementById("bgGrd").style.transform = ''
     document.getElementById("evoxContainer").classList.remove("active")
     document.getElementById("loadText").innerText = 'Περιμένετε..'
     setTimeout(function () {
@@ -455,7 +455,7 @@ function startSetup(e) {
             document.getElementById("case1").style.display = ''
             setTimeout(function () {
                 document.getElementById("evoxContainer").classList.add("active")
-                document.getElementById("bgGrd").style.transform = 'scale(0.95)'
+                //document.getElementById("bgGrd").style.transform = 'scale(0.95)'
             }, 1000)
         })
     }, 550)
@@ -706,6 +706,7 @@ function autoLogin() {
                         //alert(status)
                         if (status === 'Granted') {
                             console.log("Success")
+                            document.getElementById("selfPfp").src = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${foundName}_jeanDarc`
 
                             const accData = {
                                 "name": foundName,
@@ -805,17 +806,17 @@ function deletePIN() {
 }
 
 function reset(e) {
-    const svgElement = e.querySelector('svg');
+    //const svgElement = e.querySelector('svg');
 
-    if (svgElement) {
-        svgElement.style.transform = 'rotate(360deg)'
+    //if (svgElement) {
+    //    svgElement.style.transform = 'rotate(360deg)'
         setTimeout(function () {
             localStorage.removeItem("jeanDarc_accountData")
             window.location.reload()
         }, 600)
-    } else {
-        console.log("No SVG found in this div.");
-    }
+    //} else {
+    //    console.log("No SVG found in this div.");
+    //}
 }
 
 function dismissPINChange() {
@@ -840,4 +841,15 @@ function changePin(e) {
         }, 500)
     })
 
+}
+
+function showProfile() {
+    
+    document.getElementById("darc-user-self-profile").src = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${foundName}_jeanDarc`
+    document.getElementById("userName").innerText = foundName
+    document.getElementById("profilePage").classList.add("active")
+}
+
+function goBackFromProfile() {
+    document.getElementById("profilePage").classList.remove("active")
 }
