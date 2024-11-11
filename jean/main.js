@@ -325,6 +325,23 @@ function continueToLogin() {
 let namesData = null
 let ip = null
 document.addEventListener("DOMContentLoaded", function () {
+    //$("#tasks").fadeOut("fast", function () {
+    //    $("#loginContainer").fadeOut("fast", function () {
+    //        $("#lock").fadeIn("fast")
+    //    })
+    //}) testing
+    document.querySelectorAll('.pin-pad button').forEach(button => {
+        button.addEventListener('touchstart', () => {
+            button.classList.add('active');
+        });
+
+        button.addEventListener('touchend', () => {
+            setTimeout(function () {
+                button.classList.remove('active');
+            }, 100)
+
+        });
+    });
     if (window.innerWidth > 768) {
         //console.log("This is not a mobile device");
         $("#tasks").fadeOut("fast", function () {
@@ -810,10 +827,10 @@ function reset(e) {
 
     //if (svgElement) {
     //    svgElement.style.transform = 'rotate(360deg)'
-        setTimeout(function () {
-            localStorage.removeItem("jeanDarc_accountData")
-            window.location.reload()
-        }, 600)
+    setTimeout(function () {
+        localStorage.removeItem("jeanDarc_accountData")
+        window.location.reload()
+    }, 600)
     //} else {
     //    console.log("No SVG found in this div.");
     //}
@@ -843,13 +860,89 @@ function changePin(e) {
 
 }
 
-function showProfile() {
-    
-    document.getElementById("darc-user-self-profile").src = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${foundName}_jeanDarc`
-    document.getElementById("userName").innerText = foundName
-    document.getElementById("profilePage").classList.add("active")
+function showProfile(e) {
+    const img = e.querySelector('img')
+    img.style.transform = "scale(0.9)"
+
+    setTimeout(function () {
+        img.style.transform = ""
+        document.getElementById("darc-user-self-profile").src = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${foundName}_jeanDarc`
+        document.getElementById("userName").innerText = foundName
+        document.getElementById("profilePage").classList.add("active")
+    }, 100)
+
 }
 
 function goBackFromProfile() {
     document.getElementById("profilePage").classList.remove("active")
+}
+
+function clickCard(e) {
+    e.style.transform = "scale(0.99)"
+    setTimeout(function () {
+        e.style.transform = "scale(1)"
+    }, 200)
+}
+
+function actionClick(event, e) {
+    event.preventDefault(); // Prevent default behavior
+    event.stopPropagation(); // Stop the event from bubbling up to parent elements
+    const svgElement = e.querySelector('svg');
+    if (svgElement) {
+        svgElement.style.transform = 'rotate(360deg)'
+    } else {
+        console.log("No SVG found in this div.");
+    }
+}
+
+let startProg = 10;
+
+function testCard(e) {
+    e.style.transform = 'scale(0.99)';
+    setTimeout(function () {
+        // Increment the progress
+        let targetProg = startProg + 10;
+
+        if (targetProg >= 100) {
+            targetProg = 0;
+        }
+
+        // Animate the number change
+        animateNumberChange(e, targetProg);
+
+        // Update the progress-ring style
+        const elm = e.querySelector('div.progress-ring');
+        elm.style = `--progress: ${targetProg};`;
+
+        // Reset scale
+        e.style.transform = 'scale(1)';
+
+        // Update the startProg for the next cycle
+        startProg = targetProg;
+
+    }, 200);
+}
+
+function animateNumberChange(element, targetValue) {
+    const txt = element.querySelector('div.progress-ring div.percentage');
+    const currentValue = parseInt(txt.innerText) || 0; // Default to 0 if the text is empty
+    const duration = 500; // Duration of the animation in ms
+    const steps = 40; // Number of steps for the animation (controls how smooth the animation is)
+    const increment = (targetValue - currentValue) / steps;
+
+    let count = 0;
+
+    function update() {
+        count++;
+        const newValue = currentValue + increment * count;
+        txt.innerText = Math.round(newValue) + "%";
+
+        if (count < steps) {
+            requestAnimationFrame(update);
+        } else {
+            txt.innerText = targetValue + "%"; // Ensure it ends exactly at the target value
+        }
+    }
+
+    update();
 }
