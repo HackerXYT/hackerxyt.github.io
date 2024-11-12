@@ -172,11 +172,16 @@ function find() {
                         matchedNames.forEach(name => {
                             count++
                             const firstChar = (str) => str.split(' ')[1]?.charAt(0) || null;
+                            const ranId = Math.floor(Math.random() * 909999) + 1
                             document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
-                                        <div onclick="selectCustom('${name}')" class="socialUser"><img class="slUserPFP social"
-                src="https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${foundName}_jeanDarc">
+                                        <div onclick="selectCustom('${name}')" class="socialUser"><img id="${ranId}" class="slUserPFP social"
+                src="reloading-pfp.gif">
             <p>${name}</p><span>></span>
         </div>`
+                            getEvoxProfile(name).then(profileSrc => {
+                                document.getElementById(ranId).src = profileSrc
+                            });
+
                             if (count === matchedNames.length) {
                                 document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
                                             <div class="centerLogin">
@@ -390,7 +395,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     ip = geo.ip
                     document.getElementById("loadText").innerText = 'Αναγνωριστικό έτοιμο'
 
-                    fetch('https://data.evoxs.xyz/jeandarc?metode=merrniEmrat')
+                    fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
                         .then(response => response.json())
                         .then(names => {
                             namesData = names
@@ -431,8 +436,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                         }).catch(error => {
-                            console.error("Evox Database is offline.")
-                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα`
+                            console.error("Jeanne D'arc Database is offline.")
+                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα.`
+                            $("#tasks").fadeIn("fast")
                             console.log('Error:', error);
                         });
 
@@ -541,7 +547,7 @@ function clickPIN(element) {
             })
             if (pinAction === null) {
                 setTimeout(function () {
-                    fetch(`https://data.evoxs.xyz/jeandarc?metode=pin&pin=${pin}&emri=${foundName}`)
+                    fetch(`https://arc.evoxs.xyz/?metode=pin&pin=${pin}&emri=${foundName}`)
                         .then(response => response.text())
                         .then(status => {
                             if (status === 'Granted') {
@@ -583,15 +589,16 @@ function clickPIN(element) {
                                 })
                             }
                         }).catch(error => {
-                            console.error("Evox Database is offline.")
-                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα`
+                            console.error("Jeanne D'arc Database is offline.")
+                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα.`
+                            $("#tasks").fadeIn("fast")
                             console.log('Error:', error);
                         });
 
                 }, 900)
             } else if (pinAction === 'old') {
                 setTimeout(function () {
-                    fetch(`https://data.evoxs.xyz/jeandarc?metode=pin&pin=${pin}&emri=${foundName}`)
+                    fetch(`https://arc.evoxs.xyz/?metode=pin&pin=${pin}&emri=${foundName}`)
                         .then(response => response.text())
                         .then(status => {
                             if (status === 'Granted') {
@@ -627,15 +634,16 @@ function clickPIN(element) {
                                 })
                             }
                         }).catch(error => {
-                            console.error("Evox Database is offline.")
-                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα`
+                            console.error("Jeanne D'arc Database is offline.")
+                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα.`
+                            $("#tasks").fadeIn("fast")
                             console.log('Error:', error);
                         });
 
                 }, 500)
             } else if (pinAction === 'new') {
                 setTimeout(function () {
-                    fetch(`https://data.evoxs.xyz/jeandarc?metode=pinChange&pin=${atob(JSON.parse(localStorage.getItem('jeanDarc_accountData')).pin)}&emri=${foundName}&pinNew=${pin}`)
+                    fetch(`https://arc.evoxs.xyz/?metode=pinChange&pin=${atob(JSON.parse(localStorage.getItem('jeanDarc_accountData')).pin)}&emri=${foundName}&pinNew=${pin}`)
                         .then(response => response.text())
                         .then(status => {
                             if (status === 'Complete') {
@@ -689,8 +697,9 @@ function clickPIN(element) {
                                 })
                             }
                         }).catch(error => {
-                            console.error("Evox Database is offline.")
-                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα`
+                            console.error("Jeanne D'arc Database is offline.")
+                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα.`
+                            $("#tasks").fadeIn("fast")
                             console.log('Error:', error);
                         });
 
@@ -717,13 +726,17 @@ function autoLogin() {
                 const json = JSON.parse(val)
                 foundName = json.name
                 const process = atob(json.pin)
-                fetch(`https://data.evoxs.xyz/jeandarc?metode=pin&pin=${process}&emri=${foundName}`)
+                fetch(`https://arc.evoxs.xyz/?metode=pin&pin=${process}&emri=${foundName}`)
                     .then(response => response.text())
                     .then(status => {
                         //alert(status)
                         if (status === 'Granted') {
                             console.log("Success")
-                            document.getElementById("selfPfp").src = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${foundName}_jeanDarc`
+                            document.getElementById("selfPfp").src = 'reloading-pfp.gif'
+                            getEvoxProfile(foundName).then(profileSrc => {
+                                console.log(profileSrc)
+                                document.getElementById("selfPfp").src = profileSrc
+                            });
 
                             const accData = {
                                 "name": foundName,
@@ -744,7 +757,6 @@ function autoLogin() {
                             $("#tasks").fadeOut("fast", function () {
                                 $("#loginContainer").fadeOut("fast", function () {
                                     document.getElementById("loginContainer").style.display = 'none'
-
                                     $("#multimatch").fadeOut("fast", function () {
                                         $("#lock").fadeIn("fast")
                                     })
@@ -753,8 +765,9 @@ function autoLogin() {
                             })
                         }
                     }).catch(error => {
-                        console.error("Evox Database is offline.")
-                        document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα`
+                        console.error("Jeanne D'arc Database is offline.")
+                        document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Δοκιμάστε αργότερα.`
+                        $("#tasks").fadeIn("fast")
                         console.log('Error:', error);
                     });
             })
@@ -866,8 +879,23 @@ function showProfile(e) {
 
     setTimeout(function () {
         img.style.transform = ""
-        document.getElementById("darc-user-self-profile").src = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${foundName}_jeanDarc`
+        document.getElementById("darc-user-self-profile").src = 'reloading-pfp.gif'
+        getEvoxProfile(foundName).then(profileSrc => {
+            document.getElementById("darc-user-self-profile").src = profileSrc
+        });
         document.getElementById("userName").innerText = foundName
+        //document.getElementById("seksioni").innerText = "?"
+        fetch(`https://arc.evoxs.xyz/?metode=klasaMerr&emri=${foundName}`)
+            .then(response => response.text())
+            .then(seksioniData => {
+                if (seksioniData !== "Nuk u gjet") {
+                    const data = JSON.parse(seksioniData)
+                    document.getElementById("seksioni").innerText = `${data.seksioni}'${data.klasa}`
+                }
+            }).catch(error => {
+                console.error("Jeanne D'arc Database is offline.")
+                console.log('Error:', error);
+            });
         document.getElementById("profilePage").classList.add("active")
     }, 100)
 
@@ -890,6 +918,9 @@ function actionClick(event, e) {
     const svgElement = e.querySelector('svg');
     if (svgElement) {
         svgElement.style.transform = 'rotate(360deg)'
+        setTimeout(function () {
+            svgElement.style.transform = 'rotate(0deg)'
+        }, 500)
     } else {
         console.log("No SVG found in this div.");
     }
@@ -945,4 +976,88 @@ function animateNumberChange(element, targetValue) {
     }
 
     update();
+}
+
+let isSocialed = false;
+let socialSection = 'none'
+let socialUsername = 'none'
+async function getEvoxProfile(name) {
+    console.log("Getting pfp for", name);
+
+    try {
+        const response = await fetch(`https://arc.evoxs.xyz/?metode=fotoMerrni&emri=${name}`);
+        const data = await response.text();
+
+        console.log(data);
+        if (data !== 'null') {
+            if (name === foundName) {
+                isSocialed = true
+                if (data.includes("instagram")) {
+                    socialSection = 'instagram'
+                    $("#instagramedProfile").fadeIn("fast")
+                } else {
+                    socialSection = 'facebook'
+                }
+            }
+            const regex = /\/([^\/]+)\.evox$/;
+            const match = data.match(regex);
+            if (match) {
+                const extracted = match[1];
+                socialUsername = extracted;
+            } else {
+                console.log("No match found");
+            }
+            return data;
+        } else {
+            return `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${name}_jeanDarc`;  // Return default fallback URL
+        }
+    } catch (error) {
+        console.error("Jeanne D'arc Database is offline.");
+        console.log('Error:', error);
+        return null;
+    }
+}
+
+
+function openInstagram() {
+    if (isSocialed && socialSection === 'instagram' && socialUsername) {
+        window.open(`https://instagram.com/${socialUsername}`, '_blank');
+    }
+}
+
+function showSocial() {
+    document.getElementById("social").classList.add("active")
+    fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
+        .then(response => response.json())
+        .then(names => {
+            namesData = names
+            const fullNames = Object.keys(names.names);
+            console.log(fullNames)
+            document.getElementById("socialSpawn").innerHTML = ''
+            fullNames.forEach(name => {
+                fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
+                    .then(response => response.json())
+                    .then(info => {
+                        document.getElementById("socialSpawn").innerHTML += `<div class="socialUser">
+                <img class="slUserPFP social"
+                    src="${info.foto}">
+                <p>${info.emri}</p><span>${info.seksioni}'${info.klasa}</span>
+            </div>`
+
+                    }).catch(error => {
+                        console.error("Jeanne D'arc Database is offline.")
+                        console.log('Error:', error);
+                    });
+
+            })
+
+
+        }).catch(error => {
+            console.error("Jeanne D'arc Database is offline.")
+            console.log('Error:', error);
+        });
+}
+
+function hideSocial() {
+    document.getElementById("social").classList.remove("active")
 }

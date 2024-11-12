@@ -19,17 +19,16 @@ body {
     width: 100%;
     font-family: "SF";
     background-color: #100e00;
-    
+
     padding: 0;
     margin: 0;
     color: #fff;
-    /* Optional: keep this for body-level overflow control */
     touch-action: manipulation;
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    overflow: hidden;
+    /* overflow: hidden;*/
 }
 
 .background-gradient {
@@ -48,7 +47,7 @@ body {
     /* Base background color */
 
     /* Apply a blur filter to soften the edges of the "light" */
-    
+
 
     /* Cover the entire screen */
     min-height: 100vh;
@@ -593,7 +592,7 @@ vo input::placeholder {
     padding: 5px;
     padding-top: 15px;
     position: relative;
-    overflow:hidden;
+    overflow: hidden;
     overflow-y: auto;
 }
 
@@ -622,15 +621,16 @@ vo input::placeholder {
     cursor: pointer;
     transition: transform 0.1s ease-in-out;
 }
+
 .app .topBar .pfp .corner-svg {
     position: absolute;
     bottom: 5px;
     right: 10px;
     width: 20px;
     height: 20px;
-    fill: white; /* Ensures the SVG fill is white */
-    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.7)) 
-            drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5));
+    fill: white;
+    /* Ensures the SVG fill is white */
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.7)) drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5));
 }
 
 
@@ -785,7 +785,8 @@ vo input::placeholder {
     transform: rotate(-90deg);
     /* Start from the top */
     transform-origin: 50% 50%;
-    transition: stroke-dashoffset 0.9s ease-in-out; /* Animate the stroke-dashoffset */
+    transition: stroke-dashoffset 0.9s ease-in-out;
+    /* Animate the stroke-dashoffset */
 }
 
 /* Centering the Percentage */
@@ -963,7 +964,8 @@ vo input::placeholder {
     left: 0;
     height: 100%;
     width: 50%;
-    background-color: #ffffff; /*Bar Color*/
+    background-color: #ffffff;
+    /*Bar Color*/
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     border-radius: 25px;
 }
@@ -1068,7 +1070,7 @@ vo input::placeholder {
     top: 0px;
     left: 0px;
     width: 100%;
-    
+
 }
 
 .topActions .backArrow {
@@ -1114,23 +1116,43 @@ vo input::placeholder {
 .darc-user-self {
     width: 95px;
     height: 95px;
-    border-radius: 50%;
+
     overflow: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: -50px;
-    border: 4px solid black;
+
     margin-bottom: 5px;
+    position: relative;
+}
+
+.darc-user-self .corner-svg {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 17px;
+    height: 17px;
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.7)) drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5));
+    z-index: 2;
+    /* Ensure SVG is on top */
 }
 
 .darc-user-self img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border: 4px solid black;
     display: block;
+    position: relative;
+    /* Establish a new stacking context for the image */
+    z-index: 1;
+    /* Image stays behind the SVG */
 }
+
 
 
 .assets p span {
@@ -1160,8 +1182,8 @@ vo input::placeholder {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 100%; 
-    margin-top: 10px;  
+    width: 100%;
+    margin-top: 10px;
 }
 
 .moreInfo .anInfo {
@@ -1231,4 +1253,50 @@ vo input::placeholder {
     width: 30px;
     height: 30px;
     margin-left: 8px;
+}
+
+.socialSection {
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    justify-content: start;
+}
+
+.socialSection h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Keep the text centered */
+    align-items: center;
+}
+
+.socialSection h3 svg {
+    position: absolute;
+    left: 25px;
+    padding: 10px;
+    background-color: #000;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#socialSpawn {
+    width: 100%;
+    height: 100%;
+}
+
+.transparent-placeholder {
+    background-color: transparent;
+    width: 100%;
+    height: 250px;
+    border: 1px solid black;
+    /* Add for visibility */
+}
+
+#socialSpawn> :last-child {
+    margin-bottom: 50px;
 }
