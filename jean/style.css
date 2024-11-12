@@ -1070,7 +1070,7 @@ vo input::placeholder {
     top: 0px;
     left: 0px;
     width: 100%;
-
+    z-index: 2;
 }
 
 .topActions .backArrow {
@@ -1105,6 +1105,10 @@ vo input::placeholder {
     text-align: center;
 }
 
+.banner {
+    z-index: 1;
+}
+
 .banner img {
     width: 100%;
     height: 170px;
@@ -1112,6 +1116,8 @@ vo input::placeholder {
     align-items: center;
     justify-content: center;
     object-fit: cover;
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
 }
 
 .darc-user-self {
@@ -1268,7 +1274,8 @@ vo input::placeholder {
     margin-bottom: 15px;
     display: flex;
     flex-direction: row;
-    justify-content: center; /* Keep the text centered */
+    justify-content: center;
+    /* Keep the text centered */
     align-items: center;
 }
 
