@@ -778,7 +778,7 @@ vo input::placeholder {
 }
 
 .progress-ring circle.progress {
-    stroke: #f2f51a;
+    stroke: #ffffff;
     stroke-dasharray: 176;
     stroke-dashoffset: calc(176 - (176 * var(--progress)) / 100);
     /* Use CSS variable */
@@ -1082,6 +1082,7 @@ vo input::placeholder {
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: transform 0.1s ease-in-out;
 }
 
 .topActions .topMoreOpt {
