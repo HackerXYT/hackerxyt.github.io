@@ -18,7 +18,7 @@ body {
     height: 100%;
     width: 100%;
     font-family: "SF";
-    background-color: #100e00;
+    background-color: #000000;
 
     padding: 0;
     margin: 0;
@@ -739,6 +739,7 @@ vo input::placeholder {
 /* Card Style */
 .progress-card {
     display: flex;
+    flex-direction: row-reverse;
     align-items: center;
     background: linear-gradient(145deg, #3c3b3f, #6e6f58);
     border-radius: 15px;
@@ -750,6 +751,7 @@ vo input::placeholder {
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     transition: transform 0.3s ease-in-out;
+    z-index: 10;
 }
 
 /* Circular Progress */
@@ -1307,4 +1309,105 @@ vo input::placeholder {
 
 #socialSpawn> :last-child {
     margin-bottom: 50px;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.gradient {
+    --size: 1250px;
+    --speed: 30s;
+    --easing: cubic-bezier(0.7, 0.2, 0.2, 0.7);
+    width: var(--size);
+    height: var(--size);
+    filter: blur(calc(var(--size) / 15));
+    background-image: linear-gradient(#ffffff21, #000000);
+    animation: rotate var(--speed) var(--easing) alternate infinite;
+    border-radius: 30% 70% 70% 30%/30% 30% 70% 70%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+}
+
+@media (min-width: 720px) {
+    .gradient {
+        --size: 500px;
+    }
+}
+
+.homeGrabber {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 40%;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    background-color: #ffffff0d;
+    box-sizing: border-box;
+    backdrop-filter: blur(5px);
+    /* Adjust the blur amount as needed */
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    transform: translateY(120%);
+    transition: transform 0.5s ease-in-out;
+    z-index: 999;
+}
+
+.homeGrabber.active {
+    transform: translateY(0);
+}
+
+.homeGrabber .main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    margin-top: 1%;
+    padding: 25px;
+}
+
+.homeGrabber .main .cardAuto {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 150px;
+    padding: 25px;
+    background-color: #ffffff24;
+    backdrop-filter: blur(25px);
+    /* Adjust the blur amount as needed */
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 25px;
+}
+
+.homeGrabber .rowBoxes {
+    display: flex;
+    flex-direction: row;
+}
+
+.homeGrabber .rowBoxes .cardAuto  {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 45%;
+    height: 150px;
+    width: 170px;
+    padding: 25px;
+    background-color: #ffffff24;
+    backdrop-filter: blur(25px);
+    /* Adjust the blur amount as needed */
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 25px;
 }

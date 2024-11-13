@@ -7,6 +7,8 @@
     <meta name="theme-color" content="#100e00" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#100e00" media="(prefers-color-scheme: dark)">
     <title>Jean D'arc</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+
     <link rel="stylesheet" href="evox.css">
     <link rel="stylesheet" href="style.css">
     <meta name="apple-mobile-web-app-title" content="Jean D'arc">
@@ -80,7 +82,8 @@
 </head>
 
 <body>
-    <div class="background-gradient" id="bgGrd"></div>
+    <!--<div class="background-gradient" id="bgGrd"></div>-->
+    <div class="gradient" id="bgGrd"></div>
     <div class="warning" id="device-warning" style="display: none;">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60px" height="60px"
             viewBox="0 0 512 512" version="1.1">
@@ -186,8 +189,8 @@
         <div class="topBar fade-in-slide-up">
             <div onclick="showProfile(this)" class="pfp">
                 <img id="selfPfp" src="reloading-pfp.gif" />
-                <svg style="display: none;" class="corner-svg" xmlns="http://www.w3.org/2000/svg" width="800px" height="800px"
-                    viewBox="0 0 24 24" fill="none">
+                <svg style="display: none;" class="corner-svg" xmlns="http://www.w3.org/2000/svg" width="800px"
+                    height="800px" viewBox="0 0 24 24" fill="none">
                     <path fill-rule="evenodd" clip-rule="evenodd"
                         d="M15.2855 17.0113C14.7666 20.0509 10.5501 20.4239 9.50564 17.5226L7.15545 10.9943C6.29564 8.60595 8.60591 6.29569 10.9943 7.15551L17.5226 9.50569C20.4238 10.5501 20.0509 14.7666 17.0113 15.2856L16.2354 15.418C15.8171 15.4894 15.4894 15.8171 15.418 16.2355L15.2855 17.0113Z"
                         fill="#fff" />
@@ -256,6 +259,7 @@
                     </div>
                 </div>
             </div>
+            
         </div>
 
         <div class="cards-container fade-in-slide-up">
@@ -369,7 +373,8 @@
             <div class="darc-user-self">
                 <img id="darc-user-self-profile" src="bb.jpg">
 
-                <svg id="instagramedProfile" style="display: none;" class="corner-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px"
+                <svg id="instagramedProfile" style="display: none;" class="corner-svg"
+                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px"
                     height="20px" viewBox="0 0 20 20" version="1.1">
                     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                         <g id="Dribbble-Light-Preview" transform="translate(-340.000000, -7439.000000)" fill="#fff">
@@ -390,7 +395,7 @@
                         d="M21.6,9.84A4.57,4.57,0,0,1,21.18,9,4,4,0,0,1,21,8.07a4.21,4.21,0,0,0-.64-2.16,4.25,4.25,0,0,0-1.87-1.28,4.77,4.77,0,0,1-.85-.43A5.11,5.11,0,0,1,17,3.54a4.2,4.2,0,0,0-1.8-1.4A4.22,4.22,0,0,0,13,2.21a4.24,4.24,0,0,1-1.94,0,4.22,4.22,0,0,0-2.24-.07A4.2,4.2,0,0,0,7,3.54a5.11,5.11,0,0,1-.66.66,4.77,4.77,0,0,1-.85.43A4.25,4.25,0,0,0,3.61,5.91,4.21,4.21,0,0,0,3,8.07,4,4,0,0,1,2.82,9a4.57,4.57,0,0,1-.42.82A4.3,4.3,0,0,0,1.63,12a4.3,4.3,0,0,0,.77,2.16,4,4,0,0,1,.42.82,4.11,4.11,0,0,1,.15.95,4.19,4.19,0,0,0,.64,2.16,4.25,4.25,0,0,0,1.87,1.28,4.77,4.77,0,0,1,.85.43,5.11,5.11,0,0,1,.66.66,4.12,4.12,0,0,0,1.8,1.4,3,3,0,0,0,.87.13A6.66,6.66,0,0,0,11,21.81a4,4,0,0,1,1.94,0,4.33,4.33,0,0,0,2.24.06,4.12,4.12,0,0,0,1.8-1.4,5.11,5.11,0,0,1,.66-.66,4.77,4.77,0,0,1,.85-.43,4.25,4.25,0,0,0,1.87-1.28A4.19,4.19,0,0,0,21,15.94a4.11,4.11,0,0,1,.15-.95,4.57,4.57,0,0,1,.42-.82A4.3,4.3,0,0,0,22.37,12,4.3,4.3,0,0,0,21.6,9.84Zm-4.89.87-5,5a1,1,0,0,1-1.42,0l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42Z"
                         style="fill:#2aa15a" />
                 </svg></p>
-            <span>Δεν έχει προστεθεί περιγραφή.. <div class="editDesc">
+            <span>Δεν έχει προστεθεί περιγραφή.. <div onclick="document.getElementById('homeGrabber').classList.toggle('active')" class="editDesc">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15px" height="15px" viewBox="0 0 24 24" fill="none">
                         <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M20.7736 8.09994C22.3834 6.48381 22.315 4.36152 21.113 3.06183C20.5268 2.4281 19.6926 2.0233 18.7477 2.00098C17.7993 1.97858 16.8167 2.34127 15.91 3.09985C15.8868 3.11925 15.8645 3.13969 15.8432 3.16111L2.87446 16.1816C2.31443 16.7438 2 17.5051 2 18.2987V19.9922C2 21.0937 2.89197 22 4.00383 22H5.68265C6.48037 22 7.24524 21.6823 7.80819 21.1171L20.7736 8.09994ZM17.2071 5.79295C16.8166 5.40243 16.1834 5.40243 15.7929 5.79295C15.4024 6.18348 15.4024 6.81664 15.7929 7.20717L16.7929 8.20717C17.1834 8.59769 17.8166 8.59769 18.2071 8.20717C18.5976 7.81664 18.5976 7.18348 18.2071 6.79295L17.2071 5.79295Z"
@@ -398,7 +403,7 @@
                     </svg>
                 </div></span>
             <div class="moreInfo">
-                <div class="anInfo">
+                <div onclick="document.getElementById('notice').classList.toggle('active')" class="anInfo">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M5 9.5C5 7.01472 7.01472 5 9.5 5C11.9853 5 14 7.01472 14 9.5C14 11.9853 11.9853 14 9.5 14C7.01472 14 5 11.9853 5 9.5Z"
@@ -452,10 +457,36 @@
 
     </div>
 
+    <div class="homeGrabber" id="homeGrabber">
+        <div class="grabbable" style="width: 15%;"></div>
+        <div class="main">
+            <div class="rowBoxes">
+                <div style="margin-right: 20px;" class="cardAuto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="150px" height="150px" viewBox="0 0 24 24" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M10 8C10 4.68629 12.6863 2 16 2C19.3137 2 22 4.68629 22 8C22 11.3137 19.3137 14 16 14C12.6863 14 10 11.3137 10 8Z" fill="#ffffff70"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M2 15.5C2 13.0147 4.01472 11 6.5 11C8.98528 11 11 13.0147 11 15.5C11 17.9853 8.98528 20 6.5 20C4.01472 20 2 17.9853 2 15.5Z" fill="#ffffff70"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13 18.5C13 16.567 14.567 15 16.5 15C18.433 15 20 16.567 20 18.5C20 20.433 18.433 22 16.5 22C14.567 22 13 20.433 13 18.5Z" fill="#ffffff70"/>
+                        </svg>
+                </div>
+                <div class="cardAuto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="150px" height="150px" viewBox="0 0 24 24" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.2994 1.99988C15.9337 1.99896 16.4964 1.99815 17.0226 2.20134C17.5489 2.40452 17.9651 2.78322 18.4342 3.21016C19.1119 3.8269 19.7904 4.44277 20.47 5.05741C21.0069 5.54296 21.4836 5.97414 21.743 6.55981C22.0024 7.14548 22.0013 7.78827 22.0002 8.51212C21.9977 10.03 22 11.5479 22 13.0658C22.0001 13.9523 22.0001 14.7161 21.9179 15.3278C21.8297 15.9833 21.631 16.6117 21.1213 17.1213C20.6117 17.631 19.9833 17.8297 19.3278 17.9179C18.7161 18.0001 17.9523 18.0001 17.0658 18H12.9342C12.0477 18.0001 11.2839 18.0001 10.6722 17.9179C10.0167 17.8297 9.38835 17.631 8.87868 17.1213C8.36902 16.6117 8.17028 15.9833 8.08215 15.3278C7.99991 14.7161 7.99995 13.9523 8 13.0658L8.00001 7C8.00001 6.08546 7.99788 5.29896 8.08215 4.67221C8.17028 4.01669 8.36902 3.38834 8.87868 2.87868C9.38835 2.36902 10.0167 2.17027 10.6722 2.08214C11.2839 1.99991 12.0477 1.99995 12.9342 2C12.956 2 12.978 2 13 2C13.7665 2 14.5329 2.00098 15.2994 1.99988Z" fill="#ffffff70"/>
+                        <path d="M15.9843 18.9999H12.8813C12.0375 19 11.2176 19.0001 10.539 18.9089C9.77323 18.8059 8.89833 18.5551 8.17159 17.8283C7.44485 17.1016 7.19402 16.2267 7.09107 15.461C6.99983 14.7823 6.99992 13.9624 7.00001 13.1187L7.00001 6.88116C6.99997 6.58272 6.99994 6.28727 7.00395 5.99999C6.2364 5.99955 5.46424 5.97511 4.70072 6.06939C4.09998 6.14358 3.51831 6.30999 3.02408 6.7426C2.92414 6.83008 2.83012 6.9241 2.74264 7.02404C2.31003 7.51827 2.14362 8.09994 2.06943 8.70069C1.99993 9.26352 1.99996 9.96136 2 10.771L2 17.0658C1.99995 17.9523 1.99991 18.7161 2.08215 19.3278C2.17028 19.9833 2.36902 20.6116 2.87868 21.1213C3.38835 21.631 4.0167 21.8297 4.67221 21.9178C5.28387 22.0001 6.04769 22 6.93417 22L11.9039 22C12.4011 22 12.8301 22 13.184 21.9727C13.5572 21.9439 13.9292 21.8804 14.2905 21.7082C14.9117 21.4122 15.4122 20.9117 15.7082 20.2905C15.9005 19.887 15.9622 19.442 15.9843 18.9999Z" fill="#ffffff70"/>
+                        </svg>
+                </div>
+            </div>
+            <div style="margin-top: 20px;" class="cardAuto">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M11 13C11 13.5523 11.4477 14 12 14C12.5523 14 13 13.5523 13 13V10C13 9.44772 12.5523 9 12 9C11.4477 9 11 9.44772 11 10V13ZM13 15.9888C13 15.4365 12.5523 14.9888 12 14.9888C11.4477 14.9888 11 15.4365 11 15.9888V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V15.9888ZM9.37735 4.66136C10.5204 2.60393 13.4793 2.60393 14.6223 4.66136L21.2233 16.5431C22.3341 18.5427 20.8882 21 18.6008 21H5.39885C3.11139 21 1.66549 18.5427 2.77637 16.5431L9.37735 4.66136Z" fill="#ffffff70"/>
+                    </svg>  
+            </div>
+        </div>
+    </div>
+
     <div id="notice" class="popup" style="height: 80%">
         <div id="grabberNotice" class="grabbable"></div>
         <div class="duplicate">
-            <img src="attention.svg" style="margin-bottom: 10px;">
+            <img src="alert2.svg" style="margin-bottom: 10px;">
             <h1 style="font-weight: bold;">Προσοχή</h1>
             <p style="margin-bottom: 5px;">Το PIN του λογαριασμού σου είναι γνωστό.</p>
             <span>Ο καθένας μπορεί να συνδεθεί και να κάνει αλλαγές στα δεδομένα σου.</span>
@@ -470,14 +501,15 @@
     </div>
 
     <div class="socialSection sliding" id="social">
-        <h3><svg onclick="hideSocial()" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-            <path d="M5 12H19M5 12L11 6M5 12L11 18" stroke="#fff" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" />
-        </svg>Μαθητές</h3>
+        <h3><svg onclick="hideSocial()" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                viewBox="0 0 24 24" fill="none">
+                <path d="M5 12H19M5 12L11 6M5 12L11 18" stroke="#fff" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>Μαθητές</h3>
         <div id="socialSpawn">
         </div>
-        
-        
+
+
     </div>
 
     <div id="evoxContainer" class="popup">
@@ -625,8 +657,7 @@
                     justify-content: center;
                     align-items: center;">
                         <span id="IOS1" style="display: none;">
-                            Για να επιλύσετε το πρόβλημα, πατήστε το εικονίδιο <img
-                                src="" width="10px" height="10px"
+                            Για να επιλύσετε το πρόβλημα, πατήστε το εικονίδιο <img src="" width="10px" height="10px"
                                 style="width: 20px;height: 20px;margin:0;margin-bottom:-5px;"> στο κάτω μέρος της οθόνης
                             και στη συνέχεια επιλέξτε 'Add to Home Screen'.
                         </span>

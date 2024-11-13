@@ -719,7 +719,7 @@ function autoLogin() {
     const val = localStorage.getItem("jeanDarc_accountData")
     if (val) {
         document.getElementById("topImg").style.opacity = '0'
-        $("#tasks").fadeOut("fast", function () {
+        //$("#tasks").fadeOut("fast", function () {
             $("#loginContainer").fadeOut("fast", function () {
                 document.getElementById("loginContainer").style.display = 'none'
                 //$("#lock").fadeIn("fast")
@@ -750,13 +750,24 @@ function autoLogin() {
                                 "latestIp": ip
                             }
                             localStorage.setItem("jeanDarc_accountData", JSON.stringify(accData))
-                            $("#tasks").fadeIn("fast")
-                            document.getElementById("loadText").innerText = 'Επιτυχία'
+                            document.getElementById("loadText").style.opacity = '0'
+                            setTimeout(function() {
+                                
+                                    document.getElementById("loadText").innerText = 'Επιτυχία'
+                                    $("#tasks").fadeIn("fast", function() {
+                                        setTimeout(function () {
+                                            attach()
+                                        }, 1200)
+                                    })
+                                    document.getElementById("loadText").style.opacity = '1'
+                            }, 300)
+                            $("#tasks").fadeOut("fast")
+                            
+                            
+                            
                             sessionStorage.setItem("remUnlocked", "true")
 
-                            setTimeout(function () {
-                                attach()
-                            }, 1200)
+                            
 
                         } else {
                             document.getElementById("topImg").style.opacity = '0'
@@ -790,7 +801,7 @@ function autoLogin() {
                     });
             })
 
-        })
+        //})
 
 
     } else {
