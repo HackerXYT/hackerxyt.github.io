@@ -146,7 +146,7 @@ function find() {
     //$("#tasks").fadeIn("fast")
     //video.play()
     document.getElementById("accessButton").innerHTML = loadingHTML
-    const searchInput = document.getElementById('nameInput').value;
+    const searchInput = document.getElementById('nameInput').value.replace(/\s+/g, '');
     const matchedNames = findFullNames(searchInput);
     //console.log(matchedNames);
     setTimeout(() => {
