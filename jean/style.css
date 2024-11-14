@@ -455,11 +455,11 @@ vo input::placeholder {
 
 }
 
-#lock p {
+/*#lock p {
     font-size: 14px;
     color: #babec1;
-    margin-bottom: 32px;
-}
+    margin-bottom: 15px;
+}*/
 
 .pin-input {
     display: flex;
@@ -488,11 +488,13 @@ vo input::placeholder {
     width: 64px;
     height: 64px;
     font-size: 24px;
-    background-color: #1a1a1a;
+    background-color: #4a4a4a43;
     border: none;
     color: #ffffff;
     border-radius: 50%;
     cursor: pointer;
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
@@ -1189,20 +1191,26 @@ vo input::placeholder {
 .assets .moreInfo {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    /* Allows wrapping to the next line */
+
     justify-content: center;
     align-items: center;
     width: 100%;
     margin-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .moreInfo .anInfo {
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     margin-left: 10px;
     background-color: #1e1e1e;
     border-radius: 20px;
     box-sizing: border-box;
-    padding: 10px 20px;
+    padding: 5px 10px;
 }
 
 .anInfo svg {
@@ -1210,7 +1218,7 @@ vo input::placeholder {
 }
 
 .anInfo span {
-    font-size: 16px;
+    font-size: 0.9rem;
     padding: 0;
     padding-left: 5px;
 }
@@ -1334,7 +1342,7 @@ vo input::placeholder {
     position: fixed;
     top: 0;
     left: 0;
-    
+
 }
 
 @media (min-width: 720px) {
@@ -1396,7 +1404,7 @@ vo input::placeholder {
     flex-direction: row;
 }
 
-.homeGrabber .rowBoxes .cardAuto  {
+.homeGrabber .rowBoxes .cardAuto {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1410,4 +1418,78 @@ vo input::placeholder {
     /* Adjust the blur amount as needed */
     -webkit-backdrop-filter: blur(25px);
     border-radius: 25px;
+}
+
+#notice {
+    transition: transform 0.8s ease-in-out, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 1s ease-in-out;
+}
+
+#pinText {
+    color: #bfbfbf;
+    font-size: 1rem;
+    margin-bottom: 25px;
+}
+
+.devActions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.devActions p {
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    color: #bfbfbf;
+    text-align: center;
+}
+.devActions div {
+    width: 300px;
+    max-width: 300px;
+    padding: 10px;
+    background-color: #222222;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.devActions div span {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.devActions div svg {
+    margin-left: auto;
+    margin-right: 0;
+    width: 25px;
+    height: 25px;
+}
+
+.debugReload {
+    position: absolute;
+    top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    transform: translateY(-10vh);
+    transition: transform 1s ease-in-out;
+}
+
+.debugReload.active {
+    transform: translateY(0);
+}
+
+.debugReload svg {
+    padding: 10px;
+    border-radius: 50%;
+    background-color: #1a1a1a2b;
+    backdrop-filter: blur(5px);
+    /* Adjust the blur amount as needed */
+    -webkit-backdrop-filter: blur(5px);
 }

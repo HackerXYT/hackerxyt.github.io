@@ -41,6 +41,17 @@ function getRandomColor() {
 }
 
 let foundName = null;
+
+let checkChange;
+setInterval(function() {
+    if(foundName && foundName !== checkChange) {
+        checkChange = foundName
+        getEvoxProfile(foundName).then(profileSrc => {
+            document.getElementById('userPinPfp').src = profileSrc
+        });
+        console.log("Loading Profile Picture For User:", foundName)
+    }
+}, 1000)
 function returnFromMultimatch() {
     const multimatchElement = document.getElementById("multimatch");
     const topImgElement = document.getElementById("topImg");
@@ -518,6 +529,7 @@ document.getElementById('nameInput').addEventListener('keydown', function (event
 
 
 let pin = "";
+let toVerify;
 let proccessingPIN = false
 function clickPIN(element) {
     let number = element.innerHTML
@@ -576,7 +588,6 @@ function clickPIN(element) {
                                     //}
                                 })
                             } else {
-
                                 proccessingPIN = false
                                 deletePIN()
                                 deletePIN()
@@ -608,7 +619,10 @@ function clickPIN(element) {
                                 //console.log("Correct")
                                 $("#PINload").fadeOut("fast", function () {
                                     document.getElementById("pinText").innerHTML = 'Επιτυχία'
+                                    //pinAction = 'new'
                                     pinAction = 'new'
+
+
                                     $("#PINdots").fadeIn("fast")
                                     $("#lock").fadeIn("fast")
                                     setTimeout(function () {
@@ -616,7 +630,7 @@ function clickPIN(element) {
                                         deletePIN()
                                         deletePIN()
                                         deletePIN()
-                                        document.getElementById("pinText").innerHTML = 'Εισάγετε το νέο PIN'
+                                        document.getElementById("pinText").innerHTML = 'Εισάγετε το νέο σας PIN'
                                     }, 500)
 
                                 })
@@ -641,69 +655,127 @@ function clickPIN(element) {
                         });
 
                 }, 500)
-            } else if (pinAction === 'new') {
+            } else if (pinAction === 'verify') {
                 setTimeout(function () {
-                    fetch(`https://arc.evoxs.xyz/?metode=pinChange&pin=${atob(JSON.parse(localStorage.getItem('jeanDarc_accountData')).pin)}&emri=${foundName}&pinNew=${pin}`)
-                        .then(response => response.text())
-                        .then(status => {
-                            if (status === 'Complete') {
-                                console.log("Success")
+                    if (toVerify === pin) {
+                        fetch(`https://arc.evoxs.xyz/?metode=pinChange&pin=${atob(JSON.parse(localStorage.getItem('jeanDarc_accountData')).pin)}&emri=${foundName}&pinNew=${pin}`)
+                            .then(response => response.text())
+                            .then(status => {
+                                if (status === 'Complete') {
+                                    console.log("Success")
 
-                                proccessingPIN = false
-                                //console.log("Correct")
-                                $("#PINload").fadeOut("fast", function () {
-                                    //document.body.style.overflow = 'auto';
-                                    document.body.style.touchAction = '';
-                                    $("#lock").fadeOut("fast", function () {
-                                        document.getElementById("loadText").innerHTML = `Περιμένετε..`
-                                        const accData = {
-                                            "name": foundName,
-                                            "pin": btoa(pin),
-                                            "latestIp": ip
-                                        }
-                                        localStorage.setItem("jeanDarc_accountData", JSON.stringify(accData))
-                                        $("#tasks").fadeIn("fast")
-                                        pinAction = null
+                                    proccessingPIN = false
+                                    //console.log("Correct")
+                                    $("#PINload").fadeOut("fast", function () {
+                                        //document.body.style.overflow = 'auto';
+                                        document.body.style.touchAction = '';
+                                        $("#lock").fadeOut("fast", function () {
+                                            document.getElementById("loadText").innerHTML = `Περιμένετε..`
+                                            const accData = {
+                                                "name": foundName,
+                                                "pin": btoa(pin),
+                                                "latestIp": ip
+                                            }
+                                            localStorage.setItem("jeanDarc_accountData", JSON.stringify(accData))
+                                            $("#tasks").fadeOut("fast")
+                                            pinAction = null
 
-                                        setTimeout(function () {
-                                            $("#loadText").fadeOut("fast", function () {
-                                                document.getElementById("loadText").innerHTML = 'Το PIN ανανεώθηκε με επιτυχία'
-                                                $("#loadText").fadeIn("fast")
-
+                                            setTimeout(function () {
+                                                document.getElementById("loadText").style.opacity = '0'
                                                 setTimeout(function () {
-                                                    $("#tasks").fadeOut("fast")
-                                                    $("#app").fadeIn("fast")
-                                                }, 1200)
-                                            })
-                                        }, 500)
+
+                                                    document.getElementById("loadText").innerText = 'Το PIN ανανεώθηκε με επιτυχία'
+                                                    $("#tasks").fadeIn("fast", function () {
+                                                        setTimeout(function () {
+                                                            $("#tasks").fadeOut("fast")
+                                                            $("#app").fadeIn("fast")
+                                                        }, 1200)
+                                                    })
+                                                    document.getElementById("loadText").style.opacity = '1'
+                                                }, 300)
+                                                //$("#loadText").fadeOut("fast", function () {
+                                                //    document.getElementById("loadText").innerHTML = 'Το PIN ανανεώθηκε με επιτυχία'
+                                                //    $("#loadText").fadeIn("fast")
+                                                //
+                                                //    setTimeout(function () {
+                                                //        $("#tasks").fadeOut("fast")
+                                                //        $("#app").fadeIn("fast")
+                                                //    }, 1200)
+                                                //})
+                                            }, 500)
 
 
+                                        })
+                                        //if (localStorage.getItem("remPIN") === "true") {
+                                        sessionStorage.setItem("remUnlocked", "true")
+                                        //}
                                     })
-                                    //if (localStorage.getItem("remPIN") === "true") {
-                                    sessionStorage.setItem("remUnlocked", "true")
-                                    //}
-                                })
-                            } else {
+                                } else {
 
-                                proccessingPIN = false
-                                deletePIN()
-                                deletePIN()
-                                deletePIN()
-                                deletePIN()
-                                $("#PINload").fadeOut("fast", function () {
-                                    $("#PINdots").fadeIn("fast", function () {
-                                        shake_me("pin-input")
+                                    proccessingPIN = false
+                                    deletePIN()
+                                    deletePIN()
+                                    deletePIN()
+                                    deletePIN()
+                                    $("#PINload").fadeOut("fast", function () {
+                                        $("#PINdots").fadeIn("fast", function () {
+                                            shake_me("pin-input")
+                                        })
                                     })
-                                })
-                            }
-                        }).catch(error => {
-                            console.error("Jeanne D'arc Database is offline.")
-                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
-                            $("#tasks").fadeIn("fast")
-                            console.log('Error:', error);
-                        });
+                                }
+                            }).catch(error => {
+                                console.error("Jeanne D'arc Database is offline.")
+                                document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
+                                $("#tasks").fadeIn("fast")
+                                console.log('Error:', error);
+                            });
+                    } else {
+                        proccessingPIN = false
+                        deletePIN()
+                        deletePIN()
+                        deletePIN()
+                        deletePIN()
+                        $("#PINload").fadeOut("fast", function () {
+                            $("#PINdots").fadeIn("fast", function () {
+                                shake_me("pin-input")
+                            })
+                        })
+                        pinAction = 'new'
+                        toVerify = null
+                        document.getElementById("pinText").innerHTML = 'Εισάγετε το νέο σας PIN'
+                    }
+                }, 500)
+
+            } else if (pinAction === 'new') {
+                toVerify = pin
+                setTimeout(function () {
+
+                    console.log("Success")
+
+                    proccessingPIN = false
+                    $("#PINload").fadeOut("fast", function () {
+                        document.getElementById("pinText").innerHTML = 'Επιβεβαιώστε το νέο σας PIN'
+                        //pinAction = 'new'
+                        pinAction = 'verify'
+
+
+
+                        $("#PINdots").fadeIn("fast")
+                        $("#lock").fadeIn("fast")
+                        setTimeout(function () {
+                            deletePIN()
+                            deletePIN()
+                            deletePIN()
+                            deletePIN()
+                        }, 500)
+
+                    })
+
+
+
 
                 }, 500)
+
             }
 
         }
@@ -720,86 +792,89 @@ function autoLogin() {
     if (val) {
         document.getElementById("topImg").style.opacity = '0'
         //$("#tasks").fadeOut("fast", function () {
-            $("#loginContainer").fadeOut("fast", function () {
-                document.getElementById("loginContainer").style.display = 'none'
-                //$("#lock").fadeIn("fast")
-                const json = JSON.parse(val)
-                foundName = json.name
-                const process = atob(json.pin)
-                fetch(`https://arc.evoxs.xyz/?metode=pin&pin=${process}&emri=${foundName}`)
-                    .then(response => response.text())
-                    .then(status => {
-                        try {
-                            clearInterval(retryInt)
-                        } catch (error) {
-                            console.log("Ignoring undefined interval")
+        $("#loginContainer").fadeOut("fast", function () {
+            document.getElementById("loginContainer").style.display = 'none'
+            //$("#lock").fadeIn("fast")
+            const json = JSON.parse(val)
+            foundName = json.name
+            const process = atob(json.pin)
+            fetch(`https://arc.evoxs.xyz/?metode=pin&pin=${process}&emri=${foundName}`)
+                .then(response => response.text())
+                .then(status => {
+                    try {
+                        clearInterval(retryInt)
+                    } catch (error) {
+                        console.log("Ignoring undefined interval")
+                    }
+
+                    //alert(status)
+                    if (status === 'Granted') {
+                        console.log("Success")
+                        document.getElementById("selfPfp").src = 'reloading-pfp.gif'
+                        getEvoxProfile(foundName).then(profileSrc => {
+                            console.log(profileSrc)
+                            document.getElementById("selfPfp").src = profileSrc
+                        });
+
+                        const accData = {
+                            "name": foundName,
+                            "pin": btoa(process),
+                            "latestIp": ip
                         }
+                        localStorage.setItem("jeanDarc_accountData", JSON.stringify(accData))
+                        document.getElementById("loadText").style.opacity = '0'
+                        setTimeout(function () {
 
-                        //alert(status)
-                        if (status === 'Granted') {
-                            console.log("Success")
-                            document.getElementById("selfPfp").src = 'reloading-pfp.gif'
-                            getEvoxProfile(foundName).then(profileSrc => {
-                                console.log(profileSrc)
-                                document.getElementById("selfPfp").src = profileSrc
-                            });
-
-                            const accData = {
-                                "name": foundName,
-                                "pin": btoa(process),
-                                "latestIp": ip
-                            }
-                            localStorage.setItem("jeanDarc_accountData", JSON.stringify(accData))
-                            document.getElementById("loadText").style.opacity = '0'
-                            setTimeout(function() {
-                                
-                                    document.getElementById("loadText").innerText = 'Επιτυχία'
-                                    $("#tasks").fadeIn("fast", function() {
-                                        setTimeout(function () {
-                                            attach()
-                                        }, 1200)
-                                    })
-                                    document.getElementById("loadText").style.opacity = '1'
-                            }, 300)
-                            $("#tasks").fadeOut("fast")
-                            
-                            
-                            
-                            sessionStorage.setItem("remUnlocked", "true")
-
-                            
-
-                        } else {
-                            document.getElementById("topImg").style.opacity = '0'
-                            $("#tasks").fadeOut("fast", function () {
-                                $("#loginContainer").fadeOut("fast", function () {
-                                    document.getElementById("loginContainer").style.display = 'none'
-                                    $("#multimatch").fadeOut("fast", function () {
-                                        $("#lock").fadeIn("fast")
-                                    })
-                                })
-
+                            document.getElementById("loadText").innerText = 'Επιτυχία'
+                            $("#tasks").fadeIn("fast", function () {
+                                setTimeout(function () {
+                                    attach()
+                                }, 1200)
                             })
-                        }
-                    }).catch(error => {
-                        console.error("Jeanne D'arc Database is offline.")
-                        document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
-                        $("#tasks").fadeIn("fast")
-                        //alert("a")
-                        retryInt = setInterval(function () {
-                            fetch(`https://arc.evoxs.xyz/?metode=pin&pin=${process}&emri=${foundName}`)
-                                .then(response => response.text())
-                                .then(status => {
-                                    clearInterval(retryInt)
-                                    autoLogin()
-                                }).catch(error => {
-                                    console.log("Still Offline")
+                            document.getElementById("loadText").style.opacity = '1'
+                        }, 300)
+                        $("#tasks").fadeOut("fast")
+
+
+
+                        sessionStorage.setItem("remUnlocked", "true")
+
+
+
+                    } else {
+                        document.getElementById("topImg").style.opacity = '0'
+                        $("#tasks").fadeOut("fast", function () {
+                            $("#loginContainer").fadeOut("fast", function () {
+                                document.getElementById("loginContainer").style.display = 'none'
+                                $("#multimatch").fadeOut("fast", function () {
+                                    $("#lock").fadeIn("fast")
                                 })
-                            //autoLogin()
-                        }, 1000)
-                        console.log('Error:', error);
-                    });
-            })
+                            })
+
+                        })
+                    }
+                }).catch(error => {
+                    console.error("Jeanne D'arc Database is offline.")
+                    document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
+                    $("#tasks").fadeIn("fast")
+                    //alert("a")
+                    retryInt = setInterval(function () {
+                        fetch(`https://arc.evoxs.xyz/?metode=pin&pin=${process}&emri=${foundName}`)
+                            .then(response => response.text())
+                            .then(status => {
+                                clearInterval(retryInt)
+                                autoLogin()
+                            }).catch(error => {
+                                console.log("Still Offline")
+                            })
+                        //autoLogin()
+                    }, 1000)
+                    console.log('Error:', error);
+                });
+                getEvoxProfile(foundName).then(profileSrc => {
+                    document.getElementById('userPinPfp').src = profileSrc
+                });
+        })
 
         //})
 
@@ -883,7 +958,12 @@ function dismissPINChange() {
 }
 
 let pinAction = null;
-function changePin(e) {
+function changePin(e, event) {
+    event.preventDefault();
+    event.stopPropagation();
+    getEvoxProfile(foundName).then(profileSrc => {
+        document.getElementById('userPinPfp').src = profileSrc
+    });
     e.innerHTML = loadingHTML
     $("#PINdots").fadeIn("fast")
     deletePIN()
@@ -891,9 +971,9 @@ function changePin(e) {
     deletePIN()
     deletePIN()
     $("#app").fadeOut("fast", function () {
-        document.getElementById("notice").classList.remove("active")
-        setTimeout(function () {
 
+        setTimeout(function () {
+            document.getElementById("notice").style.transform = 'translateY(100vh)'
             document.getElementById("pinText").innerHTML = 'Εισάγετε το παλιό σας PIN'
             pinAction = 'old'
             $("#lock").fadeIn("fast")
@@ -918,13 +998,59 @@ function showProfile(e) {
             .then(response => response.text())
             .then(seksioniData => {
                 if (seksioniData !== "Nuk u gjet") {
-                    const data = JSON.parse(seksioniData)
-                    document.getElementById("seksioni").innerText = `${data.seksioni}'${data.klasa}`
+                    seksioniData = JSON.parse(seksioniData)
+                    //document.getElementById("seksioni").innerText = `${data.seksioni}'${data.klasa}`
                 }
+                fetch(`https://arc.evoxs.xyz/?metode=tags&emri=${foundName}`)
+            .then(response => response.json())
+            .then(tagsData => {
+                document.getElementById("tags").innerHTML = ''
+                document.getElementById("tags").innerHTML = `<div class="anInfo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M5 9.5C5 7.01472 7.01472 5 9.5 5C11.9853 5 14 7.01472 14 9.5C14 11.9853 11.9853 14 9.5 14C7.01472 14 5 11.9853 5 9.5Z"
+                            fill="#fff" />
+                        <path
+                            d="M14.3675 12.0632C14.322 12.1494 14.3413 12.2569 14.4196 12.3149C15.0012 12.7454 15.7209 13 16.5 13C18.433 13 20 11.433 20 9.5C20 7.567 18.433 6 16.5 6C15.7209 6 15.0012 6.2546 14.4196 6.68513C14.3413 6.74313 14.322 6.85058 14.3675 6.93679C14.7714 7.70219 15 8.5744 15 9.5C15 10.4256 14.7714 11.2978 14.3675 12.0632Z"
+                            fill="#fff" />
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M4.64115 15.6993C5.87351 15.1644 7.49045 15 9.49995 15C11.5112 15 13.1293 15.1647 14.3621 15.7008C15.705 16.2847 16.5212 17.2793 16.949 18.6836C17.1495 19.3418 16.6551 20 15.9738 20H3.02801C2.34589 20 1.85045 19.3408 2.05157 18.6814C2.47994 17.2769 3.29738 16.2826 4.64115 15.6993Z"
+                            fill="#fff" />
+                        <path
+                            d="M14.8185 14.0364C14.4045 14.0621 14.3802 14.6183 14.7606 14.7837V14.7837C15.803 15.237 16.5879 15.9043 17.1508 16.756C17.6127 17.4549 18.33 18 19.1677 18H20.9483C21.6555 18 22.1715 17.2973 21.9227 16.6108C21.9084 16.5713 21.8935 16.5321 21.8781 16.4932C21.5357 15.6286 20.9488 14.9921 20.0798 14.5864C19.2639 14.2055 18.2425 14.0483 17.0392 14.0008L17.0194 14H16.9997C16.2909 14 15.5506 13.9909 14.8185 14.0364Z"
+                            fill="#fff" />
+                    </svg>
+                    <span id="seksioni">${seksioniData.seksioni}'${seksioniData.klasa}</span>
+                </div>`
+                tagsData.forEach(tag => {
+                    document.getElementById("tags").innerHTML = `${document.getElementById("tags").innerHTML}<div class="anInfo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M5 9.5C5 7.01472 7.01472 5 9.5 5C11.9853 5 14 7.01472 14 9.5C14 11.9853 11.9853 14 9.5 14C7.01472 14 5 11.9853 5 9.5Z"
+                            fill="#fff" />
+                        <path
+                            d="M14.3675 12.0632C14.322 12.1494 14.3413 12.2569 14.4196 12.3149C15.0012 12.7454 15.7209 13 16.5 13C18.433 13 20 11.433 20 9.5C20 7.567 18.433 6 16.5 6C15.7209 6 15.0012 6.2546 14.4196 6.68513C14.3413 6.74313 14.322 6.85058 14.3675 6.93679C14.7714 7.70219 15 8.5744 15 9.5C15 10.4256 14.7714 11.2978 14.3675 12.0632Z"
+                            fill="#fff" />
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M4.64115 15.6993C5.87351 15.1644 7.49045 15 9.49995 15C11.5112 15 13.1293 15.1647 14.3621 15.7008C15.705 16.2847 16.5212 17.2793 16.949 18.6836C17.1495 19.3418 16.6551 20 15.9738 20H3.02801C2.34589 20 1.85045 19.3408 2.05157 18.6814C2.47994 17.2769 3.29738 16.2826 4.64115 15.6993Z"
+                            fill="#fff" />
+                        <path
+                            d="M14.8185 14.0364C14.4045 14.0621 14.3802 14.6183 14.7606 14.7837V14.7837C15.803 15.237 16.5879 15.9043 17.1508 16.756C17.6127 17.4549 18.33 18 19.1677 18H20.9483C21.6555 18 22.1715 17.2973 21.9227 16.6108C21.9084 16.5713 21.8935 16.5321 21.8781 16.4932C21.5357 15.6286 20.9488 14.9921 20.0798 14.5864C19.2639 14.2055 18.2425 14.0483 17.0392 14.0008L17.0194 14H16.9997C16.2909 14 15.5506 13.9909 14.8185 14.0364Z"
+                            fill="#fff" />
+                    </svg>
+                    <span>${tag}</span>
+                </div>`
+                })
+                
             }).catch(error => {
                 console.error("Jeanne D'arc Database is offline.")
                 console.log('Error:', error);
             });
+            }).catch(error => {
+                console.error("Jeanne D'arc Database is offline.")
+                console.log('Error:', error);
+            });
+            
         document.getElementById("profilePage").classList.add("active")
     }, 100)
 
@@ -932,11 +1058,11 @@ function showProfile(e) {
 
 function goBackFromProfile(e) {
     e.style.transform = "scale(0.9)"
-    setTimeout(function() {
+    setTimeout(function () {
         e.style.transform = "scale(1)"
         document.getElementById("profilePage").classList.remove("active")
     }, 100)
-    
+
 }
 
 function clickCard(e) {
@@ -1094,4 +1220,52 @@ function showSocial() {
 
 function hideSocial() {
     document.getElementById("social").classList.remove("active")
+}
+
+const notice = document.getElementById("notice");
+let startY, currentY, isDragging = false;
+
+// Initialize event listeners for touch/mouse events
+notice.addEventListener("mousedown", startDrag);
+notice.addEventListener("touchstart", startDrag);
+notice.addEventListener("mousemove", drag);
+notice.addEventListener("touchmove", drag);
+notice.addEventListener("mouseup", endDrag);
+notice.addEventListener("touchend", endDrag);
+
+function startDrag(e) {
+    startY = e.touches ? e.touches[0].clientY : e.clientY;
+    isDragging = true;
+    notice.style.transition = "none";  // Disable transitions for smoother dragging
+}
+
+function drag(e) {
+    if (!isDragging) return;
+
+    currentY = e.touches ? e.touches[0].clientY : e.clientY;
+    let deltaY = currentY - startY;
+
+    if (deltaY > 0) {  // Only allow downward dragging
+        notice.style.transform = `translateY(${deltaY}px)`;
+    }
+}
+
+function endDrag() {
+    isDragging = false;
+    notice.style.transition = "transform 0.3s ease";  // Add smooth return or dismiss transition
+
+    if (currentY - startY > 150) {  // Threshold for dismissing the div
+        notice.style.transform = `translateY(100vh)`;  // Move off screen
+        notice.addEventListener("transitionend", () => {
+            notice.classList.remove("active");  // Remove the active class
+            notice.style.transform = ``;
+        }, { once: true });
+    } else {
+        notice.style.transform = ``;  // Reset if not dismissed
+    }
+}
+
+function reDoPinChange() {
+    document.getElementById('notice').classList.toggle('active');
+    document.getElementById("profilePage").classList.remove("active")
 }
