@@ -43,8 +43,8 @@ function getRandomColor() {
 let foundName = null;
 
 let checkChange;
-setInterval(function() {
-    if(foundName && foundName !== checkChange) {
+setInterval(function () {
+    if (foundName && foundName !== checkChange) {
         checkChange = foundName
         getEvoxProfile(foundName).then(profileSrc => {
             document.getElementById('userPinPfp').src = profileSrc
@@ -871,9 +871,9 @@ function autoLogin() {
                     }, 1000)
                     console.log('Error:', error);
                 });
-                getEvoxProfile(foundName).then(profileSrc => {
-                    document.getElementById('userPinPfp').src = profileSrc
-                });
+            getEvoxProfile(foundName).then(profileSrc => {
+                document.getElementById('userPinPfp').src = profileSrc
+            });
         })
 
         //})
@@ -888,6 +888,8 @@ function attach() {
     if (atob(JSON.parse(localStorage.getItem("jeanDarc_accountData")).pin) === '0000') {
         console.log("Request PIN Change")
         document.getElementById("notice").classList.add("active")
+        document.body.style.overflow = "hidden"
+        document.getElementById("app").style.transform = "scale(0.95)"
     }
     $("#tasks").fadeOut("fast", function () {
         const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
@@ -1002,10 +1004,10 @@ function showProfile(e) {
                     //document.getElementById("seksioni").innerText = `${data.seksioni}'${data.klasa}`
                 }
                 fetch(`https://arc.evoxs.xyz/?metode=tags&emri=${foundName}`)
-            .then(response => response.json())
-            .then(tagsData => {
-                document.getElementById("tags").innerHTML = ''
-                document.getElementById("tags").innerHTML = `<div class="anInfo">
+                    .then(response => response.json())
+                    .then(tagsData => {
+                        document.getElementById("tags").innerHTML = ''
+                        document.getElementById("tags").innerHTML = `<div class="anInfo">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M5 9.5C5 7.01472 7.01472 5 9.5 5C11.9853 5 14 7.01472 14 9.5C14 11.9853 11.9853 14 9.5 14C7.01472 14 5 11.9853 5 9.5Z"
@@ -1022,35 +1024,25 @@ function showProfile(e) {
                     </svg>
                     <span id="seksioni">${seksioniData.seksioni}'${seksioniData.klasa}</span>
                 </div>`
-                tagsData.forEach(tag => {
-                    document.getElementById("tags").innerHTML = `${document.getElementById("tags").innerHTML}<div class="anInfo">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M5 9.5C5 7.01472 7.01472 5 9.5 5C11.9853 5 14 7.01472 14 9.5C14 11.9853 11.9853 14 9.5 14C7.01472 14 5 11.9853 5 9.5Z"
-                            fill="#fff" />
-                        <path
-                            d="M14.3675 12.0632C14.322 12.1494 14.3413 12.2569 14.4196 12.3149C15.0012 12.7454 15.7209 13 16.5 13C18.433 13 20 11.433 20 9.5C20 7.567 18.433 6 16.5 6C15.7209 6 15.0012 6.2546 14.4196 6.68513C14.3413 6.74313 14.322 6.85058 14.3675 6.93679C14.7714 7.70219 15 8.5744 15 9.5C15 10.4256 14.7714 11.2978 14.3675 12.0632Z"
-                            fill="#fff" />
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M4.64115 15.6993C5.87351 15.1644 7.49045 15 9.49995 15C11.5112 15 13.1293 15.1647 14.3621 15.7008C15.705 16.2847 16.5212 17.2793 16.949 18.6836C17.1495 19.3418 16.6551 20 15.9738 20H3.02801C2.34589 20 1.85045 19.3408 2.05157 18.6814C2.47994 17.2769 3.29738 16.2826 4.64115 15.6993Z"
-                            fill="#fff" />
-                        <path
-                            d="M14.8185 14.0364C14.4045 14.0621 14.3802 14.6183 14.7606 14.7837V14.7837C15.803 15.237 16.5879 15.9043 17.1508 16.756C17.6127 17.4549 18.33 18 19.1677 18H20.9483C21.6555 18 22.1715 17.2973 21.9227 16.6108C21.9084 16.5713 21.8935 16.5321 21.8781 16.4932C21.5357 15.6286 20.9488 14.9921 20.0798 14.5864C19.2639 14.2055 18.2425 14.0483 17.0392 14.0008L17.0194 14H16.9997C16.2909 14 15.5506 13.9909 14.8185 14.0364Z"
-                            fill="#fff" />
-                    </svg>
+                        tagsData.forEach(tag => {
+                            document.getElementById("tags").innerHTML = `${document.getElementById("tags").innerHTML}<div class="anInfo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M21.48 5.85869C21.4164 5.41415 21.0645 5.06646 20.6191 5.00848C20.49 4.99139 20.3611 4.97172 20.2324 4.95147C20.0833 4.92802 19.8977 4.89737 19.6863 4.85942C19.5451 4.83409 19.3922 4.80551 19.2311 4.77365C18.4146 4.61227 17.4279 4.37565 16.636 4.06798C15.2035 3.51144 13.8156 2.82416 12.4535 2.11397C12.1538 1.9573 11.7893 1.96544 11.4954 2.13101C10.2139 2.84808 8.89722 3.53579 7.52747 4.06798C6.74195 4.37311 5.71534 4.60971 4.85035 4.77177C4.42493 4.85148 4.05189 4.91076 3.78577 4.95002C3.64722 4.97047 3.50855 4.99028 3.36964 5.00738C2.92054 5.06184 2.56397 5.41092 2.50001 5.85869C1.97803 9.51317 2.39197 12.8028 3.91444 15.5689C5.43983 18.3407 8.01758 20.4762 11.6159 21.9275C11.739 21.9772 11.8696 22.0014 12 22.0001C12.1237 21.9988 12.2472 21.9746 12.364 21.9275C15.9624 20.4762 18.54 18.3407 20.0656 15.5689C21.5879 12.8029 22.0021 9.51317 21.48 5.85869ZM8.00001 10.0001C8.00001 7.79092 9.79087 6.00006 12 6.00006C14.2091 6.00006 16 7.79092 16 10.0001C16 12.2092 14.2091 14.0001 12 14.0001C9.79087 14.0001 8.00001 12.2092 8.00001 10.0001ZM8.39716 17.4814C9.14334 17.1585 10.2655 17.0001 12 17.0001C13.7753 17.0001 14.9078 17.1543 15.6538 17.4801C16.16 17.7011 16.7494 17.47 16.9705 16.9639C17.1915 16.4578 16.9604 15.8683 16.4543 15.6472C15.3044 15.145 13.8147 15.0001 12 15.0001C10.2123 15.0001 8.74384 15.1522 7.60286 15.6459C7.096 15.8652 6.86291 16.4539 7.08225 16.9608C7.30159 17.4677 7.8903 17.7007 8.39716 17.4814Z" fill="#fff"/>
+<path d="M12 8C10.8954 8 10 8.89543 10 10C10 11.1046 10.8954 12 12 12C13.1046 12 14 11.1046 14 10C14 8.89543 13.1046 8 12 8Z" fill="#fff"/>
+</svg>
                     <span>${tag}</span>
                 </div>`
-                })
-                
+                        })
+
+                    }).catch(error => {
+                        console.error("Jeanne D'arc Database is offline.")
+                        console.log('Error:', error);
+                    });
             }).catch(error => {
                 console.error("Jeanne D'arc Database is offline.")
                 console.log('Error:', error);
             });
-            }).catch(error => {
-                console.error("Jeanne D'arc Database is offline.")
-                console.log('Error:', error);
-            });
-            
+
         document.getElementById("profilePage").classList.add("active")
     }, 100)
 
@@ -1222,50 +1214,65 @@ function hideSocial() {
     document.getElementById("social").classList.remove("active")
 }
 
-const notice = document.getElementById("notice");
-let startY, currentY, isDragging = false;
+function grabberEvents(id) {
 
-// Initialize event listeners for touch/mouse events
-notice.addEventListener("mousedown", startDrag);
-notice.addEventListener("touchstart", startDrag);
-notice.addEventListener("mousemove", drag);
-notice.addEventListener("touchmove", drag);
-notice.addEventListener("mouseup", endDrag);
-notice.addEventListener("touchend", endDrag);
+    const notice = document.getElementById(id);
+    let startY, currentY, isDragging = false;
 
-function startDrag(e) {
-    startY = e.touches ? e.touches[0].clientY : e.clientY;
-    isDragging = true;
-    notice.style.transition = "none";  // Disable transitions for smoother dragging
-}
+    // Initialize event listeners for touch/mouse events
+    notice.addEventListener("mousedown", startDrag);
+    notice.addEventListener("touchstart", startDrag);
+    notice.addEventListener("mousemove", drag);
+    notice.addEventListener("touchmove", drag);
+    notice.addEventListener("mouseup", endDrag);
+    notice.addEventListener("touchend", endDrag);
 
-function drag(e) {
-    if (!isDragging) return;
+    function startDrag(e) {
+        startY = e.touches ? e.touches[0].clientY : e.clientY;
+        isDragging = true;
+        notice.style.transition = "none";  // Disable transitions for smoother dragging
+    }
 
-    currentY = e.touches ? e.touches[0].clientY : e.clientY;
-    let deltaY = currentY - startY;
+    function drag(e) {
+        if (!isDragging) return;
 
-    if (deltaY > 0) {  // Only allow downward dragging
-        notice.style.transform = `translateY(${deltaY}px)`;
+        currentY = e.touches ? e.touches[0].clientY : e.clientY;
+        let deltaY = currentY - startY;
+
+        if (deltaY > 0) {  // Only allow downward dragging
+            notice.style.transform = `translateY(${deltaY}px)`;
+        }
+    }
+
+    function endDrag() {
+        isDragging = false;
+        notice.style.transition = "transform 0.3s ease";  // Add smooth return or dismiss transition
+
+        if (currentY - startY > 150) {
+            notice.style.transform = `translateY(100vh)`;
+            
+            notice.addEventListener("transitionend", () => {
+                notice.classList.remove("active");
+                notice.style.transform = ``;
+                if(id === 'notice') {
+                    document.body.style.overflow = ""
+                   document.getElementById("app").style.transform = ""
+                }
+            }, { once: true });
+        } else {
+            notice.style.transform = ``;  // Reset if not dismissed
+        }
     }
 }
 
-function endDrag() {
-    isDragging = false;
-    notice.style.transition = "transform 0.3s ease";  // Add smooth return or dismiss transition
 
-    if (currentY - startY > 150) {  // Threshold for dismissing the div
-        notice.style.transform = `translateY(100vh)`;  // Move off screen
-        notice.addEventListener("transitionend", () => {
-            notice.classList.remove("active");  // Remove the active class
-            notice.style.transform = ``;
-        }, { once: true });
-    } else {
-        notice.style.transform = ``;  // Reset if not dismissed
-    }
-}
+grabberEvents("notice")
+
+//grabberEvents("evoxContainer")
 
 function reDoPinChange() {
+    document.getElementById("app").style.transform = "scale(0.95)"
+    document.body.style.overflow = "hidden"
     document.getElementById('notice').classList.toggle('active');
     document.getElementById("profilePage").classList.remove("active")
 }

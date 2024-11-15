@@ -596,6 +596,7 @@ vo input::placeholder {
     position: relative;
     overflow: hidden;
     overflow-y: auto;
+    transition: transform 0.4s ease-in-out;
 }
 
 .app .topBar {
