@@ -24,9 +24,9 @@ fetch(`../oasaBuild.evox`)
 function doodle() {
     if (navigator.onLine) {
         const prev = localStorage.getItem('previousRan')
-        const ran = Math.floor(Math.random() * 8) + 1
+        const ran = Math.floor(Math.random() * 13) + 1
         if (prev === ran) {
-            const ran2 = Math.floor(Math.random() * 8) + 1
+            const ran2 = Math.floor(Math.random() * 13) + 1
             document.getElementById("logo").src = `./illu/${ran2}.png`
             localStorage.setItem("previousRan", ran2)
         } else {
