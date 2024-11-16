@@ -13,8 +13,8 @@ self.addEventListener('notificationclick', function (event) {
   );
 });
 
-const CACHE_NAME = 'oasa-cache-v8';
-const CACHE_VERSION = 'v8'; // Change this version string when updating the cache
+const CACHE_NAME = 'oasa-cache-v9';
+const CACHE_VERSION = 'v9'; // Change this version string when updating the cache
 
 const urlsToCache = [
 

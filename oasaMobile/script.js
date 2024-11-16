@@ -3518,6 +3518,7 @@ function handleTimeBoxClick(element, bypass) {
 
     const optDiv = element.querySelector('div');
     if (optDiv) {
+        console.log("optDiv Found")
         optDiv.style.opacity = '0';
         optDiv.style.display = 'block';
         setTimeout(() => {
@@ -4144,3 +4145,222 @@ function showCurrentStop() {
         });
 
 }
+
+const notifyOnStart = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                        <path d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>`
+const on2minutes = `<svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="25px" height="25px" viewBox="-1 0 19 19" class="cf-icon-svg"><path d="M16.417 9.6A7.917 7.917 0 1 1 8.5 1.683 7.917 7.917 0 0 1 16.417 9.6zm-5.431 2.113H8.309l1.519-1.353q.223-.203.43-.412a2.974 2.974 0 0 0 .371-.449 2.105 2.105 0 0 0 .255-.523 2.037 2.037 0 0 0 .093-.635 1.89 1.89 0 0 0-.2-.889 1.853 1.853 0 0 0-.532-.63 2.295 2.295 0 0 0-.76-.37 3.226 3.226 0 0 0-.88-.12 2.854 2.854 0 0 0-.912.144 2.373 2.373 0 0 0-.764.42 2.31 2.31 0 0 0-.55.666 2.34 2.34 0 0 0-.274.89l1.491.204a1.234 1.234 0 0 1 .292-.717.893.893 0 0 1 1.227-.056.76.76 0 0 1 .222.568 1.002 1.002 0 0 1-.148.536 2.42 2.42 0 0 1-.389.472L6.244 11.77v1.295h4.742z"/></svg>`
+document.querySelectorAll('.swipe-container').forEach((container) => {
+    let startX = 0,
+        currentX = 0,
+        isDragging = false,
+        isRevealed = false; // Track whether actions are revealed
+    const content = container.querySelector('.swipe-content');
+    const actions = container.querySelector('.swipe-actions');
+    const actionsWidth = actions.offsetWidth; // Width of the action buttons
+
+    const resetPosition = () => {
+        actions.style.display = 'none'
+        content.style.transform = 'translateX(0)';
+        actions.style.transform = 'translateX(200%)'; // Hide actions
+        container.classList.remove('swiping');
+        isRevealed = false; // Mark actions as hidden
+
+    };
+
+    const revealActions = () => {
+        if (content.querySelector('span').innerText === "Κανένα") {
+            actions.querySelector('.time1').innerHTML = notifyOnStart
+            const station = content.querySelector('.liveCollumn').querySelector('vox').innerText.toLowerCase().replace(/\s+/g, '_')
+            actions.querySelector('.time1').onclick = function () {
+                notifyWhenStarted(currentBus, content.querySelector('span').innerText, station)
+            }
+        } else {
+            const station = content.querySelector('.liveCollumn').querySelector('vox').innerText.toLowerCase().replace(/\s+/g, '_')
+            actions.querySelector('.time1').innerHTML = on2minutes
+            actions.querySelector('.time1').onclick = function () {
+                notifyWhen2Mins(currentBus, content.querySelector('span').innerText, station)
+            }
+        }
+        actions.style.display = 'flex'
+        content.style.transform = `translateX(${-actionsWidth}px)`;
+        actions.style.transform = 'translateX(0)'; // Show actions
+        container.classList.add('swiping');
+        isRevealed = true; // Mark actions as revealed
+    };
+
+    const setPosition = (deltaX) => {
+        const translateX = isRevealed
+            ? -actionsWidth + deltaX // Adjust for revealed state
+            : deltaX; // Adjust for default state
+        content.style.transform = `translateX(${Math.min(0, translateX)}px)`;
+        actions.style.transform = `translateX(${100 + (translateX / actionsWidth) * 100}%)`;
+    };
+
+    container.addEventListener('touchstart', (e) => {
+        document.getElementById("popIt").style.overflow = 'hidden'
+        startX = e.touches[0].clientX;
+        isDragging = true;
+    });
+
+    container.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentX = e.touches[0].clientX;
+        const deltaX = currentX - startX;
+        setPosition(deltaX);
+    });
+
+    container.addEventListener('touchend', () => {
+        document.getElementById("popIt").style.overflow = null
+        if (!isDragging) return;
+        isDragging = false;
+
+        const deltaX = currentX - startX;
+
+        if (isRevealed) {
+            // If actions are revealed, swipe right to reset
+            if (deltaX > actionsWidth / 2) {
+                resetPosition(); // Reset to default position
+            } else {
+                revealActions(); // Keep actions revealed
+            }
+        } else {
+            // If actions are hidden, swipe left to reveal
+            if (deltaX < -actionsWidth / 2) {
+                revealActions(); // Reveal actions
+            } else {
+                resetPosition(); // Keep in default position
+            }
+        }
+    });
+
+    container.addEventListener('touchcancel', () => {
+        if (isRevealed) {
+            revealActions(); // Keep actions revealed
+        } else {
+            resetPosition(); // Reset to default position
+        }
+    });
+});
+
+//const targetUrl = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=400254&keyOrigin=evoxEpsilon`);
+//    const targetUrlKeranhs = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=400110&keyOrigin=evoxEpsilon`);
+//    const targetUrlDhm = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=400506&keyOrigin=evoxEpsilon`);
+//    const targetUrlKor = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=400004&keyOrigin=evoxEpsilon`);
+//    const targetUrlGoun = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=400452&keyOrigin=evoxEpsilon`);
+//    const targetUrlEthn831 = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=400451&keyOrigin=evoxEpsilon`);
+
+const known = {
+    "παναγίτσα": {
+        "route_code": "first",
+        "station": "400254"
+    },
+    "κεράνης": {
+        "route_code": "first",
+        "station": "400110"
+    },
+    "δημοτικό_θέατρο": {
+        "route_code": "2995",
+        "station": "400506"
+    },
+    "κοραή": {
+        "route_code": "5158",
+        "station": "400004"
+    },
+    "γούναρη": {
+        "route_code": "2079",
+        "station": "400452"
+    },
+    "εθνικής_αντιστάσεως": {
+        "route_code": "1886",
+        "station": "400451"
+    }
+}
+
+let temporaryFunction_bus = null
+let temporaryFunction_currentRemain = null
+let temporaryFunction_station = null
+let temporaryFunction_method = null
+function notifyWhenStarted(bus, currentRemain, station, bypass) {
+    if (localStorage.getItem("t50-username")) {
+        if (localStorage.getItem("extVOASA") || bypass) {
+            console.log("Start:", bus, currentRemain, station)
+            fetch(`https://florida.evoxs.xyz/liveNotif?username=${localStorage.getItem("t50-username")}&deviceId=${localStorage.getItem("extVOASA")}&busId=${bus}&dictionary=${JSON.stringify(known)}&station=${station}`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("runsRe").innerHTML = "Συνέχεια"
+                    console.log("Live Notification Success")
+                    document.getElementById("floridaNotice").classList.remove("active")
+                })
+                .catch(error => {
+                    console.error("Failed to check for updates")
+                })
+        } else {
+            temporaryFunction_bus = bus
+            temporaryFunction_currentRemain = currentRemain
+            temporaryFunction_station = station
+            temporaryFunction_method = '1'
+            document.getElementById("floridaNotice").classList.add("active")
+        }
+    } else {
+        alert("Δεν υπάρχει συνδεδεμένος λογαριασμός στην συσκευή!")
+    }
+
+
+}
+
+function reRunFunction(e) {
+    e.innerHTML = `<svg class="fade-in-slide-up" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px"
+                            viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+                            <path opacity="0.2" fill="#fff"
+                                d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                         s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                         c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" />
+                            <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                         C22.32,8.481,24.301,9.057,26.013,10.047z">
+                                <animateTransform attributeType="xml" attributeName="transform" type="rotate"
+                                    from="0 20 20" to="360 20 20" dur="0.3s" repeatCount="indefinite" />
+                            </path>
+                        </svg>`
+    console.log("Rerunning funct", temporaryFunction_method)
+    if(temporaryFunction_method === '1') {
+        notifyWhenStarted(temporaryFunction_bus, temporaryFunction_currentRemain, temporaryFunction_station, 'bypass')
+    } else if (temporaryFunction_method === '2') {
+        notifyWhen2Mins(temporaryFunction_bus, temporaryFunction_currentRemain, temporaryFunction_station, 'bypass')
+    }
+}
+
+function cancelLive() {
+    document.getElementById("floridaNotice").classList.remove("active")
+}
+function notifyWhen2Mins(bus, currentRemain, station, bypass) {
+    console.log("Start 2mins", bus, currentRemain, station)
+    if (localStorage.getItem("t50-username")) {
+        if (localStorage.getItem("extVOASA") || bypass) {
+            console.log("Start:", bus, currentRemain, station)
+            fetch(`https://florida.evoxs.xyz/liveNotif?username=${localStorage.getItem("t50-username")}&deviceId=${localStorage.getItem("extVOASA")}&busId=${bus}&dictionary=${JSON.stringify(known)}&station=${station}&method=2minutes`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("runsRe").innerHTML = "Συνέχεια"
+                    console.log("Live Notification Success")
+                    document.getElementById("floridaNotice").classList.remove("active")
+
+                })
+                .catch(error => {
+                    console.error("Failed to check for updates")
+                })
+        } else {
+            
+            document.getElementById("floridaNotice").classList.add("active")
+            temporaryFunction_bus = bus
+            temporaryFunction_currentRemain = currentRemain
+            temporaryFunction_station = station
+            temporaryFunction_method = '2'
+        }
+    } else {
+        alert("Δεν υπάρχει συνδεδεμένος λογαριασμός στην συσκευή!")
+    }
+
+}
+

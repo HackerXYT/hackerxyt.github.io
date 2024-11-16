@@ -656,12 +656,37 @@ input {
   margin: 10px;
 }
 
+.oasaBased .timeBox {
+  padding-right: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.oasaBased .timeBox.swiping .swipe-content .liveCollumn {
+  transition: opacity 0.3s ease-in-out, display 0.3s ease-in-out;
+  opacity: 0;
+  display: none;
+}
+
+.oasaBased .timeBox .swipe-content span {
+  margin-left: auto;
+  transition: margin 0.3s ease-in-out;
+}
+
+.oasaBased .timeBox.swiping .swipe-content span {
+  margin-left: 0;
+}
+
 .oasaBased .timeBox.topVox {
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
   margin-bottom: 0;
+  
+}
+.oasaBased .timeBox .swipe-content span {
+  margin-right: 20px;
 }
 .oasaBased .timeBox.bottomVox {
   border-top-left-radius: 0;
@@ -752,7 +777,7 @@ input {
 }
 
 .grabbable {
-  position: absolute;
+  position: fixed;
   background-color: #333;
   height: 5px;
   width: 30%;
@@ -767,7 +792,7 @@ input {
 
 .grabbable::before {
   content: "";
-  position: absolute;
+  position: fixed;
   top: -20px;
   /* Extend clickable area upwards */
   left: -20px;
@@ -1293,4 +1318,137 @@ vo input {
 .pendingCont .pending:last-child {
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
+}
+/* General swipe container */
+.swipe-container {
+  display: flex; /* Flexbox ensures actions are next to content */
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  margin: 10px;
+}
+
+
+
+.liveCollumn {
+  display: flex;
+  width: auto;
+  flex-direction: column;
+}
+
+
+.swipe-content {
+  background-color: #6f0505;
+  color: white;
+  width: 100%;
+  font-size: large;
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: row; /* Align children horizontally */
+  align-items: center; /* Center elements vertically */
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Action buttons container */
+.swipe-actions {
+  margin:0 ;
+  display: flex;
+  flex-shrink: 0; /* Prevent shrinking, keep the width fixed */
+  position: relative;
+  overflow: hidden; /* Prevent actions from being visible initially */
+  display: none;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Individual action buttons */
+.action {
+  width: 60px;
+  flex: 1; /* Equal width for each action */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.action.time1 {
+  background-color: #333;
+}
+
+.action.moreOpt {
+  background-color: rgb(143, 143, 143);
+}
+
+/* Hide actions initially */
+.swipe-actions {
+  transform: translateX(200%); /* Move actions off-screen initially */
+  transition: transform 0.3s ease;
+}
+
+/* Reveal actions */
+.swipe-container.swiping .swipe-actions {
+  transform: translateX(0); /* Bring actions into view */
+}
+
+.floridaNoticeContainer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  /* Initially hidden */
+  visibility: hidden;
+  /* Initially hidden */
+  transform: translateY(120%);
+  /* Initially off-screen to the left */
+  transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, backdrop-filter 0.5s ease-in-out;
+  z-index: 99921;
+}
+
+.floridaNoticeContainer.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  backdrop-filter: blur(5px);
+  /* Adjust the blur amount as needed */
+  -webkit-backdrop-filter: blur(5px);
+}
+.floridaNotice {
+  padding: 20px;
+  width: 350px;
+  height: 400px;
+  display: flex;
+  color: #fff;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #242426;
+  border-radius: 20px;
+  text-align: center;
+}
+.floridaNotice h2 {
+  font-size: 24px;
+  color: #de3030;
+}
+
+.floridaNotice .showBig {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.floridaNotice .descript {
+  margin-top: 5px;
+  font-size: 15px;
+  color: #b6b6b6;
+  margin-bottom: 15px;
 }
