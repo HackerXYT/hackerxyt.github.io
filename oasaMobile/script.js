@@ -4173,13 +4173,13 @@ document.querySelectorAll('.swipe-container').forEach((container) => {
             actions.querySelector('.time1').innerHTML = notifyOnStart
             const station = content.querySelector('.liveCollumn').querySelector('vox').innerText.toLowerCase().replace(/\s+/g, '_')
             actions.querySelector('.time1').onclick = function () {
-                notifyWhenStarted(currentBus, content.querySelector('span').innerText, station)
+                notifyWhenStarted(currentBus, content.querySelector('span').innerText, station, null, actions)
             }
         } else {
             const station = content.querySelector('.liveCollumn').querySelector('vox').innerText.toLowerCase().replace(/\s+/g, '_')
             actions.querySelector('.time1').innerHTML = on2minutes
             actions.querySelector('.time1').onclick = function () {
-                notifyWhen2Mins(currentBus, content.querySelector('span').innerText, station)
+                notifyWhen2Mins(currentBus, content.querySelector('span').innerText, station, null, actions)
             }
         }
         actions.style.display = 'flex'
@@ -4281,7 +4281,7 @@ let temporaryFunction_bus = null
 let temporaryFunction_currentRemain = null
 let temporaryFunction_station = null
 let temporaryFunction_method = null
-function notifyWhenStarted(bus, currentRemain, station, bypass) {
+function notifyWhenStarted(bus, currentRemain, station, bypass, actionsElement) {
     if (localStorage.getItem("t50-username")) {
         if (localStorage.getItem("extVOASA") || bypass) {
             console.log("Start:", bus, currentRemain, station)
@@ -4290,6 +4290,10 @@ function notifyWhenStarted(bus, currentRemain, station, bypass) {
                 .then(data => {
                     document.getElementById("runsRe").innerHTML = "Συνέχεια"
                     console.log("Live Notification Success")
+                    actionsElement.querySelector('.time1').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+
+<path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L12.0243 14.3899C11.4586 14.9556 10.5414 14.9556 9.97568 14.3899L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z" fill="#fff"/>
+</svg>`
                     document.getElementById("floridaNotice").classList.remove("active")
                 })
                 .catch(error => {
@@ -4324,7 +4328,7 @@ function reRunFunction(e) {
                             </path>
                         </svg>`
     console.log("Rerunning funct", temporaryFunction_method)
-    if(temporaryFunction_method === '1') {
+    if (temporaryFunction_method === '1') {
         notifyWhenStarted(temporaryFunction_bus, temporaryFunction_currentRemain, temporaryFunction_station, 'bypass')
     } else if (temporaryFunction_method === '2') {
         notifyWhen2Mins(temporaryFunction_bus, temporaryFunction_currentRemain, temporaryFunction_station, 'bypass')
@@ -4334,7 +4338,7 @@ function reRunFunction(e) {
 function cancelLive() {
     document.getElementById("floridaNotice").classList.remove("active")
 }
-function notifyWhen2Mins(bus, currentRemain, station, bypass) {
+function notifyWhen2Mins(bus, currentRemain, station, bypass, actionsElement) {
     console.log("Start 2mins", bus, currentRemain, station)
     if (localStorage.getItem("t50-username")) {
         if (localStorage.getItem("extVOASA") || bypass) {
@@ -4345,13 +4349,17 @@ function notifyWhen2Mins(bus, currentRemain, station, bypass) {
                     document.getElementById("runsRe").innerHTML = "Συνέχεια"
                     console.log("Live Notification Success")
                     document.getElementById("floridaNotice").classList.remove("active")
+                    actionsElement.querySelector('.time1').innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+
+<path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L12.0243 14.3899C11.4586 14.9556 10.5414 14.9556 9.97568 14.3899L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z" fill="#fff"/>
+</svg>`
 
                 })
                 .catch(error => {
                     console.error("Failed to check for updates")
                 })
         } else {
-            
+
             document.getElementById("floridaNotice").classList.add("active")
             temporaryFunction_bus = bus
             temporaryFunction_currentRemain = currentRemain
