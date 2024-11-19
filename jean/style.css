@@ -783,7 +783,7 @@ vo input::placeholder {
 }
 
 .progress-ring circle.track {
-    stroke: #b0b0b0; /* Subtle contrast */
+    stroke: #313131; /* Subtle contrast */
 }
 
 .progress-ring circle.progress {
@@ -1051,7 +1051,7 @@ vo input::placeholder {
 
 .navigation {
     position: absolute;
-    bottom: 20px;
+    bottom: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1060,21 +1060,26 @@ vo input::placeholder {
 }
 
 .navigation .bar {
-    width: 150px;
-    height: 70px;
+    width: auto;
+    height: auto;
+    padding: 5px 20px;
     border-radius: 50px;
-    background-color: #33334d;
+    background-color: #ffffff10;
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(25px);
+    /* Adjust the blur amount as needed */
+    -webkit-backdrop-filter: blur(25px);
+    gap: 5px;
 }
 
 .navigation .bar .item {
-    padding: 5px;
+    padding: 10px;
     border-radius: 50px;
-    width: 60px;
-    height: 60px;
-
+    width: 50px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1083,12 +1088,33 @@ vo input::placeholder {
 
 
 .navigation .bar .item.active {
-    background-color: #000;
+    background-color: #00000000;
+}
+
+.navigation .bar .item.active svg path {
+    fill: #10b76f;
 }
 
 .navigation .bar .item svg {
     width: 30px;
     height: 30px;
+    
+}
+
+.navigation .bar .item svg path {
+    fill: #efefef93;
+}
+
+
+.navigation .bar .item img {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
 }
 
 .spamStop {
