@@ -2,12 +2,14 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Display a map on a webpage</title>
   <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css'>
     <style>
-    body { margin: 0; padding: 0; }
-#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    body { margin: 0; padding: 0; overflow: hidden; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; overflow: auto; }
 </style>
 </head>
 <body>
