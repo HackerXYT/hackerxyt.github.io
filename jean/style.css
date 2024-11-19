@@ -35,12 +35,12 @@ body {
     /* Background gradient to simulate light */
     background: radial-gradient(circle at top,
             /* Glow effect from the top */
-            rgba(122, 108, 0, 0.2),
+            rgba(0, 0, 0, 0.2),
             /* Light purple with low opacity */
             rgba(0, 0, 0, 0) 60%),
         radial-gradient(circle at bottom,
             /* Glow effect from the bottom */
-            rgba(200, 182, 45, 0.1),
+            rgba(44, 40, 10, 0.435),
             /* Slightly lighter purple with lower opacity */
             rgba(0, 0, 0, 0) 50%),
         #000;
@@ -738,33 +738,37 @@ vo input::placeholder {
     padding: 10px;
     margin-top: 20px;
 }
-
 /* Card Style */
 .progress-card {
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
-    background: linear-gradient(145deg, #3c3b3f, #6e6f58);
+    background: #1f1f1f; /* Base background color */
     border-radius: 15px;
     padding: 20px;
-    box-shadow: 2px 2px 16px #141414, -2px -2px 16px #28282e;
-    /* Optional: Set max-width */
-    width: 100%;
-    border: 2px #6e6f58 solid;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 
+        8px 8px 16px rgba(0, 0, 0, 0.2), /* Dark shadow */
+        -8px -8px 16px #1f1f1f88; /* Light highlight */
     transition: transform 0.3s ease-in-out;
     z-index: 10;
 }
 
-/* Circular Progress */
+.progress-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Circular Progress Ring with Neumorphism */
 .progress-ring {
     position: relative;
     width: 70px;
     height: 70px;
     margin-right: 15px;
     flex-shrink: 0;
-    /* Prevents shrinking */
+    background: #2a2a2a;
+    border-radius: 50%;
+    box-shadow: 
+        inset 8px 8px 16px rgba(0, 0, 0, 0.2), 
+        inset -8px -8px 16px #1f1f1fc0; /* Inset shadow */
 }
 
 .progress-ring svg {
@@ -779,11 +783,11 @@ vo input::placeholder {
 }
 
 .progress-ring circle.track {
-    stroke: #33334d;
+    stroke: #b0b0b0; /* Subtle contrast */
 }
 
 .progress-ring circle.progress {
-    stroke: #ffffff;
+    stroke: #10b76f; /* Highlighted color */
     stroke-dasharray: 176;
     stroke-dashoffset: calc(176 - (176 * var(--progress)) / 100);
     /* Use CSS variable */
@@ -792,6 +796,9 @@ vo input::placeholder {
     transform-origin: 50% 50%;
     transition: stroke-dashoffset 0.9s ease-in-out;
     /* Animate the stroke-dashoffset */
+    box-shadow: 
+        inset -8px -8px 16px rgba(0, 0, 0, 0.5), 
+        inset -8px -8px 16px #1f1f1fc0; /* Inset shadow */
 }
 
 /* Centering the Percentage */
@@ -803,7 +810,11 @@ vo input::placeholder {
     font-size: 18px;
     font-weight: bold;
     color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    color: #e2e2e2;
 }
+
 
 /* Text Content */
 .text-content {
@@ -832,18 +843,18 @@ vo input::placeholder {
 
 .card {
     position: relative;
-    /* This is fine for stacking context */
     display: flex;
     flex-direction: column-reverse;
-    background-color: rgba(0, 0, 0, 0.7);
-    /* Optional: semi-transparent background for readability */
-    border-radius: 30px;
+    background: #000; /* Fallback background */
+    border-radius: 20px;
     width: 100%;
     height: 190px;
     padding: 20px;
     overflow: hidden;
-    /* Prevent overflow from the video */
     margin-bottom: 10px;
+    box-shadow: 
+        8px 8px 16px rgba(0, 0, 0, 0.8), 
+        -8px -8px 16px rgba(255, 255, 255, 0.1);
     transition: transform 0.2s ease-in-out;
 }
 
@@ -868,6 +879,11 @@ vo input::placeholder {
     z-index: 1;
     /* Set a lower z-index so it's behind content */
 }
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
 
 .card .background video {
     filter: brightness(0.5);
@@ -906,29 +922,66 @@ vo input::placeholder {
     padding: 5px 12px;
     display: inline;
     align-self: flex-start;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 
+        3px 3px 8px rgba(0, 0, 0, 0.2), 
+        -3px -3px 8px rgba(20, 20, 20, 0.1);
 }
 
 .tag.green {
-    background-color: #10b76fc5;
+    background-color: #017c47e4;
 }
 
 .tag.settings {
     background-color: #5c605ec5;
 }
 
+/* Circular Arrow Button */
 .card .arrow {
     position: absolute;
     top: 15px;
     right: 15px;
-    background-color: #fff;
+    background: #e0e0e0;
     border-radius: 50%;
     height: 50px;
     width: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 
+        5px 5px 10px rgba(0, 0, 0, 0.2), 
+        -5px -5px 10px rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
 
+
+.card .arrow:hover {
+    transform: scale(1.1);
+}
+
+.progress-bar {
+    margin-top: 15px;
+    position: relative;
+    width: 100%;
+    height: 5px;
+    background: #e0e0e0;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 
+        inset 3px 3px 6px rgba(0, 0, 0, 0.2), 
+        inset -3px -3px 6px rgba(255, 255, 255, 0.7);
+}
+
+.progress-each {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 50%;
+    background: #6c63ff; /* Bar Color */
+    border-radius: 25px;
+    box-shadow: 
+        0 0 10px rgba(108, 99, 255, 0.5), 
+        0 0 5px rgba(108, 99, 255, 0.3);
 }
 
 .card .arrow svg {
@@ -936,8 +989,8 @@ vo input::placeholder {
 }
 
 .card .title {
-    font-size: 25px;
-    margin-top: 12px;
+    font-size: 22px;
+    margin-top: 10px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.55);
     /* Subtle shadow */
 }
@@ -947,9 +1000,11 @@ vo input::placeholder {
     position: relative;
     width: 100%;
     height: 5px;
-    background-color: #ffffff48;
-    border-radius: 25px;
+    background-color: #151515;
     overflow: hidden;
+    box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 50px;
+
 }
 
 .progress-bar::before {
@@ -959,8 +1014,8 @@ vo input::placeholder {
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: #ffffff48;
-    border-radius: 25px;
+    background-color: #151515;
+    border-radius: 50px;
 }
 
 .progress-each {
@@ -968,11 +1023,11 @@ vo input::placeholder {
     top: 0;
     left: 0;
     height: 100%;
-    width: 50%;
-    background-color: #ffffff;
+    width: 60%;
+    background-color: #10b76f;
     /*Bar Color*/
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    border-radius: 25px;
+    box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 50px;
 }
 
 @keyframes fadeInSlideUp {

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Text Generation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            padding: 20px;
+        }
+
+        #response {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        button {
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3700b3;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>AI Text Generation</h1>
+    <label for="prompt">Enter a prompt: </label>
+    <input type="text" id="prompt" placeholder="Why is the sky blue?" />
+    <button onclick="generateText()">Generate</button>
+
+    <div id="response"></div>
+
+    <script>
+        function generateText() {
+            const prompt = document.getElementById('prompt').value;
+            if (!prompt) {
+                alert("Please enter a prompt.");
+                return;
+            }
+
+            const data = {
+                model: "llama3.2",
+                prompt: prompt,
+                options: { num_ctx: 4096 }
+            };
+
+            // Send the request to the API
+            fetch('http://localhost:11434/api/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+                    let decodedText = '';
+
+                    // Function to read the stream in chunks
+                    function readChunk() {
+                        reader.read().then(({ done, value }) => {
+                            if (done) {
+                                // All chunks have been processed, display the final text
+                                const jsonArray = decodedText.match(/{.*?}(?=\{|\s*$)/g).map(jsonStr => JSON.parse(jsonStr));
+                                //const a = JSON.parse(decodedText)
+                                jsonArray.forEach(g => {
+                                    //console.log(g);
+                                    
+                                    document.getElementById('response').textContent += g.response;
+                                });
+                                //document.getElementById('response').textContent = decodedText || "No response received.";
+                                return;
+                            }
+
+                            // Decode the current chunk
+                            //console.log(value)
+                            decodedText += decoder.decode(value, { stream: true });
+
+                            // Split the decoded text into individual JSON objects
+                            const chunks = decodedText.split("\n").filter(Boolean);  // Split by new lines
+                            decodedText = chunks.pop();  // Keep the last partial chunk for the next read
+
+                            // Process each complete JSON chunk
+                            chunks.forEach(chunk => {
+                                console.log(chunk)
+                                try {
+                                    const responseObject = JSON.parse(chunk);
+                                    //console.log(responseObject)
+                                    if (responseObject.response) {
+                                        console.log(responseObject.response)
+                                        //document.getElementById('response').textContent += responseObject.response;
+                                    }
+                                } catch (e) {
+                                    console.error("Error parsing JSON:", e);
+                                }
+                            });
+
+                            // Update the displayed text progressively
+                            //console.log(decodedText)
+                            const jsonArray = decodedText.match(/{.*?}(?=\{|\s*$)/g).map(jsonStr => JSON.parse(jsonStr));
+                            //const a = JSON.parse(decodedText)
+                            jsonArray.forEach(g => {
+                                //console.log(g);
+                                document.getElementById('response').textContent += g.response;
+                            });
+                            //console.log(a)
+
+
+                            // Continue reading the next chunk
+                            readChunk();
+                        }).catch(error => {
+                            console.error("Error reading chunk:", error);
+                            document.getElementById('response').textContent = "Error generating response.";
+                        });
+                    }
+
+                    // Start reading the stream
+                    readChunk();
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById('response').textContent = "Error generating response.";
+                });
+        }
+
+        function fix() {
+            const nv = document.getElementById("response").textContent
+            let output = nv.replace(/(\b\w+\b)(?=.*\1)/g, '');
+            document.getElementById("response").textContent = output
+        }
+
+
+    </script>
+</body>
+
+</html>
