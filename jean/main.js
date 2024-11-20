@@ -578,6 +578,7 @@ function clickPIN(element) {
                                             "latestIp": ip
                                         }
                                         localStorage.setItem("jeanDarc_accountData", JSON.stringify(accData))
+                                        sessionStorage.setItem("isNewUser", 'true')
                                         $("#tasks").fadeIn("fast")
 
                                         autoLogin()
@@ -814,6 +815,7 @@ function autoLogin() {
                         getEvoxProfile(foundName).then(profileSrc => {
                             console.log(profileSrc)
                             document.getElementById("selfPfp").src = profileSrc
+                            document.getElementById("navbarpfp").src = profileSrc
                         });
 
                         const accData = {
@@ -897,9 +899,14 @@ function attach() {
         const f = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
         console.log(f.length)
         if (f.length > 1) {
+            
             document.getElementById("emri").innerText = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a}`
         } else {
             document.getElementById("emri").innerText = f
+        }
+
+        if(!sessionStorage.getItem('isNewUser')) {
+            document.getElementById("welcmtxt").innerHTML = `Καλώς ήρθες ξανά 👋`
         }
 
         $("#app").fadeIn("fast")
@@ -1067,11 +1074,13 @@ function clickCard(e) {
 function actionClick(event, e) {
     event.preventDefault(); // Prevent default behavior
     event.stopPropagation(); // Stop the event from bubbling up to parent elements
+
     const svgElement = e.querySelector('svg');
     if (svgElement) {
         svgElement.style.transform = 'rotate(360deg)'
         setTimeout(function () {
             svgElement.style.transform = 'rotate(0deg)'
+            e.classList.toggle("active")
         }, 500)
     } else {
         console.log("No SVG found in this div.");
