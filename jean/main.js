@@ -329,9 +329,11 @@ if (spammingDetected) {
     };
 }
 
-function continueToLogin() {
+function continueToLogin(ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
     $("#case1").fadeOut("fast", function () {
-        document.getElementById("evoxContainer").style.height = '420px'
+        document.getElementById("evoxContainer").style.height = '55%'
         $("#loginForm").fadeIn("fast")
     })
 }
@@ -891,7 +893,10 @@ function attach() {
         console.log("Request PIN Change")
         document.getElementById("notice").classList.add("active")
         document.body.style.overflow = "hidden"
-        document.getElementById("app").style.transform = "scale(0.95)"
+        setTimeout(function () {
+            document.getElementById("app").style.transform = "scale(0.95)"
+        }, 500)
+
     }
     $("#tasks").fadeOut("fast", function () {
         const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
@@ -899,13 +904,13 @@ function attach() {
         const f = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
         console.log(f.length)
         if (f.length > 1) {
-            
+
             document.getElementById("emri").innerText = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a}`
         } else {
             document.getElementById("emri").innerText = f
         }
 
-        if(!sessionStorage.getItem('isNewUser')) {
+        if (!sessionStorage.getItem('isNewUser')) {
             document.getElementById("welcmtxt").innerHTML = `Καλώς ήρθες ξανά 👋`
         }
 
@@ -1259,13 +1264,13 @@ function grabberEvents(id) {
 
         if (currentY - startY > 150) {
             notice.style.transform = `translateY(100vh)`;
-            
+
             notice.addEventListener("transitionend", () => {
                 notice.classList.remove("active");
                 notice.style.transform = ``;
-                if(id === 'notice') {
+                if (id === 'notice') {
                     document.body.style.overflow = ""
-                   document.getElementById("app").style.transform = ""
+                    document.getElementById("app").style.transform = ""
                 }
             }, { once: true });
         } else {
@@ -1273,11 +1278,61 @@ function grabberEvents(id) {
         }
     }
 }
-
-
 grabberEvents("notice")
 
-//grabberEvents("evoxContainer")
+function grabberEventsNoDismiss(id) {
+
+    const notice = document.getElementById(id);
+    let startY, currentY, isDragging = false;
+
+    // Initialize event listeners for touch/mouse events
+    notice.addEventListener("mousedown", startDrag);
+    notice.addEventListener("touchstart", startDrag);
+    notice.addEventListener("mousemove", drag);
+    notice.addEventListener("touchmove", drag);
+    notice.addEventListener("mouseup", endDrag);
+    notice.addEventListener("touchend", endDrag);
+
+    function startDrag(e) {
+        startY = e.touches ? e.touches[0].clientY : e.clientY;
+        isDragging = true;
+        notice.style.transition = "height 1s ease-in-out";  // Disable transitions for smoother dragging
+    }
+
+    function drag(e) {
+        if (!isDragging) return;
+
+        currentY = e.touches ? e.touches[0].clientY : e.clientY;
+        let deltaY = currentY - startY;
+
+        if (deltaY > 0) {  // Only allow downward dragging
+            notice.style.transform = `translateY(${deltaY}px)`;
+        }
+    }
+
+    function endDrag() {
+        isDragging = false;
+        notice.style.transition = "transform 0.4s ease-in-out, height 1s ease-in-out";  // Add smooth return or dismiss transition
+        notice.style.transform = ``;
+
+        //if (currentY - startY > 150) {
+        //    notice.style.transform = `translateY(100vh)`;
+//
+        //    notice.addEventListener("transitionend", () => {
+        //        notice.classList.remove("active");
+        //        notice.style.transform = ``;
+        //        if (id === 'notice') {
+        //            document.body.style.overflow = ""
+        //            document.getElementById("app").style.transform = ""
+        //        }
+        //    }, { once: true });
+        //} else {
+        //    notice.style.transform = ``;  // Reset if not dismissed
+        //}
+    }
+}
+
+grabberEventsNoDismiss("evoxContainer")
 
 function reDoPinChange() {
     document.getElementById("app").style.transform = "scale(0.95)"

@@ -627,10 +627,14 @@ vo input::placeholder {
 
 .app .topBar .pfp .corner-svg {
     position: absolute;
-    bottom: -5px; /*5px*/
-    right: -5px;/*10px*/
-    width: 30px; /*20px*/
-    height: 30px; /*20px*/
+    bottom: -5px;
+    /*5px*/
+    right: -5px;
+    /*10px*/
+    width: 30px;
+    /*20px*/
+    height: 30px;
+    /*20px*/
     fill: white;
     /* Ensures the SVG fill is white */
     filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.7)) drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5));
@@ -739,17 +743,21 @@ vo input::placeholder {
     padding: 10px;
     margin-top: 20px;
 }
+
 /* Card Style */
 .progress-card {
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
-    background: #1f1f1f; /* Base background color */
+    background: #1f1f1f;
+    /* Base background color */
     border-radius: 15px;
     padding: 20px;
-    box-shadow: 
-        8px 8px 16px rgba(0, 0, 0, 0.2), /* Dark shadow */
-        -8px -8px 16px #1f1f1f88; /* Light highlight */
+    box-shadow:
+        8px 8px 16px rgba(0, 0, 0, 0.2),
+        /* Dark shadow */
+        -8px -8px 16px #1f1f1f88;
+    /* Light highlight */
     transition: transform 0.3s ease-in-out;
     z-index: 10;
 }
@@ -767,9 +775,10 @@ vo input::placeholder {
     flex-shrink: 0;
     background: #2a2a2a;
     border-radius: 50%;
-    box-shadow: 
-        inset 8px 8px 16px rgba(0, 0, 0, 0.2), 
-        inset -8px -8px 16px #1f1f1fc0; /* Inset shadow */
+    box-shadow:
+        inset 8px 8px 16px rgba(0, 0, 0, 0.2),
+        inset -8px -8px 16px #1f1f1fc0;
+    /* Inset shadow */
 }
 
 .progress-ring svg {
@@ -784,11 +793,13 @@ vo input::placeholder {
 }
 
 .progress-ring circle.track {
-    stroke: #313131; /* Subtle contrast */
+    stroke: #313131;
+    /* Subtle contrast */
 }
 
 .progress-ring circle.progress {
-    stroke: #10b76f; /* Highlighted color */
+    stroke: #10b76f;
+    /* Highlighted color */
     stroke-dasharray: 176;
     stroke-dashoffset: calc(176 - (176 * var(--progress)) / 100);
     /* Use CSS variable */
@@ -797,9 +808,10 @@ vo input::placeholder {
     transform-origin: 50% 50%;
     transition: stroke-dashoffset 0.9s ease-in-out;
     /* Animate the stroke-dashoffset */
-    box-shadow: 
-        inset -8px -8px 16px rgba(0, 0, 0, 0.5), 
-        inset -8px -8px 16px #1f1f1fc0; /* Inset shadow */
+    box-shadow:
+        inset -8px -8px 16px rgba(0, 0, 0, 0.5),
+        inset -8px -8px 16px #1f1f1fc0;
+    /* Inset shadow */
 }
 
 /* Centering the Percentage */
@@ -846,15 +858,16 @@ vo input::placeholder {
     position: relative;
     display: flex;
     flex-direction: column-reverse;
-    background: #000; /* Fallback background */
+    background: #000;
+    /* Fallback background */
     border-radius: 20px;
     width: 100%;
     height: 190px;
     padding: 20px;
     overflow: hidden;
     margin-bottom: 10px;
-    box-shadow: 
-        8px 8px 16px rgba(0, 0, 0, 0.8), 
+    box-shadow:
+        8px 8px 16px rgba(0, 0, 0, 0.8),
         -8px -8px 16px rgba(255, 255, 255, 0.1);
     transition: transform 0.2s ease-in-out;
 }
@@ -923,8 +936,8 @@ vo input::placeholder {
     padding: 5px 12px;
     display: inline;
     align-self: flex-start;
-    box-shadow: 
-        3px 3px 8px rgba(0, 0, 0, 0.2), 
+    box-shadow:
+        3px 3px 8px rgba(0, 0, 0, 0.2),
         -3px -3px 8px rgba(20, 20, 20, 0.1);
 }
 
@@ -947,8 +960,8 @@ vo input::placeholder {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 
-        5px 5px 10px rgba(0, 0, 0, 0.2), 
+    box-shadow:
+        5px 5px 10px rgba(0, 0, 0, 0.2),
         -5px -5px 10px rgba(255, 255, 255, 0.2);
     transition: transform 0.5s ease-in-out, height 0.5s ease-in-out, width 0.5s ease-in-out, border-radius 0.5s ease-in-out;
 }
@@ -961,15 +974,20 @@ vo input::placeholder {
 }
 
 .card .arrow.active {
-    height: 200vh;  /* Make it much larger than the viewport */
-    width: 200vw;   /* Make it much larger than the viewport */
-    transform: scale(10); /* Or any other value to make it bigger smoothly */
+    height: 200vh;
+    /* Make it much larger than the viewport */
+    width: 200vw;
+    /* Make it much larger than the viewport */
+    transform: scale(10);
+    /* Or any other value to make it bigger smoothly */
     border-radius: 0%;
 }
 
 .card .arrow.active svg {
-    width: 30px; /* Keep the SVG size constant */
-    height: 30px; /* Keep the SVG size constant */
+    width: 30px;
+    /* Keep the SVG size constant */
+    height: 30px;
+    /* Keep the SVG size constant */
 }
 
 
@@ -986,8 +1004,8 @@ vo input::placeholder {
     background: #e0e0e0;
     border-radius: 25px;
     overflow: hidden;
-    box-shadow: 
-        inset 3px 3px 6px rgba(0, 0, 0, 0.2), 
+    box-shadow:
+        inset 3px 3px 6px rgba(0, 0, 0, 0.2),
         inset -3px -3px 6px rgba(255, 255, 255, 0.7);
 }
 
@@ -997,10 +1015,11 @@ vo input::placeholder {
     left: 0;
     height: 100%;
     width: 50%;
-    background: #6c63ff; /* Bar Color */
+    background: #6c63ff;
+    /* Bar Color */
     border-radius: 25px;
-    box-shadow: 
-        0 0 10px rgba(108, 99, 255, 0.5), 
+    box-shadow:
+        0 0 10px rgba(108, 99, 255, 0.5),
         0 0 5px rgba(108, 99, 255, 0.3);
 }
 
@@ -1118,7 +1137,7 @@ vo input::placeholder {
 .navigation .bar .item svg {
     width: 30px;
     height: 30px;
-    
+
 }
 
 .navigation .bar .item svg path {
@@ -1444,6 +1463,7 @@ vo input::placeholder {
     position: fixed;
     top: 0;
     left: 0;
+    opacity: 0;
 
 }
 
@@ -1549,6 +1569,7 @@ vo input::placeholder {
     color: #bfbfbf;
     text-align: center;
 }
+
 .devActions div {
     width: 300px;
     max-width: 300px;
@@ -1595,4 +1616,173 @@ vo input::placeholder {
     backdrop-filter: blur(5px);
     /* Adjust the blur amount as needed */
     -webkit-backdrop-filter: blur(5px);
+}
+
+
+@keyframes moveInCircle {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes moveVertical {
+    0% {
+        transform: translateY(-5rem);
+    }
+
+    50% {
+        transform: translateY(5rem);
+    }
+
+    100% {
+        transform: translateY(-5rem);
+    }
+}
+
+@keyframes moveHorizontal {
+    0% {
+        transform: translateX(-5rem) translateY(-2rem);
+    }
+
+    50% {
+        transform: translateY(5rem) translateY(2rem);
+    }
+
+    100% {
+        transform: translateY(-5rem) translateY(-2rem);
+    }
+}
+
+:root {
+    --color-background-effect-bg1: rgb(0,0,0);
+    --color-background-effect-bg2: rgb(24,24,24);
+    --color-background-effect-color1: 216, 182, 87;
+    --color-background-effect-color2: 188, 138, 51;
+    --color-background-effect-color3: 216, 182, 87;
+    --color-background-effect-color4: 188, 138, 51;
+    --color-background-effect-color5: 216, 182, 87;
+    --color-background-effect-color6: 188, 138, 51;
+    --color-background-effect-interactive: 216, 182, 87;
+    --color-background-effect-size: 90%;
+    --color-background-effect-blending: hard-light;
+  }
+
+.background-effect {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    background: linear-gradient(45deg, var(--color-background-effect-bg1), var(--color-background-effect-bg2));
+}
+
+.moving-elements {
+    width: 100%;
+    height: 100%;
+}
+
+.g1 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color-background-effect-color1), 0.8) 0, rgba(var(--color-background-effect-color1), 0) 35%) no-repeat;
+    background: var(--color-background-effect-color1);
+    mix-blend-mode: var(--color-background-effect-blending);
+    width: var(--color-background-effect-size);
+    height: var(--color-background-effect-size);
+    top: calc(50% - var(--color-background-effect-size) / 2);
+    left: calc(50% - var(--color-background-effect-size) / 2);
+    opacity: 1;
+    transform-origin: center center;
+    animation: moveVertical 10s ease infinite;
+}
+
+.g2 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color-background-effect-color2), 0.8) 0, rgba(var(--color-background-effect-color2), 0) 35%) no-repeat;
+    mix-blend-mode: var(--color-background-effect-blending);
+    width: var(--color-background-effect-size);
+    height: var(--color-background-effect-size);
+    top: calc(50% - var(--color-background-effect-size) / 2);
+    left: calc(50% - var(--color-background-effect-size) / 2);
+    transform-origin: calc(50% - 4rem);
+    animation: moveInCircle 10s reverse infinite;
+    opacity: 1;
+}
+
+.g3 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color-background-effect-color3), 0.8) 0, rgba(var(--color-background-effect-color3), 0) 35%) no-repeat;
+    mix-blend-mode: var(--color-background-effect-blending);
+    width: var(--color-background-effect-size);
+    height: var(--color-background-effect-size);
+    top: calc(50% - var(--color-background-effect-size) / 2 + 2rem);
+    left: calc(50% - var(--color-background-effect-size) / 2 - 2rem);
+    opacity: 1;
+    transform-origin: calc(50% + 1rem);
+    animation: moveInCircle 20s reverse infinite;
+}
+
+.g4 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color-background-effect-color4), 0.8) 0, rgba(var(--color-background-effect-color4), 0) 35%) no-repeat;
+    mix-blend-mode: var(--color-background-effect-blending);
+    width: var(--color-background-effect-size);
+    height: var(--color-background-effect-size);
+    top: calc(50% - var(--color-background-effect-size) / 2 - 4rem);
+    left: calc(50% - var(--color-background-effect-size) / 2 - 12rem);
+    opacity: 1;
+
+    transform-origin: calc(50% + 4rem);
+    animation: moveInCircle 40s linear infinite;
+}
+
+.g5 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color-background-effect-color5), 0.8) 0, rgba(var(--color-background-effect-color5), 0) 35%) no-repeat;
+    mix-blend-mode: var(--color-background-effect-blending);
+    width: var(--color-background-effect-size);
+    height: var(--color-background-effect-size);
+    top: calc(50% - var(--color-background-effect-size) / 2 + 4rem);
+    left: calc(50% - var(--color-background-effect-size) / 2 + 12rem);
+    opacity: 1;
+
+    transform-origin: calc(50% + 4rem);
+    animation: moveHorizontal 40s linear infinite;
+}
+
+.g6 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color-background-effect-color6), 0.8) 0, rgba(var(--color-background-effect-color6), 0) 35%) no-repeat;
+    mix-blend-mode: var(--color-background-effect-blending);
+    width: var(--color-background-effect-size);
+    height: var(--color-background-effect-size);
+    top: calc(50% - var(--color-background-effect-size) / 2 - 1rem);
+    left: calc(50% - var(--color-background-effect-size) / 2 + 12rem);
+    opacity: 1;
+    transform-origin: calc(50% + 1rem);
+    animation: moveInCircle 40s linear infinite;
+}
+
+.interactive {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color-background-effect-interactive), 0.8) 0, rgba(var(--color-background-effect-interactive), 0) 35%) no-repeat;
+    mix-blend-mode: var(--color-background-effect-blending);
+
+    width: 100%;
+    height: 100%;
+    top: -50%;
+    left: -50%;
+
+    opacity: 0;
 }

@@ -82,6 +82,19 @@
 </head>
 
 <body>
+    <div class="background-effect">
+  
+        <div class="moving-elements">
+          <div class="g1"></div>
+          <div class="g2"></div>
+          <div class="g3"></div>
+          <div class="g4"></div>
+          <div class="g5"></div>
+          <div class="g6"></div>
+          <div class="interactive"></div>
+        </div>
+        
+      </div>
     <!--<div class="background-gradient" id="bgGrd"></div>-->
     <div class="gradient" id="bgGrd"></div>
     <div class="warning" id="device-warning" style="display: none;">
@@ -573,16 +586,16 @@
     <div id="notice" class="popup" style="height: 80%;padding: 10px;">
         <div id="grabberNotice" class="grabbable"></div>
         <div class="duplicate">
-            <img src="alert2.svg" style="margin-bottom: 10px;">
-            <h1 style="font-weight: bold;">Προσοχή!</h1>
-            <p style="margin-bottom: 5px;">Ο λογαριασμός σου έχει το αρχικό PIN.</p>
-            <span>Οποιοσδήποτε μπορεί να συνδεθεί και να τροποποιήσει τα δεδομένα σου.</span>
+            <img src="warning2.svg" style="margin-bottom: 10px;">
+            <h1 style="font-weight: bold;margin-bottom: 5px;">Το PIN του λογαριασμού σου είναι ευάλωτο!</h1>
+            <!--<p style="margin-bottom: 5px;">Το PIN σας είναι ευάλωτο</p>-->
+            <span>Οποιοσδήποτε μπορεί να συνδεθεί με το προεπιλεγμένο PIN και να τροποποιήσει τα δεδομένα και τις επιλογές σου.</span>
 
             <div class="actionBotPin" style="text-align:center;">
 
                 <button style="margin-bottom: 10px;display: none;" onclick="dismissPINChange()"
                     class="dismissButton">Παράλειψη</button>
-                <button onclick="changePin(this, event)" class="welcomeButton">Αλλαγή PIN</button>
+                <button onclick="changePin(this, event)" class="welcomeButton" style="background: none;background-color: #c03f3f;">Αλλαγή PIN</button>
             </div>
         </div>
 
@@ -666,7 +679,7 @@
         justify-content: center;
         align-items: center;">Οι αναζητήσεις, η περιήγησή σας και η βαθμολογία αξιοπιστίας της συσκευής σας ενδέχεται
                         να χρησιμοποιηθούν για την εξατομίκευση της εμπειρίας σας και τη βελτίωση της εφαρμογής.</p>
-                    <button onclick="continueToLogin()" class="welcomeButton">Επόμενο</button>
+                    <button onclick="continueToLogin(event)" class="welcomeButton">Επόμενο</button>
                 </div>
             </div>
 
@@ -769,7 +782,7 @@
                 <h2 style="font-weight: bold;font-size: 1.3rem;">Σύνδεση</h2>
                 <p style="font-size: 0.9rem">Για να συνδεθείς πληκτρολόγησε το όνομα ή το επώνυμο σου παρακάτω</p>
                 <div class="center-item">
-                    <div id="search-input-container" style="border-radius: 1rem;margin-top: 20px;">
+                    <div id="search-input-container" style="border-radius: 1.1rem;margin-top: 20px;">
                         <input id="nameInput" type="text" autocomplete="off" placeholder="Όνομα ή επώνυμο" />
                     </div>
                     <p id="matchNotFound" style="font-size: 0.9rem;display: none;">Δεν βρέθηκαν αντιστοιχίες</p>

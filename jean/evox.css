@@ -618,6 +618,7 @@ input {
   touch-action: auto;
   justify-content: center;
   background: rgb(13, 11, 15);
+  background: linear-gradient(45deg, #000000, #1c1c1c, #000000);
 
   /* Semi-transparent black overlay */
   z-index: 998;
@@ -911,13 +912,14 @@ input {
   justify-content: center;
   height: 100%;
   width: 100%;
+  padding: 10px;
 }
 
 .duplicate img {
   margin-top: auto;
   border-radius: 1rem;
-  width: 110px;
-  height: 110px;
+  width: 100px;
+  height: auto;
   object-fit: cover;
 }
 
@@ -963,7 +965,7 @@ input {
 }
 
 .duplicate h1 {
-  font-size: 2rem;
+  font-size: 1.7rem;
   color: #ed3d3d;
 }
 
@@ -1026,7 +1028,8 @@ input {
 }
 
 .welcomeButton {
-  background-color: #0980ff;
+  background-color: #c0943f; /*#0980ff -> blue #017c47e4 -> green*/
+  background: linear-gradient(145deg, #d0ab56, #c0943f, #d0ab56);
   border-radius: 1rem;
   text-align: center;
   width: 80%;
@@ -1034,6 +1037,8 @@ input {
   font-size: 1.2rem;
   margin-top: auto;
   border: none;
+  color: #ffffff;
+  text-shadow: rgba(0, 0, 0, 0.535) 0px 0px 5px;
 }
 
 .dismissButton {
