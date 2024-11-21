@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reboot Actions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .reboot-box {
+            background-color: #1c1c1c;
+            border-radius: 10px;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border: 1px solid #333;
+            margin-bottom: 10px;
+        }
+
+        .reboot-box h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: #00bcd4;
+        }
+
+        .reboot-box .details {
+            margin-bottom: 1rem;
+        }
+
+        .reboot-box .details span {
+            display: inline-block;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .toggle-services {
+            background: none;
+            border: none;
+            color: #77b1a9;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .services {
+            display: none;
+            margin-top: 10px;
+            padding-left: 20px;
+            font-size: 0.9rem;
+            color: #bbb;
+        }
+
+        .service {
+            margin-bottom: 5px;
+        }
+
+        .service.active {
+            color: #47c47f;
+        }
+
+        .service.inactive {
+            color: #f76c6c;
+        }
+
+        .service.unknown {
+            color: #f0ad4e;
+        }
+
+        .service.activating {
+            color: #f6bb42;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Reboot Actions will be displayed here -->
+    <div id="rebootActions"></div>
+
+    <script>
+        var userInput = prompt("accessCode:");
+
+        if (userInput === null) {
+            //alert("You cancelled the input.");
+        } else {
+            const url = `https://data.evoxs.xyz/status?password=${userInput}`;
+
+            // Fetch data from the URL
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();  // Parse JSON response
+                })
+                .then(data => {
+                    console.log(data);  // Handle the data received
+                    const rebootActionsContainer = document.getElementById('rebootActions');
+                    data.forEach(reboot => {
+                        const rebootBox = createRebootBox(reboot);
+                        rebootActionsContainer.appendChild(rebootBox);
+                    });
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
+        }
+
+
+        function createRebootBox(reboot) {
+            const box = document.createElement('div');
+            box.classList.add('reboot-box');
+
+            const title = document.createElement('h2');
+            title.textContent = `Action: ${reboot.action} - ${reboot.reason}`;
+            box.appendChild(title);
+
+            const details = document.createElement('div');
+            details.classList.add('details');
+            details.innerHTML = `
+        <span>Date:</span> ${reboot.date} (${reboot.day}) <br>
+        <span>Time:</span> ${reboot.time}
+      `;
+            box.appendChild(details);
+
+            const servicesToggle = document.createElement('button');
+            servicesToggle.classList.add('toggle-services');
+            servicesToggle.textContent = 'View Services';
+            box.appendChild(servicesToggle);
+
+            const servicesList = document.createElement('div');
+            servicesList.classList.add('services');
+
+            for (const [service, status] of Object.entries(reboot.services)) {
+                const serviceItem = document.createElement('div');
+                serviceItem.classList.add('service');
+
+                if (status === true) {
+                    serviceItem.classList.add('active');
+                } else if (status === false) {
+                    serviceItem.classList.add('inactive');
+                } else if (status === 'unknown') {
+                    serviceItem.classList.add('unknown');
+                } else if (status === 'activating') {
+                    serviceItem.classList.add('activating');
+                }
+
+                serviceItem.textContent = service;
+                servicesList.appendChild(serviceItem);
+            }
+
+            servicesToggle.addEventListener('click', () => {
+                servicesList.style.display = servicesList.style.display === 'block' ? 'none' : 'block';
+            });
+
+            box.appendChild(servicesList);
+            return box;
+        }
+
+
+    </script>
+</body>
+
+</html>
