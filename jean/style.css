@@ -18,17 +18,18 @@ body {
     height: 100%;
     width: 100%;
     font-family: "SF";
-    background-color: #000000;
 
     padding: 0;
     margin: 0;
     color: #fff;
+    background: rgb(0, 8, 41);
     touch-action: manipulation;
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    /* overflow: hidden;*/
+    transition: background-color 0.3s ease-in-out;
+    background-color: #000;
 }
 
 .background-gradient {
@@ -244,6 +245,7 @@ vo input::placeholder {
     display: flex;
     flex-direction: column;
     align-items: center;
+    z-index: 999;
 }
 
 @-webkit-keyframes rotate-forever {
@@ -1089,7 +1091,7 @@ vo input::placeholder {
 
 
 .navigation {
-    position: absolute;
+    position: fixed;
     bottom: 30px;
     display: flex;
     justify-content: center;
@@ -1612,7 +1614,8 @@ vo input::placeholder {
 .debugReload svg {
     padding: 10px;
     border-radius: 50%;
-    background-color: #1a1a1a2b;
+    /*background-color: #1a1a1a2b;*/
+    background-color: transparent;
     backdrop-filter: blur(5px);
     /* Adjust the blur amount as needed */
     -webkit-backdrop-filter: blur(5px);
@@ -1662,8 +1665,8 @@ vo input::placeholder {
 }
 
 :root {
-    --color-background-effect-bg1: rgb(0,0,0);
-    --color-background-effect-bg2: rgb(24,24,24);
+    --color-background-effect-bg1: rgb(0, 0, 0);
+    --color-background-effect-bg2: rgb(24, 24, 24);
     --color-background-effect-color1: 216, 182, 87;
     --color-background-effect-color2: 188, 138, 51;
     --color-background-effect-color3: 216, 182, 87;
@@ -1671,9 +1674,10 @@ vo input::placeholder {
     --color-background-effect-color5: 216, 182, 87;
     --color-background-effect-color6: 188, 138, 51;
     --color-background-effect-interactive: 216, 182, 87;
-    --color-background-effect-size: 90%;
+    --color-background-effect-size: 50%;
+    /* Reduced size for minimal appearance */
     --color-background-effect-blending: hard-light;
-  }
+}
 
 .background-effect {
     width: 100%;
@@ -1693,86 +1697,70 @@ vo input::placeholder {
     height: 100%;
 }
 
-.g1 {
+.g1,
+.g2,
+.g3,
+.g4,
+.g5,
+.g6 {
     position: absolute;
-    background: radial-gradient(circle at center, rgba(var(--color-background-effect-color1), 0.8) 0, rgba(var(--color-background-effect-color1), 0) 35%) no-repeat;
-    background: var(--color-background-effect-color1);
+    background: radial-gradient(circle, rgba(var(--color-background-effect-color1), 0.6) 0%, rgba(var(--color-background-effect-color1), 0) 50%);
     mix-blend-mode: var(--color-background-effect-blending);
-    width: var(--color-background-effect-size);
-    height: var(--color-background-effect-size);
-    top: calc(50% - var(--color-background-effect-size) / 2);
-    left: calc(50% - var(--color-background-effect-size) / 2);
-    opacity: 1;
-    transform-origin: center center;
-    animation: moveVertical 10s ease infinite;
+    width: 450px;
+    height: 450px;
+    border-radius: 50%;
+    /* Ensures the blobs are circular */
+    opacity: 0.8;
+    /* Reduced opacity for minimal appearance */
+    animation: moveInRandom 20s infinite alternate;
+}
+
+/* Spread blobs randomly across the screen */
+.g1 {
+    top: 20%;
+    left: 10%;
 }
 
 .g2 {
-    position: absolute;
-    background: radial-gradient(circle at center, rgba(var(--color-background-effect-color2), 0.8) 0, rgba(var(--color-background-effect-color2), 0) 35%) no-repeat;
-    mix-blend-mode: var(--color-background-effect-blending);
-    width: var(--color-background-effect-size);
-    height: var(--color-background-effect-size);
-    top: calc(50% - var(--color-background-effect-size) / 2);
-    left: calc(50% - var(--color-background-effect-size) / 2);
-    transform-origin: calc(50% - 4rem);
-    animation: moveInCircle 10s reverse infinite;
-    opacity: 1;
+    bottom: 0;
+    left: 0;
 }
 
 .g3 {
-    position: absolute;
-    background: radial-gradient(circle at center, rgba(var(--color-background-effect-color3), 0.8) 0, rgba(var(--color-background-effect-color3), 0) 35%) no-repeat;
-    mix-blend-mode: var(--color-background-effect-blending);
-    width: var(--color-background-effect-size);
-    height: var(--color-background-effect-size);
-    top: calc(50% - var(--color-background-effect-size) / 2 + 2rem);
-    left: calc(50% - var(--color-background-effect-size) / 2 - 2rem);
-    opacity: 1;
-    transform-origin: calc(50% + 1rem);
-    animation: moveInCircle 20s reverse infinite;
+    top: 10%;
+    left: 10%;
 }
 
 .g4 {
-    position: absolute;
-    background: radial-gradient(circle at center, rgba(var(--color-background-effect-color4), 0.8) 0, rgba(var(--color-background-effect-color4), 0) 35%) no-repeat;
-    mix-blend-mode: var(--color-background-effect-blending);
-    width: var(--color-background-effect-size);
-    height: var(--color-background-effect-size);
-    top: calc(50% - var(--color-background-effect-size) / 2 - 4rem);
-    left: calc(50% - var(--color-background-effect-size) / 2 - 12rem);
-    opacity: 1;
-
-    transform-origin: calc(50% + 4rem);
-    animation: moveInCircle 40s linear infinite;
+    bottom: 10%;
+    left: 0%;
 }
 
 .g5 {
-    position: absolute;
-    background: radial-gradient(circle at center, rgba(var(--color-background-effect-color5), 0.8) 0, rgba(var(--color-background-effect-color5), 0) 35%) no-repeat;
-    mix-blend-mode: var(--color-background-effect-blending);
-    width: var(--color-background-effect-size);
-    height: var(--color-background-effect-size);
-    top: calc(50% - var(--color-background-effect-size) / 2 + 4rem);
-    left: calc(50% - var(--color-background-effect-size) / 2 + 12rem);
-    opacity: 1;
-
-    transform-origin: calc(50% + 4rem);
-    animation: moveHorizontal 40s linear infinite;
+    top: 40%;
+    left: 30%;
 }
 
 .g6 {
-    position: absolute;
-    background: radial-gradient(circle at center, rgba(var(--color-background-effect-color6), 0.8) 0, rgba(var(--color-background-effect-color6), 0) 35%) no-repeat;
-    mix-blend-mode: var(--color-background-effect-blending);
-    width: var(--color-background-effect-size);
-    height: var(--color-background-effect-size);
-    top: calc(50% - var(--color-background-effect-size) / 2 - 1rem);
-    left: calc(50% - var(--color-background-effect-size) / 2 + 12rem);
-    opacity: 1;
-    transform-origin: calc(50% + 1rem);
-    animation: moveInCircle 40s linear infinite;
+    bottom: 10%;
+    left: 10%;
 }
+
+/* Keyframes for random movement */
+@keyframes moveInRandom {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(20px, -30px);
+    }
+
+    100% {
+        transform: translate(-20px, 30px);
+    }
+}
+
 
 .interactive {
     position: absolute;
@@ -1784,5 +1772,206 @@ vo input::placeholder {
     top: -50%;
     left: -50%;
 
+    display: none;
+}
+
+.moving-elements div {
     opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+:root {
+    --color-bg1: rgb(54, 0, 81); /* Darker purple */
+    --color-bg2: rgb(0, 8, 41); /* Darker navy */
+    --color1: 9, 57, 128;       /* Deep blue */
+    --color2: 110, 37, 128;     /* Muted magenta */
+    --color3: 50, 110, 128;     /* Soft teal */
+    --color4: 100, 25, 25;      /* Dark red */
+    --color5: 90, 90, 25;       /* Muted goldenrod */
+    --color-interactive: 70, 50, 128; /* Deep violet */
+    --circle-size: 80%;
+    --blending: hard-light;
+}
+
+
+@keyframes moveInCircle {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes moveVertical {
+    0% {
+        transform: translateY(-50%);
+    }
+
+    50% {
+        transform: translateY(50%);
+    }
+
+    100% {
+        transform: translateY(-50%);
+    }
+}
+
+@keyframes moveHorizontal {
+    0% {
+        transform: translateX(-50%) translateY(-10%);
+    }
+
+    50% {
+        transform: translateX(50%) translateY(10%);
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(-10%);
+    }
+}
+
+.gradient-bg {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    background: linear-gradient(40deg, var(--color-bg1), var(--color-bg2));
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.gradient-bg svg {
+    display: none;
+}
+
+.gradient-bg .gradients-container {
+    filter: url(#goo) blur(40px);
+    width: 100%;
+    height: 100%;
+}
+
+.gradient-bg .g1 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color1), 0.8) 0, rgba(var(--color1), 0) 50%) no-repeat;
+    mix-blend-mode: var(--blending);
+    width: var(--circle-size);
+    height: var(--circle-size);
+    top: calc(50% - var(--circle-size) / 2);
+    left: calc(50% - var(--circle-size) / 2);
+    transform-origin: center center;
+    animation: moveVertical 30s ease infinite;
+    opacity: 1;
+}
+
+.gradient-bg .g2 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color2), 0.8) 0, rgba(var(--color2), 0) 50%) no-repeat;
+    mix-blend-mode: var(--blending);
+    width: var(--circle-size);
+    height: var(--circle-size);
+    top: calc(50% - var(--circle-size) / 2);
+    left: calc(50% - var(--circle-size) / 2);
+    transform-origin: calc(50% - 400px);
+    animation: moveInCircle 20s reverse infinite;
+    opacity: 1;
+}
+
+.gradient-bg .g3 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color3), 0.8) 0, rgba(var(--color3), 0) 50%) no-repeat;
+    mix-blend-mode: var(--blending);
+    width: var(--circle-size);
+    height: var(--circle-size);
+    top: calc(50% - var(--circle-size) / 2 + 200px);
+    left: calc(50% - var(--circle-size) / 2 - 500px);
+    transform-origin: calc(50% + 400px);
+    animation: moveInCircle 40s linear infinite;
+    opacity: 1;
+}
+
+.gradient-bg .g4 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color4), 0.8) 0, rgba(var(--color4), 0) 50%) no-repeat;
+    mix-blend-mode: var(--blending);
+    width: var(--circle-size);
+    height: var(--circle-size);
+    top: calc(50% - var(--circle-size) / 2);
+    left: calc(50% - var(--circle-size) / 2);
+    transform-origin: calc(50% - 200px);
+    animation: moveHorizontal 40s ease infinite;
+    opacity: 0.7;
+}
+
+.gradient-bg .g5 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color5), 0.8) 0, rgba(var(--color5), 0) 50%) no-repeat;
+    mix-blend-mode: var(--blending);
+    width: calc(var(--circle-size) * 2);
+    height: calc(var(--circle-size) * 2);
+    top: calc(50% - var(--circle-size));
+    left: calc(50% - var(--circle-size));
+    transform-origin: calc(50% - 800px) calc(50% + 200px);
+    animation: moveInCircle 20s ease infinite;
+    opacity: 1;
+}
+
+.gradient-bg .interactive {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color-interactive), 0.8) 0, rgba(var(--color-interactive), 0) 50%) no-repeat;
+    mix-blend-mode: var(--blending);
+    width: 100%;
+    height: 100%;
+    top: -50%;
+    left: -50%;
+    opacity: 0.7;
+}
+
+.allowPWA {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px; /* Example padding */
+}
+
+.allowPWA::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px; /* Adjust height as needed */
+    pointer-events: none; /* Ensure it doesn't block interactions */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.8) 40%, rgba(0, 0, 0, 0.3) 70%, rgba(0, 0, 0, 0) 100%);
+    transition: background 0.3s ease-in-out; /* Smooth transition */
+}
+
+.debugReload svg g g path {
+    transition: fill 0.2s ease-in-out;
+}
+
+.justRow {
+    display: flex;
+    flex-direction: row;
+}
+
+#hexa img {
+    width: 170px;
+    height: 170px;
+    
+}
+
+#hexa {
+    z-index: 997;
 }

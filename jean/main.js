@@ -62,8 +62,8 @@ function returnFromMultimatch() {
     multimatchElement.classList.remove("active");
 
     // Step 2: Start fading out the top image and login section
-    topImgElement.style.opacity = '0';
     loginSectionElement.style.opacity = '0';
+    document.getElementById("evoxContainer").classList.add("active")
 
     // Step 3: Wait for the fade out to finish before changing display properties
     setTimeout(function () {
@@ -86,8 +86,8 @@ function returnFromMultimatch() {
 
 function selectCustom(name) {
     foundName = name
-    const video = document.getElementById("video");
-    video.play()
+    //const video = document.getElementById("video");
+    //video.play()
     document.getElementById("loadText").innerHTML = ``
     $("#tasks").fadeIn("fast")
     document.getElementById("multimatch").classList.remove('active')
@@ -143,7 +143,7 @@ function find() {
     // document.getElementById("topImg").style.opacity = '1'
 
     //document.getElementById("loadText").innerText = 'Αναζήτηση..'
-    //$("#tasks").fadeIn("fast")
+
     //video.play()
     document.getElementById("accessButton").innerHTML = loadingHTML
     const searchInput = document.getElementById('nameInput').value.replace(/\s+/g, '');
@@ -170,6 +170,7 @@ function find() {
                 setTimeout(function () {
 
                     document.getElementById("evoxContainer").classList.remove("active")
+                    $("#hexa").fadeOut("fast")
                     $("#tasks").fadeIn("fast")
                     document.getElementById("loadText").innerHTML = ''
                     //document.getElementById("loadText").innerHTML = `Πολλαπλές αντιστοιχίες`
@@ -196,7 +197,7 @@ function find() {
                             if (count === matchedNames.length) {
                                 document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
                                             <div class="centerLogin">
-        <div onclick="returnFromMultimatch()" class="loginButton">Ακύρωση</div>
+        <button onclick="returnFromMultimatch()" class="welcomeButton">Πίσω</button>
     </div>`
                             }
 
@@ -207,6 +208,7 @@ function find() {
                             $("#loginContainer").fadeOut("fast", function () {
                                 $("#multimatch").fadeIn("fast")
                                 $("#tasks").fadeOut("fast")
+                                $("#hexa").fadeOut("fast")
                                 document.getElementById("multimatch").classList.add("active")
                             })
 
@@ -227,6 +229,7 @@ function find() {
                     document.getElementById("accessButton").innerHTML = `Επιτυχία`
                     document.getElementById("loadText").style.opacity = '1'
                     document.getElementById("evoxContainer").classList.remove("active")
+                    $("#hexa").fadeOut("fast")
                     $("#tasks").fadeIn("fast", function () {
                         setTimeout(function () {
                             //document.getElementById("loadText").style.opacity = '0'
@@ -242,6 +245,7 @@ function find() {
                                             document.getElementById("loginContainer").style.display = 'none'
                                             $("#multimatch").fadeOut("fast", function () {
                                                 $("#lock").fadeIn("fast")
+                                                $("#hexa").fadeIn("fast")
                                             })
                                         })
 
@@ -348,6 +352,13 @@ document.addEventListener("DOMContentLoaded", function () {
     //        $("#lock").fadeIn("fast")
     //    })
     //}) testing
+    let countElems = 0
+    document.querySelectorAll('.moving-elements div').forEach(interactive => {
+        setTimeout(function () {
+            interactive.style.opacity = '1'
+        }, countElems * 200)
+        countElems++
+    })
     document.querySelectorAll('.pin-pad button').forEach(button => {
         button.addEventListener('touchstart', () => {
             button.classList.add('active');
@@ -362,44 +373,45 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     if (window.innerWidth > 768) {
         //console.log("This is not a mobile device");
-        $("#tasks").fadeOut("fast", function () {
-            $("#loginContainer").fadeOut("fast", function () {
-                $("#device-warning").fadeIn("fast")
-            })
-
+        //$("#tasks").fadeOut("fast", function () {
+        $("#loginContainer").fadeOut("fast", function () {
+            $("#device-warning").fadeIn("fast")
         })
+
+        //})
 
     } else if (spammingDetected) {
-        $("#tasks").fadeOut("fast", function () {
-            $("#loginContainer").fadeOut("fast", function () {
-                $("#spamStop").fadeIn("fast")
-                let stopTime = 10
-                if (sessionStorage.getItem("countdown")) {
-                    const nn = Number(sessionStorage.getItem("countdown"))
+        //$("#tasks").fadeOut("fast", function () {
+        $("#loginContainer").fadeOut("fast", function () {
+            $("#spamStop").fadeIn("fast")
+            let stopTime = 10
+            if (sessionStorage.getItem("countdown")) {
+                const nn = Number(sessionStorage.getItem("countdown"))
 
-                    sessionStorage.setItem("countdown", Math.floor(nn + 50 / 100 * nn))
-                    stopTime = Math.floor(nn + 50 / 100 * nn)
+                sessionStorage.setItem("countdown", Math.floor(nn + 50 / 100 * nn))
+                stopTime = Math.floor(nn + 50 / 100 * nn)
+            }
+            sessionStorage.setItem("countdown", stopTime)
+            document.getElementById("countdown").innerText = stopTime
+            setInterval(function () {
+                const num = Number(document.getElementById("countdown").innerText) - 1
+                document.getElementById("countdown").innerText = num
+                sessionStorage.setItem("countdown", num)
+                if (num < 1) {
+                    sessionStorage.removeItem('spammingDetected')
+                    sessionStorage.removeItem("countdown")
+                    window.location.reload()
                 }
-                sessionStorage.setItem("countdown", stopTime)
-                document.getElementById("countdown").innerText = stopTime
-                setInterval(function () {
-                    const num = Number(document.getElementById("countdown").innerText) - 1
-                    document.getElementById("countdown").innerText = num
-                    sessionStorage.setItem("countdown", num)
-                    if (num < 1) {
-                        sessionStorage.removeItem('spammingDetected')
-                        sessionStorage.removeItem("countdown")
-                        window.location.reload()
-                    }
-                }, 1000)
-            })
-
+            }, 1000)
         })
+
+        //})
     } else {
 
         if (localStorage.getItem("jeanDarc_accountData")) {
             autoLogin()
         } else {
+            stopPull = true
             //const video = document.getElementById("video");
             fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
@@ -423,9 +435,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                         //document.getElementById("loginSection").classList.add('active')
                                         //document.getElementById("bgGrd").style.transform = 'scale(0.95)'
                                         document.getElementById("evoxContainer").classList.add("active")
-                                        setTimeout(function () {
-                                            $("#tasks").fadeOut("fast")
-                                        }, 550)
+                                        //setTimeout(function () {
+                                        //    //$("#tasks").fadeOut("fast")
+                                        //}, 550)
                                         //video.play()
                                         setTimeout(function () {
                                             //let playbackRate = 1.0;
@@ -451,7 +463,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }).catch(error => {
                             console.error("Jeanne D'arc Database is offline.")
                             document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
-                            $("#tasks").fadeIn("fast")
+                            //$("#tasks").fadeIn("fast")
                             console.log('Error:', error);
                         });
 
@@ -485,15 +497,15 @@ function startSetup(e) {
     document.getElementById("evoxContainer").classList.remove("active")
     document.getElementById("loadText").innerText = 'Περιμένετε..'
     setTimeout(function () {
-        $("#tasks").fadeIn("fast", function () {
-            document.getElementById("setupPage").style.display = ''
-            document.getElementById("newUser").style.display = 'none'
-            document.getElementById("case1").style.display = ''
-            setTimeout(function () {
-                document.getElementById("evoxContainer").classList.add("active")
-                //document.getElementById("bgGrd").style.transform = 'scale(0.95)'
-            }, 1000)
-        })
+        //$("#tasks").fadeIn("fast", function () {
+        document.getElementById("setupPage").style.display = ''
+        document.getElementById("newUser").style.display = 'none'
+        document.getElementById("case1").style.display = ''
+        setTimeout(function () {
+            document.getElementById("evoxContainer").classList.add("active")
+            //document.getElementById("bgGrd").style.transform = 'scale(0.95)'
+        }, 1000)
+        //})
     }, 550)
 }
 
@@ -581,7 +593,9 @@ function clickPIN(element) {
                                         }
                                         localStorage.setItem("jeanDarc_accountData", JSON.stringify(accData))
                                         sessionStorage.setItem("isNewUser", 'true')
+                                        stopPull = null
                                         $("#tasks").fadeIn("fast")
+                                        $("#hexa").fadeOut("fast")
 
                                         autoLogin()
 
@@ -606,6 +620,7 @@ function clickPIN(element) {
                             console.error("Jeanne D'arc Database is offline.")
                             document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
                             $("#tasks").fadeIn("fast")
+                            $("#hexa").fadeOut("fast")
                             console.log('Error:', error);
                         });
 
@@ -654,6 +669,7 @@ function clickPIN(element) {
                             console.error("Jeanne D'arc Database is offline.")
                             document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
                             $("#tasks").fadeIn("fast")
+                            $("#hexa").fadeOut("fast")
                             console.log('Error:', error);
                         });
 
@@ -688,6 +704,7 @@ function clickPIN(element) {
                                                 setTimeout(function () {
 
                                                     document.getElementById("loadText").innerText = 'Το PIN ανανεώθηκε με επιτυχία'
+                                                    $("#hexa").fadeOut("fast")
                                                     $("#tasks").fadeIn("fast", function () {
                                                         setTimeout(function () {
                                                             $("#tasks").fadeOut("fast")
@@ -730,6 +747,7 @@ function clickPIN(element) {
                                 console.error("Jeanne D'arc Database is offline.")
                                 document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
                                 $("#tasks").fadeIn("fast")
+                                $("#hexa").fadeOut("fast")
                                 console.log('Error:', error);
                             });
                     } else {
@@ -830,14 +848,14 @@ function autoLogin() {
                         setTimeout(function () {
 
                             document.getElementById("loadText").innerText = 'Επιτυχία'
-                            $("#tasks").fadeIn("fast", function () {
-                                setTimeout(function () {
-                                    attach()
-                                }, 1200)
-                            })
+                            //$("#tasks").fadeIn("fast", function () {
+                            setTimeout(function () {
+                                attach()
+                            }, 1200)
+                            //})
                             document.getElementById("loadText").style.opacity = '1'
                         }, 300)
-                        $("#tasks").fadeOut("fast")
+                        //$("#tasks").fadeOut("fast")
 
 
 
@@ -847,20 +865,21 @@ function autoLogin() {
 
                     } else {
                         document.getElementById("topImg").style.opacity = '0'
-                        $("#tasks").fadeOut("fast", function () {
-                            $("#loginContainer").fadeOut("fast", function () {
-                                document.getElementById("loginContainer").style.display = 'none'
-                                $("#multimatch").fadeOut("fast", function () {
-                                    $("#lock").fadeIn("fast")
-                                })
+                        //$("#tasks").fadeOut("fast", function () {
+                        $("#loginContainer").fadeOut("fast", function () {
+                            document.getElementById("loginContainer").style.display = 'none'
+                            $("#multimatch").fadeOut("fast", function () {
+                                $("#lock").fadeIn("fast")
                             })
-
                         })
+
+                        //})
                     }
                 }).catch(error => {
                     console.error("Jeanne D'arc Database is offline.")
                     document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
                     $("#tasks").fadeIn("fast")
+                    $("#hexa").fadeOut("fast")
                     //alert("a")
                     retryInt = setInterval(function () {
                         fetch(`https://arc.evoxs.xyz/?metode=pin&pin=${process}&emri=${foundName}`)
@@ -889,6 +908,7 @@ function autoLogin() {
 }
 
 function attach() {
+    document.getElementById("gradColored").style.opacity = '1'
     if (atob(JSON.parse(localStorage.getItem("jeanDarc_accountData")).pin) === '0000') {
         console.log("Request PIN Change")
         document.getElementById("notice").classList.add("active")
@@ -898,7 +918,9 @@ function attach() {
         }, 500)
 
     }
-    $("#tasks").fadeOut("fast", function () {
+    $("#hexa").fadeOut("fast", function () {
+        $("#tasks").fadeOut("fast")
+        document.body.style.backgroundColor = 'rgb(0, 8, 41)'
         const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
         const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
         const f = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
@@ -997,6 +1019,8 @@ function changePin(e, event) {
 }
 
 function showProfile(e) {
+    document.body.style.overflow = 'hidden'
+    stopPull = true
     const img = e.querySelector('img')
     img.style.transform = "scale(0.9)"
 
@@ -1061,6 +1085,8 @@ function showProfile(e) {
 }
 
 function goBackFromProfile(e) {
+    document.body.style.overflow = null
+    stopPull = null;
     e.style.transform = "scale(0.9)"
     setTimeout(function () {
         e.style.transform = "scale(1)"
@@ -1265,13 +1291,14 @@ function grabberEvents(id) {
         if (currentY - startY > 150) {
             notice.style.transform = `translateY(100vh)`;
 
+            if (id === 'notice') {
+                document.body.style.overflow = null
+                document.getElementById("app").style.transform = ""
+            }
             notice.addEventListener("transitionend", () => {
                 notice.classList.remove("active");
                 notice.style.transform = ``;
-                if (id === 'notice') {
-                    document.body.style.overflow = ""
-                    document.getElementById("app").style.transform = ""
-                }
+
             }, { once: true });
         } else {
             notice.style.transform = ``;  // Reset if not dismissed
@@ -1317,7 +1344,7 @@ function grabberEventsNoDismiss(id) {
 
         //if (currentY - startY > 150) {
         //    notice.style.transform = `translateY(100vh)`;
-//
+        //
         //    notice.addEventListener("transitionend", () => {
         //        notice.classList.remove("active");
         //        notice.style.transform = ``;
@@ -1340,3 +1367,63 @@ function reDoPinChange() {
     document.getElementById('notice').classList.toggle('active');
     document.getElementById("profilePage").classList.remove("active")
 }
+
+let stopPull = null;
+let lastScrollY = window.scrollY; // Store the last known scroll position
+const pullThreshold = -120; // Maximum pull distance
+const debugReload = document.getElementById("debugReload");
+
+// Scroll event listener
+window.addEventListener("scroll", (event) => {
+    const currentScrollY = window.scrollY;
+    //if (currentScrollY < 0 && !stopPull || !document.getElementById("notice").classList.contains('active') && currentScrollY < 0) {
+    //    const pullDistance = Math.abs(currentScrollY); // Get pull distance (positive value)
+    //    const lines = document.querySelectorAll('.debugReload svg g g path');
+    //
+    //    if (lines.length > 0) {
+    //        const totalPaths = lines.length;
+    //
+    //        // Calculate the percentage of paths to fill
+    //        const fillPercentage = Math.min(pullDistance / Math.abs(pullThreshold), 1);
+    //        const pathsToFill = Math.floor(fillPercentage * totalPaths);
+    //
+    //        // Fill paths with white progressively
+    //        lines.forEach((line, index) => {
+    //            if (index < pathsToFill) {
+    //                line.setAttribute("fill", "#fff"); // Fill color
+    //            } else {
+    //                line.setAttribute("fill", "none"); // Reset others to default
+    //            }
+    //        });
+    //
+    //        // Optional: Visual feedback for the pull
+    //        debugReload.style.top = `${Math.min(pullDistance, 50)}px`;
+    //    }
+    //}
+
+    //const paths = document.querySelectorAll('.debugReload svg g g path');
+    //
+    //const allWhite = Array.from(paths).every(path => path.getAttribute('fill') === '#fff');
+    //
+    //if (allWhite) {
+    //    //alert('All of them are filled with white');
+    //    window.location.reload()
+    //}
+
+
+    // Update the last known scroll position
+    //lastScrollY = currentScrollY;
+});
+
+//window.addEventListener('scroll', manageScroll, { passive: false });
+//
+//function manageScroll(event) {
+//    if(stopPull) {
+//        event.preventDefault();
+//        event.stopPropagation();
+//        alert("stopping")
+//        return false;
+//
+//    }
+//
+//}
