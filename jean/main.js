@@ -376,6 +376,7 @@ document.addEventListener("DOMContentLoaded", function () {
         //$("#tasks").fadeOut("fast", function () {
         $("#loginContainer").fadeOut("fast", function () {
             $("#device-warning").fadeIn("fast")
+            $("#hexa").fadeOut('fast')
         })
 
         //})
@@ -383,6 +384,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (spammingDetected) {
         //$("#tasks").fadeOut("fast", function () {
         $("#loginContainer").fadeOut("fast", function () {
+            $("#hexa").fadeOut('fast')
             $("#spamStop").fadeIn("fast")
             let stopTime = 10
             if (sessionStorage.getItem("countdown")) {
@@ -918,9 +920,10 @@ function attach() {
         }, 500)
 
     }
+    document.body.style.backgroundColor = 'rgb(5,2,16)'
     $("#hexa").fadeOut("fast", function () {
         $("#tasks").fadeOut("fast")
-        document.body.style.backgroundColor = 'rgb(0, 8, 41)'
+
         const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
         const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
         const f = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`

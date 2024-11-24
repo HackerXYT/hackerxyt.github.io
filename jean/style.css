@@ -1780,18 +1780,22 @@ vo input::placeholder {
     transition: opacity 0.5s ease-in-out;
 }
 
+
 :root {
-    --color-bg1: rgb(54, 0, 81); /* Darker purple */
-    --color-bg2: rgb(0, 8, 41); /* Darker navy */
-    --color1: 9, 57, 128;       /* Deep blue */
-    --color2: 110, 37, 128;     /* Muted magenta */
-    --color3: 50, 110, 128;     /* Soft teal */
-    --color4: 100, 25, 25;      /* Dark red */
-    --color5: 90, 90, 25;       /* Muted goldenrod */
-    --color-interactive: 70, 50, 128; /* Deep violet */
+    --color-bg1: rgb(5,2,16);
+    --color-bg2: rgb(6,2,19);
+    --color1: 35,18,29;
+    --color2: 13,13,42;
+    --color3: 11,10,42;
+    --color4: 7,5,23;
+    --color5: 22,7,24;
+    --color-interactive: rgb(48, 34, 87);
     --circle-size: 80%;
     --blending: hard-light;
 }
+
+
+
 
 
 @keyframes moveInCircle {
