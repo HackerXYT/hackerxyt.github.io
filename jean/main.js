@@ -35,6 +35,15 @@
 //window.addEventListener('wheel', disableScroll, { passive: false });
 //window.addEventListener('touchstart', touchMoveHandler, { passive: false });
 
+function isIOS() {
+    //alert(navigator.userAgent)
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+if (isIOS()) {
+    console.log(isIOS())
+    document.getElementById("gradColored").style.opacity = '1'
+}
 
 function getRandomColor() {
     return `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
