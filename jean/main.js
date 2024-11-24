@@ -1439,3 +1439,12 @@ window.addEventListener("scroll", (event) => {
 //    }
 //
 //}
+
+function toggleDev() {
+    const current = document.getElementById('devActions').style.display
+    if (current === 'none') {
+        document.getElementById('devActions').style.display = 'flex'
+    } else {
+        document.getElementById('devActions').style.display = 'none'
+    }
+}
