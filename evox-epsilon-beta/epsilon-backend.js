@@ -318,7 +318,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '8.0.0'
+const appVersion = '8.0.1'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -2159,20 +2159,22 @@ async function actionReload(whoto, reloadPage, isAIT, firstLoad) {
 
                         const videoElement = document.createElement('video');
                         videoElement.classList.add('fullMsgVideo'); // Add a CSS class for styling
-                        videoElement.controls = true; // Enable video controls like play, pause, etc.
-                        //videoElement.poster = './epsilon-assets/apple-splash-dark-2224-1668.png'
+                        videoElement.controls = true; // Enable video controls
                         videoElement.autoplay = true;
                         videoElement.muted = true;
                         videoElement.loop = true;
                         videoElement.playsInline = true;
 
-                        videoElement.src = ""; // Placeholder source
-
-                        // Append the skeleton loader first
-                        messageElement.innerHTML = ''; // Clear any previous content
-                        messageElement.appendChild(skeletonLoader);
-
                         const finalVideoSrc = `${srv}/secureline?method=getFile&message=${parsed.location}`;
+
+                        // Event listener to toggle controls on interaction
+                        videoElement.addEventListener('touchstart', () => {
+                            videoElement.classList.add('show-controls'); // Show controls on mobile tap
+                        });
+
+                        videoElement.addEventListener('mouseleave', () => {
+                            videoElement.classList.remove('show-controls'); // Hide controls when interaction stops
+                        });
 
                         // Set the actual video source and handle the loadeddata event
                         videoElement.onloadeddata = () => {

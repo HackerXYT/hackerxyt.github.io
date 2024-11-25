@@ -7479,3 +7479,14 @@ vox.svgIconAnimated {
     transform: translate(0, 0); /* Matches 0% */
   }
 }
+
+.fullMsgVideo::-webkit-media-controls {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.fullMsgVideo.show-controls::-webkit-media-controls {
+  opacity: 1;
+  pointer-events: auto;
+}
