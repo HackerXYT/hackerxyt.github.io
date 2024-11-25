@@ -2606,6 +2606,10 @@ a {
   z-index: 1;
 }
 
+.bottom-actions .attachIcon svg {
+  transition: transform 0.5s ease-in-out;
+}
+
 .svg-icon {
   position: absolute;
   left: -30px;
@@ -2637,6 +2641,47 @@ a {
   transition: width 0.5s ease-in-out, max-width 0.5s ease-in-out, height 0.5s ease-in-out;
 }
 
+.message-me .skeleton-loader {
+  width: 200px;
+  height: 100px;  /* Adjust based on your image size */
+  background: linear-gradient(90deg, #f0f0f000 25%, #007bffac 50%, #f0f0f000 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite ease-in-out;
+  border-radius: 20px; /* Optional: rounded corners */
+}
+
+.message .skeleton-loader {
+  width: 200px;
+  height: 100px;  /* Adjust based on your image size */
+  background: linear-gradient(90deg, #f0f0f000 25%, #191919 50%, #f0f0f000 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite ease-in-out;
+  border-radius: 20px; /* Optional: rounded corners */
+}
+
+@keyframes loading {
+  0% {
+      background-position: -200% 0;
+  }
+  100% {
+      background-position: 200% 0;
+  }
+}
+
+.message .fullMsgImage,
+.message-me .fullMsgImage {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+}
+
+.message .fullMsgVideo,
+.message-me .fullMsgVideo {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+}
+
 .message .urlImg,
 .message-me .urlImg {
   width: 35px;
@@ -2647,7 +2692,6 @@ a {
   /* Center content inside */
   margin-right: 10px;
   vertical-align: middle;
-  border-radius: 10px;
 }
 
 .message .embedCol span,
@@ -7392,4 +7436,46 @@ vox.svgIconAnimated {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+
+
+.codeEditorStyle {
+  font-family: 'Courier New', monospace;
+  background-color: #2e2e2e;
+  color: #dcdcdc;
+  padding: 10px;
+  border-radius: 5px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  width: 100%;
+  height: 200px;
+  overflow-y: auto;
+}
+
+.ufo {
+  animation: combined 2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes combined {
+  0% {
+    transform: translate(0, 0); /* Default position */
+  }
+  25% {
+    transform: translate(5.5px, -5px); /* Up and right */
+  }
+  50% {
+    transform: translate(0, -7px); /* Highest point */
+  }
+  75% {
+    transform: translate(-5.5px, -5px); /* Up and left */
+  }
+  90% {
+    transform: translate(0, 0); /* Almost at 0% */
+  }
+  100% {
+    transform: translate(0, 0); /* Matches 0% */
+  }
 }

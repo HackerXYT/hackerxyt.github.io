@@ -54,7 +54,7 @@ if (cookieValue && isPWA() && !localStorage.getItem("hasRetrievedCookie") && !lo
             setTimeout(() => {
                 window.location.reload()
             }, 300);
-            
+
         }, 1300)
     }
     //console.log(`Username: ${userData.username}`);
@@ -318,7 +318,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '7.5.2'
+const appVersion = '8.0.0'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -1324,6 +1324,11 @@ function reloadFavs() {
                                 if (lastMsg.includes("You:")) {
                                     setItAs = 'You: Sent a URL'
                                 }
+                            } else if (lastMsg.includes(`"attachment": "file"`)) {
+                                setItAs = 'Sent a File'
+                                if (lastMsg.includes("You:")) {
+                                    setItAs = 'You: Sent a File'
+                                }
                             } else {
                                 if (lastMsg.length > 15) {
                                     setItAs = lastMsg.substring(0, 15) + '..'
@@ -1356,6 +1361,11 @@ function reloadFavs() {
                                     span.textContent = 'Sent a URL'
                                     if (lastMsg.includes("You:")) {
                                         span.textContent = 'You: Sent a URL'
+                                    }
+                                } else if (lastMsg.includes(`"attachment": "file"`)) {
+                                    span.textContent = 'Sent a File'
+                                    if (lastMsg.includes("You:")) {
+                                        span.textContent = 'You: Sent a File'
                                     }
                                 } else {
                                     if (lastMsg.length > 15) {
@@ -1505,6 +1515,11 @@ function securelineHome(data, appending) {
                         messageSpan.textContent = 'Sent a URL'
                         if (lastMsg.includes("You:")) {
                             messageSpan.textContent = 'You: Sent a URL'
+                        }
+                    } else if (lastMsg.includes(`"attachment": "file"`)) {
+                        messageSpan.textContent = 'Sent a File'
+                        if (lastMsg.includes("You:")) {
+                            messageSpan.textContent = 'You: Sent a File'
                         }
                     } else {
                         messageSpan.textContent = truncateString(lastMsg, 36)
@@ -1863,6 +1878,8 @@ function processMessage(data, element) {
                         content.appendChild(msgContent);
                     }
 
+                    console.log("Attachments test", message, message.content.includes(`"attachment": "file"`))
+
                     messagePack.appendChild(avatar);
                     messagePack.appendChild(content);
                     messageContainer.appendChild(messagePack);
@@ -1928,7 +1945,16 @@ async function actionReload(whoto, reloadPage, isAIT, firstLoad) {
             const integrityCheck = JSON.parse(messages);
 
             if (integrityCheck.messages.length === 0) {
-                document.getElementById("messages-container").innerHTML = `<p id="tempTextNoMsg" class='centered-text'>No messages!</p>`;
+                document.getElementById("messages-container").innerHTML = `<p id="tempTextNoMsg" class='centered-text'>
+                <svg class="ufo" xmlns="http://www.w3.org/2000/svg" width="55px" height="55px" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5.67459 7.59375C3.4317 8.35912 2 9.52303 2 10.8265C2 13.1315 6.47715 15.0002 12 15.0002C17.5228 15.0002 22 13.1315 22 10.8265C22 9.52303 20.5683 8.35912 18.3254 7.59375C18.2008 7.88403 17.9937 8.17776 17.6568 8.41211C16.8685 8.96038 15.3013 9.50029 12 9.50029C8.6987 9.50029 7.1315 8.96038 6.34322 8.41211C6.00629 8.17776 5.79918 7.88403 5.67459 7.59375ZM12 13.0003C12.5523 13.0003 13 12.5526 13 12.0003C13 11.448 12.5523 11.0003 12 11.0003C11.4477 11.0003 11 11.448 11 12.0003C11 12.5526 11.4477 13.0003 12 13.0003ZM8 11.0003C8 11.5526 7.55228 12.0003 7 12.0003C6.44772 12.0003 6 11.5526 6 11.0003C6 10.448 6.44772 10.0003 7 10.0003C7.55228 10.0003 8 10.448 8 11.0003ZM17 12.0003C17.5523 12.0003 18 11.5526 18 11.0003C18 10.448 17.5523 10.0003 17 10.0003C16.4477 10.0003 16 10.448 16 11.0003C16 11.5526 16.4477 12.0003 17 12.0003Z" fill="#fff"/>
+<path d="M12 17.2503C12.4142 17.2503 12.75 17.5861 12.75 18.0003V21.0003C12.75 21.4145 12.4142 21.7503 12 21.7503C11.5858 21.7503 11.25 21.4145 11.25 21.0003V18.0003C11.25 17.5861 11.5858 17.2503 12 17.2503Z" fill="#fff"/>
+<g opacity="0.5">
+<path d="M7.05498 7.0054C7.40316 4.73714 9.3631 3 11.7288 3H12.2712C14.6369 3 16.5968 4.73714 16.945 7.0054C16.9131 7.07425 16.866 7.13466 16.8003 7.18039C16.3862 7.4684 15.1898 8 12 8C8.81016 8 7.6138 7.4684 7.19972 7.18039C7.13397 7.13466 7.08687 7.07425 7.05498 7.0054Z" fill="#fff"/>
+<path d="M6 16.25C6.41421 16.25 6.75 16.5858 6.75 17V20C6.75 20.4142 6.41421 20.75 6 20.75C5.58579 20.75 5.25 20.4142 5.25 20V17C5.25 16.5858 5.58579 16.25 6 16.25Z" fill="#fff"/>
+<path d="M18.75 17C18.75 16.5858 18.4142 16.25 18 16.25C17.5858 16.25 17.25 16.5858 17.25 17V20C17.25 20.4142 17.5858 20.75 18 20.75C18.4142 20.75 18.75 20.4142 18.75 20V17Z" fill="#fff"/>
+</g>
+</svg>No messages!</p>`;
 
                 if (aitNoMsgPlayed === false) {
                     aitPlay("no_messages_with_user");
@@ -1995,6 +2021,7 @@ async function actionReload(whoto, reloadPage, isAIT, firstLoad) {
                 }
 
                 // Add line breaks for HTML rendering
+                const defaultMessage = message.content
                 message.content = addLineBreaks(message.content);
 
                 console.log("Decoded message with line breaks:", message.content);
@@ -2089,6 +2116,128 @@ async function actionReload(whoto, reloadPage, isAIT, firstLoad) {
                             console.error(error);
                             resolve();
                         });
+                } else if (message.content.includes(`"attachment": "file"`)) {
+
+                    let infoFile = 'evx';
+                    let fileSrc = false;
+                    console.log("LSLINE", defaultMessage)
+                    const parsed = JSON.parse(defaultMessage)
+                    if (parsed.fileType === 'png' || parsed.fileType === 'jpg' || parsed.fileType === 'webp' || parsed.fileType === 'gif' || parsed.fileType === 'jpeg') {
+                        messageElement.style.padding = '0';
+                        messageElement.style.backgroundColor = 'transparent';
+                        const skeletonLoader = document.createElement('div');
+                        skeletonLoader.classList.add('skeleton-loader');
+
+                        const imageElement = document.createElement('img');
+                        imageElement.classList.add('fullMsgImage');
+
+                        imageElement.src = "";
+
+                        // Append the skeleton loader first
+                        messageElement.innerHTML = '';  // Clear any previous content
+                        messageElement.appendChild(skeletonLoader);
+                        const finalImageSrc = `${srv}/secureline?method=getFile&message=${parsed.location}`;
+
+                        // Set the actual image source and handle the onload event
+                        imageElement.onload = () => {
+
+                            // Remove the skeleton loader and show the image
+                            messageElement.innerHTML = '';  // Clear skeleton
+                            messageElement.appendChild(imageElement);  // Add the image
+                        };
+
+                        // Start loading the image by setting its src
+                        imageElement.src = finalImageSrc;
+                    } else if (parsed.fileType === 'mov' || parsed.fileType === 'mp4') {
+                        //messageElement.classList.add("enlarged")
+                        //messageElement.style.maxWidth = '80%'
+                        messageElement.style.padding = '0';
+                        messageElement.style.backgroundColor = 'transparent';
+
+                        const skeletonLoader = document.createElement('div');
+                        skeletonLoader.classList.add('skeleton-loader');
+
+                        const videoElement = document.createElement('video');
+                        videoElement.classList.add('fullMsgVideo'); // Add a CSS class for styling
+                        videoElement.controls = true; // Enable video controls like play, pause, etc.
+                        //videoElement.poster = './epsilon-assets/apple-splash-dark-2224-1668.png'
+                        videoElement.autoplay = true;
+                        videoElement.muted = true;
+                        videoElement.loop = true;
+                        videoElement.playsInline = true;
+
+                        videoElement.src = ""; // Placeholder source
+
+                        // Append the skeleton loader first
+                        messageElement.innerHTML = ''; // Clear any previous content
+                        messageElement.appendChild(skeletonLoader);
+
+                        const finalVideoSrc = `${srv}/secureline?method=getFile&message=${parsed.location}`;
+
+                        // Set the actual video source and handle the loadeddata event
+                        videoElement.onloadeddata = () => {
+                            // Remove the skeleton loader and show the video
+                            messageElement.innerHTML = ''; // Clear skeleton
+                            messageElement.appendChild(videoElement); // Add the video
+                        };
+
+                        // Start loading the video by setting its src
+                        videoElement.src = finalVideoSrc;
+                    } else {
+                        const fileUrl = `${srv}/secureline?method=getFile&message=${parsed.location}`;
+                        //messageElement.style.padding = '0';
+                        //messageElement.style.backgroundColor = 'transparent';
+                        const skeletonLoader = document.createElement('div');
+                        skeletonLoader.classList.add('skeleton-loader');
+                        messageElement.innerHTML = '';
+                        messageElement.appendChild(skeletonLoader);
+                        const isText = false
+                        if (isText) {
+                            //NOT USED - SIMILAR TO CODE EDITOR [READONLY]
+                            fetch(`${srv}/secureline?method=getFile&message=${parsed.location}`)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error(`HTTP error! Status: ${response.status}`);
+                                    }
+                                    return response.text();
+                                })
+                                .then(insideTextFile => {
+                                    messageElement.innerHTML = '';
+                                    messageElement.style.padding = null;
+                                    messageElement.style.backgroundColor = null;
+                                    messageElement.classList.add('codeEditorStyle')
+
+                                    messageElement.innerText = `${insideTextFile}`;
+
+
+
+                                    console.log('The file is a text file.');
+                                }).catch(error => {
+                                    console.error(error);
+                                });
+
+                        } else {
+                            messageElement.innerHTML = `<img class="urlImg" src="./novus/document.svg">
+                        <div class="embedCol">
+                            <span>${parsed.fileType.charAt(0).toUpperCase() + parsed.fileType.slice(1)} File</span>
+                            <vo>${infoFile}</vo>
+                        </div>
+                        <img class="imgBox" src="./novus/open.svg" onclick="createAndClickHiddenLink('${srv}/secureline?method=getFile&message=${parsed.location}')" style="margin-right: 0px;">`;
+                            console.log('The file is not a text file.');
+                        }
+
+                    }
+
+
+                    if (message.sender === localStorage.getItem("t50-username")) {
+                        messageElement.classList.add('message-me');
+                    } else {
+                        messageElement.classList.add('message');
+                    }
+                    messageElement.onclick = function () {
+                        enlargeMessage(this)
+                    }
+                    messagesContainer.appendChild(messageElement);
                 } else {
                     console.log("Spawning Default with innerHTML as", message.content)
                     const type = message.sender === localStorage.getItem("t50-username") ? 'message-me' : 'message'
@@ -3875,3 +4024,105 @@ function editTag(tag) {
     }
 }
 
+function isTextFile(url, timeout = 5000) {
+    // Create an AbortController to cancel the fetch if it's taking too long
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    // Set a timeout to abort the request if it takes too long
+    const timeoutId = setTimeout(() => {
+        controller.abort();
+    }, timeout);
+
+    return fetch(url, { method: 'HEAD', signal })
+        .then(response => {
+            clearTimeout(timeoutId);  // Clear the timeout once the request is completed
+
+            if (response.ok) {
+                const contentType = response.headers.get('Content-Type');
+                console.log('Content-Type:', contentType);  // Debugging output
+
+                // Check if the content type indicates a text file
+                const isText = contentType && contentType.includes('text');
+                return isText;
+            } else {
+                throw new Error('Failed to fetch the headers');
+            }
+        })
+        .catch(error => {
+            clearTimeout(timeoutId);  // Ensure timeout is cleared on error
+            if (error.name === 'AbortError') {
+                console.error('Request timed out');
+            } else {
+                console.error('Error:', error);
+            }
+            throw new Error('Network error occurred');
+        });
+}
+
+
+
+
+
+function sendFile(e, up) {
+    if (e) {
+        const svgIcon = e.querySelector('svg');
+        svgIcon.style.transform = "rotate(360deg)"
+        setTimeout(function () {
+            document.getElementById("secureline-upload-box").click()
+        }, 450)
+    } else if (up === 'upload') {
+
+        const container = document.getElementById("messages-container");
+        const newMessage = document.createElement('div');
+        newMessage.className = 'message-me';
+        newMessage.innerHTML = `<div class="spinner-box"><div class="pulse-container"><div class="pulse-bubble pulse-bubble-1 think"></div><div class="pulse-bubble pulse-bubble-2 think"></div><div class="pulse-bubble pulse-bubble-3 think"></div></div></div>`;
+        container.insertBefore(newMessage, container.firstChild);
+        const input = document.getElementById('secureline-upload-box');
+        const file = input.files[0];
+
+        if (file) {
+            // Extract the file type (extension)
+            const fileType = file.name.split('.').pop(); // Get the part after the last dot
+            console.log('File Type:', fileType);
+
+            play("submitProfile");
+
+            const reader = new FileReader();
+            reader.onload = function (el) {
+                const base64String = el.target.result;
+
+                console.log(base64String);
+
+                fetch(`${srv}/secureline`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        method: 'uploadFile',
+                        username: localStorage.getItem("t50-username"),
+                        recipient: sessionStorage.getItem("current_sline"),
+                        file: base64String,
+                        fileType: fileType
+                    })
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log(data);
+                        //alert(`Req Complete ${data}`)
+                        actionReload(sessionStorage.getItem("current_sline"), 'reloadPage')
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        // Reset the input value to allow selecting the same file again
+        input.value = '';
+
+    }
+}
