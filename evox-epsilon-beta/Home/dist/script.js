@@ -503,7 +503,10 @@ const serverBaseUrl = 'https://data.evoxs.xyz'; // Replace with your middleware 
  * Redirects the user to Spotify login page
  */
 function redirectToSpotifyLogin() {
-    window.location.href = authUrl;
+    if(client_id) {
+        window.location.href = authUrl;
+    }
+    
 }
 
 /**
@@ -577,6 +580,7 @@ async function getCurrentlyPlayingTrack() {
         // Set up periodic updates every 30 seconds
         setInterval(getCurrentlyPlayingTrack, 30000);
     } else {
+
         // Redirect to Spotify login if not authenticated
         redirectToSpotifyLogin();
     }
