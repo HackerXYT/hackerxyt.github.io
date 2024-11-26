@@ -20,8 +20,8 @@ self.addEventListener('notificationclick', function (event) {
   );
 });
 
-const STATIC_CACHE_NAME = 'epsilon-cache-v33';
-const APP_CACHE_NAME = 'epsilon-app-cache-v33';
+const STATIC_CACHE_NAME = 'epsilon-cache-v35';
+const APP_CACHE_NAME = 'epsilon-app-cache-v35';
 const CACHE_STATIC = [
   '/evox-epsilon-beta/epsilon-frontend-assets/epsilon.png',
   '/evox-epsilon-beta/epsilon-frontend-assets/customize.png',
@@ -200,6 +200,11 @@ self.addEventListener('fetch', event => {
   if (event.request.url.startsWith('chrome-extension:')) {
     // Skip caching requests with unsupported schemes
     return;
+  }
+
+  const url = new URL(event.request.url);
+  if (url.pathname.startsWith('/evox-epsilon-beta/Home/dist/')) {
+    return; // Skip handling requests to this path
   }
 
   event.respondWith(

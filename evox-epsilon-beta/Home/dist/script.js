@@ -40,7 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (deviceName === "Spotify") {
                 //window.open(authUrl);
                 //window.location.href = authUrl
-                redirectToSpotifyLogin()
+                if(client_id) {
+                    window.location.href = authUrl;
+                }
             } else if (deviceName === "Computer") {
 
                 if (state === 'online') {
@@ -557,7 +559,9 @@ async function getCurrentlyPlayingTrack() {
     if (response.ok) {
         const data = await response.json();
         if (data.item) {
-            document.getElementById("disc").src = data.item.album.images[1].url
+            console.log(data)
+            document.getElementById("cover").src = data.item.album.images[1].url;
+
             document.getElementById("fridge").checked = true;
             document.getElementById("songName").innerText = data.item.name;
             document.getElementById("artists").innerText = data.item.artists.map(artist => artist.name).join(', ');
@@ -580,8 +584,8 @@ async function getCurrentlyPlayingTrack() {
         // Start fetching currently playing track
         getCurrentlyPlayingTrack();
 
-        // Set up periodic updates every 30 seconds
-        setInterval(getCurrentlyPlayingTrack, 30000);
+        // Set up periodic updates every 10 seconds
+        setInterval(getCurrentlyPlayingTrack, 60000);
     } else {
 
         // Redirect to Spotify login if not authenticated
