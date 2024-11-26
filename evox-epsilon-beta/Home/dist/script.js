@@ -39,7 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 changeDev(setIT, deviceName)
             } else if (deviceName === "Spotify") {
                 //window.open(authUrl);
-                window.location.href = authUrl
+                //window.location.href = authUrl
+                redirectToSpotifyLogin()
             } else if (deviceName === "Computer") {
 
                 if (state === 'online') {
@@ -503,6 +504,7 @@ const serverBaseUrl = 'https://data.evoxs.xyz'; // Replace with your middleware 
  * Redirects the user to Spotify login page
  */
 function redirectToSpotifyLogin() {
+    return;
     if(client_id) {
         window.location.href = authUrl;
     }
