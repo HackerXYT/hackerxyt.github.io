@@ -42,6 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 //window.location.href = authUrl
                 if(client_id) {
                     window.location.href = authUrl;
+                } else {
+                    alert("Client Id not Registered")
                 }
             } else if (deviceName === "Computer") {
 
