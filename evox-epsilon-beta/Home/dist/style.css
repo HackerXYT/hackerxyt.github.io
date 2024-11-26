@@ -402,11 +402,21 @@ header {
 .m-player .disc {
   width: 50px;
   height: 50px;
-  border-radius: 50%;
-  background-image: linear-gradient(50deg, rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.15) 31%, rgba(255, 255, 255, 0) 72%), linear-gradient(-50deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 60%), repeating-radial-gradient(circle, #444 0, #444 2px, gray 2px, #545454 3px);
+  border-radius: 10px;
+  /*background-image: linear-gradient(50deg, rgba(255, 255, 255, 0) 45%, rgba(255, 255, 255, 0.15) 31%, rgba(255, 255, 255, 0) 72%), linear-gradient(-50deg, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0) 60%), repeating-radial-gradient(circle, #444 0, #444 2px, gray 2px, #545454 3px);*/
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.m-player .disc::before, .m-player .disc::after {
+
+.m-player .disc img {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+/*.m-player .disc::before, .m-player .disc::after {
   content: "";
   position: absolute;
   margin: auto;
@@ -426,7 +436,7 @@ header {
   width: 8px;
   height: 8px;
   background: white;
-}
+}*/
 .m-player .control {
   width: 52px;
   height: 10px;

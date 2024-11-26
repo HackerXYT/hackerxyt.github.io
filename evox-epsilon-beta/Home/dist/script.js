@@ -557,6 +557,7 @@ async function getCurrentlyPlayingTrack() {
     if (response.ok) {
         const data = await response.json();
         if (data.item) {
+            document.getElementById("disc").src = data.item.album.images[1].url
             document.getElementById("fridge").checked = true;
             document.getElementById("songName").innerText = data.item.name;
             document.getElementById("artists").innerText = data.item.artists.map(artist => artist.name).join(', ');
