@@ -174,7 +174,7 @@ function clientVerified() {
             if (params.has('jeanDarc')) {
                 const value = params.get('jeanDarc');
                 if(value === 'redaktoni') {
-                    window.location.href = `https://data.evoxs.xyz/jeandarc?metode=redaktoni&password=${btoa(password)}`
+                    window.location.href = `https://arc.evoxs.xyz?metode=redaktoni&password=${btoa(password)}`
                     return;
                 }
             }
@@ -931,7 +931,7 @@ function startLogin() {
                     if (params.has('jeanDarc')) {
                         const value = params.get('jeanDarc');
                         if(value === 'redaktoni') {
-                            window.location.href = `https://data.evoxs.xyz/jeandarc?metode=redaktoni&password=${btoa(password)}`
+                            window.location.href = `https://arc.evoxs.xyz?metode=redaktoni&password=${btoa(password)}`
                             return;
                         }
                     }
@@ -1101,7 +1101,7 @@ function on2FAComplete() {
                 if (params.has('jeanDarc')) {
                     const value = params.get('jeanDarc');
                     if(value === 'redaktoni') {
-                        window.location.href = `https://data.evoxs.xyz/jeandarc?metode=redaktoni&password=${btoa(password)}`
+                        window.location.href = `https://arc.evoxs.xyz?metode=redaktoni&password=${btoa(password)}`
                         return;
                     }
                 }
@@ -1140,7 +1140,7 @@ function on2FAComplete() {
                 if (params.has('jeanDarc')) {
                     const value = params.get('jeanDarc');
                     if(value === 'redaktoni') {
-                        window.location.href = `https://data.evoxs.xyz/jeandarc?metode=redaktoni&password=${btoa(password)}`
+                        window.location.href = `https://arc.evoxs.xyz?metode=redaktoni&password=${btoa(password)}`
                         return;
                     }
                 }

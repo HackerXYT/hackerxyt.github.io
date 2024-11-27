@@ -598,7 +598,7 @@ vo input::placeholder {
     position: relative;
     overflow: hidden;
     overflow-y: auto;
-    transition: transform 0.4s ease-in-out;
+    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
 }
 
 .app .topBar {
@@ -1546,7 +1546,7 @@ vo input::placeholder {
 
 #notice {
     overflow-x: hidden;
-    transition: transform 0.8s ease-in-out, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 1s ease-in-out;
+    transition: transform 0.3s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 1s ease-in-out;
 }
 
 #pinText {

@@ -212,8 +212,6 @@ function find() {
 
                         });
                         setTimeout(function () {
-                            //document.getElementById("topImg").style.display = 'none'
-                            //document.getElementById("loginSection").style.display = 'none'
                             $("#loginContainer").fadeOut("fast", function () {
                                 $("#multimatch").fadeIn("fast")
                                 $("#tasks").fadeOut("fast")
@@ -254,7 +252,7 @@ function find() {
                                             document.getElementById("loginContainer").style.display = 'none'
                                             $("#multimatch").fadeOut("fast", function () {
                                                 $("#lock").fadeIn("fast")
-                                                $("#hexa").fadeIn("fast")
+                                                $("#hexa").fadeOut("fast")
                                             })
                                         })
 
@@ -444,7 +442,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     setTimeout(function () {
                                         //document.getElementById("loginContainer").style.opacity = '1'
                                         //document.getElementById("loginSection").classList.add('active')
-                                        //document.getElementById("bgGrd").style.transform = 'scale(0.95)'
+                                        //document.getElementById("bgGrd").style.transform = 'scale(0.97)'
                                         document.getElementById("evoxContainer").classList.add("active")
                                         //setTimeout(function () {
                                         //    //$("#tasks").fadeOut("fast")
@@ -514,7 +512,7 @@ function startSetup(e) {
         document.getElementById("case1").style.display = ''
         setTimeout(function () {
             document.getElementById("evoxContainer").classList.add("active")
-            //document.getElementById("bgGrd").style.transform = 'scale(0.95)'
+            //document.getElementById("bgGrd").style.transform = 'scale(0.97)'
         }, 1000)
         //})
     }, 550)
@@ -720,6 +718,9 @@ function clickPIN(element) {
                                                         setTimeout(function () {
                                                             $("#tasks").fadeOut("fast")
                                                             $("#app").fadeIn("fast")
+                                                            document.body.style.overflow = null
+                                                            document.getElementById("app").style.transform = ""
+                                                            document.getElementById("app").style.opacity = "1"
                                                         }, 1200)
                                                     })
                                                     document.getElementById("loadText").style.opacity = '1'
@@ -924,9 +925,10 @@ function attach() {
         console.log("Request PIN Change")
         document.getElementById("notice").classList.add("active")
         document.body.style.overflow = "hidden"
-        setTimeout(function () {
-            document.getElementById("app").style.transform = "scale(0.95)"
-        }, 500)
+        //setTimeout(function () {
+        document.getElementById("app").style.opacity = "0.7"
+        document.getElementById("app").style.transform = "scale(0.97)"
+        //}, 500)
 
     }
     document.body.style.backgroundColor = 'rgb(5,2,16)'
@@ -1306,6 +1308,7 @@ function grabberEvents(id) {
             if (id === 'notice') {
                 document.body.style.overflow = null
                 document.getElementById("app").style.transform = ""
+                document.getElementById("app").style.opacity = "1"
             }
             notice.addEventListener("transitionend", () => {
                 notice.classList.remove("active");
@@ -1374,7 +1377,8 @@ function grabberEventsNoDismiss(id) {
 grabberEventsNoDismiss("evoxContainer")
 
 function reDoPinChange() {
-    document.getElementById("app").style.transform = "scale(0.95)"
+    document.getElementById("app").style.transform = "scale(0.97)"
+    document.getElementById("app").style.opacity = "0.7"
     document.body.style.overflow = "hidden"
     document.getElementById('notice').classList.toggle('active');
     document.getElementById("profilePage").classList.remove("active")
