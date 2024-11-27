@@ -53,7 +53,7 @@ let foundName = null;
 
 let checkChange;
 setInterval(function () {
-    if (foundName && foundName !== checkChange) {
+    if (foundName && foundName !== checkChange && localStorage.getItem("jeanDarc_accountData")) {
         checkChange = foundName
         getEvoxProfile(foundName).then(profileSrc => {
             document.getElementById('userPinPfp').src = profileSrc
@@ -175,8 +175,141 @@ function find() {
             }, 340)
         } else {
             if (matchedNames.length > 1) {
-                document.getElementById("accessButton").innerHTML = `Βρέθηκε εμπόδιο`
+                document.getElementById("pinText").style.marginBottom = null
+                document.getElementById("accessButton").innerHTML = `Επιτυχία`
                 setTimeout(function () {
+                    let count = 0
+                    const karuseliCont = document.getElementById("karuseli")
+                    karuseliCont.style.display = null
+                    document.getElementById("userPinPfp").style.display = 'none'
+                    karuseliCont.innerHTML = ''
+                    matchedNames.forEach(name => {
+                        count++
+                        const firstChar = (str) => str.split(' ')[1]?.charAt(0) || null;
+                        const ranId = Math.floor(Math.random() * 909999) + 1
+                        if (count === 1) {
+                            karuseliCont.innerHTML = `${karuseliCont.innerHTML}<img onclick="pickasCurrent('${name}')" class="fytyre zgjedhur" src="reloading-pfp.gif" alt="Fytyrë ${count}" id="${ranId}">`
+                        } else {
+                            karuseliCont.innerHTML = `${karuseliCont.innerHTML}<img onclick="pickasCurrent('${name}')" class="fytyre" src="reloading-pfp.gif" alt="Fytyrë ${count}" id="${ranId}">`
+                        }
+
+                        //document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
+                        //<div onclick="selectCustom('${name}')" class="socialUser"><img id="${ranId}" class="slUserPFP social"
+                        getEvoxProfile(name).then(profileSrc => {
+                            document.getElementById(ranId).src = profileSrc
+                        });
+
+                        if (count === matchedNames.length) {
+                            const karuseli = document.querySelectorAll('.fytyre');
+                            function positionImages() {
+                                const zgjedhurIndex = Array.from(karuseli).findIndex(el => el.classList.contains('zgjedhur'));
+
+                                karuseli.forEach((el, i) => {
+                                    const position = i - zgjedhurIndex; // Calculate relative position
+                                    el.style.transform = `translateX(${position * 70}px)`; // Adjust distance
+                                });
+                            }
+
+                            // Initialize positions at load
+                            positionImages();
+
+                            // Add event listeners for clicks
+                            karuseli.forEach((fytyre, index) => {
+                                fytyre.addEventListener('click', () => {
+                                    document.querySelector('.zgjedhur').classList.remove('zgjedhur');
+                                    fytyre.classList.add('zgjedhur');
+                                    positionImages(); // Recalculate positions
+                                });
+                            });
+                        }
+                    });
+
+                    document.getElementById("loadText").innerHTML = `Η αυτόματη σύνδεση απέτυχε`
+                    setTimeout(function () {
+                        $("#hexa").fadeOut("fast")
+                        document.getElementById("evoxContainer").classList.remove("active")
+
+                        $("#tasks").fadeIn("fast", function () {
+
+                            document.getElementById("loadText").style.opacity = '1'
+
+
+                            setTimeout(function () {
+                                //document.getElementById("loadText").style.opacity = '0'
+                                setTimeout(function () { //
+                                    const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
+                                    const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
+                                    $("#tasks").fadeOut("fast", function () {
+                                        document.getElementById("loadText").style.opacity = '0'
+                                        document.getElementById("taskLoading").style.display = 'none'
+                                        document.getElementById("tempLoader").style.display = 'flex'
+                                        document.getElementById("loadText").innerHTML = `Επιλέξτε τον λογαριασμό σας`
+
+                                        $("#tasks").fadeIn("fast", function () {
+                                            document.getElementById("loadText").style.opacity = '1'
+                                            setTimeout(function () {
+                                                document.getElementById("topImg").style.opacity = '0'
+                                                $("#tasks").fadeOut("fast", function () {
+                                                    document.getElementById("tempLoader").style.display = 'none'
+                                                    document.getElementById("taskLoading").style.display = null
+                                                    $("#loginContainer").fadeOut("fast", function () {
+                                                        document.getElementById("loginContainer").style.display = 'none'
+                                                        $("#multimatch").fadeOut("fast", function () {
+                                                            document.getElementById("nameForMultiple").innerText = matchedNames[0]
+                                                            document.getElementById("nameForMultiple").style.display = 'flex'
+                                                            $("#lock").fadeIn("fast")
+                                                            $("#hexa").fadeOut("fast")
+                                                        })
+                                                    })
+
+                                                })
+                                            }, 1500)
+                                        })
+                                    })
+
+                                }, 340)
+                            }, 900)
+                        })
+
+
+
+                    }, 340)
+
+                    return;
+                    setTimeout(function () {
+                        //document.getElementById("loadText").innerHTML = `Επιτυχία`
+                        document.getElementById("accessButton").innerHTML = `Επιτυχία`
+                        document.getElementById("loadText").style.opacity = '1'
+                        document.getElementById("evoxContainer").classList.remove("active")
+                        $("#hexa").fadeOut("fast")
+                        $("#tasks").fadeIn("fast", function () {
+                            setTimeout(function () {
+                                //document.getElementById("loadText").style.opacity = '0'
+                                setTimeout(function () { //
+                                    const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
+                                    const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
+                                    document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
+                                    document.getElementById("loadText").style.opacity = '1'
+                                    setTimeout(function () {
+                                        document.getElementById("topImg").style.opacity = '0'
+                                        $("#tasks").fadeOut("fast", function () {
+                                            $("#loginContainer").fadeOut("fast", function () {
+                                                document.getElementById("loginContainer").style.display = 'none'
+                                                $("#multimatch").fadeOut("fast", function () {
+                                                    document.getElementById("nameForMultiple").style.display = 'none'
+                                                    $("#lock").fadeIn("fast")
+                                                    $("#hexa").fadeOut("fast")
+                                                })
+                                            })
+
+                                        })
+                                    }, 2500)
+                                }, 340)
+                            }, 900)
+                        })
+
+
+                    }, 340)
 
                     document.getElementById("evoxContainer").classList.remove("active")
                     $("#hexa").fadeOut("fast")
@@ -229,7 +362,16 @@ function find() {
                     }, 340)
                 }, 340)
             } else {
+                document.getElementById("loadText").innerHTML = ''
                 foundName = matchedNames[0]
+                const karuseliCont = document.getElementById("karuseli")
+                karuseliCont.style.display = 'none'
+                document.getElementById("userPinPfp").style.display = null
+                document.getElementById("nameForMultiple").style.display = 'none'
+                getEvoxProfile(foundName).then(profileSrc => {
+                    document.getElementById('userPinPfp').src = profileSrc
+                });
+                document.getElementById("pinText").style.marginBottom = '25px'
                 //document.getElementById("loadText").style.opacity = '0'
                 setTimeout(function () {
                     //document.getElementById("loadText").innerHTML = `Επιτυχία`
@@ -270,6 +412,11 @@ function find() {
         }
     }, 100);
 
+}
+
+function pickasCurrent(name) {
+    foundName = name
+    document.getElementById("nameForMultiple").innerText = foundName
 }
 
 function capitalizeFirstLetter(string) {
@@ -378,7 +525,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
     });
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 768 && !localStorage.getItem("devBypass")) {
         //console.log("This is not a mobile device");
         //$("#tasks").fadeOut("fast", function () {
         $("#loginContainer").fadeOut("fast", function () {
@@ -449,6 +596,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                         //}, 550)
                                         //video.play()
                                         setTimeout(function () {
+                                            $("#hexa").fadeOut("fast")
                                             //let playbackRate = 1.0;
                                             //
                                             //const slowDown = setInterval(() => {
@@ -461,7 +609,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                             //        video.playbackRate = playbackRate;
                                             //    }
                                             //}, 50);
-                                        }, 2650)
+                                        }, 1650)
                                     }, 100)
 
                                 }, 500)
@@ -906,11 +1054,11 @@ function autoLogin() {
                     }, 1000)
                     console.log('Error:', error);
                 });
-            getEvoxProfile(foundName).then(profileSrc => {
-                document.getElementById('userPinPfp').src = profileSrc
-            });
-        })
 
+        })
+        getEvoxProfile(foundName).then(profileSrc => {
+            document.getElementById('userPinPfp').src = profileSrc
+        });
         //})
 
 
@@ -1451,4 +1599,18 @@ function toggleDev() {
     } else {
         document.getElementById('devActions').style.display = 'none'
     }
+}
+
+
+function goBackToLogin() {
+    $("#lock").fadeOut("fast", function () {
+        document.getElementById("accessButton").innerText = "Σύνδεση"
+        document.getElementById("nameInput").value = ''
+        document.getElementById("evoxContainer").classList.add("active")
+    })
+
+    deletePIN()
+    deletePIN()
+    deletePIN()
+    deletePIN()
 }

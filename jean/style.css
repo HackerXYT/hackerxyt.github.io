@@ -1552,7 +1552,7 @@ vo input::placeholder {
 #pinText {
     color: #bfbfbf;
     font-size: 1rem;
-    margin-bottom: 25px;
+    
 }
 
 .devActions {
@@ -1979,3 +1979,35 @@ vo input::placeholder {
 #hexa {
     z-index: 997;
 }
+
+
+.karuseli {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    perspective: 1000px;
+    border-radius: 20px;
+  }
+  
+  .fytyre {
+    flex: 0 0 auto;
+    transition: transform 0.5s, opacity 0.5s;
+    opacity: 0.5;
+    width: 50px;
+    height: 50px;
+    margin: 0 -15px; /* Reduce spacing between images */
+    border-radius: 50%;
+  }
+  
+  .fytyre.zgjedhur {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+  
+  .fytyre:not(.zgjedhur):hover {
+    cursor: pointer;
+  }
+  
