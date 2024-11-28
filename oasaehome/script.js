@@ -11,8 +11,12 @@ function a(b, what) {
 
     if (what === 'me') {
         markerElement.style.backgroundColor = '#2e77ff';
-    } else if (what === 'colorb') {
+    } else if (what === 'red') {
         markerElement.style.backgroundColor = '#ff4a4a';
+    } else if (what === 'green') {
+        markerElement.style.backgroundColor = '#5ac876';
+    } else if (what === 'yellow') {
+        markerElement.style.backgroundColor = '#965d00';
     } else {
         markerElement.style.backgroundColor = '#333'; // dark color
     }
@@ -52,7 +56,7 @@ function setup(location) {
             isReady = true
             map.flyTo({
                 center: location, // keep the same center
-                zoom: 15, // zoom out by 2 levelsmap.getZoom() + 2
+                zoom: 14, // zoom out by 2 levelsmap.getZoom() + 2
                 speed: 3, // slow speed for smooth animation
                 curve: 1, // smooth curve of the animation
                 easing(t) {
@@ -77,7 +81,8 @@ function setup(location) {
                         "lng": cord.StopLng,
                         "lat": cord.StopLat,
                         "name": cord.StopDescrEng, // StopDescr
-                        "code": cord.StopCode
+                        "code": cord.StopCode,
+                        "color": color
                     };
                     stations.push(toPush);
 
@@ -89,13 +94,7 @@ function setup(location) {
                         nearbyLocations.forEach(corda => {
                             du++;
                             // Pass 'a' for 'me' and 'colorb' for colorb to a()
-                            if (color === 'a') {
-                                a([corda.lng, corda.lat], 'me');
-                            } else if (color === 'colorb') {
-                                a([corda.lng, corda.lat], 'colorb');
-                            } else {
-                                a([corda.lng, corda.lat]);
-                            }
+                            a([corda.lng, corda.lat], corda.color)
                             if (du === nearbyLocations.length) {
                                 ready();
                             }
@@ -109,8 +108,10 @@ function setup(location) {
     }
     const code831 = '2805'
     const code16 = '2079'
-    pushToMain(code831)
-    pushToMain(code16)
+    const code703 = '5229'
+    pushToMain(code831, "green")
+    pushToMain(code16, "yellow")
+    pushToMain(code703, "red")
 }
 
 
@@ -160,7 +161,9 @@ function filterNearbyLocations(myloc, locations, radius) {
     });
 }
 
-request()
+document.addEventListener("DOMContentLoaded", (event) => {
+    request()
+});
 
 
 function showdemo() {
@@ -169,8 +172,10 @@ function showdemo() {
     const low = document.getElementById("low")
     const skel1 = document.getElementById("skel1")
     const skel2 = document.getElementById("skel2")
+    const skel3 = document.getElementById("skel3")
     skel1.style.display = 'none'
     skel2.style.display = 'none'
+    skel3.style.display = 'none'
 
     high.style.display = null
     medium.style.display = null

@@ -134,6 +134,22 @@ body {
     border-radius: 20px;
 }
 
+.request svg {
+    animation: rotate 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(-90deg) scale(1.1);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
 .busoptions .option {
     width: 100%;
     height: auto;
@@ -372,15 +388,18 @@ body {
 .option.high .signal-bars .bar.active {
     background: #ff4a4a;
     /* Red color for the active bar */
+}
+
+.option.high .signal-bars .bar:last-child.active {
     box-shadow: 15px 0 30px 8px rgba(255, 74, 74, 0.6);
-    /* Increased blur and spread for more bloom */
 }
 
 .option.medium .signal-bars .bar.active {
     background: #e0b777;
-    /* Red color for the active bar */
+}
+
+.option.medium .signal-bars .bar:last-child.active {
     box-shadow: 15px 0 30px 8px rgba(224, 183, 119, 0.6);
-    /* Increased blur and spread for more bloom */
 }
 
 .option.low .signal-bars .bar.active {
@@ -388,6 +407,10 @@ body {
     /* Red color for the active bar */
     box-shadow: 15px 0 30px 8px rgba(90, 200, 118, 0.6);
     /* Increased blur and spread for more bloom */
+}
+
+.option.low .signal-bars .bar:last-child.active {
+    box-shadow: 15px 0 30px 8px rgba(90, 200, 118, 0.6);
 }
 
 .map {
@@ -471,6 +494,10 @@ body {
     height: 50px;
 }
 
+.option.skeleton {
+    height: 76px;
+}
+
 .collumn {
     display: flex;
     flex-direction: column;
@@ -491,4 +518,30 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.mapboxgl-ctrl-bottom-left {
+    display: none;
+}
+
+.mapboxgl-ctrl-bottom-right {
+    display: none;
+}
+
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+        /* Adjust the Y value for how far the element slides up */
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-slide-up {
+    animation: fadeInSlideUp 0.5s ease forwards;
+    /* Adjust duration and timing function as needed */
 }
