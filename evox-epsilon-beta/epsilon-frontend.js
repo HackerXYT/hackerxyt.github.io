@@ -3128,7 +3128,13 @@ let openSlider = false
 function changeBackgroundSlider(elem) {
     const gradient = localStorage.getItem("customEpsilonGradient")
     if (gradient) {
-        document.getElementById(`grad-${gradient}`).classList.add('current')
+        try {
+            document.getElementById(`grad-${gradient}`).classList.add('current')
+        } catch (error) {
+            console.warn(`Local: ${gradient}\nError: ${error}`)
+            document.getElementById(`grad-default`).classList.add('current')
+        }
+        
     } else {
         document.getElementById(`grad-default`).classList.add('current')
     }
