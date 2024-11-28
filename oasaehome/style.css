@@ -1,0 +1,494 @@
+:root {
+    --body-color: 28, 27, 30;
+
+    --font-color: 255, 255, 255;
+    --highlight-color: 0, 0, 0;
+
+    --theme-background: 28, 27, 30;
+
+    --theme-light: 0, 0, 0;
+    --theme-medium: 0, 0, 0;
+    --theme-dark: 0, 0, 0;
+    --isOldDevice: 0;
+    --isNewDevice: 5px;
+}
+
+:root {
+    --color-bg1: rgb(5, 2, 16);
+    /* Original dark background */
+    --color-bg2: rgb(6, 2, 19);
+    /* Original secondary dark background */
+    --color1: 98, 45, 77;
+    /* Brighter skin-pink with more saturation */
+    --color2: 58, 32, 90;
+    /* Rich blue-violet */
+    --color3: 80, 30, 95;
+    /* Lively plum */
+    --color4: 75, 28, 80;
+    /* Soft rose-pink */
+    --color5: 55, 18, 45;
+    /* Dark, rich maroon with a little more vibrancy */
+    --color-interactive: rgb(105, 60, 125);
+    /* Darker mauve with more vibrancy for interaction */
+    --circle-size: 80%;
+    --blending: hard-light;
+    /* Keeps contrast with the darker yet more vibrant colors */
+}
+
+
+
+html,
+body {
+    -webkit-user-select: none;
+    /* Disable text selection */
+    -webkit-touch-callout: none;
+    /* Disable callout, e.g., tap and hold effects */
+    touch-action: manipulation;
+    /* Prevent unnecessary gestures */
+    height: 100%;
+    /* Ensure the height is 100% */
+    font-family: "SF", sans-serif;
+    /* Fallback to sans-serif */
+    margin: 0;
+    /* Remove default margin */
+}
+
+@font-face {
+    font-family: "SF";
+    src: url('../oasaMobile/SFUIText-Medium.ttf') format('truetype');
+}
+
+body {
+    color: rgb(var(--font-color));
+    background-color: #050210;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    /* Remove default margin */
+
+    font-family: "SF", sans-serif;
+}
+
+.main-container {
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.main-container p {
+    margin: 0;
+    font-size: 22px;
+    padding-left: 10px;
+}
+
+.details {
+    font-size: 0.9rem;
+    color: #514e56;
+    margin-top: 5px;
+    padding-left: 10px;
+}
+
+.busoptions {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.request {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Optional, to make sure it fills the screen */
+    display: -webkit-flex;
+    /* Safari */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    z-index: 1999;
+    height: 100%;
+    width: 100%;
+    transition: opacity 0.4s ease-in-out;
+}
+
+
+.request .button {
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5ac876;
+    color: black;
+    font-size: 0.9rem;
+    border-radius: 20px;
+}
+
+.busoptions .option {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    background: #0e0b1976;
+    /* Use a semi-transparent background */
+    backdrop-filter: blur(5px);
+    /* Ensures blur effect */
+    -webkit-backdrop-filter: blur(5px);
+    /* WebKit compatibility */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 30px;
+    box-sizing: border-box;
+    overflow: hidden;
+    /* Ensures padding doesn't cause color shifts */
+    margin-bottom: 10px;
+}
+
+.busoptions .option .more {
+    display: flex;
+    flex-direction: column;
+}
+
+.busoptions .option .time {
+    font-size: 30px;
+    margin: 0;
+    margin-right: 5px;
+}
+
+.busoptions .option .more .info:nth-child(1) {
+    margin-bottom: 2px;
+}
+
+.busoptions .option .more .info {
+    color: #69636f;
+    font-size: 13px;
+    margin-left: 10px;
+}
+
+.busoptions .option .more .info .high {
+    color: #ff4a4a;
+}
+
+.busoptions .option .more .info .medium {
+    color: #e0b777;
+}
+
+.busoptions .option .more .info .low {
+    color: #5ac876;
+}
+
+.gradient-bg {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    background: linear-gradient(40deg, var(--color-bg1), var(--color-bg2));
+    transition: opacity 0.3s ease-in-out;
+
+}
+
+
+
+.gradient-bg .gradients-container {
+    filter: url(#goo) blur(40px);
+    width: 100%;
+    height: 100%;
+}
+
+.gradient-bg .g1 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color1), 0.8) 0, rgba(var(--color1), 0) 50%) no-repeat;
+    mix-blend-mode: var(--blending);
+    width: var(--circle-size);
+    height: var(--circle-size);
+    top: calc(50% - var(--circle-size) / 2);
+    left: calc(50% - var(--circle-size) / 2);
+    transform-origin: center center;
+    animation: moveVertical 30s ease infinite;
+    opacity: 1;
+}
+
+.gradient-bg .g2 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color2), 0.8) 0, rgba(var(--color2), 0) 50%) no-repeat;
+    mix-blend-mode: var(--blending);
+    width: var(--circle-size);
+    height: var(--circle-size);
+    top: calc(50% - var(--circle-size) / 2);
+    left: calc(50% - var(--circle-size) / 2);
+    transform-origin: calc(50% - 400px);
+    animation: moveInCircle 20s reverse infinite;
+    opacity: 1;
+}
+
+.gradient-bg .g3 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color3), 0.8) 0, rgba(var(--color3), 0) 50%) no-repeat;
+    mix-blend-mode: var(--blending);
+    width: var(--circle-size);
+    height: var(--circle-size);
+    top: calc(50% - var(--circle-size) / 2 + 200px);
+    left: calc(50% - var(--circle-size) / 2 - 500px);
+    transform-origin: calc(50% + 400px);
+    animation: moveInCircle 40s linear infinite;
+    opacity: 1;
+}
+
+.gradient-bg .g4 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color4), 0.8) 0, rgba(var(--color4), 0) 50%) no-repeat;
+    mix-blend-mode: var(--blending);
+    width: var(--circle-size);
+    height: var(--circle-size);
+    top: calc(50% - var(--circle-size) / 2);
+    left: calc(50% - var(--circle-size) / 2);
+    transform-origin: calc(50% - 200px);
+    animation:
+
+        40s ease infinite;
+    opacity: 0.7;
+}
+
+.gradient-bg .g5 {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color5), 0.8) 0, rgba(var(--color5), 0) 50%) no-repeat;
+    mix-blend-mode: var(--blending);
+    width: calc(var(--circle-size) * 2);
+    height: calc(var(--circle-size) * 2);
+    top: calc(50% - var(--circle-size));
+    left: calc(50% - var(--circle-size));
+    transform-origin: calc(50% - 800px) calc(50% + 200px);
+    animation: moveInCircle 20s ease infinite;
+    opacity: 1;
+}
+
+.gradient-bg .interactive {
+    position: absolute;
+    background: radial-gradient(circle at center, rgba(var(--color-interactive), 0.8) 0, rgba(var(--color-interactive), 0) 50%) no-repeat;
+    mix-blend-mode: var(--blending);
+    width: 100%;
+    height: 100%;
+    top: -50%;
+    left: -50%;
+    opacity: 0.7;
+}
+
+
+@keyframes moveInCircle {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(180deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes moveVertical {
+    0% {
+        transform: translateY(-5rem);
+    }
+
+    50% {
+        transform: translateY(5rem);
+    }
+
+    100% {
+        transform: translateY(-5rem);
+    }
+}
+
+@keyframes moveHorizontal {
+    0% {
+        transform: translateX(-5rem) translateY(-2rem);
+    }
+
+    50% {
+        transform: translateY(5rem) translateY(2rem);
+    }
+
+    100% {
+        transform: translateY(-5rem) translateY(-2rem);
+    }
+}
+
+.signal-bars {
+    display: flex;
+    gap: 5px;
+    /* Space between bars */
+    margin-left: auto;
+    align-items: flex-end;
+    /* Align items to the bottom */
+}
+
+.bar {
+    width: 5px;
+    /* Width of each bar */
+    background: rgba(255, 255, 255, 0.1);
+    /* Dark translucent bars */
+    border-radius: 3px;
+    /* Rounded edges */
+}
+
+.bar:nth-child(1) {
+    height: 16px;
+}
+
+.bar:nth-child(2) {
+    height: 18px;
+}
+
+.bar:nth-child(3) {
+    height: 14px;
+}
+
+.bar:nth-child(4) {
+    height: 17px;
+}
+
+.bar:nth-child(5) {
+    height: 23px;
+}
+
+.option.high .signal-bars .bar.active {
+    background: #ff4a4a;
+    /* Red color for the active bar */
+    box-shadow: 15px 0 30px 8px rgba(255, 74, 74, 0.6);
+    /* Increased blur and spread for more bloom */
+}
+
+.option.medium .signal-bars .bar.active {
+    background: #e0b777;
+    /* Red color for the active bar */
+    box-shadow: 15px 0 30px 8px rgba(224, 183, 119, 0.6);
+    /* Increased blur and spread for more bloom */
+}
+
+.option.low .signal-bars .bar.active {
+    background: #5ac876;
+    /* Red color for the active bar */
+    box-shadow: 15px 0 30px 8px rgba(90, 200, 118, 0.6);
+    /* Increased blur and spread for more bloom */
+}
+
+.map {
+    width: 100%;
+    height: 300px;
+    padding: 20px;
+    background: #0e0b1976;
+    /* Use a semi-transparent background */
+    backdrop-filter: blur(5px);
+    /* Ensures blur effect */
+    -webkit-backdrop-filter: blur(5px);
+    /* WebKit compatibility */
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+    box-sizing: border-box;
+    overflow: hidden;
+    /* Ensures padding doesn't cause color shifts */
+    margin-bottom: 10px;
+}
+
+#map {
+    margin-top: 10px;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+}
+
+
+.skeleton {
+    background: linear-gradient(90deg, #121431 25%, #0e0b1976 50%, #121431 75%);
+    background-size: 200% 100%;
+    animation: loading 1s infinite ease-in-out;
+    border-radius: 20px;
+}
+
+@keyframes loading {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Skeleton loader for time */
+.busoptions .option .time.skeleton {
+    width: 25px;
+    height: 30px;
+    border-radius: 5px;
+}
+
+/* Skeleton loader for .more section */
+.busoptions .option .more.skeleton {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+    width: 120px;
+}
+
+.busoptions .option .more.skeleton-signal {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    width: 50px;
+}
+
+/* Skeleton loader for .info elements */
+.busoptions .option .more .info.skeleton {
+    width: 80%;
+    height: 12px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+}
+
+/* Optional: Create a pulse effect on the skeleton loader */
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    height: 50px;
+}
+
+.collumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.right {
+    background-color: #1b1b1b;
+    border-radius: 50%;
+    padding: 5px;
+    margin-left: auto;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
