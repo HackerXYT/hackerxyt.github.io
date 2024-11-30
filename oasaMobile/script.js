@@ -3856,7 +3856,6 @@ function reloadFavorites() {
 }
 reloadFavorites()
 
-
 function showInfoFav(busId) {
     findBus(busId)
     $("#svgClear").fadeIn("fast")
