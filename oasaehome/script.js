@@ -101,7 +101,7 @@ function setup(location) {
                     stations.push(toPush);
 
                     if (count === data.stops.length) {
-                        const radius = 0.8;
+                        const radius = 2.5;
                         const nearbyLocations = filterNearbyLocations(myloc, stations, radius);
                         const stationsLines = filterNearestByColor(myloc, stations, radius)
                         spawnLines(stationsLines)
