@@ -165,7 +165,24 @@ function setup(location) {
 
 
 
-            findBest.sort((a, b) => a.timeUntilNext - b.timeUntilNext);
+            findBest.sort((a, b) => {
+                // Convert timeUntilNext from "7'" to 7 (number)
+                const timeA = a.timeUntilNext;
+                const timeB = b.timeUntilNext;
+
+                // Determine the sorting value for 'a'
+                const valueA = (a.nearStationActive !== null && parseInt(a.nearStationActive, 10) < timeA)
+                    ? parseInt(a.nearStationActive, 10)
+                    : timeA;
+
+                // Determine the sorting value for 'b'
+                const valueB = (b.nearStationActive !== null && parseInt(b.nearStationActive, 10) < timeB)
+                    ? parseInt(b.nearStationActive, 10)
+                    : timeB;
+
+                // Sort by the determined values
+                return valueA - valueB;
+            });
 
             // Shortest time
             const fast = findBest[0];
@@ -175,6 +192,23 @@ function setup(location) {
 
             // Medium time (middle between shortest and longest)
             const medium = findBest[Math.floor(findBest.length / 2)];
+
+
+
+            console.log("FASTER", fast);
+            console.log("SLOWER", slow);
+            console.log("MEDIUM", medium);
+
+            function chooseFrom2(id, selected) {
+
+                if (selected.nearStationActive) {
+                    return selected.nearStationActive + "'"
+                    document.getElementById(`${id}Time`).innerText = `${selected.nearStationActive}`
+                } else {
+                    return selected.timeUntilNext
+                    document.getElementById(`${id}Time`).innerText = `${selected.timeUntilNext}`;
+                }
+            }
 
             findBest.forEach(toFix => {
                 if (toFix.timeUntilNext > 60) {
@@ -186,20 +220,36 @@ function setup(location) {
                     toFix.timeUntilNext += "'"
                 }
             });
-            //console.log("FASTER", fast, fast_B);
-            //console.log("SLOWER", slow, slow_B);
-            //console.log("MEDIUM", medium);
 
-            document.getElementById("fastTime").innerText = `${fast.timeUntilNext}`;
+            document.getElementById("fastTime").innerText = chooseFrom2(null, fast);
             document.getElementById("fornextFast").innerText = fast.busId;
             document.getElementById("fortypeFast").innerHTML = (fast.busId.length === 2 && fast.busId.trim().length === 2) ? 'ΤΡΟΛΕΪ' : 'ΛΕΩΦΟΡΕΙΟ';
 
-            document.getElementById("slowTime").innerText = `${slow.timeUntilNext}`;
+            function fillInActions(id, selected) {
+                let found1 = false
+                stations.forEach(station => {
+                    if (station.busId === selected.busId && station.code === selected.nearStationCode && !found1) {
+                        found1 = true
+                        //alert(`Found!\n${JSON.stringify(station)}`)
+                        const coordJson = [station.lng, station.lat]
+                        document.getElementById(id).setAttribute("data-used", JSON.stringify(selected))
+                        document.getElementById(id).setAttribute("data-c", JSON.stringify(coordJson))
+                        document.getElementById(id).setAttribute("data-n", station.name)
+                    }
+                });
+            }
+
+            fillInActions('low', fast)
+
+            document.getElementById("slowTime").innerText = chooseFrom2(null, slow);
             document.getElementById("fornextSlow").innerText = slow.busId;
             document.getElementById("fortypeSlow").innerHTML = (slow.busId.length === 2 && slow.busId.trim().length === 2) ? 'ΤΡΟΛΕΪ' : 'ΛΕΩΦΟΡΕΙΟ';
-            document.getElementById("mediumTime").innerText = `${medium.timeUntilNext}`;
+            fillInActions('high', slow)
+
+            document.getElementById("mediumTime").innerText = chooseFrom2(null, medium);
             document.getElementById("fornextMedium").innerText = medium.busId;
             document.getElementById("fortypeMedium").innerHTML = (medium.busId.length === 2 && medium.busId.trim().length === 2) ? 'ΤΡΟΛΕΪ' : 'ΛΕΩΦΟΡΕΙΟ';
+            fillInActions('medium', medium)
             markers_global.forEach(marker => marker.remove());
             a(myloc, 'me');
 
@@ -219,6 +269,7 @@ function setup(location) {
 
 
             showdemo()
+            setInterval(updateTime, 60000);
             //pushToMain(code831, "green", "#5ac876", "831")
             //pushToMain(code16, "yellow", '#965d00', "16")
             //pushToMain(code703, "red", '#ff4a4a', "703")
@@ -256,68 +307,78 @@ function request() {
                         let street = placeName.split(',')[0].trim();
                         document.getElementById("locationName").innerHTML = street
                         if (street.length > 12) {
-                            document.getElementById("locationName").style.fontSize = '0.9rem'
+                            document.getElementById("locationName").classList.remove("glowUpGB")
+                            document.getElementById("locationName").classList.add("glowUpGBSM")
                         } else {
+                            document.getElementById("locationName").classList.remove("glowUpGBSM")
+                            document.getElementById("locationName").classList.add("glowUpGB")
                             document.getElementById("locationName").style.fontSize = null
                         }
 
                     })
                     .catch(error => console.error('Error:', error));
             }, 400)
-            setInterval(function () {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function (position) {
-                        const latitude = position.coords.latitude;
-                        const longitude = position.coords.longitude;
-                        const loc = [longitude, latitude];
+            setTimeout(function () {
+                setInterval(function () {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            const latitude = position.coords.latitude;
+                            const longitude = position.coords.longitude;
+                            const loc = [longitude, latitude];
 
-                        // Function to calculate distance between two coordinates using Haversine formula
-                        function calculateDistance(lat1, lon1, lat2, lon2) {
-                            const R = 6371; // Earth radius in km
-                            const dLat = (lat2 - lat1) * (Math.PI / 180);
-                            const dLon = (lon2 - lon1) * (Math.PI / 180);
-                            const a =
-                                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                                Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-                                Math.sin(dLon / 2) * Math.sin(dLon / 2);
-                            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                            const distance = R * c; // Distance in km
-                            return distance;
-                        }
-
-                        const distanceThreshold = 0.3; // Define the distance threshold for "a lot" of movement (in km)
-
-                        if (myloc) {
-                            const distance = calculateDistance(myloc[1], myloc[0], latitude, longitude);
-                            if (distance > distanceThreshold) {
-                                console.log("Moved significantly!");
-                                document.getElementById("isMoving").classList.add("active")
-                                locationMarker.forEach(marker => marker.remove());
-                                myloc = loc; // Update the current location
-                                a(myloc, 'me');
-                            } else if (distance === 0) {
-                                document.getElementById("isMoving").classList.remove("active")
-                                //console.log("No movement")
-                            } else {
-                                document.getElementById("isMoving").classList.add("active")
-                                console.log("Moved slightly");
-                                locationMarker.forEach(marker => marker.remove());
-                                myloc = loc
-                                a(myloc, 'me');
+                            // Function to calculate distance between two coordinates using Haversine formula
+                            function calculateDistance(lat1, lon1, lat2, lon2) {
+                                const R = 6371; // Earth radius in km
+                                const dLat = (lat2 - lat1) * (Math.PI / 180);
+                                const dLon = (lon2 - lon1) * (Math.PI / 180);
+                                const a =
+                                    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                                    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+                                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                                const distance = R * c; // Distance in km
+                                return distance;
                             }
-                        } else {
-                            console.log("Initial location set");
-                            myloc = loc; // Set initial location if not set
-                        }
-                    }, function (error) {
-                        alert(error.message);
-                        console.log("Error code: " + error.code + " - " + error.message);
-                    });
-                } else {
-                    alert("Geolocation is not supported by this browser.");
-                }
 
-            }, 200)
+                            const distanceThreshold = 0.3; // Define the distance threshold for "a lot" of movement (in km)
+
+                            if (myloc) {
+                                const distance = calculateDistance(myloc[1], myloc[0], latitude, longitude);
+                                if (distance > distanceThreshold) {
+                                    console.log("Moved significantly!");
+                                    if (!isDirectionActive) {
+                                        document.getElementById("isMoving").classList.add("active")
+                                    }
+                                    locationMarker.forEach(marker => marker.remove());
+                                    myloc = loc; // Update the current location
+                                    a(myloc, 'me');
+                                } else if (distance === 0) {
+                                    document.getElementById("isMoving").classList.remove("active")
+                                    //console.log("No movement")
+                                } else {
+                                    if (!isDirectionActive) {
+                                        document.getElementById("isMoving").classList.add("active")
+                                    }
+                                    console.log("Moved slightly");
+                                    locationMarker.forEach(marker => marker.remove());
+                                    myloc = loc
+                                    a(myloc, 'me');
+                                }
+                            } else {
+                                console.log("Initial location set");
+                                myloc = loc; // Set initial location if not set
+                            }
+                        }, function (error) {
+                            alert(error.message);
+                            console.log("Error code: " + error.code + " - " + error.message);
+                        });
+                    } else {
+                        alert("Geolocation is not supported by this browser.");
+                    }
+
+                }, 1000)
+            }, 3000)
+
         }, function (error) {
             alert(error.message)
             console.log("Error code: " + error.code + " - " + error.message);
@@ -375,21 +436,45 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 
-function showdemo() {
-    const high = document.getElementById("high")
-    const medium = document.getElementById("medium")
-    const low = document.getElementById("low")
-    const skel1 = document.getElementById("skel1")
-    const skel2 = document.getElementById("skel2")
-    const skel3 = document.getElementById("skel3")
-    skel1.style.display = 'none'
-    skel2.style.display = 'none'
-    skel3.style.display = 'none'
-
-    high.style.display = null
-    medium.style.display = null
-    low.style.display = null
+function animateTime(element, targetValue) {
+    let currentValue = 0;
+    let increment = targetValue / 50; // Adjust increment for smoothness
+    const interval = setInterval(() => {
+        currentValue += increment;
+        if (currentValue >= targetValue) {
+            currentValue = targetValue;
+            clearInterval(interval);
+        }
+        element.textContent = Math.round(currentValue) + "'"; // Update the time text
+    }, 30); // Controls the speed of the animation
 }
+
+function showdemo() {
+    const high = document.getElementById("high");
+    const medium = document.getElementById("medium");
+    const low = document.getElementById("low");
+    const skel1 = document.getElementById("skel1");
+    const skel2 = document.getElementById("skel2");
+    const skel3 = document.getElementById("skel3");
+
+    // Hide skeleton loaders
+    skel1.style.display = 'none';
+    skel2.style.display = 'none';
+    skel3.style.display = 'none';
+
+    // Show main content
+    high.style.display = 'flex';
+    medium.style.display = 'flex';
+    low.style.display = 'flex';
+
+    // Animate the time elements
+    const timeElements = document.querySelectorAll('.option .time');
+    timeElements.forEach(timeElement => {
+        const timeValue = parseInt(timeElement.textContent); // Get the time value (e.g., 2', 8', 12')
+        animateTime(timeElement, timeValue); // Start the animation for each element
+    });
+}
+
 
 
 
@@ -706,6 +791,7 @@ async function findBusInfo(id, getJustLineCode, getJustRouteCode) {
         } catch (error) {
             console.log("Find All Buses Code[0] error:", error);
             alert("Operation [0] Broke. Retry");
+            showdemo()
         }
     } else {
         return await nextUp(); // Return the route code from nextUp
@@ -855,7 +941,11 @@ function getNextTime(lineId) {
                 "lineCode": lineCode,
                 "timeUntilNext": totalMinutes,
                 "nearStationActive": null,
-                "previousBus": totalElapsedMinutes
+                "nearStationName": null,
+                "nearStationCode": null,
+                "routeCode": null,
+                "previousBus": totalElapsedMinutes,
+                "timestamp": new Date()
             };
 
             console.log(JSON.stringify(nearestStations).includes(busId))
@@ -866,8 +956,8 @@ function getNextTime(lineId) {
                     //if (found) { return; }
                     if (station.busId === busId) {
                         found = station.code;
-                        const stopCode = found;  // Bus stop code
-                        const stopName = "Unknown";  // Bus stop name
+                        const stopCode = found;
+                        const stopName = "Unknown";
 
 
                         let data = {
@@ -879,15 +969,18 @@ function getNextTime(lineId) {
                         findBusInfo(lineId, null, true).then(routeCode => {
                             console.log("RouteCode", routeCode)
                             data.RouteCode = routeCode;
+                            jsonToAdd.routeCode = routeCode
                             almostReady(stopCode, stopName, data).then(remaining => {
                                 console.log(remaining)
+                                jsonToAdd.nearStationName = stopName
+                                jsonToAdd.nearStationCode = stopCode
                                 jsonToAdd.nearStationActive = remaining
                                 findBest.push(jsonToAdd)
                                 console.log("Final:", jsonToAdd)
-                            });
-                        });
+                            })
+                        })
                     }
-                });
+                })
             }
         }
 
@@ -1023,3 +1116,174 @@ const currentHour = new Date().getHours();
 if (currentHour >= 0 && currentHour < 6) {
     showdemo();
 }
+
+let isDirectionActive = false;
+function getDirections(el) {
+    isDirectionActive = true;
+    const coordinates = JSON.parse(el.getAttribute("data-c"));
+    const stationName = el.getAttribute("data-n");
+    const passed = JSON.parse(el.getAttribute("data-used"));
+    console.log("got:", coordinates, stationName, passed);
+
+    // Use the passed element instead of 'this'
+    const rect = el.getBoundingClientRect();
+
+    const clone = document.createElement('div');
+    clone.className = 'fullscreen-clone';
+    clone.style.borderRadius = '20px';
+    clone.style.position = 'fixed';
+    clone.style.top = `${rect.top}px`;
+    clone.style.left = `${rect.left}px`;
+    clone.style.width = `${rect.width}px`;
+    clone.style.height = `${rect.height}px`;
+    clone.style.transition = 'all 0.5s ease-in-out'; // Smooth transition
+    clone.style.zIndex = '1000';
+
+    // Append clone to the body
+    document.body.appendChild(clone);
+
+    // Force reflow for smooth transition
+    window.getComputedStyle(clone).transform;
+    let fullscreenMap;
+
+    // Animate to fullscreen
+    setTimeout(() => {
+        clone.style.width = '100vw';
+        clone.style.height = '100vh';
+        clone.style.top = '0';
+        clone.style.left = '0';
+
+        // Continuously resize the map during the transition
+        let startTime = null;
+        function smoothResize(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / 500, 1); // 500ms duration
+
+            if (fullscreenMap) {
+                fullscreenMap.resize(); // Continuously resize the map
+            }
+
+            if (progress < 1) {
+                requestAnimationFrame(smoothResize);
+            }
+        }
+        requestAnimationFrame(smoothResize);
+
+        // Initialize a new Mapbox instance on the clone after the transition
+        setTimeout(() => {
+            document.getElementById("reloc").style.display = 'block';
+
+            let zoom;
+            if (map.getZoom() !== 14) {
+                zoom = map.getZoom() + 1;
+            } else {
+                zoom = map.getZoom();
+            }
+            fullscreenMap = new mapboxgl.Map({
+                container: clone,
+                style: 'mapbox://styles/mapbox/dark-v11',
+                center: map.getCenter(), // Use the same center
+                zoom: map.getZoom(), // Use the same zoom level
+                bearing: map.getBearing(), // Use the same bearing
+                pitch: map.getPitch() // Use the same pitch
+            });
+
+            const markerElement = document.createElement('div');
+            markerElement.style.width = '10px'; // smaller size
+            markerElement.style.height = '10px';
+            markerElement.style.backgroundColor = '#333'; // dark color
+            markerElement.style.borderRadius = '50%'; // circle shape
+            markerElement.style.border = '1px solid #fff'; // minimal border for better contrast
+            const marker = new mapboxgl.Marker({ element: markerElement })
+                .setLngLat(coordinates)
+                .addTo(fullscreenMap);
+            useForReloc = fullscreenMap;
+
+            fullscreenMap.on('load', () => {
+                console.log('Clone Map is fully loaded!');
+                document.getElementById("main").style.display = 'none';
+                clone.style.borderRadius = '0';
+                if (map.getZoom() !== 14) {
+                    fullscreenMap.flyTo({
+                        center: fullscreenMap.getCenter(),
+                        zoom: 14, // target zoom
+                        speed: 3,
+                        curve: 1,
+                        easing(t) {
+                            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+                        }
+                    });
+                }
+                const directions = new MapboxDirections({
+                    accessToken: mapboxgl.accessToken,
+                    unit: 'metric',
+                    profile: 'mapbox/walking',
+
+                });
+
+                fullscreenMap.addControl(directions, 'top-right');
+                directions.setOrigin(myloc);
+                directions.setDestination(coordinates);
+            });
+        }, 10);
+
+        // Close fullscreen on click
+        clone.addEventListener('click', function () {
+            isDirectionActive = false;
+            document.getElementById("reloc").style.display = 'none';
+            document.getElementById("main").style.display = null;
+
+            clone.style.transition = 'all 0.5s ease, opacity 1s ease';
+            clone.style.borderRadius = '20px';
+            clone.style.width = `${rect.width}px`;
+            clone.style.height = `${rect.height}px`;
+            clone.style.top = `${rect.top}px`;
+            clone.style.left = `${rect.left}px`;
+            fullscreenMap.jumpTo({
+                center: fullscreenMap.getCenter(),
+                zoom: fullscreenMap.getZoom(),
+                bearing: fullscreenMap.getBearing(),
+                pitch: fullscreenMap.getPitch()
+            });
+            map.flyTo({
+                center: fullscreenMap.getCenter(),
+                zoom: fullscreenMap.getZoom(),
+                bearing: fullscreenMap.getBearing(),
+                pitch: fullscreenMap.getPitch()
+            });
+
+            setTimeout(function () {
+                useForReloc = null;
+                fullscreenMap.remove();
+                clone.addEventListener('transitionend', () => {
+                    clone.remove();
+                });
+            }, 500);
+        });
+    }, 10);
+}
+
+function updateTime() {
+    const times = document.querySelectorAll('.time'); // Get all time elements
+
+    times.forEach(timeElement => {
+        if (timeElement.classList.contains('skeleton')) return; // Skip skeleton elements
+
+        let timeText = timeElement.textContent.trim();
+        let minutes = parseInt(timeText.replace("'", ''), 10);
+
+        if (!isNaN(minutes)) {
+            minutes -= 1; // Decrease by 1 minute
+            if (minutes < 0) {
+                timeElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L12.0243 14.3899C11.4586 14.9556 10.5414 14.9556 9.97568 14.3899L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z" fill="#fff"/>
+</svg>`; // Change to "Arrived" if the bus has arrived
+            } else {
+                timeElement.textContent = `${minutes}'`; // Update the time
+            }
+        }
+    });
+}
+
+// Update every minute (60000 milliseconds)
+

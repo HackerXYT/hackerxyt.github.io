@@ -358,6 +358,8 @@ body {
     /* Align items to the bottom */
 }
 
+
+
 .bar {
     width: 5px;
     /* Width of each bar */
@@ -366,6 +368,8 @@ body {
     border-radius: 3px;
     /* Rounded edges */
 }
+
+
 
 .bar:nth-child(1) {
     height: 16px;
@@ -545,10 +549,97 @@ body {
     }
 }
 
+@keyframes showUp {
+    from {
+        opacity: 0;
+        transform: scale(1.1);
+        /* Adjust the Y value for how far the element slides up */
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 .fade-in-slide-up {
     animation: fadeInSlideUp 0.5s ease forwards;
     /* Adjust duration and timing function as needed */
 }
+
+.showUp {
+    animation: showUp 0.5s ease forwards;
+    /* Adjust duration and timing function as needed */
+}
+
+@keyframes glowUp {
+    from {
+        opacity: 0;
+        transform: scale(1.1);
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff0000, 0 0 20px #e6e6e6;
+        font-size: 35px;
+        font-weight: bold;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.7), 0 0 30px rgba(255, 255, 255, 0.6);
+        /* Adjust the Y value for how far the element slides up */
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+        font-size: 30px;
+        font-weight: inherit;
+        text-shadow: none;
+    }
+}
+
+.glowUp {
+    animation: glowUp 1s ease forwards;
+}
+
+@keyframes glowUpGlobal {
+    from {
+        opacity: 0;
+        transform: scale(1.1);
+        font-size: calc(1em + 5px); /* Example adjustment */
+        font-weight: bold;
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff0000, 0 0 20px #e6e6e6;
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+        font-size: 1em; /* Restore original font size */
+        font-weight: inherit;
+        text-shadow: none;
+    }
+}
+
+.glowUpGB {
+    animation: glowUpGlobal 1s ease forwards;
+}
+
+@keyframes glowUpGlobalSM {
+    from {
+        opacity: 0;
+        transform: scale(1.1);
+        font-size: 1rem; /* Example adjustment */
+        font-weight: bold;
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff0000, 0 0 20px #e6e6e6;
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+        font-size: 0.9rem; /* Restore original font size */
+        font-weight: inherit;
+        text-shadow: none;
+    }
+}
+
+.glowUpGBSM {
+    animation: glowUpGlobalSM 1s ease forwards;
+}
+
 
 .map-preview {
     margin-top: 10px;
@@ -623,4 +714,18 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.mapbox-directions-component-keyline {
+    display: none;
+}
+
+.mapboxgl-ctrl.mapboxgl-ctrl-directions .directions-control-instructions {
+    height: 390px !important;
+    /* Ensure it overrides existing styles */
+    border-radius: 20px !important;
+}
+
+.directions-control .directions-control-directions {
+    border-radius: 20px !important;
 }

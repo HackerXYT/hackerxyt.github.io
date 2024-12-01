@@ -7,8 +7,8 @@
     <meta name="theme-color" content="#050210" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#050210" media="(prefers-color-scheme: dark)">
     <link rel="icon" type="image/x-icon" href="apple.png">
-    <title>OASES</title>
-    
+    <title>OASAP</title>
+
     <link rel="apple-touch-icon" sizes="180x180" href="apple.png">
     <link rel="apple-touch-icon" sizes="152x152" href="apple.png">
     <link rel="apple-touch-icon" sizes="120x120" href="apple.png">
@@ -78,7 +78,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 
     <link rel="stylesheet" href="style.css">
-    <meta name="apple-mobile-web-app-title" content="OASES">
+    <meta name="apple-mobile-web-app-title" content="OASAP">
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -121,7 +121,7 @@
     <div class="main-container" id="main">
         <div class="row">
             <div class="collumn">
-                <p onclick="window.location.reload()">Oases</p>
+                <p onclick="window.location.reload()">OASAP</p>
                 <span class="details">Τελευταία ενημέρωση: μόλις τώρα</span>
             </div>
             <div onclick="window.location.reload()" class="right">
@@ -169,8 +169,9 @@
                     <div class="info skeleton"></div>
                 </div>
             </div>
-            <div class="option low" id="low" style="display: none;">
-                <div id="fastTime" class="time">
+            <div class="option low showUp" id="low" style="display: none;" onclick="getDirections(this)"
+                data-c="coordForStation" data-n="stationName">
+                <div id="fastTime" class="time glowUp">
                     ??'
                 </div>
                 <div class="more">
@@ -190,8 +191,9 @@
                     <div class="bar active"></div>
                 </div>
             </div>
-            <div style="display: none;" id="medium" class="option medium">
-                <div id="mediumTime" class="time">
+            <div style="display: none;" id="medium" class="option medium showUp" onclick="getDirections(this)"
+                data-c="coordForStation" data-n="stationName">
+                <div id="mediumTime" class="time glowUp">
                     ??'
                 </div>
                 <div class="more">
@@ -211,8 +213,9 @@
                     <div class="bar active"></div>
                 </div>
             </div>
-            <div style="display: none;" id="high" class="option high">
-                <div id="slowTime" class="time">
+            <div style="display: none;" id="high" class="option high showUp" onclick="getDirections(this)"
+                data-c="coordForStation" data-n="stationName">
+                <div id="slowTime" class="time glowUp">
                     ??'
                 </div>
                 <div class="more">
@@ -240,7 +243,7 @@
             <div id="nearYouSkel" class="skeleton-text">
 
             </div>
-            <p id="nearYou" style="display: none;">Κοντά στην&nbsp;<span id="locationName">you</p>
+            <p id="nearYou" style="display: none;">Κοντά στην&nbsp;<span id="locationName" class="glowUpGB">you</p>
             <div id="map" class="map-preview"></div>
         </div>
     </div>
@@ -262,12 +265,18 @@
             <circle cx="13" cy="5" r="1" />
             <path d="M15 20L14 17L11 14M11 14L12 9M11 14L8 20M12 9L15 12L17 13M12 9L9 11L8 14" />
         </svg>
-        Κινείστε
+        Κινείστε <vox onclick="isDirectionActive = true;document.getElementById('isMoving').classList.remove('active')" style="right: 20px;position: absolute;"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+            <path d="M19 5L5 19M5.00001 5L19 19" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg></vox>
     </div>
 
 </body>
 <script src="../scripts/jquery-3.7.0.js"></script>
 <script src='https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js'></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.js"></script>
+<link rel="stylesheet"
+    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css"
+    type="text/css">
 <script src="script.js"></script>
 
 </html>
