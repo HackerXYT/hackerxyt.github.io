@@ -1,0 +1,227 @@
+<html>
+
+<head>
+    <title>Suip</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#151515" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#151515" media="(prefers-color-scheme: dark)"><!--2c2c2c-->
+</head>
+<style>
+    @font-face {
+        font-family: "Urb";
+        src: url('Urbanist-Bold.ttf');
+    }
+
+    body {
+        width: 100%;
+        height: 100%;
+        background-color: #151515;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        font-family: "Urb";
+    }
+
+    .button {
+        background-color: rgba(86, 97, 255, 0.621);
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: black;
+        margin-top: 10px;
+    }
+
+    /* Default state */
+    .button svg g g g path {
+        transform: translate(0, 0);
+        transition: transform 0.3s ease;
+    }
+
+    /* Active state */
+    .button svg.active g g g path:first-child {
+        transform: translate(4px, -4px);
+    }
+
+    .button svg.active g g g path:last-child {
+        transform: translate(-3px, 4px);
+    }
+
+
+    .date {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 1.1rem;
+        margin: 0;
+        margin-bottom: 5px;
+    }
+
+    .date svg {
+        margin-right: 5px;
+    }
+
+    .count {
+        margin: 0;
+    }
+
+    .remove {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #ef2f2f;
+        padding: 10px 20px;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: background-color 0.5s ease;
+        z-index: 999;
+    }
+
+    .remove:hover {
+        background-color: #ff0000;
+    }
+</style>
+
+<body>
+    <!--fill="#323232"-->
+    <p class="date"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+            <path
+                d="M2.00162 10C2.00052 10.1027 2 10.2067 2 10.312V15.688C2 16.8044 2.05852 17.7698 2.23866 18.5804C2.42133 19.4024 2.74209 20.1251 3.30848 20.6915C3.87488 21.2579 4.59764 21.5787 5.41959 21.7613C6.23018 21.9415 7.19557 22 8.312 22H15.688C16.8044 22 17.7698 21.9415 18.5804 21.7613C19.4024 21.5787 20.1251 21.2579 20.6915 20.6915C21.2579 20.1251 21.5787 19.4024 21.7613 18.5804C21.9415 17.7698 22 16.8044 22 15.688V10.312C22 10.2067 21.9995 10.1027 21.9984 10H2.00162Z"
+                fill="#fff" />
+            <path
+                d="M4.99991 4.34708V3C4.99991 2.44772 5.44762 2 5.99991 2C6.55219 2 6.99991 2.44772 6.99991 3V4.03477C7.41104 4.01008 7.84846 4 8.31191 4H15.6879C16.1514 4 16.5888 4.01008 16.9999 4.03477V3C16.9999 2.44772 17.4476 2 17.9999 2C18.5522 2 18.9999 2.44772 18.9999 3V4.34708C19.649 4.54034 20.2235 4.8406 20.6914 5.30848C21.2578 5.87488 21.5786 6.59764 21.7612 7.41959C21.8024 7.60498 21.8373 7.79846 21.8665 8H2.1333C2.16253 7.79846 2.19737 7.60498 2.23857 7.41959C2.42124 6.59764 2.742 5.87488 3.30839 5.30848C3.77627 4.8406 4.35086 4.54034 4.99991 4.34708Z"
+                fill="#fff" />
+        </svg><span id="current-date"></span></p>
+    <p class="count">Suipps Today: <span id="countlc"></span></p>
+    <div class="button" onclick="plugIn(this)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 48 48">
+            <g id="Layer_2" data-name="Layer 2">
+
+                <g id="horoscope">
+                    <g>
+                        <path fill="#151515"
+                            d="M25.6,25.6,22.2,29,19,25.8l3.4-3.4a2,2,0,0,0-2.8-2.8L16.2,23l-1.3-1.3a1.9,1.9,0,0,0-2.8,0l-3,3a9.8,9.8,0,0,0-3,7,9.1,9.1,0,0,0,1.8,5.6L4.6,40.6a1.9,1.9,0,0,0,0,2.8,1.9,1.9,0,0,0,2.8,0l3.2-3.2a10.1,10.1,0,0,0,5.9,1.9,10.2,10.2,0,0,0,7.1-2.9l3-3a2,2,0,0,0,.6-1.4,1.7,1.7,0,0,0-.6-1.4L25,31.8l3.4-3.4a2,2,0,0,0-2.8-2.8Z" />
+                        <path fill="#151515"
+                            d="M43.4,4.6a1.9,1.9,0,0,0-2.8,0L37.2,8a10,10,0,0,0-13,.9l-3,3a2,2,0,0,0-.6,1.4,1.7,1.7,0,0,0,.6,1.4L32.9,26.4a1.9,1.9,0,0,0,2.8,0l3-2.9a9.9,9.9,0,0,0,2.9-7.1A10.4,10.4,0,0,0,40,10.9l3.4-3.5A1.9,1.9,0,0,0,43.4,4.6Z" />
+                    </g>
+                </g>
+            </g>
+        </svg>
+    </div>
+    <div id="clearButton" class="remove">
+        Clear Today
+    </div>
+
+</body>
+<script>
+    document.getElementById('clearButton').addEventListener('click', clear);
+
+    function clear() {
+        const suips = localStorage.getItem("suips");
+        if (suips) {
+            const parsed = JSON.parse(suips);
+            console.log(parsed);
+            parsed.today = 0;
+            localStorage.setItem("suips", JSON.stringify(parsed));
+            reloadToday(); // Ensure the UI updates after clearing
+        } else {
+            console.log("Not found");
+        }
+    }
+    function reloadToday() {
+        const suips = localStorage.getItem("suips")
+        const currentDate = new Date().toISOString().split('T')[0] // Get current date in YYYY-MM-DD format
+
+        if (suips) {
+            const work = JSON.parse(suips)
+
+            // Check if the saved date is different from today
+            if (work.date !== currentDate) {
+                work.today = 0 // Reset today count
+                work.date = currentDate // Update stored date
+                localStorage.setItem("suips", JSON.stringify(work)) // Save changes
+            }
+
+            document.getElementById("countlc").innerText = work.today
+        } else {
+            document.getElementById("countlc").innerText = 0
+        }
+        document.getElementById('current-date').textContent = getFormattedDate();
+    }
+    reloadToday()
+
+    function saveOne() {
+        const suips = localStorage.getItem("suips")
+        const currentDate = new Date().toISOString().split('T')[0] // Get current date in YYYY-MM-DD format
+
+        if (suips) {
+            const parsed = JSON.parse(suips)
+
+            // Check if the saved date is different from today
+            if (parsed.date !== currentDate) {
+                parsed.today = 0 // Reset today count
+                parsed.date = currentDate // Update stored date
+            }
+
+            parsed.today++ // Increment today's count
+            const json = {
+                "type": 'Cuba',
+                "time": new Date()
+            }
+            parsed.details.push(json)
+            localStorage.setItem("suips", JSON.stringify(parsed))
+        } else {
+            const json = {
+                "type": 'Cuba',
+                "time": new Date()
+            }
+            const base = {
+                "today": 1,
+                "date": currentDate, // Store the current date
+                "details": [json]
+            }
+            localStorage.setItem("suips", JSON.stringify(base))
+        }
+        reloadToday()
+    }
+
+    function plugIn(e) {
+        if (e.getAttribute("data-plugged") === 'true') {
+            e.querySelector('svg').classList.remove("active")
+            e.setAttribute("data-plugged", 'false')
+        } else {
+            e.querySelector('svg').classList.add("active")
+            e.setAttribute("data-plugged", 'true')
+            saveOne()
+        }
+    }
+
+    function getFormattedDate() {
+        const date = new Date();
+        const day = date.getDate();
+        const month = date.toLocaleString('default', { month: 'long' });
+        const year = date.getFullYear();
+
+        const suffix = day % 10 === 1 && day !== 11 ? 'st' :
+            day % 10 === 2 && day !== 12 ? 'nd' :
+                day % 10 === 3 && day !== 13 ? 'rd' : 'th';
+
+        return `${day}${suffix} ${month} ${year}`;
+    }
+
+    // Set the date in the span
+    document.getElementById('current-date').textContent = getFormattedDate();
+
+</script>
+
+</html>
