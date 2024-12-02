@@ -3,7 +3,6 @@ mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z
 
 let map;
 let myloc;
-// Create a custom element for the marker
 
 let markers_global = []
 let locationMarker = []
@@ -16,8 +15,6 @@ function a(b, what) {
         markerElement.style.backgroundColor = '#2e77ff';
         markerElement.style.borderRadius = '50%'; // circle shape
         markerElement.style.border = '1px solid #fff'; // minimal border for better contrast
-
-        // Add the custom marker to the map
         const marker = new mapboxgl.Marker({ element: markerElement })
             .setLngLat(b) // coordinates for the marker
             .addTo(map);
@@ -41,8 +38,6 @@ function a(b, what) {
 
     markerElement.style.borderRadius = '50%'; // circle shape
     markerElement.style.border = '1px solid #fff'; // minimal border for better contrast
-
-    // Add the custom marker to the map
     const marker = new mapboxgl.Marker({ element: markerElement })
         .setLngLat(b) // coordinates for the marker
         .addTo(map);
@@ -66,7 +61,6 @@ function setup(location) {
     a(s, 'me');
 
     const n = [23.6447856, 37.9443765]; // Coordinates for the second marker
-    //a(n);
 
     let isReady = false
     function ready() {
@@ -77,7 +71,6 @@ function setup(location) {
             const currentTime = new Date();
             const hours = currentTime.getHours();
             if (hours >= 0 && hours < 5) {
-                // Do if time is between 12 AM and 5 AM
                 goZoom = 9
                 speed = 1
                 markers_global.forEach(marker => marker.remove());
@@ -96,7 +89,6 @@ function setup(location) {
                 speed: speed, // slow speed for smooth animation
                 curve: 1, // smooth curve of the animation
                 easing(t) {
-                    // ease-in-out function
                     return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
                 } // ease-in-out easing for smooth transition
             });
@@ -130,11 +122,9 @@ function setup(location) {
                         const stationsLines = filterNearestByColor(myloc, stations, radius)
                         spawnLines(stationsLines)
                         console.log("myloc to nearest stations (lines)", stationsLines);
-                        //console.log("Nearby Stations", nearbyLocations);
                         let du = 0;
                         nearbyLocations.forEach(corda => {
                             du++;
-                            // Pass 'a' for 'me' and 'colorb' for colorb to a()
                             a([corda.lng, corda.lat], corda.color)
                             if (du === nearbyLocations.length) {
                                 console.log("Everything Should Be Ready To Use For Bus", busId)
@@ -168,31 +158,18 @@ function setup(location) {
 
 
             findBest.sort((a, b) => {
-                // Convert timeUntilNext from "7'" to 7 (number)
                 const timeA = a.timeUntilNext;
                 const timeB = b.timeUntilNext;
-
-                // Determine the sorting value for 'a'
                 const valueA = (a.nearStationActive !== null && parseInt(a.nearStationActive, 10) < timeA)
                     ? parseInt(a.nearStationActive, 10)
                     : timeA;
-
-                // Determine the sorting value for 'b'
                 const valueB = (b.nearStationActive !== null && parseInt(b.nearStationActive, 10) < timeB)
                     ? parseInt(b.nearStationActive, 10)
                     : timeB;
-
-                // Sort by the determined values
                 return valueA - valueB;
             });
-
-            // Shortest time
             const fast = findBest[0];
-
-            // Longest time
             const slow = findBest[findBest.length - 1];
-
-            // Medium time (middle between shortest and longest)
             const medium = findBest[Math.floor(findBest.length / 2)];
 
 
@@ -232,7 +209,6 @@ function setup(location) {
                 stations.forEach(station => {
                     if (station.busId === selected.busId && station.code === selected.nearStationCode && !found1) {
                         found1 = true
-                        //alert(`Found!\n${JSON.stringify(station)}`)
                         const coordJson = [station.lng, station.lat]
                         document.getElementById(id).setAttribute("data-used", JSON.stringify(selected))
                         document.getElementById(id).setAttribute("data-c", JSON.stringify(coordJson))
@@ -272,9 +248,6 @@ function setup(location) {
 
             showdemo()
             setInterval(updateTime, 60000);
-            //pushToMain(code831, "green", "#5ac876", "831")
-            //pushToMain(code16, "yellow", '#965d00', "16")
-            //pushToMain(code703, "red", '#ff4a4a', "703")
         }
     }, 100)
 }
@@ -298,7 +271,6 @@ function request() {
             myloc = loc
             setup(loc)
             setTimeout(function () {
-                //showdemo()
                 fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${loc[0]},${loc[1]}.json?access_token=${mapboxgl.accessToken}`)
                     .then(response => response.json())
                     .then(data => {
@@ -327,8 +299,6 @@ function request() {
                             const latitude = position.coords.latitude;
                             const longitude = position.coords.longitude;
                             const loc = [longitude, latitude];
-
-                            // Function to calculate distance between two coordinates using Haversine formula
                             function calculateDistance(lat1, lon1, lat2, lon2) {
                                 const R = 6371; // Earth radius in km
                                 const dLat = (lat2 - lat1) * (Math.PI / 180);
@@ -356,7 +326,6 @@ function request() {
                                     a(myloc, 'me');
                                 } else if (distance === 0) {
                                     document.getElementById("isMoving").classList.remove("active")
-                                    //console.log("No movement")
                                 } else {
                                     if (!isDirectionActive) {
                                         document.getElementById("isMoving").classList.add("active")
@@ -389,7 +358,6 @@ function request() {
         alert("Geolocation is not supported by this browser.");
     }
 }
-// Function to calculate distance between two coordinates in kilometers
 function haversineDistance(lat1, lon1, lat2, lon2) {
     const R = 6371; // Radius of the Earth in kilometers
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -400,8 +368,6 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c; // Distance in kilometers
 }
-
-// Filter function to find locations within a certain radius
 function filterNearbyLocations(myloc, locations, radius) {
     return locations.filter(location => {
         const distance = haversineDistance(myloc[1], myloc[0], location.lat, location.lng);
@@ -410,25 +376,18 @@ function filterNearbyLocations(myloc, locations, radius) {
 }
 
 function filterNearestByColor(myloc, locations, radius) {
-    // Filter locations within the radius
     const nearbyLocations = locations.filter(location => {
         const distance = haversineDistance(myloc[1], myloc[0], location.lat, location.lng);
         return distance <= radius;
     });
-
-    // Create an object to store the nearest location for each color
     const nearestByColor = {};
 
     nearbyLocations.forEach(location => {
         const distance = haversineDistance(myloc[1], myloc[0], location.lat, location.lng);
-
-        // If no location of this color has been added or if this one is closer, update it
         if (!nearestByColor[location.color] || nearestByColor[location.color].distance > distance) {
             nearestByColor[location.color] = { location, distance };
         }
     });
-
-    // Return only the nearest location for each color
     return Object.values(nearestByColor).map(entry => entry.location);
 }
 
@@ -458,18 +417,12 @@ function showdemo() {
     const skel1 = document.getElementById("skel1");
     const skel2 = document.getElementById("skel2");
     const skel3 = document.getElementById("skel3");
-
-    // Hide skeleton loaders
     skel1.style.display = 'none';
     skel2.style.display = 'none';
     skel3.style.display = 'none';
-
-    // Show main content
     high.style.display = 'flex';
     medium.style.display = 'flex';
     low.style.display = 'flex';
-
-    // Animate the time elements
     const timeElements = document.querySelectorAll('.option .time');
     timeElements.forEach(timeElement => {
         const timeValue = parseInt(timeElement.textContent); // Get the time value (e.g., 2', 8', 12')
@@ -488,12 +441,8 @@ document.getElementById('map').addEventListener('click', function () {
     }, 100)
     const original = this;
     const rect = original.getBoundingClientRect();
-
-    // Step 1: Collect all markers from the original map
     const markers = [];
     map._markers.forEach(marker => markers.push(marker));
-
-    // Create a new container for the fullscreen map
     const clone = document.createElement('div');
     clone.className = 'fullscreen-clone';
     clone.style.borderRadius = '20px'
@@ -504,21 +453,14 @@ document.getElementById('map').addEventListener('click', function () {
     clone.style.height = `${rect.height}px`;
     clone.style.transition = 'all 0.5s ease-in-out'; // Smooth transition
     clone.style.zIndex = '1000';
-
-    // Append clone to the body
     document.body.appendChild(clone);
-
-    // Force reflow for smooth transition
     window.getComputedStyle(clone).transform;
     let fullscreenMap;
-    // Animate to fullscreen
     setTimeout(() => {
         clone.style.width = '100vw';
         clone.style.height = '100vh';
         clone.style.top = '0';
         clone.style.left = '0';
-
-        // Continuously resize the map during the transition
         let startTime = null;
         function smoothResize(timestamp) {
             if (!startTime) startTime = timestamp;
@@ -533,8 +475,6 @@ document.getElementById('map').addEventListener('click', function () {
             }
         }
         requestAnimationFrame(smoothResize);
-
-        // Initialize a new Mapbox instance on the clone after the transition
         setTimeout(() => {
             document.getElementById("reloc").style.display = 'block'
             let zoom;
@@ -560,7 +500,6 @@ document.getElementById('map').addEventListener('click', function () {
             fullscreenMap.on('load', () => {
                 console.log('Clone Map is fully loaded!');
                 clone.style.borderRadius = '0'
-                // Step 2: Clone markers to the new map
                 if (map.getZoom() !== 14) {
                     fullscreenMap.flyTo({
                         center: fullscreenMap.getCenter(), // keep the same center
@@ -568,7 +507,6 @@ document.getElementById('map').addEventListener('click', function () {
                         speed: 3, // slow speed for smooth animation
                         curve: 1, // smooth curve of the animation
                         easing(t) {
-                            // ease-in-out function
                             return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
                         } // ease-in-out easing for smooth transition
                     });
@@ -576,29 +514,18 @@ document.getElementById('map').addEventListener('click', function () {
                 markers.forEach(marker => {
                     const lngLat = marker.getLngLat();
                     const clonedElement = marker.getElement().cloneNode(true); // Clone the marker element
-
-                    // Add cloned marker to the fullscreen map
                     new mapboxgl.Marker(clonedElement)
                         .setLngLat(lngLat)
                         .addTo(fullscreenMap);
                 });
-
-                // Add lines to the fullscreen map
                 const layers = map.getStyle().layers; // Get all layers from the original map's style
 
                 layers.forEach(layer => {
-                    // Check if the layer type is 'line'
                     if (layer.type === 'line') {
                         const sourceId = layer.source;
-
-                        // Check if the source already exists on the fullscreenMap
                         if (!fullscreenMap.getSource(sourceId)) {
                             const sourceData = map.getSource(sourceId).serialize();  // Get the source data from the original map
-
-                            // Add the source to the fullscreenMap
                             fullscreenMap.addSource(sourceId, sourceData);
-
-                            // Add the corresponding layer to the fullscreenMap
                             fullscreenMap.addLayer({
                                 id: layer.id,
                                 type: 'line',
@@ -611,8 +538,6 @@ document.getElementById('map').addEventListener('click', function () {
                 });
             });
         }, 10);
-
-        // Close fullscreen on click
         clone.addEventListener('click', function () {
             document.getElementById("reloc").style.display = 'none'
 
@@ -695,8 +620,6 @@ function spawnLines(data) {
                 'line-opacity': 0.7
             }
         });
-
-        // Store the source and layer IDs
         createdLines.push({ sourceId, layerId });
     });
 }
@@ -722,7 +645,6 @@ function reloc() {
                 speed: 3, // slow speed for smooth animation
                 curve: 1, // smooth curve of the animation
                 easing(t) {
-                    // ease-in-out function
                     return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
                 } // ease-in-out easing for smooth transition
             });
@@ -774,8 +696,6 @@ async function findBusInfo(id, getJustLineCode, getJustRouteCode) {
 
             const routeCode = await routeOasa(selectedLine.LineCode); // Await the routeOasa function to get the routeCode
             activeBusNamePage = selectedLine.LineDescr;
-
-            // If routeCode is returned, you can return it here as well
             return routeCode;
         } else {
             console.log("No matching lines found.");
@@ -810,7 +730,6 @@ function readyOuter() {
         const currentTime = new Date();
         const hours = currentTime.getHours();
         if (hours >= 0 && hours < 5) {
-            // Do if time is between 12 AM and 5 AM
             goZoom = 9
             speed = 1
             markers_global.forEach(marker => marker.remove());
@@ -829,7 +748,6 @@ function readyOuter() {
             speed: speed, // slow speed for smooth animation
             curve: 1, // smooth curve of the animation
             easing(t) {
-                // ease-in-out function
                 return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
             } // ease-in-out easing for smooth transition
         });
@@ -861,11 +779,9 @@ function pushToMainOuter(code, color, hex, busId) {
                     const stationsLines = filterNearestByColor(myloc, stations, radius)
                     spawnLines(stationsLines)
                     console.log("myloc to nearest stations (lines)", stationsLines);
-                    //console.log("Nearby Stations", nearbyLocations);
                     let du = 0;
                     nearbyLocations.forEach(corda => {
                         du++;
-                        // Pass 'a' for 'me' and 'colorb' for colorb to a()
                         a([corda.lng, corda.lat], corda.color)
                         if (du === nearbyLocations.length) {
                             console.log("Everything Should Be Ready To Use For Bus", busId)
@@ -884,13 +800,6 @@ function pushToMainOuter(code, color, hex, busId) {
 let findBest = [
 
 ]
-
-//{
-//    "busId": "16",
-//    "timeUntilNext": "10",
-//    "nearStationActive": "2",
-//    "previousBus": "23"
-//}
 function getNextTime(lineId) {
     findBusInfo(lineId, true).then(lineCode => {
         console.log("Fetching next bus time for line:", lineCode);
@@ -899,12 +808,8 @@ function getNextTime(lineId) {
 
         function displayRemainingTimeLIVE(nextBusTime, previousBusTime, busId) {
             const currentTime = new Date();
-
-            // Calculate next bus time
             const nextBusDate = new Date();
             nextBusDate.setHours(nextBusTime.hour, nextBusTime.minutes, 0);
-
-            // Adjust for the next day if time has already passed today
             if (nextBusDate < currentTime) {
                 nextBusDate.setDate(nextBusDate.getDate() + 1);
             }
@@ -918,12 +823,8 @@ function getNextTime(lineId) {
             const totalMinutes = (remainingHours * 60 || 0) + displayMinutes;
 
             console.log(`Time until next ${lineId} bus: ${remainingTimeText}`);
-
-            // Calculate previous bus time
             const previousBusDate = new Date();
             previousBusDate.setHours(previousBusTime.hour, previousBusTime.minutes, 0);
-
-            // Adjust for the previous day if time hasn't passed yet today
             if (previousBusDate > currentTime) {
                 previousBusDate.setDate(previousBusDate.getDate() - 1);
             }
@@ -955,7 +856,6 @@ function getNextTime(lineId) {
             if (JSON.stringify(nearestStations).includes(busId)) {
                 let found = false;
                 nearestStations.forEach(station => {
-                    //if (found) { return; }
                     if (station.busId === busId) {
                         found = station.code;
                         const stopCode = found;
@@ -1007,8 +907,6 @@ function getNextTime(lineId) {
             const currentTime = new Date();
             const currentHour = currentTime.getHours();
             const currentMinutes = currentTime.getMinutes();
-
-            // Loop through the times in reverse order to find the last bus before the current time
             for (let i = times.length - 1; i >= 0; i--) {
                 const [hour, minutes] = times[i].split(':').map(Number);
                 if (hour < currentHour || (hour === currentHour && minutes < currentMinutes)) {
@@ -1058,8 +956,6 @@ function getNextTime(lineId) {
                     if (nextBusTime) {
                         localStorage.setItem(`${lineCode}_Timetable_shtepi`, JSON.stringify(data));
                         localStorage.setItem(`${lineCode}_Times_shtepi`, JSON.stringify(times));
-
-                        // Ensure you have busId available here
                         displayRemainingTimeLIVE(nextBusTime, previous, lineId); // Pass busId to the function
                     } else {
                         console.error("Operation Halted. Info:", nextBusTime, times);
@@ -1088,8 +984,6 @@ async function almostReady(stopCode, stopName, data) {
 
         console.log("Arrivals:", arrivals);
         console.log("Arrivals data:", data);
-
-        // Find the matching arrival based on route_code
         for (const arrive of arrivals) {
             console.log("Arrive value:", arrive);
             if (arrive.route_code === data.RouteCode) {
@@ -1097,8 +991,6 @@ async function almostReady(stopCode, stopName, data) {
                 return arrive.btime2; // Return bus arrival time
             }
         }
-
-        // If no match found
         return null;
 
     } catch (error) {
@@ -1127,8 +1019,6 @@ function getDirections(el) {
     const stationName = el.getAttribute("data-n");
     const passed = JSON.parse(el.getAttribute("data-used"));
     console.log("got:", coordinates, stationName, passed);
-
-    // Use the passed element instead of 'this'
     const rect = el.getBoundingClientRect();
 
     const clone = document.createElement('div');
@@ -1141,22 +1031,14 @@ function getDirections(el) {
     clone.style.height = `${rect.height}px`;
     clone.style.transition = 'all 0.5s ease-in-out'; // Smooth transition
     clone.style.zIndex = '1000';
-
-    // Append clone to the body
     document.body.appendChild(clone);
-
-    // Force reflow for smooth transition
     window.getComputedStyle(clone).transform;
     let fullscreenMap;
-
-    // Animate to fullscreen
     setTimeout(() => {
         clone.style.width = '100vw';
         clone.style.height = '100vh';
         clone.style.top = '0';
         clone.style.left = '0';
-
-        // Continuously resize the map during the transition
         let startTime = null;
         function smoothResize(timestamp) {
             if (!startTime) startTime = timestamp;
@@ -1171,8 +1053,6 @@ function getDirections(el) {
             }
         }
         requestAnimationFrame(smoothResize);
-
-        // Initialize a new Mapbox instance on the clone after the transition
         setTimeout(() => {
             document.getElementById("reloc").style.display = 'block';
 
@@ -1229,8 +1109,6 @@ function getDirections(el) {
                 directions.setDestination(coordinates);
             });
         }, 10);
-
-        // Close fullscreen on click
         clone.addEventListener('click', function () {
             isDirectionActive = false;
             document.getElementById("reloc").style.display = 'none';
@@ -1288,8 +1166,6 @@ function updateTime() {
     });
 }
 
-// Update every minute (60000 milliseconds)
-
 
 
 async function findBusInfo2(id, getJustLineCode = false, getJustRouteCode = true) {
@@ -1321,8 +1197,6 @@ async function findBusInfo2(id, getJustLineCode = false, getJustRouteCode = true
 
     return await nextUp();
 }
-
-// Function to get stops for a given Route Code
 async function getRouteStops(routeCode) {
     const url = `https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${routeCode}&keyOrigin=evoxEpsilon`)}`;
     const response = await fetch(url);
@@ -1331,8 +1205,6 @@ async function getRouteStops(routeCode) {
 }
 
 let activeMarker = []
-
-// Function to get the arrival time for a specific stop
 async function getStopArrivalTime(stopCode, stopName, cords, maxRetries = 5) {
     const url = `https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`)}`;
 
@@ -1358,7 +1230,6 @@ async function getStopArrivalTime(stopCode, stopName, cords, maxRetries = 5) {
                 return []; // Return empty if no arrivals
             }
         } catch (error) {
-            // Retry only if the error message contains 'SQL'
             if (error.message.includes("SQL")) {
                 console.warn(`SQL-related error fetching stop arrivals for ${stopName}/${stopCode}. Retrying... (${attempt}/${maxRetries})`);
             } else {
@@ -1373,10 +1244,6 @@ async function getStopArrivalTime(stopCode, stopName, cords, maxRetries = 5) {
     }
     return []; // Return empty array if all retries fail
 }
-
-
-// Function to find the current bus location
-// Function to find the current bus location
 
 
 async function findCurrentBusLocation(routeCode, retries = 5, delay = 10) {
@@ -1433,10 +1300,6 @@ async function findCurrentBusLocation(routeCode, retries = 5, delay = 10) {
         }
     }
 }
-
-
-
-// Function to retry an operation (e.g., API call) with fallback
 async function retryWithFallback(operation, retries = 3, delay = 2000) {
     for (let attempt = 0; attempt < retries; attempt++) {
         try {
@@ -1452,9 +1315,6 @@ async function retryWithFallback(operation, retries = 3, delay = 2000) {
         }
     }
 }
-
-
-// Function to spawn a bus marker on the Mapbox map
 async function spawnBusOnMap(lineId) {
     try {
         map.addSource('mapbox-dem', {
@@ -1463,7 +1323,6 @@ async function spawnBusOnMap(lineId) {
             'tileSize': 512,
             'maxzoom': 14
         });
-        // add the DEM source as a terrain layer with exaggerated height
         map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
         const routeCode = await findBusInfo2(lineId);
         const busLocation = await findCurrentBusLocation(routeCode);
@@ -1506,8 +1365,6 @@ function createBlinkingDot() {
     dot.style.borderRadius = '50%';
     dot.style.transform = 'translate(-50%, -50%)'; // Center the dot on the marker position
     dot.style.animation = 'blink 1s infinite'; // Add blinking animation
-
-    // Define the keyframes for the blinking animation
     const style = document.createElement('style');
     style.innerHTML = `
 @keyframes blink {
@@ -1531,14 +1388,9 @@ function createRedDot() {
     dot.style.transform = 'translate(-50%, -50%)'; // Center the dot on the marker position
     return dot;
 }
-
-
-// Function to display bus route on the map
 async function showBusRouteWithStops(stops, map) {
     const orderedStops = stops.sort((a, b) => a.RouteStopOrder - b.RouteStopOrder);
     const coordinates = orderedStops.map(stop => [parseFloat(stop.StopLng), parseFloat(stop.StopLat)]);
-
-    // Add the stops to the map as markers
     orderedStops.forEach(stop => {
         new mapboxgl.Marker({
             element: createBlueDot()
@@ -1547,8 +1399,6 @@ async function showBusRouteWithStops(stops, map) {
             .setPopup(new mapboxgl.Popup().setText(stop.StopDescr)) // Popup with stop name
             .addTo(map);
     });
-
-    // Create a line connecting the bus stops
     map.addSource('busRoute', {
         type: 'geojson',
         data: {
@@ -1576,8 +1426,6 @@ async function showBusRouteWithStops(stops, map) {
 
     console.log('Bus route displayed on the map');
 }
-
-// Fetch and display the bus route
 async function fetchAndDisplayBusRoute(routeCode) {
     try {
         const stops = await getRouteStops(routeCode);  // Fetch stops for the given route code
@@ -1592,8 +1440,6 @@ async function fetchAndDisplayBusRoute(routeCode) {
     }
 }
 
-//;
-
 const inputElement = document.getElementById('findABus');
 
 inputElement.addEventListener('keydown', function(event) {
@@ -1606,10 +1452,7 @@ inputElement.addEventListener('keydown', function(event) {
 });
 
 const originalAlert = window.alert;
-
-// Override the alert function
 window.alert = function(message) {
-    // Call your custom function instead of alert
     showAlert(message);
 };
 

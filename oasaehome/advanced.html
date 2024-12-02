@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Location Tracker</title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <script>
+        // Mapbox Access Token
+        mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw'; // Replace with your actual Mapbox access token
+
+        // Initialize the Mapbox map
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/dark-v11',
+            center: [23.7311, 37.9753], // Default center (Athens)
+            zoom: 12
+        });
+
+        // Function to find the Route Code for a given Line ID
+        async function findBusInfo(id, getJustLineCode = false, getJustRouteCode = true) {
+            async function routeOasa(lineCode) {
+                const getStops = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`);
+                const response = await fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${getStops}`);
+                const data = await response.json();
+                console.log('Route:', data)
+                if (data && data.length > 0) {
+                    return data[0].route_code;
+                } else {
+                    throw new Error("Route Code not found.");
+                }
+            }
+
+            async function nextUp() {
+                const allLinesUrl = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetLines&keyOrigin=evoxEpsilon`);
+                const response = await fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLinesUrl}`);
+                const fullLine = await response.json();
+                const matchingLines = fullLine.filter(line => line.LineID === id);
+
+                if (matchingLines.length > 0) {
+                    const selectedLine = matchingLines[0];
+                    return await routeOasa(selectedLine.LineCode);
+                } else {
+                    throw new Error("No matching lines found.");
+                }
+            }
+
+            return await nextUp();
+        }
+
+        // Function to get stops for a given Route Code
+        async function getRouteStops(routeCode) {
+            const url = `https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${routeCode}&keyOrigin=evoxEpsilon`)}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            return data.stops || [];
+        }
+
+        let activeMarker = []
+
+        // Function to get the arrival time for a specific stop
+        async function getStopArrivalTime(stopCode, stopName, cords, maxRetries = 5) {
+            const url = `https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`)}`;
+
+            const main = new mapboxgl.Marker({
+                element: createBlinkingDot()
+            })
+                .setLngLat([parseFloat(cords[1]), parseFloat(cords[0])])
+                .setPopup(new mapboxgl.Popup().setText(`Working..`))
+                .addTo(map);
+            activeMarker.push(main)
+            map.flyTo({ center: [parseFloat(cords[1]), parseFloat(cords[0])], zoom: 14 });
+            for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+
+                    if (Array.isArray(data) && data.length > 0) {
+                        return data; // Return arrivals if found
+                    } else {
+                        activeMarker.forEach(marker => marker.remove());
+                        console.warn(`No arrivals found for stopCode: ${stopName}/${stopCode}`);
+
+                        return []; // Return empty if no arrivals
+                    }
+                } catch (error) {
+                    // Retry only if the error message contains 'SQL'
+                    if (error.message.includes("SQL")) {
+                        console.warn(`SQL-related error fetching stop arrivals for ${stopName}/${stopCode}. Retrying... (${attempt}/${maxRetries})`);
+                    } else {
+                        console.error(`Error fetching stop arrivals for ${stopName}/${stopCode}:`, error);
+                        break; // Do not retry for non-SQL errors
+                    }
+
+                    if (attempt === maxRetries) {
+                        console.error(`Failed to fetch arrivals for stop ${stopName}/${stopCode} after ${maxRetries} retries.`);
+                    }
+                }
+            }
+            return []; // Return empty array if all retries fail
+        }
+
+
+        // Function to find the current bus location
+        // Function to find the current bus location
+
+
+        async function findCurrentBusLocation(routeCode, retries = 5, delay = 10) {
+            const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+            for (let attempt = 0; attempt < retries; attempt++) {
+                try {
+                    fetchAndDisplayBusRoute(routeCode);
+                    const stops = await getRouteStops(routeCode);
+                    let nearestStop = null;
+                    let minTime = Infinity;
+
+                    for (const stop of stops) {
+                        const json = [stop.StopLat, stop.StopLng]
+                        const arrivals = await getStopArrivalTime(stop.StopCode, stop.StopDescr, json);
+
+                        arrivals.forEach(bus => {
+                            if (bus.route_code === routeCode && bus.btime2 < minTime) {
+                                minTime = bus.btime2;
+                                nearestStop = stop;
+                            }
+                        });
+                    }
+
+                    if (nearestStop) {
+                        return {
+                            lat: nearestStop.StopLat,
+                            lng: nearestStop.StopLng,
+                            time: minTime,
+                            stopName: nearestStop.StopDescr
+                        };
+                    } else {
+                        console.warn(`No bus currently found on route ${routeCode}. Showing the first stop.`);
+                        return {
+                            lat: stops[0].StopLat,
+                            lng: stops[0].StopLng,
+                            time: "Not started",
+                            stopName: stops[0].StopDescr
+                        };
+                    }
+                } catch (error) {
+                    console.error(`Attempt ${attempt + 1} failed: ${error.message}`);
+                    if (attempt < retries - 1) {
+                        await sleep(delay);
+                    } else {
+                        console.error(`All attempts failed. Returning fallback location.`);
+                        return {
+                            lat: null,
+                            lng: null,
+                            time: "Failed to fetch bus location",
+                            stopName: "Unknown"
+                        };
+                    }
+                }
+            }
+        }
+
+
+
+        // Function to retry an operation (e.g., API call) with fallback
+        async function retryWithFallback(operation, retries = 3, delay = 2000) {
+            for (let attempt = 0; attempt < retries; attempt++) {
+                try {
+                    return await operation(); // Attempt the operation
+                } catch (error) {
+                    console.warn(`Retry ${attempt + 1} failed: ${error.message}`);
+                    if (attempt < retries - 1) {
+                        await sleep(delay); // Wait before retrying
+                    } else {
+                        console.error(`All retries failed.`);
+                        throw error; // Rethrow error after all retries fail
+                    }
+                }
+            }
+        }
+
+
+        // Function to spawn a bus marker on the Mapbox map
+        async function spawnBusOnMap(lineId) {
+            try {
+                const routeCode = await findBusInfo(lineId);
+                const busLocation = await findCurrentBusLocation(routeCode);
+
+                new mapboxgl.Marker({
+                    element: createRedDot()
+                })
+                    .setLngLat([parseFloat(busLocation.lng), parseFloat(busLocation.lat)])
+                    .setPopup(new mapboxgl.Popup().setText(`${lineId} arriving at ${busLocation.stopName} in ${busLocation.time} minutes`))
+                    .addTo(map);
+
+
+                map.flyTo({ center: [parseFloat(busLocation.lng), parseFloat(busLocation.lat)], zoom: 14 });
+                activeMarker.forEach(marker => marker.remove());
+            } catch (error) {
+                console.error("Error:", error.message);
+                alert("Error fetching bus location.");
+            }
+            
+        }
+
+        // Example: Fetch and display a bus location for LineID 123 (replace with actual LineID)
+        spawnBusOnMap("828"); // Replace "123" with the actual LineID
+
+        function createBlueDot() {
+            const dot = document.createElement('div');
+            dot.style.width = '10px';
+            dot.style.height = '10px';
+            dot.style.backgroundColor = 'cyan';
+            dot.style.borderRadius = '50%';
+            dot.style.transform = 'translate(-50%, -50%)'; // Center the dot on the marker position
+            return dot;
+        }
+
+        function createBlinkingDot() {
+            const dot = document.createElement('div');
+            dot.style.width = '10px';
+            dot.style.height = '10px';
+            dot.style.backgroundColor = '#333'; // Set the color to white
+            dot.style.borderRadius = '50%';
+            dot.style.transform = 'translate(-50%, -50%)'; // Center the dot on the marker position
+            dot.style.animation = 'blink 1s infinite'; // Add blinking animation
+
+            // Define the keyframes for the blinking animation
+            const style = document.createElement('style');
+            style.innerHTML = `
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    `;
+            document.head.appendChild(style);
+
+            return dot;
+        }
+
+
+        function createRedDot() {
+            const dot = document.createElement('div');
+            dot.style.width = '12px';
+            dot.style.height = '12px';
+            dot.style.backgroundColor = 'red';
+            dot.style.borderRadius = '50%';
+            dot.style.transform = 'translate(-50%, -50%)'; // Center the dot on the marker position
+            return dot;
+        }
+
+
+        // Function to display bus route on the map
+        async function showBusRouteWithStops(stops, map) {
+            const orderedStops = stops.sort((a, b) => a.RouteStopOrder - b.RouteStopOrder);
+            const coordinates = orderedStops.map(stop => [parseFloat(stop.StopLng), parseFloat(stop.StopLat)]);
+
+            // Add the stops to the map as markers
+            orderedStops.forEach(stop => {
+                new mapboxgl.Marker({
+                    element: createBlueDot()
+                })
+                    .setLngLat([parseFloat(stop.StopLng), parseFloat(stop.StopLat)])
+                    .setPopup(new mapboxgl.Popup().setText(stop.StopDescr)) // Popup with stop name
+                    .addTo(map);
+            });
+
+            // Create a line connecting the bus stops
+            map.addSource('busRoute', {
+                type: 'geojson',
+                data: {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: coordinates
+                    }
+                }
+            });
+
+            map.addLayer({
+                id: 'busRouteLayer',
+                type: 'line',
+                source: 'busRoute',
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                paint: {
+                    'line-color': '#FF5733',
+                    'line-width': 4
+                }
+            });
+
+            console.log('Bus route displayed on the map');
+        }
+
+        // Fetch and display the bus route
+        async function fetchAndDisplayBusRoute(routeCode) {
+            try {
+                const stops = await getRouteStops(routeCode);  // Fetch stops for the given route code
+                console.log(stops)
+                if (stops.length > 0) {
+                    showBusRouteWithStops(stops, map);  // Display the route on the map
+                } else {
+                    console.error('No stops found for this route');
+                }
+            } catch (error) {
+                console.error('Error fetching stops for route:', error);
+            }
+        }
+
+        // Call the function to display bus route with a sample route code
+        // Replace with the actual route code
+    </script>
+</body>
+
+</html>

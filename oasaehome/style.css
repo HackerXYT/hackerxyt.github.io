@@ -521,8 +521,8 @@ body {
     border-radius: 50%;
     padding: 5px;
     margin-left: auto;
-    width: 20px;
-    height: 20px;
+    width: 34px;
+    height: 34px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -669,7 +669,7 @@ body {
 
 .isMoving {
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: 0;
     display: flex;
     justify-content: center;
@@ -679,7 +679,7 @@ body {
     z-index: 1001;
     transition: transform 1s ease-in-out;
     background-color: #050210;
-    transform: translateY(-50px);
+    transform: translateY(50px);
 }
 
 .isMoving.active {
@@ -729,3 +729,87 @@ body {
 .directions-control .directions-control-directions {
     border-radius: 20px !important;
 }
+
+.search {
+    display: flex;
+    align-items: center;
+    background-color: #3030306a;
+    backdrop-filter: blur(5px);
+    /* Ensures blur effect */
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 15px;
+    padding: 5px 15px;
+    width: auto;
+}
+
+.search input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    padding: 8px;
+    font-size: 16px;
+    background-color: transparent;
+    color: #fff;
+}
+
+.search .search-icon {
+    margin-right: 10px;
+    fill: #888;
+}
+
+.alert {
+    padding: 15px 20px;
+    background-color: #f21f1f8b;
+    backdrop-filter: blur(5px);
+    /* Ensures blur effect */
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 15px;
+    width: 80%;
+    height: auto;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(250%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    
+}
+
+.alert.active {
+    transform: translateX(-50%) translateY(0)
+}
+.alertParent {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 10012;
+}
+
+.alert .title {
+    font-size: 18px;
+    color: #ffe730;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.alert .title svg {
+    margin-right: 5px;
+}
+
+.alert .title span {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.alert .body {
+    color: #ffffff;
+}
+
+
