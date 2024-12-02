@@ -86,6 +86,19 @@
         transition: background-color 0.5s ease;
         z-index: 999;
     }
+    
+    .list {
+        position: fixed;
+        bottom: 60px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #ef2f2f;
+        padding: 10px 20px;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: background-color 0.5s ease;
+        z-index: 999;
+    }
 
     .remove:hover {
         background-color: #ff0000;
@@ -121,6 +134,9 @@
     </div>
     <div id="clearButton" class="remove">
         Clear Today
+    </div>
+    <div id="list" class="list">
+        Details
     </div>
 
 </body>
@@ -226,6 +242,43 @@
 
         return `${day}${suffix} ${month} ${year}`;
     }
+    
+    function alertDetailedSuips() {
+    const suips = localStorage.getItem("suips");
+    if (!suips) {
+        alert("No suips data available.");
+        return;
+    }
+
+    const parsed = JSON.parse(suips);
+
+    if (!parsed.details || parsed.details.length === 0) {
+        alert("No detailed suips data found.");
+        return;
+    }
+
+    // Group details by date
+    const groupedByDate = parsed.details.reduce((acc, item) => {
+        const date = new Date(item.time).toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
+        if (!acc[date]) acc[date] = [];
+        acc[date].push(item);
+        return acc;
+    }, {});
+
+    // Format the details into a readable format
+    let message = "Detailed Suips History:\n\n";
+    for (const [date, entries] of Object.entries(groupedByDate)) {
+        message += `${date}:\n`;
+        entries.forEach((entry, index) => {
+            message += `  ${index + 1}. Type: ${entry.type}, Time: ${new Date(entry.time).toLocaleString()}\n`;
+        });
+        message += "\n";
+    }
+
+    alert(message);
+}
+
+ document.getElementById('list').addEventListener('click', alertDetailedSuips);
 
     // Set the date in the span
     document.getElementById('current-date').textContent = getFormattedDate();
