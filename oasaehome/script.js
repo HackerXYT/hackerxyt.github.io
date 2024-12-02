@@ -94,11 +94,11 @@ function setup(location) {
                 center: location, // keep the same center
                 zoom: goZoom, // zoom out by 2 levelsmap.getZoom() + 2
                 speed: speed, // slow speed for smooth animation
-                curve: 1, // smooth curve of the animation
+                curve: 1,
                 easing(t) {
                     // ease-in-out function
                     return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-                } // ease-in-out easing for smooth transition
+                }
             });
 
         }
@@ -1289,6 +1289,7 @@ function updateTime() {
 }
 
 // Update every minute (60000 milliseconds)
+//Advanced
 
 
 
@@ -1299,6 +1300,7 @@ async function findBusInfo2(id, getJustLineCode = false, getJustRouteCode = true
         const data = await response.json();
         console.log('Route:', data)
         if (data && data.length > 0) {
+            found.play()
             return data[0].route_code;
         } else {
             throw new Error("Route Code not found.");
@@ -1341,17 +1343,31 @@ async function getStopArrivalTime(stopCode, stopName, cords, maxRetries = 5) {
     })
         .setLngLat([parseFloat(cords[1]), parseFloat(cords[0])])
         .setPopup(new mapboxgl.Popup().setText(`Working..`))
-        .addTo(map);
+        .addTo(activeMapForCalc);
     activeMarker.push(main)
-    map.flyTo({ center: [parseFloat(cords[1]), parseFloat(cords[0])], zoom: 14, pitch: 45 });
+    activeMapForCalc.flyTo(
+        {
+            center: [parseFloat(cords[1]),
+            parseFloat(cords[0])], zoom: option === 'main' ? 14 : 16, pitch: 45, curve: 1,
+            easing(t) {
+                // ease-in-out function
+                return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            }
+        }
+    );
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
+            //verifying.play()
             const response = await fetch(url);
             const data = await response.json();
 
             if (Array.isArray(data) && data.length > 0) {
+                //verifying.stop()
+                foundActiveStation.play()
                 return data; // Return arrivals if found
             } else {
+                //verifying.stop()
+                inactiveStation.play()
                 activeMarker.forEach(marker => marker.remove());
                 console.warn(`No arrivals found for stopCode: ${stopName}/${stopCode}`);
 
@@ -1457,14 +1473,14 @@ async function retryWithFallback(operation, retries = 3, delay = 2000) {
 // Function to spawn a bus marker on the Mapbox map
 async function spawnBusOnMap(lineId) {
     try {
-        map.addSource('mapbox-dem', {
-            'type': 'raster-dem',
-            'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
-            'tileSize': 512,
-            'maxzoom': 14
-        });
-        // add the DEM source as a terrain layer with exaggerated height
-        map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+        //map.addSource('mapbox-dem', {
+        //    'type': 'raster-dem',
+        //    'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+        //    'tileSize': 512,
+        //    'maxzoom': 14
+        //});
+        //// add the DEM source as a terrain layer with exaggerated height
+        //map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
         const routeCode = await findBusInfo2(lineId);
         const busLocation = await findCurrentBusLocation(routeCode);
 
@@ -1473,12 +1489,16 @@ async function spawnBusOnMap(lineId) {
         })
             .setLngLat([parseFloat(busLocation.lng), parseFloat(busLocation.lat)])
             .setPopup(new mapboxgl.Popup().setText(`${lineId} arriving at ${busLocation.stopName} in ${busLocation.time} minutes`))
-            .addTo(map);
+            .addTo(activeMapForCalc);
 
 
-        map.flyTo({ center: [parseFloat(busLocation.lng), parseFloat(busLocation.lat)], zoom: 14 });
+        activeMapForCalc.flyTo({ center: [parseFloat(busLocation.lng), parseFloat(busLocation.lat)], zoom: option === 'main' ? 14 : 16, curve: 1,
+            easing(t) {
+                // ease-in-out function
+                return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            } });
         activeMarker.forEach(marker => marker.remove());
-        
+        done.play()
         inputElement.placeholder = 'Βρείτε θέση λεωφορείου'
     } catch (error) {
         console.error("Error:", error.message);
@@ -1492,7 +1512,7 @@ function createBlueDot() {
     const dot = document.createElement('div');
     dot.style.width = '10px';
     dot.style.height = '10px';
-    dot.style.backgroundColor = 'cyan';
+    dot.style.backgroundColor = '#000';
     dot.style.borderRadius = '50%';
     dot.style.transform = 'translate(-50%, -50%)'; // Center the dot on the marker position
     return dot;
@@ -1502,7 +1522,7 @@ function createBlinkingDot() {
     const dot = document.createElement('div');
     dot.style.width = '10px';
     dot.style.height = '10px';
-    dot.style.backgroundColor = '#333'; // Set the color to white
+    dot.style.backgroundColor = '#fff'; // Set the color to white
     dot.style.borderRadius = '50%';
     dot.style.transform = 'translate(-50%, -50%)'; // Center the dot on the marker position
     dot.style.animation = 'blink 1s infinite'; // Add blinking animation
@@ -1524,9 +1544,9 @@ function createBlinkingDot() {
 
 function createRedDot() {
     const dot = document.createElement('div');
-    dot.style.width = '12px';
-    dot.style.height = '12px';
-    dot.style.backgroundColor = 'red';
+    dot.style.width = '15px';
+    dot.style.height = '15px';
+    dot.style.backgroundColor = '#ff0000';
     dot.style.borderRadius = '50%';
     dot.style.transform = 'translate(-50%, -50%)'; // Center the dot on the marker position
     return dot;
@@ -1545,11 +1565,11 @@ async function showBusRouteWithStops(stops, map) {
         })
             .setLngLat([parseFloat(stop.StopLng), parseFloat(stop.StopLat)])
             .setPopup(new mapboxgl.Popup().setText(stop.StopDescr)) // Popup with stop name
-            .addTo(map);
+            .addTo(activeMapForCalc);
     });
 
     // Create a line connecting the bus stops
-    map.addSource('busRoute', {
+    activeMapForCalc.addSource('busRoute', {
         type: 'geojson',
         data: {
             type: 'Feature',
@@ -1560,7 +1580,7 @@ async function showBusRouteWithStops(stops, map) {
         }
     });
 
-    map.addLayer({
+    activeMapForCalc.addLayer({
         id: 'busRouteLayer',
         type: 'line',
         source: 'busRoute',
@@ -1569,8 +1589,8 @@ async function showBusRouteWithStops(stops, map) {
             'line-cap': 'round'
         },
         paint: {
-            'line-color': '#4228a1',
-            'line-width': 4
+            'line-color': '#fff',
+            'line-width': 2
         }
     });
 
@@ -1583,7 +1603,7 @@ async function fetchAndDisplayBusRoute(routeCode) {
         const stops = await getRouteStops(routeCode);  // Fetch stops for the given route code
         console.log(stops)
         if (stops.length > 0) {
-            showBusRouteWithStops(stops, map);  // Display the route on the map
+            showBusRouteWithStops(stops, activeMapForCalc);  // Display the route on the map
         } else {
             console.error('No stops found for this route');
         }
@@ -1595,20 +1615,37 @@ async function fetchAndDisplayBusRoute(routeCode) {
 //;
 
 const inputElement = document.getElementById('findABus');
+let activeMapForCalc;
+let option = 'main'
+inputElement.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        const inputValue = inputElement.value;
+        if (option === 'fullscreen') {
+            document.getElementById('map').click()
+            setTimeout(function () {
+                activeMapForCalc = useForReloc
+            }, 300)
+            spawnBusOnMap(inputValue)
 
-inputElement.addEventListener('keydown', function(event) {
-  if (event.key === 'Enter') {
-    const inputValue = inputElement.value;
-    spawnBusOnMap(inputValue)
-    inputElement.value = ''
-    inputElement.placeholder = 'Υπολογίζοντας τώρα..'
-  }
+        } else if (option === 'main') {
+            activeMapForCalc = map
+            spawnBusOnMap(inputValue)
+        } else {
+            return;
+        }
+
+
+        start.play()
+
+        inputElement.value = ''
+        inputElement.placeholder = 'Υπολογίζοντας τώρα..'
+    }
 });
 
 const originalAlert = window.alert;
 
 // Override the alert function
-window.alert = function(message) {
+window.alert = function (message) {
     // Call your custom function instead of alert
     showAlert(message);
 };
@@ -1620,4 +1657,56 @@ function showAlert(msg) {
 
 function closeAlert() {
     document.getElementById("alert").classList.remove("active")
+}
+
+var foundActiveStation = new Howl({
+    src: ['./select.mp3'],
+    volume: 0.5
+});
+
+var found = new Howl({
+    src: ['./found.mp3'],
+    volume: 0.5
+});
+
+var activeStation = new Howl({
+    src: ['./active.mp3'],
+    volume: 0.5
+});
+
+var inactiveStation = new Howl({
+    src: ['./nomatch.mp3'],
+    volume: 0.5
+});
+
+var verifying = new Howl({
+    src: ['./verifying.mp3'],
+    volume: 0.5
+});
+
+var start = new Howl({
+    src: ['./start.mp3'],
+    volume: 0.5
+});
+
+var done = new Howl({
+    src: ['./done.mp3'],
+    volume: 0.5
+});
+
+function chooseOption(e) {
+    const full = e.querySelector('svg.vox1');
+    const mini = e.querySelector('svg.vox2');
+
+    if (full.style.display === 'none') {
+        mini.style.display = 'none';
+        full.style.display = 'block';
+        //pick fullscreen
+        option = 'fullscreen'
+    } else {
+        mini.style.display = 'block';
+        full.style.display = 'none';
+        //pick mini
+        option = 'main'
+    }
 }

@@ -76,7 +76,7 @@
         media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
     <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/v3.8.0/mapbox-gl.css'>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
-
+    <script src="../scripts/howler.js"></script>
     <link rel="stylesheet" href="style.css">
     <meta name="apple-mobile-web-app-title" content="OASAP">
     <meta name="viewport"
@@ -135,6 +135,33 @@
                 <span class="details">Τελευταία ενημέρωση: μόλις τώρα</span>
             </div>
             -->
+            <div onclick="chooseOption(this)" class="right">
+                <svg class="vox1" style="display: none;" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <path d="M4 9L4 6C4 4.89543 4.89543 4 6 4L9 4" stroke="#fff" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2" />
+                    <path d="M20 15V18C20 19.1046 19.1046 20 18 20H15" stroke="#fff" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2" />
+                    <path d="M15 4L18 4C19.1046 4 20 4.89543 20 6L20 9" stroke="#fff" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2" />
+                    <path d="M9 20L6 20C4.89543 20 4 19.1046 4 18L4 15" stroke="#fff" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2" />
+                </svg>
+                <svg class="vox2" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <g clip-path="url(#clip0_105_1728)">
+                        <path d="M9 4.00012V7.00012C9 8.10469 8.10457 9.00012 7 9.00012H4" stroke="#fff"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+
+                        <path d="M15 20.0001L15 17.0001C15 15.8956 15.8954 15.0001 17 15.0001L20 15.0001" stroke="#fff"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+
+                        <path d="M20 9.00012L17 9.00012C15.8954 9.00012 15 8.10469 15 7.00012L15 4.00012" stroke="#fff"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+
+                        <path d="M4 15.0001L7 15.0001C8.10457 15.0001 9 15.8956 9 17.0001L9 20.0001" stroke="#fff"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                    </g>
+                </svg>
+            </div>
             <div onclick="window.location.reload()" class="right">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                     <path
