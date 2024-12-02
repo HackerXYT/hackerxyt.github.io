@@ -103,6 +103,7 @@
                 fill="#fff" />
         </svg><span id="current-date"></span></p>
     <p class="count">Suipps Today: <span id="countlc"></span></p>
+    <p class="count">Suipps Yesterday: <span id="countly"></span></p>
     <div class="button" onclick="plugIn(this)">
         <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 48 48">
             <g id="Layer_2" data-name="Layer 2">
@@ -139,23 +140,30 @@
         }
     }
     function reloadToday() {
-        const suips = localStorage.getItem("suips")
-        const currentDate = new Date().toISOString().split('T')[0] // Get current date in YYYY-MM-DD format
+        const suips = localStorage.getItem("suips");
+        const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+        const yesterdayDate = new Date();
+        yesterdayDate.setDate(yesterdayDate.getDate() - 1);
+        const yesterday = yesterdayDate.toISOString().split('T')[0];
 
         if (suips) {
-            const work = JSON.parse(suips)
+            const work = JSON.parse(suips);
 
             // Check if the saved date is different from today
             if (work.date !== currentDate) {
-                work.today = 0 // Reset today count
-                work.date = currentDate // Update stored date
-                localStorage.setItem("suips", JSON.stringify(work)) // Save changes
+                work.yesterday = work.today || 0; // Move today count to yesterday
+                work.today = 0; // Reset today count
+                work.date = currentDate; // Update stored date
+                localStorage.setItem("suips", JSON.stringify(work)); // Save changes
             }
 
-            document.getElementById("countlc").innerText = work.today
+            document.getElementById("countlc").innerText = work.today;
+            document.getElementById("countly").innerText = work.yesterday || 0;
         } else {
-            document.getElementById("countlc").innerText = 0
+            document.getElementById("countlc").innerText = 0;
+            document.getElementById("countly").innerText = 0;
         }
+
         document.getElementById('current-date').textContent = getFormattedDate();
     }
     reloadToday()
