@@ -1419,9 +1419,11 @@ vo input {
   /* Initially off-screen to the left */
   transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, backdrop-filter 0.5s ease-in-out;
   z-index: 99921;
+  display: none;
 }
 
 .floridaNoticeContainer.active {
+  display: flex;
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -1472,4 +1474,8 @@ vo input {
 }
 .scale-animation {
   animation: scaleEffect 0.5s infinite ease-in-out;
+}
+
+#spawnHere {
+  overflow: auto;
 }

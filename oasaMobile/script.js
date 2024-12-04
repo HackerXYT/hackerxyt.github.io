@@ -1603,6 +1603,7 @@ function fl_moveDiv(e) {
 
         document.getElementById("phone").style.transform = "scale(1)"
         setTimeout(function () {
+            document.getElementById("main-wrapper").style.overflow = null
             floridaCont.style.top = '';
             enableScroll()
         }, 500)
@@ -1630,6 +1631,7 @@ function fl_stopMoveDiv() {
         document.getElementById("floridaCont").classList.remove("active")
         document.getElementById("phone").style.transform = "scale(1)"
         setTimeout(function () {
+            document.getElementById("main-wrapper").style.overflow = null
             floridaCont.style.top = '';
         }, 500)
 
@@ -4086,7 +4088,7 @@ function showCurrentStop() {
                     document.getElementById("904live1").style.display = 'none'
                     disableOverflow()
                     document.getElementById("phone").style.transform = "scale(0.95)"
-                    document.getElementById("main-wrapper").style.overflow = 'hidden'
+                    //document.getElementById("main-wrapper").style.overflow = 'hidden'
                     document.getElementById("popIt").classList.add("active")
                     document.getElementById("showMore").style.display = 'none'
                     document.getElementById("16defTime").style.display = "none"
