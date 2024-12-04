@@ -153,9 +153,47 @@
     <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1136-640.png"
         media="(prefers-color-scheme: dark) and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
 
+    <style>
+        .popup:has(.active)~#main-wrapper {
+            overscroll-behavior: none;
+            touch-action: none;
+            overflow: hidden;
+        }
+
+        .popup:has(.active)~#phone {
+            overscroll-behavior: none;
+            touch-action: none;
+            overflow: hidden;
+        }
+
+        .popup:has(.active)~body {
+            overscroll-behavior: none;
+            touch-action: none;
+            overflow: hidden;
+        }
+
+        #main::-webkit-scrollbar {
+            display: none;
+        }
+
+        #spawnHere::-webkit-scrollbar {
+            display: block;
+        }
+
+        #main {
+            overflow: hidden;
+        }
+
+        /* Enable scrollbar for the element with class 'a' */
+        #spawnHere {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            /* Smooth scrolling */
+        }
+    </style>
 
     <script>
-        var currentBuild = "1.51"
+        var currentBuild = "1.60"
         console.log(`%cCurrent Build: ${currentBuild}`, "color: green; font-family:sans-serif; font-size: 25px");
         window.onerror = function (message, source, lineno, colno, error) {
             try {
@@ -278,7 +316,7 @@
 <body>
 
     <div id="phone">
-        <div id="main-wrapper" class="fancy-scrollbar">
+        <div id="main-wrapper">
             <div id="main">
                 <div id="content">
                     <div id="links-container">
@@ -297,16 +335,51 @@
                                 </path>
                             </svg></a>
                         <a onclick="document.documentElement.style.setProperty('--isOldDevice', '0');window.location.reload();"
-                            href="#">ανανέωση*</a>
+                            href="#"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                                viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM6.6 11.23C6.77 10.04 7.3 8.97 8.13 8.13C10.13 6.14 13.28 6.03 15.42 7.77V6.82C15.42 6.41 15.76 6.07 16.17 6.07C16.58 6.07 16.92 6.41 16.92 6.82V9.49C16.92 9.9 16.58 10.24 16.17 10.24H13.5C13.09 10.24 12.75 9.9 12.75 9.49C12.75 9.08 13.09 8.74 13.5 8.74H14.25C12.7 7.66 10.56 7.81 9.18 9.19C8.58 9.79 8.2 10.57 8.07 11.44C8.02 11.81 7.7 12.08 7.33 12.08C7.29 12.08 7.26 12.08 7.22 12.07C6.83 12.02 6.54 11.64 6.6 11.23ZM15.87 15.87C14.8 16.94 13.4 17.47 12 17.47C10.78 17.47 9.57 17.04 8.57 16.23V17.17C8.57 17.58 8.23 17.92 7.82 17.92C7.41 17.92 7.07 17.58 7.07 17.17V14.5C7.07 14.09 7.41 13.75 7.82 13.75H10.49C10.9 13.75 11.24 14.09 11.24 14.5C11.24 14.91 10.9 15.25 10.49 15.25H9.74C11.29 16.33 13.43 16.18 14.81 14.8C15.41 14.2 15.79 13.42 15.92 12.55C15.98 12.14 16.35 11.85 16.77 11.91C17.18 11.97 17.46 12.35 17.41 12.76C17.23 13.97 16.7 15.04 15.87 15.87Z"
+                                    fill="#fff" />
+                            </svg></a>
                         <a onclick="getBus('16')
                         getBus('831')
                         getBus('828')
                         getBus('049')
                         getBus('904')
-                        getBus('420');document.getElementById('phone').style.transform = ''" href="#">συγχρονισμός*</a>
-                        <a id='updatemanual'
+                        getBus('420');document.getElementById('phone').style.transform = ''" href="#"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path
+                                    d="M22.6517 18.1302C22.5517 17.7302 22.1517 17.4802 21.7517 17.5802C21.3517 17.6802 21.1017 18.0802 21.1917 18.4802C21.2317 18.6502 21.2517 18.8202 21.2517 19.0002C21.2517 20.2402 20.2417 21.2502 19.0017 21.2502C17.7617 21.2502 16.7517 20.2402 16.7517 19.0002C16.7517 17.9002 17.5417 16.9902 18.5917 16.7902C18.4917 17.0202 18.5017 17.3002 18.6617 17.5202C18.8117 17.7202 19.0417 17.8302 19.2717 17.8302C19.4217 17.8302 19.5817 17.7802 19.7117 17.6902L20.8817 16.8402C20.8917 16.8302 20.8917 16.8202 20.9017 16.8202C20.9117 16.8102 20.9217 16.8102 20.9317 16.8002C20.9617 16.7702 20.9817 16.7402 21.0017 16.7002C21.0317 16.6602 21.0717 16.6302 21.0917 16.5802C21.1117 16.5402 21.1217 16.4902 21.1417 16.4502C21.1517 16.4002 21.1717 16.3602 21.1817 16.3102C21.1917 16.2602 21.1817 16.2202 21.1717 16.1702C21.1717 16.1202 21.1717 16.0702 21.1517 16.0202C21.1417 15.9702 21.1117 15.9302 21.0917 15.8902C21.0717 15.8502 21.0617 15.8102 21.0417 15.7802C21.0317 15.7702 21.0217 15.7702 21.0117 15.7602C21.0017 15.7602 21.0017 15.7502 21.0017 15.7402L20.0017 14.5902C19.7317 14.2802 19.2517 14.2402 18.9417 14.5202C18.7217 14.7202 18.6417 15.0102 18.7217 15.2802C16.7917 15.4302 15.2617 17.0302 15.2617 19.0002C15.2617 21.0702 16.9417 22.7502 19.0117 22.7502C21.0817 22.7502 22.7617 21.0702 22.7617 19.0002C22.7517 18.7102 22.7217 18.4102 22.6517 18.1302Z"
+                                    fill="#fff" />
+                                <path
+                                    d="M2.03172 14.6289C2.03172 14.6589 2.01172 14.6989 2.01172 14.7289C2.93172 16.5689 4.43172 18.0789 6.27172 18.9889C6.30172 18.9889 6.34172 18.9689 6.37172 18.9689C6.03172 17.8089 5.77172 16.6189 5.58172 15.4289C4.38172 15.2289 3.19172 14.9689 2.03172 14.6289Z"
+                                    fill="#fff" />
+                                <path
+                                    d="M19.0681 6.43141C18.1281 4.46141 16.5381 2.87141 14.5781 1.94141C14.9381 3.13141 15.2381 4.35141 15.4381 5.57141C16.6581 5.77141 17.8781 6.06141 19.0681 6.43141Z"
+                                    fill="#fff" />
+                                <path
+                                    d="M1.92969 6.42953C3.12969 6.06953 4.34969 5.76953 5.56969 5.56953C5.76969 4.37953 6.01969 3.19953 6.35969 2.03953C6.32969 2.03953 6.28969 2.01953 6.25969 2.01953C4.37969 2.94953 2.84969 4.51953 1.92969 6.42953Z"
+                                    fill="#fff" />
+                                <path
+                                    d="M13.8197 5.36C13.5797 4.06 13.2797 2.76 12.8497 1.5C12.8297 1.43 12.8297 1.37 12.8197 1.29C12.0797 1.11 11.2997 1 10.4997 1C9.68969 1 8.91969 1.11 8.16969 1.3C8.15969 1.37 8.16969 1.43 8.14969 1.51C7.72969 2.77 7.41969 4.06 7.17969 5.36C9.38969 5.12 11.6097 5.12 13.8197 5.36Z"
+                                    fill="#fff" />
+                                <path
+                                    d="M5.36 7.17969C4.05 7.41969 2.77 7.72969 1.5 8.14969C1.43 8.16969 1.37 8.16969 1.3 8.17969C1.11 8.91969 1 9.69969 1 10.4997C1 11.3097 1.11 12.0797 1.3 12.8297C1.37 12.8397 1.43 12.8297 1.51 12.8497C2.77 13.2697 4.06 13.5797 5.37 13.8197C5.12 11.6097 5.12 9.38969 5.36 7.17969Z"
+                                    fill="#fff" />
+                                <path
+                                    d="M19.6989 8.17969C19.6289 8.17969 19.5689 8.16969 19.4889 8.14969C18.2289 7.72969 16.9289 7.41969 15.6289 7.17969C15.8789 9.38969 15.8789 11.6097 15.6289 13.8097C16.9289 13.5697 18.2289 13.2697 19.4889 12.8397C19.5589 12.8197 19.6189 12.8297 19.6989 12.8197C19.8789 12.0697 19.9989 11.2997 19.9989 10.4897C19.9989 9.69969 19.8889 8.92969 19.6989 8.17969Z"
+                                    fill="#fff" />
+                                <path
+                                    d="M7.17969 15.6389C7.41969 16.9489 7.71969 18.2389 8.14969 19.4989C8.16969 19.5689 8.15969 19.6289 8.16969 19.7089C8.91969 19.8889 9.68969 19.9989 10.4997 19.9989C11.2997 19.9989 12.0797 19.8889 12.8197 19.6989C12.8297 19.6289 12.8297 19.5689 12.8497 19.4889C13.2697 18.2289 13.5797 16.9389 13.8197 15.6289C12.7197 15.7489 11.6097 15.8389 10.4997 15.8389C9.38969 15.8389 8.27969 15.7589 7.17969 15.6389Z"
+                                    fill="#fff" />
+                                <path
+                                    d="M6.95156 6.95156C6.65156 9.31156 6.65156 11.6916 6.95156 14.0616C9.31156 14.3616 11.6916 14.3616 14.0616 14.0616C14.3616 11.7016 14.3616 9.32156 14.0616 6.95156C11.6916 6.65156 9.31156 6.65156 6.95156 6.95156Z"
+                                    fill="#fff" />
+                            </svg></a>
+                        <!--<a id='updatemanual'
                             onclick="updateServiceWorkerCache();this.innerHTML = 'updating..';setTimeout(function(){this.innerHTML = 'reloading..';window.location.reload();}, 1200)//document.getElementById('theDebug').innerHTML = 'Terminal Restarted'"
-                            href="#">ενημέρωση</a>
+                            href="#">ενημέρωση</a>-->
                     </div>
                     <div id="header-container">
                         <img onclick="toggleDoodle()" id="logo" src="doodle.png" />
@@ -1435,24 +1508,37 @@
             <div id="16defTime" class="timeBox topVox swipe-container">
                 <div class="swipe-content">
                     <div class="liveCollumn">
-                        <vox>Παναγίτσα</vox><p>Ρέντης - Πειραιάς</p>
+                        <vox>Παναγίτσα</vox>
+                        <p>Ρέντης - Πειραιάς</p>
                     </div>
                     <span id="based">Σύνδεση...</span>
                 </div>
                 <div class="swipe-actions">
-                    <button class="action time1"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                        <path d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <button class="action time1"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10"
+                                stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        </button>
-                    <button class="action moreOpt"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 32 32">
-                        <defs>
-                        <style>.cls-1{fill:#fff;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
-                        </defs>
-                        <g id="more">
-                        <circle class="cls-1" cx="16" cy="16" r="2"/>
-                        <circle class="cls-1" cx="6" cy="16" r="2"/>
-                        <circle class="cls-1" cx="26" cy="16" r="2"/>
-                        </g>
+                    </button>
+                    <button class="action moreOpt"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                            viewBox="0 0 32 32">
+                            <defs>
+                                <style>
+                                    .cls-1 {
+                                        fill: #fff;
+                                        stroke: #fff;
+                                        stroke-linecap: round;
+                                        stroke-linejoin: round;
+                                        stroke-width: 2px;
+                                    }
+                                </style>
+                            </defs>
+                            <g id="more">
+                                <circle class="cls-1" cx="16" cy="16" r="2" />
+                                <circle class="cls-1" cx="6" cy="16" r="2" />
+                                <circle class="cls-1" cx="26" cy="16" r="2" />
+                            </g>
                         </svg></button>
                 </div>
             </div>
@@ -1460,117 +1546,182 @@
             <div id="16gounTime" class="timeBox bottomVox swipe-container">
                 <div class="swipe-content">
                     <div class="liveCollumn">
-                        <vox>Γούναρη</vox><p>Ρέντης - Πειραιάς</p>
+                        <vox>Γούναρη</vox>
+                        <p>Ρέντης - Πειραιάς</p>
                     </div>
                     <span id="basedGoun">Σύνδεση..</span>
                 </div>
                 <div class="swipe-actions">
-                    <button class="action time1"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                        <path d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <button class="action time1"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10"
+                                stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg></button>
-                    <button class="action moreOpt"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 32 32">
-                        <defs>
-                        <style>.cls-1{fill:#fff;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
-                        </defs>
-                        <g id="more">
-                        <circle class="cls-1" cx="16" cy="16" r="2"/>
-                        <circle class="cls-1" cx="6" cy="16" r="2"/>
-                        <circle class="cls-1" cx="26" cy="16" r="2"/>
-                        </g>
+                    <button class="action moreOpt"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                            viewBox="0 0 32 32">
+                            <defs>
+                                <style>
+                                    .cls-1 {
+                                        fill: #fff;
+                                        stroke: #fff;
+                                        stroke-linecap: round;
+                                        stroke-linejoin: round;
+                                        stroke-width: 2px;
+                                    }
+                                </style>
+                            </defs>
+                            <g id="more">
+                                <circle class="cls-1" cx="16" cy="16" r="2" />
+                                <circle class="cls-1" cx="6" cy="16" r="2" />
+                                <circle class="cls-1" cx="26" cy="16" r="2" />
+                            </g>
                         </svg></button>
                 </div>
             </div>
             <div id="904live1" class="timeBox swipe-container">
                 <div class="swipe-content">
                     <div class="liveCollumn">
-                        <vox>Κοραή</vox><p>Πλ. Καραϊσκάκη - Φρεαττύδα</p>
+                        <vox>Κοραή</vox>
+                        <p>Πλ. Καραϊσκάκη - Φρεαττύδα</p>
                     </div>
                     <span id="based904">Σύνδεση..</span>
                 </div>
                 <div class="swipe-actions">
-                    <button class="action time1"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                        <path d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <button class="action time1"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10"
+                                stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg></button>
-                    <button class="action moreOpt"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 32 32">
-                        <defs>
-                        <style>.cls-1{fill:#fff;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
-                        </defs>
-                        <g id="more">
-                        <circle class="cls-1" cx="16" cy="16" r="2"/>
-                        <circle class="cls-1" cx="6" cy="16" r="2"/>
-                        <circle class="cls-1" cx="26" cy="16" r="2"/>
-                        </g>
+                    <button class="action moreOpt"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                            viewBox="0 0 32 32">
+                            <defs>
+                                <style>
+                                    .cls-1 {
+                                        fill: #fff;
+                                        stroke: #fff;
+                                        stroke-linecap: round;
+                                        stroke-linejoin: round;
+                                        stroke-width: 2px;
+                                    }
+                                </style>
+                            </defs>
+                            <g id="more">
+                                <circle class="cls-1" cx="16" cy="16" r="2" />
+                                <circle class="cls-1" cx="6" cy="16" r="2" />
+                                <circle class="cls-1" cx="26" cy="16" r="2" />
+                            </g>
                         </svg></button>
                 </div>
             </div>
-            
+
             <div id="049live1" class="timeBox topVox swipe-container">
                 <div class="swipe-content">
                     <div class="liveCollumn">
-                        <vox>Κεράνης</vox><p>Ομόνοια - Πειραιάς</p>
+                        <vox>Κεράνης</vox>
+                        <p>Ομόνοια - Πειραιάς</p>
                     </div>
                     <span id="based049">Σύνδεση..</span>
                 </div>
                 <div class="swipe-actions">
-                    <button class="action time1"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                        <path d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <button class="action time1"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10"
+                                stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg></button>
-                    <button class="action moreOpt"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 32 32">
-                        <defs>
-                        <style>.cls-1{fill:#fff;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
-                        </defs>
-                        <g id="more">
-                        <circle class="cls-1" cx="16" cy="16" r="2"/>
-                        <circle class="cls-1" cx="6" cy="16" r="2"/>
-                        <circle class="cls-1" cx="26" cy="16" r="2"/>
-                        </g>
+                    <button class="action moreOpt"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                            viewBox="0 0 32 32">
+                            <defs>
+                                <style>
+                                    .cls-1 {
+                                        fill: #fff;
+                                        stroke: #fff;
+                                        stroke-linecap: round;
+                                        stroke-linejoin: round;
+                                        stroke-width: 2px;
+                                    }
+                                </style>
+                            </defs>
+                            <g id="more">
+                                <circle class="cls-1" cx="16" cy="16" r="2" />
+                                <circle class="cls-1" cx="6" cy="16" r="2" />
+                                <circle class="cls-1" cx="26" cy="16" r="2" />
+                            </g>
                         </svg></button>
                 </div>
             </div>
-            
+
             <div id="049live2" class="timeBox bottomVox swipe-container">
                 <div class="swipe-content">
                     <div class="liveCollumn">
-                        <vox>Δημοτικό Θέατρο</vox><p>Πειραιάς - Ομόνοια</p>
+                        <vox>Δημοτικό Θέατρο</vox>
+                        <p>Πειραιάς - Ομόνοια</p>
                     </div>
                     <span id="based049Dhm">Σύνδεση..</span>
                 </div>
                 <div class="swipe-actions">
-                    <button class="action time1"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                        <path d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <button class="action time1"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10"
+                                stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg></button>
-                    <button class="action moreOpt"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 32 32">
-                        <defs>
-                        <style>.cls-1{fill:#fff;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
-                        </defs>
-                        <g id="more">
-                        <circle class="cls-1" cx="16" cy="16" r="2"/>
-                        <circle class="cls-1" cx="6" cy="16" r="2"/>
-                        <circle class="cls-1" cx="26" cy="16" r="2"/>
-                        </g>
+                    <button class="action moreOpt"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                            viewBox="0 0 32 32">
+                            <defs>
+                                <style>
+                                    .cls-1 {
+                                        fill: #fff;
+                                        stroke: #fff;
+                                        stroke-linecap: round;
+                                        stroke-linejoin: round;
+                                        stroke-width: 2px;
+                                    }
+                                </style>
+                            </defs>
+                            <g id="more">
+                                <circle class="cls-1" cx="16" cy="16" r="2" />
+                                <circle class="cls-1" cx="6" cy="16" r="2" />
+                                <circle class="cls-1" cx="26" cy="16" r="2" />
+                            </g>
                         </svg></button>
                 </div>
             </div>
             <div id="831live1" class="timeBox swipe-container">
                 <div class="swipe-content">
                     <div class="liveCollumn">
-                        <vox>Εθνικής Αντιστάσεως</vox><p>Πειραιάς - Αιγάλεω</p>
+                        <vox>Εθνικής Αντιστάσεως</vox>
+                        <p>Πειραιάς - Αιγάλεω</p>
                     </div>
                     <span id="based831Ethn">Σύνδεση..</span>
                 </div>
                 <div class="swipe-actions">
-                    <button class="action time1"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                        <path d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <button class="action time1"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10"
+                                stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg></button>
-                    <button class="action moreOpt"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 32 32">
-                        <defs>
-                        <style>.cls-1{fill:#fff;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:2px;}</style>
-                        </defs>
-                        <g id="more">
-                        <circle class="cls-1" cx="16" cy="16" r="2"/>
-                        <circle class="cls-1" cx="6" cy="16" r="2"/>
-                        <circle class="cls-1" cx="26" cy="16" r="2"/>
-                        </g>
+                    <button class="action moreOpt"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                            viewBox="0 0 32 32">
+                            <defs>
+                                <style>
+                                    .cls-1 {
+                                        fill: #fff;
+                                        stroke: #fff;
+                                        stroke-linecap: round;
+                                        stroke-linejoin: round;
+                                        stroke-width: 2px;
+                                    }
+                                </style>
+                            </defs>
+                            <g id="more">
+                                <circle class="cls-1" cx="16" cy="16" r="2" />
+                                <circle class="cls-1" cx="6" cy="16" r="2" />
+                                <circle class="cls-1" cx="26" cy="16" r="2" />
+                            </g>
                         </svg></button>
                 </div>
             </div>
@@ -1626,10 +1777,20 @@
 
     </div>
     <div style="display: none;" onclick="updateNew()" class="updateAvailable" id="updateAvailable">
-        <svg id="updateNow" xmlns="http://www.w3.org/2000/svg" fill="#fff" width="35px" height="35px"
+        Νέα Ενημέρωση!
+        <!--<svg id="updateNow" xmlns="http://www.w3.org/2000/svg" fill="#fff" width="35px" height="35px"
             viewBox="-1.5 0 19 19" class="cf-icon-svg">
             <path
                 d="M5.857 3.882v3.341a1.03 1.03 0 0 1-2.058 0v-.97a5.401 5.401 0 0 0-1.032 2.27 1.03 1.03 0 1 1-2.02-.395A7.462 7.462 0 0 1 2.235 4.91h-.748a1.03 1.03 0 1 1 0-2.058h3.34a1.03 1.03 0 0 1 1.03 1.03zm-3.25 9.237a1.028 1.028 0 0 1-1.358-.523 7.497 7.497 0 0 1-.37-1.036 1.03 1.03 0 1 1 1.983-.55 5.474 5.474 0 0 0 .269.751 1.029 1.029 0 0 1-.524 1.358zm2.905 2.439a1.028 1.028 0 0 1-1.42.322 7.522 7.522 0 0 1-.885-.652 1.03 1.03 0 0 1 1.34-1.563 5.435 5.435 0 0 0 .643.473 1.03 1.03 0 0 1 .322 1.42zm3.68.438a1.03 1.03 0 0 1-1.014 1.044h-.106a7.488 7.488 0 0 1-.811-.044 1.03 1.03 0 0 1 .224-2.046 5.41 5.41 0 0 0 .664.031h.014a1.03 1.03 0 0 1 1.03 1.015zm.034-12.847a1.03 1.03 0 0 1-1.029 1.01h-.033a1.03 1.03 0 0 1 .017-2.06h.017l.019.001a1.03 1.03 0 0 1 1.009 1.05zm3.236 11.25a1.029 1.029 0 0 1-.3 1.425 7.477 7.477 0 0 1-.797.453 1.03 1.03 0 1 1-.905-1.849 5.479 5.479 0 0 0 .578-.328 1.03 1.03 0 0 1 1.424.3zM10.475 3.504a1.029 1.029 0 0 1 1.41-.359l.018.011a1.03 1.03 0 1 1-1.06 1.764l-.01-.006a1.029 1.029 0 0 1-.358-1.41zm4.26 9.445a7.5 7.5 0 0 1-.315.56 1.03 1.03 0 1 1-1.749-1.086 5.01 5.01 0 0 0 .228-.405 1.03 1.03 0 1 1 1.836.93zm-1.959-6.052a1.03 1.03 0 0 1 1.79-1.016l.008.013a1.03 1.03 0 1 1-1.79 1.017zm2.764 2.487a9.327 9.327 0 0 1 0 .366 1.03 1.03 0 0 1-1.029 1.005h-.025A1.03 1.03 0 0 1 13.482 9.7a4.625 4.625 0 0 0 0-.266 1.03 1.03 0 0 1 1.003-1.055h.026a1.03 1.03 0 0 1 1.029 1.004z" />
+        </svg>-->
+        <svg id="updateNow" xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24"
+            fill="none">
+            <path
+                d="M14 13C14 12.4477 13.5523 12 13 12C12.4477 12 12 12.4477 12 13L12 18.5858L10.7071 17.2929C10.3166 16.9024 9.68342 16.9024 9.29289 17.2929C8.90237 17.6834 8.90237 18.3166 9.29289 18.7071L12.2929 21.7071C12.4804 21.8946 12.7348 22 13 22C13.2652 22 13.5196 21.8946 13.7071 21.7071L16.7071 18.7071C17.0976 18.3166 17.0976 17.6834 16.7071 17.2929C16.3166 16.9024 15.6834 16.9024 15.2929 17.2929L14 18.5858"
+                fill="#fff" />
+            <path
+                d="M2 10C2 5.61631 5.43583 2 9.75 2C13.4089 2 16.4383 4.60401 17.272 8.06762C17.2938 8.15801 17.3739 8.22292 17.4668 8.22718C20.0202 8.3442 22 10.5186 22 13.1111C22 15.4412 20.4008 17.4334 18.2233 17.8979C18.1051 17.9231 17.9967 17.8325 17.9794 17.7129C17.9199 17.3005 17.7315 16.9031 17.4142 16.5858C16.8463 16.0178 16.0217 15.8629 15.3137 16.1209C15.169 16.1737 15 16.0748 15 15.9208L15 13.5661C15 12 14.5 11 13 11C11.5 11 11 12 11 13.5661L11 15.9208C11 16.0748 10.831 16.1737 10.6863 16.1209C9.97831 15.8629 9.15375 16.0178 8.58579 16.5858C8.30451 16.8671 8.12453 17.2113 8.04584 17.5731C8.02016 17.6912 7.9054 17.7738 7.78867 17.7425C4.43962 16.8429 2 13.6939 2 10Z"
+                fill="#fff" />
         </svg>
     </div>
     <div style="display: none;" class="notificationBox">
@@ -1660,19 +1821,19 @@
     <div id="floridaNotice" class="floridaNoticeContainer">
         <div class="floridaNotice">
             <svg xmlns="http://www.w3.org/2000/svg" width="100px" height="100px" viewBox="0 0 24 24" fill="none">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M11 13C11 13.5523 11.4477 14 12 14C12.5523 14 13 13.5523 13 13V10C13 9.44772 12.5523 9 12 9C11.4477 9 11 9.44772 11 10V13ZM13 15.9888C13 15.4365 12.5523 14.9888 12 14.9888C11.4477 14.9888 11 15.4365 11 15.9888V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V15.9888ZM9.37735 4.66136C10.5204 2.60393 13.4793 2.60393 14.6223 4.66136L21.2233 16.5431C22.3341 18.5427 20.8882 21 18.6008 21H5.39885C3.11139 21 1.66549 18.5427 2.77637 16.5431L9.37735 4.66136Z" fill="#dbde30"/>
-                </svg>
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M11 13C11 13.5523 11.4477 14 12 14C12.5523 14 13 13.5523 13 13V10C13 9.44772 12.5523 9 12 9C11.4477 9 11 9.44772 11 10V13ZM13 15.9888C13 15.4365 12.5523 14.9888 12 14.9888C11.4477 14.9888 11 15.4365 11 15.9888V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V15.9888ZM9.37735 4.66136C10.5204 2.60393 13.4793 2.60393 14.6223 4.66136L21.2233 16.5431C22.3341 18.5427 20.8882 21 18.6008 21H5.39885C3.11139 21 1.66549 18.5427 2.77637 16.5431L9.37735 4.66136Z"
+                    fill="#dbde30" />
+            </svg>
             <h2>Προσοχή!</h2>
-            
+
             <p class="showBig">Η τρέχουσα συσκευή δεν είναι συνδεδεμένη με το Florida.</p>
             <p class="descript">Θα ειδοποιηθούν όλες οι διαθέσιμες συσκεύες συνδεδεμένες με τον λογαριασμό σας.</p>
-            <button class="oasaButton" id="runsRe"
-            onclick="reRunFunction(this)">Συνέχεια</button>
-            <button class="oasaButton"
-            onclick="cancelLive()">Ακύρωση</button>
+            <button class="oasaButton" id="runsRe" onclick="reRunFunction(this)">Συνέχεια</button>
+            <button class="oasaButton" onclick="cancelLive()">Ακύρωση</button>
         </div>
     </div>
-   
+
 </body>
 <script>
     //    let storageContent = '';

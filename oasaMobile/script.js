@@ -1456,7 +1456,7 @@ function loadActive() {
         .then(response => response.json())
         .then(data => {
             console.log(data)
-            if (data.length === 0) {
+            if (data.schedo.length === 0 && data.infinite.length === 0) {
                 console.log("No Active Schedos")
                 const container = document.getElementById("pendingContainer")
                 container.innerHTML = ''
@@ -1464,15 +1464,42 @@ function loadActive() {
             } else {
                 document.getElementById("pendingNotifications").style.display = ''
                 console.log("Active schedos found")
-                const filteredData = data.filter(item => item.id === localStorage.getItem("extVOASA"));
+                const filteredData = data.schedo.filter(item => item.id === localStorage.getItem("extVOASA"));
                 console.log("data ready")
                 console.log(filteredData)
                 const container = document.getElementById("pendingContainer")
                 container.innerHTML = ''
-                if (filteredData.length === 0) {
+
+                const filteredDataInfinite = data.infinite.filter(item => item.notificationId === localStorage.getItem("extVOASA"));
+                if (filteredData.length === 0 && filteredDataInfinite.length === 0) {
                     document.getElementById("pendingNotifications").style.display = 'none'
                     return;
                 }
+                filteredDataInfinite.forEach(schedoInfinite => {
+                    const pendingDiv = document.createElement('div');
+                    pendingDiv.className = 'pending infinite';
+
+                    const heading = document.createElement('h2');
+                    heading.textContent = schedoInfinite.bus;
+
+                    const span = document.createElement('span');
+                    if (schedoInfinite.notificationType === '2minutes') {
+                        span.innerHTML = `2' πριν την άφιξη στην στάση: <voi>${capitalizeWords(schedoInfinite.station)}</voi>`;
+                    } else if (schedoInfinite.notificationType === 'countDownBegin') {
+                        span.innerHTML = `Αρχή αντίστροφης μέτρησης στην στάση: <voi>${capitalizeWords(schedoInfinite.station)}</voi>`;
+                    } else {
+                        span.textContent = `Σφάλμα! [${schedoInfinite.notificationType}]`;
+                    }
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.style.marginLeft = 'auto';
+                    buttonContainer.style.marginRight = '10px';
+
+                    pendingDiv.appendChild(heading);
+                    pendingDiv.appendChild(span);
+                    pendingDiv.appendChild(buttonContainer);
+
+                    container.appendChild(pendingDiv);
+                })
                 filteredData.forEach(schedoNotification => {
                     const pendingDiv = document.createElement('div');
                     pendingDiv.className = 'pending';
@@ -2641,6 +2668,10 @@ function rotateElement() {
 
     // Check if the element exists
     if (element) {
+        element.classList.add('scale-animation')
+    }
+    return;
+    if (element) {
         // Get the current rotation angle
         const currentRotationMatch = element.style.transform.match(/rotate\((\d+)deg\)/);
 
@@ -2666,7 +2697,7 @@ function updateNew() {
             updateServiceWorkerCache()
             rotateElement()
             sessionStorage.setItem("updateSuccess", true)
-            document.getElementById("updateAvailable").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24" fill="none">
+            document.getElementById("updateAvailable").innerHTML = `Επανεκκίνηση.. <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24" fill="none">
 <circle cx="12" cy="12" r="9" fill="#2A4157" fill-opacity="0.24"/>
 <path d="M12 21C14.0822 21 16.1 20.278 17.7095 18.9571C19.3191 17.6362 20.4209 15.798 20.8271 13.7558C21.2333 11.7136 20.9188 9.59376 19.9373 7.75743C18.9558 5.9211 17.3679 4.48191 15.4442 3.68508C13.5205 2.88826 11.38 2.78311 9.38744 3.38754C7.3949 3.99197 5.67358 5.26858 4.51677 6.99987C3.35997 8.73115 2.83925 10.81 3.04334 12.8822C3.24743 14.9543 4.1637 16.8916 5.63604 18.364" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
 <path d="M16 10L12.402 14.3175C11.7465 15.1042 11.4187 15.4976 10.9781 15.5176C10.5375 15.5375 10.1755 15.1755 9.45139 14.4514L8 13" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>

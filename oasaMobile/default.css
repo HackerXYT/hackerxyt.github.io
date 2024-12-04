@@ -14,8 +14,8 @@
 @font-face {
     font-family: "SF";
     src: url('SFUIText-Medium.ttf');
-  }
-  
+}
+
 body {
     background-color: rgb(var(--body-color));
     margin: 0px;
@@ -347,9 +347,10 @@ input {
     }
 
     #phone {
-        height: 100vh;
+        height: 100%;
         display: flex;
         width: 100%;
+        position: fixed;
         margin: 0px auto;
     }
 
@@ -358,3 +359,4 @@ input {
         flex-grow: 1;
     }
 }
+
