@@ -3664,7 +3664,7 @@ function showDeviceDiscover() {
         terminalBT.style.backgroundColor = "transparent"
         deviceBT.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
         infob.innerHTML = `
-        currentBuild: ${sessionStorage.getItem("currentBuild")}<br><br>Device ID (extV): ${localStorage.getItem("extVOASA")}<br><br>ServiceWorker in window: ${'serviceWorker' in navigator}<br><br>hasDismissedSetup: ${localStorage.getItem("hasDismissedSetup")}<br><br>privileges: ${sessionStorage.getItem("privileges")}<br><br>hasLocalPfp: ${sessionStorage.getItem("pfp") === true}<br><br>__pwacompat_manifest: <br><span style="color: yellow">${sessionStorage.getItem('__pwacompat_manifest')}</span>`
+        currentBuild: ${sessionStorage.getItem("currentBuild")}<br><br>Device ID (extV): ${localStorage.getItem("extVOASA")}<br><br>ServiceWorker in window: ${'serviceWorker' in navigator}<br><br>hasDismissedSetup: ${localStorage.getItem("hasDismissedSetup")}<br><br>privileges: ${sessionStorage.getItem("privileges")}<br><br>hasLocalPfp: ${sessionStorage.getItem("pfp") === true}<br><br>__pwacompat_manifest: <br><span style="color: yellow">${sessionStorage.getItem('__pwacompat_manifest')}</span><br>Logout: <span onclick="localStorage.clear()">now</span>`
     } else {
         console.log("Will show A")
         innerb.style.display = "none"
