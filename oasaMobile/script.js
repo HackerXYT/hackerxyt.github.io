@@ -40,6 +40,24 @@ if (!localStorage.getItem("disableDoodle")) {
     doodle()
 }
 
+function setThemeColors(hex) {
+    // Remove existing theme-color meta tags
+    document.querySelectorAll('meta[name="theme-color"]').forEach(meta => meta.remove());
+
+    // Create and append meta tag for light theme
+    const lightMeta = document.createElement('meta');
+    lightMeta.name = 'theme-color';
+    lightMeta.content = hex; // Adjust for light theme
+    lightMeta.media = '(prefers-color-scheme: light)';
+    document.head.appendChild(lightMeta);
+
+    // Create and append meta tag for dark theme
+    const darkMeta = document.createElement('meta');
+    darkMeta.name = 'theme-color';
+    darkMeta.content = hex; // Adjust for dark theme
+    darkMeta.media = '(prefers-color-scheme: dark)';
+    document.head.appendChild(darkMeta);
+}
 
 function toggleDoodle() {
     const lcl = localStorage.getItem("disableDoodle")
@@ -423,7 +441,7 @@ function showInfo(bus, isInt, more) {
     howManyShowed = more ?? 7
     document.getElementById("904live1").style.display = 'none'
     disableOverflow()
-    document.getElementById("phone").style.transform = "scale(0.95)"
+    document.getElementById("phone").classList.add('out')
     document.getElementById("main-wrapper").style.overflow = 'hidden'
     if (!document.getElementById("popIt").classList.contains("active") && isInt) {
         console.log(`Resolved Interval Bug [info: busReq: ${bus}, stoppedBy: classList]`)
@@ -1176,7 +1194,7 @@ function getNextBusesPanagitsa(times, more) {
 function goBack() {
     document.getElementById("showMore").style.display = null
     howManyShowed = null
-    document.getElementById("phone").style.transform = ""
+    document.getElementById("phone").classList.remove('out')
     document.getElementById("Businfo").innerHTML = `⛳`
     document.getElementById("Businfo").style.opacity = '0'
     enableOverflow()
@@ -1441,7 +1459,7 @@ function enableOverflow() {
 
 function florida() {
     disableScroll()
-    document.getElementById("phone").style.transform = "scale(0.95)"
+    document.getElementById("phone").classList.add('out')
     document.getElementById("floridaCont").classList.add("active")
     document.getElementById("main-wrapper").style.overflow = 'hidden'
     loadActive()
@@ -1449,7 +1467,7 @@ function florida() {
 
 function loadActive() {
     if (!localStorage.getItem("t50-username")) {
-        console.log("<spans style='color: red'>Cancelled active schedo check due to lcstorage username being null!</span>")
+        console.log("<span style='color: red'>Cancelled active schedo check due to lcstorage username being null!</span>")
         return;
     }
     fetch(`https://florida.evoxs.xyz/activeSchedo?username=${localStorage.getItem("t50-username")}`)
@@ -1601,7 +1619,7 @@ function fl_moveDiv(e) {
         //document.getElementById("main-wrapper").style.overflow = 'auto'
         document.getElementById("floridaCont").classList.remove("active")
 
-        document.getElementById("phone").style.transform = "scale(1)"
+        document.getElementById("phone").classList.remove('out')
         setTimeout(function () {
             document.getElementById("main-wrapper").style.overflow = null
             floridaCont.style.top = '';
@@ -1629,7 +1647,7 @@ function fl_stopMoveDiv() {
 
         //document.getElementById("main-wrapper").style.overflow = 'auto'
         document.getElementById("floridaCont").classList.remove("active")
-        document.getElementById("phone").style.transform = "scale(1)"
+        document.getElementById("phone").classList.remove('out')
         setTimeout(function () {
             document.getElementById("main-wrapper").style.overflow = null
             floridaCont.style.top = '';
@@ -1644,6 +1662,7 @@ function fl_stopMoveDiv() {
 //florida()
 
 function setup_begin() {
+    console.log("Running setup begin")
     if (localStorage.getItem("extVOASA")) {
         console.log("Florida already attached!")
         return;
@@ -1654,12 +1673,12 @@ function setup_begin() {
         setTimeout(function () {
 
             document.getElementById("floridaCont").classList.remove("active")
-            document.getElementById("phone").style.transform = "scale(1)"
+            document.getElementById("phone").classList.remove('out')
             setTimeout(function () {
                 document.getElementById("floridaCont").style.backgroundColor = `#242426`
                 $("#homePage").fadeOut("fast", function () {
                     document.getElementById("floridaCont").classList.add("active")
-                    document.getElementById("phone").style.transform = "scale(0.95)"
+                    document.getElementById("phone").classList.add('out')
                     floridaCont.style.top = '';
 
                     $("#setupPage").fadeIn("fast", function () {
@@ -1717,15 +1736,16 @@ function setup_begin() {
 
 
 
+
         setTimeout(function () {
 
             document.getElementById("floridaCont").classList.remove("active")
-            document.getElementById("phone").style.transform = "scale(1)"
+            document.getElementById("phone").classList.remove('out')
             setTimeout(function () {
                 document.getElementById("floridaCont").style.backgroundColor = `#242426`
                 $("#homePage").fadeOut("fast", function () {
                     document.getElementById("floridaCont").classList.add("active")
-                    document.getElementById("phone").style.transform = "scale(0.95)"
+                    document.getElementById("phone").classList.add('out')
                     floridaCont.style.top = '';
 
                     $("#setupPage").fadeIn("fast", function () {
@@ -1987,7 +2007,7 @@ function continueFlo(isAnon) {
         //just continue
 
         document.getElementById("floridaCont").classList.remove("active")
-        document.getElementById("phone").style.transform = "scale(1)"
+        document.getElementById("phone").classList.remove('out')
 
         setTimeout(function () {
             $("#case1").fadeOut("fast", function () {
@@ -1995,7 +2015,7 @@ function continueFlo(isAnon) {
             document.getElementById("floridaCont").style.backgroundColor = `#000`
             $("#homePage").fadeOut("fast", function () {
                 document.getElementById("floridaCont").classList.add("active")
-                document.getElementById("phone").style.transform = "scale(0.95)"
+                document.getElementById("phone").classList.add('out')
                 floridaCont.style.top = '';
 
                 $("#loginForm").fadeOut("fast", function () {
@@ -2056,12 +2076,12 @@ function createOASA() {
                 localStorage.setItem("t50-email", `${username}@evoxs.xyz`)
                 setTimeout(function () {
                     document.getElementById("floridaCont").classList.remove("active")
-                    document.getElementById("phone").style.transform = "scale(1)"
+                    document.getElementById("phone").classList.remove('out')
                     setTimeout(function () {
                         document.getElementById("floridaCont").style.backgroundColor = `#000`
                         $("#homePage").fadeOut("fast", function () {
                             document.getElementById("floridaCont").classList.add("active")
-                            document.getElementById("phone").style.transform = "scale(0.95)"
+                            document.getElementById("phone").classList.add('out')
                             floridaCont.style.top = '';
 
                             $("#loginForm").fadeOut("fast", function () {
@@ -2747,21 +2767,148 @@ function handleSwipeGestureView() {
     }
 }
 
-if (localStorage.getItem("t50-username") && localStorage.getItem("16_Times") || localStorage.getItem("isNewOasa") === "false") {
+if (localStorage.getItem("t50-username") || localStorage.getItem("isNewOasa") === "false") {
     console.log("User is not new")
 } else {
-    document.getElementById("phone").style.transform = "scale(0.98)"
+    document.getElementById("setup").classList.add("active")
+    setThemeColors('#121212')
+
+    document.getElementById("phone").classList.add('out')
     document.getElementById("homePage").style.display = "none"
-    document.getElementById("newUser").style.display = ""
+    //document.getElementById("newUser").style.display = ""
     document.getElementById("grabFlorida").style.display = 'none'
-    document.getElementById("floridaCont").classList.add("active")
+    //continueSetup()
+    //TEMP%document.getElementById("floridaCont").classList.add("active")
+}
+function setupStep(step) {
+    const dot1 = document.getElementById("dot-1");
+    const dot2 = document.getElementById("dot-2");
+    const infos = document.querySelectorAll('.setup .info .info'); // Nested .info structure is preserved
+    const currentInfo = infos[0];
+    const nextInfo = infos[1];
+
+    if (step) {
+        // Move backward: from second info to first info
+        dot2.classList.remove('active');
+        dot1.classList.add('active');
+
+        // Add backward animation classes
+        currentInfo.classList.add('slide-out-right');
+        nextInfo.classList.add('slide-in-left');
+    } else {
+        // Move forward: from first info to second info
+        dot1.classList.remove('active');
+        dot2.classList.add('active');
+
+        currentInfo.classList.add('slide-out-left');
+        nextInfo.classList.add('slide-in-right');
+    }
+
+    // Cleanup and animation end handling
+    const handleAnimationEnd = (e) => {
+        e.target.style.display = e.target === nextInfo ? 'block' : 'none';
+        e.target.classList.remove('slide-out-left', 'slide-out-right', 'slide-in-left', 'slide-in-right');
+        e.target.removeEventListener('animationend', handleAnimationEnd);
+    };
+
+    // Attach event listeners for animations
+    currentInfo.addEventListener('animationend', handleAnimationEnd);
+    nextInfo.addEventListener('animationend', handleAnimationEnd);
+
+    // Display settings for buttons
+    if (step) {
+        $("#buttonNext").fadeIn("fast");
+        $("#skip").fadeIn("fast");
+    } else {
+        $("#buttonNext").fadeOut("fast");
+        $("#skip").fadeOut("fast");
+        $("#goBackToLanding").fadeIn("fast");
+    }
+}
+
+function setupNext(step) {
+    if (!step) {
+        const infos = document.querySelectorAll('.setup .info .info');
+        const currentInfo = infos[0];
+        const nextInfo = infos[1];
+
+        console.log('C', currentInfo)
+        console.log('n', nextInfo)
+        // Add animation classes
+        currentInfo.classList.add('slide-out-left');
+        nextInfo.classList.add('slide-in-right');
+
+        // Wait for the animation to finish, then update display
+        currentInfo.addEventListener('animationend', () => {
+            currentInfo.style.display = 'none';
+            currentInfo.classList.remove('slide-out-left');
+        });
+
+
+        nextInfo.addEventListener('animationend', () => {
+            currentInfo.style.display = 'none';
+            nextInfo.classList.remove('slide-in-right');
+            nextInfo.style.display = 'block';
+        });
+        nextInfo.style.display = 'block';
+
+        $("#buttonNext").fadeOut("fast");
+        $("#skip").fadeOut("fast");
+        $("#goBackToLanding").fadeIn("fast");
+        document.getElementById("dot-1").classList.remove('active')
+        document.getElementById("dot-2").classList.add('active')
+    } else {
+        const infos = document.querySelectorAll('.setup .info .info');
+        const currentInfo = infos[1];
+        const nextInfo = infos[0];
+
+        console.log('C', currentInfo)
+        console.log('n', nextInfo)
+        // Add animation classes
+        currentInfo.classList.add('slide-out-left');
+        nextInfo.classList.add('slide-in-right');
+
+        // Wait for the animation to finish, then update display
+        currentInfo.addEventListener('animationend', () => {
+            currentInfo.style.display = 'none';
+            nextInfo.style.display = 'block'
+            currentInfo.classList.remove('slide-out-left');
+        });
+
+
+        nextInfo.addEventListener('animationend', () => {
+
+            nextInfo.classList.remove('slide-in-right');
+        });
+        nextInfo.style.display = 'block';
+        $("#buttonNext").fadeIn("fast");
+        $("#skip").fadeIn("fast");
+        $("#goBackToLanding").fadeOut("fast");
+        document.getElementById("dot-1").classList.add('active')
+        document.getElementById("dot-2").classList.remove('active')
+    }
+
+}
+
+function forLoginToEvox() {
+    setTimeout(function () {
+        //florida()
+        //document.getElementById("floridaCont").classList.add("active")
+        document.getElementById("setupPage").style.display = 'flex'
+        continueSetup() 
+        $("#setup").fadeOut("fast")
+        setThemeColors('#1C1B1E')
+    }, 400)
+
 }
 
 function dismissSetup() {
+    setThemeColors('#1C1B1E')
+    $("#setup").fadeOut("fast")
     localStorage.setItem("isNewOasa", 'false')
     localStorage.setItem("hasDismissedSetup", 'true')
     document.getElementById("floridaCont").classList.remove("active")
-    document.getElementById("phone").style.transform = "scale(1)"
+    document.getElementById("phone").classList.remove('out')
     setTimeout(function () {
         document.getElementById("homePage").style.display = ""
         document.getElementById("newUser").style.display = "none"
@@ -2771,13 +2918,13 @@ function dismissSetup() {
 }
 
 function startSetup() {
-    document.getElementById("phone").style.transform = "scale(0.96)"
+    document.getElementById("phone").classList.add('out')
     document.getElementById("step2").classList.add("active")
 }
 
 function goBackToSetup(step) {
     if (step === "1") {
-        document.getElementById("phone").style.transform = "scale(0.98)"
+        document.getElementById("phone").classList.add('out')
         document.getElementById("step2").classList.remove("active")
     }
 }
@@ -2878,16 +3025,16 @@ function checkBoxCmax(cMaxValue, bypass) {
 }
 
 function continueSetup() {
-    const askedServices = []
+    const askedServices = ['oasa', 'evox', 'offline', 'florida']
     let vo1 = document.getElementById("vo1").innerHTML
     let vo2 = document.getElementById("vo2").innerHTML
     let vo3 = document.getElementById("vo3").innerHTML
     let vo4 = document.getElementById("vo4").innerHTML
     let vo5 = document.getElementById("vo5").innerHTML
-    if (vo1.includes("Unchecked")) {
-        console.log("Setup cancelled")
-        return;
-    } else {
+    //if (vo1.includes("Unchecked")) {
+    //    console.log("Setup cancelled")
+    //    return;
+    //} else {
         askedServices.push("oasa")
         if (!vo2.includes("Unchecked")) {
             askedServices.push("florida")
@@ -2920,25 +3067,25 @@ function continueSetup() {
             }, 800)
             return;
         }
-        if (askedServices.includes('oasa')) {
-            console.log("will only do oasa")
-            localStorage.setItem("isNewOasa", 'false')
-            document.getElementById("floridaCont").classList.remove("active")
-            document.getElementById("phone").style.transform = "scale(1)"
-            setTimeout(function () {
-                document.getElementById("homePage").style.display = ""
-                document.getElementById("newUser").style.display = "none"
-                document.getElementById("grabFlorida").style.display = ''
-                document.getElementById("step2").classList.remove("active")
-            }, 800)
-        } else {
-            console.log(`askedServ: ${askedServices}\nt/f: ${askedServices.includes('oasa')}`)
-        }
+        //if (askedServices.includes('oasa')) {
+        //    console.log("will only do oasa")
+        //    localStorage.setItem("isNewOasa", 'false')
+        //    document.getElementById("floridaCont").classList.remove("active")
+        //    document.getElementById("phone").classList.remove('out')
+        //    setTimeout(function () {
+        //        document.getElementById("homePage").style.display = ""
+        //        document.getElementById("newUser").style.display = "none"
+        //        document.getElementById("grabFlorida").style.display = ''
+        //        document.getElementById("step2").classList.remove("active")
+        //    }, 800)
+        //} else {
+        //    console.log(`askedServ: ${askedServices}\nt/f: ${askedServices.includes('oasa')}`)
+        //}
 
 
 
 
-    }
+    //}
 
 }
 
@@ -3686,39 +3833,57 @@ fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
     .then(data => {
         fullLine = data
         if (data) {
-            //data.forEach(eachLine => {
-            //});
-            let lc = localStorage.getItem("oasa_favorites")
+            let lc = localStorage.getItem("oasa_favorites");
             if (lc) {
-                lc = JSON.parse(lc)
+                lc = JSON.parse(lc);
             }
+
+            let finalHtml = ``;
+            // Map each line to a promise for asynchronous handling
             let linesPromises = data.map(eachLine => {
                 return new Promise((resolve, reject) => {
-                    const logger = `${eachLine.LineDescr} [${eachLine.LineID}]`
+                    const logger = `${eachLine.LineDescr} [${eachLine.LineID}]`;
 
-                    //console.log(logger)
+
+                    // Check if the line is in the favorites
                     if (lc && lc.includes(eachLine.LineID)) {
-                        document.getElementById("spawnHere").innerHTML = `${document.getElementById("spawnHere").innerHTML}<button data-bus="${eachLine.LineID}" class="fade-in-slide-up favoriteBus oasaButton" onclick="findBus('${eachLine.LineID}', this)"><span class="lineNOCLASS">${eachLine.LineID}</span><span class="button-text">${capitalizeWords(eachLine.LineDescr)}</span><vox class="loadingIndicatorNOCLASS"></vox></button>`
+                        finalHtml = `${finalHtml}
+                            <button data-bus="${eachLine.LineID}" 
+                                    class="fade-in-slide-up favoriteBus oasaButton" 
+                                    onclick="findBus('${eachLine.LineID}', this)">
+                                <span class="lineNOCLASS">${eachLine.LineID}</span>
+                                <span class="button-text">${capitalizeWords(eachLine.LineDescr)}</span>
+                                <vox class="loadingIndicatorNOCLASS"></vox>
+                            </button>`;
                     } else {
-                        document.getElementById("spawnHere").innerHTML = `${document.getElementById("spawnHere").innerHTML}<button data-bus="${eachLine.LineID}" class="fade-in-slide-up oasaButton" onclick="findBus('${eachLine.LineID}', this)"><span class="lineNOCLASS">${eachLine.LineID}</span><span class="button-text">${capitalizeWords(eachLine.LineDescr)}</span><vox class="loadingIndicatorNOCLASS"></vox></button>`
+                        finalHtml = `${finalHtml}
+                            <button data-bus="${eachLine.LineID}" 
+                                    class="fade-in-slide-up oasaButton" 
+                                    onclick="findBus('${eachLine.LineID}', this)">
+                                <span class="lineNOCLASS">${eachLine.LineID}</span>
+                                <span class="button-text">${capitalizeWords(eachLine.LineDescr)}</span>
+                                <vox class="loadingIndicatorNOCLASS"></vox>
+                            </button>`;
                     }
 
+                    // Append the generated HTML to the container
+                    const spawnHere = document.getElementById("spawnHere");
+                    if (spawnHere) {
+                        spawnHere.innerHTML = finalHtml; // Safely append each button
+                    }
 
-                    // Resolve the promise after the stop is processed
-                    resolve();
+                    resolve(); // Mark the promise as resolved after DOM update
                 });
             });
 
-            // Wait for all promises to resolve (i.e., all stops are spawned)
+            // Wait for all promises to resolve (i.e., all buttons are added to the DOM)
             Promise.all(linesPromises)
                 .then(() => {
-                    // Code to run after all elements are spawned
                     console.log('All lines have been spawned!');
-                    let element_b = document.getElementById('indexLoading');
+                    const element_b = document.getElementById('indexLoading');
                     if (element_b) {
-                        element_b.remove();
+                        element_b.remove(); // Remove the loading element
                     }
-
 
                     // Add additional functionality here
                 })
@@ -3726,6 +3891,7 @@ fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
                     console.error('An error occurred while spawning stops:', err);
                 });
         }
+
 
     })
     .catch(error => {
@@ -3900,7 +4066,7 @@ function showInfoCSTM(bus, isInt, more) {
     howManyShowed = more ?? 7
     document.getElementById("904live1").style.display = 'none'
     disableOverflow()
-    document.getElementById("phone").style.transform = "scale(0.95)"
+    document.getElementById("phone").classList.add('out')
     document.getElementById("main-wrapper").style.overflow = 'hidden'
     if (!document.getElementById("popIt").classList.contains("active") && isInt) {
         console.log(`Resolved Interval Bug [info: busReq: ${bus}, stoppedBy: classList]`)
@@ -4087,7 +4253,7 @@ function showCurrentStop() {
                 .then(arrivals => {
                     document.getElementById("904live1").style.display = 'none'
                     disableOverflow()
-                    document.getElementById("phone").style.transform = "scale(0.95)"
+                    document.getElementById("phone").classList.add('out')
                     //document.getElementById("main-wrapper").style.overflow = 'hidden'
                     document.getElementById("popIt").classList.add("active")
                     document.getElementById("showMore").style.display = 'none'
@@ -4400,6 +4566,21 @@ function notifyWhen2Mins(bus, currentRemain, station, bypass, actionsElement) {
         }
     } else {
         alert("Δεν υπάρχει συνδεδεμένος λογαριασμός στην συσκευή!")
+    }
+
+}
+
+let theme = 'day'
+
+function changeTheme() {
+    if (theme === 'day') {
+        document.documentElement.style.setProperty('--theme-background', '18 18 18'); //night
+        document.documentElement.style.setProperty('--theme-medium', '37, 37, 37');
+        theme = 'night'
+    } else {
+        document.documentElement.style.setProperty('--theme-medium', '46 44 53');
+        document.documentElement.style.setProperty('--theme-background', '28 27 30'); //day
+        theme = 'day'
     }
 
 }
