@@ -37,7 +37,7 @@ function doodle() {
 }
 
 if (!localStorage.getItem("disableDoodle")) {
-    
+
     doodle()
 } else {
     document.getElementById("doodleStat").innerText = 'Ανενεργό'
@@ -1805,7 +1805,7 @@ function OASAsettings() {
         document.getElementById("phone").classList.add('out')
         floridaCont.style.top = '';
 
-        
+
     })
     document.getElementById("settings").classList.add('active')
 }
@@ -3833,9 +3833,9 @@ function showDeviceDiscover() {
         const revert = terminalBT.style.backgroundColor
         terminalBT.style.backgroundColor = "transparent"
         deviceBT.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-        
+
         infob.innerHTML = `
-        currentBuild: ${sessionStorage.getItem("currentBuild")}<br><br>Device ID (extV): ${localStorage.getItem("extVOASA")}<br><br>ServiceWorker in window: ${'serviceWorker' in navigator}<br><br>hasDismissedSetup: ${localStorage.getItem("hasDismissedSetup")}<br><br>privileges: ${sessionStorage.getItem("privileges")}<br><br>hasLocalPfp: ${sessionStorage.getItem("pfp") === true}<br><br>__pwacompat_manifest: <br><span style="color: yellow">${sessionStorage.getItem('__pwacompat_manifest')}</span><br>Logout: <span onclick="localStorage.clear()">now</span><br><span onclick="changeTheme()">Change Theme</span>`
+        currentBuild: ${sessionStorage.getItem("currentBuild")}<br><br>Αναγνωριστικό (extV): ${localStorage.getItem("extVOASA")}<br><br>Βρέθηκε ServiceWorker: ${'serviceWorker' in navigator}<br><br>Παράβλεψη εγκατάστασης: ${localStorage.getItem("hasDismissedSetup")}<br><br>Προνόμια: ${sessionStorage.getItem("privileges")}<br><br>Τοπική εικόνα προφίλ: ${sessionStorage.getItem("pfp") === true}<br><br>__compat_manifest [ΓΙΑ ΕΚΔΟΣΕΙΣ ALPHA]: <br><span style="color: yellow">${sessionStorage.getItem('__pwacompat_manifest')}</span><br><br>Καταστροφή Λειτουργικού: <span style="color: red;" onclick="localStorage.clear();window.location.reload()">Trigger</span><br><br><span onclick="changeTheme()">Change Theme</span>`
     } else {
         console.log("Will show A")
         innerb.style.display = "none"
@@ -3924,21 +3924,131 @@ fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
             //alert(`Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.`)
             document.getElementById("performance").style.display = 'flex'
             document.getElementById("messagePerformance").innerHTML = 'Μερική Διακοπή'
+            document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentBuild}`
+
             document.getElementById("spawnHere").innerHTML = 'Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.'
+            document.getElementById("logErrors").innerHTML = `Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.`
         } else {
             //alert(`Δεν ηταν δυνατη η συνδεση στον διακομιστη.\nΑγνωστο σφαλμα`)
             document.getElementById("performance").style.display = 'flex'
             document.getElementById("messagePerformance").innerHTML = 'Σοβαρό περιστατικό'
+            document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentBuild}`
+
             document.getElementById("spawnHere").innerHTML = 'Δεν ηταν δυνατη η συνδεση στον διακομιστη.<br>Αγνωστο σφαλμα'
+            document.getElementById("logErrors").innerHTML = `Δεν ηταν δυνατη η συνδεση στον διακομιστη.<br>Αγνωστο σφαλμα<br>${error}`
         }
         if (error.toString().includes('Unexpected token')) {
             //alert("OASA SQL error. Δοκιμάστε ξανά.")
             document.getElementById("performance").style.display = 'flex'
+            document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentBuild}`
             document.getElementById("messagePerformance").innerHTML = 'Σφάλμα OASA'
             document.getElementById("spawnHere").innerHTML = "OASA SQL error. Δοκιμάστε ξανά."
+            document.getElementById("logErrors").innerHTML = `Σφάλμα από την πλευρά του OASA [SQL].<br>Επανεκκινήστε την εφαρμογή.<br>${error}`
+
         }
+        const pers = localStorage.getItem("personalization")
+        if (pers) {
+            const personalize = JSON.parse(pers);
+            const savedDate = new Date(personalize.date); // Convert to Date object
+            const currentDate = new Date();
+
+            // Calculate the difference in days
+            const differenceInDays = (currentDate - savedDate) / (1000 * 60 * 60 * 24);
+
+            if (differenceInDays <= 3 && type === "muteOfflineAlerts") {
+                return;
+                console.log("Date is within 2 days. Do something.");
+            }
+            // else {
+            //    console.log("Date is older than 2 days. Do something else.");
+            //}
+        }
+        showErrors()
+
 
     })
+
+function showErrors() {
+    document.getElementById("performance").style.display = 'none'
+    document.getElementById("popIt3").classList.add("active")
+}
+
+function muteOfflineAlerts() {
+    document.getElementById("popIt3").classList.remove("active");
+    document.getElementById("performance").style.display = 'flex'
+    const json = {
+        'date': new Date(),
+        'type': 'muteOfflineAlerts'
+    }
+    localStorage.setItem("personalization", JSON.stringify(json))
+}
+function grabberEvents(id) {
+
+    const notice = document.getElementById(id);
+    let startY, currentY, isDragging = false;
+
+    // Initialize event listeners for touch/mouse events
+    notice.addEventListener("mousedown", startDrag);
+    notice.addEventListener("touchstart", startDrag);
+    notice.addEventListener("mousemove", drag);
+    notice.addEventListener("touchmove", drag);
+    notice.addEventListener("mouseup", endDrag);
+    notice.addEventListener("touchend", endDrag);
+
+    function startDrag(e) {
+        startY = e.touches ? e.touches[0].clientY : e.clientY;
+        isDragging = true;
+        notice.style.transition = "none";  // Disable transitions for smoother dragging
+    }
+
+    function drag(e) {
+        if (!isDragging) return;
+
+        currentY = e.touches ? e.touches[0].clientY : e.clientY;
+        let deltaY = currentY - startY;
+
+        if (deltaY > 0) {  // Only allow downward dragging
+            notice.style.transform = `translateY(${deltaY}px)`;
+        }
+    }
+
+    function endDrag() {
+        isDragging = false;
+        notice.style.transition = "transform 0.4s ease";  // Add smooth return or dismiss transition
+
+        if (currentY - startY > 150) {
+            notice.style.transform = `translateY(100vh)`;
+
+            if (id === 'popIt3') {
+                document.getElementById("performance").style.display = 'flex'
+            } else if (id === 'floridaCont') {
+                const elementId = "popIt";
+                const isOutsideViewport = isElementOutsideViewport(elementId);
+
+                if (isOutsideViewport) {
+                    console.log("Element with ID '" + elementId + "' is outside the viewport.");
+
+                    goBack()
+                    setTimeout(function () {
+                        popIt.style.top = '';
+                    }, 500)
+
+                } else {
+                    console.log("Element with ID '" + elementId + "' is inside the viewport.");
+                }
+            }
+            notice.addEventListener("transitionend", () => {
+                notice.classList.remove("active");
+                notice.style.transform = ``;
+
+            }, { once: true });
+        } else {
+            notice.style.transform = ``;  // Reset if not dismissed
+        }
+    }
+}
+grabberEvents("popIt3")
+//grabberEvents("floridaCont")
 
 function getNextBusStart(code, busid) {
     //OASA LIVE

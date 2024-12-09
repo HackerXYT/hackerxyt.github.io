@@ -191,7 +191,7 @@
     </style>
 
     <script>
-        var currentBuild = "1.66"
+        var currentBuild = "1.70"
         console.log(`%cCurrent Build: ${currentBuild}`, "color: green; font-family:sans-serif; font-size: 25px");
         window.onerror = function (message, source, lineno, colno, error) {
             try {
@@ -456,12 +456,25 @@
                             </svg>
                         </div>
                         <button onclick="florida()" id="mic-button" type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                                fill="none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                                viewBox="0 0 24 24" fill="none">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                     d="M11.5 1C10.9477 1 10.5 1.44772 10.5 2V3H9.99998C7.23864 3 4.99999 5.23825 4.99999 7.99975V11C4.99999 11.7377 4.76718 12.5722 4.39739 13.4148C4.03165 14.2482 3.55876 15.0294 3.14142 15.6439C2.38188 16.7624 2.85216 18.5301 4.40564 18.8103C5.42144 18.9935 6.85701 19.2115 8.54656 19.3527C8.54454 19.4015 8.54352 19.4506 8.54352 19.5C8.54352 21.433 10.1105 23 12.0435 23C13.9765 23 15.5435 21.433 15.5435 19.5C15.5435 19.4482 15.5424 19.3966 15.5402 19.3453C17.1921 19.204 18.596 18.9903 19.5943 18.8103C21.1478 18.5301 21.6181 16.7624 20.8586 15.6439C20.4412 15.0294 19.9683 14.2482 19.6026 13.4148C19.2328 12.5722 19 11.7377 19 11V7.99975C19 5.23825 16.7613 3 14 3H13.5V2C13.5 1.44772 13.0523 1 12.5 1H11.5ZM12 19.5C12.5113 19.5 13.0122 19.4898 13.4997 19.4715C13.5076 20.2758 12.8541 20.9565 12.0435 20.9565C11.2347 20.9565 10.5803 20.2778 10.5872 19.4747C11.0473 19.491 11.5191 19.5 12 19.5ZM9.99998 5C8.34305 5 6.99999 6.34298 6.99999 7.99975V11C6.99999 12.1234 6.65547 13.2463 6.22878 14.2186C5.79804 15.2 5.25528 16.0911 4.79599 16.7675C4.78578 16.7825 4.78102 16.7969 4.77941 16.8113C4.77797 16.8242 4.77919 16.8362 4.78167 16.8458C6.3644 17.1303 9.00044 17.5 12 17.5C14.9995 17.5 17.6356 17.1303 19.2183 16.8458C19.2208 16.8362 19.222 16.8242 19.2206 16.8113C19.2189 16.7969 19.2142 16.7825 19.204 16.7675C18.7447 16.0911 18.2019 15.2 17.7712 14.2186C17.3445 13.2463 17 12.1234 17 11V7.99975C17 6.34298 15.6569 5 14 5H9.99998Z"
                                     fill="#d5d5d5" />
                             </svg>
+                            <svg style="display: none;" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path
+                                    d="M22 12C22 6.49 17.51 2 12 2C6.49 2 2 6.49 2 12C2 14.9 3.25 17.51 5.23 19.34C5.23 19.35 5.23 19.35 5.22 19.36C5.32 19.46 5.44 19.54 5.54 19.63C5.6 19.68 5.65 19.73 5.71 19.77C5.89 19.92 6.09 20.06 6.28 20.2C6.35 20.25 6.41 20.29 6.48 20.34C6.67 20.47 6.87 20.59 7.08 20.7C7.15 20.74 7.23 20.79 7.3 20.83C7.5 20.94 7.71 21.04 7.93 21.13C8.01 21.17 8.09 21.21 8.17 21.24C8.39 21.33 8.61 21.41 8.83 21.48C8.91 21.51 8.99 21.54 9.07 21.56C9.31 21.63 9.55 21.69 9.79 21.75C9.86 21.77 9.93 21.79 10.01 21.8C10.29 21.86 10.57 21.9 10.86 21.93C10.9 21.93 10.94 21.94 10.98 21.95C11.32 21.98 11.66 22 12 22C12.34 22 12.68 21.98 13.01 21.95C13.05 21.95 13.09 21.94 13.13 21.93C13.42 21.9 13.7 21.86 13.98 21.8C14.05 21.79 14.12 21.76 14.2 21.75C14.44 21.69 14.69 21.64 14.92 21.56C15 21.53 15.08 21.5 15.16 21.48C15.38 21.4 15.61 21.33 15.82 21.24C15.9 21.21 15.98 21.17 16.06 21.13C16.27 21.04 16.48 20.94 16.69 20.83C16.77 20.79 16.84 20.74 16.91 20.7C17.11 20.58 17.31 20.47 17.51 20.34C17.58 20.3 17.64 20.25 17.71 20.2C17.91 20.06 18.1 19.92 18.28 19.77C18.34 19.72 18.39 19.67 18.45 19.63C18.56 19.54 18.67 19.45 18.77 19.36C18.77 19.35 18.77 19.35 18.76 19.34C20.75 17.51 22 14.9 22 12ZM16.94 16.97C14.23 15.15 9.79 15.15 7.06 16.97C6.62 17.26 6.26 17.6 5.96 17.97C4.44 16.43 3.5 14.32 3.5 12C3.5 7.31 7.31 3.5 12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 14.32 19.56 16.43 18.04 17.97C17.75 17.6 17.38 17.26 16.94 16.97Z"
+                                    fill="#d5d5d5" />
+                                <path
+                                    d="M12 6.92969C9.93 6.92969 8.25 8.60969 8.25 10.6797C8.25 12.7097 9.84 14.3597 11.95 14.4197C11.98 14.4197 12.02 14.4197 12.04 14.4197C12.06 14.4197 12.09 14.4197 12.11 14.4197C12.12 14.4197 12.13 14.4197 12.13 14.4197C14.15 14.3497 15.74 12.7097 15.75 10.6797C15.75 8.60969 14.07 6.92969 12 6.92969Z"
+                                    fill="#d5d5d5" />
+                            </svg>
+                            <svg style="display: none" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                                <path d="M19.3399 14.49L18.3399 12.83C18.1299 12.46 17.9399 11.76 17.9399 11.35V8.82C17.9399 6.47 16.5599 4.44 14.5699 3.49C14.0499 2.57 13.0899 2 11.9899 2C10.8999 2 9.91994 2.59 9.39994 3.52C7.44994 4.49 6.09994 6.5 6.09994 8.82V11.35C6.09994 11.76 5.90994 12.46 5.69994 12.82L4.68994 14.49C4.28994 15.16 4.19994 15.9 4.44994 16.58C4.68994 17.25 5.25994 17.77 5.99994 18.02C7.93994 18.68 9.97994 19 12.0199 19C14.0599 19 16.0999 18.68 18.0399 18.03C18.7399 17.8 19.2799 17.27 19.5399 16.58C19.7999 15.89 19.7299 15.13 19.3399 14.49Z" fill="#d5d5d5"/>
+                                <path d="M14.8297 20.01C14.4097 21.17 13.2997 22 11.9997 22C11.2097 22 10.4297 21.68 9.87969 21.11C9.55969 20.81 9.31969 20.41 9.17969 20C9.30969 20.02 9.43969 20.03 9.57969 20.05C9.80969 20.08 10.0497 20.11 10.2897 20.13C10.8597 20.18 11.4397 20.21 12.0197 20.21C12.5897 20.21 13.1597 20.18 13.7197 20.13C13.9297 20.11 14.1397 20.1 14.3397 20.07C14.4997 20.05 14.6597 20.03 14.8297 20.01Z" fill="#d5d5d5"/>
+                                </svg>
 
                         </button>
                         <button onclick="changeDebug()" id="image-button" type="button">
@@ -578,7 +591,7 @@
                     </div>
                     <div id="debug" class="discover-container" style="display: none;">
                         <div id="discover-toggles">
-                            <button id="terminalbutton" type="button">Τερματικό</button>
+                            <button id="terminalbutton" type="button" onclick="showDeviceDiscover()">Καταγραφές</button>
                             <button id="devicebutton" onclick="showDeviceDiscover()" type="button">Συσκευή</button>
                         </div>
                         <div id="discover-feed">
@@ -589,7 +602,7 @@
                                 object-fit: cover;
                                 border-radius: 0.5rem;
                                 border-bottom-left-radius: 0.25rem;
-                                border-bottom-right-radius: 0.25rem;background-color: #000000;color:lime;height: 211px;padding: 20px; max-height: 211px; overflow: auto;font-family: monospace;"
+                                border-bottom-right-radius: 0.25rem;background-color: #000000;color:lime;height: 140px;padding: 20px; max-height: 211px; overflow: auto;font-family: monospace;"
                                     id="theDebug">Terminal Launched<br>Copyright © Evox 2024<br>OASA Project Registered
                                     Under Evox Using MIT License<br>
                                     <span style="color: rgb(255, 0, 0);font-family: monospace;">MIT License</span><br>
@@ -624,7 +637,7 @@
                                 <div onclick="scrollToBottom();openFullScreen()" class="discover-card-info">
                                     <p class="title" id="timetable">Πατήστε εδώ για να δείτε τα αρχεία καταγραφής σε
                                         πλήρη οθόνη.</p>
-                                    <p class="desc">Αυτό το τερματικό χρησιμοποιείται για αποσφαλμάτωση κατά τη διάρκεια
+                                    <p class="desc">Αυτό το τερματικό χρησιμοποιείται για εκσφαλμάτωση κατά τη διάρκεια
                                         των δοκιμών. Αν είστε κανονικός χρήστης, πατήστε στο εικονίδιο της αναζήτησης
                                         για να το κρύψετε.</p>
                                 </div>
@@ -767,54 +780,54 @@
                 </div>
                 <div class="option">
                     <img src="settings/status.png"><span>Ειδοποιήσεις</span>
-                    <vo>Ανενεργές</vo>
+                    <vo>Ανενεργές [Α]</vo>
                 </div>
                 <div class="option" onclick="changeTheme()">
                     <img src="settings/theme.png"><span>Θέμα</span>
-                    <vo id="themeName">Προεπιλογή</vo><svg style="margin-left: 0"
-                    xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                        fill="#8b8b8b" />
-                </svg>
+                    <vo id="themeName">Προεπιλογή</vo><svg style="margin-left: 0" xmlns="http://www.w3.org/2000/svg"
+                        width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#8b8b8b" />
+                    </svg>
                 </div>
                 <div class="option" onclick="toggleDoodle()">
                     <img src="settings/carousel.png"><span>Καρουζέλ Εικόνων</span>
-                    <vo id="doodleStat">Ενεργό</vo><svg style="margin-left: 0"
-                    xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                        fill="#8b8b8b" />
-                </svg>
+                    <vo id="doodleStat">Ενεργό</vo><svg style="margin-left: 0" xmlns="http://www.w3.org/2000/svg"
+                        width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#8b8b8b" />
+                    </svg>
                 </div>
                 <div class="option">
                     <img src="settings/evox.png"><span>Σύνδεση Evox</span>
-                    <vo>Ανενεργή</vo><svg style="margin-left: 0"
-                    xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                        fill="#8b8b8b" />
-                </svg>
+                    <vo>Ανενεργή [Α]</vo><svg style="margin-left: 0" xmlns="http://www.w3.org/2000/svg" width="20px"
+                        height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#8b8b8b" />
+                    </svg>
                 </div>
                 <div class="option" onclick="updateNew()">
                     <img src="settings/update.png"><span>Χειροκίνητη ενημέρωση</span><svg style="margin-left: auto"
-                    xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                        fill="#8b8b8b" />
-                </svg>
+                        xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#8b8b8b" />
+                    </svg>
                 </div>
                 <div class="option">
                     <img src="settings/delete.png"><span style="color: #ff2525;">Διαγραφή αρχείων</span>
-                    <svg style="margin-left: auto"
-                    xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
-                        fill="#8b8b8b" />
-                </svg>
+                    <svg style="margin-left: auto" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                        viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M9.71069 18.2929C10.1012 18.6834 10.7344 18.6834 11.1249 18.2929L16.0123 13.4006C16.7927 12.6195 16.7924 11.3537 16.0117 10.5729L11.1213 5.68254C10.7308 5.29202 10.0976 5.29202 9.70708 5.68254C9.31655 6.07307 9.31655 6.70623 9.70708 7.09676L13.8927 11.2824C14.2833 11.6729 14.2833 12.3061 13.8927 12.6966L9.71069 16.8787C9.32016 17.2692 9.32016 17.9023 9.71069 18.2929Z"
+                            fill="#8b8b8b" />
+                    </svg>
                 </div>
             </div>
-            <p>Περισσότερες ρυθμίσεις που αφορούν τον λογαριασμό σας μπορούν να επεξεργαστούν στο Evox Nexus.</p>
+            <p>ALPHA [Μερικές ρυθμίσεις δεν λειτουργούν ακομά]</p>
             <div class="devices">
 
             </div>
@@ -1911,8 +1924,8 @@
 
 
     </div>
-    <div onclick="window.location.reload()" class="performance" id="performance">
-        <div>
+    <div class="performance" id="performance">
+        <div  onclick="showErrors()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="25px" height="25px" viewBox="0 0 256 256"
                 id="Flat">
                 <!-- Signal indicator 3 -->
@@ -1928,9 +1941,73 @@
                 <path d="M128,184a16,16,0,1,0,16,16A16.01833,16.01833,0,0,0,128,184Z" />
             </svg>
 
-            <vox class='l' id="messagePerformance">Μερική Διακοπή</vox>
+            <vox class='l' id="messagePerformance">Μερική Διακοπή</vox><svg xmlns="http://www.w3.org/2000/svg"
+                width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                <path d="M8 16L16 8M16 8H10M16 8V14" stroke="#fff" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
             <span style="display: none;" id="countdown">1:00</span>
         </div>
+    </div>
+    <div id="popIt3" class="popup customDev">
+
+        <div class="container">
+            <div class="rowIn">
+                <div class="icon"><img src="apple.png"></div>
+                <div class="divider">
+                    <span></span>
+                    <span></span>
+                    <span class="error"><svg xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" width="35px" height="35px" viewBox="0 0 512 512"
+                            version="1.1">
+                            <title>warning-filled</title>
+                            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="add" fill="#f5476f" transform="translate(32.000000, 42.666667)">
+                                    <path
+                                        d="M246.312928,5.62892705 C252.927596,9.40873724 258.409564,14.8907053 262.189374,21.5053731 L444.667042,340.84129 C456.358134,361.300701 449.250007,387.363834 428.790595,399.054926 C422.34376,402.738832 415.04715,404.676552 407.622001,404.676552 L42.6666667,404.676552 C19.1025173,404.676552 7.10542736e-15,385.574034 7.10542736e-15,362.009885 C7.10542736e-15,354.584736 1.93772021,347.288125 5.62162594,340.84129 L188.099293,21.5053731 C199.790385,1.04596203 225.853517,-6.06216498 246.312928,5.62892705 Z M224,272 C208.761905,272 197.333333,283.264 197.333333,298.282667 C197.333333,313.984 208.415584,325.248 224,325.248 C239.238095,325.248 250.666667,313.984 250.666667,298.624 C250.666667,283.264 239.238095,272 224,272 Z M245.333333,106.666667 L202.666667,106.666667 L202.666667,234.666667 L245.333333,234.666667 L245.333333,106.666667 Z"
+                                        id="Combined-Shape">
+
+                                    </path>
+                                </g>
+                            </g>
+                        </svg></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="icon"><img src="../evox-epsilon-beta/evox-logo-apple-simple.png"></div>
+            </div>
+            <div class="belowIllustration">
+                <h2>Η σύνδεση απέτυχε!</h2>
+                <p>Ελέγξτε τη σύνδεση σας στο <vox style="color: #409cff;">δίκτυο</vox> και βεβαιωθείτε ότι είστε <vox style="color: #409cff;">ενημερωμένοι</vox> στη νεότερη έκδοση.</p>
+                <button onclick="window.location.reload()" class="oasaButton">Ανανέωση εφαρμογής</button>
+                <button onclick="updateNew()" class="oasaButton">Έλεγχος για ενημέρωση</button>
+                <i id="italicBuild">OASAP Unk</i>
+            </div>
+            <button style="margin-top: 10px;width:auto;" onclick="if(document.getElementById('showAnalytics').style.display === 'none') {document.getElementById('showAnalytics').style.display = 'flex'} else {
+                document.getElementById('showAnalytics').style.display = 'none'
+            }" class="oasaButton">Ανάλυση σφαλμάτων</button>
+            <button style="margin-top: 2px;width:auto;text-transform:none;" onclick="muteOfflineAlerts()" class="oasaButton">Σίγαση μηνυμάτων</button>
+            <div id="showAnalytics" style="display: none;" class="belowIllustration d">
+                <p id="logErrors"></p>
+            </div>
+        </div>
+
+        <p style="font-size: 17px;width: 100%;display: flex;flex-direction: column;align-items: center;margin-top:10px;text-align: center;justify-content: center;
+        height: 90%;
+        margin-bottom: 0;
+        background-color: transparent;
+        color: #e6e6e6;
+        border: none;
+        resize: none;
+        overflow-x: hidden;display:none;" id="logErrorsOLD">
+            <img src="report.png" height="100px">
+            Απετυχε
+        </p>
+        <div style="display: none;" id="backFullLog" class="actionButton" style="margin-top: 5px;"
+            onclick='document.getElementById("popIt3").classList.remove("active");document.getElementById("performance").style.display = "flex"'>
+            Back</div>
+
+
     </div>
     <div style="display: none;" onclick="updateNew()" class="updateAvailable" id="updateAvailable">
         Νέα Ενημέρωση!

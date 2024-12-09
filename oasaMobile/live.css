@@ -15,6 +15,7 @@ button.oasaButton {
     transition: all 0.3s ease;
     text-transform: lowercase;
     text-transform: capitalize;
+    
     margin-bottom: 10px;
     position: relative;
 }
