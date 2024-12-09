@@ -3846,7 +3846,9 @@ function showDeviceDiscover() {
 }
 
 //OASA LIVE
-
+function hasInternetConnection() {
+    return navigator.onLine; // Returns true if online, false if offline
+}
 
 //https://telematics.oasa.gr/api/?act=webGetLines
 //https://telematics.oasa.gr/api/?act=getLineName&p1=1076
@@ -3962,6 +3964,8 @@ fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
             // else {
             //    console.log("Date is older than 2 days. Do something else.");
             //}
+        } else if (!hasInternetConnection()) {
+            return;
         }
         showErrors()
 
