@@ -37,7 +37,10 @@ function doodle() {
 }
 
 if (!localStorage.getItem("disableDoodle")) {
+    
     doodle()
+} else {
+    document.getElementById("doodleStat").innerText = 'Ανενεργό'
 }
 
 function setThemeColors(hex) {
@@ -65,11 +68,13 @@ function toggleDoodle() {
         localStorage.removeItem("disableDoodle")
         doodle()
         console.log("disabled, enabling doodle")
+        document.getElementById("doodleStat").innerText = 'Ενεργό'
     } else { //enabled
 
         localStorage.setItem("disableDoodle", 'yes')
         document.getElementById("logo").src = 'doodle.png'
         console.log("enabled. disabling doodle")
+        document.getElementById("doodleStat").innerText = 'Ανενεργό'
     }
 }
 if (sessionStorage.getItem("pfp") && sessionStorage.getItem("pfp").includes('<!DOCTYPE html>')) {
@@ -77,11 +82,11 @@ if (sessionStorage.getItem("pfp") && sessionStorage.getItem("pfp").includes('<!D
     sessionStorage.removeItem("pfp")
 }
 if (sessionStorage.getItem("updateSuccess")) {
-    document.getElementById("updatemanual").innerHTML = `<span style="color: green">updated!</span>`
-    sessionStorage.removeItem("updateSuccess")
-    setTimeout(function () {
-        document.getElementById("updatemanual").innerHTML = `update`
-    }, 1500)
+    //document.getElementById("updatemanual").innerHTML = `<span style="color: green">updated!</span>`
+    //sessionStorage.removeItem("updateSuccess")
+    //setTimeout(function () {
+    //    document.getElementById("updatemanual").innerHTML = `update`
+    //}, 1500)
 
 }
 
@@ -1793,6 +1798,24 @@ function setup_begin() {
 
 }
 
+function OASAsettings() {
+    document.getElementById("settingsBuild").innerText = currentBuild
+    $("#homePage").fadeOut("fast", function () {
+        document.getElementById("floridaCont").classList.add("active")
+        document.getElementById("phone").classList.add('out')
+        floridaCont.style.top = '';
+
+        
+    })
+    document.getElementById("settings").classList.add('active')
+}
+
+function returnFromSettings() {
+    $("#homePage").fadeIn("fast")
+    document.getElementById("floridaCont").style.overflow = "hidden"
+    document.getElementById('settings').classList.remove('active')
+
+}
 function getOS() {
     const userAgent = navigator.userAgent;
     let operatingSystem = 'Unknown';
@@ -2895,7 +2918,7 @@ function forLoginToEvox() {
         //florida()
         //document.getElementById("floridaCont").classList.add("active")
         document.getElementById("setupPage").style.display = 'flex'
-        continueSetup() 
+        continueSetup()
         $("#setup").fadeOut("fast")
         setThemeColors('#1C1B1E')
     }, 400)
@@ -3035,52 +3058,52 @@ function continueSetup() {
     //    console.log("Setup cancelled")
     //    return;
     //} else {
-        askedServices.push("oasa")
-        if (!vo2.includes("Unchecked")) {
-            askedServices.push("florida")
-        }
-        if (!vo3.includes("Unchecked")) {
-            askedServices.push("evox")
-        }
-        if (!vo4.includes("Unchecked")) {
-            askedServices.push("offline")
-        }
-        if (!vo5.includes("Unchecked")) {
-            askedServices.push("devmode")
-        }
-        console.log(askedServices)
-        console.log(`askedServ: ${askedServices}\nt/f: ${askedServices.includes('oasa')}`)
-        //continue;
-        if (askedServices.includes('devmode')) {
-            localStorage.setItem("showDebug", true)
-            document.getElementById('debug').style.display = ''
-        }
-        if (askedServices.includes('florida')) {
-            document.getElementById("step2").classList.remove("active")
+    askedServices.push("oasa")
+    if (!vo2.includes("Unchecked")) {
+        askedServices.push("florida")
+    }
+    if (!vo3.includes("Unchecked")) {
+        askedServices.push("evox")
+    }
+    if (!vo4.includes("Unchecked")) {
+        askedServices.push("offline")
+    }
+    if (!vo5.includes("Unchecked")) {
+        askedServices.push("devmode")
+    }
+    console.log(askedServices)
+    console.log(`askedServ: ${askedServices}\nt/f: ${askedServices.includes('oasa')}`)
+    //continue;
+    if (askedServices.includes('devmode')) {
+        localStorage.setItem("showDebug", true)
+        document.getElementById('debug').style.display = ''
+    }
+    if (askedServices.includes('florida')) {
+        document.getElementById("step2").classList.remove("active")
 
-            setup_begin()
+        setup_begin()
+        setTimeout(function () {
+            document.getElementById("newUser").style.display = 'none'
             setTimeout(function () {
-                document.getElementById("newUser").style.display = 'none'
-                setTimeout(function () {
-                    document.getElementById("grabFlorida").style.display = ''
-                }, 800)
+                document.getElementById("grabFlorida").style.display = ''
             }, 800)
-            return;
-        }
-        //if (askedServices.includes('oasa')) {
-        //    console.log("will only do oasa")
-        //    localStorage.setItem("isNewOasa", 'false')
-        //    document.getElementById("floridaCont").classList.remove("active")
-        //    document.getElementById("phone").classList.remove('out')
-        //    setTimeout(function () {
-        //        document.getElementById("homePage").style.display = ""
-        //        document.getElementById("newUser").style.display = "none"
-        //        document.getElementById("grabFlorida").style.display = ''
-        //        document.getElementById("step2").classList.remove("active")
-        //    }, 800)
-        //} else {
-        //    console.log(`askedServ: ${askedServices}\nt/f: ${askedServices.includes('oasa')}`)
-        //}
+        }, 800)
+        return;
+    }
+    //if (askedServices.includes('oasa')) {
+    //    console.log("will only do oasa")
+    //    localStorage.setItem("isNewOasa", 'false')
+    //    document.getElementById("floridaCont").classList.remove("active")
+    //    document.getElementById("phone").classList.remove('out')
+    //    setTimeout(function () {
+    //        document.getElementById("homePage").style.display = ""
+    //        document.getElementById("newUser").style.display = "none"
+    //        document.getElementById("grabFlorida").style.display = ''
+    //        document.getElementById("step2").classList.remove("active")
+    //    }, 800)
+    //} else {
+    //    console.log(`askedServ: ${askedServices}\nt/f: ${askedServices.includes('oasa')}`)
+    //}
 
 
 
@@ -3810,6 +3833,7 @@ function showDeviceDiscover() {
         const revert = terminalBT.style.backgroundColor
         terminalBT.style.backgroundColor = "transparent"
         deviceBT.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+        
         infob.innerHTML = `
         currentBuild: ${sessionStorage.getItem("currentBuild")}<br><br>Device ID (extV): ${localStorage.getItem("extVOASA")}<br><br>ServiceWorker in window: ${'serviceWorker' in navigator}<br><br>hasDismissedSetup: ${localStorage.getItem("hasDismissedSetup")}<br><br>privileges: ${sessionStorage.getItem("privileges")}<br><br>hasLocalPfp: ${sessionStorage.getItem("pfp") === true}<br><br>__pwacompat_manifest: <br><span style="color: yellow">${sessionStorage.getItem('__pwacompat_manifest')}</span><br>Logout: <span onclick="localStorage.clear()">now</span>`
     } else {
@@ -3898,13 +3922,19 @@ fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
         console.log("All Lines Get Error:", error)
         if (isNearEvery3Hours()) {
             //alert(`Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.`)
+            document.getElementById("performance").style.display = 'flex'
+            document.getElementById("messagePerformance").innerHTML = 'Μερική Διακοπή'
             document.getElementById("spawnHere").innerHTML = 'Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.'
         } else {
             //alert(`Δεν ηταν δυνατη η συνδεση στον διακομιστη.\nΑγνωστο σφαλμα`)
+            document.getElementById("performance").style.display = 'flex'
+            document.getElementById("messagePerformance").innerHTML = 'Σοβαρό περιστατικό'
             document.getElementById("spawnHere").innerHTML = 'Δεν ηταν δυνατη η συνδεση στον διακομιστη.<br>Αγνωστο σφαλμα'
         }
         if (error.toString().includes('Unexpected token')) {
-            alert("OASA SQL error. Δοκιμάστε ξανά.")
+            //alert("OASA SQL error. Δοκιμάστε ξανά.")
+            document.getElementById("performance").style.display = 'flex'
+            document.getElementById("messagePerformance").innerHTML = 'Σφάλμα OASA'
             document.getElementById("spawnHere").innerHTML = "OASA SQL error. Δοκιμάστε ξανά."
         }
 
@@ -4574,14 +4604,44 @@ let theme = 'day'
 
 function changeTheme() {
     if (theme === 'day') {
+        document.getElementById("themeName").innerText = 'Σκοτεινό'
         document.documentElement.style.setProperty('--theme-background', '18 18 18'); //night
         document.documentElement.style.setProperty('--theme-medium', '37, 37, 37');
+        setThemeColors('#121212')
         theme = 'night'
     } else {
+        document.getElementById("themeName").innerText = 'Προεπιλογή'
         document.documentElement.style.setProperty('--theme-medium', '46 44 53');
         document.documentElement.style.setProperty('--theme-background', '28 27 30'); //day
+        setThemeColors('#1C1B1E')
         theme = 'day'
     }
 
 }
 
+
+const countdownElement = document.getElementById("countdown");
+let time = 100; // Start with 60 seconds
+
+function updateCountdown() {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    const formattedTime = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+
+    // Update the countdown visually
+    countdownElement.textContent = formattedTime;
+
+    // Decrement time
+    if (time > 0) {
+        time--;
+
+        // Use a timeout to count seconds accurately
+        setTimeout(() => {
+            updateCountdown();
+        }, 1000);
+    } else {
+        location.reload(); // Reload the page when the countdown ends
+    }
+}
+
+updateCountdown();

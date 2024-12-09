@@ -1663,3 +1663,84 @@ vo input {
   fill: white;
   transform: scale(1.2);
 } 
+
+.performance {
+  display: flex;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: none;
+  z-index: 99999;
+}
+
+.performance div {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: auto;
+  background-color: #f5476f;
+  border-radius: 10px;
+  height: auto;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+}
+
+.performance div svg {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+
+@keyframes fadeIndicator {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5; /* Target opacity */
+  }
+}
+
+
+.performance div svg path:nth-child(3) {
+  opacity: 1;
+  animation: fadeIndicator 1s ease-out 0.1s infinite; /* 0.5s delay */
+  transition: opacity 0.1s ease-in-out;
+}
+
+/* Animation for the 2nd indicator */
+.performance div svg path:nth-child(2) {
+  opacity: 1;
+  animation: fadeIndicator 1s ease-out 0.3s infinite; /* 1s delay */
+  transition: opacity 0.1s ease-in-out;
+}
+
+.performance div svg path:nth-child(1) {
+  opacity: 1;
+  animation: fadeIndicator 1s ease-out 0.8s infinite; /*3rd indicator*/
+  transition: opacity 0.1s ease-in-out;
+}
+
+vox.l {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+}
+
+#mic-button:has(img.buttonPFP) {
+  background-color: transparent;
+}
+button img.buttonPFP {
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover; 
+  border-radius: 50%;
+}
