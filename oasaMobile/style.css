@@ -13,20 +13,27 @@
   --isNewDevice: 5px;
 }
 
-html, body {
-  -webkit-user-select: none; /* Disable text selection */
-  -webkit-touch-callout: none; /* Disable callout, e.g., tap and hold effects */
+html,
+body {
+  -webkit-user-select: none;
+  /* Disable text selection */
+  -webkit-touch-callout: none;
+  /* Disable callout, e.g., tap and hold effects */
   touch-action: manipulation;
   overflow: hidden;
-  height: 100%; /* Ensure the height is 100% */
+  height: 100%;
+  /* Ensure the height is 100% */
   font-family: "SF";
 }
+
 * {
-  touch-action: manipulation; /* Prevent double-tap zoom */
+  touch-action: manipulation;
+  /* Prevent double-tap zoom */
 }
 
 body {
-  background-color: rgb(var(--theme-background)); /*--theme-background*/
+  background-color: rgb(var(--theme-background));
+  /*--theme-background*/
   margin: 0px;
   touch-action: manipulation;
 }
@@ -95,7 +102,7 @@ input {
 
 #phone {
   background-color: rgb(var(--theme-background));
-  
+
   height: 851px;
   width: 393px;
   margin: 100px auto;
@@ -206,7 +213,7 @@ input {
   flex-grow: 1;
   padding-left: 20px;
   background-color: rgb(255 255 255 / 10%);
-  transition: background-color 0.4s ease-in-out;
+  transition: background-color 0.4s ease-in-out, border-radius 0.4s ease-in-out, width 0.4s ease-in-out;
 }
 
 #search-input-container>input,
@@ -215,6 +222,7 @@ input {
   color: rgb(255 255 255 / 80%);
   font-size: 1rem;
   border: none;
+  transition: background-color 0.4s ease-in-out, border-radius 0.4s ease-in-out, width 0.4s ease-in-out;
 }
 
 #search-input-container:has(input:focus),
@@ -305,7 +313,7 @@ input {
 }
 
 #apps-container p {
-  
+
   font-weight: bold;
   text-shadow: rgba(0, 0, 0, 0.341) 0px 2px 5px;
 
@@ -382,7 +390,8 @@ input {
 #custom-container {
   display: grid;
   gap: 0.2rem;
-  grid-template-columns: 1fr; /* Single column by default */
+  grid-template-columns: 1fr;
+  /* Single column by default */
   margin: 1.3rem 0rem;
 }
 
@@ -390,9 +399,11 @@ input {
   grid-template-columns: repeat(2, 50%);
 }
 
-#custom-container:has(> a:nth-child(n+4)) > a:last-child:nth-child(odd) {
-  grid-column: span 2; /* Make it span both columns (single column style) */
+#custom-container:has(> a:nth-child(n+4))>a:last-child:nth-child(odd) {
+  grid-column: span 2;
+  /* Make it span both columns (single column style) */
 }
+
 #custom-container a {
   border-radius: 1rem;
 }
@@ -403,7 +414,7 @@ input {
   gap: 0.5rem;
   background-color: rgba(255, 255, 255, 8%);
   padding: 1rem 0.75rem;
- 
+
   text-decoration: none;
 }
 
@@ -417,7 +428,7 @@ input {
 }
 
 #custom-container p {
-  
+
   font-weight: bold;
   text-shadow: rgba(0, 0, 0, 0.341) 0px 2px 5px;
 
@@ -621,12 +632,7 @@ input {
   overflow: auto;
 }
 
-@media(min-width: 500px) {
-
-
-  
-
-}
+@media(min-width: 500px) {}
 
 
 
@@ -683,11 +689,13 @@ input {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
   margin-bottom: 0;
-  
+
 }
+
 .oasaBased .timeBox .swipe-content span {
   margin-right: 20px;
 }
+
 .oasaBased .timeBox.bottomVox {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -720,8 +728,9 @@ input {
   border: none;
   box-shadow: none;
   border-radius: 0;
-  height: 65px; /* Initial height with px */
-  transition: height 0.9s ease-in-out, transform 0.6s ease, opacity 0.7s ease-in-out, background-color 0.7s ease-in-out; 
+  height: 65px;
+  /* Initial height with px */
+  transition: height 0.9s ease-in-out, transform 0.6s ease, opacity 0.7s ease-in-out, background-color 0.7s ease-in-out;
 }
 
 .evoxBased .timeBox span {
@@ -730,12 +739,12 @@ input {
 }
 
 .evoxBased .timeBox div {
-  transition: height 0.7s ease-in-out, transform 0.6s ease, opacity 0.7s ease-in-out; 
+  transition: height 0.7s ease-in-out, transform 0.6s ease, opacity 0.7s ease-in-out;
 }
 
 .evoxBased .timeBox img {
   vertical-align: middle;
-  transition: transform 0.6s ease, opacity 0.7s ease-in-out; 
+  transition: transform 0.6s ease, opacity 0.7s ease-in-out;
 }
 
 .evoxBased .timeBox:first-child {
@@ -931,6 +940,7 @@ input {
   text-align: center;
   font-family: "SF";
 }
+
 #newUser img {
   margin-top: 90px;
   border-radius: 1rem;
@@ -1106,6 +1116,7 @@ input {
 .updateAvailable button {
   border: 0;
 }
+
 .updateAvailable button:focus {
   border: none;
   outline: 0 !important;
@@ -1132,7 +1143,8 @@ input {
 
 .updateAvailable svg {
   margin-left: 5px;
-  transition: transform 0.5s ease; /* Smooth transition */
+  transition: transform 0.5s ease;
+  /* Smooth transition */
 }
 
 .notificationBox {
@@ -1147,18 +1159,19 @@ input {
   width: 90%;
   height: auto;
   left: 50%;
-  top: 50%;  /* Add this line to center vertically */
+  top: 50%;
+  /* Add this line to center vertically */
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
 }
 
-.notificationBox h3{
+.notificationBox h3 {
   font-size: 20px;
   margin-bottom: 15px;
 }
 
-.actionButton{
+.actionButton {
   font-size: 16px;
   margin-top: 20px;
   background-color: #ffffff59;
@@ -1176,7 +1189,7 @@ input {
   transition: transform 0.2s ease-out, background-color 0.2s ease-out, color 0.2s ease-out;
 }
 
-.actionButton.online{
+.actionButton.online {
   font-size: 16px;
   margin-top: 20px;
   background-color: #7944fd;
@@ -1194,7 +1207,7 @@ input {
   transition: transform 0.2s ease-out, background-color 0.2s ease-out, color 0.2s ease-out;
 }
 
-.actionButton.online.active{
+.actionButton.online.active {
   font-size: 16px;
   margin-top: 20px;
   background-color: #fff;
@@ -1202,7 +1215,7 @@ input {
   transform: scale(1.03);
 }
 
-.actionButton.active{
+.actionButton.active {
   font-size: 16px;
   margin-top: 20px;
   background-color: #ffffff;
@@ -1211,7 +1224,8 @@ input {
 }
 
 #fullDebug span.highlight {
-  color: lime; /* Change this to the desired color */
+  color: lime;
+  /* Change this to the desired color */
   font-family: monospace;
 }
 
@@ -1266,7 +1280,7 @@ vo input {
 
 .pendingCont .pending.infinite {
   height: 75px;
-  
+
 }
 
 .pendingCont .pending.infinite voi {
@@ -1332,9 +1346,11 @@ vo input {
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
 }
+
 /* General swipe container */
 .swipe-container {
-  display: flex; /* Flexbox ensures actions are next to content */
+  display: flex;
+  /* Flexbox ensures actions are next to content */
   position: relative;
   overflow: hidden;
   border-radius: 15px;
@@ -1359,19 +1375,23 @@ vo input {
   position: relative;
   z-index: 1;
   display: flex;
-  flex-direction: row; /* Align children horizontally */
-  align-items: center; /* Center elements vertically */
+  flex-direction: row;
+  /* Align children horizontally */
+  align-items: center;
+  /* Center elements vertically */
   padding-top: 20px;
   padding-bottom: 20px;
 }
 
 /* Action buttons container */
 .swipe-actions {
-  margin:0 ;
+  margin: 0;
   display: flex;
-  flex-shrink: 0; /* Prevent shrinking, keep the width fixed */
+  flex-shrink: 0;
+  /* Prevent shrinking, keep the width fixed */
   position: relative;
-  overflow: hidden; /* Prevent actions from being visible initially */
+  overflow: hidden;
+  /* Prevent actions from being visible initially */
   display: none;
   transition: opacity 0.5s ease-in-out;
 }
@@ -1379,7 +1399,8 @@ vo input {
 /* Individual action buttons */
 .action {
   width: 60px;
-  flex: 1; /* Equal width for each action */
+  flex: 1;
+  /* Equal width for each action */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1399,13 +1420,15 @@ vo input {
 
 /* Hide actions initially */
 .swipe-actions {
-  transform: translateX(200%); /* Move actions off-screen initially */
+  transform: translateX(200%);
+  /* Move actions off-screen initially */
   transition: transform 0.3s ease;
 }
 
 /* Reveal actions */
 .swipe-container.swiping .swipe-actions {
-  transform: translateX(0); /* Bring actions into view */
+  transform: translateX(0);
+  /* Bring actions into view */
 }
 
 .floridaNoticeContainer {
@@ -1438,6 +1461,7 @@ vo input {
   /* Adjust the blur amount as needed */
   -webkit-backdrop-filter: blur(5px);
 }
+
 .floridaNotice {
   padding: 20px;
   width: 350px;
@@ -1451,6 +1475,7 @@ vo input {
   border-radius: 20px;
   text-align: center;
 }
+
 .floridaNotice h2 {
   font-size: 24px;
   color: #de3030;
@@ -1472,13 +1497,16 @@ vo input {
   0% {
     transform: scale(1.0);
   }
+
   50% {
     transform: scale(1.1);
   }
+
   100% {
     transform: scale(1.0);
   }
 }
+
 .scale-animation {
   animation: scaleEffect 0.5s infinite ease-in-out;
 }
@@ -1490,7 +1518,7 @@ vo input {
 .setup {
   background-color: rgb(18, 18, 18);
   display: none;
-  
+
   flex-direction: column;
   width: 100%;
   height: 100%;
@@ -1575,7 +1603,7 @@ vo input {
   left: 20px;
   display: flex;
   display: none;
-  
+
   justify-content: center;
   align-items: center;
   background-color: #000;
@@ -1583,30 +1611,32 @@ vo input {
   border-radius: 50%;
   width: 35px;
   height: 35px;
-  
+
 }
 
 /* Slide-out-left animation */
 @keyframes slideOutLeft {
   from {
-      transform: translateX(0);
-      opacity: 1;
+    transform: translateX(0);
+    opacity: 1;
   }
+
   to {
-      transform: translateX(-100%);
-      opacity: 0;
+    transform: translateX(-100%);
+    opacity: 0;
   }
 }
 
 /* Slide-in-right animation */
 @keyframes slideInRight {
   from {
-      transform: translateX(100%);
-      opacity: 0;
+    transform: translateX(100%);
+    opacity: 0;
   }
+
   to {
-      transform: translateX(0);
-      opacity: 1;
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 
@@ -1647,11 +1677,11 @@ vo input {
 }
 
 .btn.good:hover {
-  background: linear-gradient(0deg,#A47CF3,#683FEA);
+  background: linear-gradient(0deg, #A47CF3, #683FEA);
   box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
-  inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
-  0px 0px 0px 4px rgba(255, 255, 255, 0.2),
-  0px 0px 180px 0px #9917FF;
+    inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
+    0px 0px 0px 4px rgba(255, 255, 255, 0.2),
+    0px 0px 180px 0px #9917FF;
   transform: translateY(-2px);
 }
 
@@ -1662,7 +1692,8 @@ vo input {
 .btn:hover .sparkle {
   fill: white;
   transform: scale(1.2);
-} 
+}
+
 .performance {
   display: flex;
   position: fixed;
@@ -1670,7 +1701,8 @@ vo input {
   height: 100%;
   display: none;
   z-index: 99999;
-  pointer-events: none; /* Disable pointer events for the container */
+  pointer-events: none;
+  /* Disable pointer events for the container */
 }
 
 .performance div {
@@ -1687,7 +1719,8 @@ vo input {
   align-items: center;
   justify-content: center;
   padding: 10px 20px;
-  pointer-events: auto; /* Re-enable pointer events for the child */
+  pointer-events: auto;
+  /* Re-enable pointer events for the child */
 }
 
 
@@ -1701,31 +1734,37 @@ vo input {
   0% {
     opacity: 0.5;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
-    opacity: 0.5; /* Target opacity */
+    opacity: 0.5;
+    /* Target opacity */
   }
 }
 
 
 .performance div svg path:nth-child(3) {
   opacity: 1;
-  animation: fadeIndicator 1s ease-out 0.1s infinite; /* 0.5s delay */
+  animation: fadeIndicator 1s ease-out 0.1s infinite;
+  /* 0.5s delay */
   transition: opacity 0.1s ease-in-out;
 }
 
 /* Animation for the 2nd indicator */
 .performance div svg path:nth-child(2) {
   opacity: 1;
-  animation: fadeIndicator 1s ease-out 0.3s infinite; /* 1s delay */
+  animation: fadeIndicator 1s ease-out 0.3s infinite;
+  /* 1s delay */
   transition: opacity 0.1s ease-in-out;
 }
 
 .performance div svg path:nth-child(1) {
   opacity: 1;
-  animation: fadeIndicator 1s ease-out 0.8s infinite; /*3rd indicator*/
+  animation: fadeIndicator 1s ease-out 0.8s infinite;
+  /*3rd indicator*/
   transition: opacity 0.1s ease-in-out;
 }
 
@@ -1740,10 +1779,11 @@ vox.l {
 #mic-button:has(img.buttonPFP) {
   background-color: transparent;
 }
+
 button img.buttonPFP {
   width: 3rem;
   height: 3rem;
-  object-fit: cover; 
+  object-fit: cover;
   border-radius: 50%;
 }
 
@@ -1779,8 +1819,10 @@ button img.buttonPFP {
   height: 90px;
   border-radius: 10px;
   object-fit: cover;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 0 10px rgba(0, 0, 0, 0.6); /* Grey shadow + white glow */
-  transition: box-shadow 0.3s ease-in-out; /* Smooth transition */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 0 10px rgba(0, 0, 0, 0.6);
+  /* Grey shadow + white glow */
+  transition: box-shadow 0.3s ease-in-out;
+  /* Smooth transition */
 }
 
 .divider {
@@ -1872,3 +1914,132 @@ button img.buttonPFP {
 }
 
 
+#svgClear {
+  width: 50px;
+  height: 50px;
+  padding: 10px;
+  background-color: #e74c3c;
+  transform: translateX(10px);
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#svgClear svg {
+  width: 25px;
+  height: 25px;
+}
+
+.collumLiveSettings {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.rowBox {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  color: #fff;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.rowBox .boxRow {
+  display: flex;
+  height: auto;
+  padding: 25px;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+}
+
+.boxRow.isFirst {
+  background-color: #409cff;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.rowBox .textUI {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 40px;
+  justify-content: center;
+  align-items: center;
+}
+
+.boxRow.isSec {
+  background-color: #229624;
+}
+
+#goback {
+  margin-top: 10px;
+}
+
+.boxRow.favoriteBus {
+  background-color: #A17BCA;
+}
+
+.boxRow.red {
+  background-color: #d41212;
+}
+
+@keyframes shakeEasy {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  10% {
+    transform: translate(-1px, -0.5px) rotate(-1deg);
+  }
+
+  20% {
+    transform: translate(1px, 1px) rotate(1deg);
+  }
+
+  30% {
+    transform: translate(-1px, -1.5px) rotate(-1deg);
+  }
+
+  40% {
+    transform: translate(1px, 1px) rotate(1deg);
+  }
+
+  50% {
+    transform: translate(-1px, -0.5px) rotate(-1deg);
+  }
+
+  60% {
+    transform: translate(1px, 0) rotate(1deg);
+  }
+
+  70% {
+    transform: translate(-1px, 0.5px) rotate(-1deg);
+  }
+
+  80% {
+    transform: translate(1px, -0.5px) rotate(1deg);
+  }
+
+  90% {
+    transform: translate(-1px, 1px) rotate(-1deg);
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+.shake {
+  animation-name: shakeEasy;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+}

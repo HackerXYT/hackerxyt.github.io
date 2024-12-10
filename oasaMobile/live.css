@@ -76,6 +76,17 @@ button.oasaButton:active {
     transform: translateY(2px);
 }
 
+button.oasaButton.favoriteBus:active {
+    background-color: #003e7e;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(2px);
+}
+
+button.oasaButton:active {
+    background-color: rgba(255, 255, 255, 0.161);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
 
 .centeredTop {
     display: flex;

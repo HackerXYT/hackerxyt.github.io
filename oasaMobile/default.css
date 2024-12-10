@@ -165,7 +165,7 @@ input {
     border-bottom-right-radius: 0.5rem;
 }
 
-#search-input-container {
+/*#search-input-container {
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -174,7 +174,7 @@ input {
     padding-left: 1rem;
     border-radius: 0.2rem;
     border-bottom-left-radius: 0.5rem;
-}
+}*/
 
 #search-input-container>img {
     height: 1.5rem;

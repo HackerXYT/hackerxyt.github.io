@@ -526,16 +526,18 @@ function showInfo(bus, isInt, more) {
 
             // Create the span element and set its content to '10m'
             var span = document.createElement('span');
-            span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
+            span.innerHTML = remainTime;
 
             // Append the span element to the main div element
             timeBox.appendChild(span);
 
-            var optDiv = document.createElement('div');
-            optDiv.style.display = 'none'
-            optDiv.style.height = 'auto'
-            timeBox.appendChild(optDiv);
-
+            if (localStorage.getItem("extVOASA")) {
+                span.innerHTML += `<img src="arrow-down.svg" width="25px" height="25px">`
+                var optDiv = document.createElement('div');
+                optDiv.style.display = 'none'
+                optDiv.style.height = 'auto'
+                timeBox.appendChild(optDiv);
+            }
 
             // Optionally, append the timeBox to the body or another element in the DOM
             document.getElementById("evoxBased").appendChild(timeBox);
@@ -604,14 +606,17 @@ function showInfo(bus, isInt, more) {
 
                         // Create the span element and set its content to '10m'
                         var span = document.createElement('span');
-                        span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
+                        span.innerHTML = remainTime;
 
                         // Append the span element to the main div element
                         timeBox.appendChild(span);
-                        var optDiv = document.createElement('div');
-                        optDiv.style.display = 'none'
-                        optDiv.style.height = 'auto'
-                        timeBox.appendChild(optDiv);
+                        if (localStorage.getItem("extVOASA")) {
+                            span.innerHTML += `<img src="arrow-down.svg" width="25px" height="25px">`
+                            var optDiv = document.createElement('div');
+                            optDiv.style.display = 'none'
+                            optDiv.style.height = 'auto'
+                            timeBox.appendChild(optDiv);
+                        }
 
                         // Optionally, append the timeBox to the body or another element in the DOM
                         document.getElementById("evoxBased").appendChild(timeBox);
@@ -656,14 +661,17 @@ function showInfo(bus, isInt, more) {
 
                         // Create the span element and set its content to '10m'
                         var span = document.createElement('span');
-                        span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
+                        span.innerHTML = remainTime;
 
                         // Append the span element to the main div element
                         timeBox.appendChild(span);
-                        var optDiv = document.createElement('div');
-                        optDiv.style.display = 'none'
-                        optDiv.style.height = 'auto'
-                        timeBox.appendChild(optDiv);
+                        if (localStorage.getItem("extVOASA")) {
+                            span.innerHTML += `<img src="arrow-down.svg" width="25px" height="25px">`
+                            var optDiv = document.createElement('div');
+                            optDiv.style.display = 'none'
+                            optDiv.style.height = 'auto'
+                            timeBox.appendChild(optDiv);
+                        }
 
                         // Optionally, append the timeBox to the body or another element in the DOM
                         document.getElementById("evoxBased").appendChild(timeBox);
@@ -692,14 +700,17 @@ function showInfo(bus, isInt, more) {
 
                         // Create the span element and set its content to '10m'
                         var span = document.createElement('span');
-                        span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
+                        span.innerHTML = remainTime;
 
                         // Append the span element to the main div element
                         timeBox.appendChild(span);
-                        var optDiv = document.createElement('div');
-                        optDiv.style.display = 'none'
-                        optDiv.style.height = 'auto'
-                        timeBox.appendChild(optDiv);
+                        if (localStorage.getItem("extVOASA")) {
+                            span.innerHTML += `<img src="arrow-down.svg" width="25px" height="25px">`
+                            var optDiv = document.createElement('div');
+                            optDiv.style.display = 'none'
+                            optDiv.style.height = 'auto'
+                            timeBox.appendChild(optDiv);
+                        }
 
                         // Optionally, append the timeBox to the body or another element in the DOM
                         document.getElementById("evoxBased").appendChild(timeBox);
@@ -825,14 +836,17 @@ function showInfo(bus, isInt, more) {
 
             // Create the span element and set its content to '10m'
             var span = document.createElement('span');
-            span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
+            span.innerHTML = remainTime;
 
             // Append the span element to the main div element
             timeBox.appendChild(span);
-            var optDiv = document.createElement('div');
-            optDiv.style.display = 'none'
-            optDiv.style.height = 'auto'
-            timeBox.appendChild(optDiv);
+            if (localStorage.getItem("extVOASA")) {
+                span.innerHTML += `<img src="arrow-down.svg" width="25px" height="25px">`
+                var optDiv = document.createElement('div');
+                optDiv.style.display = 'none'
+                optDiv.style.height = 'auto'
+                timeBox.appendChild(optDiv);
+            }
 
             // Optionally, append the timeBox to the body or another element in the DOM
             document.getElementById("evoxBased").appendChild(timeBox);
@@ -903,16 +917,19 @@ function showInfo(bus, isInt, more) {
 
             // Create the span element and set its content to '10m'
             var span = document.createElement('span');
-            span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
+            span.innerHTML = remainTime;
 
             // Append the span element to the main div element
             timeBox.appendChild(span);
             timeBox.style.fontSize = "16px";
 
-            var optDiv = document.createElement('div');
-            optDiv.style.display = 'none'
-            optDiv.style.height = 'auto'
-            timeBox.appendChild(optDiv);
+            if (localStorage.getItem("extVOASA")) {
+                span.innerHTML += `<img src="arrow-down.svg" width="25px" height="25px">`
+                var optDiv = document.createElement('div');
+                optDiv.style.display = 'none'
+                optDiv.style.height = 'auto'
+                timeBox.appendChild(optDiv);
+            }
             // Optionally, append the timeBox to the body or another element in the DOM
             document.getElementById("evoxBased").appendChild(timeBox);
 
@@ -980,16 +997,19 @@ function showInfo(bus, isInt, more) {
 
             // Create the span element and set its content to '10m'
             var span = document.createElement('span');
-            span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
+            span.innerHTML = remainTime;
 
             // Append the span element to the main div element
             timeBox.appendChild(span);
             timeBox.style.fontSize = "16px";
 
-            var optDiv = document.createElement('div');
-            optDiv.style.display = 'none'
-            optDiv.style.height = 'auto'
-            timeBox.appendChild(optDiv);
+            if (localStorage.getItem("extVOASA")) {
+                span.innerHTML += `<img src="arrow-down.svg" width="25px" height="25px">`
+                var optDiv = document.createElement('div');
+                optDiv.style.display = 'none'
+                optDiv.style.height = 'auto'
+                timeBox.appendChild(optDiv);
+            }
             // Optionally, append the timeBox to the body or another element in the DOM
             document.getElementById("evoxBased").appendChild(timeBox);
 
@@ -1028,14 +1048,17 @@ function showInfo(bus, isInt, more) {
 
             // Create the span element and set its content to '10m'
             var span = document.createElement('span');
-            span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
+            span.innerHTML = remainTime;
 
             // Append the span element to the main div element
             timeBox.appendChild(span);
-            var optDiv = document.createElement('div');
-            optDiv.style.display = 'none'
-            optDiv.style.height = 'auto'
-            timeBox.appendChild(optDiv);
+            if (localStorage.getItem("extVOASA")) {
+                span.innerHTML += `<img src="arrow-down.svg" width="25px" height="25px">`
+                var optDiv = document.createElement('div');
+                optDiv.style.display = 'none'
+                optDiv.style.height = 'auto'
+                timeBox.appendChild(optDiv);
+            }
 
             // Optionally, append the timeBox to the body or another element in the DOM
             document.getElementById("evoxBased").appendChild(timeBox);
@@ -2748,6 +2771,7 @@ function updateNew() {
 <path d="M16 10L12.402 14.3175C11.7465 15.1042 11.4187 15.4976 10.9781 15.5176C10.5375 15.5375 10.1755 15.1755 9.45139 14.4514L8 13" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
 </svg>`
             setTimeout(function () {
+                //alert("updating")
                 window.location.reload()
 
 
@@ -3148,6 +3172,7 @@ function openFullScreen() {
 function findBus(id, el) {
 
     if (el) {
+
         el.querySelector('.loadingIndicatorNOCLASS').innerHTML = `<svg class="fade-in-slide-up" version="1.1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px"
                             viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
@@ -3339,24 +3364,35 @@ function findStops(lineCode, sentElementByfindBus) {
                 document.getElementById("spawnHere").style.display = 'none'
                 let randomId = Math.floor(1000000000 + Math.random() * 9000000000);
                 const lc = localStorage.getItem("oasa_favorites")
-                document.getElementById("favoriteBusButton").style.display = 'block'
-                document.getElementById("dailytimetable").style.display = 'block'
+                //document.getElementById("favoriteBusButton").style.display = 'block'
+                document.getElementById("rowBox").style.display = 'flex'
+                document.getElementById("isFavorite").style.display = 'flex'
+                document.getElementById("currentBusNameUI").style.display = 'flex'
+                document.getElementById("dailytimetable").style.display = 'flex'
                 document.getElementById("goback").style.display = 'block'
+                document.getElementById("currentBusName").innerText = activeBusPage
                 if (lc) {
-                    const fav = document.getElementById("favoriteBusButton")
+                    const fav = document.getElementById("isFavorite")
                     const string = lc
                     console.log(string)
                     if (string.includes(`"${activeBusPage}"`)) {
                         //alert("is favorite")
 
                         fav.setAttribute("data-f", "true")
-                        fav.innerHTML = `Αφαίρεση ${activeBusPage} από αγαπημένα`
-                        fav.classList.remove("red")
+                        fav.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                                    <path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" fill="#fff"/>
+                                    </svg>`
+                        //fav.classList.remove("red")
                         fav.classList.add("favoriteBus")
                     } else {
                         fav.setAttribute("data-f", "false")
-                        fav.innerHTML = `Προσθήκη ${activeBusPage} στα αγαπημένα`
-                        fav.classList.add("red")
+                        fav.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path
+                                        d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
+                                        stroke="#fff" stroke-width="1.5" />
+                                </svg>`
+                        //fav.classList.add("red")
                         fav.classList.remove("favoriteBus")
                     }
 
@@ -3376,6 +3412,8 @@ function findStops(lineCode, sentElementByfindBus) {
                             </svg>`
                 if (sentElementByfindBus) {
                     sentElementByfindBus.querySelector('.loadingIndicatorNOCLASS').innerHTML = ''
+                    resizeInput('blur')
+                    $("#svgClear").fadeOut("fast")
                 }
                 const stopsFinal = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${working}&keyOrigin=evoxEpsilon`);
                 fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stopsFinal}`)
@@ -3437,7 +3475,11 @@ function findStops(lineCode, sentElementByfindBus) {
 }
 
 function back() {
+
     reloadFavorites()
+    document.getElementById("isFavorite").style.display = 'none'
+    document.getElementById("currentBusNameUI").style.display = 'none'
+    document.getElementById("rowBox").style.display = 'none'
     document.getElementById("favoriteBusButton").style.display = 'none'
     document.getElementById("dailytimetable").style.display = 'none'
     document.getElementById("goback").style.display = 'none'
@@ -3489,7 +3531,9 @@ document.getElementById('receiveEnter').addEventListener('input', function () {
         $("#allBusesContainer").fadeIn("fast")
         $("#svgClear").fadeOut("fast")
     } else {
-        $("#svgClear").fadeIn("fast")
+        $("#svgClear").fadeIn("fast", function () {
+            $(this).css("display", "flex");
+        });
         // Select all button elements in the source div
         const buttons = sourceDiv.querySelectorAll('button[data-bus]');
 
@@ -3516,17 +3560,40 @@ document.getElementById('receiveEnter').addEventListener('input', function () {
 
 document.getElementById('receiveEnter').addEventListener('focus', function () {
     back()
+    resizeInput('focus')
     if (document.getElementById('receiveEnter').value === '') {
         const sourceDiv = document.getElementById('spawnHere');
         sourceDiv.style.display = 'flex'
         $("#allBusesContainer").fadeOut("fast")
     }
-    $("#svgClear").fadeIn("fast")
-
-
+    $("#svgClear").fadeIn("fast", function () {
+        $(this).css("display", "flex");
+    });
 });
 
+function resizeInput(func) {
+    const buttons = document.getElementById("search-container").querySelectorAll('button')
+    const inputC = document.getElementById("search-input-container")
+    if (func === 'focus') {
+        inputC.style.borderBottomLeftRadius = '0.5rem'
+        inputC.style.borderBottomRightRadius = '0.5rem'
+        inputC.style.width = '100%'
+        buttons[0].style.display = 'none'
+        buttons[1].style.display = 'none'
+    } else {
+
+        inputC.style.borderBottomLeftRadius = null
+        inputC.style.borderBottomRightRadius = null
+        inputC.style.width = null
+        buttons[0].style.display = null
+        buttons[1].style.display = null
+    }
+
+}
+
 function unfocus(event) {
+    activeBusNamePage = null
+    activeBusPage = null
     const sourceDiv = document.getElementById('spawnHere');
     sourceDiv.style.display = 'none'
     const searchHere = document.getElementById('searchHere');
@@ -3536,13 +3603,21 @@ function unfocus(event) {
     $("#svgClear").fadeOut("fast")
     $("#spawnStopsHere").fadeOut("fast")
     $("#favoriteBusButton").fadeOut("fast")
+    $("#isFavorite").fadeOut("fast")
+    $("#currentBusNameUI").fadeOut("fast")
+    $("#rowBox").fadeOut("fast")
     $("#dailytimetable").fadeOut("fast")
     $("#goback").fadeOut("fast")
     reloadFavorites()
-    event.preventDefault();
+    resizeInput('blur')
+    if (event) {
+        event.preventDefault();
+    }
+
 
 }
 document.getElementById('receiveEnter').addEventListener('blur', function () {
+
     //const sourceDiv = document.getElementById('spawnHere');
     //sourceDiv.style.display = 'none'
     //if (document.getElementById('receiveEnter').value === '') {
@@ -3623,7 +3698,7 @@ function favoriteCurrent() {
 
         fav.setAttribute("data-f", "true");
         fav.innerHTML = `Αφαίρεση ${activeBusPage} από αγαπημένα`
-        fav.classList.remove("red")
+        //fav.classList.remove("red")
         fav.classList.add("favoriteBus")
     } else {
         const lc = localStorage.getItem("oasa_favorites");
@@ -3645,123 +3720,172 @@ function favoriteCurrent() {
 
         fav.setAttribute("data-f", "false");
         fav.innerHTML = `Προσθήκη ${activeBusPage} στα αγαπημένα`
-        fav.classList.add("red")
+        //fav.classList.add("red")
         fav.classList.remove("favoriteBus")
     }
 }
 
+function favoriteCurrentN() {
+    //To favorite or not the current bus
+    if (!activeBusPage) return; // Check at the beginning
+    const fav = document.getElementById("isFavorite");
+
+    if (fav.getAttribute('data-f') === 'false') {
+        const lc = localStorage.getItem("oasa_favorites");
+
+        if (lc) {
+            let json;
+            try {
+                json = JSON.parse(lc);
+            } catch (error) {
+                console.error("Error parsing JSON:", error);
+                return; // Handle error gracefully
+            }
+            json.push(activeBusPage); // Add the new favorite
+            localStorage.setItem("oasa_favorites", JSON.stringify(json)); // Save back to localStorage
+            const busname = capitalizeWords(activeBusNamePage.split(" - ")[0])
+            localStorage.setItem(`OASA_${activeBusPage}_Info`, busname)
+            localStorage.setItem(`OASA_${activeBusPage}_Code`, currentLineCode)
+
+        } else {
+            const newJson = [activeBusPage];
+            localStorage.setItem("oasa_favorites", JSON.stringify(newJson));
+            const busname = capitalizeWords(activeBusNamePage.split(" - ")[0])
+            localStorage.setItem(`OASA_${activeBusPage}_Info`, busname)
+            localStorage.setItem(`OASA_${activeBusPage}_Code`, currentLineCode)
+        }
+
+        fav.setAttribute("data-f", "true");
+        fav.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                                    <path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" fill="#fff"/>
+                                    </svg>`
+        //fav.innerHTML = `Αφαίρεση ${activeBusPage} από αγαπημένα`
+        //now is Favorite
+        //fav.classList.remove("red")
+        fav.classList.add("favoriteBus")
+    } else {
+        const lc = localStorage.getItem("oasa_favorites");
+
+        if (lc) {
+            let json;
+            try {
+                json = JSON.parse(lc);
+            } catch (error) {
+                console.error("Error parsing JSON:", error);
+                return; // Handle error gracefully
+            }
+
+            const newArray = json.filter(item => item !== activeBusPage);
+            localStorage.setItem("oasa_favorites", JSON.stringify(newArray));
+            localStorage.removeItem(`OASA_${activeBusPage}_Info`)
+            localStorage.removeItem(`OASA_${activeBusPage}_Code`)
+        }
+
+        fav.setAttribute("data-f", "false");
+        fav.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path
+                                        d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
+                                        stroke="#fff" stroke-width="1.5" />
+                                </svg>`
+        //fav.innerHTML = `Προσθήκη ${activeBusPage} στα αγαπημένα`
+        //fav.classList.add("red")
+        fav.classList.remove("favoriteBus")
+    }
+}
 let numstartto = 0; // Initialize the variable numstartto
 let jsonForBTNIndex = {}; // Initialize the JSON object to store elements by ID
-let reShown;//?
+let reShown; // Track whether Businfo should be reshown
+let clickLock = false; // Prevent rapid function execution
+
 function handleTimeBoxClick(element, bypass) {
-    if (bypass) {
-        const theElem = document.getElementById(`global${element.id}`);
-        if (!theElem) {
-            console.error("Element not found for ID:", `global${element.id}`);
-            return;
-        }
+    if (!localStorage.getItem("extVOASA")) return;
+    if (clickLock) return; // Prevent spamming
+    clickLock = true;
+    setTimeout(() => (clickLock = false), 300); // Unlock after 300ms
 
-        // Remove active class
-        theElem.classList.remove("thisisActive");
+    const isActive = element.getAttribute("data-active") === "true";
 
-        const imgElement = theElem.querySelector('img');
+    if (bypass || isActive) {
+        element.setAttribute("data-active", "false");
+
+        const imgElement = element.querySelector("img");
         if (imgElement) {
-            // Rotate the img element by 0 degrees
-            imgElement.style.transform = 'rotate(0deg)';
+            imgElement.style.transform = "rotate(0deg)";
         }
 
-        const optDiv = theElem.querySelector('div');
+        const optDiv = element.querySelector("div");
         if (optDiv) {
-            optDiv.style.opacity = '0';
+            optDiv.style.opacity = "0";
+            setTimeout(() => {
+                optDiv.style.display = "none";
+                optDiv.innerHTML = "";
+            }, 300); // Match transition duration
         }
 
-        theElem.style.height = '65px';
-        return;
-    }
+        element.style.height = "55px";
+        element.style.backgroundColor = "#333";
 
-    if (element.classList.contains("thisisActive")) {
-        // Do nothing if the element is already active
-
-        // Remove active class
-        element.classList.remove("thisisActive");
-
-        const imgElement = element.querySelector('img');
-        if (imgElement) {
-            // Rotate the img element by 0 degrees
-            imgElement.style.transform = 'rotate(0deg)';
-        }
-
-        const optDiv = element.querySelector('div');
-        if (optDiv) {
-
-            optDiv.style.opacity = '0';
-            setTimeout(function () {
-                optDiv.innerHTML = ''
-            }, 800)
-
-        }
-
-        element.style.height = '65px';
-        element.style.backgroundColor = '#333'
-        if (reShown === true) {
-            document.getElementById("Businfo").style.opacity = '1'
-            reShown = false
+        if (reShown) {
+            const busInfo = document.getElementById("Businfo");
+            if (busInfo) busInfo.style.opacity = "1";
+            reShown = false;
         }
         return;
     }
 
+    // Activate the element
+    element.setAttribute("data-active", "true");
     numstartto++; // Increment the global variable
 
-    // Assign a new ID to the element
     element.id = `globalelmt${numstartto}`;
-
-    // Store the element in the JSON object
     jsonForBTNIndex[`elmt${numstartto}`] = element;
-    console.log(jsonForBTNIndex);
 
-    const optDiv = element.querySelector('div');
+    const optDiv = element.querySelector("div");
     if (optDiv) {
-        console.log("optDiv Found")
-        optDiv.style.opacity = '0';
-        optDiv.style.display = 'block';
+        optDiv.style.display = "block";
         setTimeout(() => {
-            optDiv.style.opacity = '1';
-        }, 100);
+            optDiv.style.opacity = "1";
+        }, 50); // Start fade-in after display block
 
-        const timetable = element.querySelector('span');
-        let cleanedString = timetable.innerHTML.replace(/<img[^>]*>/g, '');
-        console.log(cleanedString);
-
-
+        const timetable = element.querySelector("span");
+        const cleanedString = timetable
+            ? timetable.innerHTML.replace(/<img[^>]*>/g, "")
+            : "";
+        let showStation = currentBus
+        if(activeBusNamePage) {
+            showStation = `${activeBusPage} - ${capitalizeWords(activeBusNamePage.split(" - ")[0])}`
+        } else {
+            showStation = currentBus
+        }
         optDiv.innerHTML = `
-            <p style="margin-top: 10px;">Επιλέξτε πότε θα θέλατε να ενημερωθείτε για το λεωφορείο ${currentBus}:</p>
+            <p style="margin-top: 10px;">Πότε θέλετε ειδοποίηση για το λεωφορείο ${showStation};</p>
             <div onclick="this.classList.toggle('active');attachSchedo(this)" data-t="${cleanedString}" class="actionButton online">
                 Αφετηρία
             </div>
-            <div id='elmt${numstartto}' onclick="this.classList.toggle('active')" class="actionButton">
+            <!--<div id='elmt${numstartto}' onclick="this.classList.toggle('active')" class="actionButton">
                 Ακύρωση
-            </div>
+            </div>-->
         `;
     }
 
-    element.classList.add("thisisActive");
-
-    const imgElement = element.querySelector('img');
+    const imgElement = element.querySelector("img");
     if (imgElement) {
-        // Rotate the img element by 180 degrees
-        imgElement.style.transform = 'rotate(180deg)';
-    }
-    element.style.backgroundColor = '#232323'
-    if (document.getElementById("Businfo").style.opacity === '1') {
-        document.getElementById("Businfo").style.opacity = '0'
-        reShown = true
-    } else {
-        reShown = false
-        console.log("the opacity is already set to 0")
+        imgElement.style.transform = "rotate(180deg)";
     }
 
-    element.style.height = '200px';
+    element.style.height = "162px";
+    element.style.backgroundColor = "#232323";
+
+    const busInfo = document.getElementById("Businfo");
+    if (busInfo && busInfo.style.opacity === "1") {
+        busInfo.style.opacity = "0";
+        reShown = true;
+    } else {
+        reShown = false;
+    }
 }
+
 
 function convertTransition(transition) {
     // Regular expression to match Type 1 format: time - duration
@@ -3846,7 +3970,9 @@ function showDeviceDiscover() {
 }
 
 //OASA LIVE
-
+function hasInternetConnection() {
+    return navigator.onLine; // Returns true if online, false if offline
+}
 
 //https://telematics.oasa.gr/api/?act=webGetLines
 //https://telematics.oasa.gr/api/?act=getLineName&p1=1076
@@ -3962,6 +4088,8 @@ fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
             // else {
             //    console.log("Date is older than 2 days. Do something else.");
             //}
+        } else if (!hasInternetConnection()) {
+            return;
         }
         showErrors()
 
@@ -4197,17 +4325,36 @@ reloadFavorites()
 
 function showInfoFav(busId) {
     findBus(busId)
-    $("#svgClear").fadeIn("fast")
+    $("#svgClear").fadeIn("fast", function () {
+        $(this).css("display", "flex");
+    });
 }
 
-function showInfoCSTM(bus, isInt, more) {
+function showInfoCSTM(bus, isInt, more, elementTimetable) {
     isCustom = true
     currentBus = bus
     howManyShowed = more ?? 7
+    if (elementTimetable) {
+        console.log("elem timetbl found")
+        if (elementTimetable.querySelector('svg')) {
+            console.log("timetbl svg")
+            elementTimetable.querySelector('svg').classList.add("shake")
+            setTimeout(function() {
+                elementTimetable.querySelector('svg').classList.remove("shake")
+            }, 600)
+        } else {
+            console.log("timetbl img")
+            elementTimetable.querySelector('img').classList.add("shake")
+            setTimeout(function() {
+                elementTimetable.querySelector('img').classList.remove("shake")
+            }, 600)
+        }
+
+    } else {
+        console.log("timetbl notfound")
+    }
     document.getElementById("904live1").style.display = 'none'
-    disableOverflow()
-    document.getElementById("phone").classList.add('out')
-    document.getElementById("main-wrapper").style.overflow = 'hidden'
+
     if (!document.getElementById("popIt").classList.contains("active") && isInt) {
         console.log(`Resolved Interval Bug [info: busReq: ${bus}, stoppedBy: classList]`)
         return;
@@ -4216,7 +4363,7 @@ function showInfoCSTM(bus, isInt, more) {
         console.log(`Resolved Interval Bug [info: busReq: ${bus}, stoppedBy: currentWatch]`)
         return;
     }
-    document.getElementById("popIt").classList.add("active")
+    //document.getElementById("popIt").classList.add("active")
     document.getElementById("whatBus").innerHTML = bus
     document.getElementById("16defTime").style.display = "none"
     document.getElementById("16gounTime").style.display = "none"
@@ -4300,6 +4447,9 @@ function showInfoCSTM(bus, isInt, more) {
             const nextBusTime = getNextBusTimeLIVE(times);
 
             if (nextBusTime) {
+                disableOverflow()
+                document.getElementById("phone").classList.add('out')
+                document.getElementById("main-wrapper").style.overflow = 'hidden'
                 localStorage.setItem(`${currentBus}_Timetable`, JSON.stringify(data));
                 localStorage.setItem(`${currentBus}_Times`, JSON.stringify(times));
                 const remains = getNextBuses(times, more)
@@ -4313,7 +4463,7 @@ function showInfoCSTM(bus, isInt, more) {
                     }
 
                     let textNode;
-                    textNode = document.createTextNode((capitalizeWords(activeBusNamePage.split(" - ")[0]).length > 13 ? capitalizeWords(activeBusNamePage.split(" - ")[0]).substring(0, 11) + ".." : capitalizeWords(activeBusNamePage.split(" - ")[0])));
+                    textNode = document.createTextNode((capitalizeWords(activeBusNamePage.split(" - ")[0]).length > 9 ? capitalizeWords(activeBusNamePage.split(" - ")[0]).substring(0, 8) + ".." : capitalizeWords(activeBusNamePage.split(" - ")[0])));
 
 
                     // Append the text node to the main div element
@@ -4321,14 +4471,17 @@ function showInfoCSTM(bus, isInt, more) {
 
                     // Create the span element and set its content to '10m'
                     var span = document.createElement('span');
-                    span.innerHTML = remainTime + `<img src="arrow-down.svg" width="25px" height="25px">`;
+                    span.innerHTML = remainTime;
 
                     // Append the span element to the main div element
                     timeBox.appendChild(span);
-                    var optDiv = document.createElement('div');
-                    optDiv.style.display = 'none'
-                    optDiv.style.height = 'auto'
-                    timeBox.appendChild(optDiv);
+                    if (localStorage.getItem("extVOASA")) {
+                        span.innerHTML += `<img src="arrow-down.svg" width="25px" height="25px">`
+                        var optDiv = document.createElement('div');
+                        optDiv.style.display = 'none'
+                        optDiv.style.height = 'auto'
+                        timeBox.appendChild(optDiv);
+                    }
 
                     // Optionally, append the timeBox to the body or another element in the DOM
                     document.getElementById("evoxBased").appendChild(timeBox);
@@ -4344,30 +4497,50 @@ function showInfoCSTM(bus, isInt, more) {
                 }, 1000)
                 const div = document.getElementById("popIt");
                 div.scrollTop = div.scrollHeight;
+                document.getElementById("popIt").classList.add("active")
                 currentInt = setInterval(function () {
                     showInfoCSTM(bus, 'interval')
                 }, 25000)
             } else {
-                alert("Δεν υπάρχουν διαθέσιμες αφίξεις για την επιλεγμένη γραμμή.")
+                if (elementTimetable) {
+                    elementTimetable.classList.remove("shake")
+                    elementTimetable.innerHTML = '<img width="25px" height="25px" src="snap.png">'
+                    setTimeout(function () {
+                        elementTimetable.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path
+                                        d="M16.7502 3.56V2C16.7502 1.59 16.4102 1.25 16.0002 1.25C15.5902 1.25 15.2502 1.59 15.2502 2V3.5H8.75023V2C8.75023 1.59 8.41023 1.25 8.00023 1.25C7.59023 1.25 7.25023 1.59 7.25023 2V3.56C4.55023 3.81 3.24023 5.42 3.04023 7.81C3.02023 8.1 3.26023 8.34 3.54023 8.34H20.4602C20.7502 8.34 20.9902 8.09 20.9602 7.81C20.7602 5.42 19.4502 3.81 16.7502 3.56Z"
+                                        fill="#fff" />
+                                    <path
+                                        d="M20 9.83984H4C3.45 9.83984 3 10.2898 3 10.8398V16.9998C3 19.9998 4.5 21.9998 8 21.9998H16C19.5 21.9998 21 19.9998 21 16.9998V10.8398C21 10.2898 20.55 9.83984 20 9.83984ZM9.21 18.2098C9.16 18.2498 9.11 18.2998 9.06 18.3298C9 18.3698 8.94 18.3998 8.88 18.4198C8.82 18.4498 8.76 18.4698 8.7 18.4798C8.63 18.4898 8.57 18.4998 8.5 18.4998C8.37 18.4998 8.24 18.4698 8.12 18.4198C7.99 18.3698 7.89 18.2998 7.79 18.2098C7.61 18.0198 7.5 17.7598 7.5 17.4998C7.5 17.2398 7.61 16.9798 7.79 16.7898C7.89 16.6998 7.99 16.6298 8.12 16.5798C8.3 16.4998 8.5 16.4798 8.7 16.5198C8.76 16.5298 8.82 16.5498 8.88 16.5798C8.94 16.5998 9 16.6298 9.06 16.6698C9.11 16.7098 9.16 16.7498 9.21 16.7898C9.39 16.9798 9.5 17.2398 9.5 17.4998C9.5 17.7598 9.39 18.0198 9.21 18.2098ZM9.21 14.7098C9.02 14.8898 8.76 14.9998 8.5 14.9998C8.24 14.9998 7.98 14.8898 7.79 14.7098C7.61 14.5198 7.5 14.2598 7.5 13.9998C7.5 13.7398 7.61 13.4798 7.79 13.2898C8.07 13.0098 8.51 12.9198 8.88 13.0798C9.01 13.1298 9.12 13.1998 9.21 13.2898C9.39 13.4798 9.5 13.7398 9.5 13.9998C9.5 14.2598 9.39 14.5198 9.21 14.7098ZM12.71 18.2098C12.52 18.3898 12.26 18.4998 12 18.4998C11.74 18.4998 11.48 18.3898 11.29 18.2098C11.11 18.0198 11 17.7598 11 17.4998C11 17.2398 11.11 16.9798 11.29 16.7898C11.66 16.4198 12.34 16.4198 12.71 16.7898C12.89 16.9798 13 17.2398 13 17.4998C13 17.7598 12.89 18.0198 12.71 18.2098ZM12.71 14.7098C12.66 14.7498 12.61 14.7898 12.56 14.8298C12.5 14.8698 12.44 14.8998 12.38 14.9198C12.32 14.9498 12.26 14.9698 12.2 14.9798C12.13 14.9898 12.07 14.9998 12 14.9998C11.74 14.9998 11.48 14.8898 11.29 14.7098C11.11 14.5198 11 14.2598 11 13.9998C11 13.7398 11.11 13.4798 11.29 13.2898C11.38 13.1998 11.49 13.1298 11.62 13.0798C11.99 12.9198 12.43 13.0098 12.71 13.2898C12.89 13.4798 13 13.7398 13 13.9998C13 14.2598 12.89 14.5198 12.71 14.7098ZM16.21 18.2098C16.02 18.3898 15.76 18.4998 15.5 18.4998C15.24 18.4998 14.98 18.3898 14.79 18.2098C14.61 18.0198 14.5 17.7598 14.5 17.4998C14.5 17.2398 14.61 16.9798 14.79 16.7898C15.16 16.4198 15.84 16.4198 16.21 16.7898C16.39 16.9798 16.5 17.2398 16.5 17.4998C16.5 17.7598 16.39 18.0198 16.21 18.2098ZM16.21 14.7098C16.16 14.7498 16.11 14.7898 16.06 14.8298C16 14.8698 15.94 14.8998 15.88 14.9198C15.82 14.9498 15.76 14.9698 15.7 14.9798C15.63 14.9898 15.56 14.9998 15.5 14.9998C15.24 14.9998 14.98 14.8898 14.79 14.7098C14.61 14.5198 14.5 14.2598 14.5 13.9998C14.5 13.7398 14.61 13.4798 14.79 13.2898C14.89 13.1998 14.99 13.1298 15.12 13.0798C15.3 12.9998 15.5 12.9798 15.7 13.0198C15.76 13.0298 15.82 13.0498 15.88 13.0798C15.94 13.0998 16 13.1298 16.06 13.1698C16.11 13.2098 16.16 13.2498 16.21 13.2898C16.39 13.4798 16.5 13.7398 16.5 13.9998C16.5 14.2598 16.39 14.5198 16.21 14.7098Z"
+                                        fill="#fff" />
+                                </svg>`
+                    }, 3000)
+                }
+                //alert("Δεν υπάρχουν διαθέσιμες αφίξεις για την επιλεγμένη γραμμή.")
                 document.getElementById("popIt").classList.remove("active")
                 document.getElementById('phone').style.transform = ''
                 document.getElementById("main-wrapper").style.overflow = 'auto'
                 isCustom = false
-                console.error(times)
+                console.error(times,nextBusTime, getNextBuses(times, more))
                 //document.getElementById(id).innerHTML = `<img width="auto" height="18px" src='${errorIconTime()}'>`;
             }
         })
         .catch(error => {
             console.log('Load Favorite Times Error:', error)
             //document.getElementById("netStats").innerHTML = offlineSvg
-            alert("Something Failed [14]")
+            //alert("Something Failed [14]")
+            if (elementTimetable) {
+                elementTimetable.classList.remove("shake")
+                elementTimetable.innerHTML = '<img width="25px" height="25px" src="snap.png">'
+            }
             //document.getElementById(`${id}`).innerHTML = `<img width="auto" height="18px" src='${errorIconTime()}'>`;
 
         });
 }
 
-function timetable() {
-    showInfoCSTM(activeBusPage)
+function timetable(el) {
+    showInfoCSTM(activeBusPage, null, null, el)
 }
 
 function showCurrentStop() {
@@ -4446,10 +4619,12 @@ function showCurrentStop() {
 
                                 // Append the span element to the main div element
                                 timeBox.appendChild(span);
-                                var optDiv = document.createElement('div');
-                                optDiv.style.display = 'none'
-                                optDiv.style.height = 'auto'
-                                timeBox.appendChild(optDiv);
+                                if (localStorage.getItem("extVOASA")) {
+                                    var optDiv = document.createElement('div');
+                                    optDiv.style.display = 'none'
+                                    optDiv.style.height = 'auto'
+                                    timeBox.appendChild(optDiv);
+                                }
 
                                 // Optionally, append the timeBox to the body or another element in the DOM
                                 document.getElementById("evoxBased").appendChild(timeBox);
@@ -4714,12 +4889,14 @@ let theme = 'day'
 
 function changeTheme() {
     if (theme === 'day') {
+        sessionStorage.setItem("theme", 'dark')
         document.getElementById("themeName").innerText = 'Σκοτεινό'
         document.documentElement.style.setProperty('--theme-background', '18 18 18'); //night
         document.documentElement.style.setProperty('--theme-medium', '37, 37, 37');
         setThemeColors('#121212')
         theme = 'night'
     } else {
+        sessionStorage.removeItem("theme")
         document.getElementById("themeName").innerText = 'Προεπιλογή'
         document.documentElement.style.setProperty('--theme-medium', '46 44 53');
         document.documentElement.style.setProperty('--theme-background', '28 27 30'); //day
@@ -4729,6 +4906,10 @@ function changeTheme() {
 
 }
 
+if (sessionStorage.getItem("theme") === 'dark') {
+    theme = 'day'
+    changeTheme()
+}
 
 const countdownElement = document.getElementById("countdown");
 let time = 100; // Start with 60 seconds
