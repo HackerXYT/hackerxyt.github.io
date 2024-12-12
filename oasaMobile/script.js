@@ -186,7 +186,7 @@ function getBus(num) {
                         times.push(formatTime(item.sde_start1));
                     }
 
-                    console.log("Formatted times:", times); // Debug log
+                    //console.log("Formatted times:", times); // Debug log
 
                     const nextBusTime = getNextBusTime(times);
 
@@ -206,7 +206,7 @@ function getBus(num) {
                         displayRemainingTimeLC(nextBusTime, 'noLoadIndicator')
                     }
                     console.log(`Preloaded ${num} from storage`)
-                    console.log(times);
+                    //console.log(times);
                 }
             } else {
                 console.error('Error getting localstorage data')
@@ -234,7 +234,7 @@ function getBus(num) {
                     return formatTime(item.sde_start1);
                 });
 
-                console.log("Formatted times:", times); // Debug log
+                //console.log("Formatted times:", times); // Debug log
 
                 const nextBusTime = getNextBusTime(times);
 
@@ -266,7 +266,7 @@ function getBus(num) {
                         return formatTime(item.sde_start1);
                     });
 
-                    console.log("Formatted times:", times); // Debug log
+                    //console.log("Formatted times:", times); // Debug log
 
                     const nextBusTime = getNextBusTime(times);
 
@@ -338,7 +338,7 @@ function getBus(num) {
         }
 
         function getNextBusTime(times) {
-            console.log("getting times", times);
+            //console.log("getting times", times);
             const currentTime = new Date();
             const currentHour = currentTime.getHours();
             const currentMinutes = currentTime.getMinutes();
@@ -1223,6 +1223,7 @@ function goBack() {
     document.getElementById("showMore").style.display = null
     howManyShowed = null
     document.getElementById("phone").classList.remove('out')
+    setThemeColors(stockStatusBC)
     document.getElementById("Businfo").innerHTML = `⛳`
     document.getElementById("Businfo").style.opacity = '0'
     enableOverflow()
@@ -1648,6 +1649,7 @@ function fl_moveDiv(e) {
         document.getElementById("floridaCont").classList.remove("active")
 
         document.getElementById("phone").classList.remove('out')
+        setThemeColors(stockStatusBC)
         setTimeout(function () {
             document.getElementById("main-wrapper").style.overflow = null
             floridaCont.style.top = '';
@@ -1676,6 +1678,7 @@ function fl_stopMoveDiv() {
         //document.getElementById("main-wrapper").style.overflow = 'auto'
         document.getElementById("floridaCont").classList.remove("active")
         document.getElementById("phone").classList.remove('out')
+        setThemeColors(stockStatusBC)
         setTimeout(function () {
             document.getElementById("main-wrapper").style.overflow = null
             floridaCont.style.top = '';
@@ -1702,6 +1705,7 @@ function setup_begin() {
 
             document.getElementById("floridaCont").classList.remove("active")
             document.getElementById("phone").classList.remove('out')
+            setThemeColors(stockStatusBC)
             setTimeout(function () {
                 document.getElementById("floridaCont").style.backgroundColor = `#242426`
                 $("#homePage").fadeOut("fast", function () {
@@ -1769,6 +1773,7 @@ function setup_begin() {
 
             document.getElementById("floridaCont").classList.remove("active")
             document.getElementById("phone").classList.remove('out')
+            setThemeColors(stockStatusBC)
             setTimeout(function () {
                 document.getElementById("floridaCont").style.backgroundColor = `#242426`
                 $("#homePage").fadeOut("fast", function () {
@@ -1823,12 +1828,34 @@ function setup_begin() {
 
 function OASAsettings() {
     document.getElementById("settingsBuild").innerText = currentBuild
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.ready.then((registration) => {
+            // Get the URL of the active service worker's script
+            const activeWorkerUrl = registration.active.scriptURL;
+
+            // Define the expected service worker file name
+            const expectedWorkerFile = '/sw.js'; // Replace with your expected file name
+
+            // Check if the active service worker matches the expected file
+            if (activeWorkerUrl.endsWith(expectedWorkerFile)) {
+                console.log('The service worker is registered with the expected file:', expectedWorkerFile);
+                document.getElementById("swregist").innerText = 'Ενεργές'
+            } else {
+                console.log('The service worker is registered with a different file:', activeWorkerUrl);
+                document.getElementById("swregist").innerText = 'Άγνωστο'
+            }
+        }).catch((error) => {
+            console.error('Error checking service worker registration:', error);
+            document.getElementById("swregist").innerText = 'Ανενεργές'
+        });
+    } else {
+        console.log('Service Worker API not supported in this browser.');
+        document.getElementById("swregist").innerText = 'Ανενεργές'
+    }
     $("#homePage").fadeOut("fast", function () {
         document.getElementById("floridaCont").classList.add("active")
         document.getElementById("phone").classList.add('out')
         floridaCont.style.top = '';
-
-
     })
     document.getElementById("settings").classList.add('active')
 }
@@ -2054,6 +2081,7 @@ function continueFlo(isAnon) {
 
         document.getElementById("floridaCont").classList.remove("active")
         document.getElementById("phone").classList.remove('out')
+        setThemeColors(stockStatusBC)
 
         setTimeout(function () {
             $("#case1").fadeOut("fast", function () {
@@ -2123,6 +2151,7 @@ function createOASA() {
                 setTimeout(function () {
                     document.getElementById("floridaCont").classList.remove("active")
                     document.getElementById("phone").classList.remove('out')
+                    setThemeColors(stockStatusBC)
                     setTimeout(function () {
                         document.getElementById("floridaCont").style.backgroundColor = `#000`
                         $("#homePage").fadeOut("fast", function () {
@@ -2579,6 +2608,18 @@ function showRecents() {
                 } else if (payload.title === "Welcome back") {
                     span = document.createElement('img');
                     span.src = 'https://evoxs.xyz/notifications_assets/Gateway.png';
+                } else if (payload.title.includes("Schedo")) {
+                    span = document.createElement('img');
+                    span.src = './complete.png';
+                } else if (payload.title === "Ειδοποίηση λεωφορείου") {
+                    span = document.createElement('img');
+                    span.src = './bus.png';
+                } else if (payload.title.includes("έτοιμα")) {
+                    span = document.createElement('img');
+                    span.src = './ready.png';
+                } else if (payload.title.includes("Γεια,")) {
+                    span = document.createElement('img');
+                    span.src = './wave.png';
                 } else {
                     span = document.createElement('span');
                     span.innerHTML = payload.title;
@@ -2956,6 +2997,7 @@ function dismissSetup() {
     localStorage.setItem("hasDismissedSetup", 'true')
     document.getElementById("floridaCont").classList.remove("active")
     document.getElementById("phone").classList.remove('out')
+    setThemeColors(stockStatusBC)
     setTimeout(function () {
         document.getElementById("homePage").style.display = ""
         document.getElementById("newUser").style.display = "none"
@@ -3189,7 +3231,14 @@ function findBus(id, el) {
     }
 
     const lineIdToFind = id;
-    const matchingLines = fullLine.filter(line => line.LineID === lineIdToFind);
+    let matchingLines = fullLine.filter(line => line.LineID === lineIdToFind);
+    if (el) {
+        console.log("Will Edit [STOPS]:", matchingLines);
+        const innerTxt = el.getAttribute("data-name");
+        console.log("[STOPS]", innerTxt);
+        matchingLines = matchingLines.filter(line => line.LineDescr === innerTxt);  // Reassign matchingLines
+        console.log("FILTERED [STOPS]:", matchingLines);
+    }
     activeBusPage = id
     // Log the LineDescr of each matching line
     matchingLines.forEach(line => {
@@ -3198,6 +3247,9 @@ function findBus(id, el) {
         console.log('Line Code:', line.LineCode);
 
         if (matchingLines.length > 1) {
+            console.log("Handling Multiple Lines. May Fail")
+            //alert("Cannot handle multiple lines")
+            //return;
             if (el) {
                 matchingLines.forEach(handle => {
                     const toFind = `${capitalizeWords(handle.LineDescr)}`
@@ -3347,6 +3399,10 @@ function getStop(stopCode, lineCode, elementForLoading, stopName) {
 
 let pending = null
 let currentLineCode = null
+let currentRouteCode = null
+let currentLineInfo = null
+
+let chosenStopsMethod = 'default'
 function findStops(lineCode, sentElementByfindBus) {
     currentLineCode = lineCode
     const getStops = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`);
@@ -3356,10 +3412,14 @@ function findStops(lineCode, sentElementByfindBus) {
 
             if (data) {
                 const working = data[0].route_code
+                currentRouteCode = working
                 console.log(working)//
                 $("#allBusesContainer").fadeOut("fast")
 
-                document.getElementById("spawnStopsHere").style.display = 'flex'
+                //document.getElementById("spawnStopsHere").style.display = 'flex'
+                if (chosenStopsMethod === 'default') {
+                    document.getElementById("spawnStopsHere").style.display = 'flex'
+                }
                 document.getElementById("searchHere").style.display = 'none'
                 document.getElementById("spawnHere").style.display = 'none'
                 let randomId = Math.floor(1000000000 + Math.random() * 9000000000);
@@ -3415,10 +3475,16 @@ function findStops(lineCode, sentElementByfindBus) {
                     resizeInput('blur')
                     $("#svgClear").fadeOut("fast")
                 }
+
                 const stopsFinal = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${working}&keyOrigin=evoxEpsilon`);
                 fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stopsFinal}`)
                     .then(response => response.json())
                     .then(bata => {
+                        currentLineInfo = bata
+                        intelligence()
+                        if (chosenStopsMethod === 'complete') {
+                            return;
+                        }
                         let stopPromises = bata.stops.map(stop => {
                             return new Promise((resolve, reject) => {
                                 // Spawn the element
@@ -3474,7 +3540,123 @@ function findStops(lineCode, sentElementByfindBus) {
 
 }
 
+
+let controller;
+
+function intelligence() {
+    controller = new AbortController();
+    const signal = controller.signal;
+    console.warn("Intelligence Triggered!")
+    if (chosenStopsMethod === 'default') {
+        return;
+    }
+    if (currentRouteCode && currentLineInfo) {
+        const spawn = document.getElementById("intelligenceSpawn")
+        spawn.style.display = 'flex'
+        spawn.style.height = '100%'
+        spawn.style.justifyContent = 'center'
+        spawn.innerHTML = `<div id="wifi-loader" style="margin-top: 50px;">
+    <svg class="circle-outer" viewBox="0 0 86 86">
+        <circle class="back" cx="43" cy="43" r="40"></circle>
+        <circle class="front" cx="43" cy="43" r="40"></circle>
+        <circle class="new" cx="43" cy="43" r="40"></circle>
+    </svg>
+    <svg class="circle-middle" viewBox="0 0 60 60">
+        <circle class="back" cx="30" cy="30" r="27"></circle>
+        <circle class="front" cx="30" cy="30" r="27"></circle>
+    </svg>
+    <svg class="circle-inner" viewBox="0 0 34 34">
+        <circle class="back" cx="17" cy="17" r="14"></circle>
+        <circle class="front" cx="17" cy="17" r="14"></circle>
+    </svg>
+    <div class="text" data-text="Συλλέγοντας δεδομένα.."></div>
+</div>
+`
+        const intelligenceInfo = {
+            "type": "browseStops",
+            "route_code": currentRouteCode,
+            "stops": currentLineInfo.stops.map(stop => ({
+                StopCode: stop.StopCode,
+                StopDescr: stop.StopDescr,
+                RouteStopOrder: stop.RouteStopOrder,
+            }))
+        }
+
+        fetch(`https://data.evoxs.xyz/oasa?intelligence=${JSON.stringify(intelligenceInfo)}`, { signal })
+            .then(response => response.json())
+            .then(arrivals => {
+                spawn.innerHTML = ''
+                spawn.style.height = 'auto'
+                spawn.style.justifyContent = null
+                console.log("Intelligence Results:", arrivals)
+
+
+
+                arrivals.sort((a, b) => a.RouteStopOrder - b.RouteStopOrder)
+                arrivals.forEach(stop => {
+                    let toSpawn = stop.time
+                    if (toSpawn === null) {
+                        toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path opacity="0.4" d="M19.53 5.53L5.53 19.53C5.51 19.55 5.5 19.56 5.48 19.57C5.1 19.25 4.75 18.9 4.43 18.52C2.91 16.77 2 14.49 2 12C2 6.48 6.48 2 12 2C14.49 2 16.77 2.91 18.52 4.43C18.9 4.75 19.25 5.1 19.57 5.48C19.56 5.5 19.55 5.51 19.53 5.53Z" fill="#fff"/>
+<path opacity="0.4" d="M21.9996 12.0001C21.9996 17.5201 17.5196 22.0001 11.9996 22.0001C10.0096 22.0001 8.15961 21.4201 6.59961 20.4001L20.3996 6.6001C21.4196 8.1601 21.9996 10.0101 21.9996 12.0001Z" fill="#fff"/>
+<path d="M21.7709 2.22988C21.4709 1.92988 20.9809 1.92988 20.6809 2.22988L2.23086 20.6899C1.93086 20.9899 1.93086 21.4799 2.23086 21.7799C2.38086 21.9199 2.57086 21.9999 2.77086 21.9999C2.97086 21.9999 3.16086 21.9199 3.31086 21.7699L21.7709 3.30988C22.0809 3.00988 22.0809 2.52988 21.7709 2.22988Z" fill="#fff"/>
+</svg>`
+                    } else if (toSpawn === false) {
+                        toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path opacity="0.5" d="M22 19.2058V12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12V19.2058C2 20.4896 3.35098 21.3245 4.4992 20.7504C5.42726 20.2864 6.5328 20.3552 7.39614 20.9308C8.36736 21.5782 9.63264 21.5782 10.6039 20.9308L10.9565 20.6957C11.5884 20.2744 12.4116 20.2744 13.0435 20.6957L13.3961 20.9308C14.3674 21.5782 15.6326 21.5782 16.6039 20.9308C17.4672 20.3552 18.5727 20.2864 19.5008 20.7504C20.649 21.3245 22 20.4896 22 19.2058Z" fill="#fff"/>
+<path d="M15 12C15.5523 12 16 11.3284 16 10.5C16 9.67157 15.5523 9 15 9C14.4477 9 14 9.67157 14 10.5C14 11.3284 14.4477 12 15 12Z" fill="#fff"/>
+<path d="M10 10.5C10 11.3284 9.55228 12 9 12C8.44772 12 8 11.3284 8 10.5C8 9.67157 8.44772 9 9 9C9.55228 9 10 9.67157 10 10.5Z" fill="#fff"/>
+</svg>`
+                    } else {
+                        toSpawn += "'"
+                    }
+                    spawn.innerHTML += `<div id="busArrival-${stop.StopCode}-${stop.placement}" class="busArrival">
+                            <div>${capitalizeWords(stop.StopDescr)}</div>
+                            <span>${toSpawn}</span>
+                        </div>`
+                })
+            })
+            .catch(error => {
+                console.log("intelligence [1] error:", error);
+            });
+
+    } else {
+        console.warn("Data not ready")
+    }
+}
+
+function oasaIntelli() {
+    document.getElementById("oasaIntelligence").classList.add('active')
+}
+
+function returnFromIntelli() {
+    document.getElementById("oasaIntelligence").classList.remove('active')
+}
+
+function toggleIntelli() {
+    if (chosenStopsMethod === 'default') {
+        //enabling Intelli
+        chosenStopsMethod = 'complete'
+        localStorage.setItem("oasaIntelli", 'enabled')
+        document.getElementById("intelliStatus").innerText = 'Ενεργό'
+    } else {
+        //disabling Intelli
+        chosenStopsMethod = 'default'
+        localStorage.removeItem("oasaIntelli", 'enabled')
+        document.getElementById("intelliStatus").innerText = 'Ανενεργό'
+    }
+}
+
+if (localStorage.getItem("oasaIntelli")) {
+    chosenStopsMethod = 'complete'
+    document.getElementById("intelliStatus").innerText = 'Ενεργό'
+}
 function back() {
+    try {
+        controller.abort();
+    } catch {
+        console.log("Controller Abort Failed")
+    }
 
     reloadFavorites()
     document.getElementById("isFavorite").style.display = 'none'
@@ -3484,10 +3666,24 @@ function back() {
     document.getElementById("dailytimetable").style.display = 'none'
     document.getElementById("goback").style.display = 'none'
     document.getElementById('alert').classList.remove('active')
-    document.getElementById("spawnHere").style.display = 'flex'
+    if (fullLine) {
+        document.getElementById("spawnHere").style.display = 'flex'
+    } else {
+        console.log('FullLINE NOT FOUND')
+        const toShow = setInterval(function () {
+            if (fullLine) {
+                console.log('FullLINE FOUND!')
+                document.getElementById("spawnHere").style.display = 'flex'
+                clearInterval(toShow)
+            }
+        }, 200)
+    }
+
     document.getElementById("spawnStopsHere").style.display = 'none'
+    document.getElementById("intelligenceSpawn").style.display = 'none'
     document.getElementById("searchHere").style.display = 'none'
     document.getElementById("spawnStopsHere").innerHTML = ''
+    document.getElementById("intelligenceSpawn").innerHTML = ''
 
     const spawnHere = document.getElementById("spawnHere");
 
@@ -3510,9 +3706,12 @@ function back() {
             }
             // You can add any action you want to perform here
         } else {
-            if (lc && lc.includes(child.querySelector('.lineNOCLASS').innerHTML)) {
-                child.classList.add("favoriteBus")
+            if (child.querySelector('.lineNOCLASS')) {
+                if (lc && lc.includes(child.querySelector('.lineNOCLASS').innerHTML)) {
+                    child.classList.add("favoriteBus")
+                }
             }
+
         }
     }
 }
@@ -3562,8 +3761,18 @@ document.getElementById('receiveEnter').addEventListener('focus', function () {
     back()
     resizeInput('focus')
     if (document.getElementById('receiveEnter').value === '') {
-        const sourceDiv = document.getElementById('spawnHere');
-        sourceDiv.style.display = 'flex'
+        if (fullLine) {
+            document.getElementById("spawnHere").style.display = 'flex'
+        } else {
+            console.log('FullLINE NOT FOUND')
+            const toShow = setInterval(function () {
+                if (fullLine) {
+                    console.log('FullLINE FOUND!')
+                    document.getElementById("spawnHere").style.display = 'flex'
+                    clearInterval(toShow)
+                }
+            }, 200)
+        }
         $("#allBusesContainer").fadeOut("fast")
     }
     $("#svgClear").fadeIn("fast", function () {
@@ -3602,6 +3811,7 @@ function unfocus(event) {
     $("#allBusesContainer").fadeIn("fast")
     $("#svgClear").fadeOut("fast")
     $("#spawnStopsHere").fadeOut("fast")
+    $("#intelligenceSpawn").fadeOut("fast")
     $("#favoriteBusButton").fadeOut("fast")
     $("#isFavorite").fadeOut("fast")
     $("#currentBusNameUI").fadeOut("fast")
@@ -3725,11 +3935,11 @@ function favoriteCurrent() {
     }
 }
 
-function favoriteCurrentN() {
+function favoriteCurrentN(el) {
     //To favorite or not the current bus
     if (!activeBusPage) return; // Check at the beginning
     const fav = document.getElementById("isFavorite");
-
+    el.querySelector("svg").style.transform = 'scale(1.7)'
     if (fav.getAttribute('data-f') === 'false') {
         const lc = localStorage.getItem("oasa_favorites");
 
@@ -3792,6 +4002,10 @@ function favoriteCurrentN() {
         //fav.classList.add("red")
         fav.classList.remove("favoriteBus")
     }
+    setTimeout(function () {
+        el.querySelector("svg").style.transform = 'scale(1)'
+    }, 1300)
+
 }
 let numstartto = 0; // Initialize the variable numstartto
 let jsonForBTNIndex = {}; // Initialize the JSON object to store elements by ID
@@ -3853,7 +4067,7 @@ function handleTimeBoxClick(element, bypass) {
             ? timetable.innerHTML.replace(/<img[^>]*>/g, "")
             : "";
         let showStation = currentBus
-        if(activeBusNamePage) {
+        if (activeBusNamePage) {
             showStation = `${activeBusPage} - ${capitalizeWords(activeBusNamePage.split(" - ")[0])}`
         } else {
             showStation = currentBus
@@ -3959,7 +4173,7 @@ function showDeviceDiscover() {
         deviceBT.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
 
         infob.innerHTML = `
-        currentBuild: ${sessionStorage.getItem("currentBuild")}<br><br>Αναγνωριστικό (extV): ${localStorage.getItem("extVOASA")}<br><br>Βρέθηκε ServiceWorker: ${'serviceWorker' in navigator}<br><br>Παράβλεψη εγκατάστασης: ${localStorage.getItem("hasDismissedSetup")}<br><br>Προνόμια: ${sessionStorage.getItem("privileges")}<br><br>Τοπική εικόνα προφίλ: ${sessionStorage.getItem("pfp") === true}<br><br>__compat_manifest [ΓΙΑ ΕΚΔΟΣΕΙΣ ALPHA]: <br><span style="color: yellow">${sessionStorage.getItem('__pwacompat_manifest')}</span><br><br>Καταστροφή Λειτουργικού: <span style="color: red;" onclick="localStorage.clear();window.location.reload()">Trigger</span><br><br><span onclick="changeTheme()">Change Theme</span>`
+        currentBuild: ${sessionStorage.getItem("currentBuild")}<br><br>Αναγνωριστικό (extV): ${localStorage.getItem("extVOASA")}<br><br>Βρέθηκε ServiceWorker: ${'serviceWorker' in navigator}<br><br>Παράβλεψη εγκατάστασης: ${localStorage.getItem("hasDismissedSetup")}<br><br>Προνόμια: ${sessionStorage.getItem("privileges")}<br><br>Τοπική εικόνα προφίλ: ${sessionStorage.getItem("pfp") === true}<br><br>__compat_manifest [ΓΙΑ ΕΚΔΟΣΕΙΣ ALPHA]: <br><span style="color: yellow">${sessionStorage.getItem('__pwacompat_manifest')}</span><br><br>Καταστροφή Λειτουργικού: <span style="color: red;" onclick="localStorage.clear();window.location.reload()">Trigger</span><br><br><span onclick="changeTheme()">Change Theme</span><br><br><span onclick="customs()">Aurorabelle 😍🤯😐</span>`
     } else {
         console.log("Will show A")
         innerb.style.display = "none"
@@ -3988,39 +4202,46 @@ fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
                 lc = JSON.parse(lc);
             }
 
+
+
             let finalHtml = ``;
             // Map each line to a promise for asynchronous handling
             let linesPromises = data.map(eachLine => {
                 return new Promise((resolve, reject) => {
-                    const logger = `${eachLine.LineDescr} [${eachLine.LineID}]`;
 
+
+                    document.getElementById("spawnHere").querySelectorAll("button").forEach(editBus => {
+                        if (lc && lc.includes(editBus.getAttribute("data-bus"))) {
+                            editBus.classList.add("favoriteBus")
+                        }
+                    })
 
                     // Check if the line is in the favorites
-                    if (lc && lc.includes(eachLine.LineID)) {
-                        finalHtml = `${finalHtml}
-                            <button data-bus="${eachLine.LineID}" 
-                                    class="fade-in-slide-up favoriteBus oasaButton" 
-                                    onclick="findBus('${eachLine.LineID}', this)">
-                                <span class="lineNOCLASS">${eachLine.LineID}</span>
-                                <span class="button-text">${capitalizeWords(eachLine.LineDescr)}</span>
-                                <vox class="loadingIndicatorNOCLASS"></vox>
-                            </button>`;
-                    } else {
-                        finalHtml = `${finalHtml}
-                            <button data-bus="${eachLine.LineID}" 
-                                    class="fade-in-slide-up oasaButton" 
-                                    onclick="findBus('${eachLine.LineID}', this)">
-                                <span class="lineNOCLASS">${eachLine.LineID}</span>
-                                <span class="button-text">${capitalizeWords(eachLine.LineDescr)}</span>
-                                <vox class="loadingIndicatorNOCLASS"></vox>
-                            </button>`;
-                    }
+                    //if (lc && lc.includes(eachLine.LineID)) {
+                    //    finalHtml = `${finalHtml}
+                    //        <button data-bus="${eachLine.LineID}" data-name="${eachLine.LineDescr}"
+                    //                class="fade-in-slide-up favoriteBus oasaButton" 
+                    //                onclick="findBus('${eachLine.LineID}', this)">
+                    //            <span class="lineNOCLASS">${eachLine.LineID}</span>
+                    //            <span class="button-text">${capitalizeWords(eachLine.LineDescr)}</span>
+                    //            <vox class="loadingIndicatorNOCLASS"></vox>
+                    //        </button>`;
+                    //} else {
+                    //    finalHtml = `${finalHtml}
+                    //        <button data-bus="${eachLine.LineID}" data-name="${eachLine.LineDescr}"
+                    //                class="fade-in-slide-up oasaButton"
+                    //                onclick="findBus('${eachLine.LineID}', this)">
+                    //            <span class="lineNOCLASS">${eachLine.LineID}</span>
+                    //            <span class="button-text">${capitalizeWords(eachLine.LineDescr)}</span>
+                    //            <vox class="loadingIndicatorNOCLASS"></vox>
+                    //        </button>`;
+                    //}
 
                     // Append the generated HTML to the container
-                    const spawnHere = document.getElementById("spawnHere");
-                    if (spawnHere) {
-                        spawnHere.innerHTML = finalHtml; // Safely append each button
-                    }
+                    //const spawnHere = document.getElementById("spawnHere");
+                    //if (spawnHere) {
+                    //    spawnHere.innerHTML = finalHtml; // Safely append each button
+                    //}
 
                     resolve(); // Mark the promise as resolved after DOM update
                 });
@@ -4092,6 +4313,7 @@ fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
             return;
         }
         showErrors()
+        //updateCountdown();
 
 
     })
@@ -4213,7 +4435,7 @@ function getNextBusStart(code, busid) {
         document.getElementById(elid).innerText = `Επόμενο: ${remainingTimeText}`;
     }
     function getNextBusTimeLIVE(times) {
-        console.log("getting times", times);
+        ////console.log("getting times", times);
         const currentTime = new Date();
         const currentHour = currentTime.getHours();
         const currentMinutes = currentTime.getMinutes();
@@ -4273,7 +4495,7 @@ function getNextBusStart(code, busid) {
                 return formatTime(item.sde_start1);
             });
 
-            console.log("Formatted times:", times); // Debug log
+            //console.log("Formatted times:", times); // Debug log
 
             const nextBusTime = getNextBusTimeLIVE(times);
 
@@ -4330,6 +4552,8 @@ function showInfoFav(busId) {
     });
 }
 
+let elmTimtbl;
+
 function showInfoCSTM(bus, isInt, more, elementTimetable) {
     isCustom = true
     currentBus = bus
@@ -4337,17 +4561,19 @@ function showInfoCSTM(bus, isInt, more, elementTimetable) {
     if (elementTimetable) {
         console.log("elem timetbl found")
         if (elementTimetable.querySelector('svg')) {
+            elmTimtbl = elementTimetable.querySelector('svg')
             console.log("timetbl svg")
             elementTimetable.querySelector('svg').classList.add("shake")
-            setTimeout(function() {
-                elementTimetable.querySelector('svg').classList.remove("shake")
-            }, 600)
+            //setTimeout(function () {
+            //    elementTimetable.querySelector('svg').classList.remove("shake")
+            //}, 600)
         } else {
+            elmTimtbl = elementTimetable.querySelector('img')
             console.log("timetbl img")
             elementTimetable.querySelector('img').classList.add("shake")
-            setTimeout(function() {
-                elementTimetable.querySelector('img').classList.remove("shake")
-            }, 600)
+            //setTimeout(function () {
+            //    elementTimetable.querySelector('img').classList.remove("shake")
+            //}, 600)
         }
 
     } else {
@@ -4379,7 +4605,7 @@ function showInfoCSTM(bus, isInt, more, elementTimetable) {
     document.getElementById("049live2").style.display = "none"
     document.getElementById("831live1").style.display = "none"
     function getNextBusTimeLIVE(times) {
-        console.log("getting times", times);
+        //console.log("getting times", times);
         const currentTime = new Date();
         const currentHour = currentTime.getHours();
         const currentMinutes = currentTime.getMinutes();
@@ -4441,7 +4667,7 @@ function showInfoCSTM(bus, isInt, more, elementTimetable) {
                 return formatTime(item.sde_start1);
             });
 
-            console.log("Formatted times:", times); // Debug log
+            //console.log("Formatted times:", times); // Debug log
             console.warn(data)
 
             const nextBusTime = getNextBusTimeLIVE(times);
@@ -4498,6 +4724,7 @@ function showInfoCSTM(bus, isInt, more, elementTimetable) {
                 const div = document.getElementById("popIt");
                 div.scrollTop = div.scrollHeight;
                 document.getElementById("popIt").classList.add("active")
+                elmTimtbl.classList.remove("shake")
                 currentInt = setInterval(function () {
                     showInfoCSTM(bus, 'interval')
                 }, 25000)
@@ -4522,7 +4749,7 @@ function showInfoCSTM(bus, isInt, more, elementTimetable) {
                 document.getElementById('phone').style.transform = ''
                 document.getElementById("main-wrapper").style.overflow = 'auto'
                 isCustom = false
-                console.error(times,nextBusTime, getNextBuses(times, more))
+                console.error(times, nextBusTime, getNextBuses(times, more))
                 //document.getElementById(id).innerHTML = `<img width="auto" height="18px" src='${errorIconTime()}'>`;
             }
         })
@@ -4885,14 +5112,35 @@ function notifyWhen2Mins(bus, currentRemain, station, bypass, actionsElement) {
 
 }
 
-let theme = 'day'
+function hexToRgb(hex) {
+    // Remove the '#' if it's there
+    hex = hex.replace(/^#/, '');
 
+    // Convert 3-digit hex to 6-digit hex
+    if (hex.length === 3) {
+        hex = hex.split('').map(function (hexChar) {
+            return hexChar + hexChar;
+        }).join('');
+    }
+
+    // Extract the red, green, and blue values from the hex string
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+
+    return `${r}, ${g}, ${b}`;
+}
+
+let theme = 'day'
+let stockStatusBC = '#1C1B1E'
 function changeTheme() {
     if (theme === 'day') {
         sessionStorage.setItem("theme", 'dark')
         document.getElementById("themeName").innerText = 'Σκοτεινό'
         document.documentElement.style.setProperty('--theme-background', '18 18 18'); //night
         document.documentElement.style.setProperty('--theme-medium', '37, 37, 37');
+        document.documentElement.style.setProperty("--body-color", "0 0 0")
+        stockStatusBC = '#121212'
         setThemeColors('#121212')
         theme = 'night'
     } else {
@@ -4900,11 +5148,80 @@ function changeTheme() {
         document.getElementById("themeName").innerText = 'Προεπιλογή'
         document.documentElement.style.setProperty('--theme-medium', '46 44 53');
         document.documentElement.style.setProperty('--theme-background', '28 27 30'); //day
+        document.documentElement.style.setProperty("--body-color", "0 0 0")
         setThemeColors('#1C1B1E')
+        stockStatusBC = '#1C1B1E'
         theme = 'day'
     }
-
 }
+
+function customs() {
+    var script1 = document.createElement('script');
+    script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/tinycolor/1.3.0/tinycolor.min.js';
+    document.head.appendChild(script1);
+
+    var script3 = document.createElement('script');
+    script3.src = 'colorPickr.js';
+    document.head.appendChild(script3);
+
+
+    var link2 = document.createElement('link');
+    link2.rel = 'stylesheet';
+    link2.href = './pickr.css';
+    document.head.appendChild(link2);
+
+    var script4 = document.createElement('script');
+    script3.src = 'https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js';
+    document.head.appendChild(script4);
+    document.getElementById("customizeTheme").classList.add("active")
+}
+
+let steps = 0
+
+function stepUp() {
+    if (steps === 0) {
+        document.getElementById("themeName").innerText = 'Σε Επεξεργασία'
+        const inp = document.getElementById("hex").value
+        document.documentElement.style.setProperty('--theme-medium', hexToRgb(inp));
+        document.getElementById("stepsToCustom").innerHTML = 'BG<br>Nxt'
+        steps = 1
+    } else if (steps === 1) {
+        const inp = document.getElementById("hex").value
+        document.documentElement.style.setProperty('--theme-background', hexToRgb(inp)); //day
+        document.getElementById("stepsToCustom").innerHTML = 'BODY<br>Nxt'
+        steps = 2
+    } else if (steps === 2) {
+        const inp = document.getElementById("hex").value
+        document.documentElement.style.setProperty("--body-color", hexToRgb(inp))
+        document.getElementById("stepsToCustom").innerHTML = 'STATUS<br>end'
+        steps = 3
+    } else if (steps === 3) {
+        document.getElementById("themeName").innerText = 'Προσαρμοσμένο'
+        const inp = document.getElementById("hex").value
+        setThemeColors(inp)
+        stockStatusBC = inp
+        document.getElementById("customizeTheme").classList.remove("active")
+    }
+}
+function setCustomTheme() {
+    document.getElementById("themeName").innerText = 'No config.vox'
+    document.documentElement.style.setProperty('--theme-medium', '46 44 53');
+    document.documentElement.style.setProperty('--theme-background', '28 27 30'); //day
+    document.documentElement.style.setProperty("--body-color", "0 0 0")
+    setThemeColors('#1C1B1E')
+    stockStatusBC = '#1C1B1E'
+    theme = 'day'
+    let userInput = prompt("Please enter something:");
+    if (userInput !== null) {
+        alert("You entered: " + userInput);
+    }
+}
+
+setInterval(function () {
+    if (document.getElementById("phone").classList.contains("out")) {
+        setThemeColors('#000000')
+    }
+}, 100)
 
 if (sessionStorage.getItem("theme") === 'dark') {
     theme = 'day'
@@ -4935,4 +5252,8 @@ function updateCountdown() {
     }
 }
 
-updateCountdown();
+
+
+
+//ΤΟΜΕΑΣ Δ ΠΑΝΑΓΙΤΣΑ
+//https://api.transitool.com/api/rin/get-next-scheduled-arrivals/20/v1.0/?t=gsa-000-xEt2lEOkD-&stop-ids=53&time-interval=60&agency-id=PIREAUS
