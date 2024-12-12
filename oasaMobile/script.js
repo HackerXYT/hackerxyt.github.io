@@ -5155,7 +5155,11 @@ function changeTheme() {
     }
 }
 
+let steps = 0
+
 function customs() {
+    steps = 0
+    document.getElementById("stepsToCustom").innerHTML = 'Med<br>Nxt'
     var script1 = document.createElement('script');
     script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/tinycolor/1.3.0/tinycolor.min.js';
     document.head.appendChild(script1);
@@ -5176,7 +5180,7 @@ function customs() {
     document.getElementById("customizeTheme").classList.add("active")
 }
 
-let steps = 0
+
 
 function stepUp() {
     if (steps === 0) {
