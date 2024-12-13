@@ -3607,7 +3607,10 @@ function intelligence() {
 <path d="M15 12C15.5523 12 16 11.3284 16 10.5C16 9.67157 15.5523 9 15 9C14.4477 9 14 9.67157 14 10.5C14 11.3284 14.4477 12 15 12Z" fill="#fff"/>
 <path d="M10 10.5C10 11.3284 9.55228 12 9 12C8.44772 12 8 11.3284 8 10.5C8 9.67157 8.44772 9 9 9C9.55228 9 10 9.67157 10 10.5Z" fill="#fff"/>
 </svg>`
-                    } else {
+                    } else if (toSpawn === "OASAERR") {
+                        toSpawn = `Σφάλμα`
+                    }
+                    else {
                         toSpawn += "'"
                     }
                     spawn.innerHTML += `<div id="busArrival-${stop.StopCode}-${stop.placement}" class="busArrival">
