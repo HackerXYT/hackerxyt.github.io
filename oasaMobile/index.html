@@ -191,7 +191,7 @@
     </style>
 
     <script>
-        var currentBuild = "1.80"
+        var currentBuild = "1.83"
         console.log(`%cCurrent Build: ${currentBuild}`, "color: green; font-family:sans-serif; font-size: 25px");
         window.onerror = function (message, source, lineno, colno, error) {
             try {
@@ -287,11 +287,11 @@
         };
 
         window.onerror = function (message, source, lineno, colno, error) {
-            
+
             console.error(`An OASA Error occurred: ${message} at ${source}:${lineno}:${colno}`);
             line = line + 1;
             document.getElementById("theDebug").innerHTML = document.getElementById("theDebug").innerHTML +
-                    `<br><span style="color:red;">[${line}]: An OASA Error occurred: ${message} at ${source}:${lineno}:${colno}</span>`;
+                `<br><span style="color:red;">[${line}]: An OASA Error occurred: ${message} at ${source}:${lineno}:${colno}</span>`;
             if (error) {
                 console.error('Stack trace:', error.stack);
             }
@@ -4687,24 +4687,18 @@
                                 stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </button>
-                    <button class="action moreOpt" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg"
-                            width="25px" height="25px" viewBox="0 0 32 32">
-                            <defs>
-                                <style>
-                                    .cls-1 {
-                                        fill: #fff;
-                                        stroke: #fff;
-                                        stroke-linecap: round;
-                                        stroke-linejoin: round;
-                                        stroke-width: 2px;
-                                    }
-                                </style>
-                            </defs>
-                            <g id="more">
-                                <circle class="cls-1" cx="16" cy="16" r="2" />
-                                <circle class="cls-1" cx="6" cy="16" r="2" />
-                                <circle class="cls-1" cx="26" cy="16" r="2" />
-                            </g>
+                    <button class="action moreOpt" onclick="showAllInStop('Παναγίτσα', 400254, this)"><svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M18.9698 3.75V7.25C18.9698 8.22 18.1898 9 17.2198 9H8.95987C8.56987 9 8.17985 8.85999 7.86985 8.62L5.67984 6.87C4.80984 6.17 4.80984 4.83 5.67984 4.13L7.86985 2.38C8.17985 2.14 8.56987 2 8.95987 2H17.2198C18.1898 2 18.9698 2.78 18.9698 3.75Z"
+                                fill="#292D32" />
+                            <path
+                                d="M18.3408 16.87L16.1608 18.62C15.8508 18.86 15.4608 19 15.0608 19H6.80078C5.83078 19 5.05078 18.22 5.05078 17.25V13.75C5.05078 12.78 5.83078 12 6.80078 12H15.0608C15.4608 12 15.8508 12.14 16.1608 12.38L18.3408 14.13C19.2208 14.83 19.2208 16.17 18.3408 16.87Z"
+                                fill="#292D32" />
+                            <path opacity="0.4" d="M12.75 9H11.25V12H12.75V9Z" fill="#292D32" />
+                            <path opacity="0.4"
+                                d="M15.75 22C15.75 22.41 15.41 22.75 15 22.75H9C8.59 22.75 8.25 22.41 8.25 22C8.25 21.59 8.59 21.25 9 21.25H11.25V19H12.75V21.25H15C15.41 21.25 15.75 21.59 15.75 22Z"
+                                fill="#292D32" />
                         </svg></button>
                 </div>
             </div>
@@ -4724,24 +4718,18 @@
                                 d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10"
                                 stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg></button>
-                    <button class="action moreOpt" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg"
-                            width="25px" height="25px" viewBox="0 0 32 32">
-                            <defs>
-                                <style>
-                                    .cls-1 {
-                                        fill: #fff;
-                                        stroke: #fff;
-                                        stroke-linecap: round;
-                                        stroke-linejoin: round;
-                                        stroke-width: 2px;
-                                    }
-                                </style>
-                            </defs>
-                            <g id="more">
-                                <circle class="cls-1" cx="16" cy="16" r="2" />
-                                <circle class="cls-1" cx="6" cy="16" r="2" />
-                                <circle class="cls-1" cx="26" cy="16" r="2" />
-                            </g>
+                        <button class="action moreOpt" onclick="showAllInStop('Γούναρη', 400452, this)"><svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M18.9698 3.75V7.25C18.9698 8.22 18.1898 9 17.2198 9H8.95987C8.56987 9 8.17985 8.85999 7.86985 8.62L5.67984 6.87C4.80984 6.17 4.80984 4.83 5.67984 4.13L7.86985 2.38C8.17985 2.14 8.56987 2 8.95987 2H17.2198C18.1898 2 18.9698 2.78 18.9698 3.75Z"
+                                fill="#292D32" />
+                            <path
+                                d="M18.3408 16.87L16.1608 18.62C15.8508 18.86 15.4608 19 15.0608 19H6.80078C5.83078 19 5.05078 18.22 5.05078 17.25V13.75C5.05078 12.78 5.83078 12 6.80078 12H15.0608C15.4608 12 15.8508 12.14 16.1608 12.38L18.3408 14.13C19.2208 14.83 19.2208 16.17 18.3408 16.87Z"
+                                fill="#292D32" />
+                            <path opacity="0.4" d="M12.75 9H11.25V12H12.75V9Z" fill="#292D32" />
+                            <path opacity="0.4"
+                                d="M15.75 22C15.75 22.41 15.41 22.75 15 22.75H9C8.59 22.75 8.25 22.41 8.25 22C8.25 21.59 8.59 21.25 9 21.25H11.25V19H12.75V21.25H15C15.41 21.25 15.75 21.59 15.75 22Z"
+                                fill="#292D32" />
                         </svg></button>
                 </div>
             </div>
@@ -4760,24 +4748,18 @@
                                 d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10"
                                 stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg></button>
-                    <button class="action moreOpt" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg"
-                            width="25px" height="25px" viewBox="0 0 32 32">
-                            <defs>
-                                <style>
-                                    .cls-1 {
-                                        fill: #fff;
-                                        stroke: #fff;
-                                        stroke-linecap: round;
-                                        stroke-linejoin: round;
-                                        stroke-width: 2px;
-                                    }
-                                </style>
-                            </defs>
-                            <g id="more">
-                                <circle class="cls-1" cx="16" cy="16" r="2" />
-                                <circle class="cls-1" cx="6" cy="16" r="2" />
-                                <circle class="cls-1" cx="26" cy="16" r="2" />
-                            </g>
+                        <button class="action moreOpt" onclick="showAllInStop('Κοραή',400004, this)"><svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M18.9698 3.75V7.25C18.9698 8.22 18.1898 9 17.2198 9H8.95987C8.56987 9 8.17985 8.85999 7.86985 8.62L5.67984 6.87C4.80984 6.17 4.80984 4.83 5.67984 4.13L7.86985 2.38C8.17985 2.14 8.56987 2 8.95987 2H17.2198C18.1898 2 18.9698 2.78 18.9698 3.75Z"
+                                fill="#292D32" />
+                            <path
+                                d="M18.3408 16.87L16.1608 18.62C15.8508 18.86 15.4608 19 15.0608 19H6.80078C5.83078 19 5.05078 18.22 5.05078 17.25V13.75C5.05078 12.78 5.83078 12 6.80078 12H15.0608C15.4608 12 15.8508 12.14 16.1608 12.38L18.3408 14.13C19.2208 14.83 19.2208 16.17 18.3408 16.87Z"
+                                fill="#292D32" />
+                            <path opacity="0.4" d="M12.75 9H11.25V12H12.75V9Z" fill="#292D32" />
+                            <path opacity="0.4"
+                                d="M15.75 22C15.75 22.41 15.41 22.75 15 22.75H9C8.59 22.75 8.25 22.41 8.25 22C8.25 21.59 8.59 21.25 9 21.25H11.25V19H12.75V21.25H15C15.41 21.25 15.75 21.59 15.75 22Z"
+                                fill="#292D32" />
                         </svg></button>
                 </div>
             </div>
@@ -4797,24 +4779,18 @@
                                 d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10"
                                 stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg></button>
-                    <button class="action moreOpt" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg"
-                            width="25px" height="25px" viewBox="0 0 32 32">
-                            <defs>
-                                <style>
-                                    .cls-1 {
-                                        fill: #fff;
-                                        stroke: #fff;
-                                        stroke-linecap: round;
-                                        stroke-linejoin: round;
-                                        stroke-width: 2px;
-                                    }
-                                </style>
-                            </defs>
-                            <g id="more">
-                                <circle class="cls-1" cx="16" cy="16" r="2" />
-                                <circle class="cls-1" cx="6" cy="16" r="2" />
-                                <circle class="cls-1" cx="26" cy="16" r="2" />
-                            </g>
+                        <button class="action moreOpt" onclick="showAllInStop('Κεράνης',400110, this)"><svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M18.9698 3.75V7.25C18.9698 8.22 18.1898 9 17.2198 9H8.95987C8.56987 9 8.17985 8.85999 7.86985 8.62L5.67984 6.87C4.80984 6.17 4.80984 4.83 5.67984 4.13L7.86985 2.38C8.17985 2.14 8.56987 2 8.95987 2H17.2198C18.1898 2 18.9698 2.78 18.9698 3.75Z"
+                                fill="#292D32" />
+                            <path
+                                d="M18.3408 16.87L16.1608 18.62C15.8508 18.86 15.4608 19 15.0608 19H6.80078C5.83078 19 5.05078 18.22 5.05078 17.25V13.75C5.05078 12.78 5.83078 12 6.80078 12H15.0608C15.4608 12 15.8508 12.14 16.1608 12.38L18.3408 14.13C19.2208 14.83 19.2208 16.17 18.3408 16.87Z"
+                                fill="#292D32" />
+                            <path opacity="0.4" d="M12.75 9H11.25V12H12.75V9Z" fill="#292D32" />
+                            <path opacity="0.4"
+                                d="M15.75 22C15.75 22.41 15.41 22.75 15 22.75H9C8.59 22.75 8.25 22.41 8.25 22C8.25 21.59 8.59 21.25 9 21.25H11.25V19H12.75V21.25H15C15.41 21.25 15.75 21.59 15.75 22Z"
+                                fill="#292D32" />
                         </svg></button>
                 </div>
             </div>
@@ -4834,24 +4810,18 @@
                                 d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10"
                                 stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg></button>
-                    <button class="action moreOpt" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg"
-                            width="25px" height="25px" viewBox="0 0 32 32">
-                            <defs>
-                                <style>
-                                    .cls-1 {
-                                        fill: #fff;
-                                        stroke: #fff;
-                                        stroke-linecap: round;
-                                        stroke-linejoin: round;
-                                        stroke-width: 2px;
-                                    }
-                                </style>
-                            </defs>
-                            <g id="more">
-                                <circle class="cls-1" cx="16" cy="16" r="2" />
-                                <circle class="cls-1" cx="6" cy="16" r="2" />
-                                <circle class="cls-1" cx="26" cy="16" r="2" />
-                            </g>
+                        <button class="action moreOpt" onclick="showAllInStop('Δημοτικό Θέατρο', 400506, this)"><svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M18.9698 3.75V7.25C18.9698 8.22 18.1898 9 17.2198 9H8.95987C8.56987 9 8.17985 8.85999 7.86985 8.62L5.67984 6.87C4.80984 6.17 4.80984 4.83 5.67984 4.13L7.86985 2.38C8.17985 2.14 8.56987 2 8.95987 2H17.2198C18.1898 2 18.9698 2.78 18.9698 3.75Z"
+                                fill="#292D32" />
+                            <path
+                                d="M18.3408 16.87L16.1608 18.62C15.8508 18.86 15.4608 19 15.0608 19H6.80078C5.83078 19 5.05078 18.22 5.05078 17.25V13.75C5.05078 12.78 5.83078 12 6.80078 12H15.0608C15.4608 12 15.8508 12.14 16.1608 12.38L18.3408 14.13C19.2208 14.83 19.2208 16.17 18.3408 16.87Z"
+                                fill="#292D32" />
+                            <path opacity="0.4" d="M12.75 9H11.25V12H12.75V9Z" fill="#292D32" />
+                            <path opacity="0.4"
+                                d="M15.75 22C15.75 22.41 15.41 22.75 15 22.75H9C8.59 22.75 8.25 22.41 8.25 22C8.25 21.59 8.59 21.25 9 21.25H11.25V19H12.75V21.25H15C15.41 21.25 15.75 21.59 15.75 22Z"
+                                fill="#292D32" />
                         </svg></button>
                 </div>
             </div>
@@ -4870,24 +4840,18 @@
                                 d="M5.06152 12C5.55362 8.05369 8.92001 5 12.9996 5C17.4179 5 20.9996 8.58172 20.9996 13C20.9996 17.4183 17.4179 21 12.9996 21H8M13 13V9M11 3H15M3 15H8M5 18H10"
                                 stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg></button>
-                    <button class="action moreOpt" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg"
-                            width="25px" height="25px" viewBox="0 0 32 32">
-                            <defs>
-                                <style>
-                                    .cls-1 {
-                                        fill: #fff;
-                                        stroke: #fff;
-                                        stroke-linecap: round;
-                                        stroke-linejoin: round;
-                                        stroke-width: 2px;
-                                    }
-                                </style>
-                            </defs>
-                            <g id="more">
-                                <circle class="cls-1" cx="16" cy="16" r="2" />
-                                <circle class="cls-1" cx="6" cy="16" r="2" />
-                                <circle class="cls-1" cx="26" cy="16" r="2" />
-                            </g>
+                        <button class="action moreOpt" onclick="showAllInStop('Εθνικής Αντιστάσεως', 400451, this)"><svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M18.9698 3.75V7.25C18.9698 8.22 18.1898 9 17.2198 9H8.95987C8.56987 9 8.17985 8.85999 7.86985 8.62L5.67984 6.87C4.80984 6.17 4.80984 4.83 5.67984 4.13L7.86985 2.38C8.17985 2.14 8.56987 2 8.95987 2H17.2198C18.1898 2 18.9698 2.78 18.9698 3.75Z"
+                                fill="#292D32" />
+                            <path
+                                d="M18.3408 16.87L16.1608 18.62C15.8508 18.86 15.4608 19 15.0608 19H6.80078C5.83078 19 5.05078 18.22 5.05078 17.25V13.75C5.05078 12.78 5.83078 12 6.80078 12H15.0608C15.4608 12 15.8508 12.14 16.1608 12.38L18.3408 14.13C19.2208 14.83 19.2208 16.17 18.3408 16.87Z"
+                                fill="#292D32" />
+                            <path opacity="0.4" d="M12.75 9H11.25V12H12.75V9Z" fill="#292D32" />
+                            <path opacity="0.4"
+                                d="M15.75 22C15.75 22.41 15.41 22.75 15 22.75H9C8.59 22.75 8.25 22.41 8.25 22C8.25 21.59 8.59 21.25 9 21.25H11.25V19H12.75V21.25H15C15.41 21.25 15.75 21.59 15.75 22Z"
+                                fill="#292D32" />
                         </svg></button>
                 </div>
             </div>
@@ -5090,8 +5054,8 @@
         </div>
     </div>
     <div id="customizeTheme" class="sliding">
-        <div onclick="document.getElementById('customizeTheme').classList.remove('active')" class="back"><svg xmlns="http://www.w3.org/2000/svg" width="25px"
-                height="25px" viewBox="0 0 24 24" fill="none">
+        <div onclick="document.getElementById('customizeTheme').classList.remove('active')" class="back"><svg
+                xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                 <path
                     d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
                     fill="#fff" />
@@ -5100,49 +5064,49 @@
         <div style="margin-top: 15px;">
             <div class="color-picker-panel">
                 <div class="panel-row">
-                  <div class="swatches default-swatches"></div>
-                  <button onclick="stepUp()" id="stepsToCustom" class="button eyedropper">Med<br>Nxt</button>
+                    <div class="swatches default-swatches"></div>
+                    <button onclick="stepUp()" id="stepsToCustom" class="button eyedropper">Med<br>Nxt</button>
                 </div>
                 <div class="panel-row">
-                  <div class="spectrum-map">
-                    <button id="spectrum-cursor" class="color-cursor"></button>
-                    <canvas id="spectrum-canvas"></canvas>
-                  </div>
-                  <div class="hue-map">
-                    <button id="hue-cursor" class="color-cursor"></button>
-                    <canvas id="hue-canvas"></canvas>
-                  </div>
+                    <div class="spectrum-map">
+                        <button id="spectrum-cursor" class="color-cursor"></button>
+                        <canvas id="spectrum-canvas"></canvas>
+                    </div>
+                    <div class="hue-map">
+                        <button id="hue-cursor" class="color-cursor"></button>
+                        <canvas id="hue-canvas"></canvas>
+                    </div>
                 </div>
                 <div class="panel-row">
-                  <div id="rgb-fields" class="field-group value-fields rgb-fields">
-                    <div class="field-group">
-                      <label for="" class="field-label">R:</label>
-                      <input type="number" max="255" min="0" id="red" class="field-input rgb-input"/>
+                    <div id="rgb-fields" class="field-group value-fields rgb-fields">
+                        <div class="field-group">
+                            <label for="" class="field-label">R:</label>
+                            <input type="number" max="255" min="0" id="red" class="field-input rgb-input" />
+                        </div>
+                        <div class="field-group">
+                            <label for="" class="field-label">G:</label>
+                            <input type="number" max="255" min="0" id="green" class="field-input rgb-input" />
+                        </div>
+                        <div class="field-group">
+                            <label for="" class="field-label">B:</label>
+                            <input type="number" max="255" min="0" id="blue" class="field-input rgb-input" />
+                        </div>
                     </div>
-                    <div class="field-group">
-                      <label for="" class="field-label">G:</label>
-                      <input type="number" max="255" min="0" id="green" class="field-input rgb-input"/>
+                    <div id="hex-field" class="field-group value-fields hex-field active">
+                        <label for="" class="field-label">Hex:</label>
+                        <input type="text" id="hex" class="field-input" />
                     </div>
-                    <div class="field-group">
-                      <label for="" class="field-label">B:</label>
-                      <input type="number" max="255" min="0" id="blue" class="field-input rgb-input"/>
-                    </div>
-                  </div>
-                  <div id="hex-field" class="field-group value-fields hex-field active">
-                    <label for="" class="field-label">Hex:</label>
-                    <input type="text" id="hex" class="field-input"/>
-                  </div>
-                  <button id="mode-toggle" class="button mode-toggle" style="display: none">Mode</button>
+                    <button id="mode-toggle" class="button mode-toggle" style="display: none">Mode</button>
                 </div>
                 <div class="panel-row">
-                  <h2 class="panel-header">User Colors</h2>
-                  <div id="user-swatches" class="swatches custom-swatches">
-                  </div>
-                  <button id="add-swatch" class="button add-swatch">
-                    <span id="color-indicator" class="color-indicator"></span><span>Add to Swatches</span>
-                  </button>
+                    <h2 class="panel-header">User Colors</h2>
+                    <div id="user-swatches" class="swatches custom-swatches">
+                    </div>
+                    <button id="add-swatch" class="button add-swatch">
+                        <span id="color-indicator" class="color-indicator"></span><span>Add to Swatches</span>
+                    </button>
                 </div>
-              </div>
+            </div>
         </div>
 
     </div>

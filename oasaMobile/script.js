@@ -508,8 +508,32 @@ function showInfo(bus, isInt, more) {
         document.getElementById("16defTime").style.display = ""
         document.getElementById("16gounTime").style.display = ""
         const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
+        console.log("Preworked [remains]:", bus, times)
         const remains = getNextBusesPanagitsa(times, more)
-        console.log(remains)
+        console.log("Bus Remains:", bus, remains)
+
+        //Previous Bus Time Code
+        const previous = getPreviousBuses(times)
+        console.log('Previous Bus Times [remains]:', bus, previous)
+        var previousTimeBox = document.createElement('div');
+        previousTimeBox.className = 'timeBox past';
+
+        if (previous[0]) {
+            const value = previous[0].time;
+            const currentTime = new Date();
+            const [hours, minutes] = value.split(':').map(Number);
+            const targetTime = new Date();
+            targetTime.setHours(hours, minutes, 0, 0);
+            const diffInMinutes = (currentTime - targetTime) / (1000 * 60);
+            const result = diffInMinutes < 90 ? 'Σε κίνηση' : 'Περασμένο';
+            var textNode = document.createTextNode(result);
+            previousTimeBox.appendChild(textNode);
+            var span = document.createElement('span');
+            span.innerHTML = `<vox style="text-decoration: line-through;">${previous[0].time}</vox><br><span style='font-size: 0.9rem;margin-top:4px;'>${previous[0].formatted}</span>`;
+            previousTimeBox.appendChild(span);
+            document.getElementById("evoxBased").appendChild(previousTimeBox);
+        }
+
         remains.forEach(function (remainTime) {
             // Create the main div element with the class 'timeBox'
             var timeBox = document.createElement('div');
@@ -817,6 +841,33 @@ function showInfo(bus, isInt, more) {
         document.getElementById("049live2").style.display = ""
         const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
         const remains = getNextBuses(times, more)
+        console.log("Preworked [remains]:", bus, times)
+
+        //Previous Bus Time Code
+        const previous = getPreviousBuses(times)
+        console.log('Previous Bus Times [remains]:', bus, previous)
+        var previousTimeBox = document.createElement('div');
+        previousTimeBox.className = 'timeBox past';
+
+        if (previous[0]) {
+            const value = previous[0].time;
+            const currentTime = new Date();
+            const [hours, minutes] = value.split(':').map(Number);
+            const targetTime = new Date();
+            targetTime.setHours(hours, minutes, 0, 0);
+            const diffInMinutes = (currentTime - targetTime) / (1000 * 60);
+            const result = diffInMinutes < 90 ? 'Σε κίνηση' : 'Περασμένο';
+            var textNode = document.createTextNode(result);
+            previousTimeBox.appendChild(textNode);
+            var span = document.createElement('span');
+            span.innerHTML = `<vox style="text-decoration: line-through;">${previous[0].time}</vox><br><span style='font-size: 0.9rem;margin-top:4px;'>${previous[0].formatted}</span>`;
+            previousTimeBox.appendChild(span);
+            document.getElementById("evoxBased").appendChild(previousTimeBox);
+        }
+
+
+        console.log('Previous Bus Times [remains]:', bus, previous)
+        console.log("Bus Remains:", bus, remains)
         console.log(remains)
         remains.forEach(function (remainTime) {
             // Create the main div element with the class 'timeBox'
@@ -902,6 +953,27 @@ function showInfo(bus, isInt, more) {
         const remains = getNextBuses(times, more)
         console.log("KOAGUN", times)
         console.log(remains)
+        //Previous Bus Time Code
+        const previous = getPreviousBuses(times)
+        console.log('Previous Bus Times [remains]:', bus, previous)
+        var previousTimeBox = document.createElement('div');
+        previousTimeBox.className = 'timeBox past';
+
+        if (previous[0]) {
+            const value = previous[0].time;
+            const currentTime = new Date();
+            const [hours, minutes] = value.split(':').map(Number);
+            const targetTime = new Date();
+            targetTime.setHours(hours, minutes, 0, 0);
+            const diffInMinutes = (currentTime - targetTime) / (1000 * 60);
+            const result = diffInMinutes < 90 ? 'Σε κίνηση' : 'Περασμένο';
+            var textNode = document.createTextNode(result);
+            previousTimeBox.appendChild(textNode);
+            var span = document.createElement('span');
+            span.innerHTML = `<vox style="text-decoration: line-through;">${previous[0].time}</vox><br><span style='font-size: 0.9rem;margin-top:4px;'>${previous[0].formatted}</span>`;
+            previousTimeBox.appendChild(span);
+            document.getElementById("evoxBased").appendChild(previousTimeBox);
+        }
         remains.forEach(function (remainTime) {
             // Create the main div element with the class 'timeBox'
             var timeBox = document.createElement('div');
@@ -982,6 +1054,27 @@ function showInfo(bus, isInt, more) {
         const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
         const remains = getNextBuses(times, more)
         console.log(remains)
+        //Previous Bus Time Code
+        const previous = getPreviousBuses(times)
+        console.log('Previous Bus Times [remains]:', bus, previous)
+        var previousTimeBox = document.createElement('div');
+        previousTimeBox.className = 'timeBox past';
+
+        if (previous[0]) {
+            const value = previous[0].time;
+            const currentTime = new Date();
+            const [hours, minutes] = value.split(':').map(Number);
+            const targetTime = new Date();
+            targetTime.setHours(hours, minutes, 0, 0);
+            const diffInMinutes = (currentTime - targetTime) / (1000 * 60);
+            const result = diffInMinutes < 90 ? 'Σε κίνηση' : 'Περασμένο';
+            var textNode = document.createTextNode(result);
+            previousTimeBox.appendChild(textNode);
+            var span = document.createElement('span');
+            span.innerHTML = `<vox style="text-decoration: line-through;">${previous[0].time}</vox><br><span style='font-size: 0.9rem;margin-top:4px;'>${previous[0].formatted}</span>`;
+            previousTimeBox.appendChild(span);
+            document.getElementById("evoxBased").appendChild(previousTimeBox);
+        }
         remains.forEach(function (remainTime) {
             // Create the main div element with the class 'timeBox'
             var timeBox = document.createElement('div');
@@ -1024,6 +1117,27 @@ function showInfo(bus, isInt, more) {
         const times = JSON.parse(localStorage.getItem(`${bus}_Times`))
         const remains = getNextBuses(times, more)
         console.log(remains)
+        //Previous Bus Time Code
+        const previous = getPreviousBuses(times)
+        console.log('Previous Bus Times [remains]:', bus, previous)
+        var previousTimeBox = document.createElement('div');
+        previousTimeBox.className = 'timeBox past';
+
+        if (previous[0]) {
+            const value = previous[0].time;
+            const currentTime = new Date();
+            const [hours, minutes] = value.split(':').map(Number);
+            const targetTime = new Date();
+            targetTime.setHours(hours, minutes, 0, 0);
+            const diffInMinutes = (currentTime - targetTime) / (1000 * 60);
+            const result = diffInMinutes < 90 ? 'Σε κίνηση' : 'Περασμένο';
+            var textNode = document.createTextNode(result);
+            previousTimeBox.appendChild(textNode);
+            var span = document.createElement('span');
+            span.innerHTML = `<vox style="text-decoration: line-through;">${previous[0].time}</vox><br><span style='font-size: 0.9rem;margin-top:4px;'>${previous[0].formatted}</span>`;
+            previousTimeBox.appendChild(span);
+            document.getElementById("evoxBased").appendChild(previousTimeBox);
+        }
         remains.forEach(function (remainTime) {
             // Create the main div element with the class 'timeBox'
             var timeBox = document.createElement('div');
@@ -1079,6 +1193,62 @@ function showInfo(bus, isInt, more) {
 
 
 }
+
+function getPreviousBuses(times, more) {
+    const countToLoad = more || 7; // Default to 7 if `more` is not provided
+
+    const now = new Date();
+    const currentTime = now.getHours() * 60 + now.getMinutes(); // Current time in minutes since midnight
+
+    const busTimes = times.map(time => {
+        const [hours, minutes] = time.split(':').map(Number);
+        const busTime = hours * 60 + minutes; // Bus time in minutes since midnight
+        const diff = currentTime - busTime; // Difference in minutes (negative for future buses, positive for past buses)
+
+        return {
+            time,
+            isPast: busTime < currentTime, // Mark as past if bus time is earlier than current time
+            remainingTime: diff // Positive for past buses
+        };
+    });
+
+    // Filter only past buses
+    const pastBuses = busTimes.filter(bus => bus.isPast);
+
+    // Sort past buses in descending order (most recent past buses first)
+    pastBuses.sort((a, b) => a.remainingTime - b.remainingTime);
+
+    // Take the last `countToLoad` past buses
+    const previousBuses = pastBuses.slice(0, countToLoad).map(bus => {
+        const diff = bus.remainingTime; // Use positive remaining time for formatting
+        let formattedRemainingTime;
+
+        if (diff >= 60) {
+            let hours = Math.floor(diff / 60);
+            let remainingMinutes = diff % 60;
+
+            if (remainingMinutes === 0) {
+                formattedRemainingTime = hours === 1
+                    ? `πριν ${hours} ώρα`
+                    : `πριν ${hours} ώρες`;
+            } else {
+                formattedRemainingTime = hours === 1
+                    ? `πριν ${hours} ώρα ${remainingMinutes} λεπτά`
+                    : `πριν ${hours} ώρες ${remainingMinutes} λεπτά`;
+            }
+        } else {
+            formattedRemainingTime = `πριν ${diff} λεπτά`;
+        }
+
+        return { time: bus.time, formatted: formattedRemainingTime }
+        //`${bus.time}`;// - ${formattedRemainingTime}
+    });
+
+    return previousBuses;
+}
+
+
+
 
 function getNextBuses(times, more) {
 
@@ -3287,6 +3457,75 @@ function findBus(id, el) {
     }
 }
 
+function showAllInStop(name, code, el) {
+    if (name && code) {
+        el.innerHTML = `<svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+   width="25px" height="25px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+  <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+    s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+    c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+  <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+    C22.32,8.481,24.301,9.057,26.013,10.047z">
+    <animateTransform attributeType="xml"
+      attributeName="transform"
+      type="rotate"
+      from="0 20 20"
+      to="360 20 20"
+      dur="0.4s"
+      repeatCount="indefinite"/>
+    </path>
+  </svg>`
+        activeStop.code = code
+        activeStop.name = name
+        showCurrentStop('deleteAfter', el)
+    }
+}
+
+function getStopInfo(stopA) {
+    return new Promise((resolve, reject) => {
+        const getStops = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`);
+        fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${getStops}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    const working = data[0].route_code;
+                    const stopsFinal = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${working}&keyOrigin=evoxEpsilon`);
+                    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stopsFinal}`)
+                        .then(response => response.json())
+                        .then(bata => {
+                            let foundStop = null;
+                            bata.stops.forEach(stop => {
+                                if (stop.StopDescr === stopA) {
+                                    foundStop = {
+                                        stopCode: stop.StopCode,
+                                        lineCode: lineCode,
+                                        StopDescr: stop.StopDescr,
+                                        StopDescrUI: capitalizeWords(stop.StopDescr)
+                                    };
+                                }
+                            });
+                            if (foundStop) {
+                                resolve(foundStop);
+                            } else {
+                                reject('Stop not found');
+                            }
+                        })
+                        .catch(error => {
+                            console.log("FindStops [2] error:", error);
+                            reject(error);
+                        });
+                } else {
+                    reject('No data found');
+                }
+            })
+            .catch(error => {
+                console.log("FindStops EXT [1] error:", error);
+                reject(error);
+            });
+    });
+}
+
+
 function capitalizeWords(str) {
     return str
         .toLowerCase() // Ensure the rest of the letters are lowercase
@@ -4773,7 +5012,7 @@ function timetable(el) {
     showInfoCSTM(activeBusPage, null, null, el)
 }
 
-function showCurrentStop() {
+function showCurrentStop(customAction, popupEl) {
     const stopCode = activeStop.code
     const stopName = activeStop.name
 
@@ -4805,7 +5044,7 @@ function showCurrentStop() {
                     document.getElementById("049live1").style.display = "none"
                     document.getElementById("049live2").style.display = "none"
                     document.getElementById("831live1").style.display = "none"
-                    document.getElementById("whatBus").innerHTML = `Κανένα<br>Στάση: ${capitalizeWords(stopName)}`
+                    document.getElementById("whatBus").innerHTML = `Στάση: ${capitalizeWords(stopName)}`
                     document.getElementById("evoxBased").innerHTML = ""
                     document.getElementById("16defTime").style.display = "none"
                     document.getElementById("16gounTime").style.display = "none"
@@ -4813,7 +5052,8 @@ function showCurrentStop() {
                     document.getElementById("049live2").style.display = "none"
                     document.getElementById("831live1").style.display = "none"
                     document.getElementById('alert').classList.remove('active')
-                    let matchFound = false; // Flag to track if a match is found
+                    // Flag to track if a match is found
+                    let matchFound = false;
 
 
 
@@ -4862,6 +5102,25 @@ function showCurrentStop() {
                                 matchFound = true; // Set flag to true if a match is found
                             }
                         });
+                        if (customAction === 'deleteAfter') {
+                            activeStop = {
+                                "name": null,
+                                "code": null
+                            }
+                            popupEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M18.9698 3.75V7.25C18.9698 8.22 18.1898 9 17.2198 9H8.95987C8.56987 9 8.17985 8.85999 7.86985 8.62L5.67984 6.87C4.80984 6.17 4.80984 4.83 5.67984 4.13L7.86985 2.38C8.17985 2.14 8.56987 2 8.95987 2H17.2198C18.1898 2 18.9698 2.78 18.9698 3.75Z"
+                                fill="#292D32" />
+                            <path
+                                d="M18.3408 16.87L16.1608 18.62C15.8508 18.86 15.4608 19 15.0608 19H6.80078C5.83078 19 5.05078 18.22 5.05078 17.25V13.75C5.05078 12.78 5.83078 12 6.80078 12H15.0608C15.4608 12 15.8508 12.14 16.1608 12.38L18.3408 14.13C19.2208 14.83 19.2208 16.17 18.3408 16.87Z"
+                                fill="#292D32" />
+                            <path opacity="0.4" d="M12.75 9H11.25V12H12.75V9Z" fill="#292D32" />
+                            <path opacity="0.4"
+                                d="M15.75 22C15.75 22.41 15.41 22.75 15 22.75H9C8.59 22.75 8.25 22.41 8.25 22C8.25 21.59 8.59 21.25 9 21.25H11.25V19H12.75V21.25H15C15.41 21.25 15.75 21.59 15.75 22Z"
+                                fill="#292D32" />
+                        </svg>`
+                        }
                     })
 
                     //alert(finale)
@@ -4877,6 +5136,25 @@ function showCurrentStop() {
                     //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]");
                     console.log("getStop [65] error:", error);
                     document.getElementById("evoxBased").innerHTML = 'Κανένα Λεωφορείο Δεν Ερχέται Στην Τρέχουσα Στάση.'
+                    if (customAction === 'deleteAfter') {
+                        activeStop = {
+                            "name": null,
+                            "code": null
+                        }
+                        popupEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M18.9698 3.75V7.25C18.9698 8.22 18.1898 9 17.2198 9H8.95987C8.56987 9 8.17985 8.85999 7.86985 8.62L5.67984 6.87C4.80984 6.17 4.80984 4.83 5.67984 4.13L7.86985 2.38C8.17985 2.14 8.56987 2 8.95987 2H17.2198C18.1898 2 18.9698 2.78 18.9698 3.75Z"
+                                fill="#292D32" />
+                            <path
+                                d="M18.3408 16.87L16.1608 18.62C15.8508 18.86 15.4608 19 15.0608 19H6.80078C5.83078 19 5.05078 18.22 5.05078 17.25V13.75C5.05078 12.78 5.83078 12 6.80078 12H15.0608C15.4608 12 15.8508 12.14 16.1608 12.38L18.3408 14.13C19.2208 14.83 19.2208 16.17 18.3408 16.87Z"
+                                fill="#292D32" />
+                            <path opacity="0.4" d="M12.75 9H11.25V12H12.75V9Z" fill="#292D32" />
+                            <path opacity="0.4"
+                                d="M15.75 22C15.75 22.41 15.41 22.75 15 22.75H9C8.59 22.75 8.25 22.41 8.25 22C8.25 21.59 8.59 21.25 9 21.25H11.25V19H12.75V21.25H15C15.41 21.25 15.75 21.59 15.75 22Z"
+                                fill="#292D32" />
+                        </svg>`
+                    }
                 });
 
 
@@ -4885,6 +5163,25 @@ function showCurrentStop() {
         .catch(error => {
             //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]");
             console.log("getStop [63] error:", error);
+            if (customAction === 'deleteAfter') {
+                activeStop = {
+                    "name": null,
+                    "code": null
+                }
+                popupEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M18.9698 3.75V7.25C18.9698 8.22 18.1898 9 17.2198 9H8.95987C8.56987 9 8.17985 8.85999 7.86985 8.62L5.67984 6.87C4.80984 6.17 4.80984 4.83 5.67984 4.13L7.86985 2.38C8.17985 2.14 8.56987 2 8.95987 2H17.2198C18.1898 2 18.9698 2.78 18.9698 3.75Z"
+                                fill="#292D32" />
+                            <path
+                                d="M18.3408 16.87L16.1608 18.62C15.8508 18.86 15.4608 19 15.0608 19H6.80078C5.83078 19 5.05078 18.22 5.05078 17.25V13.75C5.05078 12.78 5.83078 12 6.80078 12H15.0608C15.4608 12 15.8508 12.14 16.1608 12.38L18.3408 14.13C19.2208 14.83 19.2208 16.17 18.3408 16.87Z"
+                                fill="#292D32" />
+                            <path opacity="0.4" d="M12.75 9H11.25V12H12.75V9Z" fill="#292D32" />
+                            <path opacity="0.4"
+                                d="M15.75 22C15.75 22.41 15.41 22.75 15 22.75H9C8.59 22.75 8.25 22.41 8.25 22C8.25 21.59 8.59 21.25 9 21.25H11.25V19H12.75V21.25H15C15.41 21.25 15.75 21.59 15.75 22Z"
+                                fill="#292D32" />
+                        </svg>`
+            }
         });
 
 }

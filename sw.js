@@ -20,13 +20,14 @@ const urlsToCache = [
 
 ];
 
-const STATIC_CACHE_NAME = 'static-cache-v16';
-const APP_CACHE_NAME = 'app-cache-v16';
+const STATIC_CACHE_NAME = 'static-cache-v17';
+const APP_CACHE_NAME = 'app-cache-v17';
 const CACHE_STATIC = [
   '/oasaMobile/',
   '/oasaMobile/index.html',
   '/oasaMobile/style.css',
   '/oasaMobile/default.css',
+  '/oasaMobile/live.css',
   '/oasaMobile/apple.png',
   '/oasaMobile/setup.png',
   '/oasaMobile/doodle.png',
@@ -61,7 +62,27 @@ const CACHE_STATIC = [
   '/oasaMobile/illu/7.png',
   '/oasaMobile/illu/8.png',
   '/oasaMobile/illu/9.png',
-  '/oasaMobile/illu/10.png'
+  '/oasaMobile/illu/10.png',
+  '/oasaMobile/illu/11.png',
+  '/oasaMobile/illu/12.png',
+  '/oasaMobile/illu/13.png',
+  '/oasaMobile/minimized.png',
+  '/oasaMobile/ready.png',
+  '/oasaMobile/wave.png',
+  '/oasaMobile/bus.png',
+  '/oasaMobile/complete.png',
+  '/oasaMobile/zzz.png',
+  '/evox-epsilon-beta/evox-logo-apple-simple.png',
+  '/oasaMobile/colorPickr.js',
+  '/oasaMobile/pickr.css',
+  '/oasaMobile/settings/carousel.png',
+  '/oasaMobile/settings/delete.png',
+  '/oasaMobile/settings/evox.png',
+  '/oasaMobile/settings/intelli.png',
+  '/oasaMobile/settings/status.png',
+  '/oasaMobile/settings/theme.png',
+  '/oasaMobile/settings/update.png',
+  '/oasaMobile/settings/version.png'
 ];
 const CACHE_APP = [
   '/oasaMobile/script.js'
