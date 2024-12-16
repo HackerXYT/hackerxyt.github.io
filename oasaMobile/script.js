@@ -5044,7 +5044,7 @@ function showCurrentStop(customAction, popupEl) {
                     document.getElementById("049live1").style.display = "none"
                     document.getElementById("049live2").style.display = "none"
                     document.getElementById("831live1").style.display = "none"
-                    document.getElementById("whatBus").innerHTML = `Στάση: ${capitalizeWords(stopName)}`
+                    document.getElementById("whatBus").innerHTML = `Κανένα<br>Στάση: ${capitalizeWords(stopName)}`
                     document.getElementById("evoxBased").innerHTML = ""
                     document.getElementById("16defTime").style.display = "none"
                     document.getElementById("16gounTime").style.display = "none"
