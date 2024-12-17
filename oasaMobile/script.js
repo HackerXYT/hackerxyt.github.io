@@ -3400,6 +3400,14 @@ function findBus(id, el) {
                         </svg>`
     }
 
+    if (id === 'T7' || id === 'Τ7') {
+        //alert("?")
+        el.querySelector('.loadingIndicatorNOCLASS').innerHTML = ''
+        processSTASY("Τ7")
+        return;
+    } else {
+        document.getElementById("showMore").style.display = null
+    }
     const lineIdToFind = id;
     let matchingLines = fullLine.filter(line => line.LineID === lineIdToFind);
     if (el) {
@@ -3480,6 +3488,114 @@ function showAllInStop(name, code, el) {
         showCurrentStop('deleteAfter', el)
     }
 }
+
+function processSTASY(id) {
+    if (id === 'Τ7' || id === "T7") {
+        document.getElementById("showMore").style.display = 'none';
+        document.getElementById("whatBus").innerHTML = 'ALPHA-T7-VOX';
+        document.getElementById("16defTime").style.display = "none";
+        document.getElementById("16gounTime").style.display = "none";
+        document.getElementById("049live1").style.display = "none";
+        document.getElementById("049live2").style.display = "none";
+        document.getElementById("831live1").style.display = "none";
+        document.getElementById("evoxBased").innerHTML = "";
+        document.getElementById("904live1").style.display = "none";
+        document.getElementById("popIt").classList.add("active");
+
+        fetch(`./T7BETA.json`)
+            .then(response => response.json())
+            .then(t7 => {
+                let readyJSON = {
+                    "future": [],
+                    "past": null // Initialize `past` as null
+                };
+
+                const now = new Date();
+
+                t7.evox_oasa.forEach(start => {
+                    start.times.forEach(timeStr => {
+                        const timeDate = parseTimeToDate(timeStr, now);
+                        if (timeDate >= now) {
+                            // Future times
+                            readyJSON.future.push({ time: timeStr, date: timeDate });
+                        } else {
+                            // Past times
+                            if (!readyJSON.past || timeDate > readyJSON.past.date) {
+                                readyJSON.past = { time: timeStr, date: timeDate }; // Store the latest past time
+                            }
+                        }
+                    });
+                });
+
+                // Sort future times in ascending order
+                readyJSON.future.sort((a, b) => a.date - b.date);
+                readyJSON.future = readyJSON.future.map(item => item.time);
+
+                // If there's a past time, set it as a string
+                if (readyJSON.past) {
+                    readyJSON.past = readyJSON.past.time; // Only return the time of the closest past time
+                }
+
+                console.log("Fixed Ready T7 JSON:", readyJSON);
+
+                // Display the fixed output
+                //document.getElementById("evoxBased").innerHTML = JSON.stringify(readyJSON, null, 2);
+                document.getElementById("evoxBased").innerHTML = '';
+                readyJSON.future.forEach(function (remainTime) {
+                    // Create the main div element with the class 'timeBox'
+                    var timeBox = document.createElement('div');
+                    timeBox.className = 'timeBox';
+                    //timeBox.onclick = function () {
+                    //    handleTimeBoxClick(this)
+                    //}
+
+                    let textNode;
+                    textNode = document.createTextNode('Ασκληπιείο Βούλας');
+
+
+                    // Append the text node to the main div element
+                    timeBox.appendChild(textNode);
+
+                    // Create the span element and set its content to '10m'
+                    var span = document.createElement('span');
+                    span.innerHTML = remainTime;
+
+                    // Append the span element to the main div element
+                    timeBox.appendChild(span);
+                    //if (localStorage.getItem("extVOASA")) {
+                    //    span.innerHTML += `<img src="arrow-down.svg" width="25px" height="25px">`
+                    //    var optDiv = document.createElement('div');
+                    //    optDiv.style.display = 'none'
+                    //    optDiv.style.height = 'auto'
+                    //    timeBox.appendChild(optDiv);
+                    //}
+
+                    // Optionally, append the timeBox to the body or another element in the DOM
+                    document.getElementById("evoxBased").appendChild(timeBox);
+                })
+            })
+            .catch(error => {
+                console.error("Error fetching or processing T7BETA.json:", error);
+            });
+    }
+}
+
+// Helper function: Parse time string and return a Date object
+function parseTimeToDate(timeString, now) {
+    const timeParts = timeString.match(/(\d{2}):(\d{2})/);
+    if (!timeParts) return null; // Invalid format
+    const [_, hours, minutes] = timeParts.map(Number);
+
+    const date = new Date(now);
+    date.setHours(hours, minutes, 0, 0);
+
+    // If time has passed today, shift it to tomorrow
+    if (date < now) {
+        date.setDate(date.getDate() + 1);
+    }
+    return date;
+}
+
 
 function getStopInfo(stopA) {
     return new Promise((resolve, reject) => {
@@ -3990,8 +4106,12 @@ document.getElementById('receiveEnter').addEventListener('input', function () {
         // Loop through each button and append it to the target div if the attribute contains the substring
         buttons.forEach(button => {
             const busValue = button.getAttribute('data-bus');
+            const busNameValue = button.getAttribute('data-name').toLocaleLowerCase();
             if (busValue.includes(substring)) {
                 // Clone the button to preserve the original
+                const buttonClone = button.cloneNode(true);
+                targetDiv.appendChild(buttonClone);
+            } else if (busNameValue.includes(substring)) {
                 const buttonClone = button.cloneNode(true);
                 targetDiv.appendChild(buttonClone);
             }
