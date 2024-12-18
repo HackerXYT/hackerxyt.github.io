@@ -20,8 +20,8 @@ const urlsToCache = [
 
 ];
 
-const STATIC_CACHE_NAME = 'static-cache-v19';
-const APP_CACHE_NAME = 'app-cache-v19';
+const STATIC_CACHE_NAME = 'static-cache-v20';
+const APP_CACHE_NAME = 'app-cache-v20';
 const CACHE_STATIC = [
   '/oasaMobile/',
   '/oasaMobile/index.html',
