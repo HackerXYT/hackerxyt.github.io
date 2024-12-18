@@ -2898,23 +2898,23 @@ function returnToHome2() {
     }
 }
 
-const myDiv = document.getElementById('recents');
-let touchStartX = 0;
-let touchEndX = 0;
+//const myDiv = document.getElementById('recents');
+//let touchStartX = 0;
+//let touchEndX = 0;
 
-myDiv.addEventListener('touchstart', function (event) {
-    const touch = event.touches[0];
-    touchStartX = touch.clientX;
-});
+//myDiv.addEventListener('touchstart', function (event) {
+//    const touch = event.touches[0];
+//    touchStartX = touch.clientX;
+//});
 
-myDiv.addEventListener('touchend', function (event) {
-    const touch = event.changedTouches[0];
-    touchEndX = touch.clientX;
-    handleSwipeGesture();
-});
+//myDiv.addEventListener('touchend', function (event) {
+//    const touch = event.changedTouches[0];
+//    touchEndX = touch.clientX;
+//    handleSwipeGesture();
+//});
 
 function handleSwipeGesture() {
-    const swipeThreshold = 30; // Minimum distance to consider it a swipe
+   const swipeThreshold = 30; // Minimum distance to consider it a swipe
     const swipeDistance = touchEndX - touchStartX;
 
     if (swipeDistance > swipeThreshold) {
