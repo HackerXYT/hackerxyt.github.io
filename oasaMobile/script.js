@@ -2821,10 +2821,71 @@ function showRecents() {
             }, 10000)
         });
 
+        loadDevices()
+
 
     } else {
         console.log("External V:", localStorage.getItem("extVOASA"))
     }
+}
+
+function loadDevices() {
+    const cont = document.getElementById("devices")
+    cont.innerHTML = `<svg class="fade-in-slide-up" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="20px" height="20px"
+                            viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+                            <path opacity="0.2" fill="#fff"
+                                d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                         s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                         c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" />
+                            <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                         C22.32,8.481,24.301,9.057,26.013,10.047z">
+                                <animateTransform attributeType="xml" attributeName="transform" type="rotate"
+                                    from="0 20 20" to="360 20 20" dur="0.3s" repeatCount="indefinite" />
+                            </path>
+                        </svg>`
+                        cont.style.display = null
+    fetch(`https://florida.evoxs.xyz/devices?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage. getItem("t50pswd"))}`)
+        .then(response => response.json())
+        .then(devs => {
+            cont.innerHTML = ''
+            devs.forEach(dev => {
+                if(dev.os) {
+                    let icon;
+                    let type;
+                    if(dev.os === 'macOS') {
+                        icon = './appleDevice.png'
+                        type = 'iPhone'
+                    } else if(dev.os === 'Android') {
+                        icon = './androidDevice.png'
+                        type = 'Android'
+                    } else {
+                        icon = './linuxDevice.png'
+                        type = 'Linux'
+                    }
+
+                    let add = ''
+                    if(dev.extV === localStorage.getItem("extVOASA")) {
+                        add = 'style="background-color:rgb(0, 92, 190)"'
+                    }
+                    cont.innerHTML = `${cont.innerHTML}<div ${add} onclick='alert("${dev.extV}")' class="option"><img src="${icon}">
+                        <span>${type}</span>
+                        <vo>${dev.last_used}</vo>
+                    </div>`
+                } else {
+                    cont.innerHTML = `${cont.innerHTML}<div onclick='alert("${dev.extV}")' class="option">
+                        <span>Unknown</span>
+                        <vo>${dev.extV}</vo>
+                    </div>`
+                }
+                
+            })
+        })
+        .catch(error => {
+            cont.style.display = 'none'
+            console.error("Error fetching or processing devices:", error);
+        });
+
 }
 
 function returnToHome2() {
