@@ -1,0 +1,837 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>oasa 2</title>
+    <meta charset="UTF-8">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple21.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="apple21.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="apple21.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="apple21.png">
+    <link rel="apple-touch-icon-precomposed" href="apple21.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: dark)">
+    <meta name="application-name" content="oasa 2">
+</head>
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        background-color: #f5f5f7;
+        padding: 10px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        transition: all 0.3s ease-in-out;
+
+    }
+
+    button {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        background-color: #007aff;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        text-transform: lowercase;
+        text-transform: capitalize;
+        margin-bottom: 10px;
+        position: relative;
+    }
+
+    button span {
+        font-size: 25px;
+        font-weight: bold;
+        margin-right: auto;
+        color: rgb(226, 226, 226);
+        /* Ensures the span stays on the left */
+        /* Adds padding for positioning */
+    }
+
+    button span.button-text {
+        font-size: 16px;
+        font-weight: inherit;
+        flex-grow: 1;
+        /* This makes the button text centered even with the span */
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    button span.button-text svg {
+        margin-left: 10px;
+    }
+
+    button vox svg {
+        margin-left: 10px;
+    }
+
+    button.red {
+        background-color: #d41212;
+    }
+
+    button.favoriteBus {
+        background-color: #A17BCA;
+    }
+
+    button:hover {
+        background-color: #005bbb;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    button.favoriteBus:hover {
+        background-color: #6c5189;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    button:active {
+        background-color: #003e7e;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transform: translateY(2px);
+    }
+
+    input {
+        padding: 12px 24px;
+        font-size: 16px;
+        border: 2px solid #d1d1d6;
+        border-radius: 12px;
+        background-color: #fff;
+        color: #333;
+        transition: all 0.3s ease;
+        outline: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 15px;
+        width: 100%;
+    }
+
+    input:focus {
+        border-color: #007aff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    input::placeholder {
+        color: #c7c7cc;
+    }
+
+    input:hover {
+        border-color: #b0b0b5;
+    }
+
+    input:active {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transform: translateY(2px);
+    }
+
+    .centeredTop {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .stopsSpawn {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #spawnHere {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    #searchHere {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    @keyframes fadeInSlideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+            /* Adjust the Y value for how far the element slides up */
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .fade-in-slide-up {
+        animation: fadeInSlideUp 0.5s ease forwards;
+        /* Adjust duration and timing function as needed */
+    }
+
+    .alert {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 35%;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        align-items: center;
+        overflow-x: hidden;
+        justify-content: center;
+        background: #313131;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 998;
+        box-sizing: border-box;
+        color: rgb(255, 255, 255);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(150%);
+        transition: transform 1s ease, opacity 1s ease, visibility 1s;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+
+    .alert.active {
+        opacity: 1;
+        /* Show the popup */
+        visibility: visible;
+        /* Show the popup */
+        transform: translateX(0);
+        /* Slide the popup into view */
+    }
+
+    .alert span {
+        font-size: 25px;
+        position: absolute;
+        top: 20px;
+        font-weight: bold;
+    }
+
+    .alert div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        font-size: 18px;
+    }
+
+    .alert p {
+        font-size: 16px;
+        margin: 0;
+        margin-top: -10px;
+        margin-bottom: 5px;
+    }
+
+    .alert button {
+        position: absolute;
+        bottom: 20px;
+        box-sizing: border-box;
+        padding: 10px;
+        width: 90%;
+    }
+
+    .favIcon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 999;
+    }
+</style>
+
+<body>
+    <div style="display: none;" onclick="favoriteCurrent()" id="favIcon" data-f="false" class="favIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M11.292 3.30809C10.8982 3.82224 10.4538 4.61551 9.80827 5.77355L9.48057 6.36141C9.46082 6.39684 9.44132 6.43194 9.42201 6.4667C9.12127 7.0079 8.86745 7.46469 8.45844 7.77518C8.04503 8.08901 7.54106 8.20227 6.95535 8.3339C6.91771 8.34235 6.87973 8.35089 6.84141 8.35956L6.20506 8.50354C4.94974 8.78757 4.09576 8.98299 3.51082 9.21351C2.94002 9.43845 2.81953 9.62275 2.77361 9.77044C2.72514 9.9263 2.7237 10.1647 3.06494 10.7068C3.41129 11.257 3.99558 11.9432 4.85011 12.9425L5.28393 13.4498C5.30914 13.4793 5.33413 13.5084 5.35886 13.5373C5.76188 14.0074 6.09791 14.3993 6.25205 14.895C6.40526 15.3877 6.35448 15.9054 6.29291 16.5331C6.28913 16.5716 6.28532 16.6105 6.2815 16.6499L6.21591 17.3267C6.08682 18.6589 5.99978 19.5762 6.02922 20.2369C6.05859 20.8965 6.1979 21.0788 6.30865 21.1628C6.40716 21.2376 6.58925 21.3204 7.18248 21.1504C7.78535 20.9777 8.58659 20.6111 9.76202 20.0699L10.3578 19.7956C10.3945 19.7787 10.4309 19.7619 10.4669 19.7452C11.0117 19.4934 11.4843 19.2748 12 19.2748C12.5157 19.2748 12.9883 19.4934 13.5331 19.7452C13.5692 19.7619 13.6055 19.7787 13.6422 19.7956L14.238 20.0699C15.4134 20.6111 16.2147 20.9777 16.8176 21.1504C17.4108 21.3204 17.5929 21.2376 17.6914 21.1628C17.8021 21.0788 17.9414 20.8965 17.9708 20.2369C18.0002 19.5762 17.9132 18.6589 17.7841 17.3267L17.7185 16.6499C17.7147 16.6105 17.7109 16.5716 17.7071 16.5331C17.6456 15.9054 17.5948 15.3877 17.748 14.895C17.9021 14.3993 18.2382 14.0074 18.6412 13.5372C18.6659 13.5084 18.6909 13.4793 18.7161 13.4498L19.1499 12.9425C20.0044 11.9432 20.5887 11.257 20.9351 10.7068C21.2763 10.1647 21.2749 9.9263 21.2264 9.77044C21.1805 9.62275 21.06 9.43845 20.4892 9.21351C19.9043 8.98299 19.0503 8.78757 17.795 8.50354L17.1586 8.35956C17.1203 8.35089 17.0823 8.34235 17.0447 8.33389C16.459 8.20227 15.955 8.08901 15.5416 7.77518C15.1326 7.46469 14.8788 7.0079 14.578 6.4667C14.5587 6.43194 14.5392 6.39684 14.5195 6.36141L14.1918 5.77355C13.5462 4.61551 13.1018 3.82224 12.7081 3.30809C12.3147 2.79443 12.1138 2.75 12 2.75C11.8863 2.75 11.6853 2.79443 11.292 3.30809ZM10.1011 2.3961C10.5777 1.77363 11.1669 1.25 12 1.25C12.8331 1.25 13.4223 1.77363 13.899 2.3961C14.3674 3.00773 14.864 3.89876 15.471 4.98776L15.8296 5.63106C16.2222 6.33523 16.3226 6.48482 16.4486 6.58044C16.5698 6.67247 16.7262 6.7238 17.4896 6.89654L18.1897 7.05492C19.3653 7.32088 20.3338 7.53999 21.0392 7.81796C21.7714 8.10651 22.4121 8.5318 22.6588 9.32502C22.9029 10.1101 22.6285 10.8323 22.2045 11.5059C21.7925 12.1604 21.1344 12.9298 20.3306 13.8698L19.8561 14.4247C19.3391 15.0292 19.2311 15.1772 19.1803 15.3404C19.1286 15.5069 19.1334 15.6992 19.2115 16.5052L19.2831 17.2433C19.4048 18.4994 19.5041 19.5236 19.4693 20.3037C19.434 21.0977 19.2536 21.8601 18.5984 22.3576C17.9308 22.8643 17.1542 22.8072 16.4044 22.5924C15.6774 22.3841 14.7711 21.9667 13.6705 21.46L13.0149 21.1581C12.2975 20.8278 12.1439 20.7748 12 20.7748C11.8561 20.7748 11.7025 20.8278 10.9852 21.1581L10.3295 21.46C9.22898 21.9667 8.32265 22.3841 7.59565 22.5924C6.84587 22.8072 6.0692 22.8643 5.40168 22.3576C4.7464 21.8601 4.56607 21.0977 4.5307 20.3037C4.49595 19.5236 4.59523 18.4993 4.71697 17.2433L4.7885 16.5052C4.8666 15.6992 4.87147 15.5069 4.81971 15.3404C4.76894 15.1772 4.66094 15.0292 4.14393 14.4247L3.66945 13.8698C2.8656 12.9299 2.20753 12.1604 1.79553 11.5059C1.37149 10.8323 1.09714 10.1101 1.34127 9.32502C1.58794 8.5318 2.22867 8.10651 2.96086 7.81796C3.66622 7.53999 4.63474 7.32088 5.81038 7.05492L5.87404 7.04052L6.51039 6.89654C7.27382 6.72381 7.43023 6.67247 7.55148 6.58044C7.67743 6.48482 7.77785 6.33523 8.17039 5.63106L8.52899 4.98775C9.13601 3.89876 9.63268 3.00773 10.1011 2.3961Z"
+                fill="#000" />
+        </svg>
+    </div>
+    <div class="centeredTop fade-in-slide-up">
+        <img onclick="showFavs()" src="doodle - Copy.png" style="height: 50px;">
+    </div>
+    <input class="fade-in-slide-up" type="text" id="getBusInput" placeholder="Αναζητήστε γραμμές λεωφορείων">
+    <button id="backIndex" style="display: none;margin-bottom: 15px;" onclick="back()" class="red">Πίσω</button>
+    <div id="spawnHere">
+        <svg class="fade-in-slide-up" id="indexLoading" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="25px" viewBox="0 0 40 40"
+            enable-background="new 0 0 40 40" xml:space="preserve">
+            <path opacity="0.2" fill="#000"
+                d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+     s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+     c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" />
+            <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+     C22.32,8.481,24.301,9.057,26.013,10.047z">
+                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 20 20"
+                    to="360 20 20" dur="0.3s" repeatCount="indefinite" />
+            </path>
+        </svg>
+    </div>
+    <div style="display: none;" id="searchHere">
+
+    </div>
+    <div style="display: none;" class="stopsSpawn" id="spawnStopsHere">
+
+    </div>
+
+    <div class="alert" id="alert">
+        <span>Λεωφορείο: <vox id="busLine"></vox></span>
+        <p>Ενεργά Λεωφορεία:</p>
+        <div id="activeBuses">
+        </div>
+        <button onclick="document.getElementById('alert').classList.remove('active')">Κλείσμο</button>
+    </div>
+</body>
+<script>
+    function capitalizeWords(str) {
+        return str
+            .toLowerCase() // Ensure the rest of the letters are lowercase
+            .replace(/h/g, 'η') // Replace all lowercase "h" with "η"
+            .split(' ') // Split the string into an array of words
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+            .join(' '); // Join the words back into a single string
+    }
+
+    function isNearEvery3Hours(proximityInMinutes = 5) {
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentMinutes = now.getMinutes();
+
+        // Find the closest multiple of 3 to the current hour
+        const closest3HourMark = Math.round(currentHour / 3) * 3;
+
+        // Create a Date object for that time (using today's date)
+        const closest3HourTime = new Date(now);
+        closest3HourTime.setHours(closest3HourMark, 0, 0, 0); // Set to nearest 3-hour mark, with minutes and seconds as 0
+
+        // Calculate the difference in minutes
+        const diffInMilliseconds = Math.abs(now - closest3HourTime);
+        const diffInMinutes = Math.floor(diffInMilliseconds / 60000); // 60000 ms = 1 minute
+
+        // Return true if the time is within the proximity
+        return diffInMinutes <= proximityInMinutes;
+    }
+
+    // Example usage
+    console.log(isNearEvery3Hours()); // Default proximity of 10 minutes
+    let activeBusPage = null
+    console.log("Welcome.")
+    fullLine = null
+    //https://telematics.oasa.gr/api/?act=webGetLines
+    //https://telematics.oasa.gr/api/?act=getLineName&p1=1076
+    const allLines = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetLines&keyOrigin=evoxEpsilon`);
+
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
+        .then(response => response.json())
+        .then(data => {
+            fullLine = data
+            if (data) {
+                //data.forEach(eachLine => {
+                //});
+                let lc = localStorage.getItem("oasa_favorites")
+                if (lc) {
+                    lc = JSON.parse(lc)
+                }
+                let linesPromises = data.map(eachLine => {
+                    return new Promise((resolve, reject) => {
+                        const logger = `${eachLine.LineDescr} [${eachLine.LineID}]`
+
+                        //console.log(logger)
+                        if (lc && lc.includes(eachLine.LineID)) {
+                            document.getElementById("spawnHere").innerHTML = `${document.getElementById("spawnHere").innerHTML}<button data-bus="${eachLine.LineID}" class="fade-in-slide-up favoriteBus" onclick="findBus('${eachLine.LineID}', this)"><span class="lineNOCLASS">${eachLine.LineID}</span><span class="button-text">${capitalizeWords(eachLine.LineDescr)}</span><vox class="loadingIndicatorNOCLASS"></vox></button>`
+                        } else {
+                            document.getElementById("spawnHere").innerHTML = `${document.getElementById("spawnHere").innerHTML}<button data-bus="${eachLine.LineID}" class="fade-in-slide-up" onclick="findBus('${eachLine.LineID}', this)"><span class="lineNOCLASS">${eachLine.LineID}</span><span class="button-text">${capitalizeWords(eachLine.LineDescr)}</span><vox class="loadingIndicatorNOCLASS"></vox></button>`
+                        }
+
+
+                        // Resolve the promise after the stop is processed
+                        resolve();
+                    });
+                });
+
+                // Wait for all promises to resolve (i.e., all stops are spawned)
+                Promise.all(linesPromises)
+                    .then(() => {
+                        // Code to run after all elements are spawned
+                        console.log('All lines have been spawned!');
+                        let element_b = document.getElementById('indexLoading');
+                        if (element_b) {
+                            element_b.remove();
+                        }
+                        // Add additional functionality here
+                    })
+                    .catch(err => {
+                        console.error('An error occurred while spawning stops:', err);
+                    });
+            }
+
+        })
+        .catch(error => {
+            console.log("All Lines Get Error:", error)
+            if (isNearEvery3Hours()) {
+                //alert(`Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.`)
+                document.getElementById("spawnHere").innerHTML = 'Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.'
+            } else {
+                //alert(`Δεν ηταν δυνατη η συνδεση στον διακομιστη.\nΑγνωστο σφαλμα`)
+                document.getElementById("spawnHere").innerHTML = 'Δεν ηταν δυνατη η συνδεση στον διακομιστη.<br>Αγνωστο σφαλμα'
+            }
+            if (error.toString().includes('Unexpected token')) {
+                alert("OASA SQL error. Δοκιμάστε ξανά.")
+                document.getElementById("spawnHere").innerHTML = "OASA SQL error. Δοκιμάστε ξανά."
+            }
+
+        })
+
+    function findBus(id, el) {
+
+        if (el) {
+            el.querySelector('.loadingIndicatorNOCLASS').innerHTML = `<svg class="fade-in-slide-up" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px"
+                                viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+                                <path opacity="0.2" fill="#fff"
+                                    d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                             s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                             c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" />
+                                <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                             C22.32,8.481,24.301,9.057,26.013,10.047z">
+                                    <animateTransform attributeType="xml" attributeName="transform" type="rotate"
+                                        from="0 20 20" to="360 20 20" dur="0.3s" repeatCount="indefinite" />
+                                </path>
+                            </svg>`
+        }
+
+        const lineIdToFind = id;
+        const matchingLines = fullLine.filter(line => line.LineID === lineIdToFind);
+        activeBusPage = id
+        // Log the LineDescr of each matching line
+        matchingLines.forEach(line => {
+            console.log("here", line)
+            console.log(line.LineDescr);
+            console.log('Line Code:', line.LineCode);
+
+            if (matchingLines.length > 1) {
+                if (el) {
+                    matchingLines.forEach(handle => {
+                        const toFind = `${capitalizeWords(handle.LineDescr)}`
+                        if (el.querySelector('.button-text').innerHTML === toFind) {
+                            findStops(handle.LineCode, el)
+                            console.log(`Found ${toFind} in ${handle.LineDescr} so will choose that`)
+                        } else {
+                            console.warn(`${toFind} !== ${handle.LineDescr}`)
+                        }
+                    })
+                    console.log("El ok")
+                } else {
+                    if (matchingLines[0].LineDescr.length < matchingLines[1].LineDescr.length) {
+                        findStops(matchingLines[0].LineCode, el)
+                    } else {
+                        findStops(matchingLines[1].LineCode, el)
+                    }
+                }
+
+
+                console.log("Will handle multiple");
+            } else {
+                findStops(line.LineCode)
+            }
+        });
+
+        // Optional: If you want to handle the case where no matches are found
+        if (matchingLines.length === 0) {
+            console.log("No matching lines found.");
+            alert("Δεν βρέθηκαν αντίστοιχες λεωφορειακές γραμμές.")
+        }
+    }
+    let pending = null
+    function findStops(lineCode, sentElementByfindBus) {
+        const getStops = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`);
+        fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${getStops}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    const working = data[0].route_code
+                    console.log(working)//
+                    document.getElementById("spawnHere").style.display = 'none'
+                    document.getElementById("spawnStopsHere").style.display = 'flex'
+                    document.getElementById("searchHere").style.display = 'none'
+                    document.getElementById("backIndex").style.display = 'block'
+                    let randomId = Math.floor(1000000000 + Math.random() * 9000000000);
+                    const lc = localStorage.getItem("oasa_favorites")
+                    document.getElementById("favIcon").style.display = 'block'
+                    if (lc) {
+                        const fav = document.getElementById("favIcon")
+                        const string = lc
+                        console.log(string)
+                        if (string.includes(`"${activeBusPage}"`)) {
+                            //alert("is favorite")
+
+                            fav.setAttribute("data-f", "true")
+                            fav.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" fill="#000"/>
+</svg>`
+                        } else {
+                            fav.setAttribute("data-f", "false")
+                            fav.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M11.292 3.30809C10.8982 3.82224 10.4538 4.61551 9.80827 5.77355L9.48057 6.36141C9.46082 6.39684 9.44132 6.43194 9.42201 6.4667C9.12127 7.0079 8.86745 7.46469 8.45844 7.77518C8.04503 8.08901 7.54106 8.20227 6.95535 8.3339C6.91771 8.34235 6.87973 8.35089 6.84141 8.35956L6.20506 8.50354C4.94974 8.78757 4.09576 8.98299 3.51082 9.21351C2.94002 9.43845 2.81953 9.62275 2.77361 9.77044C2.72514 9.9263 2.7237 10.1647 3.06494 10.7068C3.41129 11.257 3.99558 11.9432 4.85011 12.9425L5.28393 13.4498C5.30914 13.4793 5.33413 13.5084 5.35886 13.5373C5.76188 14.0074 6.09791 14.3993 6.25205 14.895C6.40526 15.3877 6.35448 15.9054 6.29291 16.5331C6.28913 16.5716 6.28532 16.6105 6.2815 16.6499L6.21591 17.3267C6.08682 18.6589 5.99978 19.5762 6.02922 20.2369C6.05859 20.8965 6.1979 21.0788 6.30865 21.1628C6.40716 21.2376 6.58925 21.3204 7.18248 21.1504C7.78535 20.9777 8.58659 20.6111 9.76202 20.0699L10.3578 19.7956C10.3945 19.7787 10.4309 19.7619 10.4669 19.7452C11.0117 19.4934 11.4843 19.2748 12 19.2748C12.5157 19.2748 12.9883 19.4934 13.5331 19.7452C13.5692 19.7619 13.6055 19.7787 13.6422 19.7956L14.238 20.0699C15.4134 20.6111 16.2147 20.9777 16.8176 21.1504C17.4108 21.3204 17.5929 21.2376 17.6914 21.1628C17.8021 21.0788 17.9414 20.8965 17.9708 20.2369C18.0002 19.5762 17.9132 18.6589 17.7841 17.3267L17.7185 16.6499C17.7147 16.6105 17.7109 16.5716 17.7071 16.5331C17.6456 15.9054 17.5948 15.3877 17.748 14.895C17.9021 14.3993 18.2382 14.0074 18.6412 13.5372C18.6659 13.5084 18.6909 13.4793 18.7161 13.4498L19.1499 12.9425C20.0044 11.9432 20.5887 11.257 20.9351 10.7068C21.2763 10.1647 21.2749 9.9263 21.2264 9.77044C21.1805 9.62275 21.06 9.43845 20.4892 9.21351C19.9043 8.98299 19.0503 8.78757 17.795 8.50354L17.1586 8.35956C17.1203 8.35089 17.0823 8.34235 17.0447 8.33389C16.459 8.20227 15.955 8.08901 15.5416 7.77518C15.1326 7.46469 14.8788 7.0079 14.578 6.4667C14.5587 6.43194 14.5392 6.39684 14.5195 6.36141L14.1918 5.77355C13.5462 4.61551 13.1018 3.82224 12.7081 3.30809C12.3147 2.79443 12.1138 2.75 12 2.75C11.8863 2.75 11.6853 2.79443 11.292 3.30809ZM10.1011 2.3961C10.5777 1.77363 11.1669 1.25 12 1.25C12.8331 1.25 13.4223 1.77363 13.899 2.3961C14.3674 3.00773 14.864 3.89876 15.471 4.98776L15.8296 5.63106C16.2222 6.33523 16.3226 6.48482 16.4486 6.58044C16.5698 6.67247 16.7262 6.7238 17.4896 6.89654L18.1897 7.05492C19.3653 7.32088 20.3338 7.53999 21.0392 7.81796C21.7714 8.10651 22.4121 8.5318 22.6588 9.32502C22.9029 10.1101 22.6285 10.8323 22.2045 11.5059C21.7925 12.1604 21.1344 12.9298 20.3306 13.8698L19.8561 14.4247C19.3391 15.0292 19.2311 15.1772 19.1803 15.3404C19.1286 15.5069 19.1334 15.6992 19.2115 16.5052L19.2831 17.2433C19.4048 18.4994 19.5041 19.5236 19.4693 20.3037C19.434 21.0977 19.2536 21.8601 18.5984 22.3576C17.9308 22.8643 17.1542 22.8072 16.4044 22.5924C15.6774 22.3841 14.7711 21.9667 13.6705 21.46L13.0149 21.1581C12.2975 20.8278 12.1439 20.7748 12 20.7748C11.8561 20.7748 11.7025 20.8278 10.9852 21.1581L10.3295 21.46C9.22898 21.9667 8.32265 22.3841 7.59565 22.5924C6.84587 22.8072 6.0692 22.8643 5.40168 22.3576C4.7464 21.8601 4.56607 21.0977 4.5307 20.3037C4.49595 19.5236 4.59523 18.4993 4.71697 17.2433L4.7885 16.5052C4.8666 15.6992 4.87147 15.5069 4.81971 15.3404C4.76894 15.1772 4.66094 15.0292 4.14393 14.4247L3.66945 13.8698C2.8656 12.9299 2.20753 12.1604 1.79553 11.5059C1.37149 10.8323 1.09714 10.1101 1.34127 9.32502C1.58794 8.5318 2.22867 8.10651 2.96086 7.81796C3.66622 7.53999 4.63474 7.32088 5.81038 7.05492L5.87404 7.04052L6.51039 6.89654C7.27382 6.72381 7.43023 6.67247 7.55148 6.58044C7.67743 6.48482 7.77785 6.33523 8.17039 5.63106L8.52899 4.98775C9.13601 3.89876 9.63268 3.00773 10.1011 2.3961Z"
+                fill="#000" />
+        </svg>`
+                        }
+
+                    }
+                    document.getElementById("spawnStopsHere").innerHTML = `<svg id="${randomId}" class="fade-in-slide-up" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="25px"
+                                viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+                                <path opacity="0.2" fill="#000"
+                                    d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                             s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                             c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" />
+                                <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                             C22.32,8.481,24.301,9.057,26.013,10.047z">
+                                    <animateTransform attributeType="xml" attributeName="transform" type="rotate"
+                                        from="0 20 20" to="360 20 20" dur="0.3s" repeatCount="indefinite" />
+                                </path>
+                            </svg>`
+                    if (sentElementByfindBus) {
+                        sentElementByfindBus.querySelector('.loadingIndicatorNOCLASS').innerHTML = ''
+                    }
+                    const stopsFinal = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${working}&keyOrigin=evoxEpsilon`);
+                    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stopsFinal}`)
+                        .then(response => response.json())
+                        .then(bata => {
+                            let stopPromises = bata.stops.map(stop => {
+                                return new Promise((resolve, reject) => {
+                                    // Spawn the element
+                                    const element = document.getElementById("spawnStopsHere");
+                                    element.innerHTML = `${element.innerHTML}<button class="fade-in-slide-up" onclick="getStop('${stop.StopCode}', '${lineCode}', this)">${capitalizeWords(stop.StopDescr)}<vox class="loadingIndicatorNOCLASS"></vox></button>`;
+
+                                    console.log(stop.StopDescr);
+
+                                    // Resolve the promise after the stop is processed
+                                    resolve();
+                                });
+                            });
+
+                            // Wait for all promises to resolve (i.e., all stops are spawned)
+                            Promise.all(stopPromises)
+                                .then(() => {
+                                    // Code to run after all elements are spawned
+                                    console.log('All stops have been spawned!');
+                                    let element_b = document.getElementById(randomId);
+                                    if (element_b) {
+                                        element_b.remove();
+                                    }
+                                    // Add additional functionality here
+                                })
+                                .catch(err => {
+                                    console.error('An error occurred while spawning stops:', err);
+                                });
+
+
+                        })
+                        .catch(error => {
+                            console.log("FindStops [2] error:", error)
+                            if (error.toString().includes('Unexpected token')) {
+                                //alert("OASA SQL error. Δοκιμάστε ξανά.")
+                                console.warn("Attempting to fix")
+                                findStops(lineCode, sentElementByfindBus)
+                            }
+                        })
+                }
+
+            })
+            .catch(error => {
+                console.log("FindStops [1] error:", error)
+                if (error.toString().includes('Unexpected token')) {
+                    //alert("OASA SQL error. Δοκιμάστε ξανά.")
+                    console.warn("Attempting to fix")
+                    findStops(lineCode, sentElementByfindBus)
+                }
+            })
+
+    }
+
+    function getStop(stopCode, lineCode, elementForLoading) {
+        console.log("Line Code:", lineCode)
+        document.getElementById('alert').classList.remove('active')
+
+        document.getElementById("busLine").innerText = activeBusPage
+        document.getElementById("activeBuses").innerHTML = ''
+        elementForLoading.querySelector('.loadingIndicatorNOCLASS').innerHTML = `<svg class="fade-in-slide-up" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px"
+                                viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+                                <path opacity="0.2" fill="#fff"
+                                    d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                             s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                             c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" />
+                                <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                             C22.32,8.481,24.301,9.057,26.013,10.047z">
+                                    <animateTransform attributeType="xml" attributeName="transform" type="rotate"
+                                        from="0 20 20" to="360 20 20" dur="0.3s" repeatCount="indefinite" />
+                                </path>
+                            </svg>`
+        const one = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutes&p1=${lineCode}&keyOrigin=evoxEpsilon`);
+        fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${one}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("alert").classList.add("active")
+                if (data) {
+
+                    console.log(data)
+                    const work = data[0].RouteCode
+
+                    const stop_url = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`);
+                    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url}`)
+                        .then(response => response.json())
+                        .then(arrivals => {
+                            let matchFound = false; // Flag to track if a match is found
+
+                            arrivals.forEach(arrive => {
+                                if (arrive.route_code === work) {
+                                    document.getElementById("activeBuses").innerHTML = `${document.getElementById("activeBuses").innerHTML}${arrive.btime2} λεπτά<br>`
+                                    //alert(`${arrive.btime2} λεπτά`);
+                                    matchFound = true; // Set flag to true if a match is found
+                                }
+                            });
+
+                            elementForLoading.querySelector('.loadingIndicatorNOCLASS').innerHTML = ''
+
+                            // If no match was found, alert the user
+                            if (!matchFound) {
+                                document.getElementById("activeBuses").innerHTML = `Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [!matchFound]`
+                                //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [!matchFound]");
+                            }
+                        })
+                        .catch(error => {
+                            document.getElementById("activeBuses").innerHTML = `Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]`
+                            //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]");
+                            console.log("getStop [2] error:", error);
+                        });
+                } else {
+                    document.getElementById("activeBuses").innerHTML = `Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [null]`
+                    //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [null]")
+                }
+
+            })
+            .catch(error => {
+                console.log("getStop [1] error:", error)
+                if (error.toString().includes('Unexpected token')) {
+                    //alert("OASA SQL error. Δοκιμάστε ξανά.")
+                    console.warn("Attempting to fix")
+                    getStop(stopCode, lineCode)
+                }
+            })
+
+    }
+
+    function back() {
+        document.getElementById("favIcon").style.display = 'none'
+        document.getElementById('alert').classList.remove('active')
+        document.getElementById("spawnHere").style.display = 'flex'
+        document.getElementById("spawnStopsHere").style.display = 'none'
+        document.getElementById("searchHere").style.display = 'none'
+        document.getElementById("spawnStopsHere").innerHTML = ''
+        document.getElementById("backIndex").style.display = 'none'
+
+        const spawnHere = document.getElementById("spawnHere");
+
+        // Get all child elements within the selected element
+        let lc = localStorage.getItem("oasa_favorites")
+        if (lc) {
+            lc = JSON.parse(lc)
+        }
+        const childElements = spawnHere.children;
+
+        // Loop through each child element
+        for (let i = 0; i < childElements.length; i++) {
+            const child = childElements[i];
+
+            // Check if the child has the class 'favoriteBus'
+            if (child.classList.contains("favoriteBus")) {
+                // Do something if it has the class
+                if (lc && !lc.includes(child.querySelector('.lineNOCLASS').innerHTML)) {
+                    child.classList.remove("favoriteBus")
+                }
+                // You can add any action you want to perform here
+            } else {
+                if (lc && lc.includes(child.querySelector('.lineNOCLASS').innerHTML)) {
+                    child.classList.add("favoriteBus")
+                }
+            }
+        }
+    }
+
+    const inputElement = document.getElementById("getBusInput");
+
+    // Add an event listener for the 'keydown' event
+    inputElement.addEventListener("keydown", function (event) {
+        // Check if the pressed key is 'Enter'
+        if (event.key === "Enter") {
+            // Prevent default form submission (if it's inside a form)
+            event.preventDefault();
+            findBus(inputElement.value)
+
+            // You can add additional logic here
+        }
+    });
+
+    let isFavsToggled = false;
+    function showFavs() {
+        if (isFavsToggled === false) {
+            isFavsToggled = true
+            back()
+            const targetDivId = 'searchHere'
+
+            const sourceDiv = document.getElementById('spawnHere');
+
+            // Select all button elements in the source div
+            const buttons = sourceDiv.querySelectorAll('button[data-bus]');
+
+            // Select the target div by ID (create if it doesn't exist)
+            let targetDiv = document.getElementById(targetDivId);
+            sourceDiv.style.display = 'none'
+            targetDiv.style.display = 'flex'
+
+
+            // Clear the target div (optional)
+            targetDiv.innerHTML = '';
+
+            // Loop through each button and append it to the target div if the attribute contains the substring
+            let matchedOne = false;
+            buttons.forEach(button => {
+                const isFavorite = button.classList.contains("favoriteBus");
+                if (isFavorite) {
+                    // Clone the button to preserve the original
+                    const buttonClone = button.cloneNode(true);
+                    targetDiv.appendChild(buttonClone);
+                    matchedOne = true
+                }
+            });
+            if(matchedOne === false) {
+                targetDiv.innerHTML = '<p>Δεν υπάρχουν αγαπημένα λεωφορεία</p>';
+            }
+        } else {
+            isFavsToggled = false
+            const targetDivId = 'searchHere'
+
+            const sourceDiv = document.getElementById('spawnHere');
+
+            // Select all button elements in the source div
+            const buttons = sourceDiv.querySelectorAll('button[data-bus]');
+
+            // Select the target div by ID (create if it doesn't exist)
+            let targetDiv = document.getElementById(targetDivId);
+            sourceDiv.style.display = 'flex'
+            targetDiv.style.display = 'none'
+            targetDiv.innerHTML = '';
+        }
+
+    }
+
+    inputElement.addEventListener('input', function () {
+        console.log('Input value changed:', inputElement.value);
+        back()
+        isFavsToggled = false
+
+        //substring, targetDivId
+
+        const substring = inputElement.value
+        const targetDivId = 'searchHere'
+
+        const sourceDiv = document.getElementById('spawnHere');
+
+        // Select all button elements in the source div
+        const buttons = sourceDiv.querySelectorAll('button[data-bus]');
+
+        // Select the target div by ID (create if it doesn't exist)
+        let targetDiv = document.getElementById(targetDivId);
+        sourceDiv.style.display = 'none'
+        targetDiv.style.display = 'flex'
+
+
+        // Clear the target div (optional)
+        targetDiv.innerHTML = '';
+
+        // Loop through each button and append it to the target div if the attribute contains the substring
+        buttons.forEach(button => {
+            const busValue = button.getAttribute('data-bus');
+            if (busValue.includes(substring)) {
+                // Clone the button to preserve the original
+                const buttonClone = button.cloneNode(true);
+                targetDiv.appendChild(buttonClone);
+            }
+        });
+    });
+
+    
+
+
+    function favoriteCurrent() {
+        if (!activeBusPage) return; // Check at the beginning
+        const fav = document.getElementById("favIcon");
+
+        if (fav.getAttribute('data-f') === 'false') {
+            const lc = localStorage.getItem("oasa_favorites");
+
+            if (lc) {
+                let json;
+                try {
+                    json = JSON.parse(lc);
+                } catch (error) {
+                    console.error("Error parsing JSON:", error);
+                    return; // Handle error gracefully
+                }
+                json.push(activeBusPage); // Add the new favorite
+                localStorage.setItem("oasa_favorites", JSON.stringify(json)); // Save back to localStorage
+            } else {
+                const newJson = [activeBusPage];
+                localStorage.setItem("oasa_favorites", JSON.stringify(newJson));
+            }
+
+            fav.setAttribute("data-f", "true");
+            fav.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z" fill="#000"/>
+</svg>`;
+        } else {
+            const lc = localStorage.getItem("oasa_favorites");
+
+            if (lc) {
+                let json;
+                try {
+                    json = JSON.parse(lc);
+                } catch (error) {
+                    console.error("Error parsing JSON:", error);
+                    return; // Handle error gracefully
+                }
+
+                const newArray = json.filter(item => item !== activeBusPage);
+                localStorage.setItem("oasa_favorites", JSON.stringify(newArray));
+            }
+
+            fav.setAttribute("data-f", "false");
+            fav.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M11.292 3.30809C10.8982 3.82224 10.4538 4.61551 9.80827 5.77355L9.48057 6.36141C9.46082 6.39684 9.44132 6.43194 9.42201 6.4667C9.12127 7.0079 8.86745 7.46469 8.45844 7.77518C8.04503 8.08901 7.54106 8.20227 6.95535 8.3339C6.91771 8.34235 6.87973 8.35089 6.84141 8.35956L6.20506 8.50354C4.94974 8.78757 4.09576 8.98299 3.51082 9.21351C2.94002 9.43845 2.81953 9.62275 2.77361 9.77044C2.72514 9.9263 2.7237 10.1647 3.06494 10.7068C3.41129 11.257 3.99558 11.9432 4.85011 12.9425L5.28393 13.4498C5.30914 13.4793 5.33413 13.5084 5.35886 13.5373C5.76188 14.0074 6.09791 14.3993 6.25205 14.895C6.40526 15.3877 6.35448 15.9054 6.29291 16.5331C6.28913 16.5716 6.28532 16.6105 6.2815 16.6499L6.21591 17.3267C6.08682 18.6589 5.99978 19.5762 6.02922 20.2369C6.05859 20.8965 6.1979 21.0788 6.30865 21.1628C6.40716 21.2376 6.58925 21.3204 7.18248 21.1504C7.78535 20.9777 8.58659 20.6111 9.76202 20.0699L10.3578 19.7956C10.3945 19.7787 10.4309 19.7619 10.4669 19.7452C11.0117 19.4934 11.4843 19.2748 12 19.2748C12.5157 19.2748 12.9883 19.4934 13.5331 19.7452C13.5692 19.7619 13.6055 19.7787 13.6422 19.7956L14.238 20.0699C15.4134 20.6111 16.2147 20.9777 16.8176 21.1504C17.4108 21.3204 17.5929 21.2376 17.6914 21.1628C17.8021 21.0788 17.9414 20.8965 17.9708 20.2369C18.0002 19.5762 17.9132 18.6589 17.7841 17.3267L17.7185 16.6499C17.7147 16.6105 17.7109 16.5716 17.7071 16.5331C17.6456 15.9054 17.5948 15.3877 17.748 14.895C17.9021 14.3993 18.2382 14.0074 18.6412 13.5372C18.6659 13.5084 18.6909 13.4793 18.7161 13.4498L19.1499 12.9425C20.0044 11.9432 20.5887 11.257 20.9351 10.7068C21.2763 10.1647 21.2749 9.9263 21.2264 9.77044C21.1805 9.62275 21.06 9.43845 20.4892 9.21351C19.9043 8.98299 19.0503 8.78757 17.795 8.50354L17.1586 8.35956C17.1203 8.35089 17.0823 8.34235 17.0447 8.33389C16.459 8.20227 15.955 8.08901 15.5416 7.77518C15.1326 7.46469 14.8788 7.0079 14.578 6.4667C14.5587 6.43194 14.5392 6.39684 14.5195 6.36141L14.1918 5.77355C13.5462 4.61551 13.1018 3.82224 12.7081 3.30809C12.3147 2.79443 12.1138 2.75 12 2.75C11.8863 2.75 11.6853 2.79443 11.292 3.30809ZM10.1011 2.3961C10.5777 1.77363 11.1669 1.25 12 1.25C12.8331 1.25 13.4223 1.77363 13.899 2.3961C14.3674 3.00773 14.864 3.89876 15.471 4.98776L15.8296 5.63106C16.2222 6.33523 16.3226 6.48482 16.4486 6.58044C16.5698 6.67247 16.7262 6.7238 17.4896 6.89654L18.1897 7.05492C19.3653 7.32088 20.3338 7.53999 21.0392 7.81796C21.7714 8.10651 22.4121 8.5318 22.6588 9.32502C22.9029 10.1101 22.6285 10.8323 22.2045 11.5059C21.7925 12.1604 21.1344 12.9298 20.3306 13.8698L19.8561 14.4247C19.3391 15.0292 19.2311 15.1772 19.1803 15.3404C19.1286 15.5069 19.1334 15.6992 19.2115 16.5052L19.2831 17.2433C19.4048 18.4994 19.5041 19.5236 19.4693 20.3037C19.434 21.0977 19.2536 21.8601 18.5984 22.3576C17.9308 22.8643 17.1542 22.8072 16.4044 22.5924C15.6774 22.3841 14.7711 21.9667 13.6705 21.46L13.0149 21.1581C12.2975 20.8278 12.1439 20.7748 12 20.7748C11.8561 20.7748 11.7025 20.8278 10.9852 21.1581L10.3295 21.46C9.22898 21.9667 8.32265 22.3841 7.59565 22.5924C6.84587 22.8072 6.0692 22.8643 5.40168 22.3576C4.7464 21.8601 4.56607 21.0977 4.5307 20.3037C4.49595 19.5236 4.59523 18.4993 4.71697 17.2433L4.7885 16.5052C4.8666 15.6992 4.87147 15.5069 4.81971 15.3404C4.76894 15.1772 4.66094 15.0292 4.14393 14.4247L3.66945 13.8698C2.8656 12.9299 2.20753 12.1604 1.79553 11.5059C1.37149 10.8323 1.09714 10.1101 1.34127 9.32502C1.58794 8.5318 2.22867 8.10651 2.96086 7.81796C3.66622 7.53999 4.63474 7.32088 5.81038 7.05492L5.87404 7.04052L6.51039 6.89654C7.27382 6.72381 7.43023 6.67247 7.55148 6.58044C7.67743 6.48482 7.77785 6.33523 8.17039 5.63106L8.52899 4.98775C9.13601 3.89876 9.63268 3.00773 10.1011 2.3961Z"
+                fill="#000" />
+        </svg>`;
+        }
+    }
+
+</script>
+
+</html>

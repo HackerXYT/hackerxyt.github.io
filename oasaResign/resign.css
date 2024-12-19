@@ -1,0 +1,238 @@
+.navigate {
+    padding: 23px 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #ffffff17;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 30px;
+    justify-content: space-between;
+}
+
+.navigate .switch {
+    display: flex;
+    align-items: center;
+}
+.navigate .account {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 50%; /* Increase width to take up more space */
+}
+
+
+
+.navigate .userIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+}
+
+.navigate .userIcon img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.navigate .userInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.userInfo .welcoming {
+    font-size: 13px;
+}
+.userInfo #userUsername {
+    font-size: 19px;
+}
+
+.background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    
+   
+    z-index: -1;
+}
+
+.bottomSearchParent {
+    position: fixed;
+    bottom: 30px;
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.searchIntelli {
+    padding: 18px 20px;
+    width: auto;
+    background-color: #1f42f4;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 50px;
+    box-sizing: border-box;
+}
+
+.searchIntelli .iconInC {
+    flex: 1;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ffffff1d;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.triggerSearch {
+    flex: 1;
+    margin-left: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ffffff1d;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchIn {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    justify-content: center;
+    align-items: left;
+}
+
+.searchIn .nearByHolder {
+    color: #afafaf;
+    font-size: 13px;
+}
+
+.searchIn span {
+    display: flex;
+    align-items: center;
+}
+.searchIn span svg {
+    margin-left: 2px;
+}
+
+#phone {
+    background: linear-gradient(
+        to top right,
+        rgba(31, 65, 244, 0) 50%,
+        rgba(31, 65, 244, 0.1) 75%,
+        rgba(31, 65, 244, 0.2) 100%
+      ),
+      linear-gradient(
+        to bottom left,
+        rgba(124, 255, 121, 0) 50%,
+        rgba(124, 255, 121, 0.1) 75%,
+        rgba(124, 255, 121, 0.2) 100%
+      ),
+      #141416;
+    background-repeat: no-repeat;
+    background-size: 300% 300%; /* Doubles the scale of the gradients */
+}
+
+.notificationsCC {
+    padding: 7.5px 15px;
+    background-color: rgba(255, 255, 255, 0.164); /* Use rgba for transparency */
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.newNotifs {
+    margin-left: 10px;
+    background-color: #141416;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+}
+
+.Userfeed {
+    margin-top: 25px;
+    width: 100%;
+    height: auto;
+}
+
+.Userfeed .feedItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.feedItem .topDefines {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.feedItem .topDefines .itempic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.feedItem .topDefines .itempic img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.feedItem .topDefines .itempic img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.feedItem .topDefines .infoPost {
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
+.feedItem .topDefines .infoPost span.postType {
+    color: #afafaf;
+    font-size: 13px;
+}
+
+.feedItem .arrowFar {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #ffffff1d;
+    margin-left: auto;
+}

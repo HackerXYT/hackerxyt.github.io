@@ -5616,7 +5616,7 @@ let theme = 'day'
 let stockStatusBC = '#1C1B1E'
 function changeTheme() {
     if (theme === 'day') {
-        sessionStorage.setItem("theme", 'dark')
+        localStorage.setItem("theme", 'dark')
         document.getElementById("themeName").innerText = 'Σκοτεινό'
         document.documentElement.style.setProperty('--theme-background', '18 18 18'); //night
         document.documentElement.style.setProperty('--theme-medium', '37, 37, 37');
@@ -5625,7 +5625,7 @@ function changeTheme() {
         setThemeColors('#121212')
         theme = 'night'
     } else {
-        sessionStorage.removeItem("theme")
+        localStorage.removeItem("theme")
         document.getElementById("themeName").innerText = 'Προεπιλογή'
         document.documentElement.style.setProperty('--theme-medium', '46 44 53');
         document.documentElement.style.setProperty('--theme-background', '28 27 30'); //day
@@ -5708,7 +5708,7 @@ setInterval(function () {
     }
 }, 100)
 
-if (sessionStorage.getItem("theme") === 'dark') {
+if (localStorage.getItem("theme") === 'dark') {
     theme = 'day'
     changeTheme()
 }
