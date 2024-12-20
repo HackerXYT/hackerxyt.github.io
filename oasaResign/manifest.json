@@ -1,21 +1,20 @@
 {
-    "name": "OASA Reloaded",
+    "name": "OASA alpha",
     "display": "standalone",
-    "short_name": "oasa",
+    "short_name": "alpha",
     "categories": [
-        "games",
         "entertainment"
     ],
-    "start_url": "https://evoxs.xyz/oasaMobile/index.html",
-    "scope": "https://evoxs.xyz/oasaMobile/index.html",
-    "description": "A reloaded version of OASA, now on Evox!",
-    "background_color": "#151515",
-    "theme_color": "#151515",
+    "start_url": "https://evoxs.xyz/oasaResign/index.html",
+    "scope": "https://evoxs.xyz/oasaResign/index.html",
+    "description": "Alpha version of OASAP 1.0",
+    "background_color": "#14141a",
+    "theme_color": "#14141a",
     "edge_side_panel": {
         "preferred_width": 445
     },
     "handle_links": "auto",
-    "id": "evox-epsilon-oasa",
+    "id": "evox-epsilon-oasa-alpha",
     "launch_handler": {
         "client_mode": [
             "focus-existing",
@@ -28,13 +27,13 @@
     "prefer_related_applications": false,
     "icons": [
         {
-            "src": "https://evoxs.xyz/oasaMobile/apple.png",
+            "src": "https://evoxs.xyz/oasaResign/apple.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "https://evoxs.xyz/oasaMobile/apple.png",
+            "src": "https://evoxs.xyz/oasaResign/apple.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"

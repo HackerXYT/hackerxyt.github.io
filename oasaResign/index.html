@@ -3,7 +3,7 @@
 <!--Base Version. Latest Version-->
 
 <head>
-    <title>unsigned</title>
+    <title>alpha-unsigned</title>
     <meta charset="UTF-8">
     <link rel="manifest" href="manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -16,6 +16,11 @@
             --pwacompat-splash-font: 24px "Noto Sans", sans-serif;
         }
     </style>-->
+    <style>
+        html,body,#app,#phone {
+            overscroll-behavior: none !important;
+        }
+    </style>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="live.css">
     <link rel="stylesheet" href="resign.css">
@@ -26,131 +31,133 @@
     <link rel="apple-touch-icon" sizes="76x76" href="apple.png">
     <link rel="apple-touch-icon-precomposed" href="apple.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#1C1B1E" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#1C1B1E" media="(prefers-color-scheme: dark)">
-    <meta name="application-name" content="OASA">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#14141a" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#14141a" media="(prefers-color-scheme: dark)">
+
+    <meta name="application-name" content="alpha">
     <!-- Apple splash screen images -->
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2048-2732.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2048-2732.png"
         media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2732-2048.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2732-2048.png"
         media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1668-2388.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1668-2388.png"
         media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2388-1668.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2388-1668.png"
         media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1536-2048.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1536-2048.png"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2048-1536.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2048-1536.png"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1668-2224.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1668-2224.png"
         media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2224-1668.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2224-1668.png"
         media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1620-2160.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1620-2160.png"
         media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2160-1620.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2160-1620.png"
         media="(device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1290-2796.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1290-2796.png"
         media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2796-1290.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2796-1290.png"
         media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1179-2556.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1179-2556.png"
         media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2556-1179.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2556-1179.png"
         media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1284-2778.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1284-2778.png"
         media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2778-1284.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2778-1284.png"
         media="(device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1170-2532.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1170-2532.png"
         media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2532-1170.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2532-1170.png"
         media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1125-2436.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1125-2436.png"
         media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2436-1125.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2436-1125.png"
         media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1242-2688.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1242-2688.png"
         media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2688-1242.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2688-1242.png"
         media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-828-1792.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-828-1792.png"
         media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1792-828.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1792-828.png"
         media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1242-2208.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1242-2208.png"
         media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2208-1242.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2208-1242.png"
         media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-750-1334.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-750-1334.png"
         media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1334-750.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1334-750.png"
         media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-640-1136.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-640-1136.png"
         media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1136-640.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1136-640.png"
         media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
 
     <!-- Apple splash screen images dark mode-->
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2048-2732.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2048-2732.png"
         media="(prefers-color-scheme: dark) and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2732-2048.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2732-2048.png"
         media="(prefers-color-scheme: dark) and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1668-2388.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1668-2388.png"
         media="(prefers-color-scheme: dark) and (device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2388-1668.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2388-1668.png"
         media="(prefers-color-scheme: dark) and (device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1536-2048.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1536-2048.png"
         media="(prefers-color-scheme: dark) and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2048-1536.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2048-1536.png"
         media="(prefers-color-scheme: dark) and (device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1668-2224.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1668-2224.png"
         media="(prefers-color-scheme: dark) and (device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2224-1668.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2224-1668.png"
         media="(prefers-color-scheme: dark) and (device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1620-2160.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1620-2160.png"
         media="(prefers-color-scheme: dark) and (device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2160-1620.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2160-1620.png"
         media="(prefers-color-scheme: dark) and (device-width: 810px) and (device-height: 1080px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1290-2796.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1290-2796.png"
         media="(prefers-color-scheme: dark) and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2796-1290.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2796-1290.png"
         media="(prefers-color-scheme: dark) and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1179-2556.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1179-2556.png"
         media="(prefers-color-scheme: dark) and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2556-1179.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2556-1179.png"
         media="(prefers-color-scheme: dark) and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1284-2778.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1284-2778.png"
         media="(prefers-color-scheme: dark) and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2778-1284.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2778-1284.png"
         media="(prefers-color-scheme: dark) and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1170-2532.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1170-2532.png"
         media="(prefers-color-scheme: dark) and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2532-1170.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2532-1170.png"
         media="(prefers-color-scheme: dark) and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1125-2436.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1125-2436.png"
         media="(prefers-color-scheme: dark) and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2436-1125.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2436-1125.png"
         media="(prefers-color-scheme: dark) and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1242-2688.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1242-2688.png"
         media="(prefers-color-scheme: dark) and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2688-1242.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2688-1242.png"
         media="(prefers-color-scheme: dark) and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-828-1792.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-828-1792.png"
         media="(prefers-color-scheme: dark) and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1792-828.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1792-828.png"
         media="(prefers-color-scheme: dark) and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1242-2208.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1242-2208.png"
         media="(prefers-color-scheme: dark) and (device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-2208-1242.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-2208-1242.png"
         media="(prefers-color-scheme: dark) and (device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-750-1334.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-750-1334.png"
         media="(prefers-color-scheme: dark) and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1334-750.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1334-750.png"
         media="(prefers-color-scheme: dark) and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-640-1136.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-640-1136.png"
         media="(prefers-color-scheme: dark) and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
-    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaMobile/splashScreens/apple-splash-1136-640.png"
+    <link rel="apple-touch-startup-image" href="https://evoxs.xyz/oasaResign/splashScreens/apple-splash-1136-640.png"
         media="(prefers-color-scheme: dark) and (device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
 
     <style>
@@ -405,9 +412,9 @@
     <div id="phone">
         <div id="main-wrapper">
             <div id="main">
-                <div class="bottomSearchParent">
-                    <div class="searchIntelli">
-                        <div class="iconInC">
+                <div class="bottomSearchParent" id="bottomSearchParent">
+                    <div class="searchIntelli" id="searchIntelli">
+                        <div class="iconInC" id="iconInC">
                             <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -419,15 +426,15 @@
                             </svg>
                         </div>
                         <div class="searchIn">
-                            <span class="nearByHolder">Βρες κοντά σε</span>
-                            <span>Πειραιας <svg xmlns="http://www.w3.org/2000/svg" width="15px" height="15px"
+                            <span class="nearByHolder">Κοντά στον</span>
+                            <span>Πειραιά <svg xmlns="http://www.w3.org/2000/svg" width="15px" height="15px"
                                     viewBox="0 0 24 24" fill="none">
                                     <path
                                         d="M5.70711 9.71069C5.31658 10.1012 5.31658 10.7344 5.70711 11.1249L10.5993 16.0123C11.3805 16.7927 12.6463 16.7924 13.4271 16.0117L18.3174 11.1213C18.708 10.7308 18.708 10.0976 18.3174 9.70708C17.9269 9.31655 17.2937 9.31655 16.9032 9.70708L12.7176 13.8927C12.3271 14.2833 11.6939 14.2832 11.3034 13.8927L7.12132 9.71069C6.7308 9.32016 6.09763 9.32016 5.70711 9.71069Z"
                                         fill="#fff" />
                                 </svg></span>
                         </div>
-                        <div class="triggerSearch">
+                        <div class="triggerSearch" id="triggerSearch">
                             <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -527,7 +534,7 @@
                                 <img src="cbimage.png">
                             </div>
                             <div class="userInfo"><!--collumn-->
-                                <span class="welcoming">Γεια σου,</span>
+                                <span class="welcoming">Καλημέρα,</span>
                                 <span id="userUsername">Evoxer</span>
                             </div>
                         </div>
@@ -3584,17 +3591,115 @@
                         <div class="feedItem">
                             <!--Top: icon, post type, post title arrow-->
                             <div class="topDefines">
-                                <div class="itempic"><img src="oasastandalone.png"></div>
-                                <div class="infoPost">
-                                    <span class="postType">Evox</span>
-                                    <span>Βάση OASA</span>
+                                <div class="itempic"><!--<img src="favoritesOS.png">-->
+                                    <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="1"
+                                            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                                            fill="#fff" />
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                            d="M12 7.25C12.4142 7.25 12.75 7.58579 12.75 8V11.6893L15.0303 13.9697C15.3232 14.2626 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2626 15.3232 13.9697 15.0303L11.4697 12.5303C11.329 12.3897 11.25 12.1989 11.25 12V8C11.25 7.58579 11.5858 7.25 12 7.25Z"
+                                            fill="#000" />
+                                    </svg>
                                 </div>
-                                <div class="arrowFar"><svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M4 12H20M20 12L16 8M20 12L16 16" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg></div>
+                                <div class="infoPost">
+                                    <span>Συχνή χρήση</span>
+                                </div>
+                                <div class="buttonMore">Περισσότερα</div>
+
 
                             </div>
-                            <div id="apps-container">
+                            <div class="pinned-favorites">
+                                <div class="item skeleton">
+                                    <div class="busName skeleton-text"></div>
+                                    <div class="info">
+                                        <div class="text">
+                                            <span class="skeleton-text"></span>
+                                            <span class="skeleton-text"></span>
+                                        </div>
+                                    </div>
+                                    <div class="fav-actions">
+                                        <div class="button-action skeleton-button important"></div>
+                                        <div class="button-action skeleton-button"></div>
+                                    </div>
+                                </div>
+                                <div class="item skeleton">
+                                    <div class="busName skeleton-text"></div>
+                                    <div class="info">
+                                        <div class="text">
+                                            <span class="skeleton-text"></span>
+                                            <span class="skeleton-text"></span>
+                                        </div>
+                                    </div>
+                                    <div class="fav-actions">
+                                        <div class="button-action skeleton-button important"></div>
+                                        <div class="button-action skeleton-button"></div>
+                                    </div>
+                                </div>
+
+                                <div class="item favorite">
+                                    <div class="busName">
+                                        16
+                                    </div>
+                                    <div class="info">
+
+                                        <div style="display: none;" class="picture"><img src="favoritesOS.png"></div>
+                                        <div class="text">
+                                            <span>Κοντινότερη στάση</span>
+                                            <span>Γούναρη</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: none;" class="main-text">
+                                        Our hotel was located in bla bla bla bla
+                                    </div>
+                                    <div class="fav-actions">
+                                        <div class="button-action important">
+                                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                    d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.8321 14.5547C15.5257 15.0142 14.9048 15.1384 14.4453 14.8321L11.8451 13.0986C11.3171 12.7466 11 12.1541 11 11.5196L11 11.5L11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7L13 11.4648L15.5547 13.1679C16.0142 13.4743 16.1384 14.0952 15.8321 14.5547Z"
+                                                    fill="#3557fd" />
+                                            </svg>
+                                        </div>
+                                        <div class="button-action">
+                                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M4 12H20M20 12L16 8M20 12L16 16" stroke="#fff" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="busName">
+                                        828
+                                    </div>
+                                    <div class="info">
+                                        <div class="text">
+                                            <span>Ζωντανή τοποθεσία</span>
+                                            <span>Πλατεία καμινίων</span>
+                                        </div>
+                                    </div>
+                                    <div class="fav-actions">
+                                        <div class="button-action important">
+                                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                    d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.8321 14.5547C15.5257 15.0142 14.9048 15.1384 14.4453 14.8321L11.8451 13.0986C11.3171 12.7466 11 12.1541 11 11.5196L11 11.5L11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7L13 11.4648L15.5547 13.1679C16.0142 13.4743 16.1384 14.0952 15.8321 14.5547Z"
+                                                    fill="#3557fd" />
+                                            </svg>
+                                        </div>
+                                        <div class="button-action">
+                                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M4 12H20M20 12L16 8M20 12L16 16" stroke="#fff" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: none;" id="apps-container">
                                 <a href="#" onclick="showInfo('16')">
                                     <p>16<span class="invisible-number">&nbsp;</span></p>
                                     <div class="label">
@@ -3637,15 +3742,236 @@
                                         <span id="remain420" class="url">Σύνδεση..</span>
                                     </div>
                                 </a>
-    
+
+                            </div>
+
+                        </div>
+
+                        <div class="feedItem">
+                            <div class="topDefines">
+                                <div class="itempic">
+                                    <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                                            fill="#fff" />
+                                    </svg>
+                                </div>
+                                <div class="infoPost">
+                                    <span>Αγαπημένα</span>
+                                </div>
+                                <div class="buttonMore">Περισσότερα</div>
+
+
+                            </div>
+                            <div class="pinned-favorites">
+                                <div class="item skeleton">
+                                    <div class="busName skeleton-text"></div>
+                                    <div class="info">
+                                        <div class="text">
+                                            <span class="skeleton-text"></span>
+                                            <span class="skeleton-text"></span>
+                                        </div>
+                                    </div>
+                                    <div class="fav-actions">
+                                        <div class="button-action skeleton-button important"></div>
+                                        <div class="button-action skeleton-button"></div>
+                                    </div>
+                                </div>
+                                <div class="item skeleton">
+                                    <div class="busName skeleton-text"></div>
+                                    <div class="info">
+                                        <div class="text">
+                                            <span class="skeleton-text"></span>
+                                            <span class="skeleton-text"></span>
+                                        </div>
+                                    </div>
+                                    <div class="fav-actions">
+                                        <div class="button-action skeleton-button important"></div>
+                                        <div class="button-action skeleton-button"></div>
+                                    </div>
+                                </div>
+                                <div class="item">
+
+                                    <div class="busName">
+                                        703
+                                    </div>
+                                    <div class="info">
+
+                                        <div class="text">
+                                            <span>Κοντινότερη στάση</span>
+                                            <span>Εθν. αντιστάσεως</span>
+                                        </div>
+                                    </div>
+                                    <div class="fav-actions nonDefault">
+                                        <div class="button-action coverAll">
+                                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                    d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.8321 14.5547C15.5257 15.0142 14.9048 15.1384 14.4453 14.8321L11.8451 13.0986C11.3171 12.7466 11 12.1541 11 11.5196L11 11.5L11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7L13 11.4648L15.5547 13.1679C16.0142 13.4743 16.1384 14.0952 15.8321 14.5547Z"
+                                                    fill="#fff" />
+                                            </svg>
+                                        </div>
+                                        <div class="button-action coverAll">
+                                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                    d="M12 2C7.02944 2 3 6.02944 3 11C3 13.704 4.40858 16.0555 5.97592 17.8473C7.55461 19.652 9.3972 21.0075 10.4939 21.7371C11.411 22.3473 12.589 22.3473 13.5061 21.7371C14.6028 21.0075 16.4454 19.652 18.0241 17.8473C19.5914 16.0555 21 13.704 21 11C21 6.02944 16.9706 2 12 2ZM10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13C10.8954 13 10 12.1046 10 11ZM12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7Z"
+                                                    fill="#fff" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="busName">
+                                        906
+                                    </div>
+                                    <div class="info">
+                                        <div class="text">
+                                            <span>Επόμενη άφιξη</span>
+                                            <span>10 λεπτά</span>
+                                        </div>
+                                    </div>
+                                    <div class="fav-actions nonDefault">
+                                        <div class="button-action coverAll">
+                                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                    d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.8321 14.5547C15.5257 15.0142 14.9048 15.1384 14.4453 14.8321L11.8451 13.0986C11.3171 12.7466 11 12.1541 11 11.5196L11 11.5L11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7L13 11.4648L15.5547 13.1679C16.0142 13.4743 16.1384 14.0952 15.8321 14.5547Z"
+                                                    fill="#fff" />
+                                            </svg>
+                                        </div>
+                                        <div class="button-action coverAll">
+                                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                    d="M12 2C7.02944 2 3 6.02944 3 11C3 13.704 4.40858 16.0555 5.97592 17.8473C7.55461 19.652 9.3972 21.0075 10.4939 21.7371C11.411 22.3473 12.589 22.3473 13.5061 21.7371C14.6028 21.0075 16.4454 19.652 18.0241 17.8473C19.5914 16.0555 21 13.704 21 11C21 6.02944 16.9706 2 12 2ZM10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13C10.8954 13 10 12.1046 10 11ZM12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7Z"
+                                                    fill="#fff" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="feedItem">
+                            <div class="topDefines">
+                                <div class="itempic">
+                                    <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M20 15.0002C20 19.2547 17.3819 21.1216 15.3588 21.7512C15.2746 21.7774 15.196 21.7793 15.126 21.7627C14.8373 21.6942 14.6942 21.3101 14.9019 21.0116C15.7823 19.7464 16.8 17.8161 16.8 16.0002C16.8 14.0496 15.1559 11.7467 13.8721 10.3263C13.5786 10.0016 13.0667 10.2164 13.0507 10.6539C12.9976 12.1031 12.7689 14.042 11.7828 15.5616C11.6241 15.8062 11.2872 15.8264 11.1063 15.5977C10.7982 15.208 10.4901 14.7267 10.182 14.3464C10.016 14.1416 9.71604 14.1388 9.52461 14.32C8.77825 15.0267 7.73333 16.1288 7.73333 17.5002C7.73333 18.4301 8.0936 19.405 8.50007 20.1893C8.70225 20.5795 8.39657 21.0415 8.01803 20.9595C7.97791 20.9508 7.93697 20.936 7.89573 20.9144C6.11307 19.9789 4 18.0838 4 15.0002C4 11.8538 8.31029 7.49503 9.95605 3.37712C10.2157 2.72733 11.0161 2.42199 11.5727 2.84603C14.9439 5.41409 20 10.3783 20 15.0002Z"
+                                            fill="#fff" />
+                                        <path opacity="0.5"
+                                            d="M7.7334 17.5004C7.7334 18.4303 8.09366 19.4052 8.50013 20.1896C8.70231 20.5797 8.39664 21.0417 8.0181 20.9597C8.5 21.5 11.6763 21.9175 15.1261 21.7629C14.8374 21.6944 14.6943 21.3103 14.902 21.0119C15.7824 19.7466 16.8001 17.8163 16.8001 16.0004C16.8001 14.0498 15.156 11.7469 13.8722 10.3265C13.5787 10.0018 13.0667 10.2167 13.0507 10.6541C12.9977 12.1033 12.769 14.0422 11.7829 15.5618C11.6242 15.8064 11.2872 15.8266 11.1064 15.5979C10.7983 15.2083 10.4901 14.7269 10.182 14.3466C10.0161 14.1418 9.71611 14.139 9.52467 14.3202C8.77832 15.0269 7.7334 16.129 7.7334 17.5004Z"
+                                            fill="#fff" />
+                                    </svg>
+                                </div>
+                                <div class="infoPost">
+                                    <span class="popular">Δημοφιλή</span>
+                                </div>
+                                <!--<div class="buttonMore"><svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 12H20M20 12L16 8M20 12L16 16" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg></div>-->
+                                <!--<div class="buttonMore">Εξερεύνηση</div>-->
+
+
+
+                            </div>
+                            <div class="pinned-favorites">
+                                <div class="item skeleton">
+                                    <div class="busName skeleton-text"></div>
+                                    <div class="info">
+                                        <div class="text">
+                                            <span class="skeleton-text"></span>
+                                            <span class="skeleton-text"></span>
+                                        </div>
+                                    </div>
+                                    <div class="fav-actions">
+                                        <div class="button-action skeleton-button important"></div>
+                                        <div class="button-action skeleton-button"></div>
+                                    </div>
+                                </div>
+                                <div class="item skeleton">
+                                    <div class="busName skeleton-text"></div>
+                                    <div class="info">
+                                        <div class="text">
+                                            <span class="skeleton-text"></span>
+                                            <span class="skeleton-text"></span>
+                                        </div>
+                                    </div>
+                                    <div class="fav-actions">
+                                        <div class="button-action skeleton-button important"></div>
+                                        <div class="button-action skeleton-button"></div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="busName">
+                                        122
+                                    </div>
+                                    <div class="info">
+
+                                        <div class="text">
+                                            <span>Επόμενη άφιξη</span>
+                                            <span>30 λεπτά</span>
+                                        </div>
+                                    </div>
+                                    <div class="fav-actions nonDefault">
+                                        <div class="button-action coverAll">
+                                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                    d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.8321 14.5547C15.5257 15.0142 14.9048 15.1384 14.4453 14.8321L11.8451 13.0986C11.3171 12.7466 11 12.1541 11 11.5196L11 11.5L11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7L13 11.4648L15.5547 13.1679C16.0142 13.4743 16.1384 14.0952 15.8321 14.5547Z"
+                                                    fill="#fff" />
+                                            </svg>
+                                        </div>
+                                        <div class="button-action coverAll">
+                                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                    d="M12 2C7.02944 2 3 6.02944 3 11C3 13.704 4.40858 16.0555 5.97592 17.8473C7.55461 19.652 9.3972 21.0075 10.4939 21.7371C11.411 22.3473 12.589 22.3473 13.5061 21.7371C14.6028 21.0075 16.4454 19.652 18.0241 17.8473C19.5914 16.0555 21 13.704 21 11C21 6.02944 16.9706 2 12 2ZM10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13C10.8954 13 10 12.1046 10 11ZM12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7Z"
+                                                    fill="#fff" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="busName">
+                                        831
+                                    </div>
+                                    <div class="info">
+                                        <div class="text">
+                                            <span>Επόμενη άφιξη</span>
+                                            <span>3 λεπτά</span>
+                                        </div>
+                                    </div>
+                                    <div class="fav-actions nonDefault">
+                                        <div class="button-action coverAll">
+                                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                    d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.8321 14.5547C15.5257 15.0142 14.9048 15.1384 14.4453 14.8321L11.8451 13.0986C11.3171 12.7466 11 12.1541 11 11.5196L11 11.5L11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7L13 11.4648L15.5547 13.1679C16.0142 13.4743 16.1384 14.0952 15.8321 14.5547Z"
+                                                    fill="#fff" />
+                                            </svg>
+                                        </div>
+                                        <div class="button-action coverAll">
+                                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                    d="M12 2C7.02944 2 3 6.02944 3 11C3 13.704 4.40858 16.0555 5.97592 17.8473C7.55461 19.652 9.3972 21.0075 10.4939 21.7371C11.411 22.3473 12.589 22.3473 13.5061 21.7371C14.6028 21.0075 16.4454 19.652 18.0241 17.8473C19.5914 16.0555 21 13.704 21 11C21 6.02944 16.9706 2 12 2ZM10 11C10 9.89543 10.8954 9 12 9C13.1046 9 14 9.89543 14 11C14 12.1046 13.1046 13 12 13C10.8954 13 10 12.1046 10 11ZM12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7Z"
+                                                    fill="#fff" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
                     </div>
 
-                    <div id="allBusesContainer">
+                    <div style="display: none;" id="allBusesContainer">
 
-                        
+
                         <p style="display: none;" id="favs-p">Αγαπημένα Λεωφορεία</p>
                         <div style="display: none;" id="custom-container">
 
@@ -5267,5 +5593,6 @@
 <script src="jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>
 <script src="script.js"></script>
+<script src="intelligence.js"></script>
 
 </html>
