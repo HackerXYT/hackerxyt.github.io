@@ -9,7 +9,7 @@
     -webkit-backdrop-filter: blur(5px);
     border-radius: 30px;
     justify-content: space-between;
-    
+
 }
 
 .navigate .switch {
@@ -70,15 +70,117 @@
 .bottomSearchParent {
     position: fixed;
     bottom: 30px;
-    height: auto;
+    height: 86px;
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     z-index: 100;
-    transition: transform 0.6s ease, opacity 0.6s ease; /* Smooth transition */
+    transition: transform 0.6s ease, opacity 0.6s ease, height 0.6s ease, width 0.6s ease, bottom 0.3s ease;
+    /* Smooth transition */
 }
+
+.insideSearch {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    padding-right: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.insideSearch .topSearch {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    z-index: 5;
+}
+
+.insideSearch .topSearch.recommend {
+    margin-top: 10px;
+    display: flex;
+    height: auto;
+    gap: 10px;
+    overflow-x: auto;
+    /* Space between items */
+    scroll-snap-type: x mandatory;
+    /* Enables snapping */
+    scroll-behavior: smooth;
+    /* Smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+    z-index: 5;
+}
+.insideSearch .topSearch.recommend::-webkit-scrollbar {
+    display: none;
+}
+
+.insideSearch .topSearch.recommend .Block {
+    width: auto;
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    background-color: #1f42f425;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+
+.insideSearch .backToSearch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.insideSearch .searchInput {
+    padding: 18px 20px;
+    background-color: #ffffff17;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-radius: 50px;
+    box-sizing: border-box;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: padding 0.6s ease, opacity 0.3s ease, width 0.6s ease, background-color 0.6s ease, height 0.6s ease;
+    /* Smooth transition */
+    width: 100%;
+    color: #fff;
+    margin-right: 10px;
+}
+
+.insideSearch .searchInput input {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+}
+
+.insideSearch .searchInput svg {
+    margin-left: auto;
+}
+
+.insideSearch .searchInput input::placeholder {
+    color: #cfcfcf;
+}
+
 
 
 .searchIntelli {
@@ -91,8 +193,10 @@
     box-sizing: border-box;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    transition: padding 0.6s ease, opacity 0.3s ease; /* Smooth transition */
+    transition: padding 0.6s ease, opacity 0.3s ease, width 0.6s ease, background-color 0.6s ease, height 0.6s ease;
+    /* Smooth transition */
     width: 256px;
+    color: #fff;
 }
 
 
@@ -130,19 +234,23 @@
 }
 
 .bottomSearchParent.scrolled .searchIntelli {
-    padding: 10px 20px; /* Smaller padding when scrolled */
+    padding: 10px 20px;
+    /* Smaller padding when scrolled */
     width: 145px;
     justify-content: center;
 }
 
 .bottomSearchParent.scrolled .searchIntelli .iconInC,
 .bottomSearchParent.scrolled .searchIntelli .triggerSearch {
-    opacity: 0; /* Hide the icons */
-    transform: scale(0.8); /* Shrink the icons */
+    opacity: 0;
+    /* Hide the icons */
+    transform: scale(0.8);
+    /* Shrink the icons */
 }
 
 .bottomSearchParent.scrolled {
-    height: auto; /* Allow the container to shrink based on content */
+    height: 86px;
+    /* Allow the container to shrink based on content */
 }
 
 .searchIn {
@@ -168,6 +276,7 @@
 }
 
 #phone {
+    --fade-color: #141416; /* Use the same final color for easier matching */
     background: linear-gradient(to top right,
             rgba(31, 65, 244, 0) 50%,
             rgba(31, 65, 244, 0.1) 75%,
@@ -176,10 +285,9 @@
             rgba(124, 255, 121, 0) 50%,
             rgba(124, 255, 121, 0.1) 75%,
             rgba(124, 255, 121, 0.2) 100%),
-        #141416;
+        var(--fade-color);
     background-repeat: no-repeat;
     background-size: 300% 300%;
-    /* Doubles the scale of the gradients */
 }
 
 .notificationsCC {
@@ -208,7 +316,22 @@
     width: 100%;
     height: auto;
     margin-bottom: 120px;
+    position: relative;
 }
+
+
+#content::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 280px;
+    background: linear-gradient(to bottom, rgba(20, 20, 22, 0) 0%, var(--fade-color) 98%);
+    pointer-events: none;
+}
+
+
 
 .Userfeed .feedItem {
     display: flex;
@@ -290,18 +413,24 @@
     flex-direction: row;
     align-items: center;
     width: 100%;
-    overflow-x: auto; /* Enables horizontal scrolling */
+    overflow-x: auto;
+    /* Enables horizontal scrolling */
     height: 190px;
     color: #fff;
-    gap: 10px; /* Space between items */
-    scroll-snap-type: x mandatory; /* Enables snapping */
-    scroll-behavior: smooth; /* Smooth scrolling */
-    -webkit-overflow-scrolling: touch; /* Momentum scrolling for mobile */
+    gap: 10px;
+    /* Space between items */
+    scroll-snap-type: x mandatory;
+    /* Enables snapping */
+    scroll-behavior: smooth;
+    /* Smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+    /* Momentum scrolling for mobile */
 }
 
 .pinned-favorites::-webkit-scrollbar {
-    display: none; /* For Chrome, Safari, and Edge */
-  }
+    display: none;
+    /* For Chrome, Safari, and Edge */
+}
 
 .pinned-favorites .item {
     display: flex;
@@ -314,13 +443,15 @@
     padding: 15px;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    scroll-snap-align: start; /* Snap to the start of each item */
+    scroll-snap-align: start;
+    /* Snap to the start of each item */
 }
 
 .pinned-favorites .item.favorite {
     background-color: #1f42f425;
     border: 2px solid #293fac;
 }
+
 .pinned-favorites .item .info {
     display: flex;
     flex-direction: row;
@@ -344,6 +475,7 @@
     align-items: left;
     padding: 10px;
 }
+
 .pinned-favorites .item .fav-actions {
     margin-top: auto;
     display: flex;
@@ -384,6 +516,7 @@
 .pinned-favorites .item .fav-actions .button-action.coverAll {
     width: 100% !important;
 }
+
 .pinned-favorites .item .fav-actions .button-action:nth-child(1).coverAll {
     margin-right: 5px;
 }
@@ -423,43 +556,69 @@
     flex-direction: column;
     gap: 10px;
     padding: 10px;
-  }
-  
-  .skeleton-text,
-  .skeleton-button {
+}
+
+.item.skeleton {
+    display: none;
+}
+
+.skeleton-text,
+.skeleton-button {
     background: #e0e0e0;
     border-radius: 14px;
     animation: skeleton 1.5s infinite ease-in-out;
-  }
-  
-  .skeleton-text {
+}
+
+.skeleton-text {
     height: 100%;
     width: 100%;
-  }
-  
-  .skeleton-button {
+}
+
+.skeleton-button {
     height: 40px !important;
     width: 100%;
     flex: 1;
-  }
-  
-  /* Skeleton effect animation */
-  @keyframes skeleton {
+}
+
+/* Skeleton effect animation */
+@keyframes skeleton {
     0% {
-      background-position: -200%;
+        background-position: -200%;
     }
+
     100% {
-      background-position: 200%;
+        background-position: 200%;
     }
-  }
-  
-  .skeleton-text {
+}
+
+.skeleton-text {
     background: linear-gradient(90deg, #e0e0e000 25%, #ffffff17 50%, #e0e0e000 75%);
     background-size: 200% 100%;
-  }
-  
-  .skeleton-button {
+}
+
+.skeleton-button {
     background: linear-gradient(90deg, #e0e0e000 25%, #ffffff17 50%, #e0e0e000 75%);
     background-size: 200% 100%;
-  }
-  
+}
+
+.oasa-map {
+    width: 100vw;
+    height: 100vh;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.mapboxgl-ctrl-bottom-left {
+    display: none;
+}
+
+.mapboxgl-ctrl-bottom-right {
+    display: none;
+}
+
+.behind {
+    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+}
