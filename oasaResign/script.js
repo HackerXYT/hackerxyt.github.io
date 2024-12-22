@@ -4619,6 +4619,7 @@ fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
     .then(response => response.json())
     .then(data => {
         fullLine = data
+        loadOasa() //BETA
         if (data) {
             let lc = localStorage.getItem("oasa_favorites");
             if (lc) {
