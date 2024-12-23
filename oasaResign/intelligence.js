@@ -561,46 +561,55 @@ function loadOasa() {
     //alert(`loadOasa: ${bus}`)
     const { LineDescr: descr, LineCode: lineCode } = matchingLines[0];
 
-    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${lineCode}&keyOrigin=evoxEpsilon`)}`)
-      .then(response => response.json())
-      .then(data => {
-        if (!data || (!data.come && !data.go)) {
-          console.warn(`No schedule data found for bus: ${bus}`);
-          return;
-        }
+    try {
+      fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${lineCode}&keyOrigin=evoxEpsilon`)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (!data || (!data.come && !data.go)) {
+            console.warn(`No schedule data found for bus: ${bus}`);
+            return;
+          }
 
-        console.log(`Schedule data for ${bus}:`, data);
+          console.log(`Schedule data for ${bus}:`, data);
 
-        // Extract times
-        const times = data.go.map(item => formatTime(item.sde_start1));
-        console.log(`Formatted times for ${bus}:`, times);
+          // Extract times
+          const times = data.go.map(item => formatTime(item.sde_start1));
+          console.log(`Formatted times for ${bus}:`, times);
 
-        // Determine the next bus time
-        const nextBusTime = getNextBusTimeLIVE(times);
+          // Determine the next bus time
+          const nextBusTime = getNextBusTimeLIVE(times);
 
-        if (nextBusTime) {
-          // Store data locally
-          localStorage.setItem(`${bus}_Timetable`, JSON.stringify(data));
-          localStorage.setItem(`${bus}_Times`, JSON.stringify(times));
+          if (nextBusTime) {
+            // Store data locally
+            localStorage.setItem(`${bus}_Timetable`, JSON.stringify(data));
+            localStorage.setItem(`${bus}_Times`, JSON.stringify(times));
 
-          // Display in feed
-          //alert(`Default work ${JSON.stringify(nextBusTime)}`)
-          spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), 'frequent');
-        } else {
-          //use times[0] as a fallback
-          const [hour, minutes] = times[0].split(":").map(Number);
-          const workingTime = { hour, minutes };
-          //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
-          //alert(`loadOasa Failed\nfailed why?:\nnextBusTime returned: ${JSON.stringify(nextBusTime)}\nTimes: ${JSON.stringify(times)}\nBus on work: ${bus}`);
-          console.warn(`Failed to find next bus time for ${bus}.\nWorking on the first value in schedule\nTimes:`, times);
-          spawnInFeed(bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent');
-        }
-      })
-      .catch(error => {
-        console.error(`Error fetching schedule for ${bus}:`, error);
-        spawnFallback(bus, descr);
-      });
+            // Display in feed
+            //alert(`Default work ${JSON.stringify(nextBusTime)}`)
+            spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), 'frequent');
+          } else {
+            //use times[0] as a fallback
+            const [hour, minutes] = times[0].split(":").map(Number);
+            const workingTime = { hour, minutes };
+            //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
+            //alert(`loadOasa Failed\nfailed why?:\nnextBusTime returned: ${JSON.stringify(nextBusTime)}\nTimes: ${JSON.stringify(times)}\nBus on work: ${bus}`);
+            console.warn(`Failed to find next bus time for ${bus}.\nWorking on the first value in schedule\nTimes:`, times);
+            spawnInFeed(bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent');
+          }
+        })
+        .catch(error => {
+          console.error(`Error fetching schedule for ${bus}:`, error);
+          spawnFallback(bus, descr);
+        });
+    } catch {
+      spawnFallback(bus, descr);
+    }
+
   });
+}
+
+function hasInternetConnection() {
+  return navigator.onLine; // Returns true if online, false if offline
 }
 
 function formatTimeToMin(input) {
@@ -704,11 +713,6 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
     });
   }
 }
-
-function hasInternetConnection() {
-  return navigator.onLine; // Returns true if online, false if offline
-}
-
 
 function isNearEvery3Hours(proximityInMinutes = 5) {
   const now = new Date();
@@ -874,7 +878,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       //showErrors()
       //updateCountdown();
-      loadOasa()
+
 
     })
 })
@@ -1276,6 +1280,7 @@ function getNextBuses(times, more) {
 
   return nextBuses; // Return the next buses including the previous one
 }
+
 
 function manualLogout() {
   if (localStorage.getItem("t50-username")) {
