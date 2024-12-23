@@ -9,9 +9,15 @@
     -webkit-backdrop-filter: blur(5px);
     border-radius: 30px;
     justify-content: space-between;
-
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+.navigate.hidden {
+    transform: translateY(100%);
+    /* Move the element off-screen */
+    opacity: 0;
+    /* Hide the element */
+}
 .navigate .switch {
     display: flex;
     align-items: center;
@@ -221,6 +227,21 @@
     flex-grow: 0; /* Ensure it doesn't grow */
 }
 
+.iconInCGlobal {
+    /* Remove flex: 1 */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ffffff1d;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0; /* Prevent shrinking if needed */
+    flex-grow: 0; /* Ensure it doesn't grow */
+}
+
 .triggerSearch {
     margin-left: 20px;
     width: 50px;
@@ -331,8 +352,111 @@
     height: auto;
     margin-bottom: 120px;
     position: relative;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
+.busTimetable {
+    width: 100%;
+    height: auto;
+    margin-bottom: 120px;
+    position: relative;
+    transition: transform 0.3s ease, margin-top 0.3s ease, opacity 0.3s ease, visibility 0s;
+    margin-top: 0;
+    opacity: 0;
+    visibility: hidden;
+    display: none;
+}
+
+.busTimetable.shown {
+    margin-top: -80px;
+    opacity: 1; /* Ensure it's visible by default */
+    visibility: visible;
+}
+
+
+.busTimetable .timetableItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+
+.timetableItem .topDefines {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.timetableItem .topDefines .itempic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.timetableItem .topDefines .itempic img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
+.timetableItem .topDefines .infoPost {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+
+
+.timetableItem .topDefines .infoPost span.postType {
+    color: #afafaf;
+    font-size: 13px;
+}
+
+.topDefines .arrowFar {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #ffffff1d;
+    margin-left: auto;
+}
+
+.topDefines .buttonMore {
+    padding: 0px 20px;
+    width: auto;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: #ffffff1d;
+    margin-left: auto;
+    color: #fff;
+    font-size: 14px;
+}
+
+.themeButton {
+    padding: 0px 20px;
+    width: auto;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: #ffffff1d;
+    color: #fff;
+    font-size: 14px;
+}
 
 #content::after {
     content: '';
@@ -352,6 +476,13 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
+    
+}
+
+.Userfeed.focused {
+    transform: translateX(20px);
+    opacity: 0;
+    animation: moveUpAndLeft 0.5s ease-in-out forwards;
 
 }
 
@@ -464,6 +595,11 @@
 .pinned-favorites .item.favorite {
     background-color: #1f42f425;
     border: 2px solid #293fac;
+}
+
+.pinned-favorites .item.isPreloaded {
+    background-color: #f5421f25;
+    border: 2px solid #ac2f29;
 }
 
 .pinned-favorites .item .info {
@@ -631,4 +767,130 @@
     width: 100vw;
     height: 100vh;
     position: fixed;
+}
+
+#main-wrapper::-webkit-scrollbar, #phone::-webkit-scrollbar {
+    display: none;
+}
+
+.timetableItem .busInfo {
+    margin-left: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.timetableItem .busInfo p {
+    margin: 0;
+    font-size: 37px;
+}
+
+.timetableItem .busInfo span {
+    /*description*/
+    margin-top: 5px;
+    font-size: 15px;
+}
+
+
+.busInfo .busInfoSelector {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    z-index: 5;
+    margin-left: -5px;
+    padding-right: -10px;
+
+}
+
+.busInfo .busInfoSelector {
+    color: #fff;
+    margin-top: 10px;
+    display: flex;
+    height: auto;
+    gap: 10px;
+    overflow-x: auto;
+    /* Space between items */
+    scroll-snap-type: x mandatory;
+    /* Enables snapping */
+    scroll-behavior: smooth;
+    /* Smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+    z-index: 5;
+}
+.busInfo .busInfoSelector::-webkit-scrollbar {
+    display: none;
+}
+
+.busInfo .busInfoSelector .Block {
+    width: auto;
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    background-color: #55555525;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    white-space: nowrap;
+}
+
+.timetableSpawn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
+.timetableSpawn .timeItem {
+    padding: 20px 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    width: 100%;
+    background-color: #1f42f414;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    margin-bottom: 10px;
+}
+
+.timetableSpawn .timeItem p {
+    font-size: 25px;
+    margin: 0;
+}
+
+.timetableSpawn .timeItem span {
+    font-size: 15px;
+    margin: 0;
+    margin-left: 10px;
+}
+
+.timetableSpawn .timeItem .actions {
+    color: white;
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+
+#content {
+    margin-top: env(safe-area-inset-top) !important;
+    margin-bottom: env(safe-area-inset-bottom) !important; /* Adding bottom safe area inset */
+    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)); /* Adjusting content height to fill the viewport */
+}
+
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100vh !important;
+    overflow: hidden !important; /* Optional, to prevent any scroll */
 }
