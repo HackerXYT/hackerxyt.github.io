@@ -235,7 +235,7 @@ const removeAccents = (value) => {
   return value.replace(/[άέήίόύώΆΈΉΊΌΎΏΐΰϊϋ]/g, match => accentsMap[match]);
 };
 
-function spawnFallback(bus) {
+function spawnFallback(bus, descr) {
   if (localStorage.getItem(`${bus}_Timetable`)) {
     //alert(`Found ${bus} in local storage`)
     try {
@@ -246,8 +246,11 @@ function spawnFallback(bus) {
       if (nextBusTime) {
         spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), 'frequent', 'preload')
       } else {
-        alert(`failed why?:\n${JSON.stringify(nextBusTime)}\n${JSON.stringify(times)}\nBus on work: ${bus}`);
-        spawnInFeed(bus, descr, nextBusTime, 'Άγνωστη', 'frequent', 'preload')
+        const [hour, minutes] = times[0].split(":").map(Number);
+        const workingTime = { hour, minutes };
+        //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
+        console.warn(`SPAWNFALLBACK\nFailed to find next bus time for ${bus}.\nWorking on the first value in schedule\nTimes:`, times);
+        spawnInFeed(bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent', 'preload')
       }
     } catch (error) {
       console.log(`preOffline: ${error}`)
@@ -386,20 +389,66 @@ function getName() {
 
   //check for first and second name
 }
+
+function convertTime(minutes) {
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  const hoursText = hours === 1 ? "1 ώρα" : `${hours} ώρες`;
+  const minutesText = remainingMinutes === 1 ? "1 λεπτό" : `${remainingMinutes} λεπτά`;
+
+  if (hours === 0) {
+    return minutesText;
+  } else if (remainingMinutes === 0) {
+    return hoursText;
+  } else {
+    return `${hoursText} και ${minutesText}`;
+  }
+}
+
+function convertTimeApprox(minutes) {
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  const hoursText = hours === 1 ? "1 ώρα" : `${Math.floor(hours + 0.5)} ώρες`;
+  const minutesText = remainingMinutes === 1 ? "1 λεπτό" : `${remainingMinutes} λεπτά`;
+
+  if (hours === 0) {
+    return minutesText;
+  } else if (remainingMinutes === 0) {
+    return hoursText;
+  } else {
+    return `${hoursText}`;
+  }
+}
+
+// Example usage:
+console.log(convertTime(65)); // "1 hour and 5 minutes"
+console.log(convertTime(120)); // "2 hours"
+console.log(convertTime(59)); // "59 minutes"
+console.log(convertTime(1));  // "1 minute"
+
+
 function displayRemainingTimeLIVE(nextBusTime, elid) {
   console.log("Running", JSON.stringify(nextBusTime), "for", elid);
   const currentTime = new Date();
   const nextBusDate = new Date();
-  nextBusDate.setHours(nextBusTime.hour, nextBusTime.minutes, 0);
+
+  // Explicitly set the hours, minutes, and seconds for the next bus time
+  nextBusDate.setHours(nextBusTime.hour, nextBusTime.minutes, 0, 0);
+
+  // If the next bus time is earlier than the current time, assume it's the next day
+  if (nextBusDate <= currentTime) {
+    nextBusDate.setDate(nextBusDate.getDate() + 1);
+  }
 
   const remainingTimeMs = nextBusDate - currentTime;
   const remainingMinutes = Math.floor(remainingTimeMs / 1000 / 60);
-  const remainingHours = Math.floor(remainingMinutes / 60);
-  const displayMinutes = remainingMinutes % 60;
 
-  const remainingTimeText = `${remainingHours > 0 ? `${remainingHours}h ` : ''}${displayMinutes}m`;
-  return remainingTimeText;
+  console.log("Result", JSON.stringify(nextBusTime), "for", `${remainingMinutes} minutes`);
+  return remainingMinutes;
 }
+
 function getNextBusTimeLIVE(times) {
   ////console.log("getting times", times);
   const currentTime = new Date();
@@ -448,102 +497,110 @@ const frequentBuses = ['16', '831', '828', '049']
 const favoriteBuses = []
 const famousBuses = []
 
+
+//fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`)}`)
+//  .then(response => response.json())
+//  .then(data => {
+//    if (data) {
+//      const routeCode = data[0].route_code
+//      currentRouteCode = routeCode
+//      console.log(routeCode)
+//      fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${routeCode}&keyOrigin=evoxEpsilon`)}`)
+//        .then(response => response.json())
+//        .then(bata => {
+//          currentLineInfo = bata
+//          let stopPromises = bata.stops.map(stop => {
+//            return new Promise((resolve, reject) => {
+//              console.log(stop.StopDescr);
+//
+//              // Resolve the promise after the stop is processed
+//              resolve();
+//            });
+//          });
+//
+//          // Wait for all promises to resolve (i.e., all stops are spawned)
+//          Promise.all(stopPromises)
+//            .then(() => {
+//              // Code to run after all elements are spawned
+//              console.log('All stops have been spawned!');
+//              // Add additional functionality here
+//            })
+//            .catch(err => {
+//              console.error('An error occurred while spawning stops:', err);
+//            });
+//        })
+//        .catch(error => {
+//          console.log("FindStops [2] error:", error)
+//          if (error.toString().includes('Unexpected token')) {
+//            //alert("OASA SQL error. Δοκιμάστε ξανά.")
+//            console.warn("Attempting to fix")
+//            findStops(lineCode, sentElementByfindBus)
+//          }
+//        })
+//    }
+//
+//  })
+//  .catch(error => {
+//    console.log("FindStops [1] error:", error)
+//    if (error.toString().includes('Unexpected token')) {
+//      //alert("OASA SQL error. Δοκιμάστε ξανά.")
+//      console.warn("Attempting to fix")
+//      findStops(lineCode, sentElementByfindBus)
+//    }
+//  })
+
 function loadOasa() {
-  let spawnInFreq = {}
+  let spawnInFreq = {}; // This appears unused but retained for context
   frequentBuses.forEach(bus => {
     let matchingLines = fullLine.filter(line => line.LineID === bus);
-    const working = matchingLines[0]
-    const descr = working.LineDescr
-    const lineCode = working.LineCode
+    if (!matchingLines.length) {
+      console.warn(`No matching lines found for bus: ${bus}`);
+      return;
+    }
 
-    //fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`)}`)
-    //  .then(response => response.json())
-    //  .then(data => {
-    //    if (data) {
-    //      const routeCode = data[0].route_code
-    //      currentRouteCode = routeCode
-    //      console.log(routeCode)
-    //      fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${routeCode}&keyOrigin=evoxEpsilon`)}`)
-    //        .then(response => response.json())
-    //        .then(bata => {
-    //          currentLineInfo = bata
-    //          let stopPromises = bata.stops.map(stop => {
-    //            return new Promise((resolve, reject) => {
-    //              console.log(stop.StopDescr);
-    //
-    //              // Resolve the promise after the stop is processed
-    //              resolve();
-    //            });
-    //          });
-    //
-    //          // Wait for all promises to resolve (i.e., all stops are spawned)
-    //          Promise.all(stopPromises)
-    //            .then(() => {
-    //              // Code to run after all elements are spawned
-    //              console.log('All stops have been spawned!');
-    //              // Add additional functionality here
-    //            })
-    //            .catch(err => {
-    //              console.error('An error occurred while spawning stops:', err);
-    //            });
-    //        })
-    //        .catch(error => {
-    //          console.log("FindStops [2] error:", error)
-    //          if (error.toString().includes('Unexpected token')) {
-    //            //alert("OASA SQL error. Δοκιμάστε ξανά.")
-    //            console.warn("Attempting to fix")
-    //            findStops(lineCode, sentElementByfindBus)
-    //          }
-    //        })
-    //    }
-    //
-    //  })
-    //  .catch(error => {
-    //    console.log("FindStops [1] error:", error)
-    //    if (error.toString().includes('Unexpected token')) {
-    //      //alert("OASA SQL error. Δοκιμάστε ξανά.")
-    //      console.warn("Attempting to fix")
-    //      findStops(lineCode, sentElementByfindBus)
-    //    }
-    //  })
+    //alert(`loadOasa: ${bus}`)
+    const { LineDescr: descr, LineCode: lineCode } = matchingLines[0];
 
     fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${lineCode}&keyOrigin=evoxEpsilon`)}`)
       .then(response => response.json())
       .then(data => {
-        console.log("The data:", data)
-        if (!data.come && !data.go) {
-          console.log(data)
+        if (!data || (!data.come && !data.go)) {
+          console.warn(`No schedule data found for bus: ${bus}`);
           return;
-        } else {
-          console.log("Come and go for ", bus, "\n", data)
         }
-        console.log("Success", lineCode)
 
-        var times = data.go.map(item => {
-          //console.log("sde_start1:", item.sde_start1); // Debug log
-          return formatTime(item.sde_start1);
-        });
+        console.log(`Schedule data for ${bus}:`, data);
 
-        //console.log("Formatted times:", times); // Debug log
+        // Extract times
+        const times = data.go.map(item => formatTime(item.sde_start1));
+        console.log(`Formatted times for ${bus}:`, times);
 
+        // Determine the next bus time
         const nextBusTime = getNextBusTimeLIVE(times);
 
         if (nextBusTime) {
+          // Store data locally
           localStorage.setItem(`${bus}_Timetable`, JSON.stringify(data));
           localStorage.setItem(`${bus}_Times`, JSON.stringify(times));
-          spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), 'frequent')
-          //alert(displayRemainingTimeLIVE(nextBusTime))
+
+          // Display in feed
+          //alert(`Default work ${JSON.stringify(nextBusTime)}`)
+          spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), 'frequent');
         } else {
-          alert(`failed why?:\n${JSON.stringify(nextBusTime)}\n${JSON.stringify(times)}\nBus on work: ${bus}`);
-          spawnInFeed(bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
+          //use times[0] as a fallback
+          const [hour, minutes] = times[0].split(":").map(Number);
+          const workingTime = { hour, minutes };
+          //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
+          //alert(`loadOasa Failed\nfailed why?:\nnextBusTime returned: ${JSON.stringify(nextBusTime)}\nTimes: ${JSON.stringify(times)}\nBus on work: ${bus}`);
+          console.warn(`Failed to find next bus time for ${bus}.\nWorking on the first value in schedule\nTimes:`, times);
+          spawnInFeed(bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent');
         }
       })
       .catch(error => {
-        console.log('Load Favorite Times Error:', error)
-        //document.getElementById("netStats").innerHTML = offlineSvg
-        spawnFallback(bus)
+        console.error(`Error fetching schedule for ${bus}:`, error);
+        spawnFallback(bus, descr);
       });
-  })
+  });
 }
 
 function formatTimeToMin(input) {
@@ -561,7 +618,7 @@ function formatTimeToMin(input) {
     }
   }
 
-  return "Μη έγκυρη είσοδος"; // Fallback for unexpected input
+  return input; // Fallback for unexpected input
 }
 
 function generateRandomId(length) {
@@ -625,13 +682,13 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
           <div class="info">
             <div class="text">
               <span>Επόμενη άφιξη</span>
-              <span>${formatTimeToMin(busData.timeInM)}</span>
+              <span>${formatTimeToMin(convertTimeApprox(busData.timeInM))}</span>
             </div>
           </div>
           <div class="fav-actions">
             <div onclick="processInfo('${evoxId}', 'getTimes')" class="button-action important">
               <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.8321 14.5547C15.5257 15.0142 14.9048 15.1384 14.4453 14.8321L11.8451 13.0986C11.3171 12.7466 11 12.1541 11 11.5196L11 11.5L11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7L13 11.4648L15.5547 13.1679C16.0142 13.4743 16.1384 14.0952 15.8321 14.5547Z" fill="#3557fd" />
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.8321 14.5547C15.5257 15.0142 14.9048 15.1384 14.4453 14.8321L11.8451 13.0986C11.3171 12.7466 11 12.1541 11 11.5196L11 11.5L11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7L13 11.4648L15.5547 13.1679C16.0142 13.4743 16.1384 14.0952 15.8321 14.5547Z" fill="#fff" />
               </svg>
             </div>
             <div onclick="processInfo('${evoxId}', 'showBusInfo')" class="button-action">
@@ -647,6 +704,11 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
     });
   }
 }
+
+function hasInternetConnection() {
+  return navigator.onLine; // Returns true if online, false if offline
+}
+
 
 function isNearEvery3Hours(proximityInMinutes = 5) {
   const now = new Date();
@@ -669,100 +731,153 @@ function isNearEvery3Hours(proximityInMinutes = 5) {
 }
 
 
-const allLines = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetLines&keyOrigin=evoxEpsilon`);
+document.addEventListener('DOMContentLoaded', () => {
+  function getCookie(name) {
+    // Find the cookie in document.cookie string
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
 
-fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
-  .then(response => response.json())
-  .then(data => {
-    fullLine = data
-    loadOasa() //BETA
-    if (data) {
-      let lc = localStorage.getItem("oasa_favorites");
-      if (lc) {
-        lc = JSON.parse(lc);
+    if (parts.length === 2) {
+      // Return the decoded cookie value
+      return decodeURIComponent(parts.pop().split(';').shift());
+    }
+    return null;  // If the cookie doesn't exist
+  }
+
+  const cookieValue = getCookie('userData');
+
+  let blockMoves = false
+  if (cookieValue && !localStorage.getItem("hasRetrievedCookie") && !localStorage.getItem("t50pswd") && !localStorage.getItem("hasRetrievedCookie")) {
+    // Parse the JSON string back into a JavaScript object
+    const userData = JSON.parse(cookieValue);
+    console.log(userData); // Access the JSON data
+    //alert(userData)
+    if (userData) {
+      blockMoves = true
+      let userConfirmed = window.confirm(`Βρέθηκε ο χρήστης ${userData.username} στην συσκευή.\nΘέλετε να συνδεθείτε αυτόματα;`);
+      if (userConfirmed) {
+        localStorage.setItem("t50-username", userData.username)
+        localStorage.setItem("t50-email", userData.email)
+        localStorage.setItem("t50pswd", userData.password)
+        localStorage.setItem("hasRetrievedCookie", "true")
+        setTimeout(() => {
+          window.location.reload()
+        }, 300);
+      } else {
+        // User clicked "Cancel"
+        localStorage.setItem("hasBlockedCookie", "true")
+        console.log("User canceled.");
       }
-      // Map each line to a promise for asynchronous handling
-      let linesPromises = data.map(eachLine => {
-        return new Promise((resolve, reject) => {
-          document.getElementById("spawnHere").querySelectorAll("button").forEach(editBus => {
-            if (lc && lc.includes(editBus.getAttribute("data-bus"))) {
-              editBus.classList.add("favoriteBus")
+
+    }
+    //console.log(`Username: ${userData.username}`);
+    //console.log(`Email: ${userData.email}`);
+  }
+
+  if (localStorage.getItem("t50-username") && localStorage.getItem("t50-email") && localStorage.getItem("t50pswd")) {
+    //document.getElementById("profilePic").src = "https://www.gravatar.com/avatar/" + md5(localStorage.getItem("t50-email")) + "?d=identicon";
+
+    document.getElementById("oasaPfp").src = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${localStorage.getItem("t50-username")}`
+  } else {
+    document.getElementById("oasaPfp").src = 'cbimage.png'
+  }
+
+
+  const allLines = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetLines&keyOrigin=evoxEpsilon`);
+
+  fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
+    .then(response => response.json())
+    .then(data => {
+      fullLine = data
+      loadOasa() //BETA
+      if (data) {
+        let lc = localStorage.getItem("oasa_favorites");
+        if (lc) {
+          lc = JSON.parse(lc);
+        }
+        // Map each line to a promise for asynchronous handling
+        let linesPromises = data.map(eachLine => {
+          return new Promise((resolve, reject) => {
+            document.getElementById("spawnHere").querySelectorAll("button").forEach(editBus => {
+              if (lc && lc.includes(editBus.getAttribute("data-bus"))) {
+                editBus.classList.add("favoriteBus")
+              }
+            })
+            resolve(); // Mark the promise as resolved after DOM update
+          });
+        });
+
+        // Wait for all promises to resolve (i.e., all buttons are added to the DOM)
+        Promise.all(linesPromises)
+          .then(() => {
+            console.log('All lines have been spawned!');
+            const element_b = document.getElementById('indexLoading');
+            if (element_b) {
+              element_b.remove(); // Remove the loading element
             }
+
+            // Add additional functionality here
           })
-          resolve(); // Mark the promise as resolved after DOM update
-        });
-      });
-
-      // Wait for all promises to resolve (i.e., all buttons are added to the DOM)
-      Promise.all(linesPromises)
-        .then(() => {
-          console.log('All lines have been spawned!');
-          const element_b = document.getElementById('indexLoading');
-          if (element_b) {
-            element_b.remove(); // Remove the loading element
-          }
-
-          // Add additional functionality here
-        })
-        .catch(err => {
-          console.error('An error occurred while spawning stops:', err);
-        });
-    }
-
-
-  })
-  .catch(error => {
-    console.log("All Lines Get Error:", error)
-    if (isNearEvery3Hours()) {
-      //alert(`Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.`)
-      document.getElementById("performance").style.display = 'flex'
-      document.getElementById("messagePerformance").innerHTML = 'Μερική Διακοπή'
-      document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentBuild}`
-
-      document.getElementById("spawnHere").innerHTML = 'Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.'
-      document.getElementById("logErrors").innerHTML = `Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.`
-    } else {
-      //alert(`Δεν ηταν δυνατη η συνδεση στον διακομιστη.\nΑγνωστο σφαλμα`)
-      document.getElementById("performance").style.display = 'flex'
-      document.getElementById("messagePerformance").innerHTML = 'Σοβαρό περιστατικό'
-      document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentBuild}`
-
-      document.getElementById("spawnHere").innerHTML = 'Δεν ηταν δυνατη η συνδεση στον διακομιστη.<br>Αγνωστο σφαλμα'
-      document.getElementById("logErrors").innerHTML = `Δεν ηταν δυνατη η συνδεση στον διακομιστη.<br>Αγνωστο σφαλμα<br>${error}`
-    }
-    if (error.toString().includes('Unexpected token')) {
-      //alert("OASA SQL error. Δοκιμάστε ξανά.")
-      document.getElementById("performance").style.display = 'flex'
-      document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentBuild}`
-      document.getElementById("messagePerformance").innerHTML = 'Σφάλμα OASA'
-      document.getElementById("spawnHere").innerHTML = "OASA SQL error. Δοκιμάστε ξανά."
-      document.getElementById("logErrors").innerHTML = `Σφάλμα από την πλευρά του OASA [SQL].<br>Επανεκκινήστε την εφαρμογή.<br>${error}`
-
-    }
-    const pers = localStorage.getItem("personalization")
-    if (pers) {
-      const personalize = JSON.parse(pers);
-      const savedDate = new Date(personalize.date); // Convert to Date object
-      const currentDate = new Date();
-
-      // Calculate the difference in days
-      const differenceInDays = (currentDate - savedDate) / (1000 * 60 * 60 * 24);
-
-      if (differenceInDays <= 3 && type === "muteOfflineAlerts") {
-        return;
-        console.log("Date is within 2 days. Do something.");
+          .catch(err => {
+            console.error('An error occurred while spawning stops:', err);
+          });
       }
-      // else {
-      //    console.log("Date is older than 2 days. Do something else.");
-      //}
-    } else if (!hasInternetConnection()) {
-      return;
-    }
-    //showErrors()
-    //updateCountdown();
 
 
-  })
+    })
+    .catch(error => {
+      console.log("All Lines Get Error:", error)
+      if (isNearEvery3Hours()) {
+        //alert(`Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.`)
+        document.getElementById("performance").style.display = 'flex'
+        document.getElementById("messagePerformance").innerHTML = 'Μερική Διακοπή'
+        document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentBuild}`
+
+        document.getElementById("spawnHere").innerHTML = 'Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.'
+        document.getElementById("logErrors").innerHTML = `Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.`
+      } else {
+        //alert(`Δεν ηταν δυνατη η συνδεση στον διακομιστη.\nΑγνωστο σφαλμα`)
+        document.getElementById("performance").style.display = 'flex'
+        document.getElementById("messagePerformance").innerHTML = 'Σοβαρό περιστατικό'
+        document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentBuild}`
+
+        document.getElementById("spawnHere").innerHTML = 'Δεν ηταν δυνατη η συνδεση στον διακομιστη.<br>Αγνωστο σφαλμα'
+        document.getElementById("logErrors").innerHTML = `Δεν ηταν δυνατη η συνδεση στον διακομιστη.<br>Αγνωστο σφαλμα<br>${error}`
+      }
+      if (error.toString().includes('Unexpected token')) {
+        //alert("OASA SQL error. Δοκιμάστε ξανά.")
+        document.getElementById("performance").style.display = 'flex'
+        document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentBuild}`
+        document.getElementById("messagePerformance").innerHTML = 'Σφάλμα OASA'
+        document.getElementById("spawnHere").innerHTML = "OASA SQL error. Δοκιμάστε ξανά."
+        document.getElementById("logErrors").innerHTML = `Σφάλμα από την πλευρά του OASA [SQL].<br>Επανεκκινήστε την εφαρμογή.<br>${error}`
+
+      }
+      const pers = localStorage.getItem("personalization")
+      if (pers) {
+        const personalize = JSON.parse(pers);
+        const savedDate = new Date(personalize.date); // Convert to Date object
+        const currentDate = new Date();
+
+        // Calculate the difference in days
+        const differenceInDays = (currentDate - savedDate) / (1000 * 60 * 60 * 24);
+
+        if (differenceInDays <= 3 && type === "muteOfflineAlerts") {
+          return;
+          console.log("Date is within 2 days. Do something.");
+        }
+        // else {
+        //    console.log("Date is older than 2 days. Do something else.");
+        //}
+      } else if (!hasInternetConnection()) {
+        return;
+      }
+      //showErrors()
+      //updateCountdown();
+      loadOasa()
+
+    })
+})
 
 function haversineDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // Radius of the Earth in kilometers
@@ -812,6 +927,26 @@ function capitalizeWords(str) {
     .join(' '); // Join the words back into a single string
 }
 
+function splitValue(value) {
+  return {
+    // Method to get the first part (before the first '-')
+    getFirstPart: function () {
+      const match = value.match(/^([^\-]*)/);
+      return match ? match[1].trim() : '';
+    },
+
+    // Method to get the second part (after the last '-')
+    getSecondPart: function () {
+      const match = value.match(/[^-]+$/);  // Match after the last '-'
+      return match ? match[0].trim().replace(/\(.*\)$/, '').trim() : '';
+    }
+  };
+}
+
+let activeBusInfo = {
+  'go': [],
+  'come': []
+}
 
 function processInfo(evoxId, type) {
   if (evoxId) {
@@ -829,6 +964,9 @@ function processInfo(evoxId, type) {
 
     document.getElementById("searchIntelli").classList.add('notLoaded')
     if (type === 'getTimes') {
+      document.getElementById("busGOCOME").innerHTML = ''
+      const days = document.getElementById("busInfoDaySelector")
+      days.innerHTML = ''
       const busInfo = evoxIds[evoxId]
       let matchingLines = fullLine.filter(line => line.LineID === busInfo.bus);
       const working = matchingLines[0]
@@ -839,8 +977,13 @@ function processInfo(evoxId, type) {
       fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getScheduleDaysMasterline&p1=${lineCode}&keyOrigin=evoxEpsilon`)}`)
         .then(response => response.json())
         .then(data => {
-          const days = document.getElementById("busInfoDaySelector")
-          days.innerHTML = ''
+
+          days.innerHTML += `<div class="Block active">
+                                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.75 2.5C7.75 2.08579 7.41421 1.75 7 1.75C6.58579 1.75 6.25 2.08579 6.25 2.5V4.07926C4.81067 4.19451 3.86577 4.47737 3.17157 5.17157C2.47737 5.86577 2.19451 6.81067 2.07926 8.25H21.9207C21.8055 6.81067 21.5226 5.86577 20.8284 5.17157C20.1342 4.47737 19.1893 4.19451 17.75 4.07926V2.5C17.75 2.08579 17.4142 1.75 17 1.75C16.5858 1.75 16.25 2.08579 16.25 2.5V4.0129C15.5847 4 14.839 4 14 4H10C9.16097 4 8.41527 4 7.75 4.0129V2.5Z" fill="#fff"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 11.161 2 10.4153 2.0129 9.75H21.9871C22 10.4153 22 11.161 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12ZM17 14C17.5523 14 18 13.5523 18 13C18 12.4477 17.5523 12 17 12C16.4477 12 16 12.4477 16 13C16 13.5523 16.4477 14 17 14ZM17 18C17.5523 18 18 17.5523 18 17C18 16.4477 17.5523 16 17 16C16.4477 16 16 16.4477 16 17C16 17.5523 16.4477 18 17 18ZM13 13C13 13.5523 12.5523 14 12 14C11.4477 14 11 13.5523 11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13ZM13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C12.5523 16 13 16.4477 13 17ZM7 14C7.55228 14 8 13.5523 8 13C8 12.4477 7.55228 12 7 12C6.44772 12 6 12.4477 6 13C6 13.5523 6.44772 14 7 14ZM7 18C7.55228 18 8 17.5523 8 17C8 16.4477 7.55228 16 7 16C6.44772 16 6 16.4477 6 17C6 17.5523 6.44772 18 7 18Z" fill="#fff"/>
+</svg>Καθημερινή
+                                    </div>`
           data.forEach(day => {
             let icon = `<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 3V4.34708C4.35095 4.54034 3.77636 4.8406 3.30848 5.30848C2.74209 5.87488 2.42133 6.59764 2.23866 7.41959C2.05852 8.23018 2 9.19557 2 10.312V15.688C2 16.8044 2.05852 17.7698 2.23866 18.5804C2.42133 19.4024 2.74209 20.1251 3.30848 20.6915C3.87488 21.2579 4.59764 21.5787 5.41959 21.7613C6.23018 21.9415 7.19557 22 8.312 22H15.688C16.8044 22 17.7698 21.9415 18.5804 21.7613C19.4024 21.5787 20.1251 21.2579 20.6915 20.6915C21.2579 20.1251 21.5787 19.4024 21.7613 18.5804C21.9415 17.7698 22 16.8044 22 15.688V10.312C22 9.19557 21.9415 8.23018 21.7613 7.41959C21.5787 6.59764 21.2579 5.87488 20.6915 5.30848C20.2236 4.8406 19.6491 4.54034 19 4.34708V3C19 2.44772 18.5523 2 18 2C17.4477 2 17 2.44772 17 3V4.03477C16.5889 4.01008 16.1515 4 15.688 4H8.312C7.84855 4 7.41113 4.01008 7 4.03477V3C7 2.44772 6.55228 2 6 2C5.44772 2 5 2.44772 5 3ZM6 9C6 8.44772 6.44772 8 7 8H17C17.5523 8 18 8.44772 18 9C18 9.55228 17.5523 10 17 10H7C6.44772 10 6 9.55228 6 9Z" fill="#fff"/></svg>`;
             // Default icon
@@ -870,20 +1013,19 @@ function processInfo(evoxId, type) {
         .catch(error => {
           console.log('Load Bus Times List Error:', error)
         });
+      document.getElementById("timetableSpawn").innerHTML = '';  // Clear existing content
       fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${lineCode}&keyOrigin=evoxEpsilon`)}`)
         .then(response => response.json())
         .then(data => {
-          document.getElementById("busGOCOME").innerHTML = ''
+          activeBusInfo = data
+          const splitter = splitValue(busInfo.descr);
           console.log("The data:", data)
           if (data.go) {
-            console.log('result', busInfo.descr); // ΠΕΙΡΑΙΑΣ-ΑΙΓΑΛΕΩ (ΕΝΑΛΛΑΚΤΙΚΗ ΛΟΓΩ ΛΑΪΚΗΣ ΚΑΘΕ ΔΕΥΤΕΡΑ)
 
-            const match = busInfo.descr.match(/- (.*?)(?=\s*\(|$)/); // Improved regex to handle spaces before '('
-            console.log('match', match);
-
-            const result = match ? match[1].trim() : null; // Trim any leading or trailing spaces
+            console.log('result', busInfo.descr);
+            const result = splitter.getSecondPart() // Trim any leading or trailing spaces
             console.log('result', result);
-            document.getElementById("busGOCOME").innerHTML += `<div class="Block">
+            document.getElementById("busGOCOME").innerHTML += `<div class="Block active">
                                         <svg width="20px" height="20px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M36 7L43 13.4615L36 21" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M40 14H17.0062C10.1232 14 4.27787 19.6204 4.00964 26.5C3.72612 33.7696 9.73291 40 17.0062 40H34.0016" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -893,8 +1035,7 @@ function processInfo(evoxId, type) {
           }
 
           if (data.come) {
-            const match = busInfo.descr.match(/^(.*?) -/);
-            const result = match ? match[1] : null;
+            const result = splitter.getFirstPart();
             document.getElementById("busGOCOME").innerHTML += `<div class="Block">
                                         <svg fill="#fff" width="20px" height="20px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
 <path d="M0 21.984q0.032-0.8 0.608-1.376l4-4q0.448-0.48 1.056-0.576t1.12 0.128 0.864 0.736 0.352 1.12v1.984h18.016q0.8 0 1.408-0.576t0.576-1.408v-8q0-0.832-0.576-1.408t-1.408-0.608h-16q-0.736 0-1.248-0.416t-0.64-0.992 0-1.152 0.64-1.024 1.248-0.416h16q2.464 0 4.224 1.76t1.76 4.256v8q0 2.496-1.76 4.224t-4.224 1.76h-18.016v2.016q0 0.64-0.352 1.152t-0.896 0.704-1.12 0.096-1.024-0.544l-4-4q-0.64-0.608-0.608-1.44z"></path>
@@ -908,7 +1049,7 @@ function processInfo(evoxId, type) {
           } else {
             console.log("Come and go for ", busInfo, "\n", data)
           }
-          document.getElementById("timetableSpawn").innerHTML = '';  // Clear existing content
+
           console.log("Success", lineCode);
 
           var times = data.go.map(item => {
@@ -923,24 +1064,56 @@ function processInfo(evoxId, type) {
             localStorage.setItem(`${busInfo.bus}_Times`, JSON.stringify(times));
 
             // Create the HTML content dynamically for each time
-            let timetableContent = '';
-            times.forEach(time => {
-              timetableContent += `
+
+          } else {
+            const [hour, minutes] = times[0].split(":").map(Number);
+            const workingTime = { hour, minutes };
+            //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
+            console.warn(`processInfo\nFailed to find next bus time for ${busInfo.bus}.\nWorking on the first value in schedule\nTimes:`, times);
+            spawnInFeed(busInfo.bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent')
+            //alert(`failed why?:\n${JSON.stringify(nextBusTime)}\n${JSON.stringify(times)}\nBus on work: ${busInfo.bus}`);
+            //spawnInFeed(bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
+          }
+
+          let timetableContent = '';
+          const remains = getNextBuses(times, 7)
+          const previous = getPreviousBuses(times)
+          if (previous[0]) {
+            const value = previous[0].time;
+            const currentTime = new Date();
+            const [hours, minutes] = value.split(':').map(Number);
+            const targetTime = new Date();
+            targetTime.setHours(hours, minutes, 0, 0);
+            const diffInMinutes = (currentTime - targetTime) / (1000 * 60);
+            const result = diffInMinutes < 90 ? 'Σε κίνηση' : 'Χαμένο';
+            //var textNode = document.createTextNode(result);
+            //previousTimeBox.appendChild(textNode);
+            //var span = document.createElement('span');
+            //span.innerHTML = ``;
+            //previousTimeBox.appendChild(span);
+            //document.getElementById("evoxBased").appendChild(previousTimeBox);
+            timetableContent += `<div class="timeItem">
+        <p>${result}</p>
+        <div class="actions" style="display:flex;flex-direction: column;justify-content: center;align-items: flex-end;">
+          <vox style="text-decoration: line-through;">${previous[0].time}</vox><span style='font-size: 0.9rem;margin-top:4px;'>${previous[0].formatted}</span>
+        </div>
+      </div>`
+          }
+          remains.forEach(time => {
+            timetableContent += `
       <div class="timeItem">
-        <p>${time}</p>
+      <p>${time}</p>
         <div class="actions">
-          1
+          <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#fff"/>
+</svg>
         </div>
       </div>
     `;
-            });
+          });
 
-            // Insert the content into the element
-            document.getElementById("timetableSpawn").innerHTML = timetableContent;
-          } else {
-            alert(`failed why?:\n${JSON.stringify(nextBusTime)}\n${JSON.stringify(times)}\nBus on work: ${bus}`);
-            //spawnInFeed(bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
-          }
+          // Insert the content into the element
+          document.getElementById("timetableSpawn").innerHTML = timetableContent;
         })
         .catch(error => {
           console.log('Load Favorite Times Error:', error)
@@ -955,7 +1128,9 @@ function processInfo(evoxId, type) {
   }
 }
 
+
 function returnFromBusTimetable() {
+  activeBusInfo = {}
   document.getElementById("top-navigate").classList.remove('hidden')
   document.getElementById("userFeed").classList.remove('focused')
   document.getElementById("busTimetable").style.display = 'none'
@@ -965,4 +1140,163 @@ function returnFromBusTimetable() {
 
 
   document.getElementById("searchIntelli").classList.remove('notLoaded')
+}
+
+
+function getPreviousBuses(times, more) {
+  const countToLoad = more || 7; // Default to 7 if `more` is not provided
+
+  const now = new Date();
+  const currentTime = now.getHours() * 60 + now.getMinutes(); // Current time in minutes since midnight
+
+  const busTimes = times.map(time => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const busTime = hours * 60 + minutes; // Bus time in minutes since midnight
+    const diff = currentTime - busTime; // Difference in minutes (negative for future buses, positive for past buses)
+
+    return {
+      time,
+      isPast: busTime < currentTime, // Mark as past if bus time is earlier than current time
+      remainingTime: diff // Positive for past buses
+    };
+  });
+
+  // Filter only past buses
+  const pastBuses = busTimes.filter(bus => bus.isPast);
+
+  // Sort past buses in descending order (most recent past buses first)
+  pastBuses.sort((a, b) => a.remainingTime - b.remainingTime);
+
+  // Take the last `countToLoad` past buses
+  const previousBuses = pastBuses.slice(0, countToLoad).map(bus => {
+    const diff = bus.remainingTime; // Use positive remaining time for formatting
+    let formattedRemainingTime;
+
+    if (diff >= 60) {
+      let hours = Math.floor(diff / 60);
+      let remainingMinutes = diff % 60;
+
+      if (remainingMinutes === 0) {
+        formattedRemainingTime = hours === 1
+          ? `πριν ${hours} ώρα`
+          : `πριν ${hours} ώρες`;
+      } else {
+        formattedRemainingTime = hours === 1
+          ? `πριν ${hours} ώρα ${remainingMinutes} λεπτά`
+          : `πριν ${hours} ώρες ${remainingMinutes} λεπτά`;
+      }
+    } else {
+      formattedRemainingTime = `πριν ${diff} λεπτά`;
+    }
+
+    return { time: bus.time, formatted: formattedRemainingTime }
+    //`${bus.time}`;// - ${formattedRemainingTime}
+  });
+
+  return previousBuses;
+}
+
+function getNextBuses(times, more) {
+
+  let countToLoad = null
+  if (more) {
+    countToLoad = more
+  } else {
+    countToLoad = 7
+  }
+  const now = new Date();
+  const currentTime = now.getHours() * 60 + now.getMinutes(); // Current time in minutes since midnight
+
+  const busTimes = times.map(time => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const busTime = hours * 60 + minutes; // Bus time in minutes since midnight
+    const diff = busTime - currentTime;
+    return {
+      time,
+      remainingTime: diff >= 0 ? diff : diff + 24 * 60 // Adjust for next day if time is negative
+    };
+  });
+
+  // Separate future and past bus times
+  const futureBuses = busTimes.filter(bus => bus.remainingTime >= 0);
+  const pastBuses = busTimes.filter(bus => bus.remainingTime < 0);
+
+  // Sort future buses by remaining time
+  futureBuses.sort((a, b) => a.remainingTime - b.remainingTime);
+
+  // Find the nearest previous bus time
+  let nearestPreviousBus = null;
+  if (pastBuses.length > 0) {
+    pastBuses.sort((a, b) => b.remainingTime - a.remainingTime); // Sort past buses in descending order
+    nearestPreviousBus = pastBuses[0]; // Nearest previous bus (largest negative remaining time)
+  }
+
+  // Convert remaining times to the desired format for future buses
+
+
+  const nextBuses = futureBuses.slice(0, countToLoad).map((bus) => {
+    const diff = bus.remainingTime;
+    let formattedRemainingTime;
+
+    if (diff > 60) {
+      let hours = Math.floor(diff / 60);
+      let remainingMinutes = diff % 60;
+      if (hours >= 1) {
+        formattedRemainingTime = hours === 1
+          ? `${hours} ώρα`
+          : `${hours} ώρες`;
+        return `<vox>${bus.time}</vox> <span style="font-size: 15px;margin-left: 2px;">${formattedRemainingTime}</span>`;
+      } else {
+        formattedRemainingTime = hours === 1
+          ? `${hours} ώρα, ${remainingMinutes} λεπτά`
+          : `${hours} ώρες, ${remainingMinutes} λεπτά`;
+        return `<vox>${bus.time}</vox> <span style="font-size: 15px;margin-left: 2px;">${formattedRemainingTime}</span>`;
+      }
+
+
+    } else {
+      formattedRemainingTime = `${diff} λεπτά`;
+      return `<vox>${bus.time}</vox> <span style="font-size: 15px;margin-left: 2px;">${formattedRemainingTime}</span>`;
+    }
+
+
+  });
+
+  // If there's a nearest previous bus, format it and prepend to nextBuses
+  if (nearestPreviousBus) {
+    const previousDiff = Math.abs(nearestPreviousBus.remainingTime); // Use absolute value for formatting
+    const previousFormattedTime = `${nearestPreviousBus.time} - πρίν ${previousDiff} λεπτά`;
+    nextBuses.unshift(previousFormattedTime);
+  }
+
+  // Log the original bus times
+  busTimes.slice(0, 5).forEach(bus => {
+    console.log(`Scheduled time: ${bus.time}`);
+  });
+
+  return nextBuses; // Return the next buses including the previous one
+}
+
+function manualLogout() {
+  if (localStorage.getItem("t50-username")) {
+    let userConfirmed = window.confirm(`Θέλετε να αποσυνδεθείτε από τον λογαριασμό σας [${localStorage.getItem("t50-username")}];`);
+    if (userConfirmed) {
+      localStorage.clear()
+      sessionStorage.clear()
+      setInterval(() => {
+        window.location.reload()
+      }, 500);
+    }
+  } else {
+    let userConfirmed = window.confirm(`Δεν είστε συνδεδεμένοι. Θέλετε ακόμα να διαγράψετε τα δεδομένα σας;`);
+    if (userConfirmed) {
+      localStorage.clear()
+      sessionStorage.clear()
+      setInterval(() => {
+        window.location.reload()
+      }, 500);
+    }
+  }
+
+
 }
