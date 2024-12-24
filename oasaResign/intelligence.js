@@ -589,12 +589,18 @@ function loadOasa() {
             spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), 'frequent');
           } else {
             //use times[0] as a fallback
-            const [hour, minutes] = times[0].split(":").map(Number);
-            const workingTime = { hour, minutes };
-            //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
-            //alert(`loadOasa Failed\nfailed why?:\nnextBusTime returned: ${JSON.stringify(nextBusTime)}\nTimes: ${JSON.stringify(times)}\nBus on work: ${bus}`);
-            console.warn(`Failed to find next bus time for ${bus}.\nWorking on the first value in schedule\nTimes:`, times);
-            spawnInFeed(bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent');
+            try {
+              const [hour, minutes] = times[0].split(":").map(Number);
+              const workingTime = { hour, minutes };
+              //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
+              //alert(`loadOasa Failed\nfailed why?:\nnextBusTime returned: ${JSON.stringify(nextBusTime)}\nTimes: ${JSON.stringify(times)}\nBus on work: ${bus}`);
+              console.warn(`Failed to find next bus time for ${bus}.\nWorking on the first value in schedule\nTimes:`, times);
+              spawnInFeed(bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent');
+            } catch (error) {
+              console.log(`loadOasa fallback error: ${error}`)
+              spawnInFeed(bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
+            }
+            
           }
         })
         .catch(error => {
@@ -640,9 +646,12 @@ function generateRandomId(length) {
   return result;
 }
 
-let evoxIds = {
+let evoxIds = {}
 
-}
+let personalizedAutoBus = {
+  "831": "874"
+} // This will contain bus Ids and which lineCode they have eg. { "831": "1228" } for bus "ΠΕΙΡΑΙΑΣ-ΑΙΓΑΛΕΩ (ΕΝΑΛΛΑΚΤΙΚΗ ΛΟΓΩ ΛΑΪΚΗΣ ΚΑΘΕ ΔΕΥΤΕΡΑ)"
+
 let frequentBuses_Sort = []; // Array to store bus data for sorting
 function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
   if (type === 'frequent') {
@@ -684,6 +693,10 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
       // Store the bus data with the generated ID
       evoxIds[evoxId] = busDataComplete;
 
+      let spawnIn = formatTimeToMin(convertTimeApprox(busData.timeInM))
+      if(busData.timeInM === Infinity) {
+        spawnIn = 'Άγνωστη'
+      }
       // Create the HTML for the bus item
       const toSpawn = `
         <div class="item ${highlight} ${isPreload ? 'isPreloaded' : ''}">
@@ -691,7 +704,7 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
           <div class="info">
             <div class="text">
               <span>Επόμενη άφιξη</span>
-              <span>${formatTimeToMin(convertTimeApprox(busData.timeInM))}</span>
+              <span>${spawnIn}</span>
             </div>
           </div>
           <div class="fav-actions">
@@ -973,11 +986,17 @@ function processInfo(evoxId, type) {
       days.innerHTML = ''
       const busInfo = evoxIds[evoxId]
       let matchingLines = fullLine.filter(line => line.LineID === busInfo.bus);
+      console.log("Found Matches:", matchingLines)
+      if(personalizedAutoBus[busInfo.bus]) {
+        matchingLines = fullLine.filter(line => line.LineCode === personalizedAutoBus[busInfo.bus]);
+        console.log("personalizedAutoBus", matchingLines)
+      }
       const working = matchingLines[0]
       const descr = working.LineDescr
       const lineCode = working.LineCode
       document.getElementById("busInfoID").innerText = busInfo.bus
-      document.getElementById("busInfoDesc").innerText = capitalizeWords(busInfo.descr)
+      let formattedText = busInfo.descr.replace(/\((.*)\)/, "<br>($1)");
+      document.getElementById("busInfoDesc").innerHTML = capitalizeWords(formattedText)
       fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getScheduleDaysMasterline&p1=${lineCode}&keyOrigin=evoxEpsilon`)}`)
         .then(response => response.json())
         .then(data => {
@@ -1070,13 +1089,19 @@ function processInfo(evoxId, type) {
             // Create the HTML content dynamically for each time
 
           } else {
-            const [hour, minutes] = times[0].split(":").map(Number);
-            const workingTime = { hour, minutes };
-            //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
-            console.warn(`processInfo\nFailed to find next bus time for ${busInfo.bus}.\nWorking on the first value in schedule\nTimes:`, times);
-            spawnInFeed(busInfo.bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent')
-            //alert(`failed why?:\n${JSON.stringify(nextBusTime)}\n${JSON.stringify(times)}\nBus on work: ${busInfo.bus}`);
-            //spawnInFeed(bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
+            try {
+              const [hour, minutes] = times[0].split(":").map(Number);
+              const workingTime = { hour, minutes };
+              //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
+              console.warn(`processInfo\nFailed to find next bus time for ${busInfo.bus}.\nWorking on the first value in schedule\nTimes:`, times);
+              spawnInFeed(busInfo.bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent')
+              //alert(`failed why?:\n${JSON.stringify(nextBusTime)}\n${JSON.stringify(times)}\nBus on work: ${busInfo.bus}`);
+              //
+            } catch(error) {
+              console.error('Fallback Error:', error);
+              spawnInFeed(busInfo.bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
+            }
+            
           }
 
           let timetableContent = '';
