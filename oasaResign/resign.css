@@ -18,6 +18,7 @@
     opacity: 0;
     /* Hide the element */
 }
+
 .navigate .switch {
     display: flex;
     align-items: center;
@@ -122,6 +123,7 @@
     -webkit-overflow-scrolling: touch;
     z-index: 5;
 }
+
 .insideSearch .topSearch.recommend::-webkit-scrollbar {
     display: none;
 }
@@ -226,8 +228,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-shrink: 0; /* Prevent shrinking if needed */
-    flex-grow: 0; /* Ensure it doesn't grow */
+    flex-shrink: 0;
+    /* Prevent shrinking if needed */
+    flex-grow: 0;
+    /* Ensure it doesn't grow */
 }
 
 .iconInCGlobal {
@@ -241,8 +245,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-shrink: 0; /* Prevent shrinking if needed */
-    flex-grow: 0; /* Ensure it doesn't grow */
+    flex-shrink: 0;
+    /* Prevent shrinking if needed */
+    flex-grow: 0;
+    /* Ensure it doesn't grow */
 }
 
 .triggerSearch {
@@ -256,8 +262,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-shrink: 0; /* Prevent shrinking if needed */
-    flex-grow: 0; /* Ensure it doesn't grow */
+    flex-shrink: 0;
+    /* Prevent shrinking if needed */
+    flex-grow: 0;
+    /* Ensure it doesn't grow */
     cursor: pointer;
 }
 
@@ -284,7 +292,8 @@
 
 .bottomSearchParent:not(.scrolled) .searchIntelli .iconInC,
 .bottomSearchParent:not(.scrolled) .searchIntelli .triggerSearch {
-    transition-delay: 0.2s; /* Delay the opacity transition */
+    transition-delay: 0.2s;
+    /* Delay the opacity transition */
 }
 
 .bottomSearchParent.scrolled {
@@ -315,7 +324,8 @@
 }
 
 #phone {
-    --fade-color: #141416; /* Use the same final color for easier matching */
+    --fade-color: #141416;
+    /* Use the same final color for easier matching */
     background: linear-gradient(to top right,
             rgba(31, 65, 244, 0) 50%,
             rgba(31, 65, 244, 0.1) 75%,
@@ -324,6 +334,22 @@
             rgba(124, 255, 121, 0) 50%,
             rgba(124, 255, 121, 0.1) 75%,
             rgba(124, 255, 121, 0.2) 100%),
+        var(--fade-color);
+    background-repeat: no-repeat;
+    background-size: 300% 300%;
+}
+
+#phone.login {
+    --fade-color: #000000;
+    /* Use the same final color for easier matching */
+    background: linear-gradient(to top right,
+            rgba(0, 42, 255, 0.12) 50%,
+            rgba(0, 42, 255, 0.1) 75%,
+            rgba(0, 42, 255, 0.2) 100%),
+        linear-gradient(to bottom left,
+            rgba(255, 108, 108, 0) 50%,
+            rgba(255, 102, 102, 0.1) 75%,
+            rgba(255, 135, 135, 0.2) 100%),
         var(--fade-color);
     background-repeat: no-repeat;
     background-size: 300% 300%;
@@ -374,7 +400,8 @@
 
 .busTimetable.shown {
     margin-top: -80px;
-    opacity: 1; /* Ensure it's visible by default */
+    opacity: 1;
+    /* Ensure it's visible by default */
     visibility: visible;
 }
 
@@ -487,7 +514,7 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
-    
+
 }
 
 .Userfeed.focused {
@@ -786,7 +813,8 @@
     position: fixed;
 }
 
-#main-wrapper::-webkit-scrollbar, #phone::-webkit-scrollbar {
+#main-wrapper::-webkit-scrollbar,
+#phone::-webkit-scrollbar {
     display: none;
 }
 
@@ -837,6 +865,7 @@
     -webkit-overflow-scrolling: touch;
     z-index: 5;
 }
+
 .busInfo .busInfoSelector::-webkit-scrollbar {
     display: none;
 }
@@ -856,9 +885,12 @@
 }
 
 .busInfo .busInfoSelector .Block.active {
-    background-color: #1f42f425; /* Highlight color */
-    border: 2px solid #293fac; /* Border for active state */
-    color: #ffffff; /* Text color for better contrast */
+    background-color: #1f42f425;
+    /* Highlight color */
+    border: 2px solid #293fac;
+    /* Border for active state */
+    color: #ffffff;
+    /* Text color for better contrast */
 }
 
 .timetableSpawn {
@@ -908,15 +940,31 @@
 
 #content {
     margin-top: env(safe-area-inset-top) !important;
-    margin-bottom: env(safe-area-inset-bottom) !important; /* Adding bottom safe area inset */
-    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)); /* Adjusting content height to fill the viewport */
+    margin-bottom: env(safe-area-inset-bottom) !important;
+    /* Adding bottom safe area inset */
+    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    /* Adjusting content height to fill the viewport */
 }
+
+
+.loginContent {
+    display: none;
+    margin-top: env(safe-area-inset-top) !important;
+    margin-bottom: env(safe-area-inset-bottom) !important;
+    /* Adding bottom safe area inset */
+    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    /* Adjusting content height to fill the viewport */
+    width: 100%;
+    height: 100%;
+}
+
 
 body {
     margin: 0 !important;
     padding: 0 !important;
     height: 100vh !important;
-    overflow: hidden !important; /* Optional, to prevent any scroll */
+    overflow: hidden !important;
+    /* Optional, to prevent any scroll */
 }
 
 .justCenterHorizontally {
@@ -925,4 +973,144 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
+}
+
+
+.loginContentFlex {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.loginContentFlex .loader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.container-svg-loader {
+    --uib-size: 350px;
+    --uib-color: #ffffff;
+    --uib-speed: 2.4s;
+    --uib-bg-opacity: 0.1;
+    height: var(--uib-size);
+    width: var(--uib-size);
+    transform-origin: center;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* Changed from visible to hidden */
+}
+
+.loader svg.reveal .car {
+    fill: #ffffffb7;
+}
+
+.loader svg.reveal .track {
+    fill: #ffffffb7;
+}
+
+.loader svg.reveal .car,
+.loader svg.reveal .track {
+    stroke-opacity: 0;
+    /* Fades out the stroke */
+
+    /* Smooth transition */
+}
+
+.car {
+    fill: none;
+    stroke: var(--uib-color);
+    stroke-dasharray: 110, 135;
+    stroke-dashoffset: 0;
+    stroke-linecap: round;
+    animation: travel var(--uib-speed) linear infinite;
+    will-change: stroke-dasharray, stroke-dashoffset;
+    transition: stroke 0.5s ease, fill 5.5s ease-in-out, stroke-opacity 0.1s ease-in-out;
+    fill: #00000000;
+}
+
+.track {
+    stroke: var(--uib-color);
+    opacity: var(--uib-bg-opacity);
+    transition: stroke 0.5s ease;
+    fill: none;
+    stroke: var(--uib-color);
+    stroke-dasharray: 110, 135;
+    stroke-dashoffset: 0;
+    stroke-linecap: round;
+    will-change: stroke-dasharray, stroke-dashoffset;
+    transition: stroke 0.5s ease, fill 7.5s ease, stroke-opacity 0.1s ease-in-out;
+    fill: #00000000;
+    animation: travelBack var(--uib-speed) linear infinite;
+}
+
+@keyframes travel {
+    0% {
+
+        stroke-dashoffset: 0;
+    }
+
+    100% {
+        stroke-dashoffset: -240;
+    }
+}
+
+@keyframes travelBack {
+    100% {
+
+        stroke-dashoffset: 0;
+    }
+
+    0% {
+
+        stroke-dashoffset: -240;
+    }
+}
+
+.loginForming p {
+    color: #fff;
+    font-size: 1.5rem;
+    opacity: 0;
+    /* Start hidden */
+    transition: opacity 2s ease-in-out;
+    /* Smooth fade-in */
+}
+
+.loginForming p.show {
+    opacity: 1;
+    /* Fully visible when shown */
+}
+
+.loginForming {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.loginForming svg {
+    transition: transform 0.5s ease-in-out 0.4s, width 0.5s ease-in-out, height 0.5s ease-in-out;
+    width: 250px;
+    height: 250px;
+}
+
+.loginForming.start svg{
+    width: 70px;
+    height: 70px;
+    transform: translateY(-40vh);
+}
+
+.loginForming .themeButton {
+    color: #fff;
 }

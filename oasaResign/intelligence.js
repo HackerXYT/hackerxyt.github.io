@@ -193,8 +193,6 @@ function markers(b, what) {
   markers_global.push(marker)
 }
 
-getReady()
-
 
 function oldgetPrefix(locationName) {
   // Normalize the name (lowercase and remove accents)
@@ -792,11 +790,34 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (localStorage.getItem("t50-username") && localStorage.getItem("t50-email") && localStorage.getItem("t50pswd")) {
+    getReady()
     //document.getElementById("profilePic").src = "https://www.gravatar.com/avatar/" + md5(localStorage.getItem("t50-email")) + "?d=identicon";
 
     document.getElementById("oasaPfp").src = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${localStorage.getItem("t50-username")}`
   } else {
     document.getElementById("oasaPfp").src = 'cbimage.png'
+    if(localStorage.getItem("hasDismissedSetup") !== 'true') {
+      $("#phone").fadeOut("fast", function() {
+        document.getElementById("phone").classList.add("login")
+        $("#content").fadeOut("fast", function() {
+          $("#phone").fadeIn("fast")
+          $("#loginContent").fadeIn("fast")
+          setTimeout(function() {
+            document.getElementById("loginForming").classList.add("start")
+            setTimeout(function() {
+              document.getElementById("loginForming").querySelectorAll("p")[0].classList.add("show")
+              setTimeout(function() {
+                document.getElementById("loginForming").querySelectorAll("p")[1].classList.add("show")
+              }, 1000)
+            }, 400)
+          }, 500)
+        })
+        
+        
+      })
+    } else {
+      getReady()
+    }
   }
 
 
