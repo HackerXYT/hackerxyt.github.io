@@ -1108,7 +1108,7 @@ body {
 .loginForming.start svg{
     width: 70px;
     height: 70px;
-    transform: translateY(-40vh);
+    transform: translateY(-25vh);
 }
 
 .loginForming .themeButton {
