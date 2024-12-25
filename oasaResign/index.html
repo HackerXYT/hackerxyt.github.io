@@ -559,9 +559,16 @@
                             <p id="hello-text" style="font-size: 70px;"></p>
                             <!--<p>Καλωσορίσατε στο Evox.</p>
                             <p style="font-size: 1.3rem;">Ας συνδεθούμε!</p>-->
-                            <div style="margin-bottom: 5px;margin-top: 15px;" onclick="window.location.href = '../oasaMobile'" class="themeButton">ext-alpha</div>
-                            <div style="margin-bottom: 5px;" onclick='localStorage.setItem("hasDismissedSetup", "true");setTimeout(function() {window.location.reload()}, 900)' class="themeButton">guest</div>
-                            <div style="margin-bottom: 5px;" onclick='window.location.reload()' class="themeButton">reload</div>
+                            <div id="runalpha1" style="display:none;margin-bottom: 5px;margin-top: 15px;" onclick="window.location.href = '../oasaMobile'" class="themeButton">ext-alpha</div>
+                            <div id="runalpha2" style="display:none;margin-bottom: 5px;" onclick='localStorage.setItem("hasDismissedSetup", "true");setTimeout(function() {window.location.reload()}, 900)' class="themeButton">guest</div>
+                            <div id="runalpha3" style="display:none;margin-bottom: 5px;" onclick='window.location.reload()' class="themeButton">reload</div>
+                            <div id="runalpha4" style="display:none;margin-bottom: 5px;" onclick='$("#runalpha1").fadeOut("fast")
+                            $("#runalpha2").fadeOut("fast")
+                            $("#runalpha3").fadeOut("fast")
+                            $("#runalpha4").fadeOut("fast", function () {
+                              document.getElementById("loginForming").querySelector(".infoWelcome").style.display = null
+                              $("#hello-text").fadeIn("fast")
+                            })' class="themeButton">back</div>
                             <div class="infoWelcome fade-in-slide-up"><span>Σύρετε προς τα πάνω για να ξεκινήσετε</span></div>
                         </div>
                     </div>

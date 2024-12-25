@@ -817,6 +817,72 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           displayHello();  // Call the function to display the characters
+
+          let isTouching = false;
+
+          document.addEventListener('touchstart', (e) => {
+            isTouching = true;
+          });
+
+          document.addEventListener('touchmove', (e) => {
+            if (!isTouching) return;
+
+            const touch = e.touches[0];
+            createTrail(touch.clientX, touch.clientY);
+          });
+
+          document.addEventListener('touchend', () => {
+            isTouching = false;
+          });
+
+          function createTrail(x, y) {
+            const trail = document.createElement('div');
+            trail.className = 'trail';
+            trail.style.left = `${x - 7.5}px`;
+            trail.style.top = `${y - 7.5}px`;
+
+            document.body.appendChild(trail);
+
+            // Remove the trail after the animation ends
+            trail.addEventListener('animationend', () => {
+              trail.remove();
+            });
+          }
+
+          let startY;
+
+          document.addEventListener('touchstart', (e) => {
+            // Get the starting Y position of the touch
+            startY = e.touches[0].clientY;
+          });
+
+          document.addEventListener('touchend', (e) => {
+            // Get the ending Y position of the touch
+            const endY = e.changedTouches[0].clientY;
+
+            // Detect swipe direction and distance
+            if (startY - endY > 50) { // 50px threshold for swipe up
+              runFunction();  // Your function to run on swipe up
+            }
+          });
+
+          function runFunction() {
+            $("#hello-text").fadeOut("fast", function () {
+              $("#runalpha1").fadeIn("fast")
+              $("#runalpha2").fadeIn("fast")
+              $("#runalpha3").fadeIn("fast")
+              $("#runalpha4").fadeIn("fast")
+              document.getElementById("loginForming").querySelector(".infoWelcome").style.display = 'none'
+            })
+
+            
+
+            
+
+
+            console.log('Swipe up detected! Running the function...');
+            // Add your custom function logic here
+          }
           //setTimeout(function() {
           //  //document.getElementById("loginForming").classList.add("start")
           //  setTimeout(function() {
@@ -1367,33 +1433,3 @@ function manualLogout() {
 
 }
 
-let isTouching = false;
-
-document.addEventListener('touchstart', (e) => {
-  isTouching = true;
-});
-
-document.addEventListener('touchmove', (e) => {
-  if (!isTouching) return;
-
-  const touch = e.touches[0];
-  createTrail(touch.clientX, touch.clientY);
-});
-
-document.addEventListener('touchend', () => {
-  isTouching = false;
-});
-
-function createTrail(x, y) {
-  const trail = document.createElement('div');
-  trail.className = 'trail';
-  trail.style.left = `${x - 7.5}px`;
-  trail.style.top = `${y - 7.5}px`;
-
-  document.body.appendChild(trail);
-
-  // Remove the trail after the animation ends
-  trail.addEventListener('animationend', () => {
-    trail.remove();
-  });
-}
