@@ -725,6 +725,42 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
   }
 }
 
+const helloText = "oasa";
+const helloElement = document.getElementById('hello-text');
+
+// Function to display each character of "Hello" with a drawing effect
+function displayHello() {
+  helloText.split('').forEach((char, index) => {
+    const span = document.createElement('span');
+    span.textContent = char;
+    span.style.animationDelay = `${index * 0.4}s`;  // Add delay based on index
+    helloElement.appendChild(span);
+  });
+}
+
+function goBackToSplash() {
+  $("#runalpha1").fadeOut("fast")
+  $("#runalpha2").fadeOut("fast")
+  $("#runalpha3").fadeOut("fast")
+  $("#runalpha4").fadeOut("fast")
+  document.getElementById("loginForming").querySelector(".infoWelcome").style.display = null
+ 
+  document.getElementById("loginContentFlex").classList.remove("noSplash")
+    document.getElementById("hello-text").classList.remove("noSplash")
+    
+      $("#phone").fadeOut("fast", function() {
+        $("#loginStep1").fadeOut("fast")
+        document.getElementById("phone").classList.add("login")
+        $("#phone").fadeIn("fast", function() {
+          $("#loginForming").fadeIn("fast", function () {})
+        })
+      })
+  $("#hello-text").fadeIn("slow", function () {
+    
+    //displayHello()
+  })
+}
+
 function isNearEvery3Hours(proximityInMinutes = 5) {
   const now = new Date();
   const currentHour = now.getHours();
@@ -803,23 +839,8 @@ document.addEventListener('DOMContentLoaded', () => {
           $("#phone").fadeIn("fast")
           $("#loginContent").fadeIn("fast")
           document.getElementById("loginForming").querySelectorAll("p")[0].classList.add("show")
-          const helloText = "oasa";
-          const helloElement = document.getElementById('hello-text');
-
-          // Function to display each character of "Hello" with a drawing effect
-          function displayHello() {
-            helloText.split('').forEach((char, index) => {
-              const span = document.createElement('span');
-              span.textContent = char;
-              span.style.animationDelay = `${index * 0.4}s`;  // Add delay based on index
-              helloElement.appendChild(span);
-            });
-          }
-
-          displayHello();  // Call the function to display the characters
-
+          displayHello();
           let isTouching = false;
-
           document.addEventListener('touchstart', (e) => {
             isTouching = true;
           });
@@ -867,19 +888,27 @@ document.addEventListener('DOMContentLoaded', () => {
           });
 
           function runFunction() {
-            $("#hello-text").fadeOut("fast", function () {
-              $("#runalpha1").fadeIn("fast")
-              $("#runalpha2").fadeIn("fast")
-              $("#runalpha3").fadeIn("fast")
-              $("#runalpha4").fadeIn("fast")
-              document.getElementById("loginForming").querySelector(".infoWelcome").style.display = 'none'
-            })
-
             
+            document.getElementById("loginContentFlex").classList.add("noSplash")
+            document.getElementById("hello-text").classList.add("noSplash")
+            document.getElementById("loginForming").querySelector(".infoWelcome").style.display = 'none'
+            setTimeout(function () {
 
-            
+                $("#loginForming").fadeOut("fast", function () {
+                  $("#phone").fadeOut("fast", function() {
+                    document.getElementById("phone").classList.remove("login")
+                    $("#phone").fadeIn("fast", function() {
+                      $("#loginStep1").fadeIn("fast")
+                    })
+                  })
+                  
+                })
+                //$("#runalpha1").fadeIn("fast")
+                //$("#runalpha2").fadeIn("fast")
+                //$("#runalpha3").fadeIn("fast")
+                //$("#runalpha4").fadeIn("fast")
 
-
+            }, 800)
             console.log('Swipe up detected! Running the function...');
             // Add your custom function logic here
           }

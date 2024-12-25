@@ -424,7 +424,7 @@
 
     background-repeat: no-repeat;
     background-size: 300% 300%;
-    animation: gradientMove 30s infinite ease-in-out;
+    animation: gradientMove 15s infinite ease-in-out;
 
     /* Light bulb glow effect */
     box-shadow: 0 0 50px rgba(255, 255, 255, 0.2),
@@ -1072,8 +1072,16 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
     width: 100%;
+    height: calc(85vh - env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
+    /* Ensure it accounts for the safe area */
+    transition: height 1.3s ease, padding-top 1.3s ease;
+}
+
+.loginContentFlex.noSplash {
+    height: 100%;
+    padding-top: 0px;
 }
 
 .loginContentFlex .loader {
@@ -1182,14 +1190,12 @@ body {
 
 .loginForming {
     width: 100%;
-    /*height: 100%;*/
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 999;
-    height: calc(90vh - env(safe-area-inset-top));
-    padding-top: env(safe-area-inset-top); /* Ensure it accounts for the safe area */
 }
 
 .loginForming svg {
@@ -1231,16 +1237,29 @@ body {
 }
 
 #main {
-    overscroll-behavior: none !important; 
+    overscroll-behavior: none !important;
     overflow: hidden !important;
 }
 
 #hello-text {
+    font-size: 70px;
+    padding-left: 10px;
+    padding-right: 10px;
+
     animation: float 7s ease-in-out infinite;
 }
+
+#hello-text span {
+    transition: font-size 1s ease-in-out;
+}
+
+#hello-text.noSplash span {
+    font-size: 90px;
+}
+
 #hello-text span {
     font-size: 5rem;
-    font-weight: bold;
+    font-weight: lighter;
     color: #ffffff;
     display: inline-block;
     opacity: 0;
@@ -1282,12 +1301,118 @@ body {
 
 @keyframes float {
     0% {
-      transform: translateY(2.5px);
+        transform: translateY(2.5px);
     }
+
     50% {
-      transform: translateY(-2.5px);
+        transform: translateY(-2.5px);
     }
+
     100% {
-      transform: translateY(2.5px);
+        transform: translateY(2.5px);
     }
-  }
+}
+
+.loginStep1 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+    height: calc(85vh - env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
+}
+
+.topActions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+}
+
+.topActions span {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+}
+
+.illustrationImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.illustrationImage img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.infoBelow {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.infoBelow h1 {
+    font-size: 25px;
+    margin: 10px 50px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.infoBelow p {
+    font-size: 15px;
+    font-weight: normal;
+    padding: 0px 50px;
+    text-align: center;
+}
+
+
+.buttonsContainerSplash {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+}
+
+
+.buttonsContainerSplash .aButton {
+    border-radius: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    background-color: #8989891e;
+    /*border-radius: 20px;*/
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: background-color 0.4s ease-in-out;
+    padding: 0px 10px;
+}
+
+.buttonsContainerSplash .aButton:nth-child(1) {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.buttonsContainerSplash .aButton:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.buttonsContainerSplash .aButton:hover {
+    background-color: #8989893e;
+}
+
+.buttonsContainerSplash .aButton svg {
+    margin-right: 5px;
+}
