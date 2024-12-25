@@ -14,7 +14,8 @@
 }
 
 @font-face {
-  font-family: "SF";
+  /*font-family: "SF";*/
+  font-family: 'SF Pro Text';
   src: url('SFUIText-Medium.ttf');
 }
 
@@ -30,7 +31,8 @@ body {
   overflow: hidden;
   height: 100%;
   /* Ensure the height is 100% */
-  font-family: "SF";
+  /*font-family: "SF";*/
+  font-family: 'SF Pro Text';
 }
 
 * {
@@ -73,7 +75,8 @@ span,
 a,
 p {
   color: rgb(var(--font-color));
-  font-family: "SF";
+  /*font-family: "SF";*/
+  font-family: 'SF Pro Text';
   font-size: 1rem;
   font-weight: 400;
   margin: 0px;
@@ -571,7 +574,8 @@ input {
 }
 
 .popup {
-  font-family: "SF";
+  /*font-family: "SF";*/
+  font-family: 'SF Pro Text';
   scrollbar-width: none;
   -ms-overflow-style: none;
   /* for Internet Explorer, Edge */
@@ -923,7 +927,8 @@ input {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  font-family: "SF";
+  /*font-family: "SF";*/
+  font-family: 'SF Pro Text';
 }
 
 #newUser img {
@@ -1036,7 +1041,8 @@ input {
 
 .sliding {
 
-  font-family: "SF";
+  /*font-family: "SF";*/
+  font-family: 'SF Pro Text';
   scrollbar-width: none;
   -ms-overflow-style: none;
   /* for Internet Explorer, Edge */
@@ -1170,7 +1176,8 @@ input {
   justify-content: center;
   border-radius: 15px;
   height: auto;
-  font-family: "SF";
+  /*font-family: "SF";*/
+  font-family: 'SF Pro Text';
   transition: transform 0.2s ease-out, background-color 0.2s ease-out, color 0.2s ease-out;
 }
 
@@ -1188,7 +1195,8 @@ input {
   justify-content: center;
   border-radius: 15px;
   height: auto;
-  font-family: "SF";
+  /*font-family: "SF";*/
+  font-family: 'SF Pro Text';
   transition: transform 0.2s ease-out, background-color 0.2s ease-out, color 0.2s ease-out;
 }
 
@@ -2297,10 +2305,12 @@ button img.buttonPFP {
   padding: 1rem;
 }
 
+
+
 #phone {
   background-color: rgb(var(--theme-background));
   box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
-  height: 851px;
+  height: 100%;
   width: 393px;
   margin: 100px auto;
   position: relative;
@@ -2340,6 +2350,26 @@ button img.buttonPFP {
   #main-wrapper {
     width: 100%;
     flex-grow: 1;
+  }
+}
+
+@media(min-width: 500px) {
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+  }
+  #phone {
+    height: 85%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    margin: 0px auto;
   }
 }
 

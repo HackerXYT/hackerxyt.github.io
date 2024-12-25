@@ -1,3 +1,67 @@
+@font-face {
+    font-family: 'SF Pro Icons';
+    src: url('./fonts/sf-pro-icons_regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Bubble';
+    src: url('./fonts/Bumbbled.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SF Pro Icons';
+    src: url('./fonts/sf-pro-icons_semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SF Pro Icons';
+    src: url('./fonts/sf-pro-icons_light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SF Pro Text';
+    src: url('./fonts/sf-pro-text_light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SF Pro Text';
+    src: url('./fonts/sf-pro-text_regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SF Pro Text';
+    src: url('./fonts/sf-pro-text_semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url('./fonts/sf-pro-display_regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url('./fonts/sf-pro-display_semibold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+}
+
+
 .navigate {
     padding: 23px 20px;
     width: 100%;
@@ -341,19 +405,46 @@
 
 #phone.login {
     --fade-color: #000000;
-    /* Use the same final color for easier matching */
-    background: linear-gradient(to top right,
-            rgba(0, 42, 255, 0.12) 50%,
-            rgba(0, 42, 255, 0.1) 75%,
-            rgba(0, 42, 255, 0.2) 100%),
+
+    background: radial-gradient(circle at 30% 30%,
+            rgba(255, 255, 255, 0.2) 0%,
+            rgba(255, 255, 255, 0) 80%),
+        radial-gradient(circle at 70% 70%,
+            rgba(255, 255, 255, 0.15) 0%,
+            rgba(255, 255, 255, 0) 90%),
+        linear-gradient(to top right,
+            rgba(244, 31, 31, 0) 50%,
+            rgba(244, 31, 31, 0.1) 75%,
+            rgba(244, 31, 31, 0.2) 100%),
         linear-gradient(to bottom left,
-            rgba(255, 108, 108, 0) 50%,
-            rgba(255, 102, 102, 0.1) 75%,
-            rgba(255, 135, 135, 0.2) 100%),
+            rgba(255, 121, 121, 0) 50%,
+            rgba(255, 121, 121, 0.1) 75%,
+            rgba(255, 121, 121, 0.2) 100%),
         var(--fade-color);
+
     background-repeat: no-repeat;
     background-size: 300% 300%;
+    animation: gradientMove 30s infinite ease-in-out;
+
+    /* Light bulb glow effect */
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.2),
+        0 0 100px rgba(255, 121, 121, 0.3);
 }
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 50% 100%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
 
 .notificationsCC {
     padding: 7.5px 15px;
@@ -1105,7 +1196,7 @@ body {
     height: 250px;
 }
 
-.loginForming.start svg{
+.loginForming.start svg {
     width: 70px;
     height: 70px;
     transform: translateY(-25vh);
@@ -1114,3 +1205,87 @@ body {
 .loginForming .themeButton {
     color: #fff;
 }
+
+.trail {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #ffffff90;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: fade-out 0.7s ease-out forwards;
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
+
+#main {
+    overscroll-behavior: none !important; 
+    overflow: hidden !important;
+}
+
+#hello-text {
+    animation: float 7s ease-in-out infinite;
+}
+#hello-text span {
+    font-size: 5rem;
+    font-weight: bold;
+    color: #ffffff;
+    display: inline-block;
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: draw 0.5s forwards;
+    font-family: 'Bubble';
+}
+
+@keyframes draw {
+    0% {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+}
+
+.infoWelcome {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    bottom: 50px;
+}
+
+.infoWelcome span {
+
+    font-size: 0.8rem;
+    color: #ffffff;
+    opacity: 1;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes float {
+    0% {
+      transform: translateY(2.5px);
+    }
+    50% {
+      transform: translateY(-2.5px);
+    }
+    100% {
+      transform: translateY(2.5px);
+    }
+  }

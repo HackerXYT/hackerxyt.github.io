@@ -598,7 +598,7 @@ function loadOasa() {
               console.log(`loadOasa fallback error: ${error}`)
               spawnInFeed(bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
             }
-            
+
           }
         })
         .catch(error => {
@@ -692,7 +692,7 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
       evoxIds[evoxId] = busDataComplete;
 
       let spawnIn = formatTimeToMin(convertTimeApprox(busData.timeInM))
-      if(busData.timeInM === Infinity) {
+      if (busData.timeInM === Infinity) {
         spawnIn = 'Άγνωστη'
       }
       // Create the HTML for the bus item
@@ -796,24 +796,39 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("oasaPfp").src = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${localStorage.getItem("t50-username")}`
   } else {
     document.getElementById("oasaPfp").src = 'cbimage.png'
-    if(localStorage.getItem("hasDismissedSetup") !== 'true') {
-      $("#phone").fadeOut("fast", function() {
+    if (localStorage.getItem("hasDismissedSetup") !== 'true') {
+      $("#phone").fadeOut("fast", function () {
         document.getElementById("phone").classList.add("login")
-        $("#content").fadeOut("fast", function() {
+        $("#content").fadeOut("fast", function () {
           $("#phone").fadeIn("fast")
           $("#loginContent").fadeIn("fast")
-          setTimeout(function() {
-            document.getElementById("loginForming").classList.add("start")
-            setTimeout(function() {
-              document.getElementById("loginForming").querySelectorAll("p")[0].classList.add("show")
-              setTimeout(function() {
-                document.getElementById("loginForming").querySelectorAll("p")[1].classList.add("show")
-              }, 1000)
-            }, 400)
-          }, 500)
+          document.getElementById("loginForming").querySelectorAll("p")[0].classList.add("show")
+          const helloText = "oasa";
+          const helloElement = document.getElementById('hello-text');
+
+          // Function to display each character of "Hello" with a drawing effect
+          function displayHello() {
+            helloText.split('').forEach((char, index) => {
+              const span = document.createElement('span');
+              span.textContent = char;
+              span.style.animationDelay = `${index * 0.4}s`;  // Add delay based on index
+              helloElement.appendChild(span);
+            });
+          }
+
+          displayHello();  // Call the function to display the characters
+          //setTimeout(function() {
+          //  //document.getElementById("loginForming").classList.add("start")
+          //  setTimeout(function() {
+          //    document.getElementById("loginForming").querySelectorAll("p")[0].classList.add("show")
+          //    setTimeout(function() {
+          //      document.getElementById("loginForming").querySelectorAll("p")[1].classList.add("show")
+          //    }, 1000)
+          //  }, 400)
+          //}, 500)
         })
-        
-        
+
+
       })
     } else {
       getReady()
@@ -1008,7 +1023,7 @@ function processInfo(evoxId, type) {
       const busInfo = evoxIds[evoxId]
       let matchingLines = fullLine.filter(line => line.LineID === busInfo.bus);
       console.log("Found Matches:", matchingLines)
-      if(personalizedAutoBus[busInfo.bus]) {
+      if (personalizedAutoBus[busInfo.bus]) {
         matchingLines = fullLine.filter(line => line.LineCode === personalizedAutoBus[busInfo.bus]);
         console.log("personalizedAutoBus", matchingLines)
       }
@@ -1118,11 +1133,11 @@ function processInfo(evoxId, type) {
               spawnInFeed(busInfo.bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent')
               //alert(`failed why?:\n${JSON.stringify(nextBusTime)}\n${JSON.stringify(times)}\nBus on work: ${busInfo.bus}`);
               //
-            } catch(error) {
+            } catch (error) {
               console.error('Fallback Error:', error);
               spawnInFeed(busInfo.bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
             }
-            
+
           }
 
           let timetableContent = '';
@@ -1350,4 +1365,35 @@ function manualLogout() {
   }
 
 
+}
+
+let isTouching = false;
+
+document.addEventListener('touchstart', (e) => {
+  isTouching = true;
+});
+
+document.addEventListener('touchmove', (e) => {
+  if (!isTouching) return;
+
+  const touch = e.touches[0];
+  createTrail(touch.clientX, touch.clientY);
+});
+
+document.addEventListener('touchend', () => {
+  isTouching = false;
+});
+
+function createTrail(x, y) {
+  const trail = document.createElement('div');
+  trail.className = 'trail';
+  trail.style.left = `${x - 7.5}px`;
+  trail.style.top = `${y - 7.5}px`;
+
+  document.body.appendChild(trail);
+
+  // Remove the trail after the animation ends
+  trail.addEventListener('animationend', () => {
+    trail.remove();
+  });
 }
