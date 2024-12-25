@@ -1182,12 +1182,14 @@ body {
 
 .loginForming {
     width: 100%;
-    height: 100%;
+    /*height: 100%;*/
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 999;
+    height: calc(100vh - env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top); /* Ensure it accounts for the safe area */
 }
 
 .loginForming svg {
