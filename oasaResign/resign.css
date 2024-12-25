@@ -1188,7 +1188,7 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 999;
-    height: calc(100vh + env(safe-area-inset-top));
+    height: calc(90vh - env(safe-area-inset-top));
     padding-top: env(safe-area-inset-top); /* Ensure it accounts for the safe area */
 }
 
