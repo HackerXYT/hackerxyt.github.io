@@ -36,11 +36,60 @@ function openSearch() {
   }, 100)
   bottomSearchParent.classList.add('scrolled');
 
+  spawnMyLocation()
   $("#searchIn").fadeOut("fast", function () {
     document.getElementById("insideSearch").style.display = 'flex';
     iconInC.style.display = 'none';
     triggerSearch.style.display = 'none';
+    zoomOnMe()
+    map.resize()
   })
+  document.getElementById("recommendSpawn").innerHTML = ''
+  document.getElementById("recommendSpawn").innerHTML += `<div class="Block"><svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g opacity="0.5">
+<path d="M3 8.70938V16.8377C3 17.8813 3 18.4031 3.28314 18.7959C3.56627 19.1888 4.06129 19.3538 5.05132 19.6838L6.21609 20.072C7.58318 20.5277 8.26674 20.7556 8.95493 20.6634C8.96999 20.6614 8.98501 20.6593 9 20.6569V6.65705C8.88712 6.67391 8.77331 6.68433 8.6591 6.68823C8.11989 6.70664 7.58626 6.52877 6.51901 6.17302C5.12109 5.70705 4.42213 5.47406 3.89029 5.71066C3.70147 5.79466 3.53204 5.91678 3.39264 6.06935C3 6.49907 3 7.23584 3 8.70938Z" fill="#fff"/>
+<path d="M21 15.2907V7.16229C21 6.11872 21 5.59692 20.7169 5.20409C20.4337 4.81126 19.9387 4.64625 18.9487 4.31624L17.7839 3.92799C16.4168 3.47229 15.7333 3.24444 15.0451 3.3366C15.03 3.33861 15.015 3.34078 15 3.34309V17.343C15.1129 17.3261 15.2267 17.3157 15.3409 17.3118C15.8801 17.2934 16.4137 17.4713 17.481 17.827C18.8789 18.293 19.5779 18.526 20.1097 18.2894C20.2985 18.2054 20.468 18.0833 20.6074 17.9307C21 17.501 21 16.7642 21 15.2907Z" fill="#fff"/>
+</g>
+<path d="M9.24685 6.60921C9.16522 6.6285 9.08286 6.64435 9 6.65673V20.6566C9.66964 20.5533 10.2689 20.1538 11.4416 19.3719L12.824 18.4503C13.7601 17.8263 14.2281 17.5143 14.7532 17.3902C14.8348 17.3709 14.9171 17.355 15 17.3427V3.34277C14.3304 3.44613 13.7311 3.84561 12.5583 4.62747L11.176 5.54905C10.2399 6.17308 9.77191 6.48509 9.24685 6.60921Z" fill="#fff"/>
+<path d="M17.481 17.8267C17.5684 17.8558 17.653 17.884 17.735 17.9113Z" fill="#fff"/>
+</svg>Σπίτι
+                    </div>`
+  frequentBuses.forEach(bus => {
+    document.getElementById("recommendSpawn").innerHTML += `<div class="Block"><svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.5 19.9815C16.0728 19.9415 17.1771 19.815 18 19.4151V20.9999C18 21.5522 17.5523 21.9999 17 21.9999H15.5C14.9477 21.9999 14.5 21.5522 14.5 20.9999V19.9815Z" fill="#FFF"/>
+<path d="M6 19.415C6.82289 19.815 7.9272 19.9415 9.5 19.9815V20.9999C9.5 21.5522 9.05228 21.9999 8.5 21.9999H7C6.44772 21.9999 6 21.5522 6 20.9999V19.415Z" fill="#FFF"/>
+<path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M5.17157 3.17157C6.34315 2 8.22876 2 12 2C15.7712 2 17.6569 2 18.8284 3.17157C19.8915 4.23467 19.99 5.8857 19.9991 9L20 13C19.9909 16.1143 19.8915 17.7653 18.8284 18.8284C18.5862 19.0706 18.3136 19.2627 18 19.4151C17.1771 19.8151 16.0728 19.9415 14.5 19.9815C13.7729 19.9999 12.9458 20 12 20C11.0542 20 10.2271 20 9.5 19.9815C7.9272 19.9415 6.82289 19.815 6 19.415C5.68645 19.2626 5.41375 19.0706 5.17157 18.8284C4.10848 17.7653 4.00911 16.1143 4 13L4.00093 9C4.01004 5.8857 4.10848 4.23467 5.17157 3.17157Z" fill="#FFF"/>
+<path d="M17.75 16C17.75 15.5858 17.4142 15.25 17 15.25H15.5C15.0858 15.25 14.75 15.5858 14.75 16C14.75 16.4142 15.0858 16.75 15.5 16.75H17C17.4142 16.75 17.75 16.4142 17.75 16Z" fill="#FFF"/>
+<path d="M6.25 16C6.25 15.5858 6.58579 15.25 7 15.25H8.5C8.91421 15.25 9.25 15.5858 9.25 16C9.25 16.4142 8.91421 16.75 8.5 16.75H7C6.58579 16.75 6.25 16.4142 6.25 16Z" fill="#FFF"/>
+<path opacity="0.5" d="M5.5 9.5C5.5 10.9142 5.5 11.6213 5.93934 12.0607C6.37868 12.5 7.08579 12.5 8.5 12.5H15.5C16.9142 12.5 17.6213 12.5 18.0607 12.0607C18.5 11.6213 18.5 10.9142 18.5 9.5V6.99998C18.5 5.58578 18.5 4.87868 18.0607 4.43934C17.6213 4 16.9142 4 15.5 4H8.5C7.08579 4 6.37868 4 5.93934 4.43934C5.5 4.87868 5.5 5.58579 5.5 7V9.5Z" fill="#FFF"/>
+<path d="M2.4 11.8L4 13L4.00093 9H3C2.44772 9 2 9.44772 2 10V11C2 11.3148 2.14819 11.6111 2.4 11.8Z" fill="#FFF"/>
+<path d="M21 9H19.999L20 13L21.6 11.8C21.8518 11.6111 22 11.3148 22 11V10C22 9.44772 21.5522 9 21 9Z" fill="#FFF"/>
+</svg>${bus}
+                    </div>`
+  })
+  //andMore
+}
+
+function closeSearch() {
+  searchIntelli.style.backgroundColor = null;
+  bottomSearchParent.style.width = null;
+  bottomSearchParent.style.height = '86px';
+  bottomSearchParent.style.bottom = '30px'
+  searchIntelli.style.width = '256px'
+  searchIntelli.style.height = 'auto'
+  searchIntelli.style.padding = '18px 20px'
+  searchIntelli.style.borderRadius = '50px'
+
+  document.getElementById("insideSearch").style.display = 'none';
+  iconInC.style.display = null;
+  triggerSearch.style.display = null;
+  bottomSearchParent.classList.remove('scrolled');
+  $("#searchIn").fadeIn("fast", function () {
+
+
+  })
+
+
 }
 
 let myLoc;
@@ -116,6 +165,9 @@ function getReady() {
 
     }, function (error) {
       //alert(error.message)
+      //spawnBlocks(myLoc)
+      bypassAny()
+
       console.log("Error code: " + error.code + " - " + error.message);
     });
   } else {
@@ -123,6 +175,70 @@ function getReady() {
     //alert("Geolocation is not supported by this browser.");
   }
 }
+
+function bypassAny() {
+  locationReady = true
+  const loc = myLoc
+  myLoc = loc
+  spawnBlocks(myLoc)
+  setTimeout(function () {
+    //showdemo()
+    if (isPreviousNearby(myLoc)) {
+      console.log("Working On Previous")
+      const previousLocation = localStorage.getItem('previousLocation');
+      const data = JSON.parse(previousLocation);
+      const placeFeature = data.features.find(feature =>
+        feature.place_type.includes('place') || feature.place_type.includes('locality')
+      );
+      const cityOrAreaName = placeFeature.text; // This gives the area or city name
+      console.log('City/Area name:', cityOrAreaName);
+
+      // Update the UI
+      //document.getElementById("nearYouSkel").style.display = 'none';
+      //document.getElementById("nearYou").style.display = null;
+      document.getElementById("locationName").innerHTML = toAccusative(cityOrAreaName) || 'Unknown location';
+      updateLocation(cityOrAreaName);
+    } else {
+      fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${loc[0]},${loc[1]}.json?access_token=${mapboxgl.accessToken}&language=el`)
+        .then(response => response.json())
+        .then(data => {
+          localStorage.setItem('previousLocation', JSON.stringify(data))
+          console.log(data)
+          // Find the feature with type 'place' or 'locality'
+          const placeFeature = data.features.find(feature =>
+            feature.place_type.includes('place') || feature.place_type.includes('locality')
+          );
+
+          if (placeFeature) {
+            const cityOrAreaName = placeFeature.text; // This gives the area or city name
+            console.log('City/Area name:', cityOrAreaName);
+
+            // Update the UI
+            //document.getElementById("nearYouSkel").style.display = 'none';
+            //document.getElementById("nearYou").style.display = null;
+            document.getElementById("locationName").innerHTML = toAccusative(cityOrAreaName) || 'Unknown location';
+            updateLocation(cityOrAreaName);
+
+            // Adjust styles dynamically (optional, based on your existing logic)
+            if (cityOrAreaName.length > 12) {
+              document.getElementById("locationName").classList.remove("glowUpGB");
+              document.getElementById("locationName").classList.add("glowUpGBSM");
+            } else {
+              document.getElementById("locationName").classList.remove("glowUpGBSM");
+              document.getElementById("locationName").classList.add("glowUpGB");
+              document.getElementById("locationName").style.fontSize = null;
+            }
+          } else {
+            console.error('City or area name not found in the response.');
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+
+  }, 400)
+}
+let map;
 
 function spawnBlocks(currentLocation) {
   if (!currentLocation || currentLocation.length !== 2 || isNaN(currentLocation[0]) || isNaN(currentLocation[1])) {
@@ -133,7 +249,7 @@ function spawnBlocks(currentLocation) {
   console.log('Initializing map with location:', currentLocation);
 
   map = new mapboxgl.Map({
-    container: 'map', // container ID
+    container: 'map-io', // container ID
     style: 'mapbox://styles/mapbox/dark-v11', // Mapbox dark theme
     center: currentLocation, // Use passed location [lng, lat]
     zoom: 10, // starting zoom
@@ -142,11 +258,8 @@ function spawnBlocks(currentLocation) {
   });
 
   // Resize map after initialization to ensure it fits the container
-  map.on('load', () => {
-    map.resize();
-  });
 
-  markers(currentLocation, 'me');
+  //markers(currentLocation, 'me');
 }
 
 let markers_global = []
@@ -364,6 +477,36 @@ function updateLocation(locationName) {
   const prefix = getPrefix(locationName);
   document.getElementById("vocals").textContent = prefix;
   document.getElementById("searchIntelli").classList.remove('notLoaded')
+  document.getElementById("searchInSearch").placeholder = `Αναζητήστε ${prefix} ${toAccusative(locationName)}`
+}
+
+
+function spawnMyLocation() {
+  const markerElement = document.createElement('div');
+  markerElement.style.width = '10px'; // smaller size
+  markerElement.style.height = '10px';
+  markerElement.style.backgroundColor = '#2e77ff';
+  markerElement.style.borderRadius = '50%'; // circle shape
+  markerElement.style.border = '1px solid #fff'; // minimal border for better contrast
+
+  // Add the custom marker to the map
+  const marker = new mapboxgl.Marker({ element: markerElement })
+      .setLngLat(myLoc) // coordinates for the marker
+      .addTo(map);
+  markers_global.push(marker)
+}
+
+function zoomOnMe() {
+  map.resize();
+  map.flyTo({
+    center: [parseFloat(myLoc[0]), parseFloat(myLoc[1])],
+    zoom: 16,
+    curve: 1,
+    offset: [0, -window.innerHeight / 4], // Adjust for vertical offset (e.g., header)
+    easing(t) {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    }
+  });
 }
 
 
@@ -744,19 +887,19 @@ function goBackToSplash() {
   $("#runalpha3").fadeOut("fast")
   $("#runalpha4").fadeOut("fast")
   document.getElementById("loginForming").querySelector(".infoWelcome").style.display = null
- 
+
   document.getElementById("loginContentFlex").classList.remove("noSplash")
-    document.getElementById("hello-text").classList.remove("noSplash")
-    
-      $("#phone").fadeOut("fast", function() {
-        $("#loginStep1").fadeOut("fast")
-        document.getElementById("phone").classList.add("login")
-        $("#phone").fadeIn("fast", function() {
-          $("#loginForming").fadeIn("fast", function () {})
-        })
-      })
+  document.getElementById("hello-text").classList.remove("noSplash")
+
+  $("#phone").fadeOut("fast", function () {
+    $("#loginStep1").fadeOut("fast")
+    document.getElementById("phone").classList.add("login")
+    $("#phone").fadeIn("fast", function () {
+      $("#loginForming").fadeIn("fast", function () { })
+    })
+  })
   $("#hello-text").fadeIn("slow", function () {
-    
+
     //displayHello()
   })
 }
@@ -831,8 +974,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById("oasaPfp").src = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${localStorage.getItem("t50-username")}`
   } else {
+
     document.getElementById("oasaPfp").src = 'cbimage.png'
     if (localStorage.getItem("hasDismissedSetup") !== 'true') {
+      document.getElementById("main").classList.add("setupNeeded")
       $("#phone").fadeOut("fast", function () {
         document.getElementById("phone").classList.add("login")
         $("#content").fadeOut("fast", function () {
@@ -888,25 +1033,25 @@ document.addEventListener('DOMContentLoaded', () => {
           });
 
           function runFunction() {
-            
+
             document.getElementById("loginContentFlex").classList.add("noSplash")
             document.getElementById("hello-text").classList.add("noSplash")
             document.getElementById("loginForming").querySelector(".infoWelcome").style.display = 'none'
             setTimeout(function () {
 
-                $("#loginForming").fadeOut("fast", function () {
-                  $("#phone").fadeOut("fast", function() {
-                    document.getElementById("phone").classList.remove("login")
-                    $("#phone").fadeIn("fast", function() {
-                      $("#loginStep1").fadeIn("fast")
-                    })
+              $("#loginForming").fadeOut("fast", function () {
+                $("#phone").fadeOut("fast", function () {
+                  document.getElementById("phone").classList.remove("login")
+                  $("#phone").fadeIn("fast", function () {
+                    $("#loginStep1").fadeIn("fast")
                   })
-                  
                 })
-                //$("#runalpha1").fadeIn("fast")
-                //$("#runalpha2").fadeIn("fast")
-                //$("#runalpha3").fadeIn("fast")
-                //$("#runalpha4").fadeIn("fast")
+
+              })
+              //$("#runalpha1").fadeIn("fast")
+              //$("#runalpha2").fadeIn("fast")
+              //$("#runalpha3").fadeIn("fast")
+              //$("#runalpha4").fadeIn("fast")
 
             }, 800)
             console.log('Swipe up detected! Running the function...');
@@ -1462,3 +1607,298 @@ function manualLogout() {
 
 }
 
+let option = 'main'
+
+
+//Connection With Shtepi Project
+
+async function spawnBusOnMap(lineId) {
+  try {
+    //map.addSource('mapbox-dem', {
+    //    'type': 'raster-dem',
+    //    'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+    //    'tileSize': 512,
+    //    'maxzoom': 14
+    //});
+    //// add the DEM source as a terrain layer with exaggerated height
+    //map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+    const routeCode = await findBusInfo2(lineId);
+    const busLocation = await findCurrentBusLocation(routeCode);
+
+    return;
+
+    new mapboxgl.Marker({
+      element: createRedDot()
+    })
+      .setLngLat([parseFloat(busLocation.lng), parseFloat(busLocation.lat)])
+      .setPopup(new mapboxgl.Popup().setText(`${lineId} arriving at ${busLocation.stopName} in ${busLocation.time} minutes`))
+      .addTo(map);
+
+
+    map.flyTo({
+      center: [parseFloat(busLocation.lng), parseFloat(busLocation.lat)], zoom: option === 'main' ? 14 : 16, curve: 1,
+      easing(t) {
+        // ease-in-out function
+        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      }
+    });
+    activeMarker.forEach(marker => marker.remove());
+  } catch (error) {
+    console.error("Error:", error.message);
+    alert("Error fetching bus location.");
+  }
+
+}
+
+async function findBusInfo2(id, getJustLineCode = false, getJustRouteCode = true) {
+  async function routeOasa(lineCode) {
+    const getStops = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`);
+    const response = await fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${getStops}`);
+    const data = await response.json();
+    console.log('Route:', data)
+    if (data && data.length > 0) {
+      return data[0].route_code;
+    } else {
+      throw new Error("Route Code not found.");
+    }
+  }
+
+  async function nextUp() {
+    const allLinesUrl = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetLines&keyOrigin=evoxEpsilon`);
+    const response = await fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLinesUrl}`);
+    const fullLine = await response.json();
+    const matchingLines = fullLine.filter(line => line.LineID === id);
+
+    if (matchingLines.length > 0) {
+      const selectedLine = matchingLines[0];
+      return await routeOasa(selectedLine.LineCode);
+    } else {
+      throw new Error("No matching lines found.");
+    }
+  }
+
+  return await nextUp();
+}
+
+async function findCurrentBusLocation(routeCode, retries = 5, delay = 10) {
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      fetchAndDisplayBusRoute(routeCode);
+      return;
+      const stops = await getRouteStops(routeCode);
+      let nearestStop = null;
+      let minTime = Infinity;
+
+      for (const stop of stops) {
+        const json = [stop.StopLat, stop.StopLng]
+        const arrivals = await getStopArrivalTime(stop.StopCode, stop.StopDescr, json);
+
+        arrivals.forEach(bus => {
+          if (bus.route_code === routeCode && bus.btime2 < minTime) {
+            minTime = bus.btime2;
+            nearestStop = stop;
+          }
+        });
+      }
+
+      if (nearestStop) {
+        return {
+          lat: nearestStop.StopLat,
+          lng: nearestStop.StopLng,
+          time: minTime,
+          stopName: nearestStop.StopDescr
+        };
+      } else {
+        console.warn(`No bus currently found on route ${routeCode}. Showing the first stop.`);
+        return {
+          lat: stops[0].StopLat,
+          lng: stops[0].StopLng,
+          time: "Not started",
+          stopName: stops[0].StopDescr
+        };
+      }
+    } catch (error) {
+      console.error(`Attempt ${attempt + 1} failed: ${error.message}`);
+      if (attempt < retries - 1) {
+        await sleep(delay);
+      } else {
+        console.error(`All attempts failed. Returning fallback location.`);
+        return {
+          lat: null,
+          lng: null,
+          time: "Failed to fetch bus location",
+          stopName: "Unknown"
+        };
+      }
+    }
+  }
+}
+
+async function fetchAndDisplayBusRoute(routeCode) {
+  try {
+    const stops = await getRouteStops(routeCode);  // Fetch stops for the given route code
+    console.log(stops)
+    if (stops.length > 0) {
+      showBusRouteWithStops(stops, map);  // Display the route on the map
+    } else {
+      console.error('No stops found for this route');
+    }
+  } catch (error) {
+    console.error('Error fetching stops for route:', error);
+  }
+}
+
+
+// Function to display bus route on the map
+async function showBusRouteWithStops(stops, map) {
+  const orderedStops = stops.sort((a, b) => a.RouteStopOrder - b.RouteStopOrder);
+  const coordinates = orderedStops.map(stop => [parseFloat(stop.StopLng), parseFloat(stop.StopLat)]);
+
+  // Add the stops to the map as markers
+  orderedStops.forEach(stop => {
+    new mapboxgl.Marker({
+      element: createBlueDot()
+    })
+      .setLngLat([parseFloat(stop.StopLng), parseFloat(stop.StopLat)])
+      .setPopup(new mapboxgl.Popup().setText(stop.StopDescr)) // Popup with stop name
+      .addTo(map);
+  });
+
+  // Create a line connecting the bus stops
+  //map.addSource('busRoute', {
+  //    type: 'geojson',
+  //    data: {
+  //        type: 'Feature',
+  //        geometry: {
+  //            type: 'LineString',
+  //            coordinates: coordinates
+  //        }
+  //    }
+  //});
+
+  map.addLayer({
+    id: 'busRouteLayer',
+    type: 'line',
+    //source: 'busRoute',
+    layout: {
+      'line-join': 'round',
+      'line-cap': 'round'
+    },
+    paint: {
+      'line-color': '#fff',
+      'line-width': 2
+    }
+  });
+
+  console.log('Bus route displayed on the map');
+}
+
+function createBlueDot() {
+  const dot = document.createElement('div');
+  dot.style.width = '10px';
+  dot.style.height = '10px';
+  dot.style.backgroundColor = '#fff';
+  dot.style.borderRadius = '50%';
+  dot.style.transform = 'translate(-50%, -50%)'; // Center the dot on the marker position
+  return dot;
+}
+
+function createBlinkingDot() {
+  const dot = document.createElement('div');
+  dot.style.width = '10px';
+  dot.style.height = '10px';
+  dot.style.backgroundColor = '#fff'; // Set the color to white
+  dot.style.borderRadius = '50%';
+  dot.style.transform = 'translate(-50%, -50%)'; // Center the dot on the marker position
+  dot.style.animation = 'blink 1s infinite'; // Add blinking animation
+
+  // Define the keyframes for the blinking animation
+  const style = document.createElement('style');
+  style.innerHTML = `
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+`;
+  document.head.appendChild(style);
+
+  return dot;
+}
+
+
+function createRedDot() {
+  const dot = document.createElement('div');
+  dot.style.width = '15px';
+  dot.style.height = '15px';
+  dot.style.backgroundColor = '#ff0000';
+  dot.style.borderRadius = '50%';
+  dot.style.transform = 'translate(-50%, -50%)'; // Center the dot on the marker position
+  return dot;
+}
+
+async function getRouteStops(routeCode) {
+  const url = `https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${routeCode}&keyOrigin=evoxEpsilon`)}`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data.stops || [];
+}
+
+let activeMarker = []
+
+async function getStopArrivalTime(stopCode, stopName, cords, maxRetries = 5) {
+  const url = `https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`)}`;
+
+  const main = new mapboxgl.Marker({
+    element: createBlinkingDot()
+  })
+    .setLngLat([parseFloat(cords[1]), parseFloat(cords[0])])
+    .setPopup(new mapboxgl.Popup().setText(`Working..`))
+    .addTo(map);
+  activeMarker.push(main)
+  map.flyTo(
+    {
+      center: [parseFloat(cords[1]),
+      parseFloat(cords[0])], zoom: option === 'main' ? 14 : 16, pitch: 45, curve: 1,
+      easing(t) {
+        // ease-in-out function
+        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      }
+    }
+  );
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      //verifying.play()
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (Array.isArray(data) && data.length > 0) {
+        //verifying.stop()
+        //foundActiveStation.play()
+        return data; // Return arrivals if found
+      } else {
+        //verifying.stop()
+        //inactiveStation.play()
+        activeMarker.forEach(marker => marker.remove());
+        console.warn(`No arrivals found for stopCode: ${stopName}/${stopCode}`);
+
+        return []; // Return empty if no arrivals
+      }
+    } catch (error) {
+      // Retry only if the error message contains 'SQL'
+      if (error.message.includes("SQL")) {
+        console.warn(`SQL-related error fetching stop arrivals for ${stopName}/${stopCode}. Retrying... (${attempt}/${maxRetries})`);
+      } else {
+        console.error(`Error fetching stop arrivals for ${stopName}/${stopCode}:`, error);
+        break; // Do not retry for non-SQL errors
+      }
+
+      if (attempt === maxRetries) {
+        console.error(`Failed to fetch arrivals for stop ${stopName}/${stopCode} after ${maxRetries} retries.`);
+      }
+    }
+  }
+  return []; // Return empty array if all retries fail
+}

@@ -163,6 +163,12 @@
     padding-right: 0px;
     width: 100%;
     height: 100%;
+    /*padding: 20px;*/
+    margin-top: env(safe-area-inset-top) !important;
+    margin-bottom: env(safe-area-inset-bottom) !important;
+    /* Adding bottom safe area inset */
+    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    /* Adding bottom safe area inset */
 }
 
 .insideSearch .topSearch {
@@ -177,7 +183,7 @@
     margin-top: 10px;
     display: flex;
     height: auto;
-    gap: 10px;
+    gap: 15px;
     overflow-x: auto;
     /* Space between items */
     scroll-snap-type: x mandatory;
@@ -186,6 +192,7 @@
     /* Smooth scrolling */
     -webkit-overflow-scrolling: touch;
     z-index: 5;
+    margin-left: 15px;
 }
 
 .insideSearch .topSearch.recommend::-webkit-scrollbar {
@@ -194,12 +201,12 @@
 
 .insideSearch .topSearch.recommend .Block {
     width: auto;
-    padding: 10px 15px;
+    padding: 7.5px 15px;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 5px;
-    background-color: #1f42f425;
+    background-color: #ffffff23;
     border-radius: 20px;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
@@ -224,7 +231,7 @@
 
 .insideSearch .searchInput {
     padding: 18px 20px;
-    background-color: #ffffff17;
+    background-color: #ffffff23;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -427,8 +434,6 @@
     animation: gradientMove 15s infinite ease-in-out;
 
     /* Light bulb glow effect */
-    box-shadow: 0 0 50px rgba(255, 255, 255, 0.2),
-        0 0 100px rgba(255, 121, 121, 0.3);
 }
 
 @keyframes gradientMove {
@@ -902,6 +907,9 @@
     width: 100vw;
     height: 100vh;
     position: fixed;
+    margin-top: calc(-1 * env(safe-area-inset-top)) !important;
+    margin-bottom: env(safe-area-inset-bottom) !important;
+    /* Adding bottom safe area inset */
 }
 
 #main-wrapper::-webkit-scrollbar,
@@ -1236,7 +1244,7 @@ body {
     }
 }
 
-#main {
+#main.setupNeeded {
     overscroll-behavior: none !important;
     overflow: hidden !important;
 }

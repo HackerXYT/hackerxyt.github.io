@@ -1300,7 +1300,7 @@ async function findBusInfo2(id, getJustLineCode = false, getJustRouteCode = true
         const data = await response.json();
         console.log('Route:', data)
         if (data && data.length > 0) {
-            found.play()
+            //found.play()
             return data[0].route_code;
         } else {
             throw new Error("Route Code not found.");
