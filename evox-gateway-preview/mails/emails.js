@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-//https://evox-datacenter.onrender.com/emails/?action=get&username=papostol&email=gregpap03@gmail.com&password=notyourtone
 const global_username = localStorage.getItem("t50-username")
 const pswd = localStorage.getItem("t50pswd")
 const global_email = localStorage.getItem("t50-email")

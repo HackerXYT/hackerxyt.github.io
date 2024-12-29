@@ -10,14 +10,7 @@ const urlBase64ToUint8Array = (base64String) => {
 
     return outputArray;
 }
-const subsj = {
-    "endpoint": "https://fcm.googleapis.com/fcm/send/dwmuZhiWUdY:APA91bFpiBv9Sr3hEhcuchcgKv3ZEKHJnEudugKep1OZW9US-6wh3qAHQiraczWMOoJNbs5-5zn1PKHn8eNEZSGHzeyTQN13cbHZo8kYvbL9zYHNPuRy74rhRxUyvpAihzelHNKBdNrV",
-    "expirationTime": null,
-    "keys": {
-        "p256dh": "BG9PjsyWGfv7bFPLl35GBbPknAQALEyeJ70wXywzu1ZzrcTS0CLoQ-HTlXKFj21OTPWuSvyNDB7mQqBYkeUqmaQ",
-        "auth": "3PJKFP3zW6-t8EcETbvW0g"
-    }
-}
+const subsj = {}
 
 const email4 = "gregpap03@gmail.com"
 

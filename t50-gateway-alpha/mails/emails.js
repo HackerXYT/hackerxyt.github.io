@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
   function go_dash() {
     sessionStorage.setItem("extRun", "back")
   }
-//https://data.evoxs.xyz/emails/?action=get&username=papostol&email=gregpap03@gmail.com&password=notyourtone
 const global_username = localStorage.getItem("t50-username")
 const pswd = localStorage.getItem("t50pswd")
 const global_email = localStorage.getItem("t50-email")
