@@ -2085,6 +2085,7 @@ function checkForUpdates() {
             if (data && data.current) {
                 if (Number(data.current) > version) {
                     alert("An update is available")
+                    manualUpdate()
                 }
             }
         })
