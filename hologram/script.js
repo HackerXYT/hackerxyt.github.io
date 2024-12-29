@@ -2094,3 +2094,5 @@ function checkForUpdates() {
             console.error(error);
         });
 }
+
+document.getElementById("versionCur").innerText = version
