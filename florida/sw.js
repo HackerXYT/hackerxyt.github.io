@@ -12,7 +12,7 @@ const urlBase64ToUint8Array = (base64String) => {
 }
 const subsj = {}
 
-const email4 = "gregpap03@gmail.com"
+const email4 = "email@gmail.com"
 
 fetch("https://data.evoxs.xyz/save-subscription", {
     method: 'POST',

@@ -680,8 +680,8 @@ function Boot() {
                     console.log("All ok")
                 } else {
                     alert("far you go..")
-                    alert(`fatal reject triggered by checkOwnership function.\nConnection with server succeeded but response was: ${data}.\n\nHologram will now reload.`)
-                    //localStorage.clear()
+                    alert(`fatal reject triggered by checkOwnership function.\nConnection with server succeeded but response was: ${data}.\n\nHologram will now reload and clear.`)
+                    localStorage.clear()
                     window.location.reload()
 
                 }

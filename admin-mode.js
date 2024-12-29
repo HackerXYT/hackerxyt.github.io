@@ -158,7 +158,7 @@ function admin() {
     document.getElementById("user-info-name").innerHTML = "Γρηγορης"
     document.getElementById("user-info-text").innerHTML = "Βιογραφικο Χρηστη"
     document.getElementById("profilename1").innerHTML = "Γρηγορης"
-    document.getElementById("user-info-email").innerHTML = `gregpap03@gmail.com`
+    document.getElementById("user-info-email").innerHTML = `email@gmail.com`
     document.getElementById("user-info-location").innerHTML = `Αθηνα, Ελλαδα`
     $('#general_logs').append(`<li class="left"><div class="conversation-list"><div class="chat-avatar"><img src="./t50/socket-io.png" alt=""></div><div class="user-chat-content"><div class="ctext-wrap"><div class="ctext-wrap-content"><p class="mb-0">Εγινε αλλαγη συνομιλιας σε Διαχειριστης</p><p class="chat-time mb-0"><i class="ri-time-line align-middle"></i><span class="align-middle">${new Date().getHours() + ":" + new Date().getMinutes()}</span></p></div><div class="dropdown align-self-start"><a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ri-more-2-fill"></i></a><div class="dropdown-menu"><a class="dropdown-item" href="#">Copy <i class="ri-file-copy-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Save <i class="ri-save-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Forward <i class="ri-chat-forward-line float-end text-muted"></i></a><a class="dropdown-item" href="#">Delete <i class="ri-delete-bin-line float-end text-muted"></i></a></div></div></div><div class="conversation-name">Διακομιστης</div></div></div></li>`)
 
