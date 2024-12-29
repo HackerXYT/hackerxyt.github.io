@@ -24,6 +24,8 @@ body {
   height: 100%;
   /* Ensure the height is 100% */
   font-family: "SF";
+  overscroll-behavior: none !important;
+  /* Adjusting content height to fill the viewport */
 }
 
 * {
@@ -1028,7 +1030,8 @@ input {
 }
 
 .welcomeButton {
-  background-color: #c0943f; /*#0980ff -> blue #017c47e4 -> green*/
+  background-color: #c0943f;
+  /*#0980ff -> blue #017c47e4 -> green*/
   background: linear-gradient(145deg, #d0ab56, #c0943f, #d0ab56);
   border-radius: 1rem;
   text-align: center;
@@ -1124,8 +1127,7 @@ input {
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(35px);
   -webkit-backdrop-filter: blur(35px);
-  border-radius: 20px;
-  /* Transition for sliding effect, opacity, and visibility */
+  /* Adjusting content height to fill the viewport */
 }
 
 
@@ -1365,4 +1367,3 @@ input {
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
 }
-
