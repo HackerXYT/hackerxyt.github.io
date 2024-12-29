@@ -1364,6 +1364,25 @@ vo input::placeholder {
     flex-direction: row;
 }
 
+.notch-hidden {
+    position: absolute;
+    top: 0;
+    left: 50%; /* Start in the middle */
+    transform: translateX(-50%); /* Center it */
+    width: 120px; /* Adjust to the notch width */
+    height: env(safe-area-inset-top); /* Adjust for the notch height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    color: white;
+    font-size: 14px;
+    z-index: 9999;
+    pointer-events: none; /* Prevent interactions */
+    border-radius: 20px; /* Optional: round the edges */
+    display: none;
+  }
+
 .assets .moreInfo p {
     text-align: left;
     margin-bottom: 10px;

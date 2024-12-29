@@ -149,6 +149,8 @@
         } else {
             srv = 'http://192.168.1.126:4000'
         }
+        const version = '0.1'
+        
     </script>
 </head>
 
@@ -418,6 +420,11 @@
                     Local Database<span>
                         <vox id="indexdb-status">No</vox><img src='arrow-down.svg'
                             style="vertical-align: middle;width: 20px;height: 20px;transform: rotate(-90deg);">
+                    </span>
+                </div>
+                <div class="settings-item">
+                    Manual Update<span>
+                        <vox onclick="manualUpdate()">Trigger</vox>
                     </span>
                 </div>
             </div>

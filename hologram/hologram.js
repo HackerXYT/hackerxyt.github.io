@@ -31,8 +31,8 @@
 //});
 
 
-const STATIC_CACHE_NAME = 'static-cache-v5';
-const APP_CACHE_NAME = 'app-cache-v5';
+const STATIC_CACHE_NAME = 'static-cache-v6';
+const APP_CACHE_NAME = 'app-cache-v6';
 const CACHE_STATIC = [
   "/hologram/",
   "/hologram/index.html",
@@ -123,10 +123,16 @@ self.addEventListener("fetch", e => {
 self.addEventListener('message', event => {
   if (event.data && event.data.action === 'UPDATE_CACHE') {
     event.waitUntil(
-      updateCache()
+      updateCache().then(() => {
+        event.source.postMessage({ status: 'CACHE_UPDATED' });
+      }).catch(error => {
+        console.error('Cache update failed:', error);
+        event.source.postMessage({ status: 'CACHE_UPDATE_FAILED', error });
+      })
     );
   }
 });
+
 
 // Function to manually update the cache
 async function updateCache() {

@@ -353,7 +353,7 @@ function frontFormat() {
 let postCount = 0
 let loaded = []
 function dbload() {
-    fetch(`${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&method=getIDs`, {
+    fetch(`${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&method=getIDs&v=${Math.floor(Math.random() * 10001)}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -665,6 +665,7 @@ function refreshPercent() {
 function Boot() {
     document.getElementById("nav-container").style.display = 'flex'
     if (navigator.onLine) {
+        checkForUpdates()
         console.log("The user is online.");
         fetch(`${srv}/images/checkOwnerShip?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&email=${localStorage.getItem("t50-email")}`, {
             method: 'GET',
@@ -715,7 +716,7 @@ function Boot() {
                 console.warn('Profile Picture Failed To Load:', error)
                 console.error('Error:', error);
             });
-        fetch(`${srv}/images-database?method=getTypes&password=${atob(localStorage.getItem("t50pswd"))}`, {
+        fetch(`${srv}/images-database?method=getTypes&password=${atob(localStorage.getItem("t50pswd"))}&v=${Math.floor(Math.random() * 10001)}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -782,7 +783,7 @@ function Boot() {
             });
         console.log("The user is offline.");
     }
-    fetch(`${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&method=getInfo`, {
+    fetch(`${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&method=getInfo&v=${Math.floor(Math.random() * 10001)}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -961,7 +962,7 @@ function filter(vv, element) {
     //    return;
     //}
     what = element.innerText.toLowerCase()
-    fetch(`${srv}/images-database?method=getByType&password=${atob(localStorage.getItem("t50pswd"))}&format=${what}`, {
+    fetch(`${srv}/images-database?method=getByType&password=${atob(localStorage.getItem("t50pswd"))}&format=${what}&v=${Math.floor(Math.random() * 10001)}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -1225,7 +1226,7 @@ let start = 0
 function loadStories() {
     console.log(types)
     types.forEach((type) => {
-        fetch(`${srv}/images-database?method=getByType&password=${atob(localStorage.getItem("t50pswd"))}&format=${type}`, {
+        fetch(`${srv}/images-database?method=getByType&password=${atob(localStorage.getItem("t50pswd"))}&format=${type}&v=${Math.floor(Math.random() * 10001)}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json', // Modify this based on your API's requirements
@@ -1256,7 +1257,7 @@ function loadStories() {
                     console.log("Image not found in IndexedDB, loading from network", error);
 
                     // Fallback to network URL
-                    imageElement.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access`;
+                    imageElement.src = `${srv}/images-database?password=${atob(localStorage.getItem("t50pswd"))}&image=${number}&method=access&v=${Math.floor(Math.random() * 10001)}`;
 
                     // Fetch and cache the image
                     fetch(imageElement.src).then(response => {
@@ -1635,7 +1636,7 @@ function init(data) {
 }
 function showStory(what) {
 
-    fetch(`${srv}/images-database?method=getByType&password=${atob(localStorage.getItem("t50pswd"))}&format=${what}`, {
+    fetch(`${srv}/images-database?method=getByType&password=${atob(localStorage.getItem("t50pswd"))}&format=${what}&v=${Math.floor(Math.random() * 10001)}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -2046,4 +2047,49 @@ function upload() {
     };
 
     reader.readAsDataURL(file);
+}
+function manualUpdate() {
+    // Check if the service worker is registered
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.ready.then(registration => {
+            if (registration.active) {
+                // Send a message to the active service worker
+                registration.active.postMessage({ action: 'UPDATE_CACHE' });
+
+                // Listen for messages from the service worker
+                navigator.serviceWorker.addEventListener('message', event => {
+                    if (event.data && event.data.status === 'CACHE_UPDATED') {
+                        alert('Cache update was successful!');
+                    } else {
+                        alert(`App data update failed. ${event.data.status}\n${event.data}`)
+                    }
+                });
+            } else {
+                console.error('No active service worker found.');
+                alert('No active service worker found.');
+            }
+        }).catch(error => {
+            console.error('Error accessing service worker:', error);
+            alert(`Error accessing service worker: ${error}`);
+        });
+    } else {
+        console.error('Service workers are not supported in this browser.');
+        alert('Service workers are not supported in this browser.');
+    }
+}
+
+function checkForUpdates() {
+    fetch('hologram.version')
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.current) {
+                if (Number(data.current) > version) {
+                    alert("An update is available")
+                }
+            }
+        })
+        .catch(error => {
+            alert(`Update check failed:\n${error}`)
+            console.error(error);
+        });
 }
