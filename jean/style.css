@@ -22,7 +22,8 @@ body {
     padding: 0;
     margin: 0;
     color: #fff;
-    background: rgb(0, 8, 41);
+    /*background: rgb(0, 8, 41);*/
+    background: rgb(6, 2, 19);
     touch-action: manipulation;
     display: flex;
     justify-content: center;
