@@ -140,31 +140,100 @@
         <img class="qr" src="qr.png">
     </div>
     <div id="loginContainer" class="login">
+
         <div id="topImg" class="topImg">
             <video id="video" loop muted playsinline>
                 <source id="videoSRC" src="m.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
+        <div class="infoContainer" id="infoContainer">
+            <div onclick="hideAppInfo()" class="appInfo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M12 17.75C12.4142 17.75 12.75 17.4142 12.75 17V11C12.75 10.5858 12.4142 10.25 12 10.25C11.5858 10.25 11.25 10.5858 11.25 11V17C11.25 17.4142 11.5858 17.75 12 17.75Z"
+                        fill="#FFF" />
+                    <path
+                        d="M12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z"
+                        fill="#FFF" />
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75Z"
+                        fill="#FFF" />
+                </svg>
+            </div>
+            <p style="margin: 0;">Jeanne D'arc Project</p>
+            <span>registered under Evox©</span>
+            <p>Διεύθυνση IP: <span id="ipIdent"></span></p>
+            <p>Συσκευή: <span id="deviceInfo"></span></p>
+            <p>Δοκιμαστική λειτουργία: <span>Ναι</span></p>
+            <p>Επανεκκίνηση: <span onclick="window.location.reload()">Τώρα</span></p>
+        </div>
         <div class="welcome" id="welcome">
-            <div class="textDialog">
+            <div onclick="goBackToMain()" class="topLeftBack" id="topLeftBack">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+            </div>
+            <div onclick="showAppInfo()" class="appInfo" id="appInfo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M12 17.75C12.4142 17.75 12.75 17.4142 12.75 17V11C12.75 10.5858 12.4142 10.25 12 10.25C11.5858 10.25 11.25 10.5858 11.25 11V17C11.25 17.4142 11.5858 17.75 12 17.75Z"
+                        fill="#FFF" />
+                    <path
+                        d="M12 7C12.5523 7 13 7.44772 13 8C13 8.55228 12.5523 9 12 9C11.4477 9 11 8.55228 11 8C11 7.44772 11.4477 7 12 7Z"
+                        fill="#FFF" />
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M1.25 12C1.25 6.06294 6.06294 1.25 12 1.25C17.9371 1.25 22.75 6.06294 22.75 12C22.75 17.9371 17.9371 22.75 12 22.75C6.06294 22.75 1.25 17.9371 1.25 12ZM12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75Z"
+                        fill="#FFF" />
+                </svg>
+            </div>
+            <div class="textDialog" id="textDialog">
                 <img src="logo.png" width="100px">
                 <p>Καλωσορίσατε στην</p>
                 <h2>Jeanne D'arc</h2>
             </div>
-            
-            <div class="boxUp">
+
+            <div class="boxUp" id="boxUp">
+
+                <div class="loginByName" id="loginByName" style="display: none;">
+
+                    <p>Σύνδεση με όνομα</p>
+                    <span>Πληκτρολόγηστε το όνομα ή το επώνυμο σας για να βρεθεί ο λογαριασμός σας.</span>
+                    <div class="inputsLogin">
+                        <div class="inv-button creds">
+                            <vo class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="17.5px" height="17.5px"
+                                    viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="6" r="4" stroke="#fff" stroke-width="1.5"></circle>
+                                    <path
+                                        d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z"
+                                        stroke="#fff" stroke-width="1.5"></path>
+                                </svg></vo>
+
+                            <input id="voxName" type="name" placeholder="Όνομα ή επώνυμο" oninput="searchByName()">
+                            <vox class="mirror-text"></vox>
+                        </div>
+                        <div onclick="searchByNameComplete()" class="optionButton focus svgOnRight">
+                            Αναζήτηση<svg xmlns="http://www.w3.org/2000/svg" width="17.5px" height="17.5px"
+                                viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                                    stroke="#8880eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg></div>
+                    </div>
+                </div>
                 <p>Ας ξεκινήσουμε</p>
                 <span>Συνδεθείτε παρακάτω για να σχεδιάσετε και να παραγγείλετε το φούτερ σας.</span>
                 <div class="buttonsLogin">
-                    <div class="optionButton focus"><svg xmlns="http://www.w3.org/2000/svg" width="17.5px" height="17.5px"
-                            viewBox="0 0 24 24" fill="none">
+                    <div onclick="nameLogin()" class="optionButton focus"><svg xmlns="http://www.w3.org/2000/svg"
+                            width="17.5px" height="17.5px" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="6" r="4" stroke="#8880eb" stroke-width="1.5" />
                             <path
                                 d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z"
                                 stroke="#8880eb" stroke-width="1.5" />
                         </svg>Συνέχεια με όνομα</div>
-                    <div onclick='document.getElementById("evoxContainer").classList.add("active")' class="optionButton"><img src="../oasaResign/evox-logo-dark.png" width="17.5px" height="17.5px">Συνέχεια με Evox</div>
+                    <div onclick='document.getElementById("evoxContainer").classList.add("active")'
+                        class="optionButton"><img src="../oasaResign/evox-logo-dark.png" width="17.5px"
+                            height="17.5px">Συνέχεια με Evox</div>
                     <div class="horizontalButtons">
                         <div class="optionButton">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -182,14 +251,22 @@
                             </svg>
                         </div>
                         <div class="optionButton">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
-                                <path d="M9 8L9 8.01" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M16 15L16 15.01" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M10 17L10 17.01" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M11 13L11 13.01" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M6 12L6 12.01" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M12 21C16.9706 21 21 16.9706 21 12C21 11.4402 20.9489 10.8924 20.8511 10.361C20.3413 10.7613 19.6985 11 19 11C18.4536 11 17.9413 10.8539 17.5 10.5987C17.0587 10.8539 16.5464 11 16 11C14.3431 11 13 9.65685 13 8C13 7.60975 13.0745 7.23691 13.2101 6.89492C11.9365 6.54821 11 5.38347 11 4C11 3.66387 11.0553 3.34065 11.1572 3.03894C6.58185 3.46383 3 7.31362 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path d="M9 8L9 8.01" stroke="#FFF" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M16 15L16 15.01" stroke="#FFF" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M10 17L10 17.01" stroke="#FFF" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M11 13L11 13.01" stroke="#FFF" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M6 12L6 12.01" stroke="#FFF" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path
+                                    d="M12 21C16.9706 21 21 16.9706 21 12C21 11.4402 20.9489 10.8924 20.8511 10.361C20.3413 10.7613 19.6985 11 19 11C18.4536 11 17.9413 10.8539 17.5 10.5987C17.0587 10.8539 16.5464 11 16 11C14.3431 11 13 9.65685 13 8C13 7.60975 13.0745 7.23691 13.2101 6.89492C11.9365 6.54821 11 5.38347 11 4C11 3.66387 11.0553 3.34065 11.1572 3.03894C6.58185 3.46383 3 7.31362 3 12C3 16.9706 7.02944 21 12 21Z"
+                                    stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
                         </div>
                     </div>
                 </div>

@@ -115,6 +115,67 @@ body {
     /* Optional: limit width for better layout */
 }
 
+.appInfo {
+    position: fixed;
+    top: 10px;
+    top: calc(env(safe-area-inset-top) + 10px) !important;
+    right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    transition: background-color 0.5s ease-in-out;
+}
+
+.appInfo:hover,
+.appInfo:active {
+    background-color: #FFF;
+
+}
+
+.appInfo svg path {
+    transition: fill 0.5s ease-in-out;
+}
+
+.appInfo:hover svg path,
+.appInfo:active svg path {
+    fill: #141414 !important;
+}
+
+.infoContainer {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    position: fixed;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.infoContainer p {
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.infoContainer p span {
+    color: #cfcfcfa2;
+    font-size: 16px;
+}
+
+.infoContainer span {
+    color: #cfcfcfa2;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.infoContainer.active {
+    opacity: 1;
+}
+
 .topImg {
     position: absolute;
     top: 50%;
@@ -252,7 +313,7 @@ vo input::placeholder {
     flex-direction: column;
     align-items: center;
     z-index: 999;
-    margin-top: env(safe-area-inset-top) !important;
+    margin-top: calc(env(safe-area-inset-top) + 10px) !important;
 
     /* Adding bottom safe area inset */
 }
@@ -342,12 +403,14 @@ vo input::placeholder {
     margin: 0;
     transition: all 0.3s ease-in-out;
 }
+
 .welcome {
     display: flex;
     width: 100%;
     height: 100vh;
     flex-direction: column;
-    justify-content: center; /* Keeps the items aligned at the start */
+    justify-content: center;
+    /* Keeps the items aligned at the start */
     align-items: center;
     position: relative;
     gap: 10px;
@@ -397,8 +460,12 @@ vo input::placeholder {
     flex-direction: column;
     box-sizing: border-box;
     border-radius: 20px;
-    margin-top: auto; /* Pushes the boxUp to the bottom */
+    margin-top: auto;
+    /* Pushes the boxUp to the bottom */
     margin-bottom: 20px;
+    /*Fallback*/
+    margin-bottom: calc(env(safe-area-inset-bottom) + 15px) !important;
+    transition: height 0.5s ease-in-out;
 }
 
 
@@ -421,7 +488,7 @@ vo input::placeholder {
     align-items: center;
 }
 
-.buttonsLogin .optionButton {
+.optionButton {
     width: 100%;
     padding: 12.5px;
     border-radius: 10px;
@@ -434,22 +501,24 @@ vo input::placeholder {
     align-items: center;
 }
 
-.buttonsLogin .optionButton.focus {
+.optionButton.focus {
     background-color: #282733;
     border: 1px solid #8780eb9e;
     color: #8880eb;
 }
 
-.buttonsLogin .optionButton:focus,
-.buttonsLogin .optionButton:active {
+.optionButton:focus,
+.optionButton:active {
     background-color: #333333;
     border: 1px solid #555555;
-    outline: none;  /* Removes the default browser outline */
-    transform: scale(1.05);  /* Slightly enlarges the button */
+    outline: none;
+    /* Removes the default browser outline */
+    transform: scale(1.05);
+    /* Slightly enlarges the button */
 }
 
-.buttonsLogin .optionButton.focus:focus,
-.buttonsLogin .optionButton.focus:active {
+.optionButton.focus:focus,
+.optionButton.focus:active {
     background-color: #333344;
     border: 1px solid #6666cc;
     color: #ffffff;
@@ -476,8 +545,15 @@ vo input::placeholder {
     align-items: center;
 }
 
-.buttonsLogin .optionButton svg,img {
+.optionButton svg,
+img {
     margin-right: 5px;
+}
+
+.optionButton.svgOnRight svg,
+img {
+    margin-right: 0;
+    margin-left: 5px;
 }
 
 .multimatch {
@@ -1222,6 +1298,24 @@ vo input::placeholder {
     /* Adjust duration and timing function as needed */
 }
 
+@keyframes SlideDownfadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0px);
+        /* Adjust the Y value for how far the element slides up */
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+.fade-out-slide-down {
+    animation: SlideDownfadeOut 0.5s ease forwards;
+    /* Adjust duration and timing function as needed */
+}
+
 
 .navigation {
     position: fixed;
@@ -1483,9 +1577,11 @@ vo input::placeholder {
 }
 
 #tags {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+    grid-gap: 5px; /* Adjust the space between grid items */
 }
+
 
 .notch-hidden {
     position: absolute;
@@ -2228,4 +2324,117 @@ vo input::placeholder {
 
 .fytyre:not(.zgjedhur):hover {
     cursor: pointer;
+}
+
+
+.inv-button {
+    width: 100%;
+    border-radius: 14px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+.inv-button.creds {
+
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    height: auto;
+
+    /* Semi-transparent background */
+    backdrop-filter: blur(5px);
+    /* Adjust the blur amount as needed */
+    -webkit-backdrop-filter: blur(5px);
+    margin-bottom: 5px;
+    width: 100%;
+    padding: 5px;
+    border-radius: 10px;
+    margin-top: 10px;
+    transition: all 0.5s ease-in-out;
+    background-color: #2323238a;
+    border: 1px solid #2d2d2d98;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.inv-button.creds .icon {
+    float: left;
+    padding: 5px;
+    color: #888;
+    font-size: 16px;
+    margin-left: 5px;
+    margin-right: 0;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    left: 5px;
+}
+
+.inputsLogin {
+    width: 100%;
+}
+
+
+
+.mirror-text {
+    white-space: pre;
+    font-size: 16px;
+    color: #767676;
+}
+
+.inv-button.creds input {
+    background-color: transparent !important;
+    border: none !important;
+    outline: none !important;
+    padding: 10px;
+    padding-right: 0px;
+    font-size: 16px;
+    margin: 0;
+    color: #fff !important;
+    width: auto;
+    filter: none;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-left: 30px;
+    text-align: left;
+}
+
+.topLeftBack {
+    position: fixed;
+    top: 10px;
+    top: calc(env(safe-area-inset-top) + 10px) !important;
+    left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+
+}
+
+.topLeftBack.active {
+    opacity: 1;
+}
+
+.topLeftBack:hover,
+.topLeftBack:active {
+    background-color: #FFF;
+
+}
+
+.topLeftBack svg path {
+    transition: fill 0.5s ease-in-out;
+}
+
+.topLeftBack:hover svg path,
+.topLeftBack:active svg path {
+    stroke: #141414 !important;
 }

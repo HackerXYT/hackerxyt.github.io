@@ -415,6 +415,17 @@ function find() {
 
 }
 
+function findFirstMatch(name) {
+    const searchInput = name.replace(/\s+/g, '');
+    const matchedNames = findFullNames(searchInput);
+
+    if (matchedNames.length > 0) {
+        return matchedNames[0]; // Return the first match
+    } else {
+        return null; // Return null if no match is found
+    }
+}
+
 function pickasCurrent(name) {
     foundName = name
     document.getElementById("nameForMultiple").innerText = foundName
@@ -1599,4 +1610,259 @@ function goBackToLogin() {
     deletePIN()
     deletePIN()
     deletePIN()
+}
+
+function getDeviceInfo() {
+    const userAgent = navigator.userAgent;
+
+    let deviceType = "Unknown";
+    let model = "Unknown";
+    let osVersion = "Unknown";
+
+    // Detect device type
+    if (/Mobile|iPhone|Android/.test(userAgent)) {
+        deviceType = "Κινητή";
+    } else if (/Tablet|iPad/.test(userAgent)) {
+        deviceType = "Τάμπλετ";
+    } else if (/Mac|Windows|Linux|X11/.test(userAgent)) {
+        deviceType = "Υπολογιστής";
+    }
+
+    // Detect model (basic parsing)
+    if (/iPhone/.test(userAgent)) {
+        model = "iPhone";
+    } else if (/iPad/.test(userAgent)) {
+        model = "iPad";
+    } else if (/Android/.test(userAgent)) {
+        const androidMatch = userAgent.match(/Android\s([\d.]+)/);
+        model = "Android Device";
+        osVersion = androidMatch ? androidMatch[1] : osVersion;
+    } else if (/Mac/.test(userAgent)) {
+        model = "Mac";
+    } else if (/Windows/.test(userAgent)) {
+        model = "Windows PC";
+    }
+
+    // Detect OS version (basic parsing)
+    if (/iPhone|iPad/.test(userAgent)) {
+        const iosMatch = userAgent.match(/OS (\d+_\d+)/);
+        osVersion = iosMatch ? iosMatch[1].replace("_", ".") : osVersion;
+    } else if (/Windows/.test(userAgent)) {
+        const windowsMatch = userAgent.match(/Windows NT (\d+\.\d+)/);
+        osVersion = windowsMatch ? windowsMatch[1] : osVersion;
+    } else if (/Mac/.test(userAgent)) {
+        const macMatch = userAgent.match(/Mac OS X (\d+_\d+)/);
+        osVersion = macMatch ? macMatch[1].replace("_", ".") : osVersion;
+    }
+
+    // Return as JSON object
+    return {
+        deviceType,
+        model,
+        osVersion,
+    };
+}
+
+
+function showAppInfo() {
+    const device = getDeviceInfo()
+    document.getElementById("deviceInfo").innerHTML = `${device.deviceType} - ${device.model} - ${device.osVersion}`;
+    document.getElementById("ipIdent").innerText = ip
+    $("#welcome").fadeOut("fast", function () {
+        document.getElementById("infoContainer").classList.add("active")
+    })
+
+}
+
+function hideAppInfo() {
+    document.getElementById("infoContainer").classList.remove("active")
+    $("#welcome").fadeIn("fast")
+}
+
+let boxUpDefaultHeight;
+function nameLogin() {
+    document.getElementById("topLeftBack").classList.add("active")
+    $("#appInfo").fadeOut("fast")
+    $("#textDialog").fadeOut("fast", function () {
+        const boxUp = document.getElementById("boxUp");
+        const currentHeight = boxUp.offsetHeight + 'px';
+        boxUpDefaultHeight = currentHeight
+        boxUp.style.transition = 'height 1s'; // Adjust the duration as needed
+        boxUp.style.height = currentHeight;
+        setTimeout(() => {
+            boxUp.style.height = '250px';
+        }, 10);
+        $('#boxUp').children().not('.loginByName').fadeOut(function () {
+            $("#loginByName").fadeIn("fast")
+        });
+
+    })
+
+
+}
+
+function goBackToMain() {
+    document.getElementById("topLeftBack").classList.remove("active")
+    //
+    if (boxUpDefaultHeight) {
+        const boxUp = document.getElementById("boxUp");
+        boxUp.style.transition = 'height 1s'; // Adjust the duration as needed
+
+        setTimeout(() => {
+            boxUp.style.height = boxUpDefaultHeight;
+        }, 10);
+        $("#loginByName").fadeOut("fast", function () {
+            $('#boxUp').children().not('.loginByName').fadeIn(function () {
+                $("#textDialog").fadeIn("fast", function () {
+                    $("#appInfo").fadeIn("fast")
+
+                })
+            });
+        })
+
+    }
+}
+const input = document.getElementById('voxName');
+const mirrorText = document.querySelector('.mirror-text');
+
+function calculateTextWidth(text) {
+    const span = document.createElement('span');
+    span.style.fontSize = '16px';  // Set font size to 16px
+    span.style.visibility = 'hidden'; // Hide the span element
+    span.style.position = 'absolute'; // Position it off-screen
+    span.textContent = text;
+
+    document.body.appendChild(span); // Append span to the body to calculate width
+    const width = span.offsetWidth;  // Get the width of the text
+    document.body.removeChild(span); // Remove the span after calculation
+    console.log(width)
+    return width;
+}
+
+function removeTonos(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+let previousWidth = null;
+function searchByName() {
+    const input = document.getElementById("voxName");
+    const query = input.value;
+    const firstMatch = findFirstMatch(query); // Assuming this function returns a valid match
+    const mirrorText = document.querySelector('.mirror-text');
+    const queryParts = query.split(" ");
+    const firstName = queryParts[0];
+    const lastName = queryParts[1] || "";  // In case the query only has the first name
+
+    //input.style.width = 'auto';  // Reset width to calculate properly
+
+    if (firstMatch) {
+        const fullNameParts = firstMatch.split(" ");
+        const matchFirstName = fullNameParts[0];
+        const matchLastName = fullNameParts[1] || "";
+
+        let remainingText = firstMatch;
+
+        // Check if the first name part matches
+        if (matchFirstName.toLowerCase().includes(firstName.toLowerCase()) && firstName.toLowerCase() !== matchFirstName.toLowerCase()) {
+            if (!matchFirstName.includes(query)) {
+                remainingText = ` ${matchFirstName.replace(query, '')}?`;  // If the typed first name is different from the match
+            } else {
+                remainingText = `${matchFirstName.replace(query, '')}?`;  // If the typed first name is different from the match
+            }
+
+        }
+        // Check if the last name part matches
+        else if (matchLastName.toLowerCase().includes(lastName.toLowerCase()) && lastName.toLowerCase() !== matchLastName.toLowerCase()) {
+            if (!matchLastName.includes(query)) {
+                remainingText = ` ${matchLastName.replace(query, '')}?`;
+            } else {
+                remainingText = `${matchLastName.replace(query, '')}?`;
+            }
+            // If the typed last name is different from the match
+        }
+        else {
+            // Otherwise, remove the typed part (first or last name)
+            if (firstMatch.toLowerCase().startsWith(firstName.toLowerCase())) {
+                remainingText = firstMatch.replace(firstName, '').trim();  // Remove first name if typed first
+            } else if (firstMatch.toLowerCase().endsWith(lastName.toLowerCase())) {
+                remainingText = firstMatch.replace(lastName, '').trim();  // Remove last name if typed last
+            }
+        }
+
+        mirrorText.textContent = remainingText;
+
+        if (query.length <= 2) {
+            input.style.width = previousWidth
+            return;
+        }
+        previousWidth = input.style.width
+        // Set input width based on mirrored text width, with padding and a max-width constraint
+        input.style.width = `${calculateTextWidth(query) + 10}px`;
+
+        // Apply a maximum width to prevent the input from becoming too large
+        const maxWidth = 400;  // Adjust max-width as needed
+        if (input.offsetWidth > maxWidth) {
+            input.style.width = `${maxWidth}px`;
+        }
+
+    }
+
+    // Handle empty input to set minimum width
+    if (input.value.length < 1) {
+        mirrorText.textContent = '';
+        input.style.width = null;  // Set to minimum width to avoid disappearing input
+    }
+}
+
+function searchByNameComplete() {
+    const searchInput = document.getElementById('voxName').value.replace(/\s+/g, '');
+    const matchedNames = findFullNames(searchInput);
+    if (matchedNames.length === 1) {
+        document.getElementById("welcome").classList.add("fade-out-slide-down")
+        foundName = matchedNames[0]
+        const karuseliCont = document.getElementById("karuseli")
+        karuseliCont.style.display = 'none'
+        document.getElementById("userPinPfp").style.display = null
+        document.getElementById("nameForMultiple").style.display = 'none'
+        getEvoxProfile(foundName).then(profileSrc => {
+            document.getElementById('userPinPfp').src = profileSrc
+        });
+        document.getElementById("pinText").style.marginBottom = '25px'
+        //document.getElementById("loadText").style.opacity = '0'
+        setTimeout(function () {
+            //document.getElementById("loadText").innerHTML = `Επιτυχία`
+            document.getElementById("accessButton").innerHTML = `Επιτυχία`
+            document.getElementById("loadText").style.opacity = '1'
+            document.getElementById("evoxContainer").classList.remove("active")
+            $("#hexa").fadeOut("fast")
+            $("#tasks").fadeIn("fast", function () {
+                setTimeout(function () {
+                    //document.getElementById("loadText").style.opacity = '0'
+                    setTimeout(function () { //
+                        const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
+                        const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
+                        document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
+                        document.getElementById("loadText").style.opacity = '1'
+                        setTimeout(function () {
+                            document.getElementById("topImg").style.opacity = '0'
+                            $("#tasks").fadeOut("fast", function () {
+                                $("#loginContainer").fadeOut("fast", function () {
+                                    document.getElementById("loginContainer").style.display = 'none'
+                                    $("#multimatch").fadeOut("fast", function () {
+                                        $("#lock").fadeIn("fast")
+                                        $("#hexa").fadeOut("fast")
+                                    })
+                                })
+
+                            })
+                        }, 2500)
+                    }, 340)
+                }, 900)
+            })
+
+
+        }, 340)
+    } else {
+        alert("Cannot handle multiple or no matches, yet.")
+    }
 }
