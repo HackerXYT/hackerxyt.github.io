@@ -547,7 +547,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         //})
 
-    } else if (spammingDetected) {
+    } else if (spammingDetected && !localStorage.getItem("devBypass")) { //REMOVE THIS LINE TO ENABLE SPAM DETECTION
         //$("#tasks").fadeOut("fast", function () {
         $("#loginContainer").fadeOut("fast", function () {
             $("#hexa").fadeOut('fast')
@@ -1601,9 +1601,14 @@ function toggleDev() {
 
 function goBackToLogin() {
     $("#lock").fadeOut("fast", function () {
-        document.getElementById("accessButton").innerText = "Σύνδεση"
-        document.getElementById("nameInput").value = ''
-        document.getElementById("evoxContainer").classList.add("active")
+        //document.getElementById("accessButton").innerText = "Σύνδεση"
+        input.value = ''
+        mirrorText.textContent = '';
+        input.style.width = null;
+        $("#loginContainer").fadeIn("fast", function () {
+        })
+        //document.getElementById("evoxContainer").classList.add("active")
+        document.getElementById("welcome").classList.remove("fade-out-slide-down")
     })
 
     deletePIN()
@@ -1814,6 +1819,12 @@ function searchByName() {
     }
 }
 
+document.getElementById('voxName').addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        searchByNameComplete()
+    }
+})
+
 function searchByNameComplete() {
     const searchInput = document.getElementById('voxName').value.replace(/\s+/g, '');
     const matchedNames = findFullNames(searchInput);
@@ -1829,16 +1840,16 @@ function searchByNameComplete() {
         });
         document.getElementById("pinText").style.marginBottom = '25px'
         //document.getElementById("loadText").style.opacity = '0'
-        setTimeout(function () {
-            //document.getElementById("loadText").innerHTML = `Επιτυχία`
+        //setTimeout(function () {
+            document.getElementById("loadText").innerHTML = `Επιτυχία`
             document.getElementById("accessButton").innerHTML = `Επιτυχία`
             document.getElementById("loadText").style.opacity = '1'
             document.getElementById("evoxContainer").classList.remove("active")
             $("#hexa").fadeOut("fast")
             $("#tasks").fadeIn("fast", function () {
-                setTimeout(function () {
+                //setTimeout(function () {
                     //document.getElementById("loadText").style.opacity = '0'
-                    setTimeout(function () { //
+                    //setTimeout(function () { //
                         const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
                         const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
                         document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
@@ -1855,14 +1866,114 @@ function searchByNameComplete() {
                                 })
 
                             })
-                        }, 2500)
-                    }, 340)
-                }, 900)
+                        }, 1000)
+                    //}, 340)
+                //}, 900)
             })
 
 
-        }, 340)
+        //}, 340)
+    } else if (matchedNames.length > 1) {
+        document.getElementById("pinText").style.marginBottom = null
+        document.getElementById("welcome").classList.add("fade-out-slide-down")
+        //document.getElementById("accessButton").innerHTML = `Επιτυχία`
+            let count = 0
+            const karuseliCont = document.getElementById("karuseli")
+            karuseliCont.style.display = null
+            document.getElementById("userPinPfp").style.display = 'none'
+            karuseliCont.innerHTML = ''
+            matchedNames.forEach(name => {
+                count++
+                const firstChar = (str) => str.split(' ')[1]?.charAt(0) || null;
+                const ranId = Math.floor(Math.random() * 909999) + 1
+                if (count === 1) {
+                    karuseliCont.innerHTML = `${karuseliCont.innerHTML}<img onclick="pickasCurrent('${name}')" class="fytyre zgjedhur" src="reloading-pfp.gif" alt="Fytyrë ${count}" id="${ranId}">`
+                } else {
+                    karuseliCont.innerHTML = `${karuseliCont.innerHTML}<img onclick="pickasCurrent('${name}')" class="fytyre" src="reloading-pfp.gif" alt="Fytyrë ${count}" id="${ranId}">`
+                }
+
+                //document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
+                //<div onclick="selectCustom('${name}')" class="socialUser"><img id="${ranId}" class="slUserPFP social"
+                getEvoxProfile(name).then(profileSrc => {
+                    document.getElementById(ranId).src = profileSrc
+                });
+
+                if (count === matchedNames.length) {
+                    const karuseli = document.querySelectorAll('.fytyre');
+                    function positionImages() {
+                        const zgjedhurIndex = Array.from(karuseli).findIndex(el => el.classList.contains('zgjedhur'));
+
+                        karuseli.forEach((el, i) => {
+                            const position = i - zgjedhurIndex; // Calculate relative position
+                            el.style.transform = `translateX(${position * 70}px)`; // Adjust distance
+                        });
+                    }
+
+                    // Initialize positions at load
+                    positionImages();
+
+                    // Add event listeners for clicks
+                    karuseli.forEach((fytyre, index) => {
+                        fytyre.addEventListener('click', () => {
+                            document.querySelector('.zgjedhur').classList.remove('zgjedhur');
+                            fytyre.classList.add('zgjedhur');
+                            positionImages(); // Recalculate positions
+                        });
+                    });
+                }
+            });
+
+            document.getElementById("loadText").innerHTML = `Η αυτόματη σύνδεση απέτυχε`
+            setTimeout(function () {
+                $("#hexa").fadeOut("fast")
+                document.getElementById("evoxContainer").classList.remove("active")
+
+                //$("#tasks").fadeIn("fast", function () {
+
+                    //document.getElementById("loadText").style.opacity = '1'
+
+
+                    //setTimeout(function () {
+                        //document.getElementById("loadText").style.opacity = '0'
+                    //    setTimeout(function () { //
+                            const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
+                            const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
+                            $("#tasks").fadeOut("fast", function () {
+                                document.getElementById("loadText").style.opacity = '0'
+                                document.getElementById("taskLoading").style.display = 'none'
+                                document.getElementById("tempLoader").style.display = 'flex'
+                                document.getElementById("loadText").innerHTML = `Επιλέξτε τον λογαριασμό σας`
+
+                                $("#tasks").fadeIn("fast", function () {
+                                    document.getElementById("loadText").style.opacity = '1'
+                                    setTimeout(function () {
+                                        document.getElementById("topImg").style.opacity = '0'
+                                        $("#tasks").fadeOut("fast", function () {
+                                            document.getElementById("tempLoader").style.display = 'none'
+                                            document.getElementById("taskLoading").style.display = null
+                                            $("#loginContainer").fadeOut("fast", function () {
+                                                document.getElementById("loginContainer").style.display = 'none'
+                                                $("#multimatch").fadeOut("fast", function () {
+                                                    document.getElementById("nameForMultiple").innerText = matchedNames[0]
+                                                    document.getElementById("nameForMultiple").style.display = 'flex'
+                                                    $("#lock").fadeIn("fast")
+                                                    $("#hexa").fadeOut("fast")
+                                                })
+                                            })
+
+                                        })
+                                    }, 1500)
+                                })
+                            })
+
+                    //    }, 340)
+                    //}, 900)
+                //})
+
+
+
+            }, 340)
     } else {
-        alert("Cannot handle multiple or no matches, yet.")
+        alert("Δεν βρέθηκαν αντιστοιχίες")
     }
 }

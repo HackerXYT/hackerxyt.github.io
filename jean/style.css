@@ -546,7 +546,7 @@ vo input::placeholder {
 }
 
 .optionButton svg,
-img {
+.optionButton img {
     margin-right: 5px;
 }
 
@@ -689,28 +689,43 @@ img {
 .pin-pad {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 30px;
     justify-content: center;
 }
 
 .pin-pad button {
-    width: 64px;
-    height: 64px;
+    width: 70px;
+    height: 70px;
     font-size: 24px;
     background-color: #4a4a4a43;
     border: none;
     color: #ffffff;
-    border-radius: 50%;
+    border-radius: 20px;
     cursor: pointer;
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 .pin-pad button.active,
 .pin-pad button:active {
-    background-color: #fff;
+    background-color: #ffffff77;
     color: #000;
+    animation: focusOnAction 0.3s ease-in-out;
+}
+
+/*.pin-pad button:hover {
+    transform: scale(1.05);
+}*/
+
+@keyframes focusOnAction {
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .delete-button {
@@ -869,7 +884,6 @@ img {
 .app .topBar .wlcmTxt .bottomTxt {
     font-size: 16px;
     font-family: "SF";
-
 }
 
 .app .topBar .rightItem {
@@ -1578,8 +1592,10 @@ img {
 
 #tags {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two equal columns */
-    grid-gap: 5px; /* Adjust the space between grid items */
+    grid-template-columns: repeat(2, 1fr);
+    /* Two equal columns */
+    grid-gap: 5px;
+    /* Adjust the space between grid items */
 }
 
 
@@ -2437,4 +2453,13 @@ img {
 .topLeftBack:hover svg path,
 .topLeftBack:active svg path {
     stroke: #141414 !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+    -webkit-text-fill-color: #fff !important;
+    transition: background-color 5000s ease-in-out 0s;
 }
