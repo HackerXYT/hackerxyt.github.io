@@ -31,7 +31,7 @@ body {
     box-sizing: border-box;
     transition: background-color 0.3s ease-in-out;
     margin-top: env(safe-area-inset-top) !important;
-    
+
     /* Adding bottom safe area inset */
     height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
 }
@@ -61,7 +61,7 @@ body {
     position: absolute;
     z-index: 0;
     transition: transform 0.6s ease-out;
-    
+
     /* Adding bottom safe area inset */
 }
 
@@ -253,7 +253,7 @@ vo input::placeholder {
     align-items: center;
     z-index: 999;
     margin-top: env(safe-area-inset-top) !important;
-    
+
     /* Adding bottom safe area inset */
 }
 
@@ -342,20 +342,142 @@ vo input::placeholder {
     margin: 0;
     transition: all 0.3s ease-in-out;
 }
-
 .welcome {
-
     display: flex;
-    width: 90%;
+    width: 100%;
     height: 100vh;
+    flex-direction: column;
+    justify-content: center; /* Keeps the items aligned at the start */
+    align-items: center;
+    position: relative;
+    gap: 10px;
+}
+
+
+.welcome .textDialog p {
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: #cfcfcfa2;
+}
+
+
+.welcome .textDialog h2 {
+
+    font-size: 26px;
+    margin-bottom: 5px;
+    background: linear-gradient(to right, #cfcfcfa2,
+            #fff, #fff, #cfcfcfa2);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+}
+
+.textDialog {
+    margin-top: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+    /* Default position styles for textDialog */
+}
+
+.textDialog img {
+    margin: 0;
+}
+
+.welcome .boxUp {
+    width: 95%;
+    padding: 25px;
+    background-color: #1e1e1e72;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    border-radius: 20px;
+    margin-top: auto; /* Pushes the boxUp to the bottom */
+    margin-bottom: 20px;
+}
+
+
+.welcome .boxUp p {
+    font-size: 19px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.welcome .boxUp span {
+    font-size: 14px;
+    color: #cfcfcfa2;
+    margin-bottom: 10px;
+}
+
+.welcome .boxUp .buttonsLogin {
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+}
 
+.buttonsLogin .optionButton {
+    width: 100%;
+    padding: 12.5px;
+    border-radius: 10px;
+    margin-top: 10px;
+    transition: all 0.5s ease-in-out;
+    background-color: #2323238a;
+    border: 1px solid #2d2d2d98;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonsLogin .optionButton.focus {
+    background-color: #282733;
+    border: 1px solid #8780eb9e;
+    color: #8880eb;
+}
+
+.buttonsLogin .optionButton:focus,
+.buttonsLogin .optionButton:active {
+    background-color: #333333;
+    border: 1px solid #555555;
+    outline: none;  /* Removes the default browser outline */
+    transform: scale(1.05);  /* Slightly enlarges the button */
+}
+
+.buttonsLogin .optionButton.focus:focus,
+.buttonsLogin .optionButton.focus:active {
+    background-color: #333344;
+    border: 1px solid #6666cc;
+    color: #ffffff;
+}
+
+.buttonsLogin .horizontalButtons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    gap: 5px;
+}
+
+.buttonsLogin .horizontalButtons .optionButton {
+    width: 100%;
+    padding: 12.5px;
+    border-radius: 10px;
+    margin-top: 10px;
+    transition: all 0.5s ease-in-out;
+    background-color: #2323238a;
+    border: 1px solid #2d2d2d98;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonsLogin .optionButton svg,img {
+    margin-right: 5px;
 }
 
 .multimatch {
@@ -608,7 +730,7 @@ vo input::placeholder {
     overflow: hidden;
     overflow-y: auto;
     transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-    
+
     /* Adding bottom safe area inset */
 }
 
@@ -1368,21 +1490,28 @@ vo input::placeholder {
 .notch-hidden {
     position: absolute;
     top: 0;
-    left: 50%; /* Start in the middle */
-    transform: translateX(-50%); /* Center it */
-    width: 120px; /* Adjust to the notch width */
-    height: env(safe-area-inset-top); /* Adjust for the notch height */
+    left: 50%;
+    /* Start in the middle */
+    transform: translateX(-50%);
+    /* Center it */
+    width: 120px;
+    /* Adjust to the notch width */
+    height: env(safe-area-inset-top);
+    /* Adjust for the notch height */
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    background: rgba(0, 0, 0, 0.8);
+    /* Semi-transparent background */
     color: white;
     font-size: 14px;
     z-index: 9999;
-    pointer-events: none; /* Prevent interactions */
-    border-radius: 20px; /* Optional: round the edges */
+    pointer-events: none;
+    /* Prevent interactions */
+    border-radius: 20px;
+    /* Optional: round the edges */
     display: none;
-  }
+}
 
 .assets .moreInfo p {
     text-align: left;
@@ -1403,9 +1532,12 @@ vo input::placeholder {
     border-radius: 20px;
     box-sizing: border-box;
     padding: 5px 10px;
-    flex: 1 1 auto; /* Allows items to shrink and grow as needed */
-    min-width: 0; /* Prevents flex items from exceeding container */
-    margin: 5px; /* Adds spacing for wrapping */
+    flex: 1 1 auto;
+    /* Allows items to shrink and grow as needed */
+    min-width: 0;
+    /* Prevents flex items from exceeding container */
+    margin: 5px;
+    /* Adds spacing for wrapping */
 }
 
 .anInfo svg {
@@ -1931,8 +2063,8 @@ vo input::placeholder {
     transition: opacity 0.3s ease-in-out;
     margin-top: 0px;
     margin-bottom: 0px;
-    
-    
+
+
     /* Adding bottom safe area inset */
     /* Adjusting content height to fill the viewport */
 }

@@ -155,6 +155,7 @@ function find() {
 
     //video.play()
     document.getElementById("accessButton").innerHTML = loadingHTML
+    //const searchInput = document.getElementById('nameInput').value.replace(/\s+/g, '');
     const searchInput = document.getElementById('nameInput').value.replace(/\s+/g, '');
     const matchedNames = findFullNames(searchInput);
     //console.log(matchedNames);
@@ -587,13 +588,13 @@ document.addEventListener("DOMContentLoaded", function () {
                                     document.getElementById("setupPage").style.display = ''
                                     //document.getElementById("topImg").style.opacity = '1'
                                     setTimeout(function () {
-                                        //document.getElementById("loginContainer").style.opacity = '1'
-                                        //document.getElementById("loginSection").classList.add('active')
-                                        //document.getElementById("bgGrd").style.transform = 'scale(0.97)'
-                                        document.getElementById("evoxContainer").classList.add("active")
-                                        //setTimeout(function () {
-                                        //    //$("#tasks").fadeOut("fast")
-                                        //}, 550)
+                                        document.getElementById("loginContainer").style.opacity = '1'
+                                        document.getElementById("loginSection").classList.add('active')
+                                        document.getElementById("bgGrd").style.transform = 'scale(0.97)'
+                                        //document.getElementById("evoxContainer").classList.add("active")
+                                        setTimeout(function () {
+                                            //$("#tasks").fadeOut("fast")
+                                        }, 550)
                                         //video.play()
                                         setTimeout(function () {
                                             $("#hexa").fadeOut("fast")
@@ -609,7 +610,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                             //        video.playbackRate = playbackRate;
                                             //    }
                                             //}, 50);
-                                        }, 1650)
+                                        }, 350)
                                     }, 100)
 
                                 }, 500)
