@@ -12,9 +12,11 @@ document.getElementById('main-wrapper').addEventListener('scroll', () => {
   // Check if scroll position exceeds the threshold
   if (document.getElementById('main-wrapper').scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
     // Add class to shrink and hide icons
+    document.getElementById("returnTopDefines").classList.add('scrolled')
     bottomSearchParent.classList.add('scrolled');
   } else {
     // Remove class to reset to original state
+    document.getElementById("returnTopDefines").classList.remove('scrolled')
     bottomSearchParent.classList.remove('scrolled');
   }
 });
@@ -346,7 +348,7 @@ const removeAccents = (value) => {
   return value.replace(/[άέήίόύώΆΈΉΊΌΎΏΐΰϊϋ]/g, match => accentsMap[match]);
 };
 
-function spawnFallback(bus, descr) {
+function spawnFallback(bus, descr, section) {
   if (localStorage.getItem(`${bus}_Timetable`)) {
     //alert(`Found ${bus} in local storage`)
     try {
@@ -355,13 +357,13 @@ function spawnFallback(bus, descr) {
       const nextBusTime = getNextBusTimeLIVE(times);
 
       if (nextBusTime) {
-        spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), 'frequent', 'preload')
+        spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), section, 'preload')
       } else {
         const [hour, minutes] = times[0].split(":").map(Number);
         const workingTime = { hour, minutes };
         //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
         console.warn(`SPAWNFALLBACK\nFailed to find next bus time for ${bus}.\nWorking on the first value in schedule\nTimes:`, times);
-        spawnInFeed(bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent', 'preload')
+        spawnInFeed(bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), section, 'preload')
       }
     } catch (error) {
       console.log(`preOffline: ${error}`)
@@ -634,9 +636,7 @@ function formatTime(dateTimeString) {
   return `${hours}:${minutes}`;
 }
 
-const frequentBuses = ['16', '831', '828', '049']
-const favoriteBuses = []
-const famousBuses = []
+
 
 
 //fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`)}`)
@@ -690,9 +690,21 @@ const famousBuses = []
 //    }
 //  })
 
+let frequentBuses = ['16', '831', '828', '049']
+let favoriteBuses = []
+let famousBuses = []
+
+
+if (localStorage.getItem("oasa_favorites")) {
+  console.log("Found favorites")
+  console.log(localStorage.getItem("oasa_favorites"))
+  favoriteBuses = JSON.parse(localStorage.getItem("oasa_favorites"))//.reverse();
+  console.log(favoriteBuses)
+}
+
 function loadOasa() {
-  let spawnInFreq = {}; // This appears unused but retained for context
-  frequentBuses.forEach(bus => {
+  //let spawnInFreq = {}; // This is unused but retained for future reference
+  function loadSection(section, bus) {
     let matchingLines = fullLine.filter(line => line.LineID === bus);
     if (!matchingLines.length) {
       console.warn(`No matching lines found for bus: ${bus}`);
@@ -727,7 +739,7 @@ function loadOasa() {
 
             // Display in feed
             //alert(`Default work ${JSON.stringify(nextBusTime)}`)
-            spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), 'frequent');
+            spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), section); //section is 'frequent', 'favorite', or 'famous'
           } else {
             //use times[0] as a fallback
             try {
@@ -736,23 +748,41 @@ function loadOasa() {
               //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
               //alert(`loadOasa Failed\nfailed why?:\nnextBusTime returned: ${JSON.stringify(nextBusTime)}\nTimes: ${JSON.stringify(times)}\nBus on work: ${bus}`);
               console.warn(`Failed to find next bus time for ${bus}.\nWorking on the first value in schedule\nTimes:`, times);
-              spawnInFeed(bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent');
+              spawnInFeed(bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), section); //section is 'frequent', 'favorite', or 'famous'
             } catch (error) {
-              console.log(`loadOasa fallback error: ${error}`)
-              spawnInFeed(bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
+              //work on localStorage
+              if (localStorage.getItem(`${bus}_Times`)) {
+                const times = JSON.parse(localStorage.getItem(`${bus}_Times`));
+                const nextBusTime = getNextBusTimeLIVE(times);
+                if (nextBusTime) {
+                  spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), section); //section is 'frequent', 'favorite', or 'famous'
+                } else {
+                  spawnFallback(bus, descr, section)
+                }
+              } else {
+                console.log(`loadOasa fallback error: ${error}`)
+                spawnInFeed(bus, descr, nextBusTime, 'Άγνωστη', section)//section is 'frequent', 'favorite', or 'famous'
+              }
+
             }
 
           }
         })
         .catch(error => {
           console.error(`Error fetching schedule for ${bus}:`, error);
-          spawnFallback(bus, descr);
+          spawnFallback(bus, descr, section);
         });
     } catch {
-      spawnFallback(bus, descr);
+      spawnFallback(bus, descr, section);
     }
-
+  }
+  frequentBuses.forEach(bus => {
+    loadSection('frequent', bus)
   });
+  console.log(favoriteBuses)
+  favoriteBuses.forEach(bus => {
+    loadSection('favorite', bus)
+  })
 }
 
 function hasInternetConnection() {
@@ -794,16 +824,24 @@ let personalizedAutoBus = {
 } // This will contain bus Ids and which lineCode they have eg. { "831": "1228" } for bus "ΠΕΙΡΑΙΑΣ-ΑΙΓΑΛΕΩ (ΕΝΑΛΛΑΚΤΙΚΗ ΛΟΓΩ ΛΑΪΚΗΣ ΚΑΘΕ ΔΕΥΤΕΡΑ)"
 
 let frequentBuses_Sort = []; // Array to store bus data for sorting
+let favoriteBuses_Sort = [];
+let famousBuses_Sort = [];
+const busesMap = {
+  frequent: frequentBuses_Sort,
+  favorite: favoriteBuses_Sort,
+  famous: famousBuses_Sort,
+};
 function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
-  if (type === 'frequent') {
+  function general(section) { //section is the id of the div eg. frequent, favorite, famous
     // Clear skeleton placeholder if present
-    const frequentDiv = document.getElementById("frequent");
-    if (frequentDiv.innerHTML.includes('skeleton')) {
-      frequentDiv.innerHTML = '';
+    const Div = document.getElementById(section);
+    if (Div.innerHTML.includes('skeleton')) {
+      Div.innerHTML = '';
     }
+    const selectedSection = busesMap[section];
 
     // Push bus data to the array
-    frequentBuses_Sort.push({
+    selectedSection.push({
       bus,
       descr,
       nextBusTime,
@@ -811,13 +849,13 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
     });
 
     // Sort buses based on timeInM
-    frequentBuses_Sort.sort((a, b) => a.timeInM - b.timeInM);
+    selectedSection.sort((a, b) => a.timeInM - b.timeInM);
 
     // Render sorted buses
-    frequentDiv.innerHTML = ''; // Clear current content
-    frequentBuses_Sort.forEach((busData, index) => {
+    Div.innerHTML = ''; // Clear current content
+    selectedSection.forEach((busData, index) => {
       let highlight = '';
-      if (busData === frequentBuses_Sort[0]) {
+      if (busData === selectedSection[0]) {
         highlight = 'favorite'; // Highlight the first bus
       }
 
@@ -863,8 +901,11 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
         </div>
       `;
 
-      frequentDiv.innerHTML += toSpawn;
+      Div.innerHTML += toSpawn;
     });
+  }
+  if (type === 'frequent' || type === 'favorite' || type === 'famous') {
+    general(type)
   }
 }
 
@@ -1343,8 +1384,15 @@ function processInfo(evoxId, type) {
                                     </div>`
 
           }
-          if (!data.come && !data.go) {
+          if (data.come.length === 0 && data.go.length === 0 && !localStorage.getItem(`${busInfo.bus}_Times`)) {
             console.log(data)
+            console.log("Spawning For", lineCode, "Stopped.")
+            document.getElementById("timetableSpawn").innerHTML = `<div class="failed">
+    <img src="snap.png" class="failed-icon">
+    <vox class="failed-message">Δεν βρέθηκαν δεδομένα</vox>
+    <span class="failed-subtext">Δοκιμάστε αργότερα ή επανεκκινήστε την εφαρμογή</span>
+</div>
+`;
             return;
           } else {
             console.log("Come and go for ", busInfo, "\n", data)
@@ -1352,13 +1400,13 @@ function processInfo(evoxId, type) {
 
           console.log("Success", lineCode);
 
-          var times = data.go.map(item => {
+          let times = data.go.map(item => {
             return formatTime(item.sde_start1);
           });
 
           // Find the next bus time
           const nextBusTime = getNextBusTimeLIVE(times);
-
+          let isLocal = false
           if (nextBusTime) {
             localStorage.setItem(`${busInfo.bus}_Timetable`, JSON.stringify(data));
             localStorage.setItem(`${busInfo.bus}_Times`, JSON.stringify(times));
@@ -1367,17 +1415,30 @@ function processInfo(evoxId, type) {
 
           } else {
             try {
-              const [hour, minutes] = times[0].split(":").map(Number);
-              const workingTime = { hour, minutes };
-              //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
-              console.warn(`processInfo\nFailed to find next bus time for ${busInfo.bus}.\nWorking on the first value in schedule\nTimes:`, times);
-              spawnInFeed(busInfo.bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent')
-              //alert(`failed why?:\n${JSON.stringify(nextBusTime)}\n${JSON.stringify(times)}\nBus on work: ${busInfo.bus}`);
-              //
-            } catch (error) {
-              console.error('Fallback Error:', error);
-              spawnInFeed(busInfo.bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
+              const timesNew = localStorage.getItem(`${busInfo.bus}_Times`);
+              times = JSON.parse(timesNew);
+              isLocal = true
+            } catch {
+              console.error("Failed to find times for", busInfo.bus)
             }
+            //try {
+            //  if(times[0]) {
+            //    const [hour, minutes] = times[0].split(":").map(Number);
+            //    const workingTime = { hour, minutes };
+            //    //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
+            //    console.warn(`processInfo\nFailed to find next bus time for ${busInfo.bus}.\nWorking on the first value in schedule\nTimes:`, times);
+            //    spawnInFeed(busInfo.bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent')
+            //    //alert(`failed why?:\n${JSON.stringify(nextBusTime)}\n${JSON.stringify(times)}\nBus on work: ${busInfo.bus}`);
+            //    //
+            //  } else {
+            //    spawnInFeed(busInfo.bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
+            //    console.log("No times found", times[0])
+            //  }
+            //  
+            //} catch (error) {
+            //  console.error('Fallback Error:', error);
+            //  spawnInFeed(busInfo.bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
+            //}
 
           }
 
@@ -1408,7 +1469,7 @@ function processInfo(evoxId, type) {
           remains.forEach(time => {
             document.getElementById("showMoreBusStart").style.display = null
             timetableContent += `
-      <div class="timeItem">
+      <div class="timeItem isLocal">
       <p>${time}</p>
         <div class="actions">
           <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -1527,7 +1588,7 @@ function processInfo(evoxId, type) {
                 arrivals.sort((a, b) => a.RouteStopOrder - b.RouteStopOrder)
                 const leastTime = arrivals.filter(item => item.time !== false && item.time !== null).sort((a, b) => a.time - b.time);
 
-                if(leastTime[0]){
+                if (leastTime[0]) {
                   document.getElementById("stationsSpawnInner").innerHTML = `<div class="item minimum">
                                             <div class="stationName">Ζωντανή τοποθεσία</div>
                                             <div class="info">
@@ -1615,6 +1676,10 @@ function processInfo(evoxId, type) {
 
 function returnFromBusTimetable() {
   activeBusInfo = {}
+  if(document.getElementById("returnTopDefines").classList.contains("scrolled")) {
+    const element = document.getElementById('main-wrapper');
+    element.scrollTop = 0;
+  }
   document.getElementById("top-navigate").classList.remove('hidden')
   document.getElementById("userFeed").classList.remove('focused')
   document.getElementById("busTimetable").style.display = 'none'

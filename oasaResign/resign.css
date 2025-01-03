@@ -477,7 +477,7 @@
     margin-top: 25px;
     width: 100%;
     height: auto;
-    margin-bottom: 120px;
+    margin-bottom: 160px;
     position: relative;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
@@ -516,7 +516,22 @@
     align-items: center;
     width: 100%;
     margin-bottom: 20px;
+    position: fixed;
+    padding: 0px 16px;
+    z-index: 100;
+    background-color: transparent;
+    transition: background-color 0.3s ease-in-out, backdrop-filter 0.3s ease-in-out, padding-top 0.3s ease-in-out, margin-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out, -webkit-backdrop-filter 0.3s ease-in-out;
 }
+
+.timetableItem .topDefines.scrolled {
+    background-color: rgba(0, 0, 0, 0.7); /* Black with transparency */
+    backdrop-filter: blur(5px); /* Blur effect */
+    -webkit-backdrop-filter: blur(5px);
+    padding-top: 70px; /* Adjust for status bar height */
+    margin-top: calc(env(safe-area-inset-top, 0px) * -1 - 35px);
+    padding-bottom: 10px;
+}
+
 
 .timetableItem .topDefines .itempic {
     display: flex;
@@ -589,7 +604,7 @@
 
 .themeButton.timetable {
     background-color: #1f42f414;
-    margin-bottom: 200px;
+    margin-bottom: 100px;
 }
 
 #content::after {
@@ -610,7 +625,6 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
-
 }
 
 .Userfeed.focused {
@@ -704,6 +718,8 @@
     /* Smooth scrolling */
     -webkit-overflow-scrolling: touch;
     /* Momentum scrolling for mobile */
+    /*margin-left: -20px;
+    margin-right: -20px;*/
 }
 
 .pinned-favorites::-webkit-scrollbar {
@@ -942,6 +958,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    margin-top: 60px;
 }
 
 .timetableItem .busInfo p {
@@ -1035,6 +1052,11 @@
     min-height: 70px;
 }
 
+.timetableSpawn .timeItem.isLocal {
+    background-color: #f5421f25;
+    border: 2px solid #ac2f29;
+}
+
 .timetableSpawn .timeItem p {
     font-size: 25px;
     margin: 0;
@@ -1060,7 +1082,8 @@
     margin-top: env(safe-area-inset-top) !important;
     margin-bottom: env(safe-area-inset-bottom) !important;
     /* Adding bottom safe area inset */
-    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    /*height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))*/;
+    height: auto;
     /* Adjusting content height to fill the viewport */
 }
 
@@ -1715,4 +1738,28 @@ body {
         border-bottom: 16px rgba(255, 255, 255, 0.25) solid;
         border-left: 16px rgba(255, 255, 255, 0.25) solid;
     }
+}
+
+.failed {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
+
+.failed-icon {
+    width: 50px;
+}
+
+.failed-message {
+    color: #f54940;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 19px;
+}
+
+.failed-subtext {
+    font-size: 15px;
 }

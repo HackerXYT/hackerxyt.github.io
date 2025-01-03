@@ -793,7 +793,7 @@
                                 <span id="userUsername" onclick="manualLogout()"></span>
                             </div>
                         </div>
-                        <div class="notificationsCC">
+                        <div onclick="window.location.href = '../oasaMobile/'" class="notificationsCC">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
                                 fill="none">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -3844,7 +3844,7 @@
 
                     <div class="busTimetable" id="busTimetable">
                         <div class="timetableItem">
-                            <div class="topDefines">
+                            <div class="topDefines" id="returnTopDefines">
                                 <div onclick="returnFromBusTimetable()" class="itempic iconInCGlobal">
                                     <!--<img src="favoritesOS.png">-->
                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
@@ -4135,7 +4135,7 @@
 
 
                             </div>
-                            <div class="pinned-favorites">
+                            <div class="pinned-favorites" id="favorite">
                                 <div class="item skeleton">
                                     <div class="busName skeleton-text"></div>
                                     <div class="info">
@@ -4249,7 +4249,7 @@
 
 
                             </div>
-                            <div class="pinned-favorites">
+                            <div class="pinned-favorites" id="famous">
                                 <div class="item skeleton">
                                     <div class="busName skeleton-text"></div>
                                     <div class="info">
