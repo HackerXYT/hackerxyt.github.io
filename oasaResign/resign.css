@@ -848,6 +848,8 @@
     cursor: pointer;
 }
 
+
+
 .skeleton-text,
 .skeleton-button {
     background: #e0e0e0;
@@ -864,6 +866,21 @@
     height: 40px !important;
     width: 100%;
     flex: 1;
+}
+
+.skeleton-button2 {
+    background: #e0e0e0;
+    animation: skeleton 1.5s infinite ease-in-out;
+}
+
+.skeleton-button2 {
+    width: 100%;
+    flex: 1;
+}
+
+.skeleton-button2 {
+    background: linear-gradient(90deg, #e0e0e000 25%, #ffffff17 50%, #e0e0e000 75%);
+    background-size: 200% 100%;
 }
 
 /* Skeleton effect animation */
@@ -901,6 +918,7 @@
 .mapboxgl-ctrl-bottom-right {
     display: none;
 }
+
 
 .behind {
     z-index: 1;
@@ -1014,6 +1032,7 @@
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     margin-bottom: 10px;
+    min-height: 70px;
 }
 
 .timetableSpawn .timeItem p {
@@ -1423,4 +1442,277 @@ body {
 
 .buttonsContainerSplash .aButton svg {
     margin-right: 5px;
+}
+
+.stationsSpawn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+    height: 265px;
+}
+
+.stationsSpawn .topTitle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.stationsSpawn .topTitle vox {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    margin-left: 10px;
+}
+
+.stationsSpawn .topTitle .themeButton {
+    margin-left: auto;
+}
+
+.stationsSpawn .topTitle .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.stationsSpawn .topTitle .icon svg {
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*object-fit: cover;*/
+    border-radius: 50%;
+}
+
+.splitTitle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.splitTitle vox {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    margin-left: 10px;
+}
+
+
+.splitTitle .themeButton {
+    margin-left: auto;
+}
+
+.splitTitle .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.splitTitle .icon svg {
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*object-fit: cover;*/
+    border-radius: 50%;
+}
+
+.stationsSpawn .stationsSpawnInner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    overflow-x: auto;
+    /* Enables horizontal scrolling */
+    height: 100%;
+    color: #fff;
+    gap: 10px;
+    /* Space between items */
+    scroll-snap-type: x mandatory;
+    /* Enables snapping */
+    scroll-behavior: smooth;
+    /* Smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+    /* Momentum scrolling for mobile */
+    margin-top: 7.5px;
+}
+
+.stationsSpawn .stationsSpawnInner::-webkit-scrollbar {
+    display: none;
+    /* For Chrome, Safari, and Edge */
+}
+
+.stationsSpawn .stationsSpawnInner .item {
+    display: flex;
+    flex-direction: column;
+    background-color: #1f42f413;
+    height: 100%;
+    border-radius: 20px;
+    /*width: 230px;*/
+    /*max-width: 230px;*/
+    min-width: 220px;
+    padding: 15px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    scroll-snap-align: start;
+    /* Snap to the start of each item */
+}
+
+.stationsSpawn .stationsSpawnInner .item.minimum {
+    background-color: #1f42f425;
+    border: 2px solid #293fac;
+}
+
+
+.stationsSpawn .stationsSpawnInner .item .info {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+}
+
+.stationsSpawn .stationsSpawnInner .item .main-text {
+    margin-top: 20px;
+    color: #fff;
+    font-size: 13px;
+    padding: 10px;
+    padding-top: 0px;
+}
+
+.stationsSpawn .stationsSpawnInner .item .stationName {
+    color: #fff;
+    font-size: 23px;
+    display: flex;
+    width: 100%;
+    align-items: left;
+    padding: 10px;
+}
+
+.stationsSpawn .stationsSpawnInner .item .stationName .stationInfo {
+    position: fixed;
+    top: 10px;
+
+    right: 10px;
+    display: flex;
+    flex-direction: row;
+    background-color: #40404372;
+    height: 40px;
+    width: 40px;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 50%;
+    color: #8bdd8f;
+    flex: -1;
+    display: none;
+}
+
+.stationsSpawn .stationsSpawnInner .item .fav-actions {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 5px;
+}
+
+.stationsSpawn .stationsSpawnInner .item .fav-actions div {
+    cursor: pointer;
+}
+
+
+.stationsSpawn .stationsSpawnInner .item .fav-actions .button-action {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    background-color: #40404372;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 30px;
+    color: #8bdd8f;
+    flex: -1;
+}
+
+.stationsSpawn .stationsSpawnInner .item .info .picture {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.stationsSpawn .stationsSpawnInner .item .info .picture img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.stationsSpawn .stationsSpawnInner .item .info .text {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.stationsSpawn .stationsSpawnInner .item .info .text span:nth-child(1) {
+    color: #afafaf;
+    font-size: 13px;
+}
+
+.loaderTimes {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    border-top: 16px rgba(255, 255, 255, 0.75) solid;
+    border-left: 16px rgba(255, 255, 255, 0.25) solid;
+    border-bottom: 16px rgba(255, 255, 255, 0.25) solid;
+    border-right: 16px rgba(255, 255, 255, 0.25) solid;
+    animation: spSlices 1s infinite linear;
+}
+
+@keyframes spSlices {
+    0% {
+        border-top: 16px rgba(255, 255, 255, 0.75) solid;
+        border-right: 16px rgba(255, 255, 255, 0.25) solid;
+        border-bottom: 16px rgba(255, 255, 255, 0.25) solid;
+        border-left: 16px rgba(255, 255, 255, 0.25) solid;
+    }
+
+    25% {
+        border-top: 16px rgba(255, 255, 255, 0.25) solid;
+        border-right: 16px rgba(255, 255, 255, 0.75) solid;
+        border-bottom: 16px rgba(255, 255, 255, 0.25) solid;
+        border-left: 16px rgba(255, 255, 255, 0.25) solid;
+    }
+
+    50% {
+        border-top: 16px rgba(255, 255, 255, 0.25) solid;
+        border-right: 16px rgba(255, 255, 255, 0.25) solid;
+        border-bottom: 16px rgba(255, 255, 255, 0.75) solid;
+        border-left: 16px rgba(255, 255, 255, 0.25) solid;
+    }
+
+    75% {
+        border-top: 16px rgba(255, 255, 255, 0.25) solid;
+        border-right: 16px rgba(255, 255, 255, 0.25) solid;
+        border-bottom: 16px rgba(255, 255, 255, 0.25) solid;
+        border-left: 16px rgba(255, 255, 255, 0.75) solid;
+    }
+
+    100% {
+        border-top: 16px rgba(255, 255, 255, 0.75) solid;
+        border-right: 16px rgba(255, 255, 255, 0.25) solid;
+        border-bottom: 16px rgba(255, 255, 255, 0.25) solid;
+        border-left: 16px rgba(255, 255, 255, 0.25) solid;
+    }
 }

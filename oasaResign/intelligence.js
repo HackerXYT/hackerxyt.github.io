@@ -491,8 +491,8 @@ function spawnMyLocation() {
 
   // Add the custom marker to the map
   const marker = new mapboxgl.Marker({ element: markerElement })
-      .setLngLat(myLoc) // coordinates for the marker
-      .addTo(map);
+    .setLngLat(myLoc) // coordinates for the marker
+    .addTo(map);
   markers_global.push(marker)
 }
 
@@ -1257,6 +1257,7 @@ function processInfo(evoxId, type) {
 
     document.getElementById("searchIntelli").classList.add('notLoaded')
     if (type === 'getTimes') {
+      document.getElementById("showMoreBusStart").style.display = 'none'
       document.getElementById("busGOCOME").innerHTML = ''
       const days = document.getElementById("busInfoDaySelector")
       days.innerHTML = ''
@@ -1312,7 +1313,7 @@ function processInfo(evoxId, type) {
         .catch(error => {
           console.log('Load Bus Times List Error:', error)
         });
-      document.getElementById("timetableSpawn").innerHTML = '';  // Clear existing content
+      document.getElementById("timetableSpawn").innerHTML = `<div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div>`;  // Clear existing content
       fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${lineCode}&keyOrigin=evoxEpsilon`)}`)
         .then(response => response.json())
         .then(data => {
@@ -1405,6 +1406,7 @@ function processInfo(evoxId, type) {
       </div>`
           }
           remains.forEach(time => {
+            document.getElementById("showMoreBusStart").style.display = null
             timetableContent += `
       <div class="timeItem">
       <p>${time}</p>
@@ -1425,6 +1427,183 @@ function processInfo(evoxId, type) {
           //document.getElementById("netStats").innerHTML = offlineSvg
           //spawnFallback(bus)
         });
+
+      //Start finding stations info
+      const container = document.getElementById("stationsSpawnInner")
+      container.innerHTML = `<div class="item skeleton">
+                                    <div class="busName skeleton-text"></div>
+                                    <div class="info">
+                                        <div class="text">
+                                            <span class="skeleton-text"></span>
+                                            <span class="skeleton-text"></span>
+                                        </div>
+                                    </div>
+                                    <div class="fav-actions">
+                                        <div class="button-action skeleton-button important"></div>
+                                        <div class="button-action skeleton-button"></div>
+                                    </div>
+                                </div><div class="item skeleton">
+                                    <div class="busName skeleton-text"></div>
+                                    <div class="info">
+                                        <div class="text">
+                                            <span class="skeleton-text"></span>
+                                            <span class="skeleton-text"></span>
+                                        </div>
+                                    </div>
+                                    <div class="fav-actions">
+                                        <div class="button-action skeleton-button important"></div>
+                                        <div class="button-action skeleton-button"></div>
+                                    </div>
+                                </div><div class="item skeleton">
+                                    <div class="busName skeleton-text"></div>
+                                    <div class="info">
+                                        <div class="text">
+                                            <span class="skeleton-text"></span>
+                                            <span class="skeleton-text"></span>
+                                        </div>
+                                    </div>
+                                    <div class="fav-actions">
+                                        <div class="button-action skeleton-button important"></div>
+                                        <div class="button-action skeleton-button"></div>
+                                    </div>
+                                </div>`
+      findBusInfo2(busInfo.bus).then((routeCode) => {
+
+        getRouteStops(routeCode).then((stations) => {
+          console.log("Found stations", stations);
+          container.innerHTML = ''
+
+          stations.forEach((station, index) => {
+            container.innerHTML += `<div class="item">
+                                            <div class="stationName">${capitalizeWords(station.StopDescr)}</div>
+                                            <div class="info">
+                                                <div class="text">
+                                                    <span>Επόμενη άφιξη</span>
+                                                    <span id="station-${station.StopCode}"><div class="loaderTimes"></div></span>
+                                                </div>
+                                            </div>
+                                            <div class="fav-actions">
+                                                <div class="button-action">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px"
+                                                        height="20px" viewBox="-1 0 19 19" class="cf-icon-svg">
+                                                        <path
+                                                            d="M16.417 9.6A7.917 7.917 0 1 1 8.5 1.683 7.917 7.917 0 0 1 16.417 9.6zm-5.431 2.113H8.309l1.519-1.353q.223-.203.43-.412a2.974 2.974 0 0 0 .371-.449 2.105 2.105 0 0 0 .255-.523 2.037 2.037 0 0 0 .093-.635 1.89 1.89 0 0 0-.2-.889 1.853 1.853 0 0 0-.532-.63 2.295 2.295 0 0 0-.76-.37 3.226 3.226 0 0 0-.88-.12 2.854 2.854 0 0 0-.912.144 2.373 2.373 0 0 0-.764.42 2.31 2.31 0 0 0-.55.666 2.34 2.34 0 0 0-.274.89l1.491.204a1.234 1.234 0 0 1 .292-.717.893.893 0 0 1 1.227-.056.76.76 0 0 1 .222.568 1.002 1.002 0 0 1-.148.536 2.42 2.42 0 0 1-.389.472L6.244 11.77v1.295h4.742z">
+                                                        </path>
+                                                    </svg>
+                                                </div>
+                                                <div class="button-action">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                                                        <path opacity="0.5" d="M21 15.9983V9.99826C21 7.16983 21 5.75562 20.1213 4.87694C19.3529 4.10856 18.175 4.01211 16 4H8C5.82497 4.01211 4.64706 4.10856 3.87868 4.87694C3 5.75562 3 7.16983 3 9.99826V15.9983C3 18.8267 3 20.2409 3.87868 21.1196C4.75736 21.9983 6.17157 21.9983 9 21.9983H15C17.8284 21.9983 19.2426 21.9983 20.1213 21.1196C21 20.2409 21 18.8267 21 15.9983Z" fill="#fff"/>
+                                                        <path d="M8 3.5C8 2.67157 8.67157 2 9.5 2H14.5C15.3284 2 16 2.67157 16 3.5V4.5C16 5.32843 15.3284 6 14.5 6H9.5C8.67157 6 8 5.32843 8 4.5V3.5Z" fill="#fff"/>
+                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.25 10.5C6.25 10.0858 6.58579 9.75 7 9.75H7.5C7.91421 9.75 8.25 10.0858 8.25 10.5C8.25 10.9142 7.91421 11.25 7.5 11.25H7C6.58579 11.25 6.25 10.9142 6.25 10.5ZM9.75 10.5C9.75 10.0858 10.0858 9.75 10.5 9.75H17C17.4142 9.75 17.75 10.0858 17.75 10.5C17.75 10.9142 17.4142 11.25 17 11.25H10.5C10.0858 11.25 9.75 10.9142 9.75 10.5ZM6.25 14C6.25 13.5858 6.58579 13.25 7 13.25H7.5C7.91421 13.25 8.25 13.5858 8.25 14C8.25 14.4142 7.91421 14.75 7.5 14.75H7C6.58579 14.75 6.25 14.4142 6.25 14ZM9.75 14C9.75 13.5858 10.0858 13.25 10.5 13.25H17C17.4142 13.25 17.75 13.5858 17.75 14C17.75 14.4142 17.4142 14.75 17 14.75H10.5C10.0858 14.75 9.75 14.4142 9.75 14ZM6.25 17.5C6.25 17.0858 6.58579 16.75 7 16.75H7.5C7.91421 16.75 8.25 17.0858 8.25 17.5C8.25 17.9142 7.91421 18.25 7.5 18.25H7C6.58579 18.25 6.25 17.9142 6.25 17.5ZM9.75 17.5C9.75 17.0858 10.0858 16.75 10.5 16.75H17C17.4142 16.75 17.75 17.0858 17.75 17.5C17.75 17.9142 17.4142 18.25 17 18.25H10.5C10.0858 18.25 9.75 17.9142 9.75 17.5Z" fill="#fff"/>
+                                                        </svg>
+                                                </div>
+                                            </div>
+                                        </div>`
+          })
+
+          let controller;
+          controller = new AbortController();
+          const signal = controller.signal;
+          console.warn("Intelligence Triggered!")
+          if (routeCode) {
+            const intelligenceInfo = {
+              "type": "browseStops",
+              "route_code": routeCode,
+              "stops": stations.map(stop => ({
+                StopCode: stop.StopCode,
+                StopDescr: stop.StopDescr,
+                RouteStopOrder: stop.RouteStopOrder,
+              }))
+            }
+
+            fetch(`https://data.evoxs.xyz/oasa?intelligence=${JSON.stringify(intelligenceInfo)}`, { signal })
+              .then(response => response.json())
+              .then(arrivals => {
+                console.log("Intelligence Results:", arrivals)
+
+
+
+                arrivals.sort((a, b) => a.RouteStopOrder - b.RouteStopOrder)
+                const leastTime = arrivals.filter(item => item.time !== false && item.time !== null).sort((a, b) => a.time - b.time);
+
+                if(leastTime[0]){
+                  document.getElementById("stationsSpawnInner").innerHTML = `<div class="item minimum">
+                                            <div class="stationName">Ζωντανή τοποθεσία</div>
+                                            <div class="info">
+                                                <div class="text">
+                                                    <span>${capitalizeWords(leastTime[0].StopDescr)}</span>
+                                                    <span id="station-minimum">σε ${leastTime[0].time} λεπτά</span>
+                                                </div>
+                                            </div>
+                                            <div class="fav-actions">
+                                                <div class="button-action">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px"
+                                                        height="20px" viewBox="-1 0 19 19" class="cf-icon-svg">
+                                                        <path
+                                                            d="M16.417 9.6A7.917 7.917 0 1 1 8.5 1.683 7.917 7.917 0 0 1 16.417 9.6zm-5.431 2.113H8.309l1.519-1.353q.223-.203.43-.412a2.974 2.974 0 0 0 .371-.449 2.105 2.105 0 0 0 .255-.523 2.037 2.037 0 0 0 .093-.635 1.89 1.89 0 0 0-.2-.889 1.853 1.853 0 0 0-.532-.63 2.295 2.295 0 0 0-.76-.37 3.226 3.226 0 0 0-.88-.12 2.854 2.854 0 0 0-.912.144 2.373 2.373 0 0 0-.764.42 2.31 2.31 0 0 0-.55.666 2.34 2.34 0 0 0-.274.89l1.491.204a1.234 1.234 0 0 1 .292-.717.893.893 0 0 1 1.227-.056.76.76 0 0 1 .222.568 1.002 1.002 0 0 1-.148.536 2.42 2.42 0 0 1-.389.472L6.244 11.77v1.295h4.742z">
+                                                        </path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        ${document.getElementById("stationsSpawnInner").innerHTML}
+                  `;
+                }
+                const promise = new Promise((resolve) => {
+                  arrivals.forEach((stop, index) => {
+                    const targets = document.querySelectorAll(`[id="station-${stop.StopCode}"]`);
+
+                    let toSpawn = stop.time;
+                    if (toSpawn === null) {
+                      toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                <path opacity="0.4" d="M19.53 5.53L5.53 19.53C5.51 19.55 5.5 19.56 5.48 19.57C5.1 19.25 4.75 18.9 4.43 18.52C2.91 16.77 2 14.49 2 12C2 6.48 6.48 2 12 2C14.49 2 16.77 2.91 18.52 4.43C18.9 4.75 19.25 5.1 19.57 5.48C19.56 5.5 19.55 5.51 19.53 5.53Z" fill="#fff"/>
+                <path opacity="0.4" d="M21.9996 12.0001C21.9996 17.5201 17.5196 22.0001 11.9996 22.0001C10.0096 22.0001 8.15961 21.4201 6.59961 20.4001L20.3996 6.6001C21.4196 8.1601 21.9996 10.0101 21.9996 12.0001Z" fill="#fff"/>
+                <path d="M21.7709 2.22988C21.4709 1.92988 20.9809 1.92988 20.6809 2.22988L2.23086 20.6899C1.93086 20.9899 1.93086 21.4799 2.23086 21.7799C2.38086 21.9199 2.57086 21.9999 2.77086 21.9999C2.97086 21.9999 3.16086 21.9199 3.31086 21.7699L21.7709 3.30988C22.0809 3.00988 22.0809 2.52988 21.7709 2.22988Z" fill="#fff"/>
+                </svg>`;
+                    } else if (toSpawn === false) {
+                      toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                <path opacity="0.5" d="M22 19.2058V12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12V19.2058C2 20.4896 3.35098 21.3245 4.4992 20.7504C5.42726 20.2864 6.5328 20.3552 7.39614 20.9308C8.36736 21.5782 9.63264 21.5782 10.6039 20.9308L10.9565 20.6957C11.5884 20.2744 12.4116 20.2744 13.0435 20.6957L13.3961 20.9308C14.3674 21.5782 15.6326 21.5782 16.6039 20.9308C17.4672 20.3552 18.5727 20.2864 19.5008 20.7504C20.649 21.3245 22 20.4896 22 19.2058Z" fill="#fff"/>
+                <path d="M15 12C15.5523 12 16 11.3284 16 10.5C16 9.67157 15.5523 9 15 9C14.4477 9 14 9.67157 14 10.5C14 11.3284 14.4477 12 15 12Z" fill="#fff"/>
+                <path d="M10 10.5C10 11.3284 9.55228 12 9 12C8.44772 12 8 11.3284 8 10.5C8 9.67157 8.44772 9 9 9C9.55228 9 10 9.67157 10 10.5Z" fill="#fff"/>
+                </svg>`;
+                    } else if (toSpawn === "OASAERR") {
+                      toSpawn = `Σφάλμα`;
+                    } else {
+                      toSpawn += " λεπτά";
+                    }
+
+                    targets.forEach(target_single => {
+                      target_single.innerHTML = toSpawn;
+                    });
+
+                    if (index === arrivals.length - 1) {
+                      resolve(); // Resolve when the last iteration is done
+                    }
+                  });
+                });
+
+                promise.then(() => {
+                  console.log("All updates are complete.");
+
+                });
+
+              })
+              .catch(error => {
+                console.log("intelligence [1] error:", error);
+              });
+
+          } else {
+            console.warn("Data not ready")
+          }
+
+
+        }).catch((error) => {
+          console.error(error);
+        });
+      }).catch((error) => {
+        console.error(error);
+      });
     } else if (type === 'showBusInfo') {
       console.log("Show Bus Info")
     }
