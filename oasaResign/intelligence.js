@@ -1469,7 +1469,7 @@ function processInfo(evoxId, type) {
           remains.forEach(time => {
             document.getElementById("showMoreBusStart").style.display = null
             timetableContent += `
-      <div class="timeItem isLocal">
+      <div class="timeItem ${isLocal ? "isLocal" : ""}">
       <p>${time}</p>
         <div class="actions">
           <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
