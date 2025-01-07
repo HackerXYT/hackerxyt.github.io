@@ -87,23 +87,32 @@ function openSearch() {
 }
 
 function closeSearch() {
-  searchIntelli.style.backgroundColor = null;
-  bottomSearchParent.style.width = null;
-  bottomSearchParent.style.height = '86px';
-  bottomSearchParent.style.bottom = '30px'
-  searchIntelli.style.width = '256px'
-  searchIntelli.style.height = 'auto'
-  searchIntelli.style.padding = '18px 20px'
-  searchIntelli.style.borderRadius = '50px'
+  if(document.getElementById("searchContainer").classList.contains("active")) {
+    $("#recommendSpawn").fadeIn("fast")
+    document.getElementById("searchContainer").classList.remove("active")
+    document.getElementById('toSpawnFinds').classList.add('hidden');
+  } else {
+    searchIntelli.style.backgroundColor = null;
+    bottomSearchParent.style.width = null;
+    bottomSearchParent.style.height = '86px';
+    bottomSearchParent.style.bottom = '30px'
+    searchIntelli.style.width = '256px'
+    searchIntelli.style.height = 'auto'
+    searchIntelli.style.padding = '18px 20px'
+    searchIntelli.style.borderRadius = '50px'
+  
+    document.getElementById("insideSearch").style.display = 'none';
+    iconInC.style.display = null;
+    triggerSearch.style.display = null;
+    bottomSearchParent.classList.remove('scrolled');
+    $("#searchIn").fadeIn("fast", function () {
+  
+  
+    })
+  }
+  
 
-  document.getElementById("insideSearch").style.display = 'none';
-  iconInC.style.display = null;
-  triggerSearch.style.display = null;
-  bottomSearchParent.classList.remove('scrolled');
-  $("#searchIn").fadeIn("fast", function () {
-
-
-  })
+  
 
 
 }
@@ -1296,8 +1305,12 @@ let activeBusInfo = {
   'come': []
 }
 
-function processInfo(evoxId, type) {
+let activeEvoxId = null
+let shownTimeTable = 0
+let keepForVerticalStations;
+function processInfo(evoxId, type, addMore) {
   if (evoxId) {
+    activeEvoxId = evoxId
     console.log("gotInfo", evoxIds[evoxId])
     document.getElementById("top-navigate").classList.add('hidden')
     //$("#userFeed").fadeOut("fast")
@@ -1457,7 +1470,8 @@ function processInfo(evoxId, type) {
           }
 
           let timetableContent = '';
-          const remains = getNextBuses(times, 7)
+          const remains = getNextBuses(times, addMore ? addMore : 7)
+          shownTimeTable = shownTimeTable + addMore ? addMore : 7
           const previous = getPreviousBuses(times)
           if (previous[0]) {
             const value = previous[0].time;
@@ -1473,7 +1487,12 @@ function processInfo(evoxId, type) {
             //span.innerHTML = ``;
             //previousTimeBox.appendChild(span);
             //document.getElementById("evoxBased").appendChild(previousTimeBox);
-            timetableContent += `<div class="timeItem">
+            currentInfoForSchedo = {
+              bus: busInfo.bus,
+              match: working,
+              isLocal: isLocal
+            }
+            timetableContent += `<div class="timeItem ${isLocal ? "isLocal" : ""}" onclick="showDetailedTime('${previous[0].time.replace(/<\/?vox>/g, "").replace(/ .*$/, "")}','previous' , '${result}')">
         <p>${result}</p>
         <div class="actions" style="display:flex;flex-direction: column;justify-content: center;align-items: flex-end;">
           <vox style="text-decoration: line-through;">${previous[0].time}</vox><span style='font-size: 0.9rem;margin-top:4px;'>${previous[0].formatted}</span>
@@ -1483,7 +1502,7 @@ function processInfo(evoxId, type) {
           remains.forEach(time => {
             document.getElementById("showMoreBusStart").style.display = null
             timetableContent += `
-      <div class="timeItem ${isLocal ? "isLocal" : ""}">
+      <div class="timeItem ${isLocal ? "isLocal" : ""}" onclick="showDetailedTime('${time.replace(/<\/?vox>/g, "").replace(/<\/?vox>/g, "").replace(/ .*$/, "")}','next')">
       <p>${time}</p>
         <div class="actions">
           <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -1495,6 +1514,7 @@ function processInfo(evoxId, type) {
           });
 
           // Insert the content into the element
+
           document.getElementById("timetableSpawn").innerHTML = timetableContent;
         })
         .catch(error => {
@@ -1504,8 +1524,9 @@ function processInfo(evoxId, type) {
         });
 
       //Start finding stations info
-      const container = document.getElementById("stationsSpawnInner")
-      container.innerHTML = `<div class="item skeleton">
+      if (!addMore) {
+        const container = document.getElementById("stationsSpawnInner")
+        container.innerHTML = `<div class="item skeleton">
                                     <div class="busName skeleton-text"></div>
                                     <div class="info">
                                         <div class="text">
@@ -1542,14 +1563,14 @@ function processInfo(evoxId, type) {
                                         <div class="button-action skeleton-button"></div>
                                     </div>
                                 </div>`
-      findBusInfo2(busInfo.bus).then((routeCode) => {
+        findBusInfo2(busInfo.bus).then((routeCode) => {
 
-        getRouteStops(routeCode).then((stations) => {
-          console.log("Found stations", stations);
-          container.innerHTML = ''
+          getRouteStops(routeCode).then((stations) => {
+            console.log("Found stations", stations);
+            container.innerHTML = ''
 
-          stations.forEach((station, index) => {
-            container.innerHTML += `<div class="item">
+            stations.forEach((station, index) => {
+              container.innerHTML += `<div class="item">
                                             <div class="stationName">${capitalizeWords(station.StopDescr)}</div>
                                             <div class="info">
                                                 <div class="text">
@@ -1582,35 +1603,36 @@ function processInfo(evoxId, type) {
                                                 </div>
                                             </div>
                                         </div>`
-          })
+            })
 
-          let controller;
-          controller = new AbortController();
-          const signal = controller.signal;
-          console.warn("Intelligence Triggered!")
-          if (routeCode) {
-            const intelligenceInfo = {
-              "type": "browseStops",
-              "route_code": routeCode,
-              "stops": stations.map(stop => ({
-                StopCode: stop.StopCode,
-                StopDescr: stop.StopDescr,
-                RouteStopOrder: stop.RouteStopOrder,
-              }))
-            }
+            let controller;
+            controller = new AbortController();
+            const signal = controller.signal;
+            console.warn("Intelligence Triggered!")
+            if (routeCode) {
+              const intelligenceInfo = {
+                "type": "browseStops",
+                "route_code": routeCode,
+                "stops": stations.map(stop => ({
+                  StopCode: stop.StopCode,
+                  StopDescr: stop.StopDescr,
+                  RouteStopOrder: stop.RouteStopOrder,
+                }))
+              }
+              keepForVerticalStations = intelligenceInfo
 
-            fetch(`https://data.evoxs.xyz/oasa?intelligence=${JSON.stringify(intelligenceInfo)}`, { signal })
-              .then(response => response.json())
-              .then(arrivals => {
-                console.log("Intelligence Results:", arrivals)
+              fetch(`https://data.evoxs.xyz/oasa?intelligence=${JSON.stringify(intelligenceInfo)}`, { signal })
+                .then(response => response.json())
+                .then(arrivals => {
+                  console.log("Intelligence Results:", arrivals)
 
 
 
-                arrivals.sort((a, b) => a.RouteStopOrder - b.RouteStopOrder)
-                const leastTime = arrivals.filter(item => item.time !== false && item.time !== null).sort((a, b) => a.time - b.time);
+                  arrivals.sort((a, b) => a.RouteStopOrder - b.RouteStopOrder)
+                  const leastTime = arrivals.filter(item => item.time !== false && item.time !== null).sort((a, b) => a.time - b.time);
 
-                if (leastTime[0]) {
-                  document.getElementById("stationsSpawnInner").innerHTML = `<div class="item minimum">
+                  if (leastTime[0]) {
+                    document.getElementById("stationsSpawnInner").innerHTML = `<div class="item minimum">
                                             <div class="stationName">Ζωντανή τοποθεσία</div>
                                             <div class="info">
                                                 <div class="text">
@@ -1631,61 +1653,62 @@ function processInfo(evoxId, type) {
                                         </div>
                                         ${document.getElementById("stationsSpawnInner").innerHTML}
                   `;
-                }
-                const promise = new Promise((resolve) => {
-                  arrivals.forEach((stop, index) => {
-                    const targets = document.querySelectorAll(`[id="station-${stop.StopCode}"]`);
+                  }
+                  const promise = new Promise((resolve) => {
+                    arrivals.forEach((stop, index) => {
+                      const targets = document.querySelectorAll(`[id="station-${stop.StopCode}"]`);
 
-                    let toSpawn = stop.time;
-                    if (toSpawn === null) {
-                      toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                      let toSpawn = stop.time;
+                      if (toSpawn === null) {
+                        toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                 <path opacity="0.4" d="M19.53 5.53L5.53 19.53C5.51 19.55 5.5 19.56 5.48 19.57C5.1 19.25 4.75 18.9 4.43 18.52C2.91 16.77 2 14.49 2 12C2 6.48 6.48 2 12 2C14.49 2 16.77 2.91 18.52 4.43C18.9 4.75 19.25 5.1 19.57 5.48C19.56 5.5 19.55 5.51 19.53 5.53Z" fill="#fff"/>
                 <path opacity="0.4" d="M21.9996 12.0001C21.9996 17.5201 17.5196 22.0001 11.9996 22.0001C10.0096 22.0001 8.15961 21.4201 6.59961 20.4001L20.3996 6.6001C21.4196 8.1601 21.9996 10.0101 21.9996 12.0001Z" fill="#fff"/>
                 <path d="M21.7709 2.22988C21.4709 1.92988 20.9809 1.92988 20.6809 2.22988L2.23086 20.6899C1.93086 20.9899 1.93086 21.4799 2.23086 21.7799C2.38086 21.9199 2.57086 21.9999 2.77086 21.9999C2.97086 21.9999 3.16086 21.9199 3.31086 21.7699L21.7709 3.30988C22.0809 3.00988 22.0809 2.52988 21.7709 2.22988Z" fill="#fff"/>
                 </svg>`;
-                    } else if (toSpawn === false) {
-                      toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                      } else if (toSpawn === false) {
+                        toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                 <path opacity="0.5" d="M22 19.2058V12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12V19.2058C2 20.4896 3.35098 21.3245 4.4992 20.7504C5.42726 20.2864 6.5328 20.3552 7.39614 20.9308C8.36736 21.5782 9.63264 21.5782 10.6039 20.9308L10.9565 20.6957C11.5884 20.2744 12.4116 20.2744 13.0435 20.6957L13.3961 20.9308C14.3674 21.5782 15.6326 21.5782 16.6039 20.9308C17.4672 20.3552 18.5727 20.2864 19.5008 20.7504C20.649 21.3245 22 20.4896 22 19.2058Z" fill="#fff"/>
                 <path d="M15 12C15.5523 12 16 11.3284 16 10.5C16 9.67157 15.5523 9 15 9C14.4477 9 14 9.67157 14 10.5C14 11.3284 14.4477 12 15 12Z" fill="#fff"/>
                 <path d="M10 10.5C10 11.3284 9.55228 12 9 12C8.44772 12 8 11.3284 8 10.5C8 9.67157 8.44772 9 9 9C9.55228 9 10 9.67157 10 10.5Z" fill="#fff"/>
                 </svg>`;
-                    } else if (toSpawn === "OASAERR") {
-                      toSpawn = `Σφάλμα`;
-                    } else {
-                      toSpawn += " λεπτά";
-                    }
+                      } else if (toSpawn === "OASAERR") {
+                        toSpawn = `Σφάλμα`;
+                      } else {
+                        toSpawn += " λεπτά";
+                      }
 
-                    targets.forEach(target_single => {
-                      target_single.innerHTML = toSpawn;
+                      targets.forEach(target_single => {
+                        target_single.innerHTML = toSpawn;
+                      });
+
+                      if (index === arrivals.length - 1) {
+                        resolve(); // Resolve when the last iteration is done
+                      }
                     });
-
-                    if (index === arrivals.length - 1) {
-                      resolve(); // Resolve when the last iteration is done
-                    }
                   });
+
+                  promise.then(() => {
+                    console.log("All updates are complete.");
+
+                  });
+
+                })
+                .catch(error => {
+                  console.log("intelligence [1] error:", error);
                 });
 
-                promise.then(() => {
-                  console.log("All updates are complete.");
-
-                });
-
-              })
-              .catch(error => {
-                console.log("intelligence [1] error:", error);
-              });
-
-          } else {
-            console.warn("Data not ready")
-          }
+            } else {
+              console.warn("Data not ready")
+            }
 
 
+          }).catch((error) => {
+            console.error(error);
+          });
         }).catch((error) => {
           console.error(error);
         });
-      }).catch((error) => {
-        console.error(error);
-      });
+      }
     } else if (type === 'showBusInfo') {
       console.log("Show Bus Info")
     }
@@ -1696,6 +1719,9 @@ function processInfo(evoxId, type) {
 
 
 function returnFromBusTimetable() {
+  keepForVerticalStations = null;
+  shownTimeTable = 0
+  currentInfoForSchedo = {}
   activeBusInfo = {}
   if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
     const element = document.getElementById('main-wrapper');
@@ -2168,11 +2194,25 @@ async function getStopArrivalTime(stopCode, stopName, cords, maxRetries = 5) {
   return []; // Return empty array if all retries fail
 }
 
-function spawnAndShowInfo(bus) {
+const randomString = () => Math.random().toString(36).substring(2, 10);
+
+function spawnAndShowInfo(bus, remain) {
   //get the bus stops
   findBusInfo2(bus).then((returned) => {
     console.log(returned)
     //then
+    const colors = [
+      "#007f00",
+      "#ff66b3",
+      "#007cbf",
+      "#ff3300",
+      "#ffff33",
+      "#000000",
+      "#ffffff",
+      "#808080",
+      "#ff9900",
+      "#660066"
+    ]
     const work = returned[0].route_code
     fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=https%3A%2F%2Ftelematics.oasa.gr%2Fapi%2F%3Fact%3DwebGetRoutesDetailsAndStops%26p1%3D${returned}%26keyOrigin%3DevoxEpsilon`)
       .then(response => response.json())
@@ -2184,6 +2224,7 @@ function spawnAndShowInfo(bus) {
           }))
           .sort((a, b) => a.RouteStopOrder - b.RouteStopOrder);
 
+          const id = randomString()
         // Add markers and collect coordinates for the line
         console.log(data.stops.length)
         coordinates.forEach((coord, index) => {
@@ -2208,7 +2249,7 @@ function spawnAndShowInfo(bus) {
         });
 
         // Add a line connecting the points
-        map.addSource("route", {
+        map.addSource(`route-${id}`, {
           type: "geojson",
           data: {
             type: "Feature",
@@ -2220,15 +2261,15 @@ function spawnAndShowInfo(bus) {
         });
 
         map.addLayer({
-          id: "route",
+          id: `route-${id}`,
           type: "line",
-          source: "route",
+          source: `route-${id}`,
           layout: {
             "line-join": "round",
             "line-cap": "round",
           },
           paint: {
-            "line-color": "#007cbf",
+            "line-color": colors[Math.floor(Math.random() * colors.length)], //#007cbf
             "line-width": 4,
           },
         });
@@ -2237,4 +2278,499 @@ function spawnAndShowInfo(bus) {
       })
       .catch(error => console.error('Error:', error));
   })
+}
+
+function timeUntil(targetTime) {
+  // Split the target time into hours and minutes
+  const [targetHours, targetMinutes] = targetTime.split(':').map(Number);
+
+  // Get the current date and time
+  const now = new Date();
+
+  // Create a new Date object for the target time on the current day
+  const target = new Date(now);
+  target.setHours(targetHours, targetMinutes, 0, 0);
+
+  // If the target time has already passed today, set it to the next day
+  if (target < now) {
+    target.setDate(target.getDate() + 1);
+  }
+
+  // Calculate the difference in minutes
+  const remainingMinutes = Math.round((target - now) / 60000);
+
+  // Convert and return the remaining minutes
+  return convertTime(remainingMinutes);
+}
+
+let currentInfoForSchedo = {}
+
+function showDetailedTime(time, type, text) {
+  if (type) {
+    currentInfoForSchedo.time = time
+    document.getElementById("at-start-gen").classList.add("disabled")
+    document.getElementById("befo-gen").classList.add("disabled")
+    const checkbox_atStart = document.getElementById('at-start');
+    checkbox_atStart.checked = false;
+    fetch(`https://florida.evoxs.xyz/activeSchedo?username=${localStorage.getItem("t50-username")}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        data.schedo.forEach(schedo => {
+          if (schedo.bus === document.getElementById("busInfoID").innerText && schedo.time === time && schedo.id === localStorage.getItem("extVOASA")) {
+            // To uncheck the checkbox
+            checkbox_atStart.checked = true;
+          } else {
+            console.log(`None: ${schedo.bus} ${schedo.time} ${schedo.id},\nLocal: ${document.getElementById("busInfoID").innerText} ${time} ${localStorage.getItem("extVOASA")}`)
+          }
+          document.getElementById("at-start-gen").classList.remove("disabled")
+          document.getElementById("befo-gen").classList.remove("disabled")
+        })
+      })
+      .catch(error => {
+        console.error("Failed to check for updates")
+      })
+
+
+    document.getElementById("timeInfo").innerHTML = time
+    document.getElementById("busLineInfoForDetails").innerText = document.getElementById("busInfoDesc").innerText
+    document.getElementById("timeInfoInText").innerText = 'σε ' + timeUntil(time)
+    if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
+      const element = document.getElementById('main-wrapper');
+      element.scrollTop = 0;
+    }
+    document.getElementById("busTimetable").classList.add('fade-out-slide-down')
+
+    setTimeout(function () { document.getElementById("busTimetable").style.display = 'none'; document.getElementById("busTimetable").classList.remove('fade-out-slide-down'); document.getElementById("busTimetable").classList.remove('shown'); }, 200)
+    document.getElementById("timetableItemView").style.display = 'block'
+    setTimeout(function () { document.getElementById("timetableItemView").classList.add('shown') }, 200)
+    if (type === 'previous') {
+
+    } else if (type === "next") {
+
+    }
+  }
+
+}
+
+function returnFromDetailedItemView() {
+  currentInfoForSchedo.time = null
+  if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
+    const element = document.getElementById('main-wrapper');
+    element.scrollTop = 0;
+  }
+  document.getElementById("timetableItemView").classList.add('fade-out-slide-down')
+  setTimeout(function () { document.getElementById("timetableItemView").style.display = 'none'; }, 200)
+  setTimeout(function () { document.getElementById("timetableItemView").classList.remove("fade-out-slide-down"); document.getElementById("timetableItemView").classList.remove("shown") }, 500)
+
+  setTimeout(function () { document.getElementById("busTimetable").style.display = 'block'; document.getElementById("busTimetable").classList.add('shown'); document.getElementById("busTimetable").classList.add('fade-in-slide-up') }, 200)
+  setTimeout(function () { document.getElementById("busTimetable").classList.remove('fade-in-slide-up') }, 500)
+
+}
+
+const checkboxa = document.getElementById('at-start');
+
+checkboxa.addEventListener('change', function () {
+  if (checkboxa.checked) {
+    //The checkbox is now checked meaning a schedo should be created now
+    if (localStorage.getItem("extVOASA")) {
+      if (currentInfoForSchedo.bus && currentInfoForSchedo.time) {
+        console.log("Evox json passed")
+
+        const evoxJson = {
+          'username': localStorage.getItem("t50-username"),
+          'extv': localStorage.getItem("extVOASA"),
+          'type': "transition",
+          'bus': currentInfoForSchedo.bus,
+          "transition": currentInfoForSchedo.time
+        }
+
+        console.log(evoxJson)
+        fetch('https://florida.evoxs.xyz/oasaSchedo', {
+          method: 'POST',
+          body: JSON.stringify(evoxJson),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+          .then(data => {
+            console.log("Florida Response", data)
+
+
+          }).catch(error => {
+            console.error('Fetch error:', error);
+          });
+        console.log('The checkbox is checked');
+      } else {
+        alert("Σφάλμα!")
+        checkboxa.checked = false
+      }
+    } else {
+      alert("Florida not enabled!")
+      checkboxa.checked = false
+    }
+  } else {
+    console.log('The checkbox is unchecked');
+
+
+    //will proceed to remove the schedo
+
+    fetch(`https://florida.evoxs.xyz/activeSchedo?username=${localStorage.getItem("t50-username")}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.schedo.length !== 0 && data.infinite.length !== 0) {
+          const filteredData = data.schedo.filter(item => item.id === localStorage.getItem("extVOASA"));
+          filteredData.forEach(schedoNotification => {
+            if (schedoNotification.bus === currentInfoForSchedo.bus && schedoNotification.time === currentInfoForSchedo.time) {
+              const valueToDelete = schedoNotification
+              console.log("Will delete", valueToDelete)
+              const timeNode = `${valueToDelete.date}/${valueToDelete.time}`
+              const bus = valueToDelete.bus
+              const id = valueToDelete.id
+              const evoxJson2 = {
+                'username': localStorage.getItem("t50-username"),
+                'timenode': timeNode,
+                'bus': bus,
+                'deviceId': id
+              }
+              console.log("now pinging")
+              fetch('https://florida.evoxs.xyz/deleteByNode', {
+                method: 'POST',
+                body: JSON.stringify(evoxJson2),
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }).then(response => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.text();
+              })
+                .then(data => {
+                  console.log(data)
+                }).catch(error => {
+                  checkboxa.checked = true
+                  console.error('Fetch error:', error);
+                });
+            }
+
+          })
+        }
+
+      })
+      .catch(error => {
+        checkboxa.checked = true
+        console.error("Failed to check for updates")
+      })
+  }
+});
+
+function showMoreBusStart() {
+  processInfo(activeEvoxId, 'getTimes', shownTimeTable + 5)
+}
+
+function showVerticalStations() {
+  document.getElementById("stationsBusName").innerHTML = document.getElementById("busInfoID").innerText
+  document.getElementById("busGOCOMEForStations").innerHTML = document.getElementById("busGOCOME").innerHTML
+  document.getElementById("busLineInfoForStations").innerText = document.getElementById("busInfoDesc").innerText
+  if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
+    const element = document.getElementById('main-wrapper');
+    element.scrollTop = 0;
+  }
+  document.getElementById("busTimetable").classList.add('fade-out-slide-down')
+
+  setTimeout(function () { document.getElementById("busTimetable").style.display = 'none'; document.getElementById("busTimetable").classList.remove('fade-out-slide-down'); document.getElementById("busTimetable").classList.remove('shown'); }, 200)
+  document.getElementById("stationsVertical").style.display = 'block'
+  setTimeout(function () { document.getElementById("stationsVertical").classList.add('shown') }, 200)
+
+  document.getElementById("stationsSpawnVertical").innerHTML = ''
+  if (keepForVerticalStations) {
+    keepForVerticalStations.stops.forEach(station => {
+      document.getElementById("stationsSpawnVertical").innerHTML += `<div class="timeItem" onclick="showStopDetails('${station.StopCode}', '${capitalizeWords(station.StopDescr)}')">
+                                        <p>${capitalizeWords(station.StopDescr)}</p>
+                                        <div class="actions">
+                                            <span id="timeFor-${station.StopCode}"><svg class="compassAnim" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+        <path opacity="0.5"
+            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+            fill="#8fceff" />
+        <path
+            d="M13.024 14.5601C13.5166 14.363 13.763 14.2645 13.9562 14.095C14.0055 14.0518 14.0518 14.0055 14.095 13.9562C14.2645 13.763 14.363 13.5166 14.5601 13.024C15.484 10.7142 15.946 9.5593 15.4977 8.89964C15.3914 8.74324 15.2565 8.60834 15.1001 8.50206C14.4405 8.0538 13.2856 8.51575 10.9758 9.43966C10.4831 9.63673 10.2368 9.73527 10.0435 9.90474C9.99429 9.94792 9.94792 9.99429 9.90474 10.0435C9.73527 10.2368 9.63673 10.4831 9.43966 10.9758C8.51575 13.2856 8.0538 14.4405 8.50206 15.1001C8.60834 15.2565 8.74324 15.3914 8.89964 15.4977C9.5593 15.946 10.7142 15.484 13.024 14.5601Z"
+            fill="#fff" />
+    </svg></span><svg style="transform: rotate(180deg);margin-left:5px;" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#fff"></path>
+</svg>
+                                        </div>
+                                    </div>`
+    })
+
+    fetch(`https://data.evoxs.xyz/oasa?intelligence=${JSON.stringify(keepForVerticalStations)}`)
+      .then(response => response.json())
+      .then(arrivals => {
+        console.log("Intelligence Results:", arrivals)
+
+
+
+        arrivals.sort((a, b) => a.RouteStopOrder - b.RouteStopOrder)
+        const leastTime = arrivals.filter(item => item.time !== false && item.time !== null).sort((a, b) => a.time - b.time);
+
+        if (leastTime[0]) {
+          document.getElementById("stationsSpawnVertical").innerHTML = `
+                    <div class="timeItem">
+                                        <p>Τοποθεσία</p>
+                                        <div class="actions">
+                                            <span>${capitalizeWords(leastTime[0].StopDescr)}</span><svg style="transform: rotate(180deg);margin-left:5px;" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#fff"></path>
+</svg>
+                                        </div>
+                                    </div>
+                                        ${document.getElementById("stationsSpawnVertical").innerHTML}`;
+        }
+        const promise = new Promise((resolve) => {
+          arrivals.forEach((stop, index) => {
+            const targets = document.querySelectorAll(`[id="timeFor-${stop.StopCode}"]`);
+
+            let toSpawn = stop.time;
+            if (toSpawn === null) {
+              toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                <path opacity="0.4" d="M19.53 5.53L5.53 19.53C5.51 19.55 5.5 19.56 5.48 19.57C5.1 19.25 4.75 18.9 4.43 18.52C2.91 16.77 2 14.49 2 12C2 6.48 6.48 2 12 2C14.49 2 16.77 2.91 18.52 4.43C18.9 4.75 19.25 5.1 19.57 5.48C19.56 5.5 19.55 5.51 19.53 5.53Z" fill="#fff"/>
+                <path opacity="0.4" d="M21.9996 12.0001C21.9996 17.5201 17.5196 22.0001 11.9996 22.0001C10.0096 22.0001 8.15961 21.4201 6.59961 20.4001L20.3996 6.6001C21.4196 8.1601 21.9996 10.0101 21.9996 12.0001Z" fill="#fff"/>
+                <path d="M21.7709 2.22988C21.4709 1.92988 20.9809 1.92988 20.6809 2.22988L2.23086 20.6899C1.93086 20.9899 1.93086 21.4799 2.23086 21.7799C2.38086 21.9199 2.57086 21.9999 2.77086 21.9999C2.97086 21.9999 3.16086 21.9199 3.31086 21.7699L21.7709 3.30988C22.0809 3.00988 22.0809 2.52988 21.7709 2.22988Z" fill="#fff"/>
+                </svg>`;
+            } else if (toSpawn === false) {
+              toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                <path opacity="0.5" d="M22 19.2058V12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12V19.2058C2 20.4896 3.35098 21.3245 4.4992 20.7504C5.42726 20.2864 6.5328 20.3552 7.39614 20.9308C8.36736 21.5782 9.63264 21.5782 10.6039 20.9308L10.9565 20.6957C11.5884 20.2744 12.4116 20.2744 13.0435 20.6957L13.3961 20.9308C14.3674 21.5782 15.6326 21.5782 16.6039 20.9308C17.4672 20.3552 18.5727 20.2864 19.5008 20.7504C20.649 21.3245 22 20.4896 22 19.2058Z" fill="#fff"/>
+                <path d="M15 12C15.5523 12 16 11.3284 16 10.5C16 9.67157 15.5523 9 15 9C14.4477 9 14 9.67157 14 10.5C14 11.3284 14.4477 12 15 12Z" fill="#fff"/>
+                <path d="M10 10.5C10 11.3284 9.55228 12 9 12C8.44772 12 8 11.3284 8 10.5C8 9.67157 8.44772 9 9 9C9.55228 9 10 9.67157 10 10.5Z" fill="#fff"/>
+                </svg>`;
+            } else if (toSpawn === "OASAERR") {
+              toSpawn = `Σφάλμα`;
+            } else {
+              toSpawn += "'";
+            }
+
+            targets.forEach(target_single => {
+              target_single.innerHTML = toSpawn;
+            });
+
+            if (index === arrivals.length - 1) {
+              resolve(); // Resolve when the last iteration is done
+            }
+          });
+        });
+
+        promise.then(() => {
+          console.log("All updates are complete.");
+
+        });
+
+      })
+      .catch(error => {
+        console.log("intelligence [1] error:", error);
+      });
+  }
+
+}
+
+function returnFromStationsVertical() {
+  if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
+    const element = document.getElementById('main-wrapper');
+    element.scrollTop = 0;
+  }
+  document.getElementById("stationsVertical").classList.add('fade-out-slide-down')
+  setTimeout(function () { document.getElementById("stationsVertical").style.display = 'none'; }, 200)
+  setTimeout(function () { document.getElementById("stationsVertical").classList.remove("fade-out-slide-down"); document.getElementById("stationsVertical").classList.remove("shown") }, 500)
+
+  setTimeout(function () { document.getElementById("busTimetable").style.display = 'block'; document.getElementById("busTimetable").classList.add('shown'); document.getElementById("busTimetable").classList.add('fade-in-slide-up') }, 200)
+  setTimeout(function () { document.getElementById("busTimetable").classList.remove('fade-in-slide-up') }, 500)
+}
+
+function showStopDetails(stopCode, stopName) {
+  document.getElementById("stationInfoName").innerText = stopName
+
+
+  if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
+    const element = document.getElementById('main-wrapper');
+    element.scrollTop = 0;
+  }
+  document.getElementById("stationsVertical").classList.add('fade-out-slide-down')
+
+  setTimeout(function () { document.getElementById("stationsVertical").style.display = 'none'; document.getElementById("stationsVertical").classList.remove('fade-out-slide-down'); document.getElementById("stationsVertical").classList.remove('shown'); }, 200)
+  document.getElementById("stationInfo").style.display = 'block'
+  setTimeout(function () { document.getElementById("stationInfo").classList.add('shown') }, 200)
+
+  fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`)}`)
+    .then(response => response.json())
+    .then(buses => {
+      if (buses === null) {
+        console.log("None coming to station")
+      } else {
+
+      }
+    })
+    .catch(error => {
+      console.log("intelligence [1] error:", error);
+    });
+
+
+  document.getElementById("busesComingtoStation").innerHTML = `<div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div>`
+  const stop_url_1 = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webRoutesForStop&p1=${stopCode}&keyOrigin=evoxEpsilon`);
+  fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url_1}`)
+    .then(response => response.json())
+    .then(stop => {
+      let start = {};
+      let isReady = false;
+      let count = 0;
+      let finale = '';
+      const stop_url = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`);
+      fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url}`)
+        .then(response => response.json())
+        .then(arrivals => {
+          document.getElementById("busesComingtoStation").innerHTML = '';
+          let matchFound = false;
+          let busesArrivals = {}; // Object to keep track of buses and their arrival times
+
+          stop.forEach(data => {
+            count++;
+            start[data.LineID] = {
+              "desc": data.LineDescr,
+              "lineCode": data.LineCode,
+              "routeCode": data.RouteCode,
+              "id": data.LineID
+            };
+            if (count === stop.length) {
+              isReady = true;
+            }
+
+            arrivals.forEach(arrive => {
+              if (arrive.route_code === data.RouteCode) {
+                if (!busesArrivals[data.LineID]) {
+                  busesArrivals[data.LineID] = new Set(); // Initialize a Set for this bus to store unique times
+                }
+
+                busesArrivals[data.LineID].add(arrive.btime2); // Add the new arrival time to the Set (automatically handles duplicates)
+
+                matchFound = true; // Set flag to true if a match is found
+              }
+            });
+          });
+
+          // After collecting all arrival times, create HTML
+          Object.keys(busesArrivals).forEach(lineID => {
+            const arrivalTimes = Array.from(busesArrivals[lineID]).join("', "); // Convert Set to array and join times with a comma
+            const busDesc = start[lineID].desc;
+            document.getElementById("busesComingtoStation").innerHTML += `
+                        <div class="timeItem">
+                            <p>${lineID}</p>
+                            <div class="actions">
+                                <span>${arrivalTimes}'</span>
+                                <svg style="transform: rotate(180deg);margin-left:5px;" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                                    <path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#fff"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    `;
+          });
+        })
+        .catch(error => {
+          document.getElementById("busesComingtoStation").innerHTML = `
+                    <div class="failed">
+                        <img src="snap.png" class="failed-icon">
+                        <vox class="failed-message">Δεν βρέθηκαν λεωφορεία</vox>
+                        <span class="failed-subtext">Κανένα λεωφορείο δεν κατευθύνεται προς την στάση ${stopName}</span>
+                    </div>
+                `;
+          console.log("getStop [65] error:", error);
+        });
+    })
+    .catch(error => {
+      document.getElementById("busesComingtoStation").innerHTML = `<div class="failed">
+    <img src="snap.png" class="failed-icon">
+    <vox class="failed-message">Δεν βρέθηκαν λεωφορεία</vox>
+    <span class="failed-subtext">Κανένα λεωφορείο δεν κατευθύνεται προς την στάση ${stopName}</span>
+</div>`
+      //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]");
+      console.log("getStop [63] error:", error);
+    });
+}
+
+function returnFromStationInfo() {
+  if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
+    const element = document.getElementById('main-wrapper');
+    element.scrollTop = 0;
+  }
+  document.getElementById("stationInfo").classList.add('fade-out-slide-down')
+  setTimeout(function () { document.getElementById("stationInfo").style.display = 'none'; }, 200)
+  setTimeout(function () { document.getElementById("stationInfo").classList.remove("fade-out-slide-down"); document.getElementById("stationInfo").classList.remove("shown") }, 500)
+
+  setTimeout(function () { document.getElementById("stationsVertical").style.display = 'block'; document.getElementById("stationsVertical").classList.add('shown'); document.getElementById("stationsVertical").classList.add('fade-in-slide-up') }, 200)
+  setTimeout(function () { document.getElementById("stationsVertical").classList.remove('fade-in-slide-up') }, 500)
+}
+
+document.getElementById('searchInSearch').addEventListener('focus', function () {
+  $("#recommendSpawn").fadeOut("fast")
+  document.getElementById("searchContainer").classList.add("active")
+  searchInInput()
+})
+
+document.getElementById('searchInSearch').addEventListener('blur', function () {
+  //$("#recommendSpawn").fadeIn("fast")
+  //document.getElementById("searchContainer").classList.remove("active")
+  //document.getElementById('toSpawnFinds').classList.add('hidden');
+})
+
+document.getElementById('searchInSearch').addEventListener('input', function () {
+  searchInInput()
+
+})
+
+function searchInInput() {
+  const lineIdToFind = document.getElementById("searchInSearch").value
+  if (lineIdToFind.length < 2) {
+    document.getElementById("toSpawnFinds").querySelectorAll("*").forEach((elem) => {
+      elem.classList.add("simple-fadeOut");
+    });
+    return;
+  }
+  let matchingLines = fullLine.filter(line => line.LineID.includes(lineIdToFind));  // Check for partial matches 
+  let shortMatches = fullLine.filter(line => line.LineID === lineIdToFind)
+  $("#linesContainer").fadeIn("fast")
+  //console.log(matchingLines)
+  document.getElementById("toSpawnFinds").innerHTML = ""
+  matchingLines.forEach((bus, index) => {
+    const delay = index * 0.1;
+    if (shortMatches[0] === bus) {
+      document.getElementById("toSpawnFinds").innerHTML = `<div onclick="spawnAndShowInfo('${bus.LineID}', 'remain')" class="Block simple-fadeIn match" style="opacity:0;">
+      <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.5 19.9815C16.0728 19.9415 17.1771 19.815 18 19.4151V20.9999C18 21.5522 17.5523 21.9999 17 21.9999H15.5C14.9477 21.9999 14.5 21.5522 14.5 20.9999V19.9815Z" fill="#FFF"></path>
+<path d="M6 19.415C6.82289 19.815 7.9272 19.9415 9.5 19.9815V20.9999C9.5 21.5522 9.05228 21.9999 8.5 21.9999H7C6.44772 21.9999 6 21.5522 6 20.9999V19.415Z" fill="#FFF"></path>
+<path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M5.17157 3.17157C6.34315 2 8.22876 2 12 2C15.7712 2 17.6569 2 18.8284 3.17157C19.8915 4.23467 19.99 5.8857 19.9991 9L20 13C19.9909 16.1143 19.8915 17.7653 18.8284 18.8284C18.5862 19.0706 18.3136 19.2627 18 19.4151C17.1771 19.8151 16.0728 19.9415 14.5 19.9815C13.7729 19.9999 12.9458 20 12 20C11.0542 20 10.2271 20 9.5 19.9815C7.9272 19.9415 6.82289 19.815 6 19.415C5.68645 19.2626 5.41375 19.0706 5.17157 18.8284C4.10848 17.7653 4.00911 16.1143 4 13L4.00093 9C4.01004 5.8857 4.10848 4.23467 5.17157 3.17157Z" fill="#FFF"></path>
+<path d="M17.75 16C17.75 15.5858 17.4142 15.25 17 15.25H15.5C15.0858 15.25 14.75 15.5858 14.75 16C14.75 16.4142 15.0858 16.75 15.5 16.75H17C17.4142 16.75 17.75 16.4142 17.75 16Z" fill="#FFF"></path>
+<path d="M6.25 16C6.25 15.5858 6.58579 15.25 7 15.25H8.5C8.91421 15.25 9.25 15.5858 9.25 16C9.25 16.4142 8.91421 16.75 8.5 16.75H7C6.58579 16.75 6.25 16.4142 6.25 16Z" fill="#FFF"></path>
+<path opacity="0.5" d="M5.5 9.5C5.5 10.9142 5.5 11.6213 5.93934 12.0607C6.37868 12.5 7.08579 12.5 8.5 12.5H15.5C16.9142 12.5 17.6213 12.5 18.0607 12.0607C18.5 11.6213 18.5 10.9142 18.5 9.5V6.99998C18.5 5.58578 18.5 4.87868 18.0607 4.43934C17.6213 4 16.9142 4 15.5 4H8.5C7.08579 4 6.37868 4 5.93934 4.43934C5.5 4.87868 5.5 5.58579 5.5 7V9.5Z" fill="#FFF"></path>
+<path d="M2.4 11.8L4 13L4.00093 9H3C2.44772 9 2 9.44772 2 10V11C2 11.3148 2.14819 11.6111 2.4 11.8Z" fill="#FFF"></path>
+<path d="M21 9H19.999L20 13L21.6 11.8C21.8518 11.6111 22 11.3148 22 11V10C22 9.44772 21.5522 9 21 9Z" fill="#FFF"></path>
+</svg>${bus.LineID}
+  </div>${document.getElementById("toSpawnFinds").innerHTML}`
+    } else {
+      document.getElementById("toSpawnFinds").innerHTML += `<div onclick="spawnAndShowInfo('${bus.LineID}', 'remain')" class="Block simple-fadeIn" style="animation-delay: ${delay}s;opacity:0;">
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14.5 19.9815C16.0728 19.9415 17.1771 19.815 18 19.4151V20.9999C18 21.5522 17.5523 21.9999 17 21.9999H15.5C14.9477 21.9999 14.5 21.5522 14.5 20.9999V19.9815Z" fill="#FFF"></path>
+                  <path d="M6 19.415C6.82289 19.815 7.9272 19.9415 9.5 19.9815V20.9999C9.5 21.5522 9.05228 21.9999 8.5 21.9999H7C6.44772 21.9999 6 21.5522 6 20.9999V19.415Z" fill="#FFF"></path>
+                  <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M5.17157 3.17157C6.34315 2 8.22876 2 12 2C15.7712 2 17.6569 2 18.8284 3.17157C19.8915 4.23467 19.99 5.8857 19.9991 9L20 13C19.9909 16.1143 19.8915 17.7653 18.8284 18.8284C18.5862 19.0706 18.3136 19.2627 18 19.4151C17.1771 19.8151 16.0728 19.9415 14.5 19.9815C13.7729 19.9999 12.9458 20 12 20C11.0542 20 10.2271 20 9.5 19.9815C7.9272 19.9415 6.82289 19.815 6 19.415C5.68645 19.2626 5.41375 19.0706 5.17157 18.8284C4.10848 17.7653 4.00911 16.1143 4 13L4.00093 9C4.01004 5.8857 4.10848 4.23467 5.17157 3.17157Z" fill="#FFF"></path>
+                  <path d="M17.75 16C17.75 15.5858 17.4142 15.25 17 15.25H15.5C15.0858 15.25 14.75 15.5858 14.75 16C14.75 16.4142 15.0858 16.75 15.5 16.75H17C17.4142 16.75 17.75 16.4142 17.75 16Z" fill="#FFF"></path>
+                  <path d="M6.25 16C6.25 15.5858 6.58579 15.25 7 15.25H8.5C8.91421 15.25 9.25 15.5858 9.25 16C9.25 16.4142 8.91421 16.75 8.5 16.75H7C6.58579 16.75 6.25 16.4142 6.25 16Z" fill="#FFF"></path>
+                  <path opacity="0.5" d="M5.5 9.5C5.5 10.9142 5.5 11.6213 5.93934 12.0607C6.37868 12.5 7.08579 12.5 8.5 12.5H15.5C16.9142 12.5 17.6213 12.5 18.0607 12.0607C18.5 11.6213 18.5 10.9142 18.5 9.5V6.99998C18.5 5.58578 18.5 4.87868 18.0607 4.43934C17.6213 4 16.9142 4 15.5 4H8.5C7.08579 4 6.37868 4 5.93934 4.43934C5.5 4.87868 5.5 5.58579 5.5 7V9.5Z" fill="#FFF"></path>
+                  <path d="M2.4 11.8L4 13L4.00093 9H3C2.44772 9 2 9.44772 2 10V11C2 11.3148 2.14819 11.6111 2.4 11.8Z" fill="#FFF"></path>
+                  <path d="M21 9H19.999L20 13L21.6 11.8C21.8518 11.6111 22 11.3148 22 11V10C22 9.44772 21.5522 9 21 9Z" fill="#FFF"></path>
+                  </svg>${bus.LineID}
+                        </div>`
+    }
+
+  })
+  document.getElementById('toSpawnFinds').classList.remove('hidden');
 }

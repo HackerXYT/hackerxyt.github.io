@@ -171,7 +171,31 @@
     /* Adding bottom safe area inset */
 }
 
-.insideSearch .topSearch {
+#searchContainer {
+    width: 100%;
+    height: auto;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: padding 0.5s ease-in-out, background-color 0.5s ease-in-out, border-radius 0.5s ease-in-out, margin 0.5s ease-in-out;
+}
+
+#searchContainer.active {
+    padding-top: 25px;
+    padding-bottom: 40px;
+    background-color: #141416d8;
+    border-radius: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+#searchContainer .topSearch.recommend {
+    margin-top: 20px;
+}
+
+.topSearch {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -179,7 +203,7 @@
     z-index: 5;
 }
 
-.insideSearch .topSearch.recommend {
+.topSearch.recommend {
     margin-top: 10px;
     display: flex;
     height: auto;
@@ -193,20 +217,31 @@
     -webkit-overflow-scrolling: touch;
     z-index: 5;
     margin-left: 15px;
+    opacity: 1; /* Fully visible by default */
+    visibility: visible; /* Element is visible */
+    transition: opacity 0.5s ease-in-out, visibility 0s 0.5s; /* Fade and delay visibility change */
 }
 
-.insideSearch .topSearch.recommend::-webkit-scrollbar {
+.topSearch.recommend.hidden {
+    opacity: 0; /* Fully transparent */
+    visibility: hidden; /* Element is hidden but still occupies space */
+    pointer-events: none; /* Prevent interaction */
+    transition: opacity 0.5s ease-in-out, visibility 0s 0s; /* Hide immediately after opacity transition */
+    display: none; /* Prevents element from taking up space */
+}
+
+.topSearch.recommend::-webkit-scrollbar {
     display: none;
 }
 
-.insideSearch .topSearch.recommend .Block {
+.topSearch.recommend .Block {
     width: auto;
     padding: 7.5px 15px;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 5px;
-    background-color: #ffffff05;
+    background-color: #41474763;
     border-radius: 20px;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
@@ -216,8 +251,12 @@
     background-color: #ff020212 !important;
 }
 
+.Block.match {
+    background-color: #52ff023f !important;
+}
 
-.insideSearch .backToSearch {
+
+#searchContainer .backToSearch {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -233,7 +272,7 @@
     flex-shrink: 0;
 }
 
-.insideSearch .searchInput {
+#searchContainer .searchInput {
     padding: 18px 20px;
     background-color: #ffffff0e;
     display: flex;
@@ -250,7 +289,7 @@
     margin-right: 10px;
 }
 
-.insideSearch .searchInput input {
+#searchContainer .searchInput input {
     width: 100%;
     background-color: transparent;
     border: none;
@@ -259,11 +298,11 @@
     outline: none;
 }
 
-.insideSearch .searchInput svg {
+#searchContainer .searchInput svg {
     margin-left: auto;
 }
 
-.insideSearch .searchInput input::placeholder {
+#searchContainer .searchInput input::placeholder {
     color: #cfcfcf;
 }
 
@@ -973,6 +1012,10 @@
     font-size: 37px;
 }
 
+.timetableItem .busInfo p#stationInfoName {
+    margin: 0;
+    font-size: 25px;
+}
 .timetableItem .busInfo span {
     /*description*/
     margin-top: 5px;
@@ -1059,6 +1102,23 @@
     min-height: 70px;
 }
 
+.timeItem.forCheckboxes {
+    padding: 10px 10px;
+    background-color: #a7a7a714;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    margin-bottom: 10px;
+    min-height: 40px;
+}
+.timeItem.forCheckboxes.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+    position: relative;
+}
+
+
+
 .timetableSpawn .timeItem.isLocal {
     background-color: #f5421f25;
     border: 2px solid #ac2f29;
@@ -1067,6 +1127,11 @@
 .timetableSpawn .timeItem p {
     font-size: 25px;
     margin: 0;
+}
+
+.timeItem.forCheckboxes p {
+    margin-left: 5px;
+    font-size: 17px !important;
 }
 
 .timetableSpawn .timeItem span {
@@ -1835,4 +1900,86 @@ body {
     width: 100%;
     height: 100%;
     border-radius: 50%;
+}
+
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 24px;
+    margin: 10px;
+}
+
+/* Giriş stil */
+.toggle-switch .toggle-input {
+    display: none;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.toggle-switch.disabled {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+/* Anahtarın stilinin etrafındaki etiketin stil */
+.toggle-switch .toggle-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 24px;
+    background-color: rgb(88, 88, 88);
+    border-radius: 34px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Anahtarın yuvarlak kısmının stil */
+.toggle-switch .toggle-label::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background-color: #fff;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s;
+}
+
+/* Anahtarın etkin hale gelmesindeki stil değişiklikleri */
+.toggle-switch .toggle-input:checked+.toggle-label {
+    background-color: #4caf50;
+}
+
+.toggle-switch .toggle-input:checked+.toggle-label::before {
+    transform: translateX(16px);
+}
+
+/* Light tema */
+.toggle-switch.light .toggle-label {
+    background-color: #bebebe;
+}
+
+.toggle-switch.light .toggle-input:checked+.toggle-label {
+    background-color: #9b9b9b;
+}
+
+.toggle-switch.light .toggle-input:checked+.toggle-label::before {
+    transform: translateX(6px);
+}
+
+/* Dark tema */
+.toggle-switch.dark .toggle-label {
+    background-color: #4b4b4b;
+}
+
+.toggle-switch.dark .toggle-input:checked+.toggle-label {
+    background-color: #717171;
+}
+
+.toggle-switch.dark .toggle-input:checked+.toggle-label::before {
+    transform: translateX(16px);
 }
