@@ -206,10 +206,14 @@
     flex-direction: row;
     align-items: center;
     gap: 5px;
-    background-color: #ffffff23;
+    background-color: #ffffff05;
     border-radius: 20px;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
+}
+
+.Block.favorite {
+    background-color: #ff020212 !important;
 }
 
 
@@ -524,10 +528,13 @@
 }
 
 .timetableItem .topDefines.scrolled {
-    background-color: rgba(0, 0, 0, 0.7); /* Black with transparency */
-    backdrop-filter: blur(5px); /* Blur effect */
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Black with transparency */
+    backdrop-filter: blur(5px);
+    /* Blur effect */
     -webkit-backdrop-filter: blur(5px);
-    padding-top: 70px; /* Adjust for status bar height */
+    padding-top: 70px;
+    /* Adjust for status bar height */
     margin-top: calc(env(safe-area-inset-top, 0px) * -1 - 35px);
     padding-bottom: 10px;
 }
@@ -744,7 +751,7 @@
 
 .pinned-favorites .item.favorite {
     background-color: #1f42f425;
-    border: 2px solid #293fac;
+    border: 3px solid #293fac;
 }
 
 .pinned-favorites .item.isPreloaded {
@@ -1082,7 +1089,8 @@
     margin-top: env(safe-area-inset-top) !important;
     margin-bottom: env(safe-area-inset-bottom) !important;
     /* Adding bottom safe area inset */
-    /*height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))*/;
+    /*height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))*/
+    ;
     height: auto;
     /* Adjusting content height to fill the viewport */
 }
@@ -1762,4 +1770,69 @@ body {
 
 .failed-subtext {
     font-size: 15px;
+}
+
+.compassAnim {
+    animation: compass 0.8s ease-in-out infinite;
+}
+
+@keyframes compass {
+    0% {
+        rotate: 0deg;
+    }
+
+    100% {
+        rotate: 360deg;
+    }
+}
+
+.custom-marker {
+    width: 10px;
+    /* Adjust the size of the dot */
+    height: 10px;
+    background-color: white;
+    /* Fill color of the dot */
+    border: 2px solid #007cbf;
+    /* Stroke color */
+    border-radius: 50%;
+    /* Make it a circle */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    /* Optional: Add a subtle shadow */
+}
+
+.start-end {
+    width: 30px;
+    /* Adjust the size of the dot */
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+    /* Make it a circle */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    /* Optional: Add a subtle shadow */
+    border-top-right-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(20px, -20px);
+}
+
+.marker-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.marker-icon img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
 }
