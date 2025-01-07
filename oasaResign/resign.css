@@ -252,7 +252,7 @@
 }
 
 .Block.match {
-    background-color: #52ff023f !important;
+    background-color: #1f42f4b1 !important;
 }
 
 
@@ -1879,6 +1879,51 @@ body {
     justify-content: center;
     align-items: center;
     transform: translate(20px, -20px);
+}
+
+
+.transition {
+    width: auto;
+    /* Adjust the size of the dot */
+    height: auto;
+    background-color: white;
+    border-radius: 25px;
+    /* Make it a circle */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    /* Optional: Add a subtle shadow */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(20px, -20px);
+    color: #000;
+    padding: 15px;
+    z-index: 999;
+}
+
+.transition p {
+    color: #000 !important;
+    font-weight: bold;
+}
+
+.station {
+    width: auto;
+    /* Adjust the size of the dot */
+    height: auto;
+    background-color: rgba(72, 72, 72, 0.581);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 25px;
+    /* Make it a circle */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    /* Optional: Add a subtle shadow */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(120px, -120px);
+    color: #ffffff;
+    padding: 15px;
+    z-index: 999;
+    font-weight: bold;
 }
 
 .marker-icon {

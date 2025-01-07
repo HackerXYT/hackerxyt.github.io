@@ -87,7 +87,7 @@ function openSearch() {
 }
 
 function closeSearch() {
-  if(document.getElementById("searchContainer").classList.contains("active")) {
+  if (document.getElementById("searchContainer").classList.contains("active")) {
     $("#recommendSpawn").fadeIn("fast")
     document.getElementById("searchContainer").classList.remove("active")
     document.getElementById('toSpawnFinds').classList.add('hidden');
@@ -100,19 +100,19 @@ function closeSearch() {
     searchIntelli.style.height = 'auto'
     searchIntelli.style.padding = '18px 20px'
     searchIntelli.style.borderRadius = '50px'
-  
+
     document.getElementById("insideSearch").style.display = 'none';
     iconInC.style.display = null;
     triggerSearch.style.display = null;
     bottomSearchParent.classList.remove('scrolled');
     $("#searchIn").fadeIn("fast", function () {
-  
-  
+
+
     })
   }
-  
 
-  
+
+
 
 
 }
@@ -2195,25 +2195,109 @@ async function getStopArrivalTime(stopCode, stopName, cords, maxRetries = 5) {
 }
 
 const randomString = () => Math.random().toString(36).substring(2, 10);
-
+let previouslines;
+let markers_intel = []
 function spawnAndShowInfo(bus, remain) {
   //get the bus stops
+  if (remain === 'deleteAfter' && previouslines) {
+    // Remove markers
+    markers_intel.forEach((marker) => marker.remove());
+    markers_intel = []; // Clear marker references
+
+    // Remove layer and source
+    if (map.getLayer(`route-${previouslines}`)) {
+      map.removeLayer(`route-${previouslines}`);
+    }
+    if (map.getSource(`route-${previouslines}`)) {
+      map.removeSource(`route-${previouslines}`);
+    }
+  }
   findBusInfo2(bus).then((returned) => {
-    console.log(returned)
-    //then
+    console.log(returned);
+
     const colors = [
-      "#007f00",
-      "#ff66b3",
-      "#007cbf",
-      "#ff3300",
-      "#ffff33",
-      "#000000",
-      "#ffffff",
-      "#808080",
-      "#ff9900",
-      "#660066"
-    ]
-    const work = returned[0].route_code
+      "#007f00", "#ff66b3", "#007cbf", "#ff3300",
+      "#ffff33", "#fff", "#ffffff", "#808080", "#ff9900", "#660066"
+    ];
+
+    function addIt(coordinates) {
+      console.log(coordinates);
+
+      // Fly to the first coordinate
+      map.flyTo({
+        center: [parseFloat(coordinates[0].lng), parseFloat(coordinates[0].lat)],
+        zoom: 16,
+        curve: 1,
+        offset: [0, -window.innerHeight / 4], // Adjust for header offset
+        easing(t) {
+          return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        }
+      });
+
+      const id = randomString();
+      previouslines = id; // Track current line ID
+
+      // Add markers
+      coordinates.forEach((coord, index) => {
+        const dot = document.createElement('div');
+        let offset = [0, 0];
+
+        if (index === coordinates.length - 1) {
+          dot.className = "custom-marker";
+        } else if (index === 0) {
+          dot.className = "transition";
+          dot.innerHTML = `<p>${capitalizeWords(coord.StopDescr)}</p>`;
+        } else {
+          dot.className = "station";
+        }
+
+        if (index !== coordinates.length - 1) {
+          dot.innerHTML = capitalizeWords(coord.StopDescr);
+        }
+
+        const marker = new mapboxgl.Marker({ element: dot, offset: offset })
+          .setLngLat([coord.lng, coord.lat])
+          .addTo(map);
+        markers_intel.push(marker);
+      });
+
+      // Add a line connecting the points
+      map.addSource(`route-${id}`, {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          geometry: {
+            type: "LineString",
+            coordinates: coordinates.map((coord) => [coord.lng, coord.lat]),
+          },
+        },
+      });
+
+      map.addLayer({
+        id: `route-${id}`,
+        type: "line",
+        source: `route-${id}`,
+        layout: {
+          "line-join": "round",
+          "line-cap": "round",
+        },
+        paint: {
+          "line-color": colors[Math.floor(Math.random() * colors.length)],
+          "line-width": 4,
+        },
+      });
+    }
+
+    const learning = localStorage.getItem("oasa-intelligence");
+    if (learning) {
+      const workOn = JSON.parse(learning);
+      if (workOn[bus]) {
+        addIt(workOn[bus]);
+        return;
+      }
+    }
+
+    // Fetch new bus data
     fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=https%3A%2F%2Ftelematics.oasa.gr%2Fapi%2F%3Fact%3DwebGetRoutesDetailsAndStops%26p1%3D${returned}%26keyOrigin%3DevoxEpsilon`)
       .then(response => response.json())
       .then(data => {
@@ -2221,63 +2305,23 @@ function spawnAndShowInfo(bus, remain) {
           .map((stop) => ({
             lat: parseFloat(stop.StopLat),
             lng: parseFloat(stop.StopLng),
+            StopDescr: stop.StopDescr,
           }))
           .sort((a, b) => a.RouteStopOrder - b.RouteStopOrder);
 
-          const id = randomString()
-        // Add markers and collect coordinates for the line
-        console.log(data.stops.length)
-        coordinates.forEach((coord, index) => {
-          // Create a custom HTML element for the marker
-          const dot = document.createElement('div');
-          if (index === data.stops.length - 1) {
-            console.log("Last station")
-            dot.className = "start-end"
-          } else {
-            dot.className = "custom-marker"
-          }
-          if (index === data.stops.length - 1) {
-            console.log("Last station")
-            dot.innerHTML = '<div class="marker-icon"><img src="evox-logo-beta-large.png"></div>'
-          }
+        if (localStorage.getItem("oasa-intelligence")) {
+          const current = JSON.parse(localStorage.getItem("oasa-intelligence"));
+          current[bus] = coordinates;
+          localStorage.setItem("oasa-intelligence", JSON.stringify(current));
+        } else {
+          const json = { [bus]: coordinates };
+          localStorage.setItem("oasa-intelligence", JSON.stringify(json));
+        }
 
-
-          new mapboxgl.Marker(dot)
-            .setLngLat([coord.lng, coord.lat])
-            .addTo(map);
-          console.log(index)
-        });
-
-        // Add a line connecting the points
-        map.addSource(`route-${id}`, {
-          type: "geojson",
-          data: {
-            type: "Feature",
-            geometry: {
-              type: "LineString",
-              coordinates: coordinates.map((coord) => [coord.lng, coord.lat]),
-            },
-          },
-        });
-
-        map.addLayer({
-          id: `route-${id}`,
-          type: "line",
-          source: `route-${id}`,
-          layout: {
-            "line-join": "round",
-            "line-cap": "round",
-          },
-          paint: {
-            "line-color": colors[Math.floor(Math.random() * colors.length)], //#007cbf
-            "line-width": 4,
-          },
-        });
-
-
+        addIt(coordinates);
       })
       .catch(error => console.error('Error:', error));
-  })
+  });
 }
 
 function timeUntil(targetTime) {
@@ -2731,6 +2775,29 @@ document.getElementById('searchInSearch').addEventListener('input', function () 
 function searchInInput() {
   const lineIdToFind = document.getElementById("searchInSearch").value
   if (lineIdToFind.length < 2) {
+    if (previouslines) {
+      // Remove markers
+      markers_intel.forEach((marker) => marker.remove());
+      markers_intel = []; // Clear marker references
+  
+      // Remove layer and source
+      if (map.getLayer(`route-${previouslines}`)) {
+        map.removeLayer(`route-${previouslines}`);
+      }
+      if (map.getSource(`route-${previouslines}`)) {
+        map.removeSource(`route-${previouslines}`);
+      }
+      map.flyTo({
+        center: [parseFloat(myLoc[0]), parseFloat(myLoc[1])],
+        zoom: 16,
+        curve: 1,
+        offset: [0, -window.innerHeight / 4], // Adjust for vertical offset (e.g., header)
+        easing(t) {
+          return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        }
+      });
+    }
+
     document.getElementById("toSpawnFinds").querySelectorAll("*").forEach((elem) => {
       elem.classList.add("simple-fadeOut");
     });
@@ -2744,6 +2811,7 @@ function searchInInput() {
   matchingLines.forEach((bus, index) => {
     const delay = index * 0.1;
     if (shortMatches[0] === bus) {
+      spawnAndShowInfo(shortMatches[0].LineID, 'deleteAfter')
       document.getElementById("toSpawnFinds").innerHTML = `<div onclick="spawnAndShowInfo('${bus.LineID}', 'remain')" class="Block simple-fadeIn match" style="opacity:0;">
       <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M14.5 19.9815C16.0728 19.9415 17.1771 19.815 18 19.4151V20.9999C18 21.5522 17.5523 21.9999 17 21.9999H15.5C14.9477 21.9999 14.5 21.5522 14.5 20.9999V19.9815Z" fill="#FFF"></path>
