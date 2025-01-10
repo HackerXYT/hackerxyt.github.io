@@ -766,6 +766,7 @@
     /* Momentum scrolling for mobile */
     /*margin-left: -20px;
     margin-right: -20px;*/
+    border-radius: 20px;
 }
 
 .pinned-favorites::-webkit-scrollbar {
