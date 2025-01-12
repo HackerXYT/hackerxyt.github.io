@@ -21,6 +21,45 @@ document.getElementById('main-wrapper').addEventListener('scroll', () => {
   }
 });
 
+function countUpWithParallax(element) {
+  const text = element.innerText;
+  const chars = text.split(''); // Split the text into individual characters
+  const container = document.createElement('vox');
+  container.style.display = 'flex';
+  container.style.position = 'relative';
+
+  chars.forEach((char, index) => {
+    const charSpan = document.createElement('vo');
+    charSpan.innerText = char;
+    charSpan.style.position = 'relative';
+    charSpan.style.transform = 'translateY(0)';
+    charSpan.style.transition = 'transform 0.1s ease-in-out';
+    container.appendChild(charSpan);
+  });
+
+  element.innerText = '';
+  element.appendChild(container);
+
+  let startTime;
+
+  function animate(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const elapsed = timestamp - startTime;
+
+    const scrollY = window.scrollY || window.pageYOffset; // Current scroll position
+
+    chars.forEach((char, index) => {
+      const speed = (index + 1) * 0.5; // Modify speed based on index
+      const position = Math.sin(elapsed * 0.002 + index) * 5; // Simple oscillation effect
+      container.children[index].style.transform = `translateY(${scrollY * 0.05 + position}px)`;
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+}
+
 function openSearch() {
   // Change the background color of searchIntelli
   searchIntelli.style.backgroundColor = '#141416';
@@ -899,13 +938,14 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
         spawnIn = 'Άγνωστη'
       }
       // Create the HTML for the bus item
+      const tmp = `parallax-${randomString()}`
       const toSpawn = `
         <div class="item ${highlight} ${isPreload ? 'isPreloaded' : ''}">
-          <div class="busName">${busData.bus}</div>
+          <div class="busName glowUpGlobaltxt_title">${busData.bus}</div>
           <div class="info">
             <div class="text">
               <span>Επόμενη άφιξη</span>
-              <span>${spawnIn}</span>
+              <span id="${tmp}">${spawnIn}</span>
             </div>
           </div>
           <div class="fav-actions">
@@ -922,8 +962,11 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
           </div>
         </div>
       `;
+      
 
       Div.innerHTML += toSpawn;
+      //const counterDiv = document.getElementById(tmp);
+      //countUpWithParallax(counterDiv);
     });
   }
   if (type === 'frequent' || type === 'favorite' || type === 'famous') {
@@ -1491,7 +1534,7 @@ function processInfo(evoxId, type, addMore) {
               match: working,
               isLocal: isLocal
             }
-            timetableContent += `<div class="timeItem ${isLocal ? "isLocal" : ""}" onclick="showDetailedTime('${previous[0].time.replace(/<\/?vox>/g, "").replace(/ .*$/, "")}','previous' , '${result}')">
+            timetableContent += `<div class="fade-in-slide-up timeItem ${isLocal ? "isLocal" : ""}" onclick="showDetailedTime('${previous[0].time.replace(/<\/?vox>/g, "").replace(/ .*$/, "")}','previous' , '${result}')">
         <p>${result}</p>
         <div class="actions" style="display:flex;flex-direction: column;justify-content: center;align-items: flex-end;">
           <vox style="text-decoration: line-through;">${previous[0].time}</vox><span style='font-size: 0.9rem;margin-top:4px;'>${previous[0].formatted}</span>
@@ -1501,7 +1544,7 @@ function processInfo(evoxId, type, addMore) {
           remains.forEach(time => {
             document.getElementById("showMoreBusStart").style.display = null
             timetableContent += `
-      <div class="timeItem ${isLocal ? "isLocal" : ""}" onclick="showDetailedTime('${time.replace(/<\/?vox>/g, "").replace(/<\/?vox>/g, "").replace(/ .*$/, "")}','next')">
+      <div class="timeItem fade-in-slide-up ${isLocal ? "isLocal" : ""}" onclick="showDetailedTime('${time.replace(/<\/?vox>/g, "").replace(/<\/?vox>/g, "").replace(/ .*$/, "")}','next')">
       <p>${time}</p>
         <div class="actions">
           <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -1585,8 +1628,22 @@ function processInfo(evoxId, type, addMore) {
                                                 </div>
                                             </div>
                                             <div class="fav-actions">
-                                                <div class="button-action">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px"
+                                            <div id="start-schedo-station-${station.StopCode}" onclick="addInfinity('${busInfo.bus}', '${station.StopCode}', 'showUp')" style="display:none" class="button-action glowUpGBSM">
+                                                    <svg class="glowUpGlobaltxt_title" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15.5023 14.3674L20.5319 9.35289C21.2563 8.63072 21.6185 8.26963 21.8092 7.81046C22 7.3513 22 6.84065 22 5.81937V5.33146C22 3.76099 22 2.97576 21.5106 2.48788C21.0213 2 20.2337 2 18.6585 2H18.1691C17.1447 2 16.6325 2 16.172 2.19019C15.7114 2.38039 15.3493 2.74147 14.6249 3.46364L9.59522 8.47817C8.74882 9.32202 8.224 9.84526 8.02078 10.3506C7.95657 10.5103 7.92446 10.6682 7.92446 10.8339C7.92446 11.5238 8.48138 12.0791 9.59522 13.1896L9.74492 13.3388L11.4985 11.5591C11.7486 11.3053 12.1571 11.3022 12.4109 11.5523C12.6647 11.8024 12.6678 12.2109 12.4177 12.4647L10.6587 14.2499L10.7766 14.3674C11.8905 15.4779 12.4474 16.0331 13.1394 16.0331C13.2924 16.0331 13.4387 16.006 13.5858 15.9518C14.1048 15.7607 14.6345 15.2325 15.5023 14.3674ZM17.8652 8.47854C17.2127 9.12904 16.1548 9.12904 15.5024 8.47854C14.8499 7.82803 14.8499 6.77335 15.5024 6.12284C16.1548 5.47233 17.2127 5.47233 17.8652 6.12284C18.5177 6.77335 18.5177 7.82803 17.8652 8.47854Z" fill="#FFF"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M2.77409 12.4814C3.07033 12.778 3.07004 13.2586 2.77343 13.5548L2.61779 13.7103C2.48483 13.8431 2.48483 14.058 2.61779 14.1908C2.75125 14.3241 2.96801 14.3241 3.10147 14.1908L4.8136 12.4807C5.1102 12.1845 5.59079 12.1848 5.88704 12.4814C6.18328 12.778 6.18298 13.2586 5.88638 13.5548L4.17426 15.2648C3.4481 15.9901 2.27116 15.9901 1.545 15.2648C0.818334 14.5391 0.818333 13.362 1.545 12.6362L1.70065 12.4807C1.99725 12.1845 2.47784 12.1848 2.77409 12.4814ZM7.29719 16.696C7.5903 16.9957 7.58495 17.4762 7.28525 17.7693L5.55508 19.4614C5.25538 19.7545 4.77481 19.7491 4.48171 19.4494C4.1886 19.1497 4.19395 18.6692 4.49365 18.3761L6.22382 16.684C6.52352 16.3909 7.00409 16.3963 7.29719 16.696ZM11.4811 18.118C11.7774 18.4146 11.7771 18.8952 11.4805 19.1915L9.76834 20.9015C9.63539 21.0343 9.63539 21.2492 9.76834 21.382C9.9018 21.5153 10.1186 21.5153 10.252 21.382L10.4077 21.2265C10.7043 20.9303 11.1849 20.9306 11.4811 21.2272C11.7774 21.5238 11.7771 22.0044 11.4805 22.3006L11.3248 22.4561C10.5987 23.1813 9.42171 23.1813 8.69556 22.4561C7.96889 21.7303 7.96889 20.5532 8.69556 19.8274L10.4077 18.1174C10.7043 17.8211 11.1849 17.8214 11.4811 18.118Z" fill="#FFF"/>
+<g opacity="0.5">
+<path d="M10.8461 5.40925L8.65837 7.59037C8.25624 7.99126 7.88737 8.35901 7.59606 8.69145C7.40899 8.90494 7.22204 9.13861 7.06368 9.39679L7.04237 9.37554C7.00191 9.3352 6.98165 9.31501 6.96133 9.29529C6.58108 8.92635 6.1338 8.63301 5.64342 8.43097C5.61722 8.42018 5.59062 8.40964 5.53743 8.38856L5.2117 8.25949C4.77043 8.08464 4.65283 7.51659 4.9886 7.18184C5.95224 6.22112 7.10923 5.06765 7.6676 4.83597C8.16004 4.63166 8.692 4.56368 9.20505 4.6395C9.67514 4.70897 10.1198 4.95043 10.8461 5.40925Z" fill="#FFF"/>
+<path d="M14.5816 16.8934C14.7579 17.0723 14.8749 17.1987 14.9808 17.3337C15.1204 17.5119 15.2453 17.7012 15.3542 17.8996C15.4767 18.123 15.5718 18.3616 15.7621 18.8389C15.9169 19.2274 16.4315 19.3301 16.7303 19.0322L16.8026 18.9601C17.7662 17.9993 18.9232 16.8458 19.1556 16.2891C19.3605 15.7982 19.4287 15.2678 19.3526 14.7563C19.283 14.2877 19.0408 13.8444 18.5807 13.1205L16.3857 15.3089C15.9745 15.7189 15.5974 16.0949 15.2564 16.3894C15.052 16.5659 14.8284 16.7423 14.5816 16.8934Z" fill="#FFF"/>
+</g>
+<g opacity="0.5">
+<path d="M7.68621 14.5633C7.98263 14.2669 7.98263 13.7863 7.68621 13.4899C7.38979 13.1935 6.90919 13.1935 6.61277 13.4899L4.47036 15.6323C4.17394 15.9287 4.17394 16.4093 4.47036 16.7057C4.76679 17.0021 5.24738 17.0021 5.5438 16.7057L7.68621 14.5633Z" fill="#FFF"/>
+<path d="M10.4954 17.369C10.7918 17.0726 10.7918 16.592 10.4954 16.2956C10.1989 15.9992 9.71835 15.9992 9.42193 16.2956L7.29417 18.4233C6.99774 18.7198 6.99774 19.2003 7.29417 19.4968C7.59059 19.7932 8.07118 19.7932 8.36761 19.4968L10.4954 17.369Z" fill="#FFF"/>
+</g>
+</svg>
+                                                </div>
+                                                <div id="2min-schedo-station-${station.StopCode}" onclick="addInfinity('${busInfo.bus}', '${station.StopCode}', '2min')" class="button-action">
+                                                    <svg class="glowUpGlobaltxt_title" xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px"
                                                         height="20px" viewBox="-1 0 19 19" class="cf-icon-svg">
                                                         <path
                                                             d="M16.417 9.6A7.917 7.917 0 1 1 8.5 1.683 7.917 7.917 0 0 1 16.417 9.6zm-5.431 2.113H8.309l1.519-1.353q.223-.203.43-.412a2.974 2.974 0 0 0 .371-.449 2.105 2.105 0 0 0 .255-.523 2.037 2.037 0 0 0 .093-.635 1.89 1.89 0 0 0-.2-.889 1.853 1.853 0 0 0-.532-.63 2.295 2.295 0 0 0-.76-.37 3.226 3.226 0 0 0-.88-.12 2.854 2.854 0 0 0-.912.144 2.373 2.373 0 0 0-.764.42 2.31 2.31 0 0 0-.55.666 2.34 2.34 0 0 0-.274.89l1.491.204a1.234 1.234 0 0 1 .292-.717.893.893 0 0 1 1.227-.056.76.76 0 0 1 .222.568 1.002 1.002 0 0 1-.148.536 2.42 2.42 0 0 1-.389.472L6.244 11.77v1.295h4.742z">
@@ -1657,6 +1714,9 @@ function processInfo(evoxId, type, addMore) {
                     arrivals.forEach((stop, index) => {
                       const targets = document.querySelectorAll(`[id="station-${stop.StopCode}"]`);
 
+                      const twomins = document.querySelectorAll(`[id="2min-schedo-station-${stop.StopCode}"]`);
+                      const starts = document.querySelectorAll(`[id="start-schedo-station-${stop.StopCode}"]`);
+
                       let toSpawn = stop.time;
                       if (toSpawn === null) {
                         toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -1664,15 +1724,37 @@ function processInfo(evoxId, type, addMore) {
                 <path opacity="0.4" d="M21.9996 12.0001C21.9996 17.5201 17.5196 22.0001 11.9996 22.0001C10.0096 22.0001 8.15961 21.4201 6.59961 20.4001L20.3996 6.6001C21.4196 8.1601 21.9996 10.0101 21.9996 12.0001Z" fill="#fff"/>
                 <path d="M21.7709 2.22988C21.4709 1.92988 20.9809 1.92988 20.6809 2.22988L2.23086 20.6899C1.93086 20.9899 1.93086 21.4799 2.23086 21.7799C2.38086 21.9199 2.57086 21.9999 2.77086 21.9999C2.97086 21.9999 3.16086 21.9199 3.31086 21.7699L21.7709 3.30988C22.0809 3.00988 22.0809 2.52988 21.7709 2.22988Z" fill="#fff"/>
                 </svg>`;
+                        starts.forEach(target_single => {
+                          target_single.style.display = ''
+                        })
+                        twomins.forEach(target_single => {
+                          target_single.style.display = 'none'
+                        })
                       } else if (toSpawn === false) {
                         toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                 <path opacity="0.5" d="M22 19.2058V12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12V19.2058C2 20.4896 3.35098 21.3245 4.4992 20.7504C5.42726 20.2864 6.5328 20.3552 7.39614 20.9308C8.36736 21.5782 9.63264 21.5782 10.6039 20.9308L10.9565 20.6957C11.5884 20.2744 12.4116 20.2744 13.0435 20.6957L13.3961 20.9308C14.3674 21.5782 15.6326 21.5782 16.6039 20.9308C17.4672 20.3552 18.5727 20.2864 19.5008 20.7504C20.649 21.3245 22 20.4896 22 19.2058Z" fill="#fff"/>
                 <path d="M15 12C15.5523 12 16 11.3284 16 10.5C16 9.67157 15.5523 9 15 9C14.4477 9 14 9.67157 14 10.5C14 11.3284 14.4477 12 15 12Z" fill="#fff"/>
                 <path d="M10 10.5C10 11.3284 9.55228 12 9 12C8.44772 12 8 11.3284 8 10.5C8 9.67157 8.44772 9 9 9C9.55228 9 10 9.67157 10 10.5Z" fill="#fff"/>
                 </svg>`;
+                        starts.forEach(target_single => {
+                          target_single.style.display = ''
+                        })
+                        twomins.forEach(target_single => {
+                          target_single.style.display = 'none'
+                        })
                       } else if (toSpawn === "OASAERR") {
                         toSpawn = `Σφάλμα`;
+                        twomins.forEach(target_single => {
+                          target_single.style.display = 'none'
+                        })
                       } else {
+
+                        if (Number(stop.time) <= 2) {
+                          twomins.forEach(target_single => {
+                            target_single.style.display = 'none'
+                          })
+                        }
+
                         toSpawn += " λεπτά";
                       }
 
@@ -2573,7 +2655,7 @@ function showVerticalStations() {
   document.getElementById("stationsSpawnVertical").innerHTML = ''
   if (keepForVerticalStations) {
     keepForVerticalStations.stops.forEach(station => {
-      document.getElementById("stationsSpawnVertical").innerHTML += `<div class="timeItem" onclick="showStopDetails('${station.StopCode}', '${capitalizeWords(station.StopDescr)}')">
+      document.getElementById("stationsSpawnVertical").innerHTML += `<div class="timeItem fade-in-slide-up" onclick="showStopDetails('${station.StopCode}', '${capitalizeWords(station.StopDescr)}')">
                                         <p>${capitalizeWords(station.StopDescr)}</p>
                                         <div class="actions">
                                             <span id="timeFor-${station.StopCode}"><svg class="compassAnim" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
@@ -2669,6 +2751,92 @@ function returnFromStationsVertical() {
 
   setTimeout(function () { document.getElementById("busTimetable").style.display = 'block'; document.getElementById("busTimetable").classList.add('shown'); document.getElementById("busTimetable").classList.add('fade-in-slide-up') }, 200)
   setTimeout(function () { document.getElementById("busTimetable").classList.remove('fade-in-slide-up') }, 500)
+}
+
+function displayLocalStorage() {
+  const itemsContainer = document.getElementById('localStorageItems');
+  itemsContainer.innerHTML = ''; // Clear existing items
+
+  const keys = Object.keys(localStorage);
+  if (keys.length === 0) {
+      itemsContainer.textContent = 'No items in localStorage.';
+      return;
+  }
+
+  keys.forEach(key => {
+      const value = localStorage.getItem(key);
+      // Create item div
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'item';
+
+      // Key display
+      const keyDisplay = document.createElement('span');
+      keyDisplay.textContent = `${key}: `;
+      itemDiv.appendChild(keyDisplay);
+
+      // Editable value input
+      const valueInput = document.createElement('input');
+      valueInput.type = 'text';
+      valueInput.value = value;
+      itemDiv.appendChild(valueInput);
+
+      // Edit button
+      const editBtn = document.createElement('button');
+      editBtn.textContent = 'Edit';
+      editBtn.addEventListener('click', () => {
+          localStorage.setItem(key, valueInput.value);
+          displayLocalStorage(); // Refresh display
+          alert('Item edited successfully!');
+      });
+      itemDiv.appendChild(editBtn);
+
+      // Append item to container
+      itemsContainer.appendChild(itemDiv);
+  });
+}
+
+// Call display function on page load
+displayLocalStorage();
+
+// Add new item to localStorage
+document.getElementById('addItem').addEventListener('click', function() {
+  const newKey = document.getElementById('newKey').value.trim();
+  const newValue = document.getElementById('newValue').value.trim();
+
+  if (newKey && newValue) {
+      localStorage.setItem(newKey, newValue);
+      document.getElementById('newKey').value = '';
+      document.getElementById('newValue').value = '';
+      displayLocalStorage();
+      alert('Item added successfully!');
+  } else {
+      alert('Please enter both key and value.');
+  }
+});
+
+function convert2Txt() {
+  const value = document.getElementById("gotobaseNone").value;
+  
+  try {
+    if (!value) {
+      throw new Error("Input is empty. Please enter a Base64 encoded string.");
+    }
+
+    const new1 = atob(value);
+    alert(`Decoded: ${new1}`);
+  } catch (error) {
+    alert(`Error: ${error.message}`);
+  }
+}
+
+function convert2Base() {
+  const value = document.getElementById("gotobase64").value
+  try {
+    const new1 = btoa(value)
+    alert(`Encoded: ${new1}`)
+  } catch(error) {
+    alert(error)
+  }
 }
 
 function showStopDetails(stopCode, stopName) {
@@ -2878,4 +3046,106 @@ function searchInInput() {
 
   })
   document.getElementById('toSpawnFinds').classList.remove('hidden');
+}
+
+function getNearestMatch(descr, routeDescrs) {
+  let closestMatch = null;
+  let closestDistance = Infinity;
+
+  routeDescrs.forEach(description => {
+    const distance = levenshteinDistance(descr, description);
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closestMatch = description;
+    }
+  });
+
+  return closestMatch;
+}
+
+// Simple Levenshtein Distance function
+function levenshteinDistance(a, b) {
+  const matrix = [];
+
+  for (let i = 0; i <= a.length; i++) {
+    matrix[i] = [i];
+  }
+
+  for (let j = 0; j <= b.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      if (a[i - 1] === b[j - 1]) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j] + 1,     // deletion
+          matrix[i][j - 1] + 1,     // insertion
+          matrix[i - 1][j - 1] + 1  // substitution
+        );
+      }
+    }
+  }
+
+  return matrix[a.length][b.length];
+}
+
+function addInfinity(busLineId, stationCode, type) {
+  const toFindRouteCode = evoxIds[activeEvoxId]
+  const linesSearch = fullLine.filter(item => item.LineID === busLineId);
+  let routeCode = null
+  linesSearch.forEach(line => {
+    const lineCode = line.LineCode;
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutes&p1=${lineCode}&keyOrigin=evoxEpsilon`)}`)
+      .then(response => response.json())
+      .then(routes => {
+        console.log(routes);
+        if (routes) {
+          let matched = false;
+          const toFindRouteDescr = toFindRouteCode.descr;
+          const routeDescrs = routes.map(route => route.RouteDescr);
+
+          routes.forEach(route => {
+            const nearestMatchDescr = getNearestMatch(toFindRouteDescr, routeDescrs);
+            if (route.RouteDescr === nearestMatchDescr) {
+              console.log(route.RouteCode, route.RouteDescr);
+              routeCode = route.RouteCode
+              matched = true;
+              // You can uncomment this if you want to stop after finding the match
+              // return;
+            }
+          });
+
+          if (!matched) {
+            alert("Σφάλμα εύρεσης της γραμμής.")
+            //console.log("No matching route found.");
+            return;
+          } else {
+            console.log("OKAY")
+            if (type === 'showUp' || type === '2min') {
+              if (localStorage.getItem("extVOASA")) {
+                fetch(`https://florida.evoxs.xyz/liveNotif?username=${localStorage.getItem("t50-username")}&deviceId=${localStorage.getItem("extVOASA")}&busId=${busLineId}&stationCode=${stationCode}&routeCode=${routeCode}&origin=resign${type === '2min' ? "&method=2minutes" : ''}`) //&method=2minutes
+                  .then(response => response.text())
+                  .then(data => {
+                    console.log("SchedoInfi:", data)
+                    //set
+                  })
+                  .catch(error => {
+                    console.error("Failed to check for updates")
+                  })
+              }
+
+            }
+          }
+        }
+      })
+      .catch(error => {
+        console.error("Failed to check for updates");
+      });
+  });
+
+
+
 }

@@ -1032,6 +1032,7 @@
     z-index: 5;
     margin-left: -5px;
     padding-right: -10px;
+    border-radius: 20px;
 
 }
 
@@ -2028,4 +2029,149 @@ body {
 
 .toggle-switch.dark .toggle-input:checked+.toggle-label::before {
     transform: translateX(16px);
+}
+
+@keyframes glowUpGlobalSM {
+    from {
+        opacity: 0;
+        transform: scale(1.2);
+        box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff0000, 0 0 20px #e6e6e6;
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: none;
+    }
+}
+
+.glowUpGBSM {
+    display: inline-block;  /* Ensure divs are visible and can animate */
+    animation: glowUpGlobalSM 1s ease forwards;
+}
+
+@keyframes glowUpGlobaltxt_title {
+    from {
+        opacity: 0;
+        transform: scale(1.1);
+        font-size: 40px; /* Example adjustment */
+        font-weight: bold;
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff0000, 0 0 20px #e6e6e6;
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+        font-size: 38px; /* Restore original font size */
+        font-weight: inherit;
+        text-shadow: none;
+    }
+}
+
+.glowUpGlobaltxt_title {
+    animation: glowUpGlobaltxt_title 1s ease forwards;
+}
+
+#busInfoDesc {
+    margin-bottom: 20px;
+}
+
+.full-width-line {
+    position: relative;
+    width: 120%;
+    box-sizing: border-box; /* Ensures padding doesn't reduce the width */
+    height: 2px; /* Adjust the thickness of the line */
+    background-color: rgba(255, 255, 255, 0.243); /* Color of the line */
+    margin-left: -30px;
+    padding: 0;
+    border-radius: 20px;
+}
+.storage-editor {
+    background-color: #121212; /* Darker base for a modern Apple style */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    max-width: 600px;
+    margin: 0 auto;
+    color: #ffffff; /* Default text color */
+}
+
+.storage-editor label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #e0e0e0;
+}
+
+.storage-editor .items {
+    background-color: #1e1e1e;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 6px;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.storage-editor .item {
+    display: flex;
+    justify-content: space-between;
+    background-color: #2e2e2e;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #333;
+    border-radius: 6px;
+    align-items: center;
+}
+
+.storage-editor .item input[type="text"] {
+    width: 60%;
+    padding: 8px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+.storage-editor .item button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.storage-editor .item button:hover {
+    background-color: #0056b3;
+}
+
+.storage-editor .add-item {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.storage-editor .add-item input[type="text"] {
+    width: 40%;
+    padding: 8px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+.storage-editor .add-item button {
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.storage-editor .add-item button:hover {
+    background-color: #218838;
 }

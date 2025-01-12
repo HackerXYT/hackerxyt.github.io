@@ -3901,8 +3901,9 @@
 
                             </div>
                             <div class="busInfo">
-                                <p id="busInfoID">831</p>
+                                <p id="busInfoID" class="glowUpGlobaltxt_title">831</p>
                                 <span id="busInfoDesc">PEIRAIS- BLA</span>
+                                <div class="full-width-line"></div>
                                 <div id="busInfoDaySelector" class="busInfoSelector">
 
                                 </div>
@@ -4565,6 +4566,24 @@
                                 </div>
                             </div>
 
+                        </div>
+                        <div class="storage-editor">
+                            <h2>Επεξεργασία δεδομένων</h2>
+                            <div class="items" id="localStorageItems"></div>
+                    
+                            <div class="add-item">
+                                <input type="text" id="newKey" placeholder="Όνομα">
+                                <input type="text" id="newValue" placeholder="Περιεχόμενα">
+                                <button id="addItem">Προσθήκη</button>
+                            </div>
+                            <div class="add-item">
+                                <input style="width: 100%;" type="text" id="gotobase64" placeholder="Κείμενο -> base64">
+                                <button onclick="convert2Base()">ok</button>
+                            </div>
+                            <div class="add-item">
+                                <input style="width: 100%;" type="text" id="gotobaseNone" placeholder="Base64 -> κείμενο">
+                                <button onclick="convert2Txt()">ok</button>
+                            </div>
                         </div>
                     </div>
 
