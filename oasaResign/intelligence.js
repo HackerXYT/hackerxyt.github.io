@@ -3,7 +3,8 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-
+const currentVersion = '2.0.4'
+localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
 
 
@@ -306,7 +307,7 @@ let map;
 
 function spawnBlocks(currentLocation) {
   if (!currentLocation || currentLocation.length !== 2 || isNaN(currentLocation[0]) || isNaN(currentLocation[1])) {
-    console.error('Invalid location data for spawning blocks:', currentLocation);
+    console.warn('Invalid location data for spawning blocks:', currentLocation);
     return;
   }
 
@@ -916,8 +917,8 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
     Div.innerHTML = ''; // Clear current content
     selectedSection.forEach((busData, index) => {
       let highlight = '';
-      if (busData === selectedSection[0]) {
-        highlight = 'favorite'; // Highlight the first bus
+      if (busData === selectedSection[0] && section === 'frequent') {
+        highlight = 'favorite'; // Highlight the first bus as the shortest time remaining
       }
 
       // Generate unique ID for this bus data
@@ -951,7 +952,7 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
           <div class="fav-actions">
             <div onclick="processInfo('${evoxId}', 'getTimes')" class="button-action important">
               <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.8321 14.5547C15.5257 15.0142 14.9048 15.1384 14.4453 14.8321L11.8451 13.0986C11.3171 12.7466 11 12.1541 11 11.5196L11 11.5L11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7L13 11.4648L15.5547 13.1679C16.0142 13.4743 16.1384 14.0952 15.8321 14.5547Z" fill="#fff" />
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.8321 14.5547C15.5257 15.0142 14.9048 15.1384 14.4453 14.8321L11.8451 13.0986C11.3171 12.7466 11 12.1541 11 11.5196L11 11.5L11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7L13 11.4648L15.5547 13.1679C16.0142 13.4743 16.1384 14.0952 15.8321 14.5547Z" fill="${busData === selectedSection[0] && section !== 'frequent' ? "#3557fd" : "#fff"}" />
               </svg>
             </div>
             <div onclick="processInfo('${evoxId}', 'showBusInfo')" class="button-action">
@@ -962,7 +963,7 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
           </div>
         </div>
       `;
-      
+
 
       Div.innerHTML += toSpawn;
       //const counterDiv = document.getElementById(tmp);
@@ -985,6 +986,10 @@ function displayHello() {
     span.style.animationDelay = `${index * 0.4}s`;  // Add delay based on index
     helloElement.appendChild(span);
   });
+}
+
+function hasInternetConnection() {
+  return navigator.onLine; // Returns true if online, false if offline
 }
 
 function goBackToSplash() {
@@ -1028,6 +1033,121 @@ function isNearEvery3Hours(proximityInMinutes = 5) {
 
   // Return true if the time is within the proximity
   return diffInMinutes <= proximityInMinutes;
+}
+
+function runTest() {
+  document.getElementById("searchIntelli").classList.add("notLoaded")
+  document.getElementById("update-center").classList.add("active")
+}
+// Utility functions for UI updates
+const setLoadingState = (isLoading) => {
+  const searchIntelli = document.getElementById("searchIntelli");
+  const updateCenter = document.getElementById("update-center");
+  if (isLoading) {
+    searchIntelli?.classList.add("notLoaded");
+    updateCenter?.classList.add("active");
+  } else {
+    searchIntelli?.classList.remove("notLoaded");
+    updateCenter?.classList.remove("active");
+  }
+};
+
+function registerPWA() {
+  if (!hasInternetConnection()) {
+    console.log("No internet connection. PWA registration skipped.");
+    return;
+  }
+
+  if (!('serviceWorker' in navigator && 'PushManager' in window)) {
+    console.log("Service Worker or Push Manager not supported.");
+    return;
+  }
+
+
+
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("./resign-sw.js")
+      .then((registration) => {
+        console.log("Service Worker registered with scope:", registration.scope);
+        
+
+        // Listen for updates to the service worker
+        registration.onupdatefound = () => {
+          const installingWorker = registration.installing;
+          if (installingWorker) {
+            installingWorker.onstatechange = () => {
+              if (installingWorker.state === "installed") {
+                if (navigator.serviceWorker.controller) {
+                  console.log("New update available.");
+                  setLoadingState(false);
+                  // Notify the user about the update
+                  //showUpdateNotification();
+                } else {
+                  console.log("Content cached for offline use.");
+                  setLoadingState(false);
+                }
+              }
+            };
+          }
+        };
+
+        setupServiceWorkerMessaging();
+        fetch(`z-oasa-current-version.evox`)
+          .then(response => response.json())
+          .then(data => {
+            if(data.current !== currentVersion) {
+              updateServiceWorkerCache()
+            }
+          })
+          .catch(error => {
+            alert("Failed to check for updates..")
+          })
+      })
+      .catch((error) => {
+        console.error("Service Worker registration failed:", error);
+      });
+  });
+}
+
+// Show update notification to the user
+function showUpdateNotification() {
+  // Customize this to fit your app's UI
+  alert("A new update is available! Refresh the page to apply the update.");
+}
+
+function updateServiceWorkerCache() {
+  if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({
+          action: 'UPDATE_CACHE'
+      });
+  } else {
+      console.log('No active service worker found.');
+  }
+}
+
+// Set up messaging between the page and the service worker
+function setupServiceWorkerMessaging() {
+  navigator.serviceWorker.ready
+    .then((registration) => {
+      navigator.serviceWorker.addEventListener("message", (event) => {
+        if (event.data) {
+          switch (event.data.action) {
+            case "CACHE_UPDATE_STARTED":
+              console.log("Cache update started.");
+              setLoadingState(true);
+              break;
+            case "CACHE_UPDATE_COMPLETED":
+              console.log("Cache update completed.");
+              setLoadingState(false);
+              break;
+          }
+        }
+      });
+    })
+    .catch((error) => {
+      console.error("Failed to set up service worker messaging:", error);
+    });
 }
 
 
@@ -1074,11 +1194,19 @@ document.addEventListener('DOMContentLoaded', () => {
     //console.log(`Email: ${userData.email}`);
   }
 
-  if (localStorage.getItem("t50-username") && localStorage.getItem("t50-email") && localStorage.getItem("t50pswd")) {
+  if (localStorage.getItem("t50-username") && localStorage.getItem("t50-email") && localStorage.getItem("t50pswd") || localStorage.getItem("t50-username") && localStorage.getItem("t50-email") && localStorage.getItem("t50-pswd")) {
     getReady()
+    registerPWA()
     //document.getElementById("profilePic").src = "https://www.gravatar.com/avatar/" + md5(localStorage.getItem("t50-email")) + "?d=identicon";
 
-    document.getElementById("oasaPfp").src = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${localStorage.getItem("t50-username")}`
+    if(hasInternetConnection()) {
+      document.getElementById("oasaPfp").src = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${localStorage.getItem("t50-username")}&v=${randomString()}`
+    } else {
+      document.getElementById("oasaPfp").src = 'apple.png'
+    }
+    
+    
+
   } else {
 
     document.getElementById("oasaPfp").src = 'cbimage.png'
@@ -1230,7 +1358,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //alert(`Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.`)
         document.getElementById("performance").style.display = 'flex'
         document.getElementById("messagePerformance").innerHTML = 'Μερική Διακοπή'
-        document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentBuild}`
+        document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentVersion}`
 
         document.getElementById("spawnHere").innerHTML = 'Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.'
         document.getElementById("logErrors").innerHTML = `Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.`
@@ -1238,7 +1366,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //alert(`Δεν ηταν δυνατη η συνδεση στον διακομιστη.\nΑγνωστο σφαλμα`)
         document.getElementById("performance").style.display = 'flex'
         document.getElementById("messagePerformance").innerHTML = 'Σοβαρό περιστατικό'
-        document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentBuild}`
+        document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentVersion}`
 
         document.getElementById("spawnHere").innerHTML = 'Δεν ηταν δυνατη η συνδεση στον διακομιστη.<br>Αγνωστο σφαλμα'
         document.getElementById("logErrors").innerHTML = `Δεν ηταν δυνατη η συνδεση στον διακομιστη.<br>Αγνωστο σφαλμα<br>${error}`
@@ -1246,7 +1374,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (error.toString().includes('Unexpected token')) {
         //alert("OASA SQL error. Δοκιμάστε ξανά.")
         document.getElementById("performance").style.display = 'flex'
-        document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentBuild}`
+        document.getElementById("italicBuild").innerHTML = `Evox© OASAP V${currentVersion}`
         document.getElementById("messagePerformance").innerHTML = 'Σφάλμα OASA'
         document.getElementById("spawnHere").innerHTML = "OASA SQL error. Δοκιμάστε ξανά."
         document.getElementById("logErrors").innerHTML = `Σφάλμα από την πλευρά του OASA [SQL].<br>Επανεκκινήστε την εφαρμογή.<br>${error}`
@@ -1291,12 +1419,22 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
 
 // Filter function to find locations within a certain radius
 function filterNearbyLocations(myloc, locations, radius) {
-  console.log('near1', locations)
-  const distance = haversineDistance(myloc[1], myloc[0], locations[1], locations[0]);
-  console.log("NEARBY", distance, radius)
-  return distance <= radius;
-}
+  if (!locations || !Array.isArray(locations) || locations.length < 2) {
+    console.error('Invalid locations data:', locations);
+    return false;
+  }
 
+  try {
+    const distance = haversineDistance(myloc[1], myloc[0], locations[1], locations[0]);
+    console.log("NEARBY", distance, radius);
+    return distance <= radius;
+  } catch (error) {
+    console.warn(error)
+    return true;
+  }
+
+
+}
 function isPreviousNearby(currentLocation) {
   const previousLocation = localStorage.getItem('previousLocation');
   if (previousLocation) {
@@ -1534,7 +1672,7 @@ function processInfo(evoxId, type, addMore) {
               match: working,
               isLocal: isLocal
             }
-            timetableContent += `<div class="fade-in-slide-up timeItem ${isLocal ? "isLocal" : ""}" onclick="showDetailedTime('${previous[0].time.replace(/<\/?vox>/g, "").replace(/ .*$/, "")}','previous' , '${result}')">
+            timetableContent += `<div class="previous fade-in-slide-up timeItem ${isLocal ? "isLocal" : ""}" onclick="showDetailedTime('${previous[0].time.replace(/<\/?vox>/g, "").replace(/ .*$/, "")}','previous' , '${result}')">
         <p>${result}</p>
         <div class="actions" style="display:flex;flex-direction: column;justify-content: center;align-items: flex-end;">
           <vox style="text-decoration: line-through;">${previous[0].time}</vox><span style='font-size: 0.9rem;margin-top:4px;'>${previous[0].formatted}</span>
@@ -1612,7 +1750,7 @@ function processInfo(evoxId, type, addMore) {
             container.innerHTML = ''
 
             stations.forEach((station, index) => {
-              container.innerHTML += `<div class="item">
+              container.innerHTML += `<div class="item" id="global-station-${station.StopCode}">
                                             <div class="stationName">${capitalizeWords(station.StopDescr)}</div>
                                             <div class="info">
                                                 <div class="text">
@@ -1688,27 +1826,31 @@ function processInfo(evoxId, type, addMore) {
                   const leastTime = arrivals.filter(item => item.time !== false && item.time !== null).sort((a, b) => a.time - b.time);
 
                   if (leastTime[0]) {
-                    document.getElementById("stationsSpawnInner").innerHTML = `<div class="item minimum">
-                                            <div class="stationName">Ζωντανή τοποθεσία</div>
-                                            <div class="info">
-                                                <div class="text">
-                                                    <span>${capitalizeWords(leastTime[0].StopDescr)}</span>
-                                                    <span id="station-minimum">σε ${leastTime[0].time} λεπτά</span>
-                                                </div>
-                                            </div>
-                                            <div class="fav-actions">
-                                                <div class="button-action">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px"
-                                                        height="20px" viewBox="-1 0 19 19" class="cf-icon-svg">
-                                                        <path
-                                                            d="M16.417 9.6A7.917 7.917 0 1 1 8.5 1.683 7.917 7.917 0 0 1 16.417 9.6zm-5.431 2.113H8.309l1.519-1.353q.223-.203.43-.412a2.974 2.974 0 0 0 .371-.449 2.105 2.105 0 0 0 .255-.523 2.037 2.037 0 0 0 .093-.635 1.89 1.89 0 0 0-.2-.889 1.853 1.853 0 0 0-.532-.63 2.295 2.295 0 0 0-.76-.37 3.226 3.226 0 0 0-.88-.12 2.854 2.854 0 0 0-.912.144 2.373 2.373 0 0 0-.764.42 2.31 2.31 0 0 0-.55.666 2.34 2.34 0 0 0-.274.89l1.491.204a1.234 1.234 0 0 1 .292-.717.893.893 0 0 1 1.227-.056.76.76 0 0 1 .222.568 1.002 1.002 0 0 1-.148.536 2.42 2.42 0 0 1-.389.472L6.244 11.77v1.295h4.742z">
-                                                        </path>
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        ${document.getElementById("stationsSpawnInner").innerHTML}
-                  `;
+                    const targets = document.querySelectorAll(`[id="global-station-${leastTime[0].StopCode}"]`);
+                    targets.forEach((stopa) => {
+                      stopa.classList.add("minimum")
+                    })
+                    //document.getElementById("stationsSpawnInner").innerHTML = `<div class="item minimum">
+                    //                        <div class="stationName">Ζωντανή τοποθεσία</div>
+                    //                        <div class="info">
+                    //                            <div class="text">
+                    //                                <span>${capitalizeWords(leastTime[0].StopDescr)}</span>
+                    //                                <span id="station-minimum">σε ${leastTime[0].time} λεπτά</span>
+                    //                            </div>
+                    //                        </div>
+                    //                        <div class="fav-actions">
+                    //                            <div class="button-action">
+                    //                                <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px"
+                    //                                    height="20px" viewBox="-1 0 19 19" class="cf-icon-svg">
+                    //                                    <path
+                    //                                        d="M16.417 9.6A7.917 7.917 0 1 1 8.5 1.683 7.917 7.917 0 0 1 16.417 9.6zm-5.431 2.113H8.309l1.519-1.353q.223-.203.43-.412a2.974 2.974 0 0 0 .371-.449 2.105 2.105 0 0 0 .255-.523 2.037 2.037 0 0 0 .093-.635 1.89 1.89 0 0 0-.2-.889 1.853 1.853 0 0 0-.532-.63 2.295 2.295 0 0 0-.76-.37 3.226 3.226 0 0 0-.88-.12 2.854 2.854 0 0 0-.912.144 2.373 2.373 0 0 0-.764.42 2.31 2.31 0 0 0-.55.666 2.34 2.34 0 0 0-.274.89l1.491.204a1.234 1.234 0 0 1 .292-.717.893.893 0 0 1 1.227-.056.76.76 0 0 1 .222.568 1.002 1.002 0 0 1-.148.536 2.42 2.42 0 0 1-.389.472L6.244 11.77v1.295h4.742z">
+                    //                                    </path>
+                    //                                </svg>
+                    //                            </div>
+                    //                        </div>
+                    //                    </div>
+                    //                    ${document.getElementById("stationsSpawnInner").innerHTML}
+                    //`;
                   }
                   const promise = new Promise((resolve) => {
                     arrivals.forEach((stop, index) => {
@@ -2655,7 +2797,7 @@ function showVerticalStations() {
   document.getElementById("stationsSpawnVertical").innerHTML = ''
   if (keepForVerticalStations) {
     keepForVerticalStations.stops.forEach(station => {
-      document.getElementById("stationsSpawnVertical").innerHTML += `<div class="timeItem fade-in-slide-up" onclick="showStopDetails('${station.StopCode}', '${capitalizeWords(station.StopDescr)}')">
+      document.getElementById("stationsSpawnVertical").innerHTML += `<div id="global-vertical-station-${station.StopCode}" class="timeItem fade-in-slide-up" onclick="showStopDetails('${station.StopCode}', '${capitalizeWords(station.StopDescr)}')">
                                         <p>${capitalizeWords(station.StopDescr)}</p>
                                         <div class="actions">
                                             <span id="timeFor-${station.StopCode}"><svg class="compassAnim" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
@@ -2683,16 +2825,7 @@ function showVerticalStations() {
         const leastTime = arrivals.filter(item => item.time !== false && item.time !== null).sort((a, b) => a.time - b.time);
 
         if (leastTime[0]) {
-          document.getElementById("stationsSpawnVertical").innerHTML = `
-                    <div class="timeItem">
-                                        <p>Τοποθεσία</p>
-                                        <div class="actions">
-                                            <span>${capitalizeWords(leastTime[0].StopDescr)}</span><svg style="transform: rotate(180deg);margin-left:5px;" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-<path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#fff"></path>
-</svg>
-                                        </div>
-                                    </div>
-                                        ${document.getElementById("stationsSpawnVertical").innerHTML}`;
+          document.getElementById(`global-vertical-station-${leastTime[0].StopCode}`).classList.add("currentLocation")
         }
         const promise = new Promise((resolve) => {
           arrivals.forEach((stop, index) => {
@@ -2759,39 +2892,39 @@ function displayLocalStorage() {
 
   const keys = Object.keys(localStorage);
   if (keys.length === 0) {
-      itemsContainer.textContent = 'No items in localStorage.';
-      return;
+    itemsContainer.textContent = 'No items in localStorage.';
+    return;
   }
 
   keys.forEach(key => {
-      const value = localStorage.getItem(key);
-      // Create item div
-      const itemDiv = document.createElement('div');
-      itemDiv.className = 'item';
+    const value = localStorage.getItem(key);
+    // Create item div
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'item';
 
-      // Key display
-      const keyDisplay = document.createElement('span');
-      keyDisplay.textContent = `${key}: `;
-      itemDiv.appendChild(keyDisplay);
+    // Key display
+    const keyDisplay = document.createElement('span');
+    keyDisplay.textContent = `${key}: `;
+    itemDiv.appendChild(keyDisplay);
 
-      // Editable value input
-      const valueInput = document.createElement('input');
-      valueInput.type = 'text';
-      valueInput.value = value;
-      itemDiv.appendChild(valueInput);
+    // Editable value input
+    const valueInput = document.createElement('input');
+    valueInput.type = 'text';
+    valueInput.value = value;
+    itemDiv.appendChild(valueInput);
 
-      // Edit button
-      const editBtn = document.createElement('button');
-      editBtn.textContent = 'Edit';
-      editBtn.addEventListener('click', () => {
-          localStorage.setItem(key, valueInput.value);
-          displayLocalStorage(); // Refresh display
-          alert('Item edited successfully!');
-      });
-      itemDiv.appendChild(editBtn);
+    // Edit button
+    const editBtn = document.createElement('button');
+    editBtn.textContent = 'Edit';
+    editBtn.addEventListener('click', () => {
+      localStorage.setItem(key, valueInput.value);
+      displayLocalStorage(); // Refresh display
+      alert('Item edited successfully!');
+    });
+    itemDiv.appendChild(editBtn);
 
-      // Append item to container
-      itemsContainer.appendChild(itemDiv);
+    // Append item to container
+    itemsContainer.appendChild(itemDiv);
   });
 }
 
@@ -2799,24 +2932,24 @@ function displayLocalStorage() {
 displayLocalStorage();
 
 // Add new item to localStorage
-document.getElementById('addItem').addEventListener('click', function() {
+document.getElementById('addItem').addEventListener('click', function () {
   const newKey = document.getElementById('newKey').value.trim();
   const newValue = document.getElementById('newValue').value.trim();
 
   if (newKey && newValue) {
-      localStorage.setItem(newKey, newValue);
-      document.getElementById('newKey').value = '';
-      document.getElementById('newValue').value = '';
-      displayLocalStorage();
-      alert('Item added successfully!');
+    localStorage.setItem(newKey, newValue);
+    document.getElementById('newKey').value = '';
+    document.getElementById('newValue').value = '';
+    displayLocalStorage();
+    alert('Item added successfully!');
   } else {
-      alert('Please enter both key and value.');
+    alert('Please enter both key and value.');
   }
 });
 
 function convert2Txt() {
   const value = document.getElementById("gotobaseNone").value;
-  
+
   try {
     if (!value) {
       throw new Error("Input is empty. Please enter a Base64 encoded string.");
@@ -2834,7 +2967,7 @@ function convert2Base() {
   try {
     const new1 = btoa(value)
     alert(`Encoded: ${new1}`)
-  } catch(error) {
+  } catch (error) {
     alert(error)
   }
 }
