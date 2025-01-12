@@ -217,17 +217,25 @@
     -webkit-overflow-scrolling: touch;
     z-index: 5;
     margin-left: 15px;
-    opacity: 1; /* Fully visible by default */
-    visibility: visible; /* Element is visible */
-    transition: opacity 0.5s ease-in-out, visibility 0s 0.5s; /* Fade and delay visibility change */
+    opacity: 1;
+    /* Fully visible by default */
+    visibility: visible;
+    /* Element is visible */
+    transition: opacity 0.5s ease-in-out, visibility 0s 0.5s;
+    /* Fade and delay visibility change */
 }
 
 .topSearch.recommend.hidden {
-    opacity: 0; /* Fully transparent */
-    visibility: hidden; /* Element is hidden but still occupies space */
-    pointer-events: none; /* Prevent interaction */
-    transition: opacity 0.5s ease-in-out, visibility 0s 0s; /* Hide immediately after opacity transition */
-    display: none; /* Prevents element from taking up space */
+    opacity: 0;
+    /* Fully transparent */
+    visibility: hidden;
+    /* Element is hidden but still occupies space */
+    pointer-events: none;
+    /* Prevent interaction */
+    transition: opacity 0.5s ease-in-out, visibility 0s 0s;
+    /* Hide immediately after opacity transition */
+    display: none;
+    /* Prevents element from taking up space */
 }
 
 .topSearch.recommend::-webkit-scrollbar {
@@ -533,6 +541,7 @@
     transition: transform 0.3s ease, margin-top 0.3s ease, opacity 0.3s ease, visibility 0s;
     margin-top: 0;
     opacity: 0;
+    overflow-x: hidden;
     visibility: hidden;
     display: none;
 }
@@ -542,6 +551,38 @@
     opacity: 1;
     /* Ensure it's visible by default */
     visibility: visible;
+}
+
+:root {
+    --randomFactor: calc(var(--randomFactorMin, 0) + var(--randomFactorMax, 1));
+}
+
+@keyframes randomRotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(calc(360deg * var(--randomFactor)));
+    }
+}
+
+
+@keyframes pulse {
+    0% {
+        transform: scale(1.10);
+        fill: #f83636a4;
+    }
+
+    70% {
+        transform: scale(1);
+        fill: #ffffffa4;
+    }
+
+    100% {
+        transform: scale(1.10);
+        fill: #f83636a4;
+    }
 }
 
 
@@ -1017,6 +1058,7 @@
     margin: 0;
     font-size: 25px;
 }
+
 .timetableItem .busInfo span {
     /*description*/
     margin-top: 5px;
@@ -1113,6 +1155,7 @@
     margin-bottom: 10px;
     min-height: 40px;
 }
+
 .timeItem.forCheckboxes.disabled {
     opacity: 0.3;
     pointer-events: none;
@@ -2046,7 +2089,8 @@ body {
 }
 
 .glowUpGBSM {
-    display: inline-block;  /* Ensure divs are visible and can animate */
+    display: inline-block;
+    /* Ensure divs are visible and can animate */
     animation: glowUpGlobalSM 1s ease forwards;
 }
 
@@ -2054,7 +2098,8 @@ body {
     from {
         opacity: 0;
         transform: scale(1.1);
-        font-size: 40px; /* Example adjustment */
+        font-size: 40px;
+        /* Example adjustment */
         font-weight: bold;
         text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ff0000, 0 0 20px #e6e6e6;
     }
@@ -2062,7 +2107,8 @@ body {
     to {
         opacity: 1;
         transform: scale(1);
-        font-size: 38px; /* Restore original font size */
+        font-size: 38px;
+        /* Restore original font size */
         font-weight: inherit;
         text-shadow: none;
     }
@@ -2079,21 +2125,27 @@ body {
 .full-width-line {
     position: relative;
     width: 120%;
-    box-sizing: border-box; /* Ensures padding doesn't reduce the width */
-    height: 2px; /* Adjust the thickness of the line */
-    background-color: rgba(255, 255, 255, 0.243); /* Color of the line */
+    box-sizing: border-box;
+    /* Ensures padding doesn't reduce the width */
+    height: 2px;
+    /* Adjust the thickness of the line */
+    background-color: rgba(255, 255, 255, 0.243);
+    /* Color of the line */
     margin-left: -30px;
     padding: 0;
     border-radius: 20px;
 }
+
 .storage-editor {
-    background-color: #121212; /* Darker base for a modern Apple style */
+    background-color: #121212;
+    /* Darker base for a modern Apple style */
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     max-width: 600px;
     margin: 0 auto;
-    color: #ffffff; /* Default text color */
+    color: #ffffff;
+    /* Default text color */
 }
 
 .storage-editor label {
