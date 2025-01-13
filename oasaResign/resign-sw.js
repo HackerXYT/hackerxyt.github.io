@@ -13,8 +13,8 @@ self.addEventListener('notificationclick', function (event) {
   );
 });
 
-const STATIC_CACHE_NAME = 'static-cache-v58';
-const APP_CACHE_NAME = 'app-cache-v58';
+const STATIC_CACHE_NAME = 'static-cache-v69';
+const APP_CACHE_NAME = 'app-cache-v69';
 const CACHE_STATIC = [
   '/oasaResign/',
   '/oasaResign/index.html',
@@ -188,6 +188,18 @@ self.addEventListener('activate', event => {
   );
 });
 
+async function addResourcesToCache(cache, resources) {
+  const addPromises = resources.map(async (resource) => {
+    try {
+      await cache.add(resource);
+      console.log(`Resource added to cache: ${resource}`);
+    } catch (error) {
+      console.error(`Failed to add resource to cache: ${resource}`, error);
+    }
+  });
+  await Promise.all(addPromises);
+}
+
 async function updateCache() {
   const cacheNames = await caches.keys();
   const oldCaches = cacheNames.filter(cacheName => cacheName !== STATIC_CACHE_NAME && cacheName !== APP_CACHE_NAME);
@@ -225,21 +237,89 @@ async function updateCache() {
 }
 
 // Fetch event: Serve cached content when offline and update cache with network responses
+//self.addEventListener('fetch', event => {
+//  // Filter out requests with unsupported schemes
+//  if (event.request.url.startsWith('chrome-extension:')) {
+//    // Skip caching requests with unsupported schemes
+//    return;
+//  }
+//
+//  const url = new URL(event.request.url);
+//  if (url.pathname.startsWith('/evox-epsilon-beta/Home/dist/')) {
+//    return; // Skip handling requests to this path
+//  }
+//
+//  //console.warn("PATH!", url.pathname)
+//  if (url.pathname.startsWith('/events/v2') || url.pathname.startsWith('/fonts/v1/mapbox') || url.pathname.startsWith('/map-sessions/v1')) {
+//    return; // Skip handling requests to this path
+//  }
+//
+//  event.respondWith(
+//    caches.match(event.request).then(response => {
+//      if (response) {
+//        return response; // Cache hit - return the cached response
+//      }
+//
+//      // Fetch from the network and update the cache
+//      return fetch(event.request).then(networkResponse => {
+//        if (networkResponse && networkResponse.status === 200) {
+//          // Clone the response because the response stream can only be consumed once
+//          const responseClone = networkResponse.clone();
+//
+//          // Open cache and put the cloned response
+//          caches.open(STATIC_CACHE_NAME).then(cache => {
+//            if (!event.request.url.startsWith('chrome-extension:')) {
+//              cache.put(event.request, responseClone).catch(err => {
+//                console.error('Failed to cache the request:', event.request.url, err);
+//              });
+//            }
+//          });
+//        }
+//        return networkResponse; // Return network response
+//      }).catch((error) => {
+//        console.warn("SW Fetch failed:", error, event.request)
+//        //throw error; // Optionally handle fetch error
+//        return caches.match('/oasaResign/offline.html');
+//        //return caches.match('/evox-epsilon-beta/ohNoEvoxError.html'); // Serve offline page if network fails
+//      });
+//    })
+//  );
+//});
+
 self.addEventListener('fetch', event => {
   // Filter out requests with unsupported schemes
   if (event.request.url.startsWith('chrome-extension:')) {
-    // Skip caching requests with unsupported schemes
-    return;
+    return; // Skip handling these requests
   }
 
   const url = new URL(event.request.url);
-  if (url.pathname.startsWith('/evox-epsilon-beta/Home/dist/')) {
-    return; // Skip handling requests to this path
+
+  // Define a list of URLs or patterns to exclude
+  const excludedPatterns = [
+    /^https:\/\/data\.evoxs\.xyz\/proxy\?key=21&targetUrl=.*telematics\.oasa\.gr\/api\/\?act=getScheduleDaysMasterline.*/,
+    /^https:\/\/data\.evoxs\.xyz\/proxy\?key=21&targetUrl=.*telematics\.oasa\.gr\/api\/\?act=getDailySchedule.*/,
+    /^https:\/\/data\.evoxs\.xyz\/oasa\?intelligence=.*/,
+    /^https:\/\/florida\.evoxs\.xyz\/activeSchedo\?username=.*/,
+    /^https:\/\/florida\.evoxs\.xyz\/liveNotif\?username=.*/,
+    /^https:\/\/data\.evoxs\.xyz\/proxy\?key=21&targetUrl=.*telematics\.oasa\.gr\/api\/\?act=webGetRoutesDetailsAndStops.*/,
+    /^https:\/\/data\.evoxs\.xyz\/proxy\?key=21&targetUrl=.*telematics\.oasa\.gr\/api\/\?act=getStopArrivals.*/
+  ];
+
+  // Check if the request URL matches any excluded pattern
+  const shouldExclude = excludedPatterns.some(pattern => pattern.test(event.request.url));
+
+  if (shouldExclude) {
+    return; // Skip handling these requests
   }
 
-  //console.warn("PATH!", url.pathname)
-  if (url.pathname.startsWith('/events/v2') || url.pathname.startsWith('/fonts/v1/mapbox') || url.pathname.startsWith('/map-sessions/v1')) {
-    return; // Skip handling requests to this path
+  // Skip handling requests to specific paths
+  if (url.pathname.startsWith('/evox-epsilon-beta/Home/dist/') ||
+      url.pathname.startsWith('/events/v2') ||
+      url.pathname.startsWith('/fonts/v1/mapbox') ||
+      url.pathname.startsWith('/map-sessions/v1')||
+      url.pathname.includes('z-oasa-current-version.evox')) {
+        console.log('Bypassing cache:', url.pathname)
+    return;
   }
 
   event.respondWith(
@@ -251,10 +331,8 @@ self.addEventListener('fetch', event => {
       // Fetch from the network and update the cache
       return fetch(event.request).then(networkResponse => {
         if (networkResponse && networkResponse.status === 200) {
-          // Clone the response because the response stream can only be consumed once
           const responseClone = networkResponse.clone();
 
-          // Open cache and put the cloned response
           caches.open(STATIC_CACHE_NAME).then(cache => {
             if (!event.request.url.startsWith('chrome-extension:')) {
               cache.put(event.request, responseClone).catch(err => {
@@ -263,16 +341,15 @@ self.addEventListener('fetch', event => {
             }
           });
         }
-        return networkResponse; // Return network response
-      }).catch((error) => {
-        console.warn("SW Fetch failed:", error, event.request)
-        //throw error; // Optionally handle fetch error
+        return networkResponse;
+      }).catch(error => {
+        console.warn("SW Fetch failed:", error, event.request);
         return caches.match('/oasaResign/offline.html');
-        //return caches.match('/evox-epsilon-beta/ohNoEvoxError.html'); // Serve offline page if network fails
       });
     })
   );
 });
+
 
 // Handle messages from the client to manually update the cache
 self.addEventListener('message', event => {

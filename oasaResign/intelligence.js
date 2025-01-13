@@ -3,10 +3,10 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.0.4'
+const currentVersion = '2.0.66'
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
-
+const randomString = () => Math.random().toString(36).substring(2, 10);
 
 // Listen for the scroll event
 document.getElementById('main-wrapper').addEventListener('scroll', () => {
@@ -20,6 +20,20 @@ document.getElementById('main-wrapper').addEventListener('scroll', () => {
     document.getElementById("returnTopDefines").classList.remove('scrolled')
     bottomSearchParent.classList.remove('scrolled');
   }
+});
+
+// Listen for any uncaught errors in the application
+window.addEventListener('error', (event) => {
+  // Alert the user with the error message
+  alert(`[BETA] An error occurred: ${event.message}\nAt: ${event.filename}:${event.lineno}:${event.colno}`);
+  
+  // Optionally, log the error to the console for debugging
+  console.error('Error details:', event);
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  alert(`[BETA] An unhandled promise rejection occurred: ${event.reason}`);
+  console.error('Unhandled rejection:', event.reason);
 });
 
 function countUpWithParallax(element) {
@@ -189,7 +203,7 @@ function getReady() {
           document.getElementById("locationName").innerHTML = toAccusative(cityOrAreaName) || 'Unknown location';
           updateLocation(cityOrAreaName);
         } else {
-          fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${loc[0]},${loc[1]}.json?access_token=${mapboxgl.accessToken}&language=el`)
+          fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${loc[0]},${loc[1]}.json?access_token=${mapboxgl.accessToken}&language=el&vevox=${randomString()}`)
             .then(response => response.json())
             .then(data => {
               localStorage.setItem('previousLocation', JSON.stringify(data))
@@ -264,7 +278,7 @@ function bypassAny() {
       document.getElementById("locationName").innerHTML = toAccusative(cityOrAreaName) || 'Unknown location';
       updateLocation(cityOrAreaName);
     } else {
-      fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${loc[0]},${loc[1]}.json?access_token=${mapboxgl.accessToken}&language=el`)
+      fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${loc[0]},${loc[1]}.json?access_token=${mapboxgl.accessToken}&language=el&vevox=${randomString()}`)
         .then(response => response.json())
         .then(data => {
           localStorage.setItem('previousLocation', JSON.stringify(data))
@@ -777,62 +791,74 @@ function loadOasa() {
     const { LineDescr: descr, LineCode: lineCode } = matchingLines[0];
 
     try {
-      fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${lineCode}&keyOrigin=evoxEpsilon`)}`)
-        .then(response => response.json())
-        .then(data => {
-          if (!data || (!data.come && !data.go)) {
-            console.warn(`No schedule data found for bus: ${bus}`);
-            return;
-          }
+      function theSchedule(data) {
+        if (!data || (!data.come && !data.go)) {
+          console.warn(`No schedule data found for bus: ${bus}`);
+          return;
+        }
 
-          console.log(`Schedule data for ${bus}:`, data);
+        console.log(`Schedule data for ${bus}:`, data);
 
-          // Extract times
-          const times = data.go.map(item => formatTime(item.sde_start1));
-          console.log(`Formatted times for ${bus}:`, times);
+        // Extract times
+        const times = data.go.map(item => formatTime(item.sde_start1));
+        console.log(`Formatted times for ${bus}:`, times);
 
-          // Determine the next bus time
-          const nextBusTime = getNextBusTimeLIVE(times);
+        // Determine the next bus time
+        const nextBusTime = getNextBusTimeLIVE(times);
 
-          if (nextBusTime) {
-            // Store data locally
-            localStorage.setItem(`${bus}_Timetable`, JSON.stringify(data));
-            localStorage.setItem(`${bus}_Times`, JSON.stringify(times));
+        if (nextBusTime) {
+          // Store data locally
+          localStorage.setItem(`${bus}_Timetable`, JSON.stringify(data));
+          localStorage.setItem(`${bus}_Times`, JSON.stringify(times));
 
-            // Display in feed
-            //alert(`Default work ${JSON.stringify(nextBusTime)}`)
-            spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), section); //section is 'frequent', 'favorite', or 'famous'
-          } else {
-            //use times[0] as a fallback
-            try {
-              const [hour, minutes] = times[0].split(":").map(Number);
-              const workingTime = { hour, minutes };
-              //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
-              //alert(`loadOasa Failed\nfailed why?:\nnextBusTime returned: ${JSON.stringify(nextBusTime)}\nTimes: ${JSON.stringify(times)}\nBus on work: ${bus}`);
-              console.warn(`Failed to find next bus time for ${bus}.\nWorking on the first value in schedule\nTimes:`, times);
-              spawnInFeed(bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), section); //section is 'frequent', 'favorite', or 'famous'
-            } catch (error) {
-              //work on localStorage
-              if (localStorage.getItem(`${bus}_Times`)) {
-                const times = JSON.parse(localStorage.getItem(`${bus}_Times`));
-                const nextBusTime = getNextBusTimeLIVE(times);
-                if (nextBusTime) {
-                  spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), section); //section is 'frequent', 'favorite', or 'famous'
-                } else {
-                  spawnFallback(bus, descr, section)
-                }
+          // Display in feed
+          //alert(`Default work ${JSON.stringify(nextBusTime)}`)
+          spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), section); //section is 'frequent', 'favorite', or 'famous'
+        } else {
+          //use times[0] as a fallback
+          try {
+            const [hour, minutes] = times[0].split(":").map(Number);
+            const workingTime = { hour, minutes };
+            //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
+            //alert(`loadOasa Failed\nfailed why?:\nnextBusTime returned: ${JSON.stringify(nextBusTime)}\nTimes: ${JSON.stringify(times)}\nBus on work: ${bus}`);
+            console.warn(`Failed to find next bus time for ${bus}.\nWorking on the first value in schedule\nTimes:`, times);
+            spawnInFeed(bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), section); //section is 'frequent', 'favorite', or 'famous'
+          } catch (error) {
+            //work on localStorage
+            if (localStorage.getItem(`${bus}_Times`)) {
+              const times = JSON.parse(localStorage.getItem(`${bus}_Times`));
+              const nextBusTime = getNextBusTimeLIVE(times);
+              if (nextBusTime) {
+                spawnInFeed(bus, descr, nextBusTime, displayRemainingTimeLIVE(nextBusTime), section); //section is 'frequent', 'favorite', or 'famous'
               } else {
-                console.log(`loadOasa fallback error: ${error}`)
-                spawnInFeed(bus, descr, nextBusTime, 'Άγνωστη', section)//section is 'frequent', 'favorite', or 'famous'
+                spawnFallback(bus, descr, section)
               }
-
+            } else {
+              console.log(`loadOasa fallback error: ${error}`)
+              spawnInFeed(bus, descr, nextBusTime, 'Άγνωστη', section)//section is 'frequent', 'favorite', or 'famous'
             }
 
           }
+
+        }
+      }
+      fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${lineCode}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`)
+        .then(response => response.json())
+        .then(data => {
+          localStorage.setItem(`dailySchedule_${lineCode}`, JSON.stringify(data))
+          theSchedule(data)
+          
         })
         .catch(error => {
-          console.error(`Error fetching schedule for ${bus}:`, error);
+          //const lc_Temp = localStorage.getItem(`dailySchedule_${lineCode}`)
+          //if (lc_Temp) {
+          //  theSchedule(JSON.parse(lc_Temp))
+          //} else {
+          //  console.error(`Error fetching schedule for ${bus}:`, error);
+          //}
           spawnFallback(bus, descr, section);
+          
+          
         });
     } catch {
       spawnFallback(bus, descr, section);
@@ -1070,7 +1096,7 @@ function registerPWA() {
       .register("./resign-sw.js")
       .then((registration) => {
         console.log("Service Worker registered with scope:", registration.scope);
-        
+
 
         // Listen for updates to the service worker
         registration.onupdatefound = () => {
@@ -1096,7 +1122,7 @@ function registerPWA() {
         fetch(`z-oasa-current-version.evox`)
           .then(response => response.json())
           .then(data => {
-            if(data.current !== currentVersion) {
+            if (data.current !== currentVersion) {
               updateServiceWorkerCache()
             }
           })
@@ -1110,6 +1136,24 @@ function registerPWA() {
   });
 }
 
+function clearAllCaches() {
+  if ('caches' in self) {
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cache => caches.delete(cache))
+      );
+    }).then(() => {
+      alert('All caches cleared successfully!');
+    }).catch(error => {
+      console.error('Failed to clear caches:', error);
+      alert('Failed to clear caches. Check the console for details.');
+    });
+  } else {
+    alert('Caching is not supported in this browser.');
+  }
+}
+
+
 // Show update notification to the user
 function showUpdateNotification() {
   // Customize this to fit your app's UI
@@ -1118,11 +1162,11 @@ function showUpdateNotification() {
 
 function updateServiceWorkerCache() {
   if (navigator.serviceWorker.controller) {
-      navigator.serviceWorker.controller.postMessage({
-          action: 'UPDATE_CACHE'
-      });
+    navigator.serviceWorker.controller.postMessage({
+      action: 'UPDATE_CACHE'
+    });
   } else {
-      console.log('No active service worker found.');
+    console.log('No active service worker found.');
   }
 }
 
@@ -1199,13 +1243,13 @@ document.addEventListener('DOMContentLoaded', () => {
     registerPWA()
     //document.getElementById("profilePic").src = "https://www.gravatar.com/avatar/" + md5(localStorage.getItem("t50-email")) + "?d=identicon";
 
-    if(hasInternetConnection()) {
+    if (hasInternetConnection()) {
       document.getElementById("oasaPfp").src = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${localStorage.getItem("t50-username")}&v=${randomString()}`
     } else {
       document.getElementById("oasaPfp").src = 'apple.png'
     }
-    
-    
+
+
 
   } else {
 
@@ -1312,10 +1356,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const allLines = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetLines&keyOrigin=evoxEpsilon`);
 
-  fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
-    .then(response => response.json())
-    .then(data => {
-      fullLine = data
+  function runOASABridge(data) {
+    fullLine = data
       loadOasa() //BETA
       if (data) {
         let lc = localStorage.getItem("oasa_favorites");
@@ -1349,11 +1391,22 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('An error occurred while spawning stops:', err);
           });
       }
+  }
+  fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLines}`)
+    .then(response => response.json())
+    .then(data => {
+      localStorage.setItem("allLines", JSON.stringify(data))
+      runOASABridge(data)
 
 
     })
     .catch(error => {
       console.log("All Lines Get Error:", error)
+      if(localStorage.getItem("allLines")) {
+        const tmp = localStorage.getItem("allLines")
+        runOASABridge(JSON.parse(tmp))
+      }
+      return;
       if (isNearEvery3Hours()) {
         //alert(`Ο διακομιστής επανεκκινείται, δοκιμάστε ξανά σε 2-3 λεπτά.`)
         document.getElementById("performance").style.display = 'flex'
@@ -1522,22 +1575,19 @@ function processInfo(evoxId, type, addMore) {
       document.getElementById("busInfoID").innerText = busInfo.bus
       let formattedText = busInfo.descr.replace(/\((.*)\)/, "<br>($1)");
       document.getElementById("busInfoDesc").innerHTML = capitalizeWords(formattedText)
-      fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getScheduleDaysMasterline&p1=${lineCode}&keyOrigin=evoxEpsilon`)}`)
-        .then(response => response.json())
-        .then(data => {
-
-          days.innerHTML += `<div class="Block active">
+      function workOnSchedules(data) {
+        days.innerHTML += `<div class="Block active">
                                         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M7.75 2.5C7.75 2.08579 7.41421 1.75 7 1.75C6.58579 1.75 6.25 2.08579 6.25 2.5V4.07926C4.81067 4.19451 3.86577 4.47737 3.17157 5.17157C2.47737 5.86577 2.19451 6.81067 2.07926 8.25H21.9207C21.8055 6.81067 21.5226 5.86577 20.8284 5.17157C20.1342 4.47737 19.1893 4.19451 17.75 4.07926V2.5C17.75 2.08579 17.4142 1.75 17 1.75C16.5858 1.75 16.25 2.08579 16.25 2.5V4.0129C15.5847 4 14.839 4 14 4H10C9.16097 4 8.41527 4 7.75 4.0129V2.5Z" fill="#fff"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 11.161 2 10.4153 2.0129 9.75H21.9871C22 10.4153 22 11.161 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12ZM17 14C17.5523 14 18 13.5523 18 13C18 12.4477 17.5523 12 17 12C16.4477 12 16 12.4477 16 13C16 13.5523 16.4477 14 17 14ZM17 18C17.5523 18 18 17.5523 18 17C18 16.4477 17.5523 16 17 16C16.4477 16 16 16.4477 16 17C16 17.5523 16.4477 18 17 18ZM13 13C13 13.5523 12.5523 14 12 14C11.4477 14 11 13.5523 11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13ZM13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C12.5523 16 13 16.4477 13 17ZM7 14C7.55228 14 8 13.5523 8 13C8 12.4477 7.55228 12 7 12C6.44772 12 6 12.4477 6 13C6 13.5523 6.44772 14 7 14ZM7 18C7.55228 18 8 17.5523 8 17C8 16.4477 7.55228 16 7 16C6.44772 16 6 16.4477 6 17C6 17.5523 6.44772 18 7 18Z" fill="#fff"/>
 </svg>Καθημερινή
                                     </div>`
-          data.forEach(day => {
-            let icon = `<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 3V4.34708C4.35095 4.54034 3.77636 4.8406 3.30848 5.30848C2.74209 5.87488 2.42133 6.59764 2.23866 7.41959C2.05852 8.23018 2 9.19557 2 10.312V15.688C2 16.8044 2.05852 17.7698 2.23866 18.5804C2.42133 19.4024 2.74209 20.1251 3.30848 20.6915C3.87488 21.2579 4.59764 21.5787 5.41959 21.7613C6.23018 21.9415 7.19557 22 8.312 22H15.688C16.8044 22 17.7698 21.9415 18.5804 21.7613C19.4024 21.5787 20.1251 21.2579 20.6915 20.6915C21.2579 20.1251 21.5787 19.4024 21.7613 18.5804C21.9415 17.7698 22 16.8044 22 15.688V10.312C22 9.19557 21.9415 8.23018 21.7613 7.41959C21.5787 6.59764 21.2579 5.87488 20.6915 5.30848C20.2236 4.8406 19.6491 4.54034 19 4.34708V3C19 2.44772 18.5523 2 18 2C17.4477 2 17 2.44772 17 3V4.03477C16.5889 4.01008 16.1515 4 15.688 4H8.312C7.84855 4 7.41113 4.01008 7 4.03477V3C7 2.44772 6.55228 2 6 2C5.44772 2 5 2.44772 5 3ZM6 9C6 8.44772 6.44772 8 7 8H17C17.5523 8 18 8.44772 18 9C18 9.55228 17.5523 10 17 10H7C6.44772 10 6 9.55228 6 9Z" fill="#fff"/></svg>`;
-            // Default icon
-            console.log(day)
-            if (day.sdc_descr_eng.includes("WINTER")) {
-              icon = `<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        data.forEach(day => {
+          let icon = `<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M5 3V4.34708C4.35095 4.54034 3.77636 4.8406 3.30848 5.30848C2.74209 5.87488 2.42133 6.59764 2.23866 7.41959C2.05852 8.23018 2 9.19557 2 10.312V15.688C2 16.8044 2.05852 17.7698 2.23866 18.5804C2.42133 19.4024 2.74209 20.1251 3.30848 20.6915C3.87488 21.2579 4.59764 21.5787 5.41959 21.7613C6.23018 21.9415 7.19557 22 8.312 22H15.688C16.8044 22 17.7698 21.9415 18.5804 21.7613C19.4024 21.5787 20.1251 21.2579 20.6915 20.6915C21.2579 20.1251 21.5787 19.4024 21.7613 18.5804C21.9415 17.7698 22 16.8044 22 15.688V10.312C22 9.19557 21.9415 8.23018 21.7613 7.41959C21.5787 6.59764 21.2579 5.87488 20.6915 5.30848C20.2236 4.8406 19.6491 4.54034 19 4.34708V3C19 2.44772 18.5523 2 18 2C17.4477 2 17 2.44772 17 3V4.03477C16.5889 4.01008 16.1515 4 15.688 4H8.312C7.84855 4 7.41113 4.01008 7 4.03477V3C7 2.44772 6.55228 2 6 2C5.44772 2 5 2.44772 5 3ZM6 9C6 8.44772 6.44772 8 7 8H17C17.5523 8 18 8.44772 18 9C18 9.55228 17.5523 10 17 10H7C6.44772 10 6 9.55228 6 9Z" fill="#fff"/></svg>`;
+          // Default icon
+          console.log(day)
+          if (day.sdc_descr_eng.includes("WINTER")) {
+            icon = `<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <line x1="3" y1="12" x2="21" y2="12" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <line x1="12" y1="21" x2="12" y2="3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M17 17L7 7.00001" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1551,137 +1601,148 @@ function processInfo(evoxId, type, addMore) {
             <path d="M11.9001 17L13.8001 18.5834" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M11.9 17L10 18.5834" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>`
-            }
-            console.log("Day is", day.sdc_descr)
-            days.innerHTML += `<div class="Block">
+          }
+          console.log("Day is", day.sdc_descr)
+          days.innerHTML += `<div class="Block">
                                         ${icon}${capitalizeWords(day.sdc_descr)}
                                     </div>`
-          })
         })
-        .catch(error => {
-          console.log('Load Bus Times List Error:', error)
-        });
-      document.getElementById("timetableSpawn").innerHTML = `<div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div>`;  // Clear existing content
-      fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${lineCode}&keyOrigin=evoxEpsilon`)}`)
+      }
+      fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getScheduleDaysMasterline&p1=${lineCode}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`)
         .then(response => response.json())
         .then(data => {
-          activeBusInfo = data
-          const splitter = splitValue(busInfo.descr);
-          console.log("The data:", data)
-          if (data.go) {
+          localStorage.setItem(`scheduleDays_${lineCode}`, JSON.stringify(data))
+          workOnSchedules(data)
+        })
+        .catch(error => {
+          if (localStorage.getItem(`scheduleDays_${lineCode}`)) {
+            const workOn = localStorage.getItem(`scheduleDays_${lineCode}`)
+            const data = JSON.parse(workOn)
+            workOnSchedules(data)
+          } else {
+            console.log('Load Bus Times List Error:', error)
+          }
 
-            console.log('result', busInfo.descr);
-            const result = splitter.getSecondPart() // Trim any leading or trailing spaces
-            console.log('result', result);
-            document.getElementById("busGOCOME").innerHTML += `<div class="Block active">
+        });
+      document.getElementById("timetableSpawn").innerHTML = `<div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div>`;  // Clear existing content
+      function dailySchedule(data) {
+        activeBusInfo = data
+        const splitter = splitValue(busInfo.descr);
+        console.log("The data:", data)
+        if (data.go) {
+
+          console.log('result', busInfo.descr);
+          const result = splitter.getSecondPart() // Trim any leading or trailing spaces
+          console.log('result', result);
+          document.getElementById("busGOCOME").innerHTML += `<div class="Block active">
                                         <svg width="20px" height="20px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M36 7L43 13.4615L36 21" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M40 14H17.0062C10.1232 14 4.27787 19.6204 4.00964 26.5C3.72612 33.7696 9.73291 40 17.0062 40H34.0016" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>Προς ${capitalizeWords(result)}
                                     </div>`
 
-          }
+        }
 
-          if (data.come) {
-            const result = splitter.getFirstPart();
-            document.getElementById("busGOCOME").innerHTML += `<div class="Block">
+        if (data.come) {
+          const result = splitter.getFirstPart();
+          document.getElementById("busGOCOME").innerHTML += `<div class="Block">
                                         <svg fill="#fff" width="20px" height="20px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
 <path d="M0 21.984q0.032-0.8 0.608-1.376l4-4q0.448-0.48 1.056-0.576t1.12 0.128 0.864 0.736 0.352 1.12v1.984h18.016q0.8 0 1.408-0.576t0.576-1.408v-8q0-0.832-0.576-1.408t-1.408-0.608h-16q-0.736 0-1.248-0.416t-0.64-0.992 0-1.152 0.64-1.024 1.248-0.416h16q2.464 0 4.224 1.76t1.76 4.256v8q0 2.496-1.76 4.224t-4.224 1.76h-18.016v2.016q0 0.64-0.352 1.152t-0.896 0.704-1.12 0.096-1.024-0.544l-4-4q-0.64-0.608-0.608-1.44z"></path>
 </svg>Προς ${capitalizeWords(result)}
                                     </div>`
 
-          }
-          if (data.come.length === 0 && data.go.length === 0 && !localStorage.getItem(`${busInfo.bus}_Times`)) {
-            console.log(data)
-            console.log("Spawning For", lineCode, "Stopped.")
-            document.getElementById("timetableSpawn").innerHTML = `<div class="failed">
+        }
+        if (data.come.length === 0 && data.go.length === 0 && !localStorage.getItem(`${busInfo.bus}_Times`)) {
+          console.log(data)
+          console.log("Spawning For", lineCode, "Stopped.")
+          document.getElementById("timetableSpawn").innerHTML = `<div class="failed">
     <img src="snap.png" class="failed-icon">
     <vox class="failed-message">Δεν βρέθηκαν δεδομένα</vox>
     <span class="failed-subtext">Δοκιμάστε αργότερα ή επανεκκινήστε την εφαρμογή</span>
 </div>
 `;
-            return;
-          } else {
-            console.log("Come and go for ", busInfo, "\n", data)
+          return;
+        } else {
+          console.log("Come and go for ", busInfo, "\n", data)
+        }
+
+        console.log("Success", lineCode);
+
+        let times = data.go.map(item => {
+          return formatTime(item.sde_start1);
+        });
+
+        // Find the next bus time
+        const nextBusTime = getNextBusTimeLIVE(times);
+        let isLocal = false
+        if (nextBusTime) {
+          localStorage.setItem(`${busInfo.bus}_Timetable`, JSON.stringify(data));
+          localStorage.setItem(`${busInfo.bus}_Times`, JSON.stringify(times));
+
+          // Create the HTML content dynamically for each time
+
+        } else {
+          try {
+            const timesNew = localStorage.getItem(`${busInfo.bus}_Times`);
+            times = JSON.parse(timesNew);
+            isLocal = true
+          } catch {
+            console.error("Failed to find times for", busInfo.bus)
           }
+          //try {
+          //  if(times[0]) {
+          //    const [hour, minutes] = times[0].split(":").map(Number);
+          //    const workingTime = { hour, minutes };
+          //    //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
+          //    console.warn(`processInfo\nFailed to find next bus time for ${busInfo.bus}.\nWorking on the first value in schedule\nTimes:`, times);
+          //    spawnInFeed(busInfo.bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent')
+          //    //alert(`failed why?:\n${JSON.stringify(nextBusTime)}\n${JSON.stringify(times)}\nBus on work: ${busInfo.bus}`);
+          //    //
+          //  } else {
+          //    spawnInFeed(busInfo.bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
+          //    console.log("No times found", times[0])
+          //  }
+          //  
+          //} catch (error) {
+          //  console.error('Fallback Error:', error);
+          //  spawnInFeed(busInfo.bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
+          //}
 
-          console.log("Success", lineCode);
+        }
 
-          let times = data.go.map(item => {
-            return formatTime(item.sde_start1);
-          });
-
-          // Find the next bus time
-          const nextBusTime = getNextBusTimeLIVE(times);
-          let isLocal = false
-          if (nextBusTime) {
-            localStorage.setItem(`${busInfo.bus}_Timetable`, JSON.stringify(data));
-            localStorage.setItem(`${busInfo.bus}_Times`, JSON.stringify(times));
-
-            // Create the HTML content dynamically for each time
-
-          } else {
-            try {
-              const timesNew = localStorage.getItem(`${busInfo.bus}_Times`);
-              times = JSON.parse(timesNew);
-              isLocal = true
-            } catch {
-              console.error("Failed to find times for", busInfo.bus)
-            }
-            //try {
-            //  if(times[0]) {
-            //    const [hour, minutes] = times[0].split(":").map(Number);
-            //    const workingTime = { hour, minutes };
-            //    //alert(`Fallback: ${JSON.stringify(workingTime)}\n${bus}`)
-            //    console.warn(`processInfo\nFailed to find next bus time for ${busInfo.bus}.\nWorking on the first value in schedule\nTimes:`, times);
-            //    spawnInFeed(busInfo.bus, descr, workingTime, displayRemainingTimeLIVE(workingTime), 'frequent')
-            //    //alert(`failed why?:\n${JSON.stringify(nextBusTime)}\n${JSON.stringify(times)}\nBus on work: ${busInfo.bus}`);
-            //    //
-            //  } else {
-            //    spawnInFeed(busInfo.bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
-            //    console.log("No times found", times[0])
-            //  }
-            //  
-            //} catch (error) {
-            //  console.error('Fallback Error:', error);
-            //  spawnInFeed(busInfo.bus, descr, nextBusTime, 'Άγνωστη', 'frequent')
-            //}
-
+        let timetableContent = '';
+        const remains = getNextBuses(times, addMore ? addMore : 7)
+        shownTimeTable = shownTimeTable + addMore ? addMore : 7
+        const previous = getPreviousBuses(times)
+        if (previous[0]) {
+          const value = previous[0].time;
+          const currentTime = new Date();
+          const [hours, minutes] = value.split(':').map(Number);
+          const targetTime = new Date();
+          targetTime.setHours(hours, minutes, 0, 0);
+          const diffInMinutes = (currentTime - targetTime) / (1000 * 60);
+          const result = diffInMinutes < 90 ? 'Σε κίνηση' : 'Χαμένο';
+          //var textNode = document.createTextNode(result);
+          //previousTimeBox.appendChild(textNode);
+          //var span = document.createElement('span');
+          //span.innerHTML = ``;
+          //previousTimeBox.appendChild(span);
+          //document.getElementById("evoxBased").appendChild(previousTimeBox);
+          currentInfoForSchedo = {
+            bus: busInfo.bus,
+            match: working,
+            isLocal: isLocal
           }
-
-          let timetableContent = '';
-          const remains = getNextBuses(times, addMore ? addMore : 7)
-          shownTimeTable = shownTimeTable + addMore ? addMore : 7
-          const previous = getPreviousBuses(times)
-          if (previous[0]) {
-            const value = previous[0].time;
-            const currentTime = new Date();
-            const [hours, minutes] = value.split(':').map(Number);
-            const targetTime = new Date();
-            targetTime.setHours(hours, minutes, 0, 0);
-            const diffInMinutes = (currentTime - targetTime) / (1000 * 60);
-            const result = diffInMinutes < 90 ? 'Σε κίνηση' : 'Χαμένο';
-            //var textNode = document.createTextNode(result);
-            //previousTimeBox.appendChild(textNode);
-            //var span = document.createElement('span');
-            //span.innerHTML = ``;
-            //previousTimeBox.appendChild(span);
-            //document.getElementById("evoxBased").appendChild(previousTimeBox);
-            currentInfoForSchedo = {
-              bus: busInfo.bus,
-              match: working,
-              isLocal: isLocal
-            }
-            timetableContent += `<div class="previous fade-in-slide-up timeItem ${isLocal ? "isLocal" : ""}" onclick="showDetailedTime('${previous[0].time.replace(/<\/?vox>/g, "").replace(/ .*$/, "")}','previous' , '${result}')">
+          timetableContent += `<div class="previous fade-in-slide-up timeItem ${isLocal ? "isLocal" : ""}" onclick="showDetailedTime('${previous[0].time.replace(/<\/?vox>/g, "").replace(/ .*$/, "")}','previous' , '${result}')">
         <p>${result}</p>
         <div class="actions" style="display:flex;flex-direction: column;justify-content: center;align-items: flex-end;">
           <vox style="text-decoration: line-through;">${previous[0].time}</vox><span style='font-size: 0.9rem;margin-top:4px;'>${previous[0].formatted}</span>
         </div>
       </div>`
-          }
-          remains.forEach(time => {
-            document.getElementById("showMoreBusStart").style.display = null
-            timetableContent += `
+        }
+        remains.forEach(time => {
+          document.getElementById("showMoreBusStart").style.display = null
+          timetableContent += `
       <div class="timeItem fade-in-slide-up ${isLocal ? "isLocal" : ""}" onclick="showDetailedTime('${time.replace(/<\/?vox>/g, "").replace(/<\/?vox>/g, "").replace(/ .*$/, "")}','next')">
       <p>${time}</p>
         <div class="actions">
@@ -1691,14 +1752,26 @@ function processInfo(evoxId, type, addMore) {
         </div>
       </div>
     `;
-          });
+        });
 
-          // Insert the content into the element
+        // Insert the content into the element
 
-          document.getElementById("timetableSpawn").innerHTML = timetableContent;
+        document.getElementById("timetableSpawn").innerHTML = timetableContent;
+      }
+      fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${lineCode}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`)
+        .then(response => response.json())
+        .then(data => {
+          localStorage.setItem(`dailySchedule_${lineCode}`, JSON.stringify(data))
+          dailySchedule(data)
         })
         .catch(error => {
-          console.log('Load Favorite Times Error:', error)
+          const lc_Temp = localStorage.getItem(`dailySchedule_${lineCode}`)
+          if (lc_Temp) {
+            dailySchedule(JSON.parse(lc_Temp))
+          } else {
+            console.log('Load Favorite Times Error:', error)
+          }
+
           //document.getElementById("netStats").innerHTML = offlineSvg
           //spawnFallback(bus)
         });
@@ -1746,6 +1819,7 @@ function processInfo(evoxId, type, addMore) {
         findBusInfo2(busInfo.bus).then((routeCode) => {
 
           getRouteStops(routeCode).then((stations) => {
+            
             console.log("Found stations", stations);
             container.innerHTML = ''
 
@@ -1815,7 +1889,7 @@ function processInfo(evoxId, type, addMore) {
               }
               keepForVerticalStations = intelligenceInfo
 
-              fetch(`https://data.evoxs.xyz/oasa?intelligence=${JSON.stringify(intelligenceInfo)}`, { signal })
+              fetch(`https://data.evoxs.xyz/oasa?intelligence=${JSON.stringify(intelligenceInfo)}&vevox=${randomString()}`, { signal })
                 .then(response => response.json())
                 .then(arrivals => {
                   console.log("Intelligence Results:", arrivals)
@@ -1917,6 +1991,10 @@ function processInfo(evoxId, type, addMore) {
 
                 })
                 .catch(error => {
+                  const targets = document.querySelectorAll(`[id="station-${stop.StopCode}"]`);
+                  targets.forEach(target_single => {
+                    target_single.innerHTML = '<img src="snap.png" width="25px" height="25px">';
+                  });
                   console.log("intelligence [1] error:", error);
                 });
 
@@ -2167,7 +2245,7 @@ async function spawnBusOnMap(lineId) {
 async function findBusInfo2(id, getJustLineCode = false, getJustRouteCode = true) {
   async function routeOasa(lineCode) {
     const getStops = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`);
-    const response = await fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${getStops}`);
+    const response = await fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${getStops}&vevox=${randomString()}`);
     const data = await response.json();
     console.log('Route:', data)
     if (data && data.length > 0) {
@@ -2179,7 +2257,7 @@ async function findBusInfo2(id, getJustLineCode = false, getJustRouteCode = true
 
   async function nextUp() {
     const allLinesUrl = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetLines&keyOrigin=evoxEpsilon`);
-    const response = await fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLinesUrl}`);
+    const response = await fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLinesUrl}&vevox=${randomString()}`);
     const fullLine = await response.json();
     const matchingLines = fullLine.filter(line => line.LineID === id);
 
@@ -2354,16 +2432,29 @@ function createRedDot() {
 }
 
 async function getRouteStops(routeCode) {
-  const url = `https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${routeCode}&keyOrigin=evoxEpsilon`)}`;
-  const response = await fetch(url);
-  const data = await response.json();
-  return data.stops || [];
+  const url = `https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${routeCode}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    const stops = data.stops || [];
+    localStorage.setItem(`stations_${routeCode}`, JSON.stringify(stops));
+    return stops;
+  } catch (error) {
+    console.warn('Fetch failed, falling back to localStorage:', error);
+    const cachedStops = localStorage.getItem(`stations_${routeCode}`);
+    return cachedStops ? JSON.parse(cachedStops) : [];
+  }
 }
+
 
 let activeMarker = []
 
 async function getStopArrivalTime(stopCode, stopName, cords, maxRetries = 5) {
-  const url = `https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`)}`;
+  const url = `https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`;
 
   const main = new mapboxgl.Marker({
     element: createBlinkingDot()
@@ -2417,7 +2508,7 @@ async function getStopArrivalTime(stopCode, stopName, cords, maxRetries = 5) {
   return []; // Return empty array if all retries fail
 }
 
-const randomString = () => Math.random().toString(36).substring(2, 10);
+
 let previouslines;
 let markers_intel = []
 function spawnAndShowInfo(bus, remain) {
@@ -2560,7 +2651,7 @@ function spawnAndShowInfo(bus, remain) {
     }
 
     // Fetch new bus data
-    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=https%3A%2F%2Ftelematics.oasa.gr%2Fapi%2F%3Fact%3DwebGetRoutesDetailsAndStops%26p1%3D${returned}%26keyOrigin%3DevoxEpsilon`)
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=https%3A%2F%2Ftelematics.oasa.gr%2Fapi%2F%3Fact%3DwebGetRoutesDetailsAndStops%26p1%3D${returned}%26keyOrigin%3DevoxEpsilon&vevox=${randomString()}`)
       .then(response => response.json())
       .then(data => {
         const coordinates = data.stops
@@ -2618,7 +2709,7 @@ function showDetailedTime(time, type, text) {
     document.getElementById("befo-gen").classList.add("disabled")
     const checkbox_atStart = document.getElementById('at-start');
     checkbox_atStart.checked = false;
-    fetch(`https://florida.evoxs.xyz/activeSchedo?username=${localStorage.getItem("t50-username")}`)
+    fetch(`https://florida.evoxs.xyz/activeSchedo?username=${localStorage.getItem("t50-username")}&vevox=${randomString()}`)
       .then(response => response.json())
       .then(data => {
         console.log(data)
@@ -2726,7 +2817,7 @@ checkboxa.addEventListener('change', function () {
 
     //will proceed to remove the schedo
 
-    fetch(`https://florida.evoxs.xyz/activeSchedo?username=${localStorage.getItem("t50-username")}`)
+    fetch(`https://florida.evoxs.xyz/activeSchedo?username=${localStorage.getItem("t50-username")}&vevox=${randomString()}`)
       .then(response => response.json())
       .then(data => {
         if (data.schedo.length !== 0 && data.infinite.length !== 0) {
@@ -2814,7 +2905,7 @@ function showVerticalStations() {
                                     </div>`
     })
 
-    fetch(`https://data.evoxs.xyz/oasa?intelligence=${JSON.stringify(keepForVerticalStations)}`)
+    fetch(`https://data.evoxs.xyz/oasa?intelligence=${JSON.stringify(keepForVerticalStations)}&vevox=${randomString()}`)
       .then(response => response.json())
       .then(arrivals => {
         console.log("Intelligence Results:", arrivals)
@@ -2986,7 +3077,7 @@ function showStopDetails(stopCode, stopName) {
   document.getElementById("stationInfo").style.display = 'block'
   setTimeout(function () { document.getElementById("stationInfo").classList.add('shown') }, 200)
 
-  fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`)}`)
+  fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`)
     .then(response => response.json())
     .then(buses => {
       if (buses === null) {
@@ -3002,7 +3093,7 @@ function showStopDetails(stopCode, stopName) {
 
   document.getElementById("busesComingtoStation").innerHTML = `<div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div>`
   const stop_url_1 = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webRoutesForStop&p1=${stopCode}&keyOrigin=evoxEpsilon`);
-  fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url_1}`)
+  fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url_1}&vevox=${randomString()}`)
     .then(response => response.json())
     .then(stop => {
       let start = {};
@@ -3010,7 +3101,7 @@ function showStopDetails(stopCode, stopName) {
       let count = 0;
       let finale = '';
       const stop_url = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`);
-      fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url}`)
+      fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url}&vevox=${randomString()}`)
         .then(response => response.json())
         .then(arrivals => {
           document.getElementById("busesComingtoStation").innerHTML = '';
@@ -3231,7 +3322,7 @@ function addInfinity(busLineId, stationCode, type) {
   let routeCode = null
   linesSearch.forEach(line => {
     const lineCode = line.LineCode;
-    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutes&p1=${lineCode}&keyOrigin=evoxEpsilon`)}`)
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutes&p1=${lineCode}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`)
       .then(response => response.json())
       .then(routes => {
         console.log(routes);
@@ -3259,7 +3350,7 @@ function addInfinity(busLineId, stationCode, type) {
             console.log("OKAY")
             if (type === 'showUp' || type === '2min') {
               if (localStorage.getItem("extVOASA")) {
-                fetch(`https://florida.evoxs.xyz/liveNotif?username=${localStorage.getItem("t50-username")}&deviceId=${localStorage.getItem("extVOASA")}&busId=${busLineId}&stationCode=${stationCode}&routeCode=${routeCode}&origin=resign${type === '2min' ? "&method=2minutes" : ''}`) //&method=2minutes
+                fetch(`https://florida.evoxs.xyz/liveNotif?username=${localStorage.getItem("t50-username")}&deviceId=${localStorage.getItem("extVOASA")}&busId=${busLineId}&stationCode=${stationCode}&routeCode=${routeCode}&origin=resign${type === '2min' ? "&method=2minutes" : ''}&vevox=${randomString()}`) //&method=2minutes
                   .then(response => response.text())
                   .then(data => {
                     console.log("SchedoInfi:", data)
