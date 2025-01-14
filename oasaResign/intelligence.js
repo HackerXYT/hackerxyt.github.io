@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.0.66'
+const currentVersion = '2.0.7'
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
 const randomString = () => Math.random().toString(36).substring(2, 10);
@@ -871,6 +871,13 @@ function loadOasa() {
   favoriteBuses.forEach(bus => {
     loadSection('favorite', bus)
   })
+  if(favoriteBuses.length === 0) {
+    document.getElementById('favorite').innerHTML = `<div class="failed">
+                                    <img style="width: 40px;" src="discover.svg" class="failed-icon">
+                                    <vox class="failed-message nonImportant">Κανένα αγαπημένο λεωφορείο.</vox>
+                                    <span class="failed-subtext">Προσθέστε τα αγαπημένα σας λεωφορεία από την Εξερεύνηση.</span>
+                                </div>`
+  }
 }
 
 function hasInternetConnection() {

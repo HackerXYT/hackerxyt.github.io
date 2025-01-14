@@ -1892,6 +1892,10 @@ body {
     font-size: 19px;
 }
 
+.failed-message.nonImportant {
+    color: #f5b640;
+}
+
 .failed-subtext {
     font-size: 15px;
 }
