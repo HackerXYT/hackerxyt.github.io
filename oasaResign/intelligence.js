@@ -25,14 +25,14 @@ document.getElementById('main-wrapper').addEventListener('scroll', () => {
 // Listen for any uncaught errors in the application
 window.addEventListener('error', (event) => {
   // Alert the user with the error message
-  alert(`[BETA] An error occurred: ${event.message}\nAt: ${event.filename}:${event.lineno}:${event.colno}`);
+  //alert(`[BETA] An error occurred: ${event.message}\nAt: ${event.filename}:${event.lineno}:${event.colno}`);
   
   // Optionally, log the error to the console for debugging
   console.error('Error details:', event);
 });
 
 window.addEventListener('unhandledrejection', (event) => {
-  alert(`[BETA] An unhandled promise rejection occurred: ${event.reason}`);
+  //alert(`[BETA] An unhandled promise rejection occurred: ${event.reason}`);
   console.error('Unhandled rejection:', event.reason);
 });
 
