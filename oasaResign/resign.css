@@ -1073,7 +1073,7 @@
     z-index: 5;
     margin-left: 0px;
     padding-right: -10px;
-    border-radius: 20px;
+    /*border-radius: 20px;*/
 
 }
 
@@ -1696,6 +1696,7 @@ body {
     -webkit-overflow-scrolling: touch;
     /* Momentum scrolling for mobile */
     margin-top: 7.5px;
+    border-radius: 20px;
 }
 
 .stationsSpawn .stationsSpawnInner::-webkit-scrollbar {
