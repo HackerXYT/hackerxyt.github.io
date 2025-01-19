@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.0.10'
+const currentVersion = '2.0.11'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -1591,6 +1591,10 @@ let activeEvoxId = null
 let shownTimeTable = 0
 let keepForVerticalStations;
 function processInfo(evoxId, type, addMore, comego) {
+  if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
+    const element = document.getElementById('main-wrapper');
+    element.scrollTop = 0;
+  }
   if (!comego) {
     comego = 'go'
   }
