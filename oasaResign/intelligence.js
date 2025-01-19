@@ -257,7 +257,10 @@ function getReady() {
 }
 
 function tempMake() {
+<<<<<<< Updated upstream
   return;
+=======
+>>>>>>> Stashed changes
   console.log("Latitude: " + latitude + ", Longitude: " + longitude);
   locationReady = true
   const loc = [longitude, latitude]
