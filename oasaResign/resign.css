@@ -1990,6 +1990,27 @@ body {
     font-weight: bold;
 }
 
+.busLocation {
+    width: auto;
+    /* Adjust the size of the dot */
+    height: auto;
+    background-color: #00ff959c;
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    border-radius: 25px;
+    /* Make it a circle */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    /* Optional: Add a subtle shadow */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(120px, -120px);
+    color: #ffffff;
+    padding: 15px;
+    z-index: 1999;
+    font-weight: bold;
+}
+
 .marker-icon {
     display: flex;
     justify-content: center;
