@@ -540,7 +540,7 @@
         </div>
 
     </div>
-    <div id="phone" class="">
+    <div id="phone">
 
         <div id="main-wrapper">
 
@@ -806,7 +806,7 @@
                                     fill="#fff" />
                             </svg>
                         </div>
-                        <div class="account">
+                        <div class="account" id="account-home">
                             <div class="userIcon">
                                 <img id="oasaPfp" src="reloading-pfp.gif">
                             </div>
@@ -815,7 +815,7 @@
                                 <span id="userUsername" onclick="manualLogout()"></span>
                             </div>
                         </div>
-                        <div onclick="window.location.href = '../oasaMobile/'" class="notificationsCC">
+                        <div onclick="window.location.href = '../oasaMobile/'" class="notificationsCC" id="notifications-home">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
                                 fill="none">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -1311,7 +1311,7 @@
                         <div class="feedItem">
                             <!--Top: icon, post type, post title arrow-->
                             <div class="topDefines">
-                                <div class="itempic"><!--<img src="favoritesOS.png">-->
+                                <div onclick="showLocalPanel()"  class="itempic"><!--<img src="favoritesOS.png">-->
                                     <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path opacity="1"
@@ -1574,7 +1574,7 @@
                                     </div>
                             </div>
                         </div>
-                        <div class="feedItem">
+                        <div class="feedItem" id="famousFeed">
                             <div class="topDefines">
                                 <div class="itempic">
                                     <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
@@ -1687,7 +1687,7 @@
                             </div>
 
                         </div>
-                        <div class="storage-editor">
+                        <div class="storage-editor" id="storage-editor" data-e="hidden" style="display: none;">
                             <h2>Επεξεργασία δεδομένων</h2>
                             <div class="items" id="localStorageItems"></div>
 

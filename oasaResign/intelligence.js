@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.0.9'
+const currentVersion = '2.0.10'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -177,7 +177,6 @@ let myLoc;
 function getReady() {
   document.getElementById("greeting").textContent = `${greeting()},`;
   document.getElementById("userUsername").textContent = getName();
-  tempMake()
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function (position) {
       const latitude = position.coords.latitude;
@@ -258,8 +257,7 @@ function getReady() {
 }
 
 function tempMake() {
-  const latitude = 37.9576153;
-  const longitude = 23.6603983;
+  return;
   console.log("Latitude: " + latitude + ", Longitude: " + longitude);
   locationReady = true
   const loc = [longitude, latitude]
@@ -495,11 +493,11 @@ const removeAccents = (value) => {
 };
 
 function spawnFallback(bus, descr, section) {
-  if (localStorage.getItem(`${bus}_Timetable`)) {
+  if (localStorage.getItem(`${bus}_Timetable_go`)) {
     //alert(`Found ${bus} in local storage`)
     try {
-      const data = JSON.parse(localStorage.getItem(`${bus}_Timetable`));
-      const times = JSON.parse(localStorage.getItem(`${bus}_Times`));
+      const data = JSON.parse(localStorage.getItem(`${bus}_Timetable_go`));
+      const times = JSON.parse(localStorage.getItem(`${bus}_Times_go`));
       const nextBusTime = getNextBusTimeLIVE(times);
 
       if (nextBusTime) {
@@ -840,12 +838,30 @@ let favoriteBuses = []
 let famousBuses = []
 
 
+
 if (localStorage.getItem("oasa_favorites")) {
   console.log("Found favorites")
   console.log(localStorage.getItem("oasa_favorites"))
   favoriteBuses = JSON.parse(localStorage.getItem("oasa_favorites"))//.reverse();
   console.log(favoriteBuses)
 }
+
+fetch(`famousBuses.json?vevox=${randomString()}`)
+  .then(response => response.json())
+  .then(data => {
+    console.log("famous")
+    let uniqueBuses = data.list.filter(bus =>
+      !frequentBuses.includes(bus) && !favoriteBuses.includes(bus)
+    );
+    console.log("Unique famous:", uniqueBuses)
+    famousBuses = uniqueBuses
+
+
+  })
+  .catch(error => {
+    $("#famousFeed").fadeOut("fast")
+    console.warn("Cannot load famous")
+  });
 
 function loadOasa() {
   //let spawnInFreq = {}; // This is unused but retained for future reference
@@ -877,8 +893,8 @@ function loadOasa() {
 
         if (nextBusTime) {
           // Store data locally
-          localStorage.setItem(`${bus}_Timetable`, JSON.stringify(data));
-          localStorage.setItem(`${bus}_Times`, JSON.stringify(times));
+          localStorage.setItem(`${bus}_Timetable_go`, JSON.stringify(data));
+          localStorage.setItem(`${bus}_Times_go`, JSON.stringify(times));
 
           // Display in feed
           //alert(`Default work ${JSON.stringify(nextBusTime)}`)
@@ -914,7 +930,7 @@ function loadOasa() {
       fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${lineCode}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`)
         .then(response => response.json())
         .then(data => {
-          localStorage.setItem(`dailySchedule_${lineCode}`, JSON.stringify(data))
+          localStorage.setItem(`dailySchedule_${lineCode}_go`, JSON.stringify(data))
           theSchedule(data)
 
         })
@@ -940,6 +956,9 @@ function loadOasa() {
   favoriteBuses.forEach(bus => {
     loadSection('favorite', bus)
   })
+  famousBuses.forEach(bus => {
+    loadSection('famous', bus)
+  });
   if (favoriteBuses.length === 0) {
     document.getElementById('favorite').innerHTML = `<div class="failed">
                                     <img style="width: 40px;" src="discover.svg" class="failed-icon">
@@ -987,6 +1006,11 @@ let personalizedAutoBus = {
   "831": "874"
 } // This will contain bus Ids and which lineCode they have eg. { "831": "1228" } for bus "ΠΕΙΡΑΙΑΣ-ΑΙΓΑΛΕΩ (ΕΝΑΛΛΑΚΤΙΚΗ ΛΟΓΩ ΛΑΪΚΗΣ ΚΑΘΕ ΔΕΥΤΕΡΑ)"
 
+if (localStorage.getItem("personalizedAutoBus")) {
+  const temp = JSON.parse(localStorage.getItem("personalizedAutoBus"))
+  personalizedAutoBus = temp
+  console.log("set local personalized")
+}
 let frequentBuses_Sort = []; // Array to store bus data for sorting
 let favoriteBuses_Sort = [];
 let famousBuses_Sort = [];
@@ -1632,7 +1656,10 @@ let activeBusInfo = {
 let activeEvoxId = null
 let shownTimeTable = 0
 let keepForVerticalStations;
-function processInfo(evoxId, type, addMore) {
+function processInfo(evoxId, type, addMore, comego) {
+  if (!comego) {
+    comego = 'go'
+  }
   if (evoxId) {
     activeEvoxId = evoxId
     console.log("gotInfo", evoxIds[evoxId])
@@ -1665,14 +1692,14 @@ function processInfo(evoxId, type, addMore) {
       const lineCode = working.LineCode
       document.getElementById("busInfoID").innerHTML = `${busInfo.bus}`//${busInfo.multiple ? "<svg width='25px' height='25px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' style='transform: rotate(-90deg)'><path d='M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z' fill='#fff'></path></svg>" : ''}`
 
-      let formattedText = busInfo.descr.replace(/\((.*)\)/, "<br>($1)");
+      let formattedText = descr.replace(/\((.*)\)/, "<br>($1)");
       document.getElementById("busInfoDesc").innerHTML = capitalizeWords(formattedText)
       document.getElementById("multiple-routes").innerHTML = ''
       if (busInfo.multiple) {
         try {
           busInfo.multiple.forEach(aroute => {
             const text = capitalizeWords(aroute.LineDescr.match(/\((.*?)\)/)?.[1])
-            document.getElementById("multiple-routes").innerHTML += `<div onclick="switchRouteTo(this)" class="Block${busInfo.descr === aroute.LineDescr ? ' active' : ""}">
+            document.getElementById("multiple-routes").innerHTML += `<div onclick="switchRouteTo(this)" class="Block${descr === aroute.LineDescr ? ' active' : ""}">
             <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
     <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M12 2C10.2843 2 8.90356 3.38071 6.14214 6.14214C3.38071 8.90356 2 10.2843 2 12C2 13.7157 3.38071 15.0964 6.14214 17.8579C8.90356 20.6193 10.2843 22 12 22C13.7157 22 15.0964 20.6193 17.8579 17.8579C20.6193 15.0964 22 13.7157 22 12C22 10.2843 20.6193 8.90356 17.8579 6.14214C15.0964 3.38071 13.7157 2 12 2Z" fill="#fff"/>
     <path fill-rule="evenodd" clip-rule="evenodd" d="M12.7862 8.48705C13.0695 8.18486 13.5441 8.16955 13.8463 8.45285L16.513 10.9528C16.6642 11.0946 16.75 11.2927 16.75 11.5C16.75 11.7073 16.6642 11.9054 16.513 12.0472L13.8463 14.5472C13.5441 14.8305 13.0695 14.8151 12.7862 14.513C12.5029 14.2108 12.5182 13.7361 12.8204 13.4528L14.1034 12.25H10.6667C10.3329 12.25 9.8225 12.3497 9.4196 12.6216C9.05681 12.8665 8.75 13.2655 8.75 14C8.75 14.4142 8.41421 14.75 8 14.75C7.58579 14.75 7.25 14.4142 7.25 14C7.25 12.7345 7.83208 11.8835 8.5804 11.3784C9.28861 10.9003 10.1116 10.75 10.6667 10.75L14.1034 10.75L12.8204 9.54716C12.5182 9.26386 12.5029 8.78923 12.7862 8.48705Z" fill="#fff"/>
@@ -1721,12 +1748,12 @@ function processInfo(evoxId, type, addMore) {
       fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getScheduleDaysMasterline&p1=${lineCode}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`)
         .then(response => response.json())
         .then(data => {
-          localStorage.setItem(`scheduleDays_${lineCode}`, JSON.stringify(data))
+          localStorage.setItem(`scheduleDays_${lineCode}_${comego}`, JSON.stringify(data))
           workOnSchedules(data)
         })
         .catch(error => {
-          if (localStorage.getItem(`scheduleDays_${lineCode}`)) {
-            const workOn = localStorage.getItem(`scheduleDays_${lineCode}`)
+          if (localStorage.getItem(`scheduleDays_${lineCode}_${comego}`)) {
+            const workOn = localStorage.getItem(`scheduleDays_${lineCode}_${comego}`)
             const data = JSON.parse(workOn)
             workOnSchedules(data)
           } else {
@@ -1744,7 +1771,7 @@ function processInfo(evoxId, type, addMore) {
           console.log('result', busInfo.descr);
           const result = splitter.getSecondPart() // Trim any leading or trailing spaces
           console.log('result', result);
-          document.getElementById("busGOCOME").innerHTML += `<div class="Block active">
+          document.getElementById("busGOCOME").innerHTML += `<div class="Block${comego === 'go' ? ' active' : ""}" onclick="switchTo('go', this)">
                                         <svg width="20px" height="20px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M36 7L43 13.4615L36 21" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M40 14H17.0062C10.1232 14 4.27787 19.6204 4.00964 26.5C3.72612 33.7696 9.73291 40 17.0062 40H34.0016" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1755,14 +1782,14 @@ function processInfo(evoxId, type, addMore) {
 
         if (data.come) {
           const result = splitter.getFirstPart();
-          document.getElementById("busGOCOME").innerHTML += `<div class="Block">
+          document.getElementById("busGOCOME").innerHTML += `<div class="Block${comego === 'come' ? ' active' : ""}" onclick="switchTo('come', this)">
                                         <svg fill="#fff" width="20px" height="20px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
 <path d="M0 21.984q0.032-0.8 0.608-1.376l4-4q0.448-0.48 1.056-0.576t1.12 0.128 0.864 0.736 0.352 1.12v1.984h18.016q0.8 0 1.408-0.576t0.576-1.408v-8q0-0.832-0.576-1.408t-1.408-0.608h-16q-0.736 0-1.248-0.416t-0.64-0.992 0-1.152 0.64-1.024 1.248-0.416h16q2.464 0 4.224 1.76t1.76 4.256v8q0 2.496-1.76 4.224t-4.224 1.76h-18.016v2.016q0 0.64-0.352 1.152t-0.896 0.704-1.12 0.096-1.024-0.544l-4-4q-0.64-0.608-0.608-1.44z"></path>
 </svg>Προς ${capitalizeWords(result)}
                                     </div>`
 
         }
-        if (data.come.length === 0 && data.go.length === 0 && !localStorage.getItem(`${busInfo.bus}_Times`)) {
+        if (data.come.length === 0 && data.go.length === 0 && !localStorage.getItem(`${busInfo.bus}_Times_${comego}`)) {
           console.log(data)
           console.log("Spawning For", lineCode, "Stopped.")
           document.getElementById("timetableSpawn").innerHTML = `<div class="failed">
@@ -1777,23 +1804,32 @@ function processInfo(evoxId, type, addMore) {
         }
 
         console.log("Success", lineCode);
-
-        let times = data.go.map(item => {
+        console.log("Selected:", comego, 'with:', data[comego])
+        let times = data[comego].map(item => {
           return formatTime(item.sde_start1);
         });
+        console.log("Current times:", times)
+        if (times.length === 0) {
+          document.getElementById("timetableSpawn").innerHTML = `<div class="failed">
+    <img src="snap.png" class="failed-icon">
+    <vox class="failed-message">Δεν βρέθηκαν δεδομένα</vox>
+    <span class="failed-subtext">${capitalizeWords(formattedText).includes("κυκλικη") ? "Η διαδρομή του λεωφορείου είναι κυκλική.<br>Δεν υπάρχουν δρομολόγια για επιστροφή." : "Δεν υπάρχει διαθέσιμη διαδρομή επιστροφής για αυτό το λεωφορείο."}</span>
+</div>
+`;
+        }
 
         // Find the next bus time
         const nextBusTime = getNextBusTimeLIVE(times);
         let isLocal = false
         if (nextBusTime) {
-          localStorage.setItem(`${busInfo.bus}_Timetable`, JSON.stringify(data));
-          localStorage.setItem(`${busInfo.bus}_Times`, JSON.stringify(times));
+          localStorage.setItem(`${busInfo.bus}_Timetable_${comego}`, JSON.stringify(data));
+          localStorage.setItem(`${busInfo.bus}_Times_${comego}`, JSON.stringify(times));
 
           // Create the HTML content dynamically for each time
 
         } else {
           try {
-            const timesNew = localStorage.getItem(`${busInfo.bus}_Times`);
+            const timesNew = localStorage.getItem(`${busInfo.bus}_Times_${comego}`);
             times = JSON.parse(timesNew);
             isLocal = true
           } catch {
@@ -1850,10 +1886,10 @@ function processInfo(evoxId, type, addMore) {
         </div>
       </div>`
         }
-        remains.forEach(time => {
+        remains.forEach((time, index) => {
           document.getElementById("showMoreBusStart").style.display = null
           timetableContent += `
-      <div class="timeItem fade-in-slide-up ${isLocal ? "isLocal" : ""}" onclick="showDetailedTime('${time.replace(/<\/?vox>/g, "").replace(/<\/?vox>/g, "").replace(/ .*$/, "")}','next')">
+      <div class="timeItem fade-in-slide-up${previous[0] && index === 0 ? " isNext" : ""} ${isLocal ? "isLocal" : ""}" onclick="showDetailedTime('${time.replace(/<\/?vox>/g, "").replace(/<\/?vox>/g, "").replace(/ .*$/, "")}','next')">
       <p>${time}</p>
         <div class="actions">
           <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -1871,11 +1907,11 @@ function processInfo(evoxId, type, addMore) {
       fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${lineCode}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`)
         .then(response => response.json())
         .then(data => {
-          localStorage.setItem(`dailySchedule_${lineCode}`, JSON.stringify(data))
+          localStorage.setItem(`dailySchedule_${lineCode}_${comego}`, JSON.stringify(data))
           dailySchedule(data)
         })
         .catch(error => {
-          const lc_Temp = localStorage.getItem(`dailySchedule_${lineCode}`)
+          const lc_Temp = localStorage.getItem(`dailySchedule_${lineCode}_${comego}`)
           if (lc_Temp) {
             dailySchedule(JSON.parse(lc_Temp))
           } else {
@@ -2911,7 +2947,7 @@ function spawnAndShowInfo(bus, remain) {
     }
 
     console.log("REACHED LIVE")
-    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${returned}&type=currentLocation`)
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${returned}&type=currentLocation&vevox=${randomString()}`)
       .then(response => response.json())
       .then(data => {
         console.log("LIVE OK")
@@ -2919,7 +2955,7 @@ function spawnAndShowInfo(bus, remain) {
           data.forEach(location => {
             const dot = document.createElement('div');
             let offset = [0, 0];
-  
+
             dot.className = "busLocation";
             dot.onclick = function () {
               if (dot.getAttribute("data-status") === 'hidden') {
@@ -2940,7 +2976,7 @@ function spawnAndShowInfo(bus, remain) {
     </svg>`
                 dot.setAttribute("data-status", 'hidden')
               }
-  
+
             }
             dot.setAttribute("data-status", 'hidden')
             dot.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -2953,17 +2989,17 @@ function spawnAndShowInfo(bus, remain) {
     <path d="M2.4 11.8L4 13L4.00093 9H3C2.44772 9 2 9.44772 2 10V11C2 11.3148 2.14819 11.6111 2.4 11.8Z" fill="#000"></path>
     <path d="M21 9H19.999L20 13L21.6 11.8C21.8518 11.6111 22 11.3148 22 11V10C22 9.44772 21.5522 9 21 9Z" fill="#000"></path>
     </svg>`;
-  
+
             const marker = new mapboxgl.Marker({ element: dot, offset: offset })
               .setLngLat([location.CS_LNG, location.CS_LAT])
               .addTo(map);
             markers_intel.push(marker);
           })
-        } catch(error) {
+        } catch (error) {
           console.log("live failed")
         }
-        
-        
+
+
       })
       .catch(error => console.error('Error:', error));
 
@@ -2971,14 +3007,14 @@ function spawnAndShowInfo(bus, remain) {
     if (learning) {
       const workOn = JSON.parse(learning);
       if (workOn[bus]) {
-        if(workOn[bus][0].StopCode) {
+        if (workOn[bus][0].StopCode) {
           addIt(workOn[bus]);
           return;
         } else {
           localStorage.removeItem('oasa-intelligence')
         }
-        
-        
+
+
       }
     }
 
@@ -3200,6 +3236,11 @@ checkboxa.addEventListener('change', function () {
       })
   }
 });
+function switchTo(what, el) {
+  if (!el.classList.contains('active')) {
+    processInfo(activeEvoxId, 'getTimes', null, what)
+  }
+}
 
 function showMoreBusStart() {
   processInfo(activeEvoxId, 'getTimes', shownTimeTable + 5)
@@ -3752,7 +3793,11 @@ function switchRouteTo(el) {
       workOn.descr = aroute.LineDescr
       processInfo(activeEvoxId, 'getTimes', null)
       console.log('Redirecting to some other route', aroute.LineCode)
+    } else {
+      return;
     }
+
+    localStorage.setItem("personalizedAutoBus", JSON.stringify(personalizedAutoBus))
 
   })
 }
@@ -3779,11 +3824,65 @@ function openStation(code, descr) {
     document.getElementById("stationsVertical").classList.add('fade-out-slide-down')
     setTimeout(function () { document.getElementById("stationsVertical").style.display = 'none'; }, 200)
     setTimeout(function () { document.getElementById("stationsVertical").classList.remove("fade-out-slide-down"); document.getElementById("stationsVertical").classList.remove("shown") }, 500)
-    
+
     closeSearch()
     document.getElementById("searchIntelli").classList.add('notLoaded')
   }, 400)
   directBack = true
   showStopDetails(code, descr)
 
+}
+
+function showMenu() {
+  $("#account-home").fadeOut("fast");
+  $("#notifications-home").fadeOut("fast", function () {
+    const navigate = document.getElementById("top-navigate");
+    navigate.classList.add("expand"); // Add the class to expand the element
+    setTimeout(function () {
+      // Add options dynamically or make them visible
+      const options = document.createElement("div");
+      options.classList.add("menu-options");
+      options.innerHTML = `
+        <button onclick="optionAction('Option 1')">Option 1</button>
+        <button onclick="optionAction('Option 2')">Option 2</button>
+        <button onclick="optionAction('Option 3')">Option 3</button>
+      `;
+      navigate.appendChild(options);
+    }, 300); // Wait for the animation to complete
+  });
+}
+
+function optionAction(option) {
+  alert(`You selected: ${option}`);
+}
+
+function resetMenu() {
+  const navigate = document.getElementById("top-navigate");
+
+  // Reset styles applied in showMenu
+  navigate.style.justifyContent = "center"; // Assuming "center" is the default
+  navigate.style.transition = ""; // Clear any transition styles
+
+  // Remove the shrink class
+  navigate.classList.remove("shrink");
+
+  // Reset visibility for icons
+  const accountHome = document.getElementById("account-home");
+  const notificationsHome = document.getElementById("notifications-home");
+
+  accountHome.style.display = "block"; // Show the element
+  notificationsHome.style.display = "block";
+
+  // Optional: Reset anything else you modified in showMenu
+}
+
+
+function showLocalPanel() {
+  if(document.getElementById("storage-editor").getAttribute("data-e") === 'hidden') {
+    $("#storage-editor").fadeIn("fast")
+    document.getElementById("storage-editor").setAttribute("data-e", '')
+  } else {
+    $("#storage-editor").fadeOut("fast")
+    document.getElementById("storage-editor").setAttribute("data-e", 'hidden')
+  }
 }
