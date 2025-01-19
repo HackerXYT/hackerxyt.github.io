@@ -73,15 +73,51 @@
     -webkit-backdrop-filter: blur(5px);
     border-radius: 30px;
     justify-content: space-between;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
+    transition: width 0.3s ease, border-radius 0.3s ease, transform 0.3s ease, height 0.3s ease, padding 0.3s ease;
+  }
+  
+  .navigate.expand {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    padding: 50px;
+    flex-direction: column; /* Stack content vertically */
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .menu-options {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .menu-options button {
+    background: #ffffff10;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .menu-options button:hover {
+    background: #ffffff30;
+  }
+  
 
 .navigate.hidden {
     transform: translateY(100%);
-    /* Move the element off-screen */
     opacity: 0;
-    /* Hide the element */
 }
+
+.navigate.shrink {
+    width: 66px;
+    border-radius: 50px;
+}
+
 
 .navigate .switch {
     display: flex;
@@ -444,22 +480,57 @@
 .searchIn span svg {
     margin-left: 2px;
 }
-
 #phone {
-    --fade-color: #141416;
+    --fade-color: #121216; /* Slightly lighter shade, still close to OLED black */
     background: linear-gradient(to bottom left,
-            rgba(41, 63, 172, 0) 50%,
-            rgba(41, 63, 172, 0.1) 75%,
-            rgba(41, 63, 172, 0.2) 100%),
+            rgba(0, 0, 0, 0) 50%, /* Keep dark to transparent */
+            rgba(0, 0, 0, 0.05) 75%, /* Very subtle brightness */
+            rgba(0, 0, 0, 0.1) 100%), /* Slightly more visible */
         linear-gradient(to top,
-            rgba(245, 66, 31, 0) 50%,
-            rgba(31, 117, 245, 0.05) 75%,
-            rgba(31, 31, 245, 0.08) 100%),
+            rgba(10, 25, 50, 0) 50%, /* Keep dark blue hint */
+            rgba(0, 20, 80, 0.03) 75%, /* Very subtle brighter blue */
+            rgba(0, 0, 50, 0.05) 100%), /* Slightly brighter blue */
         var(--fade-color);
     background-repeat: no-repeat;
     background-size: 300% 300%;
-
 }
+
+
+#phone.image {
+    --fade-color: #0a0a0d; /* Darker shade close to OLED black */
+    position: relative; /* Make sure the pseudo-element is positioned correctly */
+    width: 100vw; /* Full width */
+    height: 100vh; /* Full height */
+    z-index: 1; /* Keeps the content in front of the pseudo-element */
+    background: linear-gradient(to bottom left,
+            rgba(0, 0, 0, 0) 50%, /* Darker to transparent */
+            rgba(0, 0, 0, 0.1) 75%, /* Darker to slightly visible */
+            rgba(0, 0, 0, 0.2) 100%), /* Darker still */
+        linear-gradient(to top,
+            rgba(10, 25, 50, 0) 50%, /* Darker gradient with a hint of blue */
+            rgba(0, 20, 80, 0.05) 75%, /* Darker blue */
+            rgba(0, 0, 50, 0.08) 100%), /* Darker blue */
+        var(--fade-color);
+}
+
+/* Create a pseudo-element to hold the background image */
+#phone.image::before {
+    content: ''; /* Required for pseudo-elements */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('splashScreens/apple-splash-640-1136.png'); /* Replace with your image URL */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    filter: blur(5px) brightness(60%); /* Apply the blur effect only to the background image */
+    z-index: -1; /* Place the pseudo-element behind the content */
+}
+
+
+
 
 #phone.login {
     --fade-color: #000000;
@@ -1074,7 +1145,14 @@
     margin-left: 0px;
     padding-right: -10px;
     /*border-radius: 20px;*/
+}
 
+#multiple-routes .Block {
+    order: 2;
+}
+
+#multiple-routes .Block.active {
+    order: 1;
 }
 
 .busInfo .busInfoSelector {
@@ -1183,8 +1261,8 @@
     background-color: #f5421f25;
 }
 
-#timetableSpawn .timeItem:nth-child(2) {
-    background-color: #75f51f25;
+#timetableSpawn .timeItem.isNext {
+    background-color: #ffffff36;
 }
 
 .timeItem.forCheckboxes p {
