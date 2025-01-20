@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.0.11'
+const currentVersion = '2.0.2'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -650,7 +650,7 @@ console.log(convertTime(1));  // "1 minute"
 
 
 function displayRemainingTimeLIVE(nextBusTime, elid) {
-  console.log("Running", JSON.stringify(nextBusTime), "for", elid);
+  //console.log("Running", JSON.stringify(nextBusTime), "for", elid);
   const currentTime = new Date();
   const nextBusDate = new Date();
 
@@ -665,7 +665,7 @@ function displayRemainingTimeLIVE(nextBusTime, elid) {
   const remainingTimeMs = nextBusDate - currentTime;
   const remainingMinutes = Math.floor(remainingTimeMs / 1000 / 60);
 
-  console.log("Result", JSON.stringify(nextBusTime), "for", `${remainingMinutes} minutes`);
+  //console.log("Result", JSON.stringify(nextBusTime), "for", `${remainingMinutes} minutes`);
   return remainingMinutes;
 }
 
@@ -816,11 +816,11 @@ function loadOasa() {
           return;
         }
 
-        console.log(`Schedule data for ${bus}:`, data);
+        //console.log(`Schedule data for ${bus}:`, data);
 
         // Extract times
         const times = data.go.map(item => formatTime(item.sde_start1));
-        console.log(`Formatted times for ${bus}:`, times);
+        //console.log(`Formatted times for ${bus}:`, times);
 
         // Determine the next bus time
         const nextBusTime = getNextBusTimeLIVE(times);
@@ -1245,6 +1245,11 @@ function setupServiceWorkerMessaging() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  setInterval(function () {
+    console.log('Calling handleActivity');
+    handleActivity(startingJson);
+  }, 10000);
+
   function getCookie(name) {
     // Find the cookie in document.cookie string
     const value = `; ${document.cookie}`;
@@ -2321,13 +2326,14 @@ async function spawnBusOnMap(lineId) {
   }
 
 }
-
+let activeRouteCode = null
 async function findBusInfo2(id, getJustLineCode = false, getJustRouteCode = true) {
   async function routeOasa(lineCode) {
     const getStops = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`);
     const response = await fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${getStops}&vevox=${randomString()}`);
     const data = await response.json();
     console.log('Route:', data)
+    activeRouteCode = data[0].route_code
     if (data && data.length > 0) {
       return data[0].route_code;
     } else {
@@ -3201,8 +3207,8 @@ function showVerticalStations() {
   document.getElementById("stationsSpawnVertical").innerHTML = ''
   if (keepForVerticalStations) {
     keepForVerticalStations.stops.forEach(station => {
-      document.getElementById("stationsSpawnVertical").innerHTML += `<div id="global-vertical-station-${station.StopCode}" class="timeItem fade-in-slide-up" onclick="showStopDetails('${station.StopCode}', '${capitalizeWords(station.StopDescr)}')">
-                                        <p>${capitalizeWords(station.StopDescr)}</p>
+      document.getElementById("stationsSpawnVertical").innerHTML += `<div id="global-vertical-station-${station.StopCode}" class="timeItem fade-in-slide-up">
+                                        <div onclick="showStopDetails('${station.StopCode}', '${capitalizeWords(station.StopDescr)}')" class="rowDefault"><p>${capitalizeWords(station.StopDescr)}</p>
                                         <div class="actions">
                                             <span id="timeFor-${station.StopCode}"><svg class="compassAnim" xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
         <path opacity="0.5"
@@ -3214,6 +3220,16 @@ function showVerticalStations() {
     </svg></span><svg style="transform: rotate(180deg);margin-left:5px;" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
 <path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#fff"></path>
 </svg>
+                                        </div></div>
+                                        <div style="display: none" class='moreActions'>
+                                        <div onclick="addActivity('${capitalizeWords(station.StopDescr)}', '${station.StopCode}', this)" style="display: none" class="themeButton">
+                                            Παρακολούθηση
+                                        </div>
+                                        <div style="display: none" class="themeButton">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M11.5 1C10.9477 1 10.5 1.44772 10.5 2V3H9.99998C7.23864 3 4.99999 5.23825 4.99999 7.99975V11C4.99999 11.7377 4.76718 12.5722 4.39739 13.4148C4.03165 14.2482 3.55876 15.0294 3.14142 15.6439C2.38188 16.7624 2.85216 18.5301 4.40564 18.8103C5.42144 18.9935 6.85701 19.2115 8.54656 19.3527C8.54454 19.4015 8.54352 19.4506 8.54352 19.5C8.54352 21.433 10.1105 23 12.0435 23C13.9765 23 15.5435 21.433 15.5435 19.5C15.5435 19.4482 15.5424 19.3966 15.5402 19.3453C17.1921 19.204 18.596 18.9903 19.5943 18.8103C21.1478 18.5301 21.6181 16.7624 20.8586 15.6439C20.4412 15.0294 19.9683 14.2482 19.6026 13.4148C19.2328 12.5722 19 11.7377 19 11V7.99975C19 5.23825 16.7613 3 14 3H13.5V2C13.5 1.44772 13.0523 1 12.5 1H11.5ZM12 19.5C12.5113 19.5 13.0122 19.4898 13.4997 19.4715C13.5076 20.2758 12.8541 20.9565 12.0435 20.9565C11.2347 20.9565 10.5803 20.2778 10.5872 19.4747C11.0473 19.491 11.5191 19.5 12 19.5ZM9.99998 5C8.34305 5 6.99999 6.34298 6.99999 7.99975V11C6.99999 12.1234 6.65547 13.2463 6.22878 14.2186C5.79804 15.2 5.25528 16.0911 4.79599 16.7675C4.78578 16.7825 4.78102 16.7969 4.77941 16.8113C4.77797 16.8242 4.77919 16.8362 4.78167 16.8458C6.3644 17.1303 9.00044 17.5 12 17.5C14.9995 17.5 17.6356 17.1303 19.2183 16.8458C19.2208 16.8362 19.222 16.8242 19.2206 16.8113C19.2189 16.7969 19.2142 16.7825 19.204 16.7675C18.7447 16.0911 18.2019 15.2 17.7712 14.2186C17.3445 13.2463 17 12.1234 17 11V7.99975C17 6.34298 15.6569 5 14 5H9.99998Z" fill="#d5d5d5"></path>
+                            </svg> <vox>../</vox>
+                                        </div>
                                         </div>
                                     </div>`
     })
@@ -3234,20 +3250,48 @@ function showVerticalStations() {
         const promise = new Promise((resolve) => {
           arrivals.forEach((stop, index) => {
             const targets = document.querySelectorAll(`[id="timeFor-${stop.StopCode}"]`);
-
+            const actions = document.getElementById(`global-vertical-station-${stop.StopCode}`).querySelector('.moreActions')
+            const activity = document.getElementById(`global-vertical-station-${stop.StopCode}`).querySelectorAll('.moreActions .themeButton')
             let toSpawn = stop.time;
+            activity[0].setAttribute("data-time", toSpawn)
             if (toSpawn === null) {
               toSpawn = `<img src="busNotFound.png" width="25px" height="25px">`;
+              //show up at start
+              actions.style.display = 'flex'
+              activity[1].style.display = 'flex'
+              activity[1].querySelector("vox").innerText = 'Όταν εμφανιστεί'
             } else if (toSpawn === false) {
               toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
 <path opacity="0.5" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" fill="#fff"/>
 <path d="M12 7.75C11.3787 7.75 10.875 8.25368 10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 7.42525 14.625 8.875C14.625 9.58584 14.3415 10.232 13.883 10.704C13.7907 10.7989 13.7027 10.8869 13.6187 10.9708C13.4029 11.1864 13.2138 11.3753 13.0479 11.5885C12.8289 11.8699 12.75 12.0768 12.75 12.25V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V12.25C11.25 11.5948 11.555 11.0644 11.8642 10.6672C12.0929 10.3733 12.3804 10.0863 12.6138 9.85346C12.6842 9.78321 12.7496 9.71789 12.807 9.65877C13.0046 9.45543 13.125 9.18004 13.125 8.875C13.125 8.25368 12.6213 7.75 12 7.75Z" fill="#fff"/>
 <path d="M12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z" fill="#fff"/>
 </svg>`;
+              //show up at count start
+              actions.style.display = 'flex'
+              activity[1].style.display = 'flex'
+              activity[1].querySelector("vox").innerText = 'Όταν εμφανιστεί'
             } else if (toSpawn === "OASAERR") {
               toSpawn = `Σφάλμα`;
+              //show up at count start
+              actions.style.display = 'flex'
+              activity[1].style.display = 'flex'
+              activity[1].querySelector("vox").innerText = 'Όταν εμφανιστεί'
             } else {
               toSpawn += "'";
+              if (Number(stop.time) > 2) {
+                //show up 2 mins
+                console.log(activity[1])
+                actions.style.display = 'flex'
+                activity[1].style.display = 'flex'
+                activity[1].querySelector("vox").innerText = "2' μακριά"
+                activity[0].style.display = 'flex'
+              } else {
+                if (Number(stop.time) === 1 || Number(stop.time) === 0) {
+                  document.getElementById(`global-vertical-station-${stop.StopCode}`).classList.add("currentLocation")
+                }
+
+                console.log("Not accepted!", stop.time)
+              }
             }
 
             targets.forEach(target_single => {
@@ -3269,6 +3313,8 @@ function showVerticalStations() {
       .catch(error => {
         console.log("intelligence [1] error:", error);
       });
+  } else {
+    showVerticalStations()
   }
 
 }
@@ -3816,11 +3862,85 @@ function resetMenu() {
 
 
 function showLocalPanel() {
-  if(document.getElementById("storage-editor").getAttribute("data-e") === 'hidden') {
+  if (document.getElementById("storage-editor").getAttribute("data-e") === 'hidden') {
     $("#storage-editor").fadeIn("fast")
     document.getElementById("storage-editor").setAttribute("data-e", '')
   } else {
     $("#storage-editor").fadeOut("fast")
     document.getElementById("storage-editor").setAttribute("data-e", 'hidden')
   }
+}
+
+let startingJson = {}
+
+function handleActivity(startingJson, te) {
+  if (startingJson.start_min) {
+    document.getElementById("activity").style.display = 'flex'
+
+
+    // Convert startTime to minutes
+    //const startTimeInMinutes = (new Date() - new Date(startingJson.startTime)) / (1000 * 60); // Difference in minutes
+    //
+    //// Compare startTimeInMinutes with start_min
+    //if (startTimeInMinutes > Number(startingJson.start_min)) {
+    //  console.log("startTimeInMinutes > Number(startingJson.start_min)")
+    //  return; // If true, stop the function early
+    //} else {
+    //  console.log("Running normally")
+    //}
+
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${startingJson.station_id}&keyOrigin=evoxEpsilon`)}`)
+      .then(response => response.json())
+      .then(data => {
+        const targetRouteCode = startingJson.route_code; // Replace this with your desired route_code
+        const filteredData = data.filter(item => item.route_code === targetRouteCode);
+        //console.log(filteredData[0])
+        if (filteredData[0]) {
+          const min = filteredData[0].btime2;
+          if(min > startingJson.start_min) {
+            document.getElementById("activity").style.display = 'none'
+          }
+          //const min = te
+          //const x = (startingJson.start_min - min / startingJson.start_min) * 100
+          let x = 98 - (Number(min) * 100) / Number(startingJson.start_min);
+          //console.log("starting x", x);
+          x = x < 2 ? x + 4 : x;
+          //console.log("Activity:", min, "x:", x);
+          document.getElementById("progress-fill").style.width = `${x}%`;
+          document.getElementById("progress-indicator").style.left = `${x}%`;
+          document.getElementById("to-?").innerText = startingJson.stationName;
+          document.getElementById("busidNoReq").innerText = startingJson.busName;
+          document.getElementById("howMuchActivity").innerText = `${min} ${min >= 2 || min === 0 ? "λεπτά" : "λεπτό"}`;
+        }
+      })
+      .catch(error => {
+        console.log("Activity [1] error:", error);
+      });
+  } else {
+    document.getElementById("activity").style.display = 'none'
+  }
+}
+
+
+
+function changeActivity() {
+  const current = document.getElementById("progress-fill").style.width.replace("%", "");
+  document.getElementById("progress-fill").style.width = `${Number(current) + 10}%`
+  document.getElementById("progress-indicator").style.left = `${Number(current) + 10}%`
+}
+
+
+
+function addActivity(stationName, stationId, currentMinEl) {
+  const current = currentMinEl.getAttribute("data-time")
+  startingJson = {
+    'busName': evoxIds[activeEvoxId].bus,
+    "stationName": stationName,
+    "station_id": stationId,
+    "route_code": activeRouteCode,
+    "start_min": current,
+    "startTime": new Date()
+  }
+  console.log("Set!", startingJson)
+  handleActivity(startingJson);
 }
