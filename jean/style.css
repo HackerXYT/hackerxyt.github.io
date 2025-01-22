@@ -1095,6 +1095,7 @@ img {
         8px 8px 16px rgba(0, 0, 0, 0.8),
         -8px -8px 16px rgba(255, 255, 255, 0.1);
     transition: transform 0.2s ease-in-out;
+    box-sizing: border-box;
 }
 
 .card .background {
@@ -1113,6 +1114,7 @@ img {
     min-height: auto;
     /* Allow height to adjust */
     transform: translate(-50%, -50%);
+    min-width: calc(100% + 40px);
     /* Center the video */
 
     z-index: 1;
@@ -1168,6 +1170,10 @@ img {
 
 .tag.green {
     background-color: #017c47e4;
+}
+
+.tag.cyan {
+    background-color: #01617ce4;
 }
 
 .tag.settings {
@@ -1292,6 +1298,10 @@ img {
     /*Bar Color*/
     box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.8);
     border-radius: 50px;
+}
+
+.progress-each.cyan {
+    background-color: #01617ce4 !important;
 }
 
 @keyframes fadeInSlideUp {
@@ -1429,7 +1439,6 @@ img {
 .spamStop .countdown {
     font-size: 30px;
 }
-
 .topActions {
     display: flex;
     flex-direction: row;
@@ -1440,7 +1449,6 @@ img {
     width: 100%;
     z-index: 2;
     margin-top: env(safe-area-inset-top) !important;
-
 }
 
 .topActions .backArrow {
@@ -1466,6 +1474,13 @@ img {
     justify-content: center;
     align-items: center;
 }
+
+.topActions.keepUp {
+    position: absolute; /* Use absolute positioning instead of fixed */
+    left: 10px; /* Position it relative to .topActions */
+    top: 10px;  /* Adjust as needed */
+}
+
 
 .assets {
     display: flex;
@@ -2462,4 +2477,192 @@ input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
     -webkit-text-fill-color: #fff !important;
     transition: background-color 5000s ease-in-out 0s;
+}
+
+.simple-ontop .assets {
+    justify-content: flex-start;
+    height: 100%;
+    padding-top: 60px;
+}
+
+.search-container {
+    position: relative;
+    width: 90%;
+    /* bg-gray-100 */
+    border-radius: 16px;
+    /* rounded-2xl */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* shadow-md */
+    padding: 6px;
+    /* p-1.5 */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    backdrop-filter: blur(5px);
+    /* Adjust the blur amount as needed */
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 15px;
+    transition: all 0.5s ease-in-out;
+    background-color: #2323238a;
+    border: 1px solid #2d2d2d98;
+    justify-content: left;
+}
+
+.icon-container {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.search-icon {
+    height: 30px;
+    /* h-5 */
+    width: 30px;
+    /* w-5 */
+    color: #9ca3af;
+    /* text-gray-400 */
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 0px 12px 5px;
+    /* pl-8, pr-24, py-3 */
+    font-size: 16px;
+    /* text-base */
+    color: #dedede;
+    /* text-gray-700 */
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    /* rounded-lg */
+    outline: none;
+}
+
+.search-button {
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    right: 6px;
+    padding: 0 24px;
+    /* px-6 */
+    background-color: #5044e4;
+    color: #ffffff;
+    font-weight: 500;
+    /* font-medium */
+    border: none;
+    border-radius: 12px;
+    /* rounded-xl */
+    cursor: pointer;
+}
+
+.search-button:focus {
+    outline: 2px solid #5044e4;
+    /* focus:ring-2 */
+    outline-offset: 2px;
+    /* focus:ring-offset-2 */
+}
+
+.emoji-cont {
+    font-size: 5rem;
+    opacity: 0;
+    transform: translateY(30px) scale(1.5);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    width: 80%;
+    text-align: center;
+    transform-origin: center;
+    margin-bottom: 20px;
+}
+
+.emoji-cont.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.big-info {
+    margin-top: 20px;
+    padding: 0px 30px;
+}
+
+.big-info h2{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 23px;
+    font-weight: 500;
+}
+
+.big-info p{
+    color: #ffffffb9;
+    margin-top: 5px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.spawnPeople {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    width: 90%;
+    gap: 10px;
+    order: 1; /* Default order */
+}
+
+.spawnPeople.parent {
+    width: 100%;
+    margin-bottom: 40px;
+    padding-bottom: 50px;
+}
+
+.spawnPeople.upup {
+    order: -1;
+}
+
+.aStudent {
+    width: 100%;
+    height: auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    backdrop-filter: blur(5px);
+    /* Adjust the blur amount as needed */
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 15px;
+    transition: all 0.2s ease-in-out;
+    background-color: #1c1c1c75; /*232323f0*/
+    /*border: 2px solid #7c7c7c39;*/
+}
+
+.aStudent.picked {
+    /*background-color: #01617c99;*/
+    border: 3px solid #01617c99;
+    border-radius: 20px;
+}
+
+.spawnPeople .studentImage {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.spawnPeople .studentImage img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.spawnPeople .pickStudent {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
 }

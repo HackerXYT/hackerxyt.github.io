@@ -1257,7 +1257,147 @@ function clickCard(e) {
     e.style.transform = "scale(0.99)"
     setTimeout(function () {
         e.style.transform = "scale(1)"
+        if (e.getAttribute('data-evox') === 'yearbook') {
+            activateYearbook()
+        }
     }, 200)
+
+}
+let allUsers = {}
+let classes = {}
+function activateYearbook() {
+    $("#app").fadeOut("fast", function () {
+        document.getElementById("loadText").innerHTML = 'Φόρτωση..'
+        $("#tasks").fadeIn("fast", function () {
+            fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
+                .then(response => response.json())
+                .then(names => {
+                    namesData = names
+                    const fullNames = Object.keys(names.names);
+                    document.getElementById("spawnPeople").innerHTML = '';
+                    let selfClass = null
+                    const fetchPromises = fullNames.map(name => {
+                        return fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
+                            .then(response => response.json())
+                            .then(info => {
+                                if (info.emri !== foundName) {
+                                    allUsers[info.emri] = info;
+                                } else {
+                                    selfClass = `${info.seksioni}${info.klasa}`
+                                }
+
+                            })
+                            .catch(error => {
+                                console.error("Jeanne D'arc Database is offline.");
+                                console.log('Error:', error);
+                            });
+                    });
+
+                    Promise.all(fetchPromises)
+                        .then(() => {
+                            Object.entries(allUsers).forEach(([key, user]) => {
+                                // key -> emri, user -> data
+                                if (classes[`${user.seksioni}${user.klasa}`]) {
+                                    classes[`${user.seksioni}${user.klasa}`].push(user);
+                                } else {
+                                    classes[`${user.seksioni}${user.klasa}`] = [user];
+                                }
+                            });
+
+                            console.log(classes);
+
+                            Object.entries(classes).forEach(([key, aclass]) => {
+                                if (!document.getElementById("spawnPeople").innerText.includes(key)) {
+                                    document.getElementById("spawnPeople").innerHTML += `<div class="spawnPeople" id="${key}-cont">
+                                    <p style="text-align: left">${key}</p></div>` //${key.includes("ΚΑΘ") ? " style='display: none'" : ""}
+                                }
+                                console.log(key, aclass)
+
+
+
+
+                                // key -> class, user -> data
+                                if (key === selfClass) {
+
+                                    document.getElementById(`${key}-cont`).classList.add("upup")
+                                    document.getElementById(`${key}-cont`).innerText = 'Στην τάξη σου'
+                                    //classes[`${user.seksioni}${user.klasa}`].push(user);
+                                }
+
+                                Object.entries(aclass).forEach(([nameEach, inform]) => {
+                                    if (inform.emri === foundName) { return; }
+                                    document.getElementById(`${key}-cont`).innerHTML += `<div class="aStudent fade-in-slide-up" onclick="pickStudent('${inform.emri}', this)">
+                                    <div class="studentImage">
+                                        <img src="${inform.foto}">
+                                    </div>
+                                    <div class="studentInfo">
+                                        <p>${inform.emri}</p>
+                                    </div>
+                                </div>`
+                                })
+
+                            });
+                        });
+
+
+
+
+                }).catch(error => {
+                    console.error("Jeanne D'arc Database is offline.")
+                    console.log('Error:', error);
+                });
+
+            //const a = foundName.split(" ")[0]
+            const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
+            const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
+            document.getElementById("loadText").innerHTML = `Ας ξεκινήσουμε,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a}`
+            //document.getElementById("loadText").innerHTML = `Ας ξεκινήσουμε,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a}`
+            document.getElementById("loadText").style.opacity = '1'
+            setTimeout(function () {
+                $("#tasks").fadeOut("fast", function () {
+                    document.getElementById("yearbook-container").style.display = 'block'
+                    document.getElementById("yearbook-container").style.opacity = '1'
+
+                    const emojiCont = document.querySelector('.emoji-cont');
+                    const emotions = [
+                        "😃", "😢", "😡", "😱", "😍", "🤔", "😂", "😐", 
+                        "😎", "🥳", "😴", "🥺", "🤩", "🙄", "😜", "🤗", 
+                        "😅", "😌", "😶", "😇", "😈", "😬", "🥰", "😤", 
+                        "😓", "🤯", "🫣", "😖"
+                      ]
+                      ;
+                    let index = 0;
+
+                    function changeEmoji() {
+                        emojiCont.classList.remove('active');
+
+                        setTimeout(() => {
+                            emojiCont.textContent = emotions[index];
+                            emojiCont.classList.add('active');
+                            index = (index + 1) % emotions.length;
+                        }, 500);
+                    }
+
+                    setInterval(changeEmoji, 2000);
+                    changeEmoji();
+
+                })
+            }, 1000)
+        })
+    })
+
+}
+function goBackFromBook() {
+
+    document.getElementById("yearbook-container").style.opacity = '0'
+    setTimeout(function () {
+        document.getElementById("yearbook-container").style.display = 'none'
+    }, 500)
+    $("#app").fadeIn("fast", function () {})
+}
+
+function pickStudent(name, e) {
+    e.classList.toggle("picked")
 }
 
 function actionClick(event, e) {
@@ -1375,9 +1515,7 @@ function openInstagram() {
         window.open(`https://instagram.com/${socialUsername}`, '_blank');
     }
 }
-
-function showSocial() {
-    document.getElementById("social").classList.add("active")
+function merrniEmrat() {
     fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
         .then(response => response.json())
         .then(names => {
@@ -1395,6 +1533,7 @@ function showSocial() {
                 <p>${info.emri}</p><span>${info.seksioni}'${info.klasa}</span>
             </div>`
 
+
                     }).catch(error => {
                         console.error("Jeanne D'arc Database is offline.")
                         console.log('Error:', error);
@@ -1407,6 +1546,11 @@ function showSocial() {
             console.error("Jeanne D'arc Database is offline.")
             console.log('Error:', error);
         });
+}
+function showSocial() {
+    merrniEmrat()
+    document.getElementById("social").classList.add("active")
+
 }
 
 function hideSocial() {
@@ -1841,35 +1985,35 @@ function searchByNameComplete() {
         document.getElementById("pinText").style.marginBottom = '25px'
         //document.getElementById("loadText").style.opacity = '0'
         //setTimeout(function () {
-            document.getElementById("loadText").innerHTML = `Επιτυχία`
-            document.getElementById("accessButton").innerHTML = `Επιτυχία`
+        document.getElementById("loadText").innerHTML = `Επιτυχία`
+        document.getElementById("accessButton").innerHTML = `Επιτυχία`
+        document.getElementById("loadText").style.opacity = '1'
+        document.getElementById("evoxContainer").classList.remove("active")
+        $("#hexa").fadeOut("fast")
+        $("#tasks").fadeIn("fast", function () {
+            //setTimeout(function () {
+            //document.getElementById("loadText").style.opacity = '0'
+            //setTimeout(function () { //
+            const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
+            const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
+            document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
             document.getElementById("loadText").style.opacity = '1'
-            document.getElementById("evoxContainer").classList.remove("active")
-            $("#hexa").fadeOut("fast")
-            $("#tasks").fadeIn("fast", function () {
-                //setTimeout(function () {
-                    //document.getElementById("loadText").style.opacity = '0'
-                    //setTimeout(function () { //
-                        const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
-                        const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
-                        document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
-                        document.getElementById("loadText").style.opacity = '1'
-                        setTimeout(function () {
-                            document.getElementById("topImg").style.opacity = '0'
-                            $("#tasks").fadeOut("fast", function () {
-                                $("#loginContainer").fadeOut("fast", function () {
-                                    document.getElementById("loginContainer").style.display = 'none'
-                                    $("#multimatch").fadeOut("fast", function () {
-                                        $("#lock").fadeIn("fast")
-                                        $("#hexa").fadeOut("fast")
-                                    })
-                                })
+            setTimeout(function () {
+                document.getElementById("topImg").style.opacity = '0'
+                $("#tasks").fadeOut("fast", function () {
+                    $("#loginContainer").fadeOut("fast", function () {
+                        document.getElementById("loginContainer").style.display = 'none'
+                        $("#multimatch").fadeOut("fast", function () {
+                            $("#lock").fadeIn("fast")
+                            $("#hexa").fadeOut("fast")
+                        })
+                    })
 
-                            })
-                        }, 1000)
-                    //}, 340)
-                //}, 900)
-            })
+                })
+            }, 1000)
+            //}, 340)
+            //}, 900)
+        })
 
 
         //}, 340)
@@ -1877,102 +2021,102 @@ function searchByNameComplete() {
         document.getElementById("pinText").style.marginBottom = null
         document.getElementById("welcome").classList.add("fade-out-slide-down")
         //document.getElementById("accessButton").innerHTML = `Επιτυχία`
-            let count = 0
-            const karuseliCont = document.getElementById("karuseli")
-            karuseliCont.style.display = null
-            document.getElementById("userPinPfp").style.display = 'none'
-            karuseliCont.innerHTML = ''
-            matchedNames.forEach(name => {
-                count++
-                const firstChar = (str) => str.split(' ')[1]?.charAt(0) || null;
-                const ranId = Math.floor(Math.random() * 909999) + 1
-                if (count === 1) {
-                    karuseliCont.innerHTML = `${karuseliCont.innerHTML}<img onclick="pickasCurrent('${name}')" class="fytyre zgjedhur" src="reloading-pfp.gif" alt="Fytyrë ${count}" id="${ranId}">`
-                } else {
-                    karuseliCont.innerHTML = `${karuseliCont.innerHTML}<img onclick="pickasCurrent('${name}')" class="fytyre" src="reloading-pfp.gif" alt="Fytyrë ${count}" id="${ranId}">`
-                }
+        let count = 0
+        const karuseliCont = document.getElementById("karuseli")
+        karuseliCont.style.display = null
+        document.getElementById("userPinPfp").style.display = 'none'
+        karuseliCont.innerHTML = ''
+        matchedNames.forEach(name => {
+            count++
+            const firstChar = (str) => str.split(' ')[1]?.charAt(0) || null;
+            const ranId = Math.floor(Math.random() * 909999) + 1
+            if (count === 1) {
+                karuseliCont.innerHTML = `${karuseliCont.innerHTML}<img onclick="pickasCurrent('${name}')" class="fytyre zgjedhur" src="reloading-pfp.gif" alt="Fytyrë ${count}" id="${ranId}">`
+            } else {
+                karuseliCont.innerHTML = `${karuseliCont.innerHTML}<img onclick="pickasCurrent('${name}')" class="fytyre" src="reloading-pfp.gif" alt="Fytyrë ${count}" id="${ranId}">`
+            }
 
-                //document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
-                //<div onclick="selectCustom('${name}')" class="socialUser"><img id="${ranId}" class="slUserPFP social"
-                getEvoxProfile(name).then(profileSrc => {
-                    document.getElementById(ranId).src = profileSrc
-                });
-
-                if (count === matchedNames.length) {
-                    const karuseli = document.querySelectorAll('.fytyre');
-                    function positionImages() {
-                        const zgjedhurIndex = Array.from(karuseli).findIndex(el => el.classList.contains('zgjedhur'));
-
-                        karuseli.forEach((el, i) => {
-                            const position = i - zgjedhurIndex; // Calculate relative position
-                            el.style.transform = `translateX(${position * 70}px)`; // Adjust distance
-                        });
-                    }
-
-                    // Initialize positions at load
-                    positionImages();
-
-                    // Add event listeners for clicks
-                    karuseli.forEach((fytyre, index) => {
-                        fytyre.addEventListener('click', () => {
-                            document.querySelector('.zgjedhur').classList.remove('zgjedhur');
-                            fytyre.classList.add('zgjedhur');
-                            positionImages(); // Recalculate positions
-                        });
-                    });
-                }
+            //document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
+            //<div onclick="selectCustom('${name}')" class="socialUser"><img id="${ranId}" class="slUserPFP social"
+            getEvoxProfile(name).then(profileSrc => {
+                document.getElementById(ranId).src = profileSrc
             });
 
-            document.getElementById("loadText").innerHTML = `Η αυτόματη σύνδεση απέτυχε`
-            setTimeout(function () {
-                $("#hexa").fadeOut("fast")
-                document.getElementById("evoxContainer").classList.remove("active")
+            if (count === matchedNames.length) {
+                const karuseli = document.querySelectorAll('.fytyre');
+                function positionImages() {
+                    const zgjedhurIndex = Array.from(karuseli).findIndex(el => el.classList.contains('zgjedhur'));
 
-                //$("#tasks").fadeIn("fast", function () {
+                    karuseli.forEach((el, i) => {
+                        const position = i - zgjedhurIndex; // Calculate relative position
+                        el.style.transform = `translateX(${position * 70}px)`; // Adjust distance
+                    });
+                }
 
-                    //document.getElementById("loadText").style.opacity = '1'
+                // Initialize positions at load
+                positionImages();
+
+                // Add event listeners for clicks
+                karuseli.forEach((fytyre, index) => {
+                    fytyre.addEventListener('click', () => {
+                        document.querySelector('.zgjedhur').classList.remove('zgjedhur');
+                        fytyre.classList.add('zgjedhur');
+                        positionImages(); // Recalculate positions
+                    });
+                });
+            }
+        });
+
+        document.getElementById("loadText").innerHTML = `Η αυτόματη σύνδεση απέτυχε`
+        setTimeout(function () {
+            $("#hexa").fadeOut("fast")
+            document.getElementById("evoxContainer").classList.remove("active")
+
+            //$("#tasks").fadeIn("fast", function () {
+
+            //document.getElementById("loadText").style.opacity = '1'
 
 
-                    //setTimeout(function () {
-                        //document.getElementById("loadText").style.opacity = '0'
-                    //    setTimeout(function () { //
-                            const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
-                            const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
-                            $("#tasks").fadeOut("fast", function () {
-                                document.getElementById("loadText").style.opacity = '0'
-                                document.getElementById("taskLoading").style.display = 'none'
-                                document.getElementById("tempLoader").style.display = 'flex'
-                                document.getElementById("loadText").innerHTML = `Επιλέξτε τον λογαριασμό σας`
+            //setTimeout(function () {
+            //document.getElementById("loadText").style.opacity = '0'
+            //    setTimeout(function () { //
+            const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
+            const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
+            $("#tasks").fadeOut("fast", function () {
+                document.getElementById("loadText").style.opacity = '0'
+                document.getElementById("taskLoading").style.display = 'none'
+                document.getElementById("tempLoader").style.display = 'flex'
+                document.getElementById("loadText").innerHTML = `Επιλέξτε τον λογαριασμό σας`
 
-                                $("#tasks").fadeIn("fast", function () {
-                                    document.getElementById("loadText").style.opacity = '1'
-                                    setTimeout(function () {
-                                        document.getElementById("topImg").style.opacity = '0'
-                                        $("#tasks").fadeOut("fast", function () {
-                                            document.getElementById("tempLoader").style.display = 'none'
-                                            document.getElementById("taskLoading").style.display = null
-                                            $("#loginContainer").fadeOut("fast", function () {
-                                                document.getElementById("loginContainer").style.display = 'none'
-                                                $("#multimatch").fadeOut("fast", function () {
-                                                    document.getElementById("nameForMultiple").innerText = matchedNames[0]
-                                                    document.getElementById("nameForMultiple").style.display = 'flex'
-                                                    $("#lock").fadeIn("fast")
-                                                    $("#hexa").fadeOut("fast")
-                                                })
-                                            })
-
-                                        })
-                                    }, 1500)
+                $("#tasks").fadeIn("fast", function () {
+                    document.getElementById("loadText").style.opacity = '1'
+                    setTimeout(function () {
+                        document.getElementById("topImg").style.opacity = '0'
+                        $("#tasks").fadeOut("fast", function () {
+                            document.getElementById("tempLoader").style.display = 'none'
+                            document.getElementById("taskLoading").style.display = null
+                            $("#loginContainer").fadeOut("fast", function () {
+                                document.getElementById("loginContainer").style.display = 'none'
+                                $("#multimatch").fadeOut("fast", function () {
+                                    document.getElementById("nameForMultiple").innerText = matchedNames[0]
+                                    document.getElementById("nameForMultiple").style.display = 'flex'
+                                    $("#lock").fadeIn("fast")
+                                    $("#hexa").fadeOut("fast")
                                 })
                             })
 
-                    //    }, 340)
-                    //}, 900)
-                //})
+                        })
+                    }, 1500)
+                })
+            })
+
+            //    }, 340)
+            //}, 900)
+            //})
 
 
 
-            }, 340)
+        }, 340)
     } else {
         alert("Δεν βρέθηκαν αντιστοιχίες")
     }

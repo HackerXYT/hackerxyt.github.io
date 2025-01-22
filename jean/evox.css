@@ -1140,6 +1140,39 @@ input {
   /* Slide the popup into view */
 }
 
+.simple-ontop {
+
+  font-family: "SF";
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* for Internet Explorer, Edge */
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Change from 'visible' to 'auto' */
+  scroll-behavior: smooth;
+  justify-content: center;
+  /* Semi-transparent black overlay */
+  z-index: 998;
+  box-sizing: border-box;
+  /* Include padding in the element's total width and height */
+  color: white;
+  opacity: 0;
+  /* Initially hidden */
+  /* Initially off-screen to the left */
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  /* Adjusting content height to fill the viewport */
+}
+
 .back {
   position: relative;
   top: 21px;
