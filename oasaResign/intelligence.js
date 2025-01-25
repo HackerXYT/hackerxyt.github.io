@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.0.2'
+const currentVersion = '2.0.3'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -1595,6 +1595,7 @@ let activeBusInfo = {
 let activeEvoxId = null
 let shownTimeTable = 0
 let keepForVerticalStations;
+let latestHorizontalIntelligence;
 function processInfo(evoxId, type, addMore, comego) {
   if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
     const element = document.getElementById('main-wrapper');
@@ -1981,6 +1982,7 @@ function processInfo(evoxId, type, addMore, comego) {
               fetch(`https://data.evoxs.xyz/oasa?intelligence=${JSON.stringify(intelligenceInfo)}&vevox=${randomString()}`, { signal })
                 .then(response => response.json())
                 .then(arrivals => {
+                  latestHorizontalIntelligence = arrivals
                   console.log("Intelligence Results:", arrivals)
 
 
@@ -3204,8 +3206,24 @@ function showVerticalStations() {
   document.getElementById("stationsVertical").style.display = 'block'
   setTimeout(function () { document.getElementById("stationsVertical").classList.add('shown') }, 200)
 
-  document.getElementById("stationsSpawnVertical").innerHTML = ''
+  document.getElementById("stationsSpawnVertical").innerHTML = `<div class="failed">
+                        <svg class="failed-icon" version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px"
+                                viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+                                <path opacity="0.2" fill="#fff"
+                                    d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                             s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                             c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" />
+                                <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                             C22.32,8.481,24.301,9.057,26.013,10.047z">
+                                    <animateTransform attributeType="xml" attributeName="transform" type="rotate"
+                                        from="0 20 20" to="360 20 20" dur="0.5s" repeatCount="indefinite" />
+                                </path>
+                            </svg>
+                        <vox class="failed-message nonImportant">Συλλογή δεδομένων..</vox>
+                    </div>`
   if (keepForVerticalStations) {
+    document.getElementById("stationsSpawnVertical").innerHTML = ''
     keepForVerticalStations.stops.forEach(station => {
       document.getElementById("stationsSpawnVertical").innerHTML += `<div id="global-vertical-station-${station.StopCode}" class="timeItem fade-in-slide-up">
                                         <div onclick="showStopDetails('${station.StopCode}', '${capitalizeWords(station.StopDescr)}')" class="rowDefault"><p>${capitalizeWords(station.StopDescr)}</p>
@@ -3234,87 +3252,122 @@ function showVerticalStations() {
                                     </div>`
     })
 
-    fetch(`https://data.evoxs.xyz/oasa?intelligence=${JSON.stringify(keepForVerticalStations)}&vevox=${randomString()}`)
-      .then(response => response.json())
-      .then(arrivals => {
-        console.log("Intelligence Results:", arrivals)
+    function spawnIntelli(arrivals, isOld) {
+      arrivals.sort((a, b) => a.RouteStopOrder - b.RouteStopOrder)
+      const leastTime = arrivals.filter(item => item.time !== false && item.time !== null).sort((a, b) => a.time - b.time);
 
-
-
-        arrivals.sort((a, b) => a.RouteStopOrder - b.RouteStopOrder)
-        const leastTime = arrivals.filter(item => item.time !== false && item.time !== null).sort((a, b) => a.time - b.time);
-
-        if (leastTime[0]) {
-          document.getElementById(`global-vertical-station-${leastTime[0].StopCode}`).classList.add("currentLocation")
-        }
-        const promise = new Promise((resolve) => {
-          arrivals.forEach((stop, index) => {
-            const targets = document.querySelectorAll(`[id="timeFor-${stop.StopCode}"]`);
-            const actions = document.getElementById(`global-vertical-station-${stop.StopCode}`).querySelector('.moreActions')
-            const activity = document.getElementById(`global-vertical-station-${stop.StopCode}`).querySelectorAll('.moreActions .themeButton')
-            let toSpawn = stop.time;
-            activity[0].setAttribute("data-time", toSpawn)
-            if (toSpawn === null) {
-              toSpawn = `<img src="busNotFound.png" width="25px" height="25px">`;
-              //show up at start
-              actions.style.display = 'flex'
-              activity[1].style.display = 'flex'
-              activity[1].querySelector("vox").innerText = 'Όταν εμφανιστεί'
-            } else if (toSpawn === false) {
-              toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+      if (leastTime[0]) {
+        document.getElementById(`global-vertical-station-${leastTime[0].StopCode}`).classList.add("currentLocation")
+      }
+      
+      const promise = new Promise((resolve) => {
+        arrivals.forEach((stop, index) => {
+          if(isOld) {
+            document.getElementById(`global-vertical-station-${stop.StopCode}`).classList.add("previous")
+          } else {
+            try {
+              document.getElementById(`global-vertical-station-${stop.StopCode}`).classList.remove("previous")
+            } catch (err) {
+              console.warn("Failed to remove classes for prev")
+            }
+          }
+          const targets = document.querySelectorAll(`[id="timeFor-${stop.StopCode}"]`);
+          const actions = document.getElementById(`global-vertical-station-${stop.StopCode}`).querySelector('.moreActions')
+          const activity = document.getElementById(`global-vertical-station-${stop.StopCode}`).querySelectorAll('.moreActions .themeButton')
+          let toSpawn = stop.time;
+          activity[0].setAttribute("data-time", toSpawn)
+          if (toSpawn === null) {
+            toSpawn = `<img src="busNotFound.png" width="25px" height="25px">`;
+            //show up at start
+            actions.style.display = 'flex'
+            activity[1].style.display = 'flex'
+            activity[1].querySelector("vox").innerText = 'Όταν εμφανιστεί'
+          } else if (toSpawn === false) {
+            toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
 <path opacity="0.5" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" fill="#fff"/>
 <path d="M12 7.75C11.3787 7.75 10.875 8.25368 10.875 8.875C10.875 9.28921 10.5392 9.625 10.125 9.625C9.71079 9.625 9.375 9.28921 9.375 8.875C9.375 7.42525 10.5503 6.25 12 6.25C13.4497 6.25 14.625 7.42525 14.625 8.875C14.625 9.58584 14.3415 10.232 13.883 10.704C13.7907 10.7989 13.7027 10.8869 13.6187 10.9708C13.4029 11.1864 13.2138 11.3753 13.0479 11.5885C12.8289 11.8699 12.75 12.0768 12.75 12.25V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V12.25C11.25 11.5948 11.555 11.0644 11.8642 10.6672C12.0929 10.3733 12.3804 10.0863 12.6138 9.85346C12.6842 9.78321 12.7496 9.71789 12.807 9.65877C13.0046 9.45543 13.125 9.18004 13.125 8.875C13.125 8.25368 12.6213 7.75 12 7.75Z" fill="#fff"/>
 <path d="M12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z" fill="#fff"/>
 </svg>`;
-              //show up at count start
+            //show up at count start
+            actions.style.display = 'flex'
+            activity[1].style.display = 'flex'
+            activity[1].querySelector("vox").innerText = 'Όταν εμφανιστεί'
+          } else if (toSpawn === "OASAERR") {
+            toSpawn = `Σφάλμα`;
+            //show up at count start
+            actions.style.display = 'flex'
+            activity[1].style.display = 'flex'
+            activity[1].querySelector("vox").innerText = 'Όταν εμφανιστεί'
+          } else {
+            toSpawn += "'";
+            if (Number(stop.time) > 2) {
+              //show up 2 mins
+              console.log(activity[1])
               actions.style.display = 'flex'
               activity[1].style.display = 'flex'
-              activity[1].querySelector("vox").innerText = 'Όταν εμφανιστεί'
-            } else if (toSpawn === "OASAERR") {
-              toSpawn = `Σφάλμα`;
-              //show up at count start
-              actions.style.display = 'flex'
-              activity[1].style.display = 'flex'
-              activity[1].querySelector("vox").innerText = 'Όταν εμφανιστεί'
+              activity[1].querySelector("vox").innerText = "2' μακριά"
+              activity[0].style.display = 'flex'
             } else {
-              toSpawn += "'";
-              if (Number(stop.time) > 2) {
-                //show up 2 mins
-                console.log(activity[1])
-                actions.style.display = 'flex'
-                activity[1].style.display = 'flex'
-                activity[1].querySelector("vox").innerText = "2' μακριά"
-                activity[0].style.display = 'flex'
-              } else {
-                if (Number(stop.time) === 1 || Number(stop.time) === 0) {
-                  document.getElementById(`global-vertical-station-${stop.StopCode}`).classList.add("currentLocation")
-                }
-
-                console.log("Not accepted!", stop.time)
+              if (Number(stop.time) === 1 || Number(stop.time) === 0) {
+                document.getElementById(`global-vertical-station-${stop.StopCode}`).classList.add("currentLocation")
               }
-            }
 
-            targets.forEach(target_single => {
-              target_single.innerHTML = toSpawn;
-            });
-
-            if (index === arrivals.length - 1) {
-              resolve(); // Resolve when the last iteration is done
+              console.log("Not accepted!", stop.time)
             }
+          }
+
+          targets.forEach(target_single => {
+            target_single.innerHTML = toSpawn;
           });
-        });
 
-        promise.then(() => {
-          console.log("All updates are complete.");
-
+          if (index === arrivals.length - 1) {
+            resolve(); // Resolve when the last iteration is done
+          }
         });
+      });
+
+      promise.then(() => {
+        console.log("All updates are complete.");
+
+      });
+    }
+
+    if(latestHorizontalIntelligence) {
+      spawnIntelli(latestHorizontalIntelligence, 'old')
+    }
+    let afasterfix = setInterval(function() {
+      if(isFetching === true && latestHorizontalIntelligence) {
+        spawnIntelli(latestHorizontalIntelligence, 'old')
+        clearInterval(afasterfix)
+      }
+    }, 200)
+
+    let isFetching = true;
+    fetch(`https://data.evoxs.xyz/oasa?intelligence=${JSON.stringify(keepForVerticalStations)}&vevox=${randomString()}`)
+      .then(response => response.json())
+      .then(arrivals => {
+        isFetching = false;
+        console.log("Intelligence Results:", arrivals)
+
+
+
+        spawnIntelli(arrivals)
 
       })
       .catch(error => {
         console.log("intelligence [1] error:", error);
       });
   } else {
-    showVerticalStations()
+
+    //Don't break the app
+    let restartit = setInterval(function () {
+      if (keepForVerticalStations) {
+        clearInterval(restartit)
+        showVerticalStations()
+        console.log("Found")
+      }
+    }, 200)
+    //
   }
 
 }
@@ -3897,7 +3950,7 @@ function handleActivity(startingJson, te) {
         //console.log(filteredData[0])
         if (filteredData[0]) {
           const min = filteredData[0].btime2;
-          if(min > startingJson.start_min) {
+          if (min > startingJson.start_min) {
             document.getElementById("activity").style.display = 'none'
           }
           //const min = te
