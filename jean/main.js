@@ -632,7 +632,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }).catch(error => {
                             console.error("Jeanne D'arc Database is offline.")
                             document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
-                            //$("#tasks").fadeIn("fast")
+                            $("#tasks").fadeIn("fast")
                             console.log('Error:', error);
                         });
 
@@ -1265,6 +1265,7 @@ function clickCard(e) {
 }
 let allUsers = {}
 let classes = {}
+let usersElems = {}
 function activateYearbook() {
     $("#app").fadeOut("fast", function () {
         document.getElementById("loadText").innerHTML = 'Φόρτωση..'
@@ -1326,7 +1327,9 @@ function activateYearbook() {
 
                                 Object.entries(aclass).forEach(([nameEach, inform]) => {
                                     if (inform.emri === foundName) { return; }
-                                    document.getElementById(`${key}-cont`).innerHTML += `<div class="aStudent fade-in-slide-up" onclick="pickStudent('${inform.emri}', this)">
+                                    const ranId = Math.floor(Math.random() * 909999) + 1
+                                    usersElems[inform.emri] = { ranId: ranId, info: inform }
+                                    document.getElementById(`${key}-cont`).innerHTML += `<div id="user-${ranId}" class="aStudent fade-in-slide-up" onclick="pickStudent('${inform.emri}', this)">
                                     <div class="studentImage">
                                         <img src="${inform.foto}">
                                     </div>
@@ -1353,33 +1356,39 @@ function activateYearbook() {
             document.getElementById("loadText").innerHTML = `Ας ξεκινήσουμε,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a}`
             //document.getElementById("loadText").innerHTML = `Ας ξεκινήσουμε,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a}`
             document.getElementById("loadText").style.opacity = '1'
+            $("#gradColored").fadeOut("fast", function () {
+                //$("#static").fadeIn("fast")
+                document.getElementById("static").style.opacity = '1'
+            })
+
             setTimeout(function () {
                 $("#tasks").fadeOut("fast", function () {
                     document.getElementById("yearbook-container").style.display = 'block'
                     document.getElementById("yearbook-container").style.opacity = '1'
 
+                    //const emojiCont = document.querySelector('.emoji-cont');
+                    //const emotions = [
+                    //    "😃", "😢", "😡", "😱", "😍", "🤔", "😂", "😐", 
+                    //    "😎", "🥳", "😴", "🥺", "🤩", "🙄", "😜", "🤗", 
+                    //    "😅", "😌", "😶", "😇", "😈", "😬", "🥰", "😤", 
+                    //    "😓", "🤯", "🫣", "😖"
+                    //  ]
+                    //  ;
+                    //let index = 0;
+                    //function changeEmoji() {
+                    //    emojiCont.classList.remove('active');
+                    //    setTimeout(() => {
+                    //        emojiCont.textContent = emotions[index];
+                    //        emojiCont.classList.add('active');
+                    //        index = (index + 1) % emotions.length;
+                    //    }, 500);
+                    //}
+                    //setInterval(changeEmoji, 2000);
+                    //changeEmoji();
                     const emojiCont = document.querySelector('.emoji-cont');
-                    const emotions = [
-                        "😃", "😢", "😡", "😱", "😍", "🤔", "😂", "😐", 
-                        "😎", "🥳", "😴", "🥺", "🤩", "🙄", "😜", "🤗", 
-                        "😅", "😌", "😶", "😇", "😈", "😬", "🥰", "😤", 
-                        "😓", "🤯", "🫣", "😖"
-                      ]
-                      ;
-                    let index = 0;
+                    emojiCont.classList.add('active');
 
-                    function changeEmoji() {
-                        emojiCont.classList.remove('active');
 
-                        setTimeout(() => {
-                            emojiCont.textContent = emotions[index];
-                            emojiCont.classList.add('active');
-                            index = (index + 1) % emotions.length;
-                        }, 500);
-                    }
-
-                    setInterval(changeEmoji, 2000);
-                    changeEmoji();
 
                 })
             }, 1000)
@@ -1388,16 +1397,60 @@ function activateYearbook() {
 
 }
 function goBackFromBook() {
+    document.getElementById("static").style.opacity = '0'
+    setTimeout(function () {
+        $("#gradColored").fadeIn("fast")
+    }, 500)
+
 
     document.getElementById("yearbook-container").style.opacity = '0'
     setTimeout(function () {
         document.getElementById("yearbook-container").style.display = 'none'
     }, 500)
-    $("#app").fadeIn("fast", function () {})
+    $("#app").fadeIn("fast", function () { })
 }
 
+let pickedStudents = []
 function pickStudent(name, e) {
-    e.classList.toggle("picked")
+    if (e.classList.contains("picked")) {
+        e.classList.remove("picked")
+        pickedStudents = pickedStudents.filter(student => student !== name);
+        document.getElementById("count-picked").innerHTML = pickedStudents.length
+    } else {
+        e.classList.add("picked")
+        pickedStudents.push(name)
+        document.getElementById("count-picked").innerHTML = pickedStudents.length
+    }
+    if (pickedStudents.length > 0) {
+        document.getElementById("count-picked").style.opacity = '1'
+        $("#buttonStartCont").fadeIn("fast")
+    } else {
+        document.getElementById("count-picked").style.opacity = '0'
+        $("#buttonStartCont").fadeOut("fast")
+    }
+
+
+}
+
+function startYbRate(e, event) {
+    if (pickedStudents.length === 0) { return; }
+    event.preventDefault();
+    event.stopPropagation();
+    e.innerHTML = loadingHTML
+    document.getElementById("yearbook-container").style.opacity = '0'
+    setTimeout(function () {
+        document.getElementById("yearbook-container").style.display = 'none'
+        document.getElementById("yearbook-screen-2").style.display = 'block'
+        document.getElementById("yearbook-screen-2").style.opacity = '1'
+        document.getElementById("count-picked").style.opacity = '0'
+        $("#buttonStartCont").fadeOut("fast")
+    }, 500)
+
+    
+    //testPick()
+   
+    //yearbook-screen-2
+
 }
 
 function actionClick(event, e) {
@@ -2120,4 +2173,174 @@ function searchByNameComplete() {
     } else {
         alert("Δεν βρέθηκαν αντιστοιχίες")
     }
+}
+
+
+const doubleInput = document.getElementById('yb-input');
+const mirrorTextYb = document.querySelector('.mirror-text.xy');
+
+let previousWidthYb = null;
+function YbsearchByName() {
+    const input = document.getElementById("yb-input");
+    const query = input.value;
+    const firstMatch = findFirstMatch(query); // Assuming this function returns a valid match
+    const mirrorTextYb = document.querySelector('.mirror-text.xy');
+    const queryParts = query.split(" ");
+    const el = document.getElementById(`searchPeople`);
+    el.innerHTML = ''
+    const matchedNames = findFullNames(query);
+    matchedNames.forEach((part, index) => {
+        console.log(part);
+        console.log(usersElems);
+        console.log(usersElems[part]);
+
+        // Ensure that part exists in usersElems
+        console.log(`Will search for usersElems['${part}']`)
+        if (usersElems[`'${part}'`]) {
+            const inform = usersElems[part].info;
+
+            el.innerHTML += `<div class="aStudent fade-in-slide-up" onclick="pickStudent('${inform.emri}', this)">
+                            <div class="studentImage">
+                                <img src="${inform.foto}">
+                            </div>
+                            <div class="studentInfo">
+                                <p>${inform.emri}</p>
+                            </div>
+                          </div>`;
+        } else {
+            console.log(`No info found for ${part}`);
+        }
+    });
+    const firstName = queryParts[0];
+    const lastName = queryParts[1] || "";  // In case the query only has the first name
+
+    //input.style.width = 'auto';  // Reset width to calculate properly
+
+    if (firstMatch) {
+        const fullNameParts = firstMatch.split(" ");
+        const matchFirstName = fullNameParts[0];
+        const matchLastName = fullNameParts[1] || "";
+
+        let remainingText = firstMatch;
+
+        // Check if the first name part matches
+        if (matchFirstName.toLowerCase().includes(firstName.toLowerCase()) && firstName.toLowerCase() !== matchFirstName.toLowerCase()) {
+            if (!matchFirstName.includes(query)) {
+                remainingText = ` ${matchFirstName.replace(query, '')}?`;  // If the typed first name is different from the match
+            } else {
+                remainingText = `${matchFirstName.replace(query, '')}?`;  // If the typed first name is different from the match
+            }
+
+        }
+        // Check if the last name part matches
+        else if (matchLastName.toLowerCase().includes(lastName.toLowerCase()) && lastName.toLowerCase() !== matchLastName.toLowerCase()) {
+            if (!matchLastName.includes(query)) {
+                remainingText = ` ${matchLastName.replace(query, '')}?`;
+            } else {
+                remainingText = `${matchLastName.replace(query, '')}?`;
+            }
+            // If the typed last name is different from the match
+        }
+        else {
+            // Otherwise, remove the typed part (first or last name)
+            if (firstMatch.toLowerCase().startsWith(firstName.toLowerCase())) {
+                remainingText = firstMatch.replace(firstName, '').trim();  // Remove first name if typed first
+            } else if (firstMatch.toLowerCase().endsWith(lastName.toLowerCase())) {
+                remainingText = firstMatch.replace(lastName, '').trim();  // Remove last name if typed last
+            }
+        }
+
+        mirrorTextYb.textContent = remainingText;
+
+        if (query.length <= 2) {
+            input.style.width = previousWidthYb
+            return;
+        }
+        previousWidthYb = input.style.width
+        // Set input width based on mirrored text width, with padding and a max-width constraint
+        input.style.width = `${calculateTextWidth(query) + 10}px`;
+
+        // Apply a maximum width to prevent the input from becoming too large
+        const maxWidth = 400;  // Adjust max-width as needed
+        if (input.offsetWidth > maxWidth) {
+            input.style.width = `${maxWidth}px`;
+        }
+
+    }
+
+    // Handle empty input to set minimum width
+    if (input.value.length < 1) {
+        mirrorTextYb.textContent = '';
+        input.style.width = null;  // Set to minimum width to avoid disappearing input
+        $("#searchPeople").fadeOut("fast", function () {
+            $("#spawnPeople").fadeIn('fast')
+        })
+    } else {
+        $("#spawnPeople").fadeOut("fast", function () {
+            $("#searchPeople").fadeIn('fast')
+        })
+    }
+
+}
+
+document.getElementById('yb-input').addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        //searchByNameComplete()
+    }
+})
+
+function testPick() {
+    let matchedNames = ["Λιλάντα Αδαμίδη", "Γιάννης Καπράλος"]
+    let count = 0
+    const karuseliCont = document.getElementById("karuseli-2")
+    karuseliCont.style.display = null
+    document.getElementById("userPinPfp").style.display = 'none'
+    karuseliCont.innerHTML = ''
+    matchedNames.forEach(name => {
+        count++
+        const firstChar = (str) => str.split(' ')[1]?.charAt(0) || null;
+        const ranId = Math.floor(Math.random() * 909999) + 1
+        if (count === 1) {
+            karuseliCont.innerHTML = `${karuseliCont.innerHTML}<img onclick="pickName('${name}', '${ranId}')" class="fytyre zgjedhur" src="reloading-pfp.gif" alt="Fytyrë ${count}" id="${ranId}">`
+        } else {
+            karuseliCont.innerHTML = `${karuseliCont.innerHTML}<img onclick="pickName('${name}', '${ranId}')" class="fytyre" src="reloading-pfp.gif" alt="Fytyrë ${count}" id="${ranId}">`
+        }
+
+        //document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
+        //<div onclick="selectCustom('${name}')" class="socialUser"><img id="${ranId}" class="slUserPFP social"
+        getEvoxProfile(name).then(profileSrc => {
+            document.getElementById(ranId).src = profileSrc
+        });
+
+        if (count === matchedNames.length) {
+            const karuseli = document.querySelectorAll('.fytyre');
+            function positionImages() {
+                const zgjedhurIndex = Array.from(karuseli).findIndex(el => el.classList.contains('zgjedhur'));
+
+                karuseli.forEach((el, i) => {
+                    const position = i - zgjedhurIndex; // Calculate relative position
+                    el.style.transform = `translateX(${position * 70}px)`; // Adjust distance
+                });
+            }
+
+            // Initialize positions at load
+            positionImages();
+
+            // Add event listeners for clicks
+            karuseli.forEach((fytyre, index) => {
+                fytyre.addEventListener('click', () => {
+                    document.querySelector('.zgjedhur').classList.remove('zgjedhur');
+                    fytyre.classList.add('zgjedhur');
+                    positionImages(); // Recalculate positions
+                });
+            });
+        }
+    });
+    document.querySelectorAll("#karuseli-2 img")[0].click();
+
+}
+
+function pickName(name, id) {
+    document.getElementById("selected-st").innerText = name
+
 }

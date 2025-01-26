@@ -1167,9 +1167,8 @@ input {
   /* Initially hidden */
   /* Initially off-screen to the left */
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   /* Adjusting content height to fill the viewport */
 }
 
