@@ -1356,10 +1356,10 @@ function activateYearbook() {
             document.getElementById("loadText").innerHTML = `Ας ξεκινήσουμε,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a}`
             //document.getElementById("loadText").innerHTML = `Ας ξεκινήσουμε,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a}`
             document.getElementById("loadText").style.opacity = '1'
-            $("#gradColored").fadeOut("fast", function () {
-                //$("#static").fadeIn("fast")
-                document.getElementById("static").style.opacity = '1'
-            })
+            //$("#gradColored").fadeOut("fast", function () {
+            //    //$("#static").fadeIn("fast")
+            //    document.getElementById("static").style.opacity = '1'
+            //})
 
             setTimeout(function () {
                 $("#tasks").fadeOut("fast", function () {
@@ -1408,9 +1408,12 @@ function goBackFromBook() {
         document.getElementById("yearbook-container").style.display = 'none'
     }, 500)
     $("#app").fadeIn("fast", function () { })
+    document.getElementById("count-picked").style.opacity = '0'
+    $("#buttonStartCont").fadeOut("fast")
 }
 
 let pickedStudents = []
+
 function pickStudent(name, e) {
     if (e.classList.contains("picked")) {
         e.classList.remove("picked")
@@ -1431,9 +1434,10 @@ function pickStudent(name, e) {
 
 
 }
-
+let activeStudent = 0
 function startYbRate(e, event) {
     if (pickedStudents.length === 0) { return; }
+    
     event.preventDefault();
     event.stopPropagation();
     e.innerHTML = loadingHTML
@@ -1445,14 +1449,34 @@ function startYbRate(e, event) {
         document.getElementById("count-picked").style.opacity = '0'
         $("#buttonStartCont").fadeOut("fast")
     }, 500)
+    document.getElementById("currentName").innerText = pickedStudents[activeStudent]
+    document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length + 1}`
+    document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
 
-    
     //testPick()
-   
+
     //yearbook-screen-2
 
 }
 
+function skipCurrentRate() {
+    if(pickedStudents.length === activeStudent) {
+        alert("Operation done!")
+        return;
+    }
+    activeStudent++
+    $("#centerContent-rate").fadeOut("fast", function () {
+        document.getElementById("currentPic").src = 'reloading-pfp.gif'
+        document.getElementById("message").value = ""
+        document.getElementById("currentName").innerText = pickedStudents[activeStudent]
+        document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length + 1}`
+        document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
+        setTimeout(function() {
+            $("#centerContent-rate").fadeIn("fast")
+        }, 300)
+        
+    })
+}
 function actionClick(event, e) {
     event.preventDefault(); // Prevent default behavior
     event.stopPropagation(); // Stop the event from bubbling up to parent elements
