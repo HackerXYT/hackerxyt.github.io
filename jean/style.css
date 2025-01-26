@@ -37,21 +37,18 @@ body {
     height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
 }
 
-html,
+/*html,
 body {
     overflow: hidden;
-    /* Prevents scrolling */
     -ms-overflow-style: none;
-    /* For IE and Edge */
     scrollbar-width: none;
-    /* For Firefox */
 }
 
 body::-webkit-scrollbar {
     display: none;
-    /* For Chrome, Safari, and Opera */
+     For Chrome, Safari, and Opera 
 }
-
+*/
 .background-gradient {
     /* Background gradient to simulate light */
     background: radial-gradient(circle at top,
