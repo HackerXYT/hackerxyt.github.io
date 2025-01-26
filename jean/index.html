@@ -453,7 +453,7 @@
                 <div class="text-content">
                     <div class="message">
                         <vo>Ας ξεκινήσουμε!</vo>
-                        <span>Δημιουργήστε το σχέδιο της μπλούζας σας</span>
+                        <span>Δημιουργήστε το σχέδιο του φούτερ σας</span>
                     </div>
                 </div>
             </div>
@@ -492,7 +492,7 @@
                     <img src="recap.png">
                 </div>
 
-                <div class="progress-bar" data-progress="75">
+                <div class="progress-bar" data-progress="20">
                     <div class="progress-each cyan"></div>
                 </div>
                 <div class="title">
@@ -751,7 +751,7 @@
         0
     </div>
     <div class="buttonStartCont" id="buttonStartCont">
-        <button onclick="startYbRate(this, event)" class="welcomeButton">Συνέχεια</button>
+        <button onclick="startYbRate(this, event)" class="welcomeButton" >Συνέχεια</button>
     </div>
     <div class="simple-ontop" style="display: none;" id="yearbook-container">
         <div class="topActions keepUp">
@@ -834,7 +834,7 @@
     </div>
     <div class="simple-ontop" style="display: none;overflow:hidden;" id="yearbook-screen-2">
         <div class="topActions keepUp" style="display: flex;align-items: center;gap: 10px;left: 5px;">
-            <div class="backArrow book" onclick="goBackFromBook(this)">
+            <div class="backArrow book" onclick="goBackFromRate(this)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                     <path d="M5 12H19M5 12L11 6M5 12L11 18" stroke="#fff" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
@@ -874,7 +874,7 @@
                         <div onclick="skipCurrentRate()" class="optionButton">
                             Παράλειψη
                         </div>
-                        <div class="optionButton" style="background-color: #4545458a;">
+                        <div class="optionButton" style="background-color: #4545458a;" onclick="continueCurrent()">
                             Επόμενο
                         </div>
                     </div>

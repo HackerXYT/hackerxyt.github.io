@@ -1412,6 +1412,22 @@ function goBackFromBook() {
     $("#buttonStartCont").fadeOut("fast")
 }
 
+function goBackFromRate() {
+
+    document.getElementById("yearbook-screen-2").style.opacity = '0'
+    setTimeout(function () {
+        document.getElementById("yearbook-container").style.display = 'block'
+        document.getElementById("yearbook-container").style.opacity = '1'
+        document.getElementById("yearbook-screen-2").style.display = 'none'
+        document.getElementById("count-picked").style.opacity = '1'
+        $("#buttonStartCont").fadeIn("fast")
+    }, 500)
+
+
+    
+   
+}
+
 let pickedStudents = []
 
 function pickStudent(name, e) {
@@ -1437,7 +1453,7 @@ function pickStudent(name, e) {
 let activeStudent = 0
 function startYbRate(e, event) {
     if (pickedStudents.length === 0) { return; }
-    
+
     event.preventDefault();
     event.stopPropagation();
     e.innerHTML = loadingHTML
@@ -1448,6 +1464,9 @@ function startYbRate(e, event) {
         document.getElementById("yearbook-screen-2").style.opacity = '1'
         document.getElementById("count-picked").style.opacity = '0'
         $("#buttonStartCont").fadeOut("fast")
+        setTimeout(function() {
+            e.innerHTML = 'Συνέχεια'
+        }, 800)
     }, 500)
     document.getElementById("currentName").innerText = pickedStudents[activeStudent]
     document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length + 1}`
@@ -1458,9 +1477,33 @@ function startYbRate(e, event) {
     //yearbook-screen-2
 
 }
+let dataIn = {
+
+}
+function continueCurrent() {
+    if(document.getElementById("message").value === '') {return;}
+    console.log(pickedStudents.length, activeStudent)
+    if (pickedStudents.length === activeStudent + 1) {
+        alert("Operation done!")
+        return;
+    }
+    activeStudent++
+    dataIn[document.getElementById("currentName").innerText] = document.getElementById("message").value
+    $("#centerContent-rate").fadeOut("fast", function () {
+        document.getElementById("currentPic").src = 'reloading-pfp.gif'
+        document.getElementById("message").value = ""
+        document.getElementById("currentName").innerText = pickedStudents[activeStudent]
+        document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length + 1}`
+        document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
+        setTimeout(function () {
+            $("#centerContent-rate").fadeIn("fast")
+        }, 300)
+
+    })
+}
 
 function skipCurrentRate() {
-    if(pickedStudents.length === activeStudent) {
+    if (pickedStudents.length === activeStudent + 1) {
         alert("Operation done!")
         return;
     }
@@ -1471,10 +1514,10 @@ function skipCurrentRate() {
         document.getElementById("currentName").innerText = pickedStudents[activeStudent]
         document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length + 1}`
         document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
-        setTimeout(function() {
+        setTimeout(function () {
             $("#centerContent-rate").fadeIn("fast")
         }, 300)
-        
+
     })
 }
 function actionClick(event, e) {
