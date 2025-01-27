@@ -320,7 +320,7 @@
         <p class="loading-text fade-in-slide-up" id="loadText">Περιμένετε..</p>
     </div>
 
-    <div id="hexa" class="tasks">
+    <div onclick="window.location.reload()" id="hexa" class="tasks">
         <img src="logo.png">
     </div>
 
@@ -801,7 +801,7 @@
                 <input class="x" id="yb-input" type="name" placeholder="Φίλους, γνωστούς..." oninput="YbsearchByName()">
                 <vox class="mirror-text xy"></vox>
             </div>
-            <div class="spawnPeople parent" id="searchPeople" style="display: none;"></div>
+            <div class="spawnPeople" id="searchPeople" style="display: none;"></div>
             <div class="spawnPeople parent" id="spawnPeople">
                 <div class="aStudent">
                     <div class="studentImage">
@@ -833,16 +833,17 @@
 
     </div>
     <div class="simple-ontop" style="display: none;overflow:hidden;" id="yearbook-screen-2">
-        <div class="topActions keepUp" style="display: flex;align-items: center;gap: 10px;left: 5px;">
+        <div class="centerItems-bugfix" id="centerContent-rate">
+        <div class="topActions relative" style="display: flex;align-items: center;gap: 10px;left: 5px;">
             <div class="backArrow book" onclick="goBackFromRate(this)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                     <path d="M5 12H19M5 12L11 6M5 12L11 18" stroke="#fff" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
                 </svg>
             </div>
-            <p>Δημιουργία</p>
+            <p>Επετηρίδα</p>
         </div>
-        <div class="centerItems" id="centerContent-rate">
+        
             <div class="selectedPerson"><!--row-->
                 <img id="currentPic" src="reloading-pfp.gif" alt="">
                 <!--icon-->
@@ -887,46 +888,6 @@
         </div>
 
 
-    </div>
-
-    <div class="homeGrabber" id="homeGrabber">
-        <div class="grabbable" style="width: 15%;"></div>
-        <div class="main">
-            <div class="rowBoxes">
-                <div style="margin-right: 20px;" class="cardAuto">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="150px" height="150px" viewBox="0 0 24 24"
-                        fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M10 8C10 4.68629 12.6863 2 16 2C19.3137 2 22 4.68629 22 8C22 11.3137 19.3137 14 16 14C12.6863 14 10 11.3137 10 8Z"
-                            fill="#ffffff70" />
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M2 15.5C2 13.0147 4.01472 11 6.5 11C8.98528 11 11 13.0147 11 15.5C11 17.9853 8.98528 20 6.5 20C4.01472 20 2 17.9853 2 15.5Z"
-                            fill="#ffffff70" />
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M13 18.5C13 16.567 14.567 15 16.5 15C18.433 15 20 16.567 20 18.5C20 20.433 18.433 22 16.5 22C14.567 22 13 20.433 13 18.5Z"
-                            fill="#ffffff70" />
-                    </svg>
-                </div>
-                <div class="cardAuto">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="150px" height="150px" viewBox="0 0 24 24"
-                        fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M15.2994 1.99988C15.9337 1.99896 16.4964 1.99815 17.0226 2.20134C17.5489 2.40452 17.9651 2.78322 18.4342 3.21016C19.1119 3.8269 19.7904 4.44277 20.47 5.05741C21.0069 5.54296 21.4836 5.97414 21.743 6.55981C22.0024 7.14548 22.0013 7.78827 22.0002 8.51212C21.9977 10.03 22 11.5479 22 13.0658C22.0001 13.9523 22.0001 14.7161 21.9179 15.3278C21.8297 15.9833 21.631 16.6117 21.1213 17.1213C20.6117 17.631 19.9833 17.8297 19.3278 17.9179C18.7161 18.0001 17.9523 18.0001 17.0658 18H12.9342C12.0477 18.0001 11.2839 18.0001 10.6722 17.9179C10.0167 17.8297 9.38835 17.631 8.87868 17.1213C8.36902 16.6117 8.17028 15.9833 8.08215 15.3278C7.99991 14.7161 7.99995 13.9523 8 13.0658L8.00001 7C8.00001 6.08546 7.99788 5.29896 8.08215 4.67221C8.17028 4.01669 8.36902 3.38834 8.87868 2.87868C9.38835 2.36902 10.0167 2.17027 10.6722 2.08214C11.2839 1.99991 12.0477 1.99995 12.9342 2C12.956 2 12.978 2 13 2C13.7665 2 14.5329 2.00098 15.2994 1.99988Z"
-                            fill="#ffffff70" />
-                        <path
-                            d="M15.9843 18.9999H12.8813C12.0375 19 11.2176 19.0001 10.539 18.9089C9.77323 18.8059 8.89833 18.5551 8.17159 17.8283C7.44485 17.1016 7.19402 16.2267 7.09107 15.461C6.99983 14.7823 6.99992 13.9624 7.00001 13.1187L7.00001 6.88116C6.99997 6.58272 6.99994 6.28727 7.00395 5.99999C6.2364 5.99955 5.46424 5.97511 4.70072 6.06939C4.09998 6.14358 3.51831 6.30999 3.02408 6.7426C2.92414 6.83008 2.83012 6.9241 2.74264 7.02404C2.31003 7.51827 2.14362 8.09994 2.06943 8.70069C1.99993 9.26352 1.99996 9.96136 2 10.771L2 17.0658C1.99995 17.9523 1.99991 18.7161 2.08215 19.3278C2.17028 19.9833 2.36902 20.6116 2.87868 21.1213C3.38835 21.631 4.0167 21.8297 4.67221 21.9178C5.28387 22.0001 6.04769 22 6.93417 22L11.9039 22C12.4011 22 12.8301 22 13.184 21.9727C13.5572 21.9439 13.9292 21.8804 14.2905 21.7082C14.9117 21.4122 15.4122 20.9117 15.7082 20.2905C15.9005 19.887 15.9622 19.442 15.9843 18.9999Z"
-                            fill="#ffffff70" />
-                    </svg>
-                </div>
-            </div>
-            <div style="margin-top: 20px;" class="cardAuto">
-                <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24" fill="none">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M11 13C11 13.5523 11.4477 14 12 14C12.5523 14 13 13.5523 13 13V10C13 9.44772 12.5523 9 12 9C11.4477 9 11 9.44772 11 10V13ZM13 15.9888C13 15.4365 12.5523 14.9888 12 14.9888C11.4477 14.9888 11 15.4365 11 15.9888V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V15.9888ZM9.37735 4.66136C10.5204 2.60393 13.4793 2.60393 14.6223 4.66136L21.2233 16.5431C22.3341 18.5427 20.8882 21 18.6008 21H5.39885C3.11139 21 1.66549 18.5427 2.77637 16.5431L9.37735 4.66136Z"
-                        fill="#ffffff70" />
-                </svg>
-            </div>
-        </div>
     </div>
 
     <div id="notice" class="popup" style="height: 80%;padding: 10px;">

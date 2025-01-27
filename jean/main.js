@@ -1219,7 +1219,7 @@ function showProfile(e) {
                         document.getElementById("tags").innerHTML = ''
                         document.getElementById("tags").innerHTML = `<div class="anInfo">
                     🏫
-                    <span id="seksioni">${seksioniData.seksioni}'${seksioniData.klasa}</span>
+                    <span id="seksioni">${seksioniData.seksioni}${seksioniData.klasa}</span>
                 </div>`
                         tagsData.forEach(tag => {
                             document.getElementById("tags").innerHTML = `${document.getElementById("tags").innerHTML}<div class="anInfo">
@@ -1331,7 +1331,7 @@ function activateYearbook() {
                                     usersElems[inform.emri] = { ranId: ranId, info: inform }
                                     document.getElementById(`${key}-cont`).innerHTML += `<div id="user-${ranId}" class="aStudent fade-in-slide-up" onclick="pickStudent('${inform.emri}', this)">
                                     <div class="studentImage">
-                                        <img src="${inform.foto}">
+                                        <img alt="Αποτυχία" src="${inform.foto}">
                                     </div>
                                     <div class="studentInfo">
                                         <p>${inform.emri}</p>
@@ -1424,8 +1424,8 @@ function goBackFromRate() {
     }, 500)
 
 
-    
-   
+
+
 }
 
 let pickedStudents = []
@@ -1464,12 +1464,12 @@ function startYbRate(e, event) {
         document.getElementById("yearbook-screen-2").style.opacity = '1'
         document.getElementById("count-picked").style.opacity = '0'
         $("#buttonStartCont").fadeOut("fast")
-        setTimeout(function() {
+        setTimeout(function () {
             e.innerHTML = 'Συνέχεια'
         }, 800)
     }, 500)
     document.getElementById("currentName").innerText = pickedStudents[activeStudent]
-    document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length + 1}`
+    document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
     document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
 
     //testPick()
@@ -1481,7 +1481,7 @@ let dataIn = {
 
 }
 function continueCurrent() {
-    if(document.getElementById("message").value === '') {return;}
+    if (document.getElementById("message").value === '') { return; }
     console.log(pickedStudents.length, activeStudent)
     if (pickedStudents.length === activeStudent + 1) {
         alert("Operation done!")
@@ -1493,7 +1493,7 @@ function continueCurrent() {
         document.getElementById("currentPic").src = 'reloading-pfp.gif'
         document.getElementById("message").value = ""
         document.getElementById("currentName").innerText = pickedStudents[activeStudent]
-        document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length + 1}`
+        document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
         document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
         setTimeout(function () {
             $("#centerContent-rate").fadeIn("fast")
@@ -1512,7 +1512,7 @@ function skipCurrentRate() {
         document.getElementById("currentPic").src = 'reloading-pfp.gif'
         document.getElementById("message").value = ""
         document.getElementById("currentName").innerText = pickedStudents[activeStudent]
-        document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length + 1}`
+        document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
         document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
         setTimeout(function () {
             $("#centerContent-rate").fadeIn("fast")
@@ -1650,7 +1650,7 @@ function merrniEmrat() {
                         document.getElementById("socialSpawn").innerHTML += `<div class="socialUser">
                 <img class="slUserPFP social"
                     src="${info.foto}">
-                <p>${info.emri}</p><span>${info.seksioni}'${info.klasa}</span>
+                <p>${info.emri}</p><span>${info.seksioni}${info.klasa}</span>
             </div>`
 
 
@@ -2246,7 +2246,9 @@ function searchByNameComplete() {
 const doubleInput = document.getElementById('yb-input');
 const mirrorTextYb = document.querySelector('.mirror-text.xy');
 
+
 let previousWidthYb = null;
+let spawnedSearches = []
 function YbsearchByName() {
     const input = document.getElementById("yb-input");
     const query = input.value;
@@ -2254,29 +2256,62 @@ function YbsearchByName() {
     const mirrorTextYb = document.querySelector('.mirror-text.xy');
     const queryParts = query.split(" ");
     const el = document.getElementById(`searchPeople`);
-    el.innerHTML = ''
+
     const matchedNames = findFullNames(query);
+    console.log("quer", query)
+    el.innerHTML = ''
+    //spawnedSearches = []
     matchedNames.forEach((part, index) => {
-        console.log(part);
-        console.log(usersElems);
-        console.log(usersElems[part]);
-
+        console.log('matches', matchedNames);
         // Ensure that part exists in usersElems
-        console.log(`Will search for usersElems['${part}']`)
-        if (usersElems[`'${part}'`]) {
-            const inform = usersElems[part].info;
+        console.log(`Will search for usersElems['${part}']`, index)
+        //if (usersElems[`'${part}'`]) {
+        //console.log(document.getElementById(`searchPeople`).innerHTML, part, el.innerHTML.includes(part))
+        console.log(spawnedSearches, part)
+        if (!spawnedSearches.includes(part)) {
+            //spawnedSearches.push(part)
+            fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${part}`)
+                .then(response => response.json())
+                .then(info => {
+                    el.innerHTML += `<div class="aStudent fade-in-slide-up">
+                    <div class="studentImage">
+                        <img src="${info.foto}">
+                    </div>
+                    <div class="studentInfo">
+                        <p>${info.emri}</p>
+                    </div>
+                  </div>`;
 
-            el.innerHTML += `<div class="aStudent fade-in-slide-up" onclick="pickStudent('${inform.emri}', this)">
+                }).catch(error => {
+                    el.innerHTML += `<div class="aStudent fade-in-slide-up">
                             <div class="studentImage">
-                                <img src="${inform.foto}">
+                                <img src="snap.png">
                             </div>
                             <div class="studentInfo">
-                                <p>${inform.emri}</p>
+                                <p>${part}</p>
                             </div>
                           </div>`;
-        } else {
-            console.log(`No info found for ${part}`);
+                });
         }
+        //const inform = usersElems[part].info;
+
+
+        //} else {
+        //console.log(`No info found for ${part}`);
+        //}
+        setTimeout(function() {
+            const div = document.getElementById('searchPeople');
+            const seen = new Set();
+    
+            Array.from(div.children).forEach(child => {
+                if (seen.has(child.textContent)) {
+                    child.remove();
+                } else {
+                    seen.add(child.textContent);
+                }
+            });
+        }, 200)
+        
     });
     const firstName = queryParts[0];
     const lastName = queryParts[1] || "";  // In case the query only has the first name

@@ -31,10 +31,13 @@ body {
     box-sizing: border-box;
     transition: background-color 0.3s ease-in-out;
     margin-top: env(safe-area-inset-top) !important;
+    
     overscroll-behavior: none;
 
-    /* Adding bottom safe area inset */
+    /* Adding bottom safe area inset 
     height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    margin-top: calc(15px + env(safe-area-inset-top));
+    margin-bottom: calc(5px + env(safe-area-inset-bottom));*/
 }
 
 /*html,
@@ -448,7 +451,7 @@ vo input::placeholder {
 }
 
 .textDialog {
-    margin-top: 70%;
+    margin-top: -70%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -461,26 +464,23 @@ vo input::placeholder {
 .textDialog img {
     margin: 0;
 }
-
 .welcome .boxUp {
+    position: fixed;
+    bottom: 0;
     width: 95%;
     padding: 25px;
     background-color: #1e1e1e72;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    height: auto;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     border-radius: 20px;
     margin-top: auto;
-    /* Pushes the boxUp to the bottom */
-    margin-bottom: 20px;
-    /*Fallback*/
-    margin-bottom: calc(env(safe-area-inset-bottom) + 15px) !important;
+    margin-bottom: 20px; /* Fallback for browsers that don't support dynamic units */
+    margin-bottom: calc(1dvh + 15px); /* Adjust the value as needed */
     transition: height 0.5s ease-in-out;
 }
-
 
 .welcome .boxUp p {
     font-size: 19px;
@@ -833,14 +833,13 @@ img {
     display: none;
     flex-direction: column;
     padding: 5px;
-    padding-top: 15px;
+    
     position: relative;
     overflow: hidden;
     overflow-y: auto;
     transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-
-    /* Adding bottom safe area inset */
 }
+
 
 .app .topBar {
     display: flex;
@@ -1467,6 +1466,12 @@ img {
     width: 100%;
     z-index: 2;
     margin-top: env(safe-area-inset-top) !important;
+}
+
+.topActions.relative {
+    position: relative;
+    padding: 20px;
+    padding-bottom: 0px;
 }
 
 .topActions .backArrow {
@@ -2253,7 +2258,7 @@ img {
     top: 0;
     left: 0;
     width: 100%;
-    height: calc(120vh + env(safe-area-inset-bottom));
+    /*height: calc(120vh + env(safe-area-inset-bottom));*/
     padding-bottom: env(safe-area-inset-bottom);
     /* Ensure safe area padding */
 }
@@ -2815,6 +2820,14 @@ input:-webkit-autofill:active {
     margin-top: 55px;
 }
 
+.centerItems-bugfix {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 98%;
+}
+
 .centerItems p {
     margin-top: 10px;
 }
@@ -2895,7 +2908,6 @@ input:-webkit-autofill:active {
     border-radius: 25px;
     align-items: center;
     margin-top: 20px;
-    margin-top: calc(20px + env(safe-area-inset-top)) !important;
 
 }
 .addInfo {
@@ -2903,7 +2915,7 @@ input:-webkit-autofill:active {
     flex-direction: column;
     width: 95%;
     /*height: auto;  Allow it to grow based on content */
-    height: 73%;
+    height: 100%;
     margin-top: 10px;
     padding: 15px;
     background-color: #202427;
