@@ -254,3 +254,80 @@ input:hover {
     width: 1rem;
     height: 1rem;
 }
+.students {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin; /* Optional: for thinner scrollbars */
+    scrollbar-color: #888 transparent; /* Optional: custom scrollbar color */
+}
+
+.students::-webkit-scrollbar {
+    height: 8px; /* Adjust scrollbar height */
+}
+
+.students::-webkit-scrollbar-thumb {
+    background-color: #888; /* Scrollbar thumb color */
+    border-radius: 10px;
+}
+
+.students::-webkit-scrollbar-track {
+    background: transparent; /* Scrollbar track color */
+}
+
+.student {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    height: auto;
+    padding: 15px;
+    background-color: #1d1d1d;
+    border-radius: 15px;
+    margin-right: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    flex-shrink: 0; /* Ensures the items don't shrink */
+}
+
+.student img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover; /* Ensures the image is cropped nicely if needed */
+}
+
+.topRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 5px;
+}
+
+.coll {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.coll p {
+    
+    margin:0;
+}
+
+.coll span {
+    font-size: 12px;
+    color: #838383;
+}
+
+p {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}

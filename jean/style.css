@@ -559,7 +559,7 @@ vo input::placeholder {
 }
 
 .horizontalButtons.xz .optionButton {
-    background-color: #2a2e31;
+    background-color: #3d4144;
 }
 
 .optionButton svg,
@@ -1470,7 +1470,7 @@ img {
 
 .topActions.relative {
     position: relative;
-    padding: 20px;
+    padding: 10px;
     padding-bottom: 0px;
 }
 
@@ -2523,6 +2523,10 @@ img {
     margin-left: 40px;
 }
 
+.inv-button.creds input.autoFillOff {
+    width: 98%;
+}
+
 .topLeftBack {
     position: fixed;
     top: 10px;
@@ -2907,7 +2911,7 @@ input:-webkit-autofill:active {
     -webkit-backdrop-filter: blur(5px);
     border-radius: 25px;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 10px;
 
 }
 .addInfo {
@@ -2940,6 +2944,7 @@ input:-webkit-autofill:active {
     resize: vertical;
     /* Allow vertical resizing */
     box-sizing: border-box;
+    resize: none;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -2953,17 +2958,23 @@ input:-webkit-autofill:active {
 
 .addInfo .warn-info {
     width: 100%;
+    height: 50px;
     border-radius: 20px;
     background-color: #2a2e31;
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 20px;
-    gap: 5px;
+    padding: 10px 20px;
+    gap: 10px;
+    transition: height 0.5s ease-in-out;
 }
 
 .addInfo .warn-info span {
     font-size: 15px;
+}
+
+.addInfo .warn-info .dropdown {
+    margin-left: auto;
 }
 
 .selectedPerson img {

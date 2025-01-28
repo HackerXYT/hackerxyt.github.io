@@ -1450,8 +1450,90 @@ function pickStudent(name, e) {
 
 
 }
+function fixNameCase(name) {
+    const nameEndings = {
+        'ης': 'η',
+        'ος': 'ο',
+        'ά': 'ά',
+        'ι': 'ι',
+        'ς': 'η',
+        'ας': 'α'
+    };
+
+    if (name === 'Αίαντας') {
+        return 'Αίαντα';
+    }
+    if (name === 'Ηλίας') {
+        return 'Ηλία';
+    }
+
+    name = name.toLowerCase();
+
+    for (let ending in nameEndings) {
+        if (name.endsWith(ending)) {
+            name = name.slice(0, -ending.length) + nameEndings[ending];
+            break;
+        }
+    }
+    return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
+
+function getGender(name) {
+    const girlEndings = ['α', 'η', 'ώ', 'ί', 'ύ'];
+    const boyEndings = ['ς', 'ος', 'ης', 'ους'];
+    name = name.toLowerCase();
+    for (let ending of girlEndings) {
+        if (name.endsWith(ending)) {
+            return 'Female';
+        }
+    }
+    for (let ending of boyEndings) {
+        if (name.endsWith(ending)) {
+            return 'Male';
+        }
+    }
+
+    return 'Unknown';
+}
+
+const phrases = [
+    "Πώς σου φάνηκε ο τελευταίος χρόνος με {callout} {name}?",
+    "Ποιες στιγμές από την τάξη σου θα θυμάσαι πάντα με {callout} {name}?",
+    "Ποιες είναι οι πιο αστείες αναμνήσεις σου με {callout} {name}?",
+    "Πώς σε έχει βοηθήσει {callout-οη} {name} στην τάξη ή έξω από αυτήν?",
+    "Ποιες αξέχαστες στιγμές πέρασες με {callout} {name} στο σχολείο?",
+    "Ποιο είναι το αγαπημένο σου χαρακτηριστικό {callout-τουτης} {name}?",
+    "Ποιες δραστηριότητες κάνατε μαζί με {callout} {name} που σου έμειναν αξέχαστες?",
+    "Πες μας κάτι που δεν ξέρουμε για {callout} {name}!",
+    "Ποιες είναι οι πιο εμπνευσμένες ιδέες που μοιράστηκε μαζί σου {callout-οη} {name}?",
+    "Πώς βοηθάει {callout-οη} {name} τους άλλους μαθητές στην τάξη?",
+    "Ποιες ήταν οι πιο ενδιαφέρουσες συζητήσεις που είχες με {callout} {name}?",
+    "Αν έπρεπε να χαρακτηρίσεις {callout} {name} με 5 λέξεις, ποιες θα ήταν αυτές?",
+    "Ποιες στιγμές του σχολείου με {callout} {name} θεωρείς τις πιο σημαντικές για σένα?",
+    "Τι σου αρέσει πιο πολύ στην προσωπικότητα {callout-τουτης} {name}?"
+]
+
+function reloadGenerate() {
+
+    const studentName = pickedStudents[activeStudent].split(" ")[0]
+    let generated = phrases[Math.floor(Math.random() * phrases.length)]
+        .replace("{name}", studentName)
+        .replace("{callout}", getGender(studentName) === "Male" ? "τον" : "την")
+        .replace("{callout-τουτης}", getGender(studentName) === "Male" ? "του" : "της")
+        .replace("{callout-οη}", getGender(studentName) === "Male" ? "ο" : "η");
+
+    if (generated.includes(`τον ${studentName}`) || generated.includes(`την ${studentName}`)) {
+        console.log("includes tontin");
+        generated = generated.replace(studentName, fixNameCase(studentName));
+    }
+    dataIn[`${pickedStudents[activeStudent]}-question`] = generated
+    document.getElementById("message").placeholder = `πχ: ` + generated
+    console.log(generated)
+}
 let activeStudent = 0
 function startYbRate(e, event) {
+    activeStudent = 0
     if (pickedStudents.length === 0) { return; }
 
     event.preventDefault();
@@ -1471,20 +1553,39 @@ function startYbRate(e, event) {
     document.getElementById("currentName").innerText = pickedStudents[activeStudent]
     document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
     document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
+    reloadGenerate()
 
     //testPick()
 
     //yearbook-screen-2
 
 }
-let dataIn = {
 
+function saveRatings() {
+    const userData = JSON.parse(localStorage.getItem("jeanDarc_accountData"))
+    fetch(`https://arc.evoxs.xyz/?metode=vleresimet&emri=${foundName || userData.name}&pin=${userData.pin}&parashtresat=${JSON.stringify(dataIn)}`) //base64Pin
+        .then(response => response.text())
+        .then(data => {
+            if (data === 'Kontrolloni json!') {
+                console.error("JSON error:", data, dataIn)
+            } else {
+                const res = JSON.parse(data)
+                console.log("Success", res)
+            }
+
+
+        }).catch(error => {
+            console.error("Jeanne D'arc Database is offline.")
+            console.log('Error:', error);
+        });
 }
+let dataIn = {}
 function continueCurrent() {
     if (document.getElementById("message").value === '') { return; }
     console.log(pickedStudents.length, activeStudent)
     if (pickedStudents.length === activeStudent + 1) {
-        alert("Operation done!")
+        dataIn[document.getElementById("currentName").innerText] = document.getElementById("message").value
+        saveRatings()
         return;
     }
     activeStudent++
@@ -1495,6 +1596,7 @@ function continueCurrent() {
         document.getElementById("currentName").innerText = pickedStudents[activeStudent]
         document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
         document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
+        reloadGenerate()
         setTimeout(function () {
             $("#centerContent-rate").fadeIn("fast")
         }, 300)
@@ -1504,7 +1606,7 @@ function continueCurrent() {
 
 function skipCurrentRate() {
     if (pickedStudents.length === activeStudent + 1) {
-        alert("Operation done!")
+        saveRatings()
         return;
     }
     activeStudent++
@@ -1514,6 +1616,7 @@ function skipCurrentRate() {
         document.getElementById("currentName").innerText = pickedStudents[activeStudent]
         document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
         document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
+        reloadGenerate()
         setTimeout(function () {
             $("#centerContent-rate").fadeIn("fast")
         }, 300)
@@ -2299,10 +2402,10 @@ function YbsearchByName() {
         //} else {
         //console.log(`No info found for ${part}`);
         //}
-        setTimeout(function() {
+        setTimeout(function () {
             const div = document.getElementById('searchPeople');
             const seen = new Set();
-    
+
             Array.from(div.children).forEach(child => {
                 if (seen.has(child.textContent)) {
                     child.remove();
@@ -2311,7 +2414,7 @@ function YbsearchByName() {
                 }
             });
         }, 200)
-        
+
     });
     const firstName = queryParts[0];
     const lastName = queryParts[1] || "";  // In case the query only has the first name
