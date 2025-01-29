@@ -1267,6 +1267,9 @@ let allUsers = {}
 let classes = {}
 let usersElems = {}
 function activateYearbook() {
+    allUsers = {}
+    classes = {}
+    usersElems = {}
     $("#app").fadeOut("fast", function () {
         document.getElementById("loadText").innerHTML = 'Φόρτωση..'
         $("#tasks").fadeIn("fast", function () {
@@ -1353,8 +1356,8 @@ function activateYearbook() {
             //const a = foundName.split(" ")[0]
             const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
             const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
-            document.getElementById("loadText").innerHTML = `Ας ξεκινήσουμε,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a}`
             //document.getElementById("loadText").innerHTML = `Ας ξεκινήσουμε,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a}`
+            document.getElementById("loadText").innerHTML = `Περιμένετε..`
             document.getElementById("loadText").style.opacity = '1'
             //$("#gradColored").fadeOut("fast", function () {
             //    //$("#static").fadeIn("fast")
@@ -1753,7 +1756,7 @@ function merrniEmrat() {
                         document.getElementById("socialSpawn").innerHTML += `<div class="socialUser">
                 <img class="slUserPFP social"
                     src="${info.foto}">
-                <p>${info.emri}</p><span>${info.seksioni}${info.klasa}</span>
+                <p>${info.emri}</p><span>${info.klasa}</span> <!-${info.seksioni}-->
             </div>`
 
 

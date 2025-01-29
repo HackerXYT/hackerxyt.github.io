@@ -11,20 +11,18 @@
 
 * {
     touch-action: manipulation;
+    scroll-behavior: smooth;
 }
-
 html,
 body {
     height: 100%;
     width: 100%;
     font-family: "SF";
-
+    
     padding: 0;
     margin: 0;
     color: #fff;
-    /*background: rgb(0, 8, 41);*/
     background: rgb(6, 2, 19);
-    touch-action: manipulation;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -32,13 +30,8 @@ body {
     transition: background-color 0.3s ease-in-out;
     margin-top: env(safe-area-inset-top) !important;
     
-    overscroll-behavior: none;
-
-    /* Adding bottom safe area inset 
-    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
-    margin-top: calc(15px + env(safe-area-inset-top));
-    margin-bottom: calc(5px + env(safe-area-inset-bottom));*/
 }
+
 
 /*html,
 body {
@@ -122,13 +115,10 @@ body::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Center items horizontally */
     justify-content: center;
-    /* Center items vertically */
     transition: all 0.5s ease-in-out;
     width: 100%;
     max-width: 400px;
-    /* Optional: limit width for better layout */
 }
 
 .appInfo {
@@ -430,6 +420,7 @@ vo input::placeholder {
     align-items: center;
     position: relative;
     gap: 10px;
+    touch-action: manipulation;
 }
 
 
@@ -650,6 +641,7 @@ img {
     /* border: 2px solid #fff;    Optional: Add a border around the circle */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     /* Optional: Add a shadow for some depth */
+    flex-shrink: 0;
 }
 
 .slUserPFP.social {
@@ -990,7 +982,8 @@ img {
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
-    background: #1f1f1f;
+    background: #ffffff1d;
+    
     /* Base background color */
     border-radius: 15px;
     padding: 20px;
@@ -1039,7 +1032,7 @@ img {
 }
 
 .progress-ring circle.progress {
-    stroke: #10b76f;
+    stroke: #01617ce4;
     /* Highlighted color */
     stroke-dasharray: 176;
     stroke-dashoffset: calc(176 - (176 * var(--progress)) / 100);
@@ -1075,6 +1068,7 @@ img {
     display: flex;
     flex-direction: column;
     max-width: 250px;
+    margin-right: auto;
     /* Limits text width */
 }
 
@@ -1083,15 +1077,19 @@ img {
 }
 
 .message vo {
-    display: block;
-    font-size: 16px;
+    display: flex;
+    font-size: 17px;
     margin-bottom: 5px;
     font-family: "SF";
-
+    flex-direction: row;
+    align-items: center;
 }
 
+.message vo svg {
+    margin-right: 5px;
+}
 .message span {
-    font-size: 14px;
+    font-size: 13px;
     opacity: 0.8;
 }
 
