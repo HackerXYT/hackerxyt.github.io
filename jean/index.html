@@ -670,14 +670,14 @@
                 </svg>
             </div>
         </div>
-        <div onclick="this.querySelector('img').classList.toggle('fullimage')" class="banner">
-            <img src="image_processing20210917-11582-kv16qe.png">
+        <div onclick="this.querySelector('img').classList.toggle('fullimage')" class="banner noBanner">
+            <!--<img src="image_processing20210917-11582-kv16qe.png">-->
         </div>
         <div class="assets">
             <div onclick="this.classList.toggle('fullimage')" class="darc-user-self">
                 <img id="darc-user-self-profile" src="bb.jpg">
 
-                <svg id="instagramedProfile" style="display: none;" class="corner-svg"
+                <svg id="instagramedProfile" style="display: none;opacity:0;" class="corner-svg"
                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px"
                     height="20px" viewBox="0 0 20 20" version="1.1">
                     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -699,7 +699,7 @@
                         d="M21.6,9.84A4.57,4.57,0,0,1,21.18,9,4,4,0,0,1,21,8.07a4.21,4.21,0,0,0-.64-2.16,4.25,4.25,0,0,0-1.87-1.28,4.77,4.77,0,0,1-.85-.43A5.11,5.11,0,0,1,17,3.54a4.2,4.2,0,0,0-1.8-1.4A4.22,4.22,0,0,0,13,2.21a4.24,4.24,0,0,1-1.94,0,4.22,4.22,0,0,0-2.24-.07A4.2,4.2,0,0,0,7,3.54a5.11,5.11,0,0,1-.66.66,4.77,4.77,0,0,1-.85.43A4.25,4.25,0,0,0,3.61,5.91,4.21,4.21,0,0,0,3,8.07,4,4,0,0,1,2.82,9a4.57,4.57,0,0,1-.42.82A4.3,4.3,0,0,0,1.63,12a4.3,4.3,0,0,0,.77,2.16,4,4,0,0,1,.42.82,4.11,4.11,0,0,1,.15.95,4.19,4.19,0,0,0,.64,2.16,4.25,4.25,0,0,0,1.87,1.28,4.77,4.77,0,0,1,.85.43,5.11,5.11,0,0,1,.66.66,4.12,4.12,0,0,0,1.8,1.4,3,3,0,0,0,.87.13A6.66,6.66,0,0,0,11,21.81a4,4,0,0,1,1.94,0,4.33,4.33,0,0,0,2.24.06,4.12,4.12,0,0,0,1.8-1.4,5.11,5.11,0,0,1,.66-.66,4.77,4.77,0,0,1,.85-.43,4.25,4.25,0,0,0,1.87-1.28A4.19,4.19,0,0,0,21,15.94a4.11,4.11,0,0,1,.15-.95,4.57,4.57,0,0,1,.42-.82A4.3,4.3,0,0,0,22.37,12,4.3,4.3,0,0,0,21.6,9.84Zm-4.89.87-5,5a1,1,0,0,1-1.42,0l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42Z"
                         style="fill:#2aa15a" />
                 </svg></p>
-            <span>Δεν έχει προστεθεί περιγραφή.. <div class="editDesc">
+            <span style="display: none;">Δεν έχει προστεθεί περιγραφή.. <div class="editDesc">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15px" height="15px" viewBox="0 0 24 24" fill="none">
                         <path fill-rule="evenodd" clip-rule="evenodd"
                             d="M20.7736 8.09994C22.3834 6.48381 22.315 4.36152 21.113 3.06183C20.5268 2.4281 19.6926 2.0233 18.7477 2.00098C17.7993 1.97858 16.8167 2.34127 15.91 3.09985C15.8868 3.11925 15.8645 3.13969 15.8432 3.16111L2.87446 16.1816C2.31443 16.7438 2 17.5051 2 18.2987V19.9922C2 21.0937 2.89197 22 4.00383 22H5.68265C6.48037 22 7.24524 21.6823 7.80819 21.1171L20.7736 8.09994ZM17.2071 5.79295C16.8166 5.40243 16.1834 5.40243 15.7929 5.79295C15.4024 6.18348 15.4024 6.81664 15.7929 7.20717L16.7929 8.20717C17.1834 8.59769 17.8166 8.59769 18.2071 8.20717C18.5976 7.81664 18.5976 7.18348 18.2071 6.79295L17.2071 5.79295Z"
@@ -742,6 +742,32 @@
                 <p>ΠΛΗΡΟΦΟΡΙΕΣ</p>
                 <div id="tags">
 
+                </div>
+            </div>
+
+            <div class="moreInfo" id="settings">
+                <p>ΡΥΘΜΙΣΕΙΣ</p>
+                <div id="settings-sp">
+                    <div onclick="changePfp()" class="anInfo">
+                        ❔
+                        <span>Αλλαγή Εικόνας Προφίλ</span>
+                    </div>
+                    <div class="anInfo">
+                        ❔
+                        <span>Αλλαγή Banner</span>
+                    </div>
+                    <div class="anInfo">
+                        ❔
+                        <span>Αλλαγή PIN</span>
+                    </div>
+                    <div class="anInfo">
+                        ❔
+                        <span>Επεξεργασία Συνδέσεων</span>
+                    </div>
+                    <div class="anInfo">
+                        ❔
+                        <span style="color: #c03f3f;">Αποσύνδεση</span>
+                    </div>
                 </div>
             </div>
 
@@ -1597,7 +1623,7 @@
             </g>
         </svg>
     </div>
-
+    <input type="file" id="upload-box" style="display: none;" accept="image/*" onchange="handleFileSelect()">
 </body>
 <script src="../scripts/jquery-3.7.0.js"></script>
 

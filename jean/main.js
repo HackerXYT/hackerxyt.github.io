@@ -60,7 +60,7 @@ setInterval(function () {
         });
         console.log("Loading Profile Picture For User:", foundName)
     }
-}, 1000)
+}, 6000)
 function returnFromMultimatch() {
     const multimatchElement = document.getElementById("multimatch");
     const topImgElement = document.getElementById("topImg");
@@ -881,6 +881,8 @@ function clickPIN(element) {
                                                             document.body.style.overflow = null
                                                             document.getElementById("app").style.transform = ""
                                                             document.getElementById("app").style.opacity = "1"
+                                                            setTimeout(function () { document.getElementById("app").style.opacity = "1" }, 500)
+
                                                         }, 1200)
                                                     })
                                                     document.getElementById("loadText").style.opacity = '1'
@@ -1202,6 +1204,7 @@ function showProfile(e) {
         img.style.transform = ""
         document.getElementById("darc-user-self-profile").src = 'reloading-pfp.gif'
         getEvoxProfile(foundName).then(profileSrc => {
+            if(profileSrc.includes("data.evoxs.xyz")) {document.getElementById("instagramedProfile").style.display = 'none'} else {document.getElementById("instagramedProfile").style.display = null}
             document.getElementById("darc-user-self-profile").src = profileSrc
         });
         document.getElementById("userName").innerText = foundName
@@ -1312,8 +1315,9 @@ function activateYearbook() {
 
                             Object.entries(classes).forEach(([key, aclass]) => {
                                 if (!document.getElementById("spawnPeople").innerText.includes(key)) {
+                                    const toFind = key.match(/[Α-Ω]+|\d+/g);
                                     document.getElementById("spawnPeople").innerHTML += `<div class="spawnPeople" id="${key}-cont">
-                                    <p style="text-align: left">${key}</p></div>` //${key.includes("ΚΑΘ") ? " style='display: none'" : ""}
+                                    <p style="text-align: left">${toFind[0]}${toFind[1] ? "'"+toFind[1] : ""}</p></div>` //${key.includes("ΚΑΘ") ? " style='display: none'" : ""}
                                 }
                                 console.log(key, aclass)
 
@@ -1400,6 +1404,7 @@ function activateYearbook() {
 
 }
 function goBackFromBook() {
+    pickedStudents = []
     document.getElementById("static").style.opacity = '0'
     setTimeout(function () {
         $("#gradColored").fadeIn("fast")
@@ -1756,7 +1761,7 @@ function merrniEmrat() {
                         document.getElementById("socialSpawn").innerHTML += `<div class="socialUser">
                 <img class="slUserPFP social"
                     src="${info.foto}">
-                <p>${info.emri}</p><span>${info.klasa}</span> <!-${info.seksioni}-->
+                <p>${info.emri}</p><span>${info.seksioni}${info.klasa !== 'none' ? "'"+info.klasa : ""}</span> <!--->
             </div>`
 
 
@@ -2551,4 +2556,55 @@ function testPick() {
 function pickName(name, id) {
     document.getElementById("selected-st").innerText = name
 
+}
+
+function changePfp() {
+    document.getElementById('upload-box').click();    
+}
+
+function handleFileSelect() {
+    const toPin = localStorage.getItem("jeanDarc_accountData")
+    if(toPin) {
+        const pars = JSON.parse(toPin)
+        const input = document.getElementById('upload-box');
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const base64String = e.target.result;
+                // Now you have the base64 representation of the selected image
+                //console.log(base64String);
+                document.getElementById("darc-user-self-profile").src = "./reloading-pfp.gif"
+                fetch(`https://data.evoxs.xyz/profiles`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: pars.name,
+                        pin: atob(pars.pin),
+                        jd: true,
+                        pfp: base64String
+                    })
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log(data);
+                        if (data === "done [JEANBRIDGE]") {
+                            document.getElementById("instagramedProfile").style.display = 'none'
+                            document.getElementById("darc-user-self-profile").src = base64String
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Reset the input value to allow selecting the same file again
+        input.value = '';
+    } else {
+        alert("Δεν έχετε συνδεθεί")
+    }
 }
