@@ -2257,6 +2257,7 @@ function searchByNameComplete() {
         karuseliCont.style.display = null
         document.getElementById("userPinPfp").style.display = 'none'
         karuseliCont.innerHTML = ''
+        pickasCurrent(matchedNames[0])
         matchedNames.forEach(name => {
             count++
             const firstChar = (str) => str.split(' ')[1]?.charAt(0) || null;
