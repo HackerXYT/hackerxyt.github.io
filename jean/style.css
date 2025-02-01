@@ -1556,10 +1556,10 @@ img {
     align-items: center;
     justify-content: center;
     margin-top: -50px;
-
     margin-bottom: 5px;
     position: relative;
     transition: height 0.5s ease, width 0.5s ease;
+    flex-shrink: 0;
 }
 
 .darc-user-self.fullimage {
@@ -1587,6 +1587,7 @@ img {
     border: 4px solid black;
     display: block;
     position: relative;
+    flex-shrink: 0;
     /* Establish a new stacking context for the image */
     z-index: 1;
     /* Image stays behind the SVG */
