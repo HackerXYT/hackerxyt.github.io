@@ -1032,7 +1032,7 @@ img {
 }
 
 .progress-ring circle.progress {
-    stroke: #01617ce4;
+    stroke: #10b76f;
     /* Highlighted color */
     stroke-dasharray: 176;
     stroke-dashoffset: calc(176 - (176 * var(--progress)) / 100);
@@ -1110,7 +1110,14 @@ img {
         -8px -8px 16px rgba(255, 255, 255, 0.1);
     transition: transform 0.2s ease-in-out;
     box-sizing: border-box;
+    
 }
+
+.card.under-const {
+    opacity: 0.5;
+}
+
+
 
 .card .background {
     position: absolute;
@@ -1307,7 +1314,7 @@ img {
     top: 0;
     left: 0;
     height: 100%;
-    width: 60%;
+    width: 10%;
     background-color: #10b76f;
     /*Bar Color*/
     box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.8);
@@ -1772,6 +1779,7 @@ img {
     flex-direction: column;
     padding: 25px;
     justify-content: start;
+    padding-top: env(safe-area-inset-top) !important;
 }
 
 .socialSection h3 {
@@ -2968,7 +2976,7 @@ input:-webkit-autofill:active {
     border-radius: 20px;
     background-color: #2a2e31;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     padding: 10px 20px;
     gap: 10px;
@@ -2983,6 +2991,28 @@ input:-webkit-autofill:active {
     margin-left: auto;
 }
 
+.topOption {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+}
+
+.hidden-options {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+}
+
+.hidden-options span {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    gap: 10px;
+}
 .selectedPerson img {
     width: 50px;
     height: 50px;
@@ -3003,4 +3033,17 @@ input:-webkit-autofill:active {
 
 .sel-coll span {
     color: #ffffffa1;
+}
+
+.notReady {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.under-construction {
+    display: flex;
+    flex-direction: column;
 }

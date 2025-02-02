@@ -507,7 +507,14 @@ function continueToLogin(ev) {
         $("#loginForm").fadeIn("fast")
     })
 }
-
+function hideElementOnAndroid(elementId) {
+    if (navigator.userAgent.toLowerCase().includes('android')) {
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.style.display = 'none';
+      }
+    }
+  }
 
 
 let namesData = null
@@ -537,6 +544,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
     });
+    hideElementOnAndroid('bgGrd');
     if (window.innerWidth > 768 && !localStorage.getItem("devBypass")) {
         //console.log("This is not a mobile device");
         //$("#tasks").fadeOut("fast", function () {
@@ -547,7 +555,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         //})
 
-    } else if (spammingDetected && !localStorage.getItem("devBypass")) { //REMOVE THIS LINE TO ENABLE SPAM DETECTION
+    } else if (spammingDetected) {
         //$("#tasks").fadeOut("fast", function () {
         $("#loginContainer").fadeOut("fast", function () {
             $("#hexa").fadeOut('fast')
@@ -578,6 +586,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (localStorage.getItem("jeanDarc_accountData")) {
             autoLogin()
+
         } else {
             stopPull = true
             //const video = document.getElementById("video");
@@ -981,18 +990,45 @@ function clickPIN(element) {
     //}
 }
 
+function reloadProgress() {
+    const val = localStorage.getItem("jeanDarc_accountData")
+    if (val) {
+        const json = JSON.parse(val)
+        const process = atob(json.pin)
+        fetch(`https://arc.evoxs.xyz/?metode=getProgress&emri=${foundName}&pin=${process}`)
+            .then(response => response.text())
+            .then(progress => {
+                console.log("Progress Success!")
+                document.getElementById("percentage").innerText = progress
+                document.getElementById("progress-ring").style = `--progress: ${progress.replace("%", "")};`
+            }).catch(error => {
+                console.error("Progress error", error)
+            });
+    }
+
+}
 let retryInt;
 function autoLogin() {
     const val = localStorage.getItem("jeanDarc_accountData")
     if (val) {
         document.getElementById("topImg").style.opacity = '0'
         //$("#tasks").fadeOut("fast", function () {
+
         $("#loginContainer").fadeOut("fast", function () {
             document.getElementById("loginContainer").style.display = 'none'
             //$("#lock").fadeIn("fast")
             const json = JSON.parse(val)
             foundName = json.name
             const process = atob(json.pin)
+            fetch(`https://arc.evoxs.xyz/?metode=getProgress&emri=${foundName}&pin=${process}`)
+                .then(response => response.text())
+                .then(progress => {
+                    console.log("Progress Success!")
+                    document.getElementById("percentage").innerText = progress
+                    document.getElementById("progress-ring").style = `--progress: ${progress.replace("%", "")};`
+                }).catch(error => {
+                    console.error("Progress error", error)
+                });
             fetch(`https://arc.evoxs.xyz/?metode=pin&pin=${process}&emri=${foundName}`)
                 .then(response => response.text())
                 .then(status => {
@@ -1049,6 +1085,7 @@ function autoLogin() {
 
                         //})
                     }
+
                 }).catch(error => {
                     console.error("Jeanne D'arc Database is offline.")
                     document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
@@ -1169,14 +1206,26 @@ function dismissPINChange() {
     document.getElementById("notice").classList.remove("active")
 }
 
+function changePinRedo() {
+
+    document.getElementById("profilePage").classList.remove("active")
+    changePin()
+}
+
 let pinAction = null;
 function changePin(e, event) {
-    event.preventDefault();
-    event.stopPropagation();
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
     getEvoxProfile(foundName).then(profileSrc => {
         document.getElementById('userPinPfp').src = profileSrc
     });
-    e.innerHTML = loadingHTML
+    if (e) {
+        e.innerHTML = loadingHTML
+    }
+
     $("#PINdots").fadeIn("fast")
     deletePIN()
     deletePIN()
@@ -1204,7 +1253,7 @@ function showProfile(e) {
         img.style.transform = ""
         document.getElementById("darc-user-self-profile").src = 'reloading-pfp.gif'
         getEvoxProfile(foundName).then(profileSrc => {
-            if(profileSrc.includes("data.evoxs.xyz")) {document.getElementById("instagramedProfile").style.display = 'none'} else {document.getElementById("instagramedProfile").style.display = null}
+            if (profileSrc.includes("data.evoxs.xyz")) { document.getElementById("instagramedProfile").style.display = 'none' } else { document.getElementById("instagramedProfile").style.display = null }
             document.getElementById("darc-user-self-profile").src = profileSrc
         });
         document.getElementById("userName").innerText = foundName
@@ -1281,7 +1330,7 @@ function activateYearbook() {
                 .then(names => {
                     namesData = names
                     const fullNames = Object.keys(names.names);
-                    document.getElementById("spawnPeople").innerHTML = '';
+                    document.getElementById("spawnPeople").innerHTML = `<div id="temp-name-loader" class="loading-spinner fade-in-slide-up"></div>`;
                     let selfClass = null
                     const fetchPromises = fullNames.map(name => {
                         return fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
@@ -1302,6 +1351,7 @@ function activateYearbook() {
 
                     Promise.all(fetchPromises)
                         .then(() => {
+                            document.getElementById("temp-name-loader").style.display = 'none'
                             Object.entries(allUsers).forEach(([key, user]) => {
                                 // key -> emri, user -> data
                                 if (classes[`${user.seksioni}${user.klasa}`]) {
@@ -1317,7 +1367,7 @@ function activateYearbook() {
                                 if (!document.getElementById("spawnPeople").innerText.includes(key)) {
                                     const toFind = key.match(/[Α-Ω]+|\d+/g);
                                     document.getElementById("spawnPeople").innerHTML += `<div class="spawnPeople" id="${key}-cont">
-                                    <p style="text-align: left">${toFind[0]}${toFind[1] ? "'"+toFind[1] : ""}</p></div>` //${key.includes("ΚΑΘ") ? " style='display: none'" : ""}
+                                    <p style="text-align: left">${toFind[0]}${toFind[1] ? "'" + toFind[1] : ""}</p></div>` //${key.includes("ΚΑΘ") ? " style='display: none'" : ""}
                                 }
                                 console.log(key, aclass)
 
@@ -1438,7 +1488,28 @@ function goBackFromRate() {
 
 let pickedStudents = []
 
+function addFromSearch(emri, el) {
+    if (!pickedStudents.includes(emri)) {
+        const id = usersElems[emri].ranId
+        console.log("user id", id)
+        el.classList.add("picked")
+        pickStudent(emri, document.getElementById(`user-${id}`))
+    } else {
+        el.classList.remove("picked")
+        pickedStudents = pickedStudents.filter(student => student !== emri);
+        document.getElementById("count-picked").innerHTML = pickedStudents.length
+        if (pickedStudents.length > 0) {
+            document.getElementById("count-picked").style.opacity = '1'
+            $("#buttonStartCont").fadeIn("fast")
+        } else {
+            document.getElementById("count-picked").style.opacity = '0'
+            $("#buttonStartCont").fadeOut("fast")
+        }
+    }
+}
+
 function pickStudent(name, e) {
+
     if (e.classList.contains("picked")) {
         e.classList.remove("picked")
         pickedStudents = pickedStudents.filter(student => student !== name);
@@ -1570,22 +1641,47 @@ function startYbRate(e, event) {
 }
 
 function saveRatings() {
-    const userData = JSON.parse(localStorage.getItem("jeanDarc_accountData"))
-    fetch(`https://arc.evoxs.xyz/?metode=vleresimet&emri=${foundName || userData.name}&pin=${userData.pin}&parashtresat=${JSON.stringify(dataIn)}`) //base64Pin
-        .then(response => response.text())
-        .then(data => {
-            if (data === 'Kontrolloni json!') {
-                console.error("JSON error:", data, dataIn)
-            } else {
-                const res = JSON.parse(data)
-                console.log("Success", res)
-            }
+    $("#yearbook-screen-2").fadeOut("fast", function () {
+        document.getElementById("loadText").innerText = 'Αποθήκευση αλλαγών..'
+        $("#tasks").fadeIn("fast")
+
+        const userData = JSON.parse(localStorage.getItem("jeanDarc_accountData"))
+        fetch(`https://arc.evoxs.xyz/?metode=vleresimet&emri=${foundName || userData.name}&pin=${userData.pin}&parashtresat=${JSON.stringify(dataIn)}`) //base64Pin
+            .then(response => response.text())
+            .then(data => {
+                if (data === 'Kontrolloni json!') {
+                    console.error("JSON error:", data, dataIn)
+                } else {
+                    const res = JSON.parse(data)
+                    console.log("Success", res)
+                    $("#tasks").fadeOut("fast", function () {
+                        document.getElementById("loadText").innerText = 'Οι αλλαγές σας αποθηκεύτηκαν!'
+                        $("#tasks").fadeIn("fast")
+                        setTimeout(function () {
+                            setTimeout(function () {
+                                goBackFromBook()
+
+                                document.getElementById("yearbook-container").style.display = 'none'
+                                document.getElementById("yearbook-screen-2").style.display = 'none'
+                                document.getElementById("yearbook-screen-2").style.opacity = '0'
+                                setTimeout(function () {
+                                    reloadProgress()
+                                    $("#tasks").fadeOut("fast")
+                                }, 200)
+                            }, 200)
+
+                        }, 2000)
+                    })
 
 
-        }).catch(error => {
-            console.error("Jeanne D'arc Database is offline.")
-            console.log('Error:', error);
-        });
+                }
+
+
+            }).catch(error => {
+                console.error("Jeanne D'arc Database is offline.")
+                console.log('Error:', error);
+            });
+    })
 }
 let dataIn = {}
 function continueCurrent() {
@@ -1677,9 +1773,9 @@ function testCard(e) {
 
 function animateNumberChange(element, targetValue) {
     const txt = element.querySelector('div.progress-ring div.percentage');
-    const currentValue = parseInt(txt.innerText) || 0; // Default to 0 if the text is empty
-    const duration = 500; // Duration of the animation in ms
-    const steps = 40; // Number of steps for the animation (controls how smooth the animation is)
+    const currentValue = parseInt(txt.innerText) || 0;
+    const duration = 500;
+    const steps = 40; // (controls how smooth the animation is)
     const increment = (targetValue - currentValue) / steps;
 
     let count = 0;
@@ -1692,7 +1788,7 @@ function animateNumberChange(element, targetValue) {
         if (count < steps) {
             requestAnimationFrame(update);
         } else {
-            txt.innerText = targetValue + "%"; // Ensure it ends exactly at the target value
+            txt.innerText = targetValue + "%";
         }
     }
 
@@ -1761,7 +1857,7 @@ function merrniEmrat() {
                         document.getElementById("socialSpawn").innerHTML += `<div class="socialUser">
                 <img class="slUserPFP social"
                     src="${info.foto}">
-                <p>${info.emri}</p><span>${info.seksioni}${info.klasa !== 'none' ? "'"+info.klasa : ""}</span> <!--->
+                <p>${info.emri}</p><span>${info.seksioni}${info.klasa !== 'none' ? "'" + info.klasa : ""}</span> <!--->
             </div>`
 
 
@@ -1975,21 +2071,36 @@ function toggleDev() {
 
 
 function goBackToLogin() {
-    $("#lock").fadeOut("fast", function () {
-        //document.getElementById("accessButton").innerText = "Σύνδεση"
-        input.value = ''
-        mirrorText.textContent = '';
-        input.style.width = null;
-        $("#loginContainer").fadeIn("fast", function () {
+    if (!localStorage.getItem("jeanDarc_accountData")) {
+        $("#lock").fadeOut("fast", function () {
+            //document.getElementById("accessButton").innerText = "Σύνδεση"
+            input.value = ''
+            mirrorText.textContent = '';
+            input.style.width = null;
+            $("#loginContainer").fadeIn("fast", function () {
+            })
+            //document.getElementById("evoxContainer").classList.add("active")
+            document.getElementById("welcome").classList.remove("fade-out-slide-down")
         })
-        //document.getElementById("evoxContainer").classList.add("active")
-        document.getElementById("welcome").classList.remove("fade-out-slide-down")
-    })
 
-    deletePIN()
-    deletePIN()
-    deletePIN()
-    deletePIN()
+        deletePIN()
+        deletePIN()
+        deletePIN()
+        deletePIN()
+    } else {
+        deletePIN()
+        deletePIN()
+        deletePIN()
+        deletePIN()
+        $("#lock").fadeOut("fast", function () {
+            $("#app").fadeIn("fast")
+            document.body.style.overflow = null
+            document.getElementById("app").style.transform = ""
+            document.getElementById("app").style.opacity = "1"
+            setTimeout(function () { document.getElementById("app").style.opacity = "1" }, 500)
+        })
+    }
+
 }
 
 function getDeviceInfo() {
@@ -2072,13 +2183,32 @@ function nameLogin() {
         setTimeout(() => {
             boxUp.style.height = '250px';
         }, 10);
-        $('#boxUp').children().not('.loginByName').fadeOut(function () {
+        $('#boxUp').children().not('.loginByName, #helpMe').fadeOut(function () {
             $("#loginByName").fadeIn("fast")
         });
 
     })
 
 
+}
+
+function help() {
+    document.getElementById("topLeftBack").classList.add("active")
+    $("#appInfo").fadeOut("fast")
+    $("#textDialog").fadeOut("fast", function () {
+        const boxUp = document.getElementById("boxUp");
+        const currentHeight = boxUp.offsetHeight + 'px';
+        boxUpDefaultHeight = currentHeight
+        boxUp.style.transition = 'height 1s'; // Adjust the duration as needed
+        boxUp.style.height = currentHeight;
+        setTimeout(() => {
+            boxUp.style.height = '260px';
+        }, 10);
+        $('#boxUp').children().not('#helpMe, .loginByName').fadeOut(function () {
+            $("#helpMe").fadeIn("fast")
+        });
+
+    })
 }
 
 function goBackToMain() {
@@ -2091,7 +2221,43 @@ function goBackToMain() {
         setTimeout(() => {
             boxUp.style.height = boxUpDefaultHeight;
         }, 10);
+        $("#helpMe").fadeOut("fast")
         $("#loginByName").fadeOut("fast", function () {
+            $('#boxUp').children().not('.loginByName, #helpMe').fadeIn(function () {
+                $("#textDialog").fadeIn("fast", function () {
+                    $("#appInfo").fadeIn("fast")
+
+                })
+            });
+        })
+
+    }
+}
+
+function getHelpSend() {
+    fetch(`https://arc.evoxs.xyz/?metode=needHelp&emri=${document.getElementById("getHelpInput").value}`)
+                .then(response => response.text())
+                .then(text => {
+                    document.getElementById("getHelpInput").value = ''
+                    goBackToMain()
+
+                }).catch(error => {
+                    
+                });
+}
+
+function goBackFromHelp() {
+    document.getElementById("topLeftBackHelp").classList.remove("active")
+    //
+    if (boxUpDefaultHeight) {
+        const boxUp = document.getElementById("boxUp");
+        boxUp.style.transition = 'height 1s'; // Adjust the duration as needed
+
+        setTimeout(() => {
+            boxUp.style.height = boxUpDefaultHeight;
+        }, 10);
+        $("#topLeftBack").fadeOut("fast")
+        $("#helpMe").fadeOut("fast", function () {
             $('#boxUp').children().not('.loginByName').fadeIn(function () {
                 $("#textDialog").fadeIn("fast", function () {
                     $("#appInfo").fadeIn("fast")
@@ -2380,12 +2546,16 @@ function YbsearchByName() {
         //if (usersElems[`'${part}'`]) {
         //console.log(document.getElementById(`searchPeople`).innerHTML, part, el.innerHTML.includes(part))
         console.log(spawnedSearches, part)
+        if(part === foundName && matchedNames.length === 1) {
+            el.innerHTML += 'Δεν μπορείτε να γράψετε για τον εαυτό σας'
+            return;
+        }
         if (!spawnedSearches.includes(part)) {
             //spawnedSearches.push(part)
             fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${part}`)
                 .then(response => response.json())
                 .then(info => {
-                    el.innerHTML += `<div class="aStudent fade-in-slide-up">
+                    el.innerHTML += `<div onclick="addFromSearch('${info.emri}', this)" class="aStudent fade-in-slide-up ${pickedStudents.includes(info.emri) ? "picked" : ""}">
                     <div class="studentImage">
                         <img src="${info.foto}">
                     </div>
@@ -2425,6 +2595,9 @@ function YbsearchByName() {
         }, 200)
 
     });
+    if(matchedNames.length === 0) {
+        el.innerHTML += 'Δεν βρέθηκαν αντιστοιχίες'
+    }
     const firstName = queryParts[0];
     const lastName = queryParts[1] || "";  // In case the query only has the first name
 
@@ -2560,12 +2733,12 @@ function pickName(name, id) {
 }
 
 function changePfp() {
-    document.getElementById('upload-box').click();    
+    document.getElementById('upload-box').click();
 }
 
 function handleFileSelect() {
     const toPin = localStorage.getItem("jeanDarc_accountData")
-    if(toPin) {
+    if (toPin) {
         const pars = JSON.parse(toPin)
         const input = document.getElementById('upload-box');
         const file = input.files[0];
@@ -2594,6 +2767,7 @@ function handleFileSelect() {
                         if (data === "done [JEANBRIDGE]") {
                             document.getElementById("instagramedProfile").style.display = 'none'
                             document.getElementById("darc-user-self-profile").src = base64String
+                            document.getElementById("selfPfp").src = base64String
                         }
                     })
                     .catch(error => {
@@ -2608,4 +2782,21 @@ function handleFileSelect() {
     } else {
         alert("Δεν έχετε συνδεθεί")
     }
+}
+
+function moreOptions(el) {
+    return;
+    const active = usersElems[pickedStudents[activeStudent]].info.emri
+    document.getElementById("where").innerText = `${getGender(active) === "Male" ? "στον" : "στην"} ${fixNameCase(active.split(" ")[0])}`
+    el.style.height = "130px"
+    document.getElementById("hidden-options").style.display = 'flex'
+}
+
+//function pickAvail(what) {
+//    if(what === 'user+teach') {
+//    }
+//}
+
+function startEvoxLogin() {
+    window.location.href = '../evox-epsilon-beta/?metode=jeandarc'
 }

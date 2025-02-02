@@ -173,7 +173,7 @@ function clientVerified() {
             const params = new URLSearchParams(window.location.search);
             if (params.has('jeanDarc')) {
                 const value = params.get('jeanDarc');
-                if(value === 'redaktoni') {
+                if (value === 'redaktoni') {
                     window.location.href = `https://arc.evoxs.xyz?metode=redaktoni&password=${btoa(password)}`
                     return;
                 }
@@ -930,7 +930,7 @@ function startLogin() {
 
                     if (params.has('jeanDarc')) {
                         const value = params.get('jeanDarc');
-                        if(value === 'redaktoni') {
+                        if (value === 'redaktoni') {
                             window.location.href = `https://arc.evoxs.xyz?metode=redaktoni&password=${btoa(password)}`
                             return;
                         }
@@ -1100,7 +1100,7 @@ function on2FAComplete() {
                 PWACheck()
                 if (params.has('jeanDarc')) {
                     const value = params.get('jeanDarc');
-                    if(value === 'redaktoni') {
+                    if (value === 'redaktoni') {
                         window.location.href = `https://arc.evoxs.xyz?metode=redaktoni&password=${btoa(password)}`
                         return;
                     }
@@ -1139,7 +1139,7 @@ function on2FAComplete() {
                 PWACheck()
                 if (params.has('jeanDarc')) {
                     const value = params.get('jeanDarc');
-                    if(value === 'redaktoni') {
+                    if (value === 'redaktoni') {
                         window.location.href = `https://arc.evoxs.xyz?metode=redaktoni&password=${btoa(password)}`
                         return;
                     }
@@ -1226,6 +1226,7 @@ function verificationComplete() {
         const url = new URL(window.location.href);
         const params = new URLSearchParams(url.search);
         const showNotification = params.get('showNotification');
+        const metode = params.get('metode');
         const title = params.get('title');
         const content = params.get('content');
 
@@ -1248,6 +1249,30 @@ function verificationComplete() {
                 }).catch(error => {
                     //setNetworkStatus('off')
                     console.error(error);
+                });
+        }
+
+        if (metode === 'jeandarc') {
+            const myData = localStorage.getItem("t50-email")
+            const pswd = localStorage.getItem("t50pswd")
+            fetch(`${srv}/accounts?method=jeandarc&email=${myData}&password=${atob(pswd)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(jd => {
+                    if(jd) {
+                        localStorage.setItem("jeanDarc_accountData", JSON.stringify(jd))
+                        console.log("JEANDARC IS READY")
+                        window.location.href = '../jean/'
+                    }
+
+                })
+                .catch(error => {
+
+
                 });
         }
 
@@ -3134,7 +3159,7 @@ function changeBackgroundSlider(elem) {
             console.warn(`Local: ${gradient}\nError: ${error}`)
             document.getElementById(`grad-default`).classList.add('current')
         }
-        
+
     } else {
         document.getElementById(`grad-default`).classList.add('current')
     }
