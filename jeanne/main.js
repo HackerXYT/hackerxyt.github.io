@@ -544,6 +544,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
     });
+    hideElementOnAndroid('gradColored');
     hideElementOnAndroid('bgGrd');
     if (window.innerWidth > 768 && !localStorage.getItem("devBypass")) {
         //console.log("This is not a mobile device");
