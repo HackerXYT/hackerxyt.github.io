@@ -115,7 +115,7 @@ function selectCustom(name) {
                     setTimeout(function () {
                         const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
                         const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
-                        document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
+                        document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${transformGreekName(matchedNames[0],0)} ${transformGreekName(matchedNames[0],1)}`
                         document.getElementById("loadText").style.opacity = '1'
                         setTimeout(function () {
                             document.getElementById("topImg").style.opacity = '0'
@@ -289,7 +289,7 @@ function find() {
                                 setTimeout(function () { //
                                     const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
                                     const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
-                                    document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
+                                    document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${transformGreekName(matchedNames[0],0)} ${transformGreekName(matchedNames[0],1)}`
                                     document.getElementById("loadText").style.opacity = '1'
                                     setTimeout(function () {
                                         document.getElementById("topImg").style.opacity = '0'
@@ -386,7 +386,7 @@ function find() {
                             setTimeout(function () { //
                                 const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
                                 const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
-                                document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
+                                document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${transformGreekName(matchedNames[0],0)} ${transformGreekName(matchedNames[0],1)}`
                                 document.getElementById("loadText").style.opacity = '1'
                                 setTimeout(function () {
                                     document.getElementById("topImg").style.opacity = '0'
@@ -1119,6 +1119,24 @@ function autoLogin() {
     }
 }
 
+function transformGreekName(name, num) {
+    const firstName = name.split(' ')[num].replace(/[σς]+$/, ''); // Remove trailing σ/ς
+    
+    let transformedName = firstName;
+
+    if (firstName.endsWith("ος")) {
+        transformedName = firstName.slice(0, -2) + "ε";
+    } else if (firstName.endsWith("ης")) {
+        transformedName = firstName.slice(0, -2) + "η";
+    } else if (firstName.endsWith("ας")) {
+        transformedName = firstName.slice(0, -2) + "α";
+    } else if (firstName.endsWith("ες")) {
+        transformedName = firstName.slice(0, -2) + "ε";
+    }
+
+    return transformedName;
+}
+
 function attach() {
     document.getElementById("gradColored").style.opacity = '1'
     if (atob(JSON.parse(localStorage.getItem("jeanDarc_accountData")).pin) === '0000') {
@@ -1141,9 +1159,9 @@ function attach() {
         console.log(f.length)
         if (f.length > 1) {
 
-            document.getElementById("emri").innerText = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a}`
+            document.getElementById("emri").innerText = `${transformGreekName(foundName, 0)}`
         } else {
-            document.getElementById("emri").innerText = f
+            document.getElementById("emri").innerText = `${transformGreekName(foundName,0)} ${transformGreekName(foundName,1)}`
         }
 
         if (!sessionStorage.getItem('isNewUser')) {
@@ -1272,7 +1290,7 @@ function showProfile(e) {
                         document.getElementById("tags").innerHTML = ''
                         document.getElementById("tags").innerHTML = `<div class="anInfo">
                     🏫
-                    <span id="seksioni">${seksioniData.seksioni}${seksioniData.klasa}</span>
+                    <span id="seksioni">${seksioniData.seksioni}${seksioniData.klasa !== "none" ? seksioniData.klasa : ""}</span>
                 </div>`
                         tagsData.forEach(tag => {
                             document.getElementById("tags").innerHTML = `${document.getElementById("tags").innerHTML}<div class="anInfo">
@@ -2394,7 +2412,7 @@ function searchByNameComplete() {
             //setTimeout(function () { //
             const a = matchedNames[0].split(' ')[0].replace(/[σς]+$/, '')
             const b = matchedNames[0].split(' ')[1].replace(/[σς]+$/, '')
-            document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
+            document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${transformGreekName(matchedNames[0],0)} ${transformGreekName(matchedNames[0],1)}`
             document.getElementById("loadText").style.opacity = '1'
             setTimeout(function () {
                 document.getElementById("topImg").style.opacity = '0'
