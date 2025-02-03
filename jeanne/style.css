@@ -1651,15 +1651,14 @@ img {
 
 #tags {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    /* Two equal columns */
-    grid-gap: 5px;
-    /* Adjust the space between grid items */
+    grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+    grid-gap: 5px; /* Adjust the space between grid items */
 }
 
-#tags > *:only-child {
+#tags > *:nth-last-child(1):nth-child(odd) {
     grid-column: span 2; /* Make it take the full width */
 }
+
 
 
 .notch-hidden {

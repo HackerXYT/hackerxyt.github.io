@@ -997,8 +997,11 @@ function reloadProgress() {
         const json = JSON.parse(val)
         const process = atob(json.pin)
         fetch(`https://arc.evoxs.xyz/?metode=getProgress&emri=${foundName}&pin=${process}`)
-            .then(response => response.text())
-            .then(progress => {
+            .then(response => response.json())
+            .then(complete => {
+                const progress = complete.progress
+                document.getElementById("title-progress").innerHTML = complete.title
+                document.getElementById("desc-progress").innerHTML = complete.desc
                 console.log("Progress Success!")
                 document.getElementById("percentage").innerText = progress
                 document.getElementById("progress-ring").style = `--progress: ${progress.replace("%", "")};`
@@ -1022,9 +1025,12 @@ function autoLogin() {
             foundName = json.name
             const process = atob(json.pin)
             fetch(`https://arc.evoxs.xyz/?metode=getProgress&emri=${foundName}&pin=${process}`)
-                .then(response => response.text())
-                .then(progress => {
-                    console.log("Progress Success!")
+                .then(response => response.json())
+                .then(complete => {
+                    const progress = complete.progress
+                    document.getElementById("title-progress").innerHTML = complete.title
+                    document.getElementById("desc-progress").innerHTML = complete.desc
+                    console.log("Progress Success!", complete)
                     document.getElementById("percentage").innerText = progress
                     document.getElementById("progress-ring").style = `--progress: ${progress.replace("%", "")};`
                 }).catch(error => {
@@ -1294,7 +1300,7 @@ function showProfile(e) {
                 </div>`
                         tagsData.forEach(tag => {
                             document.getElementById("tags").innerHTML = `${document.getElementById("tags").innerHTML}<div class="anInfo">
-                    🏛️
+                    ${tag === "Evox" ? `<img src="../oasaResign/evox-logo-dark.png" width="17.5px" height="17.5px">` : "🏛️"}
                     <span>${tag}</span>
                 </div>`
                         })
@@ -2829,7 +2835,7 @@ function updateProgress(percentage) {
     const circle = document.querySelector('.circle-fill');
     const maxStroke = 188; // The full circumference of the circle
     const offset = maxStroke - (maxStroke * percentage) / 100;
-    
+
     circle.style.strokeDashoffset = offset;
 }
 
@@ -2845,16 +2851,16 @@ function openDiscovery(el) {
             document.getElementById("countDone").innerHTML = progress.have_participated
             document.getElementById("countFull").innerHTML = progress.total_users
             document.getElementById("countLeft").innerHTML = progress.total_users - progress.have_participated
-            const percentage = Number.parseInt(100*progress.have_participated/progress.total_users)
+            const percentage = Number.parseInt(100 * progress.have_participated / progress.total_users)
             document.getElementById("isDone").innerHTML = percentage + "%"
             updateProgress(percentage);
             const progress_class = progress_global.byclass
             document.getElementById("classes").innerHTML = ''
             Object.entries(progress_class.class_counts).forEach(([key, value]) => {
-                if(key === 'ΚΑΘ'){return;}
+                if (key === 'ΚΑΘ') { return; }
                 document.getElementById("classes").innerHTML += `<div class="aclass">
                     <div class="left">
-                    ${key === "ΓΥΓ"? "Υγείας" : key.includes("ΓΑΝΘ1") ? "Θεωρητ. 1" : key === 'ΓΟΠ1' ? "Οικον. 1" : key === 'ΓΟΠ2' ? "Οικον. 2" : key === "ΓΑΝΘ2" ? "Θεωρητ. 2" : key === "ΓΘΤ" ? "Θετικών" : key}
+                    ${key === "ΓΥΓ" ? "Υγείας" : key.includes("ΓΑΝΘ1") ? "Θεωρητ. 1" : key === 'ΓΟΠ1' ? "Οικον. 1" : key === 'ΓΟΠ2' ? "Οικον. 2" : key === "ΓΑΝΘ2" ? "Θεωρητ. 2" : key === "ΓΘΤ" ? "Θετικών" : key}
                     <p>${value.have_participated}<vox class="smallto">/${value.total}</vox></p>
                     </div>
                     <div class="right">
@@ -2897,7 +2903,7 @@ function openDiscovery(el) {
 <path style="fill:#707070;" d="M422.363,65.206c0,13.493,10.938,24.432,24.432,24.432V40.774  C433.301,40.774,422.363,51.712,422.363,65.206z"/>
 </svg>`: key.includes("ΓΟΠ") ? `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM10.6158 9.5C11.0535 8.71823 11.8025 8 12.7498 8C13.284 8 13.819 8.23239 14.2923 8.70646C14.6824 9.09734 15.3156 9.09792 15.7065 8.70775C16.0973 8.31758 16.0979 7.68442 15.7077 7.29354C14.9274 6.51179 13.9042 6 12.7498 6C11.3289 6 10.1189 6.77025 9.29826 7.86449C8.93769 8.34528 8.64329 8.89783 8.42654 9.5H8C7.44772 9.5 7 9.94772 7 10.5C7 10.9581 7.30804 11.3443 7.72828 11.4626C7.82228 11.4891 7.91867 11.5 8.01613 11.5C7.99473 11.8304 7.99473 12.1696 8.01613 12.5C7.91867 12.5 7.82228 12.5109 7.72828 12.5374C7.30804 12.6557 7 13.0419 7 13.5C7 14.0523 7.44772 14.5 8 14.5H8.42654C8.64329 15.1022 8.93769 15.6547 9.29826 16.1355C10.1189 17.2298 11.3289 18 12.7498 18C13.9042 18 14.9274 17.4882 15.7077 16.7065C16.0979 16.3156 16.0973 15.6824 15.7065 15.2923C15.3156 14.9021 14.6824 14.9027 14.2923 15.2935C13.819 15.7676 13.284 16 12.7498 16C11.8025 16 11.0535 15.2818 10.6158 14.5H12C12.5523 14.5 13 14.0523 13 13.5C13 12.9477 12.5523 12.5 12 12.5H10.0217C9.99312 12.1735 9.99312 11.8265 10.0217 11.5H13C13.5523 11.5 14 11.0523 14 10.5C14 9.94772 13.5523 9.5 13 9.5H10.6158Z" fill="#fff"/>
-</svg>` : key.includes("ΓΘΤ") ? `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 1024 1024" class="icon" version="1.1"><path d="M857.7 583.1c-6.7-11.8-21.8-15.8-33.5-9-11.8 6.7-15.8 21.8-9.1 33.5 66.6 115.9 83.4 212.6 43.8 252.2-75.7 75.8-311.6-54.5-476-218.9-41.5-41.5-78.8-84.7-111.3-127.9 33.4-45.1 71.3-89.2 111.3-129.2C547.2 219.5 783.1 89.3 858.9 165c30.9 30.9 27.7 97.6-8.9 183-40.1 93.6-114.7 197.7-210 293-22.3 22.3-45.4 43.8-68.7 63.8-10.3 8.8-11.4 24.4-2.6 34.6 8.9 10.3 24.4 11.4 34.6 2.6 24.2-20.8 48.2-43.2 71.4-66.3 99.6-99.6 177.9-209.1 220.4-308.3 45.6-106.3 45-190.5-1.5-237C802 38.8 562.4 135 348.2 349.3c-39.9 39.9-75.7 80.7-107 121.2-28.1-41.7-51.4-83-68.3-122.4-36.6-85.3-39.8-152-8.9-183 39.6-39.6 136.1-22.9 252 43.6 11.7 6.7 26.8 2.7 33.5-9.1 6.7-11.8 2.7-26.8-9.1-33.5-140-80.3-253.4-93.4-311.1-35.7-46.6 46.6-47.1 130.7-1.5 237 20 46.8 48.2 95.8 82.6 145C97.5 674.2 60.7 825.9 129.3 894.5c23.8 23.8 57 35.5 97.6 35.5 58.7 0 132.9-24.6 216.5-73 11.7-6.8 15.7-21.8 8.9-33.6-6.8-11.7-21.8-15.7-33.6-8.9-117.1 68-214.7 85.3-254.7 45.3-51.6-51.6-7.5-177.6 77.8-304.7 31.6 40.9 67.3 81.5 106.3 120.5 99.6 99.6 209.1 177.8 308.4 220.4 52.5 22.5 99.7 33.8 139.6 33.8 40.8 0 73.9-11.8 97.5-35.3 57.7-57.7 44.6-171.2-35.9-311.4zM511.5 430.5c-45.2 0-81.9 36.7-81.9 81.9s36.7 81.9 81.9 81.9 81.9-36.7 81.9-81.9c-0.1-45.2-36.7-81.9-81.9-81.9z" fill="#FFF"/></svg>`: "error"}
+</svg>` : key.includes("ΓΘΤ") ? `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 1024 1024" class="icon" version="1.1"><path d="M857.7 583.1c-6.7-11.8-21.8-15.8-33.5-9-11.8 6.7-15.8 21.8-9.1 33.5 66.6 115.9 83.4 212.6 43.8 252.2-75.7 75.8-311.6-54.5-476-218.9-41.5-41.5-78.8-84.7-111.3-127.9 33.4-45.1 71.3-89.2 111.3-129.2C547.2 219.5 783.1 89.3 858.9 165c30.9 30.9 27.7 97.6-8.9 183-40.1 93.6-114.7 197.7-210 293-22.3 22.3-45.4 43.8-68.7 63.8-10.3 8.8-11.4 24.4-2.6 34.6 8.9 10.3 24.4 11.4 34.6 2.6 24.2-20.8 48.2-43.2 71.4-66.3 99.6-99.6 177.9-209.1 220.4-308.3 45.6-106.3 45-190.5-1.5-237C802 38.8 562.4 135 348.2 349.3c-39.9 39.9-75.7 80.7-107 121.2-28.1-41.7-51.4-83-68.3-122.4-36.6-85.3-39.8-152-8.9-183 39.6-39.6 136.1-22.9 252 43.6 11.7 6.7 26.8 2.7 33.5-9.1 6.7-11.8 2.7-26.8-9.1-33.5-140-80.3-253.4-93.4-311.1-35.7-46.6 46.6-47.1 130.7-1.5 237 20 46.8 48.2 95.8 82.6 145C97.5 674.2 60.7 825.9 129.3 894.5c23.8 23.8 57 35.5 97.6 35.5 58.7 0 132.9-24.6 216.5-73 11.7-6.8 15.7-21.8 8.9-33.6-6.8-11.7-21.8-15.7-33.6-8.9-117.1 68-214.7 85.3-254.7 45.3-51.6-51.6-7.5-177.6 77.8-304.7 31.6 40.9 67.3 81.5 106.3 120.5 99.6 99.6 209.1 177.8 308.4 220.4 52.5 22.5 99.7 33.8 139.6 33.8 40.8 0 73.9-11.8 97.5-35.3 57.7-57.7 44.6-171.2-35.9-311.4zM511.5 430.5c-45.2 0-81.9 36.7-81.9 81.9s36.7 81.9 81.9 81.9 81.9-36.7 81.9-81.9c-0.1-45.2-36.7-81.9-81.9-81.9z" fill="#FFF"/></svg>` : "error"}
                     </div>
                 </div>`
                 console.log(`Class: ${key}, Total: ${value.total}, Participated: ${value.have_participated}`);
