@@ -1657,6 +1657,10 @@ img {
     /* Adjust the space between grid items */
 }
 
+#tags > *:only-child {
+    grid-column: span 2; /* Make it take the full width */
+}
+
 
 .notch-hidden {
     position: absolute;
@@ -3046,4 +3050,108 @@ input:-webkit-autofill:active {
 .under-construction {
     display: flex;
     flex-direction: column;
+}
+
+.tracker-card {
+    width: 100%;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #ffffff1d;
+    display: flex;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.2),
+    /* Dark shadow */
+    -8px -8px 16px #1f1f1f88;
+}
+.tracker-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+.tracker-info {
+    font-size: 14px;
+    margin-top: 5px;
+    color: #7e7e7e;
+}
+.tracker-info span.a {
+    color: #36c157;
+}
+
+.part2 {
+    margin-left: auto;
+}
+.remaining-indicator {
+    background: #303030;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    display: inline-block;
+    margin-top: 8px;
+}
+.progress-wrapper {
+    display: flex;
+    align-items: center;
+}
+.progress-circle {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+.progress-circle circle {
+    fill: none;
+    stroke-width: 6;
+}
+.progress-circle .circle-bg {
+    stroke: #444;
+}
+.progress-circle .circle-fill {
+    stroke: #36c157;
+    stroke-linecap: round;
+    stroke-dasharray: 188;
+    stroke-dashoffset: calc(188 - (188 * 36) / 100);
+    transition: stroke-dashoffset 0.5s ease-in-out;
+}
+.percentage-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+}
+
+.classcontainer {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Two equal columns */
+    grid-gap: 5px;
+}
+
+.aclass {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #ffffff1d;
+    display: flex;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.2),
+    /* Dark shadow */
+    -8px -8px 16px #1f1f1f88;
+    align-items: center;
+    
+}
+
+.aclass .left {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    height: 100%;
+}
+
+.aclass .right {
+    margin-left: auto;
+}
+
+.smallto {
+    font-size : 13px;
+    color: #ffffff8f;
 }

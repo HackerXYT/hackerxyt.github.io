@@ -179,7 +179,7 @@
                         stroke-linejoin="round" />
                 </svg>
             </div>
-            
+
             <div onclick="showAppInfo()" class="appInfo" id="appInfo">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                     <path
@@ -231,7 +231,8 @@
                 <div class="lsl" id="helpMe" style="display: none;">
 
                     <p>Λάβετε βοήθεια</p>
-                    <span>Δεν βρίσκετε το όνομά σας ή δεν μπορείτε να συνδεθείτε; Πληκτρολογήστε το όνομά σας παρακάτω και θα σας βοηθήσουμε σύντομα!</span>
+                    <span>Δεν βρίσκετε το όνομά σας ή δεν μπορείτε να συνδεθείτε; Πληκτρολογήστε το όνομά σας παρακάτω
+                        και θα σας βοηθήσουμε σύντομα!</span>
                     <div class="inputsLogin">
                         <div class="inv-button creds">
                             <vo class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="17.5px" height="17.5px"
@@ -263,9 +264,8 @@
                                 d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z"
                                 stroke="#8880eb" stroke-width="1.5" />
                         </svg>Συνέχεια με όνομα</div>
-                    <div onclick='startEvoxLogin()'
-                        class="optionButton"><img src="../oasaResign/evox-logo-dark.png" width="17.5px"
-                            height="17.5px">Συνέχεια με Evox</div>
+                    <div onclick='startEvoxLogin()' class="optionButton"><img src="../oasaResign/evox-logo-dark.png"
+                            width="17.5px" height="17.5px">Συνέχεια με Evox</div>
                     <div class="horizontalButtons">
                         <div class="optionButton">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -401,238 +401,244 @@
         <div onclick="goBackToLogin()" class="version"><img src="logo.png" height="55px"></div>
     </div>
     <div id="app" class="app">
-        <div class="topBar fade-in-slide-up">
-            <div onclick="showProfile(this)" class="pfp">
-                <img id="selfPfp" src="reloading-pfp.gif" />
-                <img src="logo.png" class="corner-svg">
-                <svg style="display: none;" class="corner-svg" xmlns="http://www.w3.org/2000/svg" width="800px"
-                    height="800px" viewBox="0 0 24 24" fill="none">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M15.2855 17.0113C14.7666 20.0509 10.5501 20.4239 9.50564 17.5226L7.15545 10.9943C6.29564 8.60595 8.60591 6.29569 10.9943 7.15551L17.5226 9.50569C20.4238 10.5501 20.0509 14.7666 17.0113 15.2856L16.2354 15.418C15.8171 15.4894 15.4894 15.8171 15.418 16.2355L15.2855 17.0113Z"
-                        fill="#fff" />
-                    <path d="M10 4V3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M4 10H3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M4 4L6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </div>
-            <div class="wlcmTxt">
-                <div id="welcmtxt" class="topTxt">
-                    Καλωσόρισες 👋
-                </div>
-                <div id="emri" class="bottomTxt">
-                    όνομα
-                </div>
-            </div>
-            <div onclick="showSocial()" class="rightItem">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-                        stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-            </div>
-        </div>
-        <div class="stories fade-in-slide-up" style="display: none;">
-            <div class="plus">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-                    <path d="M4 12H20M12 4V20" stroke="#fff" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                </svg>
-            </div>
-            <div class="story">
-                <img src="https://avatars.githubusercontent.com/u/88238306?v=4">
-            </div>
-            <div class="story">
-                <img src="https://avatars.githubusercontent.com/u/88238306?v=4">
-            </div>
-            <div class="story">
-                <img src="https://avatars.githubusercontent.com/u/88238306?v=4">
-            </div>
-
-            <div class="story">
-                <img src="https://avatars.githubusercontent.com/u/88238306?v=4">
-            </div>
-            <div class="story">
-                <img src="https://avatars.githubusercontent.com/u/88238306?v=4">
-            </div>
-        </div>
-
-        <div class="progress fade-in-slide-up">
-            <div id="progress-card" class="progress-card"> <!-- onclick="testCard(this)"-->
-                <!-- Circular Progress Ring -->
-                <div class="progress-ring" id="progress-ring" style="--progress: 0;">
-                    <svg>
-                        <circle class="track" cx="35" cy="35" r="28"></circle>
-                        <circle class="progress" cx="35" cy="35" r="28"></circle>
-                    </svg>
-                    <div id="percentage" class="percentage">0%</div>
-                </div>
-
-                <!-- Text Content -->
-                <div class="text-content">
-                    <div class="message">
-                        <vo><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                                fill="none">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M12.8903 3.70589C13.2265 2.61318 14.7733 2.61317 15.1095 3.70589L16.663 8.75461C16.7552 9.05418 16.9825 9.29321 17.277 9.40032L21.3417 10.8784C22.3891 11.2593 22.3891 12.7407 21.3417 13.1216L17.277 14.5996C16.9825 14.7067 16.7552 14.9458 16.663 15.2453L15.1095 20.2941C14.7733 21.3868 13.2265 21.3868 12.8903 20.2941L11.3368 15.2453C11.2447 14.9458 11.0174 14.7067 10.7228 14.5996L6.65816 13.1216C5.61069 12.7407 5.61069 11.2593 6.65816 10.8784L10.7228 9.40032C11.0174 9.29321 11.2447 9.05418 11.3368 8.75461L12.8903 3.70589Z"
-                                    fill="#eccf69" />
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M3.80133 3.43379C4.18531 2.28184 5.81471 2.28184 6.1987 3.43379C6.25654 3.60732 6.39271 3.74349 6.56624 3.80133C7.71819 4.18531 7.71819 5.81471 6.56624 6.1987C6.39271 6.25654 6.25654 6.39271 6.1987 6.56624C5.81471 7.71819 4.18531 7.71819 3.80133 6.56624C3.74349 6.39271 3.60732 6.25654 3.43379 6.1987C2.28184 5.81471 2.28184 4.18531 3.43379 3.80133C3.60732 3.74349 3.74349 3.60732 3.80133 3.43379Z"
-                                    fill="#eccf69" />
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M4.80133 17.4338C5.18531 16.2818 6.81471 16.2818 7.1987 17.4338C7.25654 17.6073 7.39271 17.7435 7.56624 17.8013C8.71819 18.1853 8.71819 19.8147 7.56624 20.1987C7.39271 20.2565 7.25654 20.3927 7.1987 20.5662C6.81471 21.7182 5.18531 21.7182 4.80133 20.5662C4.74349 20.3927 4.60732 20.2565 4.43379 20.1987C3.28184 19.8147 3.28184 18.1853 4.43379 17.8013C4.60732 17.7435 4.74349 17.6073 4.80133 17.4338Z"
-                                    fill="#eccf69" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" style="display:none;" width="22px" height="22px"
-                                viewBox="0 0 24 24" fill="none">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M12 2C12.5523 2 13 2.44772 13 3V4C13 4.55228 12.5523 5 12 5C11.4477 5 11 4.55228 11 4V3C11 2.44772 11.4477 2 12 2Z"
-                                    fill="#eccf69" />
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M19.7071 4.29289C20.0976 4.68342 20.0976 5.31658 19.7071 5.70711L18.7071 6.70711C18.3166 7.09763 17.6834 7.09763 17.2929 6.70711C16.9024 6.31658 16.9024 5.68342 17.2929 5.29289L18.2929 4.29289C18.6834 3.90237 19.3166 3.90237 19.7071 4.29289Z"
-                                    fill="#eccf69" />
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M19 12C19 11.4477 19.4477 11 20 11H21C21.5523 11 22 11.4477 22 12C22 12.5523 21.5523 13 21 13H20C19.4477 13 19 12.5523 19 12Z"
-                                    fill="#eccf69" />
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M2 12C2 11.4477 2.44772 11 3 11H4C4.55228 11 5 11.4477 5 12C5 12.5523 4.55228 13 4 13H3C2.44772 13 2 12.5523 2 12Z"
-                                    fill="#eccf69" />
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M4.29289 4.29289C4.68342 3.90237 5.31658 3.90237 5.70711 4.29289L6.70711 5.29289C7.09763 5.68342 7.09763 6.31658 6.70711 6.70711C6.31658 7.09763 5.68342 7.09763 5.29289 6.70711L4.29289 5.70711C3.90237 5.31658 3.90237 4.68342 4.29289 4.29289Z"
-                                    fill="#eccf69" />
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M12 6C8.68629 6 6 8.68629 6 12C6 13.6332 6.65387 15.1157 7.71186 16.1966C7.97971 16.4703 8.1241 16.7217 8.16867 16.9444L8.69776 19.5886C8.97833 20.9908 10.2095 22 11.6395 22H12.3605C13.7905 22 15.0217 20.9908 15.3022 19.5886L15.8313 16.9444C15.8759 16.7217 16.0203 16.4703 16.2881 16.1966C17.3461 15.1157 18 13.6332 18 12C18 8.68629 15.3137 6 12 6ZM11 16C10.4477 16 10 16.4477 10 17C10 17.5523 10.4477 18 11 18H13C13.5523 18 14 17.5523 14 17C14 16.4477 13.5523 16 13 16H11Z"
-                                    fill="#eccf69" />
-                            </svg>Πρώτα βήματα
-                        </vo>
-                        <span>Λάβε μέρος στην επετηρίδα <br>της Γ' Λυκείου!</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="cards-container fade-in-slide-up">
-
-            <div onclick="clickCard(this)" data-evox="yearbook" class="card">
-                <div class="background">
-
-                    <img src="recap.png">
-                </div>
-
-                <div class="progress-bar" data-progress="20">
-                    <div style="width: 20%;" class="progress-each cyan"></div>
-                </div>
-                <div class="title">
-                    Επετηρίδα
-                </div>
-                <div class="tag cyan">
-                    Ανασκόπηση
-                </div>
-            </div>
-            <div onclick="clickCard(this)" class="card under-const">
-
-                <div class="background">
-                    <img src="fleur.png">
-                    <!--<video autoplay loop muted playsinline>
-                        <source src="geoB.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>-->
-                </div>
-
-                <div class="progress-bar" data-progress="75">
-                    <div style="width: 5%;" class="progress-each"></div>
-                </div>
-                <div class="title">
-                    Δημιουργία Φούτερ
-                </div>
-                <div class="tag green">
-                    Σχέδιο
-                </div>
-                <div style="display: none;" onclick="actionClick(event, this)" class="arrow">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
-                        <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round"
+        <div class="app" style="display: block;padding: 0px;" id="home">
+            <div class="topBar fade-in-slide-up">
+                <div onclick="showProfile(this)" class="pfp">
+                    <img id="selfPfp" src="reloading-pfp.gif" />
+                    <img src="logo.png" class="corner-svg">
+                    <svg style="display: none;" class="corner-svg" xmlns="http://www.w3.org/2000/svg" width="800px"
+                        height="800px" viewBox="0 0 24 24" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M15.2855 17.0113C14.7666 20.0509 10.5501 20.4239 9.50564 17.5226L7.15545 10.9943C6.29564 8.60595 8.60591 6.29569 10.9943 7.15551L17.5226 9.50569C20.4238 10.5501 20.0509 14.7666 17.0113 15.2856L16.2354 15.418C15.8171 15.4894 15.4894 15.8171 15.418 16.2355L15.2855 17.0113Z"
+                            fill="#fff" />
+                        <path d="M10 4V3" stroke="#fff" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M4 10H3" stroke="#fff" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M4 4L6 6" stroke="#fff" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" />
                     </svg>
                 </div>
-            </div>
-            <div id="devActions" class="devActions fade-in-slide-up" style="display: none;">
-                <p>Developer</p>
-                <div onclick="reset()">
-                    <span>Αποσύνδεση</span>
+                <div class="wlcmTxt">
+                    <div id="welcmtxt" class="topTxt">
+                        Καλωσόρισες 👋
+                    </div>
+                    <div id="emri" class="bottomTxt">
+                        όνομα
+                    </div>
+                </div>
+                <div onclick="showSocial()" class="rightItem">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                         <path
-                            d="M17.2929 14.2929C16.9024 14.6834 16.9024 15.3166 17.2929 15.7071C17.6834 16.0976 18.3166 16.0976 18.7071 15.7071L21.6201 12.7941C21.6351 12.7791 21.6497 12.7637 21.6637 12.748C21.87 12.5648 22 12.2976 22 12C22 11.7024 21.87 11.4352 21.6637 11.252C21.6497 11.2363 21.6351 11.2209 21.6201 11.2059L18.7071 8.29289C18.3166 7.90237 17.6834 7.90237 17.2929 8.29289C16.9024 8.68342 16.9024 9.31658 17.2929 9.70711L18.5858 11H13C12.4477 11 12 11.4477 12 12C12 12.5523 12.4477 13 13 13H18.5858L17.2929 14.2929Z"
-                            fill="#bfbfbf" />
-                        <path
-                            d="M5 2C3.34315 2 2 3.34315 2 5V19C2 20.6569 3.34315 22 5 22H14.5C15.8807 22 17 20.8807 17 19.5V16.7326C16.8519 16.647 16.7125 16.5409 16.5858 16.4142C15.9314 15.7598 15.8253 14.7649 16.2674 14H13C11.8954 14 11 13.1046 11 12C11 10.8954 11.8954 10 13 10H16.2674C15.8253 9.23514 15.9314 8.24015 16.5858 7.58579C16.7125 7.4591 16.8519 7.35296 17 7.26738V4.5C17 3.11929 15.8807 2 14.5 2H5Z"
-                            fill="#bfbfbf" />
-                    </svg>
-                </div>
-                <div onclick="window.location.reload()">
-                    <span>Reload</span>
-                    <span id="size">Reload</span>
-
-                </div>
-                <div onclick="reDoPinChange()">
-                    <span>Popup αλλαγής Pin</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
-                        fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M11 13C11 13.5523 11.4477 14 12 14C12.5523 14 13 13.5523 13 13V10C13 9.44772 12.5523 9 12 9C11.4477 9 11 9.44772 11 10V13ZM13 15.9888C13 15.4365 12.5523 14.9888 12 14.9888C11.4477 14.9888 11 15.4365 11 15.9888V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V15.9888ZM9.37735 4.66136C10.5204 2.60393 13.4793 2.60393 14.6223 4.66136L21.2233 16.5431C22.3341 18.5427 20.8882 21 18.6008 21H5.39885C3.11139 21 1.66549 18.5427 2.77637 16.5431L9.37735 4.66136Z"
-                            fill="#bfbfbf" />
-                    </svg>
-                </div>
-                <div
-                    onclick="document.getElementById('homeGrabber').classList.toggle('active');document.getElementById('debugReload').classList.add('active')">
-                    <span>Popup διαφάνεια + blur</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
-                        fill="none">
-                        <path
-                            d="M2 15.024C2 16.2771 2.06584 17.3524 2.26552 18.2508C2.46772 19.1607 2.82021 19.9493 3.43543 20.5646C4.05065 21.1798 4.83933 21.5323 5.74915 21.7345C6.64762 21.9342 7.72287 22 8.976 22L15.024 22C16.2771 22 17.3524 21.9342 18.2508 21.7345C19.1607 21.5323 19.9494 21.1798 20.5646 20.5646C21.1798 19.9494 21.5323 19.1607 21.7345 18.2508C21.9342 17.3524 22 16.2771 22 15.024L22 15C22 13.8954 21.1046 13 20 13L4 13C2.89543 13 2 13.8954 2 15L2 15.024Z"
-                            fill="#bfbfbf" />
-                        <path
-                            d="M2 8.976C2 7.72287 2.06584 6.64762 2.26552 5.74916C2.46772 4.83933 2.82021 4.05065 3.43543 3.43543C4.05065 2.82021 4.83933 2.46772 5.74915 2.26552C6.64762 2.06584 7.72287 2 8.976 2L9 2C10.1046 2 11 2.89543 11 4L11 9C11 10.1046 10.1046 11 9 11L4 11C2.89543 11 2 10.1046 2 9L2 8.976Z"
-                            fill="#bfbfbf" />
-                        <path
-                            d="M22 8.976C22 7.72287 21.9342 6.64762 21.7345 5.74916C21.5323 4.83933 21.1798 4.05065 20.5646 3.43543C19.9494 2.82021 19.1607 2.46772 18.2508 2.26552C17.3524 2.06584 16.2771 2 15.024 2L15 2C13.8954 2 13 2.89543 13 4L13 9C13 10.1046 13.8954 11 15 11L20 11C21.1046 11 22 10.1046 22 9L22 8.976Z"
-                            fill="#bfbfbf" />
-                    </svg>
-                </div>
-                <div onclick="testCard(document.getElementById('progress-card'))">
-                    <span>Αύξηση προόδου</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
-                        fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M16.7071 7.29289C17.0976 7.68342 17.0976 8.31658 16.7071 8.70711L8.70711 16.7071C8.31658 17.0976 7.68342 17.0976 7.29289 16.7071C6.90237 16.3166 6.90237 15.6834 7.29289 15.2929L15.2929 7.29289C15.6834 6.90237 16.3166 6.90237 16.7071 7.29289ZM9 10.01C8.44772 10.01 8 9.56229 8 9.01001V9.00001C8 8.44772 8.44772 8.00001 9 8.00001C9.55228 8.00001 10 8.44772 10 9.00001L10 9.01001C10 9.56229 9.55228 10.01 9 10.01ZM14 15.01C14 15.5623 14.4477 16.01 15 16.01C15.5523 16.01 16 15.5623 16 15.01V15C16 14.4477 15.5523 14 15 14C14.4477 14 14 14.4477 14 15V15.01ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12Z"
-                            fill="#bfbfbf" />
-                    </svg>
-                </div>
-                <div onclick="document.getElementById('devActions').style.display='none'">
-                    <span>Κρύψιμο Dev</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
-                        fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M12 2C12.5523 2 13 2.44772 13 3V4C13 4.55228 12.5523 5 12 5C11.4477 5 11 4.55228 11 4V3C11 2.44772 11.4477 2 12 2Z"
-                            fill="#bfbfbf" />
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M19.7071 4.29289C20.0976 4.68342 20.0976 5.31658 19.7071 5.70711L18.7071 6.70711C18.3166 7.09763 17.6834 7.09763 17.2929 6.70711C16.9024 6.31658 16.9024 5.68342 17.2929 5.29289L18.2929 4.29289C18.6834 3.90237 19.3166 3.90237 19.7071 4.29289Z"
-                            fill="#bfbfbf" />
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M19 12C19 11.4477 19.4477 11 20 11H21C21.5523 11 22 11.4477 22 12C22 12.5523 21.5523 13 21 13H20C19.4477 13 19 12.5523 19 12Z"
-                            fill="#bfbfbf" />
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M2 12C2 11.4477 2.44772 11 3 11H4C4.55228 11 5 11.4477 5 12C5 12.5523 4.55228 13 4 13H3C2.44772 13 2 12.5523 2 12Z"
-                            fill="#bfbfbf" />
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M4.29289 4.29289C4.68342 3.90237 5.31658 3.90237 5.70711 4.29289L6.70711 5.29289C7.09763 5.68342 7.09763 6.31658 6.70711 6.70711C6.31658 7.09763 5.68342 7.09763 5.29289 6.70711L4.29289 5.70711C3.90237 5.31658 3.90237 4.68342 4.29289 4.29289Z"
-                            fill="#bfbfbf" />
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M12 6C8.68629 6 6 8.68629 6 12C6 13.6332 6.65387 15.1157 7.71186 16.1966C7.97971 16.4703 8.1241 16.7217 8.16867 16.9444L8.69776 19.5886C8.97833 20.9908 10.2095 22 11.6395 22H12.3605C13.7905 22 15.0217 20.9908 15.3022 19.5886L15.8313 16.9444C15.8759 16.7217 16.0203 16.4703 16.2881 16.1966C17.3461 15.1157 18 13.6332 18 12C18 8.68629 15.3137 6 12 6ZM11 16C10.4477 16 10 16.4477 10 17C10 17.5523 10.4477 18 11 18H13C13.5523 18 14 17.5523 14 17C14 16.4477 13.5523 16 13 16H11Z"
-                            fill="#bfbfbf" />
+                            d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </div>
             </div>
-            <!--<div class="card">
+            <div class="stories fade-in-slide-up" style="display: none;">
+                <div class="plus">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
+                        <path d="M4 12H20M12 4V20" stroke="#fff" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <div class="story">
+                    <img src="https://avatars.githubusercontent.com/u/88238306?v=4">
+                </div>
+                <div class="story">
+                    <img src="https://avatars.githubusercontent.com/u/88238306?v=4">
+                </div>
+                <div class="story">
+                    <img src="https://avatars.githubusercontent.com/u/88238306?v=4">
+                </div>
+
+                <div class="story">
+                    <img src="https://avatars.githubusercontent.com/u/88238306?v=4">
+                </div>
+                <div class="story">
+                    <img src="https://avatars.githubusercontent.com/u/88238306?v=4">
+                </div>
+            </div>
+
+            <div class="progress fade-in-slide-up">
+                <div id="progress-card" class="progress-card"> <!-- onclick="testCard(this)"-->
+                    <!-- Circular Progress Ring -->
+                    <div class="progress-ring" id="progress-ring" style="--progress: 0;">
+                        <svg>
+                            <circle class="track" cx="35" cy="35" r="28"></circle>
+                            <circle class="progress" cx="35" cy="35" r="28"></circle>
+                        </svg>
+                        <div id="percentage" class="percentage">0%</div>
+                    </div>
+
+                    <!-- Text Content -->
+                    <div class="text-content">
+                        <div class="message">
+                            <vo><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M12.8903 3.70589C13.2265 2.61318 14.7733 2.61317 15.1095 3.70589L16.663 8.75461C16.7552 9.05418 16.9825 9.29321 17.277 9.40032L21.3417 10.8784C22.3891 11.2593 22.3891 12.7407 21.3417 13.1216L17.277 14.5996C16.9825 14.7067 16.7552 14.9458 16.663 15.2453L15.1095 20.2941C14.7733 21.3868 13.2265 21.3868 12.8903 20.2941L11.3368 15.2453C11.2447 14.9458 11.0174 14.7067 10.7228 14.5996L6.65816 13.1216C5.61069 12.7407 5.61069 11.2593 6.65816 10.8784L10.7228 9.40032C11.0174 9.29321 11.2447 9.05418 11.3368 8.75461L12.8903 3.70589Z"
+                                        fill="#eccf69" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M3.80133 3.43379C4.18531 2.28184 5.81471 2.28184 6.1987 3.43379C6.25654 3.60732 6.39271 3.74349 6.56624 3.80133C7.71819 4.18531 7.71819 5.81471 6.56624 6.1987C6.39271 6.25654 6.25654 6.39271 6.1987 6.56624C5.81471 7.71819 4.18531 7.71819 3.80133 6.56624C3.74349 6.39271 3.60732 6.25654 3.43379 6.1987C2.28184 5.81471 2.28184 4.18531 3.43379 3.80133C3.60732 3.74349 3.74349 3.60732 3.80133 3.43379Z"
+                                        fill="#eccf69" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M4.80133 17.4338C5.18531 16.2818 6.81471 16.2818 7.1987 17.4338C7.25654 17.6073 7.39271 17.7435 7.56624 17.8013C8.71819 18.1853 8.71819 19.8147 7.56624 20.1987C7.39271 20.2565 7.25654 20.3927 7.1987 20.5662C6.81471 21.7182 5.18531 21.7182 4.80133 20.5662C4.74349 20.3927 4.60732 20.2565 4.43379 20.1987C3.28184 19.8147 3.28184 18.1853 4.43379 17.8013C4.60732 17.7435 4.74349 17.6073 4.80133 17.4338Z"
+                                        fill="#eccf69" />
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" style="display:none;" width="22px" height="22px"
+                                    viewBox="0 0 24 24" fill="none">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M12 2C12.5523 2 13 2.44772 13 3V4C13 4.55228 12.5523 5 12 5C11.4477 5 11 4.55228 11 4V3C11 2.44772 11.4477 2 12 2Z"
+                                        fill="#eccf69" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M19.7071 4.29289C20.0976 4.68342 20.0976 5.31658 19.7071 5.70711L18.7071 6.70711C18.3166 7.09763 17.6834 7.09763 17.2929 6.70711C16.9024 6.31658 16.9024 5.68342 17.2929 5.29289L18.2929 4.29289C18.6834 3.90237 19.3166 3.90237 19.7071 4.29289Z"
+                                        fill="#eccf69" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M19 12C19 11.4477 19.4477 11 20 11H21C21.5523 11 22 11.4477 22 12C22 12.5523 21.5523 13 21 13H20C19.4477 13 19 12.5523 19 12Z"
+                                        fill="#eccf69" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M2 12C2 11.4477 2.44772 11 3 11H4C4.55228 11 5 11.4477 5 12C5 12.5523 4.55228 13 4 13H3C2.44772 13 2 12.5523 2 12Z"
+                                        fill="#eccf69" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M4.29289 4.29289C4.68342 3.90237 5.31658 3.90237 5.70711 4.29289L6.70711 5.29289C7.09763 5.68342 7.09763 6.31658 6.70711 6.70711C6.31658 7.09763 5.68342 7.09763 5.29289 6.70711L4.29289 5.70711C3.90237 5.31658 3.90237 4.68342 4.29289 4.29289Z"
+                                        fill="#eccf69" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M12 6C8.68629 6 6 8.68629 6 12C6 13.6332 6.65387 15.1157 7.71186 16.1966C7.97971 16.4703 8.1241 16.7217 8.16867 16.9444L8.69776 19.5886C8.97833 20.9908 10.2095 22 11.6395 22H12.3605C13.7905 22 15.0217 20.9908 15.3022 19.5886L15.8313 16.9444C15.8759 16.7217 16.0203 16.4703 16.2881 16.1966C17.3461 15.1157 18 13.6332 18 12C18 8.68629 15.3137 6 12 6ZM11 16C10.4477 16 10 16.4477 10 17C10 17.5523 10.4477 18 11 18H13C13.5523 18 14 17.5523 14 17C14 16.4477 13.5523 16 13 16H11Z"
+                                        fill="#eccf69" />
+                                </svg>Πρώτα βήματα
+                            </vo>
+                            <span>Λάβε μέρος στην επετηρίδα <br>της Γ' Λυκείου!</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="cards-container fade-in-slide-up">
+
+                <div onclick="clickCard(this)" data-evox="yearbook" class="card">
+                    <div class="background">
+
+                        <img src="recap.png">
+                    </div>
+
+                    <div class="progress-bar" data-progress="20">
+                        <div style="width: 20%;" class="progress-each cyan"></div>
+                    </div>
+                    <div class="title">
+                        Επετηρίδα
+                    </div>
+                    <div class="tag cyan">
+                        Ανασκόπηση
+                    </div>
+                </div>
+                <div onclick="clickCard(this)" class="card under-const">
+
+                    <div class="background">
+                        <img src="fleur.png">
+                        <!--<video autoplay loop muted playsinline>
+                        <source src="geoB.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>-->
+                    </div>
+
+                    <div class="progress-bar" data-progress="75">
+                        <div style="width: 5%;" class="progress-each"></div>
+                    </div>
+                    <div class="title">
+                        Δημιουργία Φούτερ
+                    </div>
+                    <div class="tag green">
+                        Σχέδιο
+                    </div>
+                    <div style="display: none;" onclick="actionClick(event, this)" class="arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                </div>
+                <div id="devActions" class="devActions fade-in-slide-up" style="display: none;">
+                    <p>Developer</p>
+                    <div onclick="reset()">
+                        <span>Αποσύνδεση</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M17.2929 14.2929C16.9024 14.6834 16.9024 15.3166 17.2929 15.7071C17.6834 16.0976 18.3166 16.0976 18.7071 15.7071L21.6201 12.7941C21.6351 12.7791 21.6497 12.7637 21.6637 12.748C21.87 12.5648 22 12.2976 22 12C22 11.7024 21.87 11.4352 21.6637 11.252C21.6497 11.2363 21.6351 11.2209 21.6201 11.2059L18.7071 8.29289C18.3166 7.90237 17.6834 7.90237 17.2929 8.29289C16.9024 8.68342 16.9024 9.31658 17.2929 9.70711L18.5858 11H13C12.4477 11 12 11.4477 12 12C12 12.5523 12.4477 13 13 13H18.5858L17.2929 14.2929Z"
+                                fill="#bfbfbf" />
+                            <path
+                                d="M5 2C3.34315 2 2 3.34315 2 5V19C2 20.6569 3.34315 22 5 22H14.5C15.8807 22 17 20.8807 17 19.5V16.7326C16.8519 16.647 16.7125 16.5409 16.5858 16.4142C15.9314 15.7598 15.8253 14.7649 16.2674 14H13C11.8954 14 11 13.1046 11 12C11 10.8954 11.8954 10 13 10H16.2674C15.8253 9.23514 15.9314 8.24015 16.5858 7.58579C16.7125 7.4591 16.8519 7.35296 17 7.26738V4.5C17 3.11929 15.8807 2 14.5 2H5Z"
+                                fill="#bfbfbf" />
+                        </svg>
+                    </div>
+                    <div onclick="window.location.reload()">
+                        <span>Reload</span>
+                        <span id="size">Reload</span>
+
+                    </div>
+                    <div onclick="reDoPinChange()">
+                        <span>Popup αλλαγής Pin</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M11 13C11 13.5523 11.4477 14 12 14C12.5523 14 13 13.5523 13 13V10C13 9.44772 12.5523 9 12 9C11.4477 9 11 9.44772 11 10V13ZM13 15.9888C13 15.4365 12.5523 14.9888 12 14.9888C11.4477 14.9888 11 15.4365 11 15.9888V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V15.9888ZM9.37735 4.66136C10.5204 2.60393 13.4793 2.60393 14.6223 4.66136L21.2233 16.5431C22.3341 18.5427 20.8882 21 18.6008 21H5.39885C3.11139 21 1.66549 18.5427 2.77637 16.5431L9.37735 4.66136Z"
+                                fill="#bfbfbf" />
+                        </svg>
+                    </div>
+                    <div
+                        onclick="document.getElementById('homeGrabber').classList.toggle('active');document.getElementById('debugReload').classList.add('active')">
+                        <span>Popup διαφάνεια + blur</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M2 15.024C2 16.2771 2.06584 17.3524 2.26552 18.2508C2.46772 19.1607 2.82021 19.9493 3.43543 20.5646C4.05065 21.1798 4.83933 21.5323 5.74915 21.7345C6.64762 21.9342 7.72287 22 8.976 22L15.024 22C16.2771 22 17.3524 21.9342 18.2508 21.7345C19.1607 21.5323 19.9494 21.1798 20.5646 20.5646C21.1798 19.9494 21.5323 19.1607 21.7345 18.2508C21.9342 17.3524 22 16.2771 22 15.024L22 15C22 13.8954 21.1046 13 20 13L4 13C2.89543 13 2 13.8954 2 15L2 15.024Z"
+                                fill="#bfbfbf" />
+                            <path
+                                d="M2 8.976C2 7.72287 2.06584 6.64762 2.26552 5.74916C2.46772 4.83933 2.82021 4.05065 3.43543 3.43543C4.05065 2.82021 4.83933 2.46772 5.74915 2.26552C6.64762 2.06584 7.72287 2 8.976 2L9 2C10.1046 2 11 2.89543 11 4L11 9C11 10.1046 10.1046 11 9 11L4 11C2.89543 11 2 10.1046 2 9L2 8.976Z"
+                                fill="#bfbfbf" />
+                            <path
+                                d="M22 8.976C22 7.72287 21.9342 6.64762 21.7345 5.74916C21.5323 4.83933 21.1798 4.05065 20.5646 3.43543C19.9494 2.82021 19.1607 2.46772 18.2508 2.26552C17.3524 2.06584 16.2771 2 15.024 2L15 2C13.8954 2 13 2.89543 13 4L13 9C13 10.1046 13.8954 11 15 11L20 11C21.1046 11 22 10.1046 22 9L22 8.976Z"
+                                fill="#bfbfbf" />
+                        </svg>
+                    </div>
+                    <div onclick="testCard(document.getElementById('progress-card'))">
+                        <span>Αύξηση προόδου</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M16.7071 7.29289C17.0976 7.68342 17.0976 8.31658 16.7071 8.70711L8.70711 16.7071C8.31658 17.0976 7.68342 17.0976 7.29289 16.7071C6.90237 16.3166 6.90237 15.6834 7.29289 15.2929L15.2929 7.29289C15.6834 6.90237 16.3166 6.90237 16.7071 7.29289ZM9 10.01C8.44772 10.01 8 9.56229 8 9.01001V9.00001C8 8.44772 8.44772 8.00001 9 8.00001C9.55228 8.00001 10 8.44772 10 9.00001L10 9.01001C10 9.56229 9.55228 10.01 9 10.01ZM14 15.01C14 15.5623 14.4477 16.01 15 16.01C15.5523 16.01 16 15.5623 16 15.01V15C16 14.4477 15.5523 14 15 14C14.4477 14 14 14.4477 14 15V15.01ZM2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12Z"
+                                fill="#bfbfbf" />
+                        </svg>
+                    </div>
+                    <div onclick="document.getElementById('devActions').style.display='none'">
+                        <span>Κρύψιμο Dev</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M12 2C12.5523 2 13 2.44772 13 3V4C13 4.55228 12.5523 5 12 5C11.4477 5 11 4.55228 11 4V3C11 2.44772 11.4477 2 12 2Z"
+                                fill="#bfbfbf" />
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M19.7071 4.29289C20.0976 4.68342 20.0976 5.31658 19.7071 5.70711L18.7071 6.70711C18.3166 7.09763 17.6834 7.09763 17.2929 6.70711C16.9024 6.31658 16.9024 5.68342 17.2929 5.29289L18.2929 4.29289C18.6834 3.90237 19.3166 3.90237 19.7071 4.29289Z"
+                                fill="#bfbfbf" />
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M19 12C19 11.4477 19.4477 11 20 11H21C21.5523 11 22 11.4477 22 12C22 12.5523 21.5523 13 21 13H20C19.4477 13 19 12.5523 19 12Z"
+                                fill="#bfbfbf" />
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M2 12C2 11.4477 2.44772 11 3 11H4C4.55228 11 5 11.4477 5 12C5 12.5523 4.55228 13 4 13H3C2.44772 13 2 12.5523 2 12Z"
+                                fill="#bfbfbf" />
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M4.29289 4.29289C4.68342 3.90237 5.31658 3.90237 5.70711 4.29289L6.70711 5.29289C7.09763 5.68342 7.09763 6.31658 6.70711 6.70711C6.31658 7.09763 5.68342 7.09763 5.29289 6.70711L4.29289 5.70711C3.90237 5.31658 3.90237 4.68342 4.29289 4.29289Z"
+                                fill="#bfbfbf" />
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M12 6C8.68629 6 6 8.68629 6 12C6 13.6332 6.65387 15.1157 7.71186 16.1966C7.97971 16.4703 8.1241 16.7217 8.16867 16.9444L8.69776 19.5886C8.97833 20.9908 10.2095 22 11.6395 22H12.3605C13.7905 22 15.0217 20.9908 15.3022 19.5886L15.8313 16.9444C15.8759 16.7217 16.0203 16.4703 16.2881 16.1966C17.3461 15.1157 18 13.6332 18 12C18 8.68629 15.3137 6 12 6ZM11 16C10.4477 16 10 16.4477 10 17C10 17.5523 10.4477 18 11 18H13C13.5523 18 14 17.5523 14 17C14 16.4477 13.5523 16 13 16H11Z"
+                                fill="#bfbfbf" />
+                        </svg>
+                    </div>
+                </div>
+                <!--<div class="card">
                 <div class="background">
                     <video id="bgVdf" autoplay loop muted playsinline>
                         <source src="color.mp4" type="video/mp4">
@@ -656,13 +662,54 @@
                     </svg>
                 </div>
             </div>-->
+            </div>
+
         </div>
 
+        <div class="app fade-in-slide-up" id="discover">
+            <div class="tracker-card">
+                <div class="part1">
+                    <div class="tracker-title">Επετηρίδα</div>
+                    <div class="tracker-info"><span class="a" id="countDone">1</span> από <vox id="countFull">64</vox> μαθητές</div>
+                    <div class="remaining-indicator"><vox id="countLeft"></vox> απομένουν</div>
+                </div>
+                <div class="part2">
+                    <div class="progress-wrapper">
+                        <div class="progress-circle">
+                            <svg width="80" height="80" viewBox="0 0 64 64">
+                                <circle cx="32" cy="32" r="28" class="circle-bg" />
+                                <circle cx="32" cy="32" r="28" class="circle-fill" />
+                            </svg>
+                            <div id="isDone" class="percentage-label">36%</div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="classcontainer" id="classes">
+                <div class="aclass">
+                    <div class="left">
+                        GOP1
 
+                    </div>
+                    <div class="right">
+                        OK
+                    </div>
+                </div>
+                <div class="aclass">
+                    <div class="left">
+                        GOP2
+                    </div>
+                    <div class="right">
+                        OK
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="navigation">
             <div class="bar">
-                <div class="item active">
+                <div onclick="openHome(this)" class="item active" id="home-switch">
                     <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
                         fill="none">
                         <path
@@ -682,7 +729,7 @@
                 <div style="display: none;" class="item" onclick="toggleDev()">
                     <img src="reloading-pfp.gif" id="navbarpfp">
                 </div>
-                <div class="item" onclick="window.location.reload()">
+                <div class="item" onclick="openDiscovery(this)" id="discovery-switch">
                     <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
                         fill="none">
                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -766,7 +813,7 @@
                                 fill="#fff" />
                         </svg>Μηνύματα
                     </div>-->
-                <div onclick="openInstagram()" class="message">
+                <div id="isInstagramed" onclick="openInstagram()" class="message">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px"
                         height="20px" viewBox="0 0 20 20" version="1.1">
                         <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -966,8 +1013,8 @@
                     </div>
 
                     <div style="display: none;" class="hidden-options" id="hidden-options">
-                        <span onclick="pickAvail('user+teach')"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
-                                fill="none">
+                        <span onclick="pickAvail('user+teach')"><svg xmlns="http://www.w3.org/2000/svg" width="25px"
+                                height="25px" viewBox="0 0 24 24" fill="none">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                     d="M6 8C6 4.68629 8.68629 2 12 2C15.3137 2 18 4.68629 18 8C18 11.3137 15.3137 14 12 14C8.68629 14 6 11.3137 6 8Z"
                                     fill="#efefef93" />
@@ -975,8 +1022,8 @@
                                     d="M5.43094 16.9025C7.05587 16.2213 9.2233 16 12 16C14.771 16 16.9351 16.2204 18.5586 16.8981C20.3012 17.6255 21.3708 18.8613 21.941 20.6587C22.1528 21.3267 21.6518 22 20.9592 22H3.03459C2.34482 22 1.84679 21.3297 2.0569 20.6654C2.62537 18.8681 3.69119 17.6318 5.43094 16.9025Z"
                                     fill="#efefef93" />
                             </svg>Ορατό<vox id="where">στον χρηστη</vox>+ καθηγητές</span>
-                        <span onclick="pickAvail('teach')"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
-                                fill="none">
+                        <span onclick="pickAvail('teach')"><svg xmlns="http://www.w3.org/2000/svg" width="25px"
+                                height="25px" viewBox="0 0 24 24" fill="none">
                                 <path
                                     d="M11.5144 3.12584C11.8164 2.95805 12.1836 2.95805 12.4856 3.12584L21.4856 8.12584C21.8031 8.30221 22 8.63683 22 9C22 9.36317 21.8031 9.69779 21.4856 9.87416L12.4856 14.8742C12.1836 15.0419 11.8164 15.0419 11.5144 14.8742L9 13.4773V14.6212L11.0287 15.7483C11.6328 16.0839 12.3672 16.0839 12.9713 15.7483L19.3499 12.2046C19.4773 12.1338 19.6353 12.2188 19.6464 12.3641L19.9314 16.0686C20.0072 17.0538 19.3559 17.9336 18.4171 18.1743C17.6573 18.3693 16.5807 18.664 15.8497 18.9368C14.9401 19.2764 13.8454 19.9536 13.1583 20.4134C12.459 20.8812 11.5412 20.8812 10.8419 20.4134C10.3602 20.0911 9.67815 19.6619 9 19.3171V20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20V18.5622C6.50505 18.4164 5.99699 18.2806 5.58296 18.1744C4.64424 17.9336 3.99295 17.0538 4.06873 16.0686L4.35369 12.3642C4.36487 12.2188 4.52279 12.1339 4.65023 12.2047L7 13.5101V12.5C7 12.4565 7.00283 12.4133 7.00836 12.3708L2.51436 9.87416C2.19689 9.69779 2 9.36317 2 9C2 8.63683 2.19689 8.30221 2.51436 8.12584L11.5144 3.12584Z"
                                     fill="#efefef93" />
@@ -1642,7 +1689,7 @@
         <p class="countdown" id="countdown"></p>
     </div>
 
-    <div onclick="window.location.reload()" class="debugReload" id="debugReload">
+    <div onclick="openDiscovery()" class="debugReload" id="debugReload">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="none" height="50px"
             width="50px" version="1.1" viewBox="0 0 472.615 472.615" xml:space="preserve">
             <g>
