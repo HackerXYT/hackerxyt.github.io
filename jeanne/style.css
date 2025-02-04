@@ -1655,9 +1655,9 @@ img {
     grid-gap: 5px; /* Adjust the space between grid items */
 }
 
-#tags > *:nth-last-child(1):nth-child(odd) {
-    grid-column: span 2; /* Make it take the full width */
-}
+/*#tags > *:nth-last-child(1):nth-child(odd) {
+    grid-column: span 2;
+}*/
 
 
 
@@ -2800,10 +2800,15 @@ input:-webkit-autofill:active {
     border: 2px solid #1c1c1c75;
 }
 
+.aStudent.seen {
+    border: 3px solid rgba(255, 255, 255, 0.15); 
+    border-radius: 20px;
+}
+
 .aStudent.picked {
     /*background-color: #01617c99;*/
-    border: 3px solid rgba(255, 255, 255, 0.15);
-    border-radius: 20px;
+    border: 3px solid #10b76f55 !important;
+    border-radius: 20px !important;
 }
 
 .spawnPeople .studentImage {

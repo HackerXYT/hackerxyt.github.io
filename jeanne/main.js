@@ -369,9 +369,12 @@ function find() {
                 karuseliCont.style.display = 'none'
                 document.getElementById("userPinPfp").style.display = null
                 document.getElementById("nameForMultiple").style.display = 'none'
-                getEvoxProfile(foundName).then(profileSrc => {
-                    document.getElementById('userPinPfp').src = profileSrc
-                });
+                if (foundName) {
+                    getEvoxProfile(foundName).then(profileSrc => {
+                        document.getElementById('userPinPfp').src = profileSrc
+                    });
+                }
+
                 document.getElementById("pinText").style.marginBottom = '25px'
                 //document.getElementById("loadText").style.opacity = '0'
                 setTimeout(function () {
@@ -1114,9 +1117,12 @@ function autoLogin() {
                 });
 
         })
-        getEvoxProfile(foundName).then(profileSrc => {
-            document.getElementById('userPinPfp').src = profileSrc
-        });
+        if (foundName) {
+            getEvoxProfile(foundName).then(profileSrc => {
+                document.getElementById('userPinPfp').src = profileSrc
+            });
+        }
+
         //})
 
 
@@ -1343,10 +1349,13 @@ function clickCard(e) {
 let allUsers = {}
 let classes = {}
 let usersElems = {}
+let marresit = [];
+let marresit_more;
 function activateYearbook() {
     allUsers = {}
     classes = {}
     usersElems = {}
+    marresit_more = []
     $("#app").fadeOut("fast", function () {
         document.getElementById("loadText").innerHTML = 'Φόρτωση..'
         $("#tasks").fadeIn("fast", function () {
@@ -1357,6 +1366,7 @@ function activateYearbook() {
                     const fullNames = Object.keys(names.names);
                     document.getElementById("spawnPeople").innerHTML = `<div id="temp-name-loader" class="loading-spinner fade-in-slide-up"></div>`;
                     let selfClass = null
+                    let waitMore = false
                     const fetchPromises = fullNames.map(name => {
                         return fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
                             .then(response => response.json())
@@ -1365,6 +1375,9 @@ function activateYearbook() {
                                     allUsers[info.emri] = info;
                                 } else {
                                     selfClass = `${info.seksioni}${info.klasa}`
+                                }
+                                if (info.has_participated && info.has_participated === 'true') {
+                                    waitMore = true
                                 }
 
                             })
@@ -1423,6 +1436,55 @@ function activateYearbook() {
                                 </div>`
                                 })
 
+                                function readyToShow() {
+                                    $("#tasks").fadeOut("fast", function () {
+                                        document.getElementById("yearbook-container").style.display = 'block'
+                                        document.getElementById("yearbook-container").style.opacity = '1'
+                                    })
+                                }
+                                if (waitMore === false) {
+                                    readyToShow()
+                                } else {
+                                    const account_data = localStorage.getItem("jeanDarc_accountData")
+                                    if(!account_data) {
+                                        console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
+                                        readyToShow()
+                                        return;
+                                    }
+                                    const pars = JSON.parse(account_data)
+                                    fetch(`https://arc.evoxs.xyz/?metode=userSent&pin=${pars.pin}&emri=${pars.name}`)
+                                        .then(response => response.json())
+                                        .then(sent => {
+                                            marresit_more = sent;
+                                            const processNames = (sent) => {
+                                                return new Promise((resolve) => {
+                                                    marresit = []
+                                                    sent.forEach(name => {
+                                                        marresit.push(name.marresi);
+                                                    });
+                                                    resolve(marresit);
+                                                });
+                                            };
+                                            
+                                            processNames(sent).then(result => {
+                                                console.log(result);
+                                                result.forEach(name_el => {
+                                                    const workOn = usersElems[name_el].ranId
+                                                    document.getElementById(`user-${workOn}`).classList.add("seen")
+                                                    document.getElementById(`user-${workOn}`).setAttribute("evox-c", "require-resee")
+                                                })
+                                            });
+                                            readyToShow()
+
+                                        })
+                                        .catch(error => {
+                                            console.error("Jeanne D'arc Database is offline.");
+                                            console.log('Error:', error);
+                                        });
+                                }
+
+
+
                             });
                         });
 
@@ -1445,37 +1507,28 @@ function activateYearbook() {
             //    document.getElementById("static").style.opacity = '1'
             //})
 
-            setTimeout(function () {
-                $("#tasks").fadeOut("fast", function () {
-                    document.getElementById("yearbook-container").style.display = 'block'
-                    document.getElementById("yearbook-container").style.opacity = '1'
 
-                    //const emojiCont = document.querySelector('.emoji-cont');
-                    //const emotions = [
-                    //    "😃", "😢", "😡", "😱", "😍", "🤔", "😂", "😐", 
-                    //    "😎", "🥳", "😴", "🥺", "🤩", "🙄", "😜", "🤗", 
-                    //    "😅", "😌", "😶", "😇", "😈", "😬", "🥰", "😤", 
-                    //    "😓", "🤯", "🫣", "😖"
-                    //  ]
-                    //  ;
-                    //let index = 0;
-                    //function changeEmoji() {
-                    //    emojiCont.classList.remove('active');
-                    //    setTimeout(() => {
-                    //        emojiCont.textContent = emotions[index];
-                    //        emojiCont.classList.add('active');
-                    //        index = (index + 1) % emotions.length;
-                    //    }, 500);
-                    //}
-                    //setInterval(changeEmoji, 2000);
-                    //changeEmoji();
-                    const emojiCont = document.querySelector('.emoji-cont');
-                    emojiCont.classList.add('active');
-
-
-
-                })
-            }, 1000)
+            //const emojiCont = document.querySelector('.emoji-cont');
+            //const emotions = [
+            //    "😃", "😢", "😡", "😱", "😍", "🤔", "😂", "😐", 
+            //    "😎", "🥳", "😴", "🥺", "🤩", "🙄", "😜", "🤗", 
+            //    "😅", "😌", "😶", "😇", "😈", "😬", "🥰", "😤", 
+            //    "😓", "🤯", "🫣", "😖"
+            //  ]
+            //  ;
+            //let index = 0;
+            //function changeEmoji() {
+            //    emojiCont.classList.remove('active');
+            //    setTimeout(() => {
+            //        emojiCont.textContent = emotions[index];
+            //        emojiCont.classList.add('active');
+            //        index = (index + 1) % emotions.length;
+            //    }, 500);
+            //}
+            //setInterval(changeEmoji, 2000);
+            //changeEmoji();
+            const emojiCont = document.querySelector('.emoji-cont');
+            emojiCont.classList.add('active');
         })
     })
 
@@ -1659,13 +1712,29 @@ function startYbRate(e, event) {
     document.getElementById("currentName").innerText = pickedStudents[activeStudent]
     document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
     document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
+    document.getElementById("message").value = ''
     reloadGenerate()
-
+    if(marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
+        const searchValue = pickedStudents[activeStudent];
+        const result = marresit_more.find(item => item.marresi === searchValue);
+        if(result) {
+            document.getElementById("message").value = result.contents.vleresim
+        }
+    }
     //testPick()
 
     //yearbook-screen-2
 
 }
+
+document.getElementById("message").addEventListener("input", function (event) {
+    let invalidChars = /["\\]/g; // Double quotes (") and backslashes (\)
+    let textarea = event.target;
+    let originalText = textarea.value;
+    let cleanedText = originalText.replace(invalidChars, '');
+
+    textarea.value = cleanedText;
+});
 
 function saveRatings() {
     $("#yearbook-screen-2").fadeOut("fast", function () {
@@ -1731,6 +1800,13 @@ function continueCurrent() {
         setTimeout(function () {
             $("#centerContent-rate").fadeIn("fast")
         }, 300)
+        if(marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
+            const searchValue = pickedStudents[activeStudent];
+            const result = marresit_more.find(item => item.marresi === searchValue);
+            if(result) {
+                document.getElementById("message").value = result.contents.vleresim
+            }
+        }
 
     })
 }
@@ -1751,6 +1827,14 @@ function skipCurrentRate() {
         setTimeout(function () {
             $("#centerContent-rate").fadeIn("fast")
         }, 300)
+
+        if(marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
+            const searchValue = pickedStudents[activeStudent];
+            const result = marresit_more.find(item => item.marresi === searchValue);
+            if(result) {
+                document.getElementById("message").value = result.contents.vleresim
+            }
+        }
 
     })
 }
@@ -1826,6 +1910,7 @@ let isSocialed = false;
 let socialSection = 'none'
 let socialUsername = 'none'
 async function getEvoxProfile(name) {
+    if (name === null) { return; }
     //console.log("Getting pfp for", name);
 
     try {
