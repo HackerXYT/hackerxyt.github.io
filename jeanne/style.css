@@ -1650,14 +1650,15 @@ img {
 }
 
 #tags {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two equal columns */
-    grid-gap: 5px; /* Adjust the space between grid items */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
 }
 
-/*#tags > *:nth-last-child(1):nth-child(odd) {
+#tags > *:nth-last-child(1):nth-child(odd) {
     grid-column: span 2;
-}*/
+}
+
 
 
 
@@ -1705,13 +1706,15 @@ img {
     background-color: #1e1e1e;
     border-radius: 20px;
     box-sizing: border-box;
-    padding: 5px 10px;
+    padding: 5px 5px;
     flex: 1 1 auto;
     /* Allows items to shrink and grow as needed */
     min-width: 0;
     /* Prevents flex items from exceeding container */
     margin: 5px;
     /* Adds spacing for wrapping */
+    flex: 1 1 min(45%, 150px); /* Limits shrinking */
+    min-width: 45%; /* Ensures items don't collapse */
 }
 
 .anInfo svg {
