@@ -13,12 +13,13 @@
     touch-action: manipulation;
     scroll-behavior: smooth;
 }
+
 html,
 body {
     height: 100%;
     width: 100%;
     font-family: "SF";
-    
+
     padding: 0;
     margin: 0;
     color: #fff;
@@ -29,7 +30,7 @@ body {
     box-sizing: border-box;
     transition: background-color 0.3s ease-in-out;
     margin-top: env(safe-area-inset-top) !important;
-    
+
 }
 
 
@@ -455,6 +456,7 @@ vo input::placeholder {
 .textDialog img {
     margin: 0;
 }
+
 .welcome .boxUp {
     position: fixed;
     bottom: 0;
@@ -468,8 +470,10 @@ vo input::placeholder {
     box-sizing: border-box;
     border-radius: 20px;
     margin-top: auto;
-    margin-bottom: 20px; /* Fallback for browsers that don't support dynamic units */
-    margin-bottom: calc(1dvh + 15px); /* Adjust the value as needed */
+    margin-bottom: 20px;
+    /* Fallback for browsers that don't support dynamic units */
+    margin-bottom: calc(1dvh + 15px);
+    /* Adjust the value as needed */
     transition: height 0.5s ease-in-out;
 }
 
@@ -825,7 +829,7 @@ img {
     display: none;
     flex-direction: column;
     padding: 5px;
-    
+
     position: relative;
     overflow: hidden;
     overflow-y: auto;
@@ -983,7 +987,7 @@ img {
     flex-direction: row-reverse;
     align-items: center;
     background: #ffffff1d;
-    
+
     /* Base background color */
     border-radius: 15px;
     padding: 20px;
@@ -1088,6 +1092,7 @@ img {
 .message vo svg {
     margin-right: 5px;
 }
+
 .message span {
     font-size: 13px;
     opacity: 0.8;
@@ -1111,10 +1116,13 @@ img {
     transition: transform 0.2s ease-in-out;
     box-sizing: border-box;
     
+
 }
 
 .card.under-const {
-    opacity: 0.5;
+    opacity: 0.3;
+    margin-bottom: 100px;
+    border: 1px #ffffff5d dashed;
 }
 
 
@@ -1273,6 +1281,7 @@ img {
     box-shadow:
         0 0 10px rgba(108, 99, 255, 0.5),
         0 0 5px rgba(108, 99, 255, 0.3);
+    transition: width 0.5s ease-in-out;
 }
 
 .card .arrow svg {
@@ -1382,9 +1391,9 @@ img {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(25px);
+    backdrop-filter: blur(5px);
     /* Adjust the blur amount as needed */
-    -webkit-backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(5px);
     gap: 5px;
 }
 
@@ -1655,7 +1664,7 @@ img {
     gap: 5px;
 }
 
-#tags > *:nth-last-child(1):nth-child(odd) {
+#tags>*:nth-last-child(1):nth-child(odd) {
     grid-column: span 2;
 }
 
@@ -1711,8 +1720,10 @@ img {
     min-width: 0;
     /* Prevents flex items from exceeding container */
     /* Adds spacing for wrapping */
-    flex: 1 1 min(45%, 150px); /* Limits shrinking */
-    min-width: 45%; /* Ensures items don't collapse */
+    flex: 1 1 min(45%, 150px);
+    /* Limits shrinking */
+    min-width: 45%;
+    /* Ensures items don't collapse */
 }
 
 #settings-sp .anInfo {
@@ -2806,7 +2817,7 @@ input:-webkit-autofill:active {
 }
 
 .aStudent.seen {
-    border: 3px solid rgba(255, 255, 255, 0.15); 
+    border: 3px solid rgba(255, 255, 255, 0.15);
     border-radius: 20px;
 }
 
@@ -2941,6 +2952,7 @@ input:-webkit-autofill:active {
     margin-top: 10px;
 
 }
+
 .addInfo {
     display: flex;
     flex-direction: column;
@@ -3026,6 +3038,7 @@ input:-webkit-autofill:active {
     align-items: center;
     gap: 10px;
 }
+
 .selectedPerson img {
     width: 50px;
     height: 50px;
@@ -3068,18 +3081,21 @@ input:-webkit-autofill:active {
     background-color: #ffffff1d;
     display: flex;
     box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.2),
-    /* Dark shadow */
-    -8px -8px 16px #1f1f1f88;
+        /* Dark shadow */
+        -8px -8px 16px #1f1f1f88;
 }
+
 .tracker-title {
     font-size: 18px;
     font-weight: bold;
 }
+
 .tracker-info {
     font-size: 14px;
     margin-top: 5px;
     color: #7e7e7e;
 }
+
 .tracker-info span.a {
     color: #36c157;
 }
@@ -3087,6 +3103,7 @@ input:-webkit-autofill:active {
 .part2 {
     margin-left: auto;
 }
+
 .remaining-indicator {
     background: #303030;
     padding: 6px 10px;
@@ -3095,22 +3112,27 @@ input:-webkit-autofill:active {
     display: inline-block;
     margin-top: 8px;
 }
+
 .progress-wrapper {
     display: flex;
     align-items: center;
 }
+
 .progress-circle {
     position: relative;
     width: 80px;
     height: 80px;
 }
+
 .progress-circle circle {
     fill: none;
     stroke-width: 6;
 }
+
 .progress-circle .circle-bg {
     stroke: #444;
 }
+
 .progress-circle .circle-fill {
     stroke: #36c157;
     stroke-linecap: round;
@@ -3118,6 +3140,7 @@ input:-webkit-autofill:active {
     stroke-dashoffset: calc(188 - (188 * 36) / 100);
     transition: stroke-dashoffset 0.5s ease-in-out;
 }
+
 .percentage-label {
     position: absolute;
     top: 50%;
@@ -3143,10 +3166,10 @@ input:-webkit-autofill:active {
     background-color: #ffffff1d;
     display: flex;
     box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.2),
-    /* Dark shadow */
-    -8px -8px 16px #1f1f1f88;
+        /* Dark shadow */
+        -8px -8px 16px #1f1f1f88;
     align-items: center;
-    
+
 }
 
 .aclass .left {
@@ -3161,6 +3184,81 @@ input:-webkit-autofill:active {
 }
 
 .smallto {
-    font-size : 13px;
+    font-size: 13px;
     color: #ffffff8f;
+}
+.notice-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: -10px;
+    height: auto;
+    box-sizing: border-box;
+    box-shadow:
+        8px 8px 16px rgba(0, 0, 0, 0.8),
+        -8px -8px 16px rgba(255, 255, 255, 0.1);
+    padding: 17px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
+.notice-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to left, #f84a00, #f88400);
+    filter: brightness(0.7); 
+    border-radius: 15px;
+    z-index: -1; /* Place it behind the content */
+}
+
+.notice-box .rowTop {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+}
+
+.notice-box .rowTop p {
+    font-size: 17px;
+    letter-spacing: 0.5px;
+}
+.notice-box .text-info {
+    margin-top: 13px;
+    display: flex;
+    flex-direction: collumn;
+    width: 100%;
+    margin-bottom: 13px;
+}
+
+.notice-box .text-info span {
+    font-size: 13.5px;
+    color: #d5d5d5;
+}
+
+.notice-box .buttonOk {
+    
+    width: 100%;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #f84a00;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
+}
+
+.notice-box .buttonOk:active {
+    background-color: #f84a00;
+    color: #fff;
+}
+
+.cntfix p {
+    margin: 0;
 }

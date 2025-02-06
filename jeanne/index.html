@@ -168,7 +168,7 @@
             <span>registered under Evox©</span>
             <p>Διεύθυνση IP: <span id="ipIdent"></span></p>
             <p>Συσκευή: <span id="deviceInfo"></span></p>
-            <p>Έκδοση: <span>0.8.2</span></p>
+            <p>Έκδοση: <span>0.9.0</span></p>
             <p>Δοκιμαστική λειτουργία: <span>Ανενεργή</span></p>
             <p>Επανεκκίνηση: <span onclick="window.location.reload()">Τώρα</span></p>
         </div>
@@ -207,7 +207,7 @@
                     <p>Σύνδεση με όνομα</p>
                     <span>Πληκτρολόγηστε το όνομα ή το επώνυμο σας για να βρεθεί ο λογαριασμός σας.</span>
                     <div class="inputsLogin">
-                        <div class="inv-button creds">
+                        <div class="inv-button creds" onclick="document.getElementById('voxName').focus()">
                             <vo class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="17.5px" height="17.5px"
                                     viewBox="0 0 24 24" fill="none">
                                     <circle cx="12" cy="6" r="4" stroke="#fff" stroke-width="1.5"></circle>
@@ -403,7 +403,7 @@
     <div id="app" class="app">
         <div class="app" style="display: block;padding: 0px;" id="home">
             <div class="topBar fade-in-slide-up">
-                <div onclick="showProfile(this)" class="pfp">
+                <div onclick="showProfile(this)" class="pfp" id="pfpContHome">
                     <img id="selfPfp" src="reloading-pfp.gif" />
                     <img src="logo.png" class="corner-svg">
                     <svg style="display: none;" class="corner-svg" xmlns="http://www.w3.org/2000/svg" width="800px"
@@ -474,8 +474,8 @@
                     <!-- Text Content -->
                     <div class="text-content">
                         <div class="message">
-                            <vo id="title-progress"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                                    fill="none">
+                            <vo id="title-progress"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                                    viewBox="0 0 24 24" fill="none">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
                                         d="M12.8903 3.70589C13.2265 2.61318 14.7733 2.61317 15.1095 3.70589L16.663 8.75461C16.7552 9.05418 16.9825 9.29321 17.277 9.40032L21.3417 10.8784C22.3891 11.2593 22.3891 12.7407 21.3417 13.1216L17.277 14.5996C16.9825 14.7067 16.7552 14.9458 16.663 15.2453L15.1095 20.2941C14.7733 21.3868 13.2265 21.3868 12.8903 20.2941L11.3368 15.2453C11.2447 14.9458 11.0174 14.7067 10.7228 14.5996L6.65816 13.1216C5.61069 12.7407 5.61069 11.2593 6.65816 10.8784L10.7228 9.40032C11.0174 9.29321 11.2447 9.05418 11.3368 8.75461L12.8903 3.70589Z"
                                         fill="#eccf69" />
@@ -495,8 +495,22 @@
             </div>
 
             <div class="cards-container fade-in-slide-up">
-                <div style="display: none;" class="notice-box">
-
+                <div class="notice-box" id="notice-box" style="display: none;">
+                    <div class="rowTop">
+                        <p id="notice-title"></p>
+                        <svg style="margin-left: auto;width: 25px;height: auto;" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M12 15H12.01M12 12V9M4.98207 19H19.0179C20.5615 19 21.5233 17.3256 20.7455 15.9923L13.7276 3.96153C12.9558 2.63852 11.0442 2.63852 10.2724 3.96153L3.25452 15.9923C2.47675 17.3256 3.43849 19 4.98207 19Z"
+                                stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div class="text-info">
+                        <span id="notice-description"></span>
+                    </div>
+                    <div class="buttonOk" onclick="runNoticeAction()">
+                        Εντάξει
+                    </div>
                 </div>
 
                 <div onclick="clickCard(this)" data-evox="yearbook" class="card">
@@ -506,7 +520,7 @@
                     </div>
 
                     <div class="progress-bar" data-progress="20">
-                        <div style="width: 20%;" class="progress-each cyan"></div>
+                        <div style="width: 20%;" class="progress-each cyan" id="yb-prog"></div>
                     </div>
                     <div class="title">
                         Επετηρίδα
@@ -515,31 +529,39 @@
                         Ανασκόπηση
                     </div>
                 </div>
-                <div onclick="clickCard(this)" class="card under-const">
+                <div style="padding:0;width: 100%;margin:0;position:relative">
+                    <vox
+                        style=" position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);color:#d23d3d;z-index: 999;font-size: 20px;text-shadow: #c03f3f 1px 0 5px;">
+                        ΑΚΥΡΩΘΗΚΕ</vox>
+                    <div onclick="clickCard(this)" class="card under-const">
 
-                    <div class="background">
-                        <img src="fleur.png">
-                        <!--<video autoplay loop muted playsinline>
+                        <div class="background">
+                            <img src="fleur.png">
+                            <!--<video autoplay loop muted playsinline>
                         <source src="geoB.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>-->
-                    </div>
+                        </div>
 
-                    <div class="progress-bar" data-progress="75">
-                        <div style="width: 5%;" class="progress-each"></div>
-                    </div>
-                    <div class="title">
-                        Δημιουργία Φούτερ
-                    </div>
-                    <div class="tag green">
-                        Σχέδιο
-                    </div>
-                    <div style="display: none;" onclick="actionClick(event, this)" class="arrow">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24"
-                            fill="none">
-                            <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
+                        <div class="progress-bar" data-progress="75">
+                            <div style="width: 100%;" class="progress-each"></div>
+                        </div>
+                        <div class="title">
+                            Δημιουργία Φούτερ
+                        </div>
+                        <div class="tag green">
+                            Σχέδιο
+                        </div>
+                        <div style="display: none;" onclick="actionClick(event, this)" class="arrow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
                 <div id="devActions" class="devActions fade-in-slide-up" style="display: none;">
@@ -652,8 +674,11 @@
             <div class="tracker-card">
                 <div class="part1">
                     <div class="tracker-title">Επετηρίδα</div>
-                    <div class="tracker-info"><span class="a" id="countDone">1</span> από <vox id="countFull">64</vox> μαθητές</div>
-                    <div class="remaining-indicator"><vox id="countLeft"></vox> απομένουν</div>
+                    <div class="tracker-info"><span class="a" id="countDone">?</span> από <vox id="countFull">?</vox>
+                        μαθητές</div>
+                    <div class="remaining-indicator">
+                        <vox id="countLeft">?</vox> απομένουν
+                    </div>
                 </div>
                 <div class="part2">
                     <div class="progress-wrapper">
@@ -662,30 +687,16 @@
                                 <circle cx="32" cy="32" r="28" class="circle-bg" />
                                 <circle cx="32" cy="32" r="28" class="circle-fill" />
                             </svg>
-                            <div id="isDone" class="percentage-label">36%</div>
+                            <div id="isDone" class="percentage-label">
+                                <div class="loading-spinner"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
+
             </div>
             <div class="classcontainer" id="classes">
-                <div class="aclass">
-                    <div class="left">
-                        GOP1
 
-                    </div>
-                    <div class="right">
-                        OK
-                    </div>
-                </div>
-                <div class="aclass">
-                    <div class="left">
-                        GOP2
-                    </div>
-                    <div class="right">
-                        OK
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -829,11 +840,18 @@
                 <p>ΡΥΘΜΙΣΕΙΣ</p>
                 <div id="settings-sp">
                     <div onclick="changePfp()" class="anInfo">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                            <path opacity="0.4" d="M12 22.01C17.5228 22.01 22 17.5329 22 12.01C22 6.48716 17.5228 2.01001 12 2.01001C6.47715 2.01001 2 6.48716 2 12.01C2 17.5329 6.47715 22.01 12 22.01Z" fill="#fff"/>
-                            <path d="M12 6.93994C9.93 6.93994 8.25 8.61994 8.25 10.6899C8.25 12.7199 9.84 14.3699 11.95 14.4299C11.98 14.4299 12.02 14.4299 12.04 14.4299C12.06 14.4299 12.09 14.4299 12.11 14.4299C12.12 14.4299 12.13 14.4299 12.13 14.4299C14.15 14.3599 15.74 12.7199 15.75 10.6899C15.75 8.61994 14.07 6.93994 12 6.93994Z" fill="#fff"/>
-                            <path d="M18.7807 19.36C17.0007 21 14.6207 22.01 12.0007 22.01C9.3807 22.01 7.0007 21 5.2207 19.36C5.4607 18.45 6.1107 17.62 7.0607 16.98C9.7907 15.16 14.2307 15.16 16.9407 16.98C17.9007 17.62 18.5407 18.45 18.7807 19.36Z" fill="#fff"/>
-                            </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path opacity="0.4"
+                                d="M12 22.01C17.5228 22.01 22 17.5329 22 12.01C22 6.48716 17.5228 2.01001 12 2.01001C6.47715 2.01001 2 6.48716 2 12.01C2 17.5329 6.47715 22.01 12 22.01Z"
+                                fill="#fff" />
+                            <path
+                                d="M12 6.93994C9.93 6.93994 8.25 8.61994 8.25 10.6899C8.25 12.7199 9.84 14.3699 11.95 14.4299C11.98 14.4299 12.02 14.4299 12.04 14.4299C12.06 14.4299 12.09 14.4299 12.11 14.4299C12.12 14.4299 12.13 14.4299 12.13 14.4299C14.15 14.3599 15.74 12.7199 15.75 10.6899C15.75 8.61994 14.07 6.93994 12 6.93994Z"
+                                fill="#fff" />
+                            <path
+                                d="M18.7807 19.36C17.0007 21 14.6207 22.01 12.0007 22.01C9.3807 22.01 7.0007 21 5.2207 19.36C5.4607 18.45 6.1107 17.62 7.0607 16.98C9.7907 15.16 14.2307 15.16 16.9407 16.98C17.9007 17.62 18.5407 18.45 18.7807 19.36Z"
+                                fill="#fff" />
+                        </svg>
                         <span>Αλλαγή Εικόνας Προφίλ</span>
                     </div>
                     <div style="display: none;" class="anInfo">
@@ -841,30 +859,57 @@
                         <span>Αλλαγή Banner</span>
                     </div>
                     <div onclick="changePinRedo()" class="anInfo">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                            <path d="M15 22C14.59 22 14.25 21.66 14.25 21.25V2.75C14.25 2.34 14.59 2 15 2C15.41 2 15.75 2.34 15.75 2.75V21.25C15.75 21.66 15.41 22 15 22Z" fill="#fff"/>
-                            <path opacity="0.4" d="M6.5 20H12.5V4H6.5C4.29 4 2.5 5.79 2.5 8V16C2.5 18.21 4.29 20 6.5 20Z" fill="#fff"/>
-                            <path opacity="0.4" d="M18 20H15V4H18C20.21 4 22 5.79 22 8V16C22 18.21 20.21 20 18 20Z" fill="#fff"/>
-                            <path d="M5.75 12.9999C5.62 12.9999 5.49 12.9699 5.37 12.9199C5.25 12.8699 5.14 12.7999 5.04 12.7099C4.95 12.6099 4.88 12.4999 4.82 12.3799C4.77 12.2599 4.75 12.1299 4.75 11.9999C4.75 11.7399 4.86 11.4799 5.04 11.2899C5.09 11.2499 5.14 11.2099 5.19 11.1699C5.25 11.1299 5.31 11.0999 5.37 11.0799C5.43 11.0499 5.49 11.0299 5.55 11.0199C5.89 10.9499 6.23 11.0599 6.46 11.2899C6.64 11.4799 6.75 11.7399 6.75 11.9999C6.75 12.1299 6.72 12.2599 6.67 12.3799C6.62 12.4999 6.55 12.6099 6.46 12.7099C6.36 12.7999 6.25 12.8699 6.13 12.9199C6.01 12.9699 5.88 12.9999 5.75 12.9999Z" fill="#fff"/>
-                            <path d="M9.25 13C9.12 13 8.99 12.97 8.87 12.92C8.75 12.87 8.64 12.8 8.54 12.71C8.35 12.52 8.25 12.27 8.25 12C8.25 11.87 8.28 11.74 8.33 11.62C8.38 11.49 8.45 11.39 8.54 11.29C8.91 10.92 9.58 10.92 9.96 11.29C10.14 11.48 10.25 11.74 10.25 12C10.25 12.13 10.22 12.26 10.17 12.38C10.12 12.5 10.05 12.61 9.96 12.71C9.86 12.8 9.75 12.87 9.63 12.92C9.51 12.97 9.38 13 9.25 13Z" fill="#fff"/>
-                            </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M15 22C14.59 22 14.25 21.66 14.25 21.25V2.75C14.25 2.34 14.59 2 15 2C15.41 2 15.75 2.34 15.75 2.75V21.25C15.75 21.66 15.41 22 15 22Z"
+                                fill="#fff" />
+                            <path opacity="0.4"
+                                d="M6.5 20H12.5V4H6.5C4.29 4 2.5 5.79 2.5 8V16C2.5 18.21 4.29 20 6.5 20Z" fill="#fff" />
+                            <path opacity="0.4" d="M18 20H15V4H18C20.21 4 22 5.79 22 8V16C22 18.21 20.21 20 18 20Z"
+                                fill="#fff" />
+                            <path
+                                d="M5.75 12.9999C5.62 12.9999 5.49 12.9699 5.37 12.9199C5.25 12.8699 5.14 12.7999 5.04 12.7099C4.95 12.6099 4.88 12.4999 4.82 12.3799C4.77 12.2599 4.75 12.1299 4.75 11.9999C4.75 11.7399 4.86 11.4799 5.04 11.2899C5.09 11.2499 5.14 11.2099 5.19 11.1699C5.25 11.1299 5.31 11.0999 5.37 11.0799C5.43 11.0499 5.49 11.0299 5.55 11.0199C5.89 10.9499 6.23 11.0599 6.46 11.2899C6.64 11.4799 6.75 11.7399 6.75 11.9999C6.75 12.1299 6.72 12.2599 6.67 12.3799C6.62 12.4999 6.55 12.6099 6.46 12.7099C6.36 12.7999 6.25 12.8699 6.13 12.9199C6.01 12.9699 5.88 12.9999 5.75 12.9999Z"
+                                fill="#fff" />
+                            <path
+                                d="M9.25 13C9.12 13 8.99 12.97 8.87 12.92C8.75 12.87 8.64 12.8 8.54 12.71C8.35 12.52 8.25 12.27 8.25 12C8.25 11.87 8.28 11.74 8.33 11.62C8.38 11.49 8.45 11.39 8.54 11.29C8.91 10.92 9.58 10.92 9.96 11.29C10.14 11.48 10.25 11.74 10.25 12C10.25 12.13 10.22 12.26 10.17 12.38C10.12 12.5 10.05 12.61 9.96 12.71C9.86 12.8 9.75 12.87 9.63 12.92C9.51 12.97 9.38 13 9.25 13Z"
+                                fill="#fff" />
+                        </svg>
                         <span>Αλλαγή PIN</span>
                     </div>
                     <div style="display: none;" class="anInfo">
                         ❔
                         <span>Επεξεργασία Συνδέσεων</span>
                     </div>
-                    <div onclick="reset()" class="anInfo">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                            <path opacity="0.4" d="M9 7.2V16.79C9 20 11 22 14.2 22H16.79C19.99 22 21.99 20 21.99 16.8V7.2C22 4 20 2 16.8 2H14.2C11 2 9 4 9 7.2Z" fill="#fff"/>
-                            <path d="M5.56945 8.12002L2.21945 11.47C1.92945 11.76 1.92945 12.24 2.21945 12.53L5.56945 15.88C5.85945 16.17 6.33945 16.17 6.62945 15.88C6.91945 15.59 6.91945 15.11 6.62945 14.82L4.55945 12.75H15.2495C15.6595 12.75 15.9995 12.41 15.9995 12C15.9995 11.59 15.6595 11.25 15.2495 11.25H4.55945L6.62945 9.18002C6.77945 9.03002 6.84945 8.84002 6.84945 8.65002C6.84945 8.46002 6.77945 8.26002 6.62945 8.12002C6.33945 7.82002 5.86945 7.82002 5.56945 8.12002Z" fill="#fff"/>
-                            </svg>
+                    <div onclick="changeClass()" class="anInfo">
+                        <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M17.0671 2.27157C17.5 2.09228 17.9639 2 18.4324 2C18.9009 2 19.3648 2.09228 19.7977 2.27157C20.2305 2.45086 20.6238 2.71365 20.9551 3.04493C21.2864 3.37621 21.5492 3.7695 21.7285 4.20235C21.9077 4.63519 22 5.09911 22 5.56761C22 6.03611 21.9077 6.50003 21.7285 6.93288C21.5492 7.36572 21.2864 7.75901 20.9551 8.09029L20.4369 8.60845L15.3916 3.56308L15.9097 3.04493C16.241 2.71365 16.6343 2.45086 17.0671 2.27157Z"
+                                fill="#efefef93" />
+                            <path
+                                d="M13.9774 4.9773L3.6546 15.3001C3.53154 15.4231 3.44273 15.5762 3.39694 15.7441L2.03526 20.7369C1.94084 21.0831 2.03917 21.4534 2.29292 21.7071C2.54667 21.9609 2.91693 22.0592 3.26314 21.9648L8.25597 20.6031C8.42387 20.5573 8.57691 20.4685 8.69996 20.3454L19.0227 10.0227L13.9774 4.9773Z"
+                                fill="#efefef93" />
+                        </svg>
+                        <span>Αλλαγή Τάξης</span>
+                    </div>
+                    <div onclick="reset()" class="anInfo" style="margin-top: 20px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path opacity="0.4"
+                                d="M9 7.2V16.79C9 20 11 22 14.2 22H16.79C19.99 22 21.99 20 21.99 16.8V7.2C22 4 20 2 16.8 2H14.2C11 2 9 4 9 7.2Z"
+                                fill="#fff" />
+                            <path
+                                d="M5.56945 8.12002L2.21945 11.47C1.92945 11.76 1.92945 12.24 2.21945 12.53L5.56945 15.88C5.85945 16.17 6.33945 16.17 6.62945 15.88C6.91945 15.59 6.91945 15.11 6.62945 14.82L4.55945 12.75H15.2495C15.6595 12.75 15.9995 12.41 15.9995 12C15.9995 11.59 15.6595 11.25 15.2495 11.25H4.55945L6.62945 9.18002C6.77945 9.03002 6.84945 8.84002 6.84945 8.65002C6.84945 8.46002 6.77945 8.26002 6.62945 8.12002C6.33945 7.82002 5.86945 7.82002 5.56945 8.12002Z"
+                                fill="#fff" />
+                        </svg>
                         <span style="color: #c03f3f;">Αποσύνδεση</span>
                     </div>
                 </div>
             </div>
 
-            <p style="font-size: 13px;color: #ffffff82;margin-top: 10px;padding: 20px;">Το όνομα χρήστη σας στο Instagram εμφανίζεται μόνο σε εσάς, οι άλλοι χρήστες βλέπουν μόνο την εικόνα προφίλ σας.</p>
+            <p style="font-size: 13px;color: #ffffff82;margin-top: 10px;padding: 20px;">Το όνομα χρήστη σας στο
+                Instagram εμφανίζεται μόνο σε εσάς, οι άλλοι χρήστες βλέπουν μόνο την εικόνα προφίλ σας.</p>
 
 
         </div>
@@ -1064,6 +1109,39 @@
                 <button onclick="changePin(this, event)" class="welcomeButton"
                     style="background: none;background-color: #c03f3f;">Αλλαγή PIN</button>
             </div>
+        </div>
+
+
+    </div>
+
+    <div id="classChange" class="popup" style="height: 80%;padding: 10px;background: #000;overflow-x: hidden;">
+        <div id="grabberNotice2" class="grabbable"></div>
+        <div class="duplicate fade-in-slide-up" style="margin-top: auto;justify-content: flex-start;margin-top: 10px;">
+            <h1 style="font-weight: bold;margin-bottom: 5px;color: #fff;font-size: 25px;">Αλλαγή Τάξης</h1>
+            <span>Επιδιόρθωση σφαλμάτων</span>
+
+            <div style="margin-top: 30px;width: 100%;">
+                <div class="spawnPeople parent" id="spawnClasses" style="width: 100%;">
+                    <div class="aStudent cntfix">
+                        <p>ΓΟΠ1</p>
+                        <span style="margin-left: auto;">10 άτομα</span>
+                    </div>
+                    <div class="aStudent cntfix">
+                        <p>ΓΟΠ1</p>
+                        <span style="margin-left: auto;">10 άτομα</span>
+                    </div>
+                    <div class="aStudent cntfix">
+                        <p>ΓΟΠ1</p>
+                        <span style="margin-left: auto;">10 άτομα</span>
+                    </div>
+                    <div class="aStudent cntfix">
+                        <p>ΓΟΠ1</p>
+                        <span style="margin-left: auto;">10 άτομα</span>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
 
 

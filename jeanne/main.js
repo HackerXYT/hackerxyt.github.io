@@ -35,6 +35,20 @@
 //window.addEventListener('wheel', disableScroll, { passive: false });
 //window.addEventListener('touchstart', touchMoveHandler, { passive: false });
 
+function cardProgress() {
+    fetch('https://arc.evoxs.xyz/?metode=progresin')
+        .then(response => response.json())
+        .then(progress_global => {
+            const progress = progress_global.global
+            const percentage = Number.parseInt(100 * progress.have_participated / progress.total_users)
+            document.getElementById("yb-prog").style.width = percentage + "%"
+
+        }).catch(error => {
+            console.log('Error:', error);
+        });
+}
+
+
 function isIOS() {
     //alert(navigator.userAgent)
     return /iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -53,7 +67,7 @@ let foundName = null;
 
 let checkChange;
 setInterval(function () {
-    if (foundName && foundName !== checkChange && localStorage.getItem("jeanDarc_accountData")) {
+    if (foundName && foundName !== checkChange && localStorage.getItem("jeanDarc_accountData") && !hasLoginFailed) {
         checkChange = foundName
         getEvoxProfile(foundName).then(profileSrc => {
             document.getElementById('userPinPfp').src = profileSrc
@@ -786,7 +800,7 @@ function clickPIN(element) {
                                     sessionStorage.setItem("remUnlocked", "true")
                                     //}
                                 })
-                            } else {
+                            } else if (status === 'Denied') {
                                 proccessingPIN = false
                                 deletePIN()
                                 deletePIN()
@@ -795,6 +809,24 @@ function clickPIN(element) {
                                 $("#PINload").fadeOut("fast", function () {
                                     $("#PINdots").fadeIn("fast", function () {
                                         shake_me("pin-input")
+                                    })
+                                })
+                            } else {
+                                console.warn("Server Responded With Failure!", status)
+                                proccessingPIN = false
+                                $("#PINload").fadeOut("fast", function () {
+                                    document.body.style.touchAction = '';
+                                    $("#lock").fadeOut("fast", function () {
+                                        document.getElementById("loadText").innerHTML = `Διόρθωση σφαλμάτων..`
+                                        $("#tasks").fadeIn("fast")
+                                        $("#hexa").fadeOut("fast")
+                                        setTimeout(function () {
+                                            localStorage.clear()
+                                            sessionStorage.clear()
+                                            setTimeout(function () {
+                                                window.location.reload()
+                                            }, 500)
+                                        }, 2000)
                                     })
                                 })
                             }
@@ -1015,6 +1047,7 @@ function reloadProgress() {
 
 }
 let retryInt;
+let hasLoginFailed = false;
 function autoLogin() {
     const val = localStorage.getItem("jeanDarc_accountData")
     if (val) {
@@ -1084,6 +1117,7 @@ function autoLogin() {
 
 
                     } else {
+                        hasLoginFailed = true
                         document.getElementById("topImg").style.opacity = '0'
                         //$("#tasks").fadeOut("fast", function () {
                         $("#loginContainer").fadeOut("fast", function () {
@@ -1092,7 +1126,18 @@ function autoLogin() {
                                 $("#lock").fadeIn("fast")
                             })
                         })
+                        document.getElementById("nameForMultiple").innerText = foundName
+                        document.getElementById("nameForMultiple").style.display = 'flex'
+                        getEvoxProfile(foundName).then(profileSrc => {
+                            document.getElementById('userPinPfp').style.display = ''
+                            if (profileSrc.includes("Kodi i gabimit:")) {
+                                document.getElementById('userPinPfp').src = "snap.png"
+                                document.getElementById("nameForMultiple").innerText += '?'
+                            } else {
+                                document.getElementById('userPinPfp').src = profileSrc
+                            }
 
+                        });
                         //})
                     }
 
@@ -1115,6 +1160,16 @@ function autoLogin() {
                     }, 1000)
                     console.log('Error:', error);
                 });
+            fetch(`https://arc.evoxs.xyz/?metode=warns&pin=${btoa(process)}&emri=${foundName}`)
+                .then(response => response.json())
+                .then(notice => {
+                    if (notice.id !== '-1') {
+                        noticeFront(notice)
+                    }
+                }).catch(error => {
+                    console.error("Offline?")
+                })
+            cardProgress()
 
         })
         if (foundName) {
@@ -1124,6 +1179,7 @@ function autoLogin() {
         }
 
         //})
+
 
 
     } else {
@@ -1446,7 +1502,7 @@ function activateYearbook() {
                                     readyToShow()
                                 } else {
                                     const account_data = localStorage.getItem("jeanDarc_accountData")
-                                    if(!account_data) {
+                                    if (!account_data) {
                                         console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
                                         readyToShow()
                                         return;
@@ -1465,7 +1521,7 @@ function activateYearbook() {
                                                     resolve(marresit);
                                                 });
                                             };
-                                            
+
                                             processNames(sent).then(result => {
                                                 console.log(result);
                                                 result.forEach(name_el => {
@@ -1714,10 +1770,10 @@ function startYbRate(e, event) {
     document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
     document.getElementById("message").value = ''
     reloadGenerate()
-    if(marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
+    if (marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
         const searchValue = pickedStudents[activeStudent];
         const result = marresit_more.find(item => item.marresi === searchValue);
-        if(result) {
+        if (result) {
             document.getElementById("message").value = result.contents.vleresim
         }
     }
@@ -1800,10 +1856,10 @@ function continueCurrent() {
         setTimeout(function () {
             $("#centerContent-rate").fadeIn("fast")
         }, 300)
-        if(marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
+        if (marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
             const searchValue = pickedStudents[activeStudent];
             const result = marresit_more.find(item => item.marresi === searchValue);
-            if(result) {
+            if (result) {
                 document.getElementById("message").value = result.contents.vleresim
             }
         }
@@ -1828,10 +1884,10 @@ function skipCurrentRate() {
             $("#centerContent-rate").fadeIn("fast")
         }, 300)
 
-        if(marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
+        if (marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
             const searchValue = pickedStudents[activeStudent];
             const result = marresit_more.find(item => item.marresi === searchValue);
-            if(result) {
+            if (result) {
                 document.getElementById("message").value = result.contents.vleresim
             }
         }
@@ -2186,6 +2242,14 @@ function toggleDev() {
 
 
 function goBackToLogin() {
+    if (hasLoginFailed) {
+        localStorage.clear()
+        sessionStorage.clear()
+        setTimeout(function () {
+            window.location.reload()
+        }, 500)
+        return;
+    }
     if (!localStorage.getItem("jeanDarc_accountData")) {
         $("#lock").fadeOut("fast", function () {
             //document.getElementById("accessButton").innerText = "Σύνδεση"
@@ -3003,4 +3067,107 @@ function openHome(el) {
     document.getElementById("discovery-switch").classList.remove("active")
     document.getElementById("home").style.display = 'block'
     document.getElementById("discover").style.display = 'none'
+}
+
+let noticeAction = null
+let noticeData = null
+function noticeFront(data) {
+    document.getElementById("notice-box").style.display = 'flex'
+    document.getElementById("notice-title").innerHTML = data.title
+    document.getElementById("notice-description").innerHTML = data.description
+    if (data.function.name === 'fetch' && data.function.url) {
+        const account_data = localStorage.getItem("jeanDarc_accountData")
+        if (!account_data) {
+            console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
+            return;
+        }
+        const pars = JSON.parse(account_data)
+        let finalUrl = `${data.function.url.replace("{emri}", foundName).replace("{base64Pin}", pars.pin).replace("{dataId}", data.id)}`
+        //console.log(finalUrl)
+        noticeAction = 'fetch'
+        noticeData = finalUrl
+    }
+}
+
+function noticeFetch(url) {
+    fetch(url)
+        .then(response => response.json())
+        .then(result => {
+            if (result.message === 'Complete') {
+                document.getElementById("notice-box").style.display = 'none'
+            }
+        }).catch(error => {
+            console.log('Error:', error);
+        });
+}
+
+function runNoticeAction() {
+    setTimeout(function () {
+        noticeAction === "fetch" ? noticeFetch(noticeData) : console.warn("Couldn't remove warn")
+    }, 400)
+
+}
+
+grabberEvents("classChange")
+
+function changeClass() {
+    document.getElementById("classChange").classList.add("active")
+    document.getElementById("spawnClasses").innerHTML = `<div class="loading-spinner"></div>`
+    fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${foundName}`)
+        .then(response => response.json())
+        .then(info => {
+            document.getElementById("spawnClasses").innerHTML = ''
+            const selfClass = `${info.seksioni}${info.klasa}`
+            console.log("User's class", selfClass)
+            fetch('https://arc.evoxs.xyz/?metode=progresin')
+                .then(response => response.json())
+                .then(progress_global => {
+                    const progress = progress_global.global
+                    const percentage = Number.parseInt(100 * progress.have_participated / progress.total_users)
+                    document.getElementById("isDone").innerHTML = percentage + "%"
+                    updateProgress(percentage);
+                    const progress_class = progress_global.byclass
+                    document.getElementById("classes").innerHTML = ''
+                    let classes = []
+                    Object.entries(progress_class.class_counts).forEach(([key, value]) => {
+                        if (key === 'ΚΑΘ') { return; }
+                        classes.push({ name: key, count: value.total })
+                        console.log(`Class: ${key}, Total: ${value.total}, Participated: ${value.have_participated}`);
+                    });
+                    classes.forEach(klasa => {
+                        console.log(klasa)
+                        const isClass = selfClass.replace("none", "") === klasa.name 
+                        const key = klasa.name
+                        document.getElementById("spawnClasses").innerHTML += `<div ${!isClass ? `onclick='switchClass("${klasa.name}", event)'` : ""} class="aStudent cntfix${isClass ? " picked" : ""}">
+                        <p>${key === "ΓΥΓ" ? "Υγείας" : key.includes("ΓΑΝΘ1") ? "Θεωρητ. 1" : key === 'ΓΟΠ1' ? "Οικον. 1" : key === 'ΓΟΠ2' ? "Οικον. 2" : key === "ΓΑΝΘ2" ? "Θεωρητ. 2" : key === "ΓΘΤ" ? "Θετικών" : key}</p>
+                        <span style="margin-left: auto;">${klasa.count} άτομα</span>
+                    </div>`
+                    })
+                }).catch(error => {
+                    console.log('Error:', error);
+                });
+        })
+        .catch(error => {
+            console.error("Jeanne D'arc Database is offline.");
+            console.log('Error:', error);
+        });
+
+}
+
+function switchClass(to, ev) {
+    ev.preventDefault();
+    ev.stopPropagation();
+    const val = localStorage.getItem("jeanDarc_accountData")
+    if (val) {
+        const json = JSON.parse(val)
+        const process = atob(json.pin)
+        fetch(`https://arc.evoxs.xyz/?metode=ndryshimKlasa&emri=${foundName}&pin=${process}&id=${to}`)
+            .then(response => response.text())
+            .then(complete => {
+                changeClass()
+                showProfile(document.getElementById("pfpContHome"))
+            }).catch(error => {
+                console.error("Progress error", error)
+            });
+    }
 }
