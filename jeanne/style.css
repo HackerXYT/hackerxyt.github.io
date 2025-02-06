@@ -1702,7 +1702,6 @@ img {
     align-items: center;
     justify-content: center;
     /*margin-left: 10px;*/
-    margin-right: 5px;
     background-color: #1e1e1e;
     border-radius: 20px;
     box-sizing: border-box;
@@ -1711,10 +1710,13 @@ img {
     /* Allows items to shrink and grow as needed */
     min-width: 0;
     /* Prevents flex items from exceeding container */
-    margin: 5px;
     /* Adds spacing for wrapping */
     flex: 1 1 min(45%, 150px); /* Limits shrinking */
     min-width: 45%; /* Ensures items don't collapse */
+}
+
+#settings-sp .anInfo {
+    margin: 5px;
 }
 
 .anInfo svg {
