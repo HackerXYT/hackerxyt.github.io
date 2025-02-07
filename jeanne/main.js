@@ -1180,7 +1180,7 @@ function autoLogin() {
 
         //})
 
-        if(localStorage.getItem("jeanneBackup")) {
+        if (localStorage.getItem("jeanneBackup")) {
             const backup = JSON.parse(localStorage.getItem("jeanneBackup"))
             dataIn = backup
             saveRatings()
@@ -3139,6 +3139,27 @@ function openDiscovery(el) {
         }).catch(error => {
             console.log('Error:', error);
         });
+
+
+    const toUser = document.getElementById("toyou")
+    toUser.style.display = 'none'
+    const val = localStorage.getItem("jeanDarc_accountData")
+    if (val) {
+        const json = JSON.parse(val)
+        const process = atob(json.pin)
+        fetch(`https://arc.evoxs.xyz/?metode=toMe&emri=${foundName}&pin=${process}`)
+            .then(response => response.json())
+            .then(complete => {
+                if (complete.total !== 0) {
+                    toUser.style.display = 'flex'
+                    toUser.querySelector(".right").innerHTML = `${complete.total} ${complete.total === 1 ? "καταχώρηση" : "καταχωρήσεις"}`
+                }
+
+            }).catch(error => {
+                console.error("Progress error", error)
+            });
+    }
+
 }
 
 function openHome(el) {
@@ -3215,7 +3236,7 @@ function changeClass() {
                     });
                     classes.forEach(klasa => {
                         console.log(klasa)
-                        const isClass = selfClass.replace("none", "") === klasa.name 
+                        const isClass = selfClass.replace("none", "") === klasa.name
                         const key = klasa.name
                         document.getElementById("spawnClasses").innerHTML += `<div ${!isClass ? `onclick='switchClass("${klasa.name}", event)'` : ""} class="aStudent cntfix${isClass ? " picked" : ""}">
                         <p>${key === "ΓΥΓ" ? "Υγείας" : key.includes("ΓΑΝΘ1") ? "Θεωρητ. 1" : key === 'ΓΟΠ1' ? "Οικον. 1" : key === 'ΓΟΠ2' ? "Οικον. 2" : key === "ΓΑΝΘ2" ? "Θεωρητ. 2" : key === "ΓΘΤ" ? "Θετικών" : key}</p>
