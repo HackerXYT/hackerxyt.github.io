@@ -1830,6 +1830,8 @@ function saveRatings() {
 
 
             }).catch(error => {
+                localStorage.setItem("jeanneBackup", JSON.stringify(dataIn))
+                alert("Αποτυχία Σύνδεσης Με Τον Διακομιστή. Οι καταχωρήσεις σας αποθηκεύτηκαν στην συσκευή σας. Δοκιμάστε αργότερα")
                 console.error("Jeanne D'arc Database is offline.")
                 console.log('Error:', error);
             });
