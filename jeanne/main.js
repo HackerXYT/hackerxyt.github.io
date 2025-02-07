@@ -1180,6 +1180,13 @@ function autoLogin() {
 
         //})
 
+        if(localStorage.getItem("jeanneBackup")) {
+            const backup = JSON.parse(localStorage.getItem("jeanneBackup"))
+            dataIn = backup
+            saveRatings()
+            localStorage.removeItem("jeanneBackup")
+        }
+
 
 
     } else {
@@ -1794,6 +1801,61 @@ document.getElementById("message").addEventListener("input", function (event) {
 
 function saveRatings() {
     $("#yearbook-screen-2").fadeOut("fast", function () {
+        document.getElementById("loadText").innerText = 'Αποθήκευση αλλαγών..';
+        $("#tasks").fadeIn("fast");
+
+        const userData = JSON.parse(localStorage.getItem("jeanDarc_accountData"));
+        const payload = {
+            metode: "vleresimet",
+            emri: foundName || userData.name,
+            pin: userData.pin,
+            parashtresat: JSON.stringify(dataIn),
+        };
+
+        fetch("https://arc.evoxs.xyz/saveRatings", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        })
+            .then(response => response.text())
+            .then(data => {
+                if (data === "Kontrolloni json!") {
+                    console.error("JSON error:", data, dataIn);
+                } else {
+                    const res = JSON.parse(data);
+                    console.log("Success", res);
+                    $("#tasks").fadeOut("fast", function () {
+                        document.getElementById("loadText").innerText = 'Οι αλλαγές σας αποθηκεύτηκαν!';
+                        $("#tasks").fadeIn("fast");
+                        setTimeout(() => {
+                            setTimeout(() => {
+                                goBackFromBook();
+                                document.getElementById("yearbook-container").style.display = 'none';
+                                document.getElementById("yearbook-screen-2").style.display = 'none';
+                                document.getElementById("yearbook-screen-2").style.opacity = '0';
+                                setTimeout(() => {
+                                    reloadProgress();
+                                    $("#tasks").fadeOut("fast");
+                                }, 200);
+                            }, 200);
+                        }, 2000);
+                    });
+                }
+            })
+            .catch(error => {
+                localStorage.setItem("jeanneBackup", JSON.stringify(dataIn));
+                if (!hasLoginFailed) {
+                    alert("Αποτυχία Σύνδεσης Με Τον Διακομιστή. Οι καταχωρήσεις σας αποθηκεύτηκαν στην συσκευή σας. Δοκιμάστε αργότερα");
+                }
+                
+                console.error("Jeanne D'arc Database is offline.");
+                console.log("Error:", error);
+            });
+    });
+}
+
+function saveRatingsOld() {
+    $("#yearbook-screen-2").fadeOut("fast", function () {
         document.getElementById("loadText").innerText = 'Αποθήκευση αλλαγών..'
         $("#tasks").fadeIn("fast")
 
@@ -2245,12 +2307,12 @@ function toggleDev() {
 
 function goBackToLogin() {
     if (hasLoginFailed) {
-        localStorage.clear()
-        sessionStorage.clear()
-        setTimeout(function () {
-            window.location.reload()
-        }, 500)
-        return;
+        //localStorage.clear()
+        //sessionStorage.clear()
+        //setTimeout(function () {
+        //    window.location.reload()
+        //}, 500)
+        //return;
     }
     if (!localStorage.getItem("jeanDarc_accountData")) {
         $("#lock").fadeOut("fast", function () {
