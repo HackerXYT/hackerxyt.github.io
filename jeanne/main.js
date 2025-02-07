@@ -1847,7 +1847,22 @@ function saveRatings() {
                 if (!hasLoginFailed) {
                     alert("Αποτυχία Σύνδεσης Με Τον Διακομιστή. Οι καταχωρήσεις σας αποθηκεύτηκαν στην συσκευή σας. Δοκιμάστε αργότερα");
                 }
-                
+                $("#tasks").fadeOut("fast", function () {
+                    document.getElementById("loadText").innerHTML = `Τα τοπικά δεδομένα είναι έτοιμα.<br>Ξανασυνδεθείτε αργότερα.`;
+                    $("#tasks").fadeIn("fast");
+                    setTimeout(() => {
+                        setTimeout(() => {
+                            goBackFromBook();
+                            document.getElementById("yearbook-container").style.display = 'none';
+                            document.getElementById("yearbook-screen-2").style.display = 'none';
+                            document.getElementById("yearbook-screen-2").style.opacity = '0';
+                            setTimeout(() => {
+                                reloadProgress();
+                                $("#tasks").fadeOut("fast");
+                            }, 200);
+                        }, 200);
+                    }, 5000);
+                });
                 console.error("Jeanne D'arc Database is offline.");
                 console.log("Error:", error);
             });
