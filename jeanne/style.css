@@ -1115,7 +1115,7 @@ img {
         -8px -8px 16px rgba(255, 255, 255, 0.1);
     transition: transform 0.2s ease-in-out;
     box-sizing: border-box;
-    
+
 
 }
 
@@ -1148,6 +1148,7 @@ img {
 
     z-index: 1;
     /* Set a lower z-index so it's behind content */
+
 }
 
 .card:hover {
@@ -1163,12 +1164,29 @@ img {
     /* Cover the area without distortion */
 }
 
+@keyframes cardShake {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(-0.9px, 0.90px);
+    }
+
+    75% {
+        transform: translate(0.9px, 0px);
+    }
+}
+
 .card .background img {
     filter: brightness(0.5);
     width: 100%;
     height: 100%;
     object-fit: cover;
     /* Cover the area without distortion */
+    animation: cardShake 3s infinite ease-in-out;
 }
 
 .card>* {
@@ -1395,6 +1413,7 @@ img {
     /* Adjust the blur amount as needed */
     -webkit-backdrop-filter: blur(5px);
     gap: 5px;
+    box-shadow: 0px 0px 20px 0px rgb(35 35 35 / 89%), -3px -3px 8px rgba(20, 20, 20, 0.1)
 }
 
 .navigation .bar .item {
@@ -3187,6 +3206,7 @@ input:-webkit-autofill:active {
     font-size: 13px;
     color: #ffffff8f;
 }
+
 .notice-box {
     position: relative;
     display: flex;
@@ -3211,9 +3231,10 @@ input:-webkit-autofill:active {
     right: 0;
     bottom: 0;
     background: linear-gradient(to left, #f84a00, #f88400);
-    filter: brightness(0.7); 
+    filter: brightness(0.7);
     border-radius: 15px;
-    z-index: -1; /* Place it behind the content */
+    z-index: -1;
+    /* Place it behind the content */
 }
 
 .notice-box .rowTop {
@@ -3227,6 +3248,7 @@ input:-webkit-autofill:active {
     font-size: 17px;
     letter-spacing: 0.5px;
 }
+
 .notice-box .text-info {
     margin-top: 13px;
     display: flex;
@@ -3241,7 +3263,7 @@ input:-webkit-autofill:active {
 }
 
 .notice-box .buttonOk {
-    
+
     width: 100%;
     border-radius: 10px;
     background-color: #fff;
@@ -3265,4 +3287,18 @@ input:-webkit-autofill:active {
 
 .toyou {
     margin-top: 5px;
+}
+
+.inputsIP {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+#matchedPfp {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    object-fit: cover;
 }

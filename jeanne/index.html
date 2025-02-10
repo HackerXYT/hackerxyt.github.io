@@ -168,7 +168,7 @@
             <span>registered under Evox©</span>
             <p>Διεύθυνση IP: <span id="ipIdent"></span></p>
             <p>Συσκευή: <span id="deviceInfo"></span></p>
-            <p>Έκδοση: <span>0.9.0</span></p>
+            <p>Έκδοση: <span>0.9.5</span></p>
             <p>Δοκιμαστική λειτουργία: <span>Ανενεργή</span></p>
             <p>Επανεκκίνηση: <span onclick="window.location.reload()">Τώρα</span></p>
         </div>
@@ -226,6 +226,27 @@
                                     d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
                                     stroke="#8880eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg></div>
+                    </div>
+                </div>
+                <div class="loginByName" id="loginByIp" style="display: none;">
+
+                    <p style="text-align: center;width: 100%;">Καλωσόρισες ξανά!</p>
+                    <!--<span>Είσαι αυτός?</span>-->
+                    <div
+                        style="display: flex;flex-direction: column;justify-content: center;align-items: center;width: 100%;height: 100%;margin-top: 10px;">
+                        <img id="matchedPfp" src="reloading-pfp.gif">
+                        <p id="nameIp" style="margin-top: 5px;">Name Surname</p>
+                        <span style="text-align: center;">Τελευταία Σύνδεση:<br>
+                            <vox id="longAgo"></vox>
+                        </span>
+                        <div class="inputsIP">
+                            <div onclick="connectWithIp()" class="optionButton focus svgOnRight">
+                                Σύνδεση
+                            </div>
+                            <div onclick="goBackToMain()" class="optionButton svgOnRight" style="margin-left: 10px;">
+                                Δεν είμαι εγώ</div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="lsl" id="helpMe" style="display: none;">
@@ -701,7 +722,7 @@
             <div class="toyou" id="toyou">
                 <div class="aclass">
                     <div class="left">
-                    Προς εσένα
+                        Προς εσένα
                     </div>
                     <div class="right">
                         0 καταχωρήσεις
@@ -842,7 +863,9 @@
             <div class="moreInfo" id="tagsS">
                 <p>ΠΛΗΡΟΦΟΡΙΕΣ</p>
                 <div id="tags">
-
+                    <div style="display: flex;width: 100%;padding: 10px;justify-content: center;">
+                        <div class="loading-spinner"></div>
+                    </div>
                 </div>
             </div>
 

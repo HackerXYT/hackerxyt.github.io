@@ -188,7 +188,7 @@
             let {renderer: e} = this
               , t = this.getSize();
             return new PIXI.TextStyle({
-                fontSize: 14, //vanilla text size, no zoom
+                fontSize: 12, //vanilla text size, no zoom
                 fill: e.colors.text.rgb,
                 fontFamily: 'ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft YaHei Light", sans-serif',
                 wordWrap: !0,
@@ -1155,7 +1155,7 @@
         }
         updateZoom() {
             let {scale: e, targetScale: t, panX: n, panY: r} = this;
-            t = this.targetScale = Math.min(5, Math.max(4 / 4, t)); // Increased max zoom to 2
+            t = this.targetScale = Math.min(5, Math.max(3 / 4, t)); // Increased max zoom to 2
             if ((e > t ? e / t : t / e) - 1 >= .01) {
                 let {zoomCenterX: s, zoomCenterY: f} = this;
                 if (s === 0 && f === 0) {

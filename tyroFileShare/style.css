@@ -115,7 +115,7 @@ body {
     background-color: #343434;
 }
 
-.act:hover {
+.act:hover,.act:active  {
     background-color: #343434;
 }
 
@@ -152,13 +152,18 @@ body {
     cursor: pointer;
 }
 
-.folders .folder:hover {
+.folders .folder:hover,.folder:active {
     background-color: #343434;
 }
 
 .folders .folder:hover span {
     background-color: #1d1d1d;
 }
+
+.folders .folder:active span {
+    background-color: #1d1d1d;
+}
+
 
 .folders .folder span {
     width: auto;
@@ -332,6 +337,19 @@ p {
     width: auto;
 }
 
+.showInputs {
+    display: grid;
+    gap: 10px;
+}
+
+.showInputs:has(:only-child) {
+    grid-template-columns: 1fr;
+}
+
+.showInputs:not(:has(:only-child)) {
+    grid-template-columns: repeat(2, 1fr);
+}
+
 .students.details {
     margin-top: 5px;
     display: grid;
@@ -342,9 +360,21 @@ p {
     box-sizing: border-box;
 }
 
+.ham {
+    display: none;
+}
+
 @media (max-width: 768px) { /* Adjust breakpoint as needed */
     .navbar {
-        display: none;
+        transform: translateX(-150%);
+        position: absolute;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .navbar.active {
+        transform: translateX(0);
+        position: absolute;
+        box-shadow: 4px 6px 20px 0px rgb(0 0 0), -3px -3px 8px rgba(20, 20, 20, 0.1);
     }
 
     .container {
@@ -362,6 +392,10 @@ p {
 
     .group {
         display: none;
+    }
+
+    .ham {
+        display: block;
     }
 }
 /* Scrollbar for WebKit browsers (Chrome, Safari, Edge) */
@@ -533,3 +567,4 @@ p {
   .bigbig {
     font-size: 21px;
   }
+

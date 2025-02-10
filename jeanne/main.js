@@ -455,26 +455,39 @@ function capitalizeFirstLetter(string) {
 
 function findFullNames(input) {
     const results = [];
-    const variations = Object.values(namesData.names).flat();
 
     for (const [fullName, nameVariations] of Object.entries(namesData.names)) {
-        // Check if the input matches any of the name variations (case insensitive)
-        if (nameVariations.some(variation => variation.toLowerCase() === input.toLowerCase())) {
-            results.push(fullName);
-        } else {
-            //console.log(input.length)
-            if (JSON.stringify(nameVariations).includes(input) || JSON.stringify(nameVariations).includes(input.toLowerCase()) || JSON.stringify(nameVariations).includes(capitalizeFirstLetter(input))) {
-                if (input.length > 2) {
-                    console.log("Found included")
-                    results.push(fullName);
-                }
+        const normalizedInput = input.toLowerCase().replace(/\s+/g, '');
+        const normalizedFullName = fullName.toLowerCase().replace(/\s+/g, '');
 
+        // Check for direct match with full name
+        if (normalizedFullName === normalizedInput) {
+            results.push(fullName);
+            continue;
+        }
+
+        // Check if input matches any variation (case insensitive)
+        if (nameVariations.some(variation => variation.toLowerCase() === normalizedInput)) {
+            results.push(fullName);
+            continue;
+        }
+
+        // Check if input is part of name variations (substring match)
+        if (nameVariations.some(variation => variation.toLowerCase().includes(normalizedInput))) {
+            if (input.length > 2) {
+                results.push(fullName);
             }
+        }
+
+        // Check if input is part of the full name (substring match)
+        if (fullName.toLowerCase().includes(input.toLowerCase()) && input.length > 2) {
+            results.push(fullName);
         }
     }
 
     return results;
 }
+
 
 function storiesSpawned() {
     document.querySelectorAll('.app .stories .story').forEach(story => {
@@ -533,6 +546,24 @@ function hideElementOnAndroid(elementId) {
     }
 }
 
+function connectWithIp() {
+    if (ipLog) {
+        document.getElementById("loadText").innerText = 'Επεξεργασία..'
+        $("#tasks").fadeIn("fast")
+        goBackToMain()
+        setTimeout(function () {
+            nameLogin()
+            document.getElementById("voxName").value = ipLog
+
+            setTimeout(function () {
+                searchByNameComplete()
+            }, 600)
+        }, 600)
+
+    }
+}
+
+let ipLog;
 
 let namesData = null
 let ip = null
@@ -619,6 +650,31 @@ document.addEventListener("DOMContentLoaded", function () {
                         .then(response => response.json())
                         .then(names => {
                             namesData = names
+                            if (names.matchedAccounts.length > 0) {
+                                //runIdentifier
+                                ipLog = names.matchedAccounts[0]
+                                getEvoxProfile(names.matchedAccounts[0]).then(profileSrc => {
+                                    document.getElementById('matchedPfp').src = profileSrc
+                                });
+                                document.getElementById("longAgo").innerText = timeAgo(names.ZeroLastLogin)
+                                document.getElementById("nameIp").innerText = names.matchedAccounts[0]
+
+                                $("#appInfo").fadeOut("fast")
+                                $("#textDialog").fadeOut("fast", function () {
+                                    const boxUp = document.getElementById("boxUp");
+                                    const currentHeight = boxUp.offsetHeight + 'px';
+                                    boxUpDefaultHeight = currentHeight
+                                    boxUp.style.transition = 'height 1s';
+                                    boxUp.style.height = currentHeight;
+                                    setTimeout(() => {
+                                        boxUp.style.height = '300px';
+                                    }, 10);
+                                    $('#boxUp').children().not('#helpMe, .loginByName').fadeOut(function () {
+                                        $("#loginByIp").fadeIn("fast")
+                                    });
+
+                                })
+                            }
                             setTimeout(function () {
 
                                 document.getElementById("loadText").innerText = 'Έγινε σύνδεση'
@@ -1487,17 +1543,46 @@ function activateYearbook() {
 
                                 Object.entries(aclass).forEach(([nameEach, inform]) => {
                                     if (inform.emri === foundName || key === "ΚΑΘnone") { return; }
-                                    const ranId = Math.floor(Math.random() * 909999) + 1
-                                    usersElems[inform.emri] = { ranId: ranId, info: inform }
-                                    document.getElementById(`${key}-cont`).innerHTML += `<div id="user-${ranId}" class="aStudent fade-in-slide-up" onclick="pickStudent('${inform.emri}', this)">
-                                    <div class="studentImage">
-                                        <img alt="Αποτυχία" src="${inform.foto}">
-                                    </div>
-                                    <div class="studentInfo">
-                                        <p>${inform.emri}</p>
-                                    </div>
-                                </div>`
+                                    const ranId = Math.floor(Math.random() * 909999) + 1;
+                                    usersElems[inform.emri] = { ranId: ranId, info: inform };
+
+                                    document.getElementById(`${key}-cont`).innerHTML += `
+    <div id="user-${ranId}" class="aStudent fade-in-slide-up" onclick="pickStudent('${inform.emri}', this)">
+        <div class="studentImage">
+            <img alt="Αποτυχία" src="user.gif">
+        </div>
+        <div class="studentInfo">
+            <p>${inform.emri}</p>
+        </div>
+    </div>`;
+
+                                    const tempImage = new Image();
+                                    tempImage.src = inform.foto + '?size=minimum';
+
+                                    console.log('Attempting to load:', tempImage.src);
+
+                                    tempImage.onload = () => {
+                                        console.log('Image loaded');
+                                        const imgElement = document.getElementById(`user-${ranId}`).querySelector('.studentImage img');
+                                        console.log(tempImage.src)
+                                        imgElement.src = tempImage.src;
+                                        imgElement.style.visibility = 'visible'; // Make the image visible after it's loaded
+                                    };
+
+                                    tempImage.onerror = () => {
+                                        console.log('Image load failed');
+                                        const imgElement = document.getElementById(`user-${ranId}`).querySelector('.studentImage img');
+                                        imgElement.src = 'snap.png';
+                                        imgElement.style.visibility = 'visible'; // Make the image visible even if it failed to load
+                                    };
+
                                 })
+
+
+
+
+                                // Load actual image
+
 
                                 function readyToShow() {
                                     $("#tasks").fadeOut("fast", function () {
@@ -1557,6 +1642,13 @@ function activateYearbook() {
                 }).catch(error => {
                     console.error("Jeanne D'arc Database is offline.")
                     console.log('Error:', error);
+                    document.getElementById("loadText").innerHTML = 'Αποτυχία.'
+                    document.getElementById("yearbook-container").style.display = 'block'
+                    document.getElementById("yearbook-container").style.opacity = '1'
+                    goBackFromBook()
+                    setTimeout(function() {
+                        $("#tasks").fadeOut("fast")
+                    }, 1000)
                 });
 
             //const a = foundName.split(" ")[0]
@@ -2176,6 +2268,12 @@ function grabberEvents(id) {
                 document.getElementById("app").style.transform = ""
                 document.getElementById("app").style.opacity = "1"
             }
+
+            if (id === 'classChange') {
+                document.body.style.overflow = null
+                document.getElementById("app").style.transform = ""
+                document.getElementById("app").style.opacity = "1"
+            }
             notice.addEventListener("transitionend", () => {
                 notice.classList.remove("active");
                 notice.style.transform = ``;
@@ -2441,7 +2539,7 @@ function nameLogin() {
         setTimeout(() => {
             boxUp.style.height = '250px';
         }, 10);
-        $('#boxUp').children().not('.loginByName, #helpMe').fadeOut(function () {
+        $('#boxUp').children().not('.loginByName, #helpMe, #loginByIp').fadeOut(function () {
             $("#loginByName").fadeIn("fast")
         });
 
@@ -2462,7 +2560,7 @@ function help() {
         setTimeout(() => {
             boxUp.style.height = '260px';
         }, 10);
-        $('#boxUp').children().not('#helpMe, .loginByName').fadeOut(function () {
+        $('#boxUp').children().not('#helpMe, .loginByName, #loginByIp').fadeOut(function () {
             $("#helpMe").fadeIn("fast")
         });
 
@@ -2480,13 +2578,15 @@ function goBackToMain() {
             boxUp.style.height = boxUpDefaultHeight;
         }, 10);
         $("#helpMe").fadeOut("fast")
-        $("#loginByName").fadeOut("fast", function () {
-            $('#boxUp').children().not('.loginByName, #helpMe').fadeIn(function () {
-                $("#textDialog").fadeIn("fast", function () {
-                    $("#appInfo").fadeIn("fast")
+        $("#loginByIp").fadeOut("fast", function () {
+            $("#loginByName").fadeOut("fast", function () {
+                $('#boxUp').children().not('.loginByName, #helpMe, #loginByIp').fadeIn(function () {
+                    $("#textDialog").fadeIn("fast", function () {
+                        $("#appInfo").fadeIn("fast")
 
-                })
-            });
+                    })
+                });
+            })
         })
 
     }
@@ -3211,6 +3311,11 @@ function runNoticeAction() {
 grabberEvents("classChange")
 
 function changeClass() {
+    document.getElementById("app").style.transform = "scale(0.97)"
+    document.getElementById("app").style.opacity = "0.7"
+    document.getElementById("profilePage").style.transform = "scale(0.97)"
+    document.getElementById("profilePage").style.opacity = "0"
+    document.body.style.overflow = "hidden"
     document.getElementById("classChange").classList.add("active")
     document.getElementById("spawnClasses").innerHTML = `<div class="loading-spinner"></div>`
     fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${foundName}`)
@@ -3269,5 +3374,30 @@ function switchClass(to, ev) {
             }).catch(error => {
                 console.error("Progress error", error)
             });
+    }
+}
+
+function timeAgo(isoString) {
+    const now = new Date();
+    const past = new Date(isoString);
+    const diff = Math.floor((now - past) / 1000);
+
+    const units = [
+        { max: 60, value: 1, name: ['δευτερόλεπτο', 'δευτερόλεπτα'] },
+        { max: 3600, value: 60, name: ['λεπτό', 'λεπτά'] },
+        { max: 86400, value: 3600, name: ['ώρα', 'ώρες'] },
+        { max: 604800, value: 86400, name: ['ημέρα', 'ημέρες'] },
+        { max: 2419200, value: 604800, name: ['εβδομάδα', 'εβδομάδες'] },
+        { max: 29030400, value: 2419200, name: ['μήνα', 'μήνες'] },
+        { max: Infinity, value: 29030400, name: ['χρόνο', 'χρόνια'] }
+    ];
+
+    for (const unit of units) {
+        if (diff < unit.max) {
+            const count = Math.floor(diff / unit.value);
+            return count <= 1
+                ? `πριν ${count || 1} ${unit.name[0]}`
+                : `πριν ${count} ${unit.name[1]}`;
+        }
     }
 }
