@@ -1646,7 +1646,7 @@ function activateYearbook() {
                     document.getElementById("yearbook-container").style.display = 'block'
                     document.getElementById("yearbook-container").style.opacity = '1'
                     goBackFromBook()
-                    setTimeout(function() {
+                    setTimeout(function () {
                         $("#tasks").fadeOut("fast")
                     }, 1000)
                 });
@@ -2273,6 +2273,8 @@ function grabberEvents(id) {
                 document.body.style.overflow = null
                 document.getElementById("app").style.transform = ""
                 document.getElementById("app").style.opacity = "1"
+                document.getElementById("profilePage").style.transform = ""
+                document.getElementById("profilePage").style.opacity = "1"
             }
             notice.addEventListener("transitionend", () => {
                 notice.classList.remove("active");
@@ -3311,10 +3313,10 @@ function runNoticeAction() {
 grabberEvents("classChange")
 
 function changeClass() {
-    document.getElementById("app").style.transform = "scale(0.97)"
-    document.getElementById("app").style.opacity = "0.7"
-    document.getElementById("profilePage").style.transform = "scale(0.97)"
-    document.getElementById("profilePage").style.opacity = "0"
+    document.getElementById("app").style.transform = "scale(0.95)"
+    document.getElementById("app").style.opacity = "0"
+    document.getElementById("profilePage").style.transform = "scale(0.95)"
+    document.getElementById("profilePage").style.opacity = "0.7"
     document.body.style.overflow = "hidden"
     document.getElementById("classChange").classList.add("active")
     document.getElementById("spawnClasses").innerHTML = `<div class="loading-spinner"></div>`
