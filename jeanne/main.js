@@ -650,31 +650,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         .then(response => response.json())
                         .then(names => {
                             namesData = names
-                            if (names.matchedAccounts.length > 0) {
-                                //runIdentifier
-                                ipLog = names.matchedAccounts[0]
-                                getEvoxProfile(names.matchedAccounts[0]).then(profileSrc => {
-                                    document.getElementById('matchedPfp').src = profileSrc
-                                });
-                                document.getElementById("longAgo").innerText = timeAgo(names.ZeroLastLogin)
-                                document.getElementById("nameIp").innerText = names.matchedAccounts[0]
-
-                                $("#appInfo").fadeOut("fast")
-                                $("#textDialog").fadeOut("fast", function () {
-                                    const boxUp = document.getElementById("boxUp");
-                                    const currentHeight = boxUp.offsetHeight + 'px';
-                                    boxUpDefaultHeight = currentHeight
-                                    boxUp.style.transition = 'height 1s';
-                                    boxUp.style.height = currentHeight;
-                                    setTimeout(() => {
-                                        boxUp.style.height = '300px';
-                                    }, 10);
-                                    $('#boxUp').children().not('#helpMe, .loginByName').fadeOut(function () {
-                                        $("#loginByIp").fadeIn("fast")
-                                    });
-
-                                })
-                            }
+                            
                             setTimeout(function () {
 
                                 document.getElementById("loadText").innerText = 'Έγινε σύνδεση'
@@ -710,7 +686,37 @@ document.addEventListener("DOMContentLoaded", function () {
                                 }, 500)
                             }, 500)
 
+try {
+                                if (names.matchedAccounts) {
+                            if (names.matchedAccounts.length > 0) {
+                                //runIdentifier
+                                ipLog = names.matchedAccounts[0]
+                                getEvoxProfile(names.matchedAccounts[0]).then(profileSrc => {
+                                    document.getElementById('matchedPfp').src = profileSrc
+                                });
+                                document.getElementById("longAgo").innerText = timeAgo(names.ZeroLastLogin)
+                                document.getElementById("nameIp").innerText = names.matchedAccounts[0]
 
+                                $("#appInfo").fadeOut("fast")
+                                $("#textDialog").fadeOut("fast", function () {
+                                    const boxUp = document.getElementById("boxUp");
+                                    const currentHeight = boxUp.offsetHeight + 'px';
+                                    boxUpDefaultHeight = currentHeight
+                                    boxUp.style.transition = 'height 1s';
+                                    boxUp.style.height = currentHeight;
+                                    setTimeout(() => {
+                                        boxUp.style.height = '300px';
+                                    }, 10);
+                                    $('#boxUp').children().not('#helpMe, .loginByName').fadeOut(function () {
+                                        $("#loginByIp").fadeIn("fast")
+                                    });
+
+                                })
+                            }
+                            }
+                            } catch (error) {
+                                console.error("Ip Login Failed")
+                            }
 
                         }).catch(error => {
                             console.error("Jeanne D'arc Database is offline.")
