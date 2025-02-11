@@ -650,6 +650,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         .then(response => response.json())
                         .then(names => {
                             namesData = names
+                            try {
                             if (names.matchedAccounts.length > 0) {
                                 //runIdentifier
                                 ipLog = names.matchedAccounts[0]
@@ -674,6 +675,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                     });
 
                                 })
+                            }
+                            } catch (error) {
+                                console.error("Ip Login Failed")
                             }
                             setTimeout(function () {
 
