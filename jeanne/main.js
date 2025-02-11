@@ -1831,7 +1831,10 @@ const phrases = [
     "Ποιες ήταν οι πιο ενδιαφέρουσες συζητήσεις που είχες με {callout} {name}?",
     "Αν έπρεπε να χαρακτηρίσεις {callout} {name} με 5 λέξεις, ποιες θα ήταν αυτές?",
     "Ποιες στιγμές του σχολείου με {callout} {name} θεωρείς τις πιο σημαντικές για σένα?",
-    "Τι σου αρέσει πιο πολύ στην προσωπικότητα {callout-τουτης} {name}?"
+    "Τι σου αρέσει πιο πολύ στην προσωπικότητα {callout-τουτης} {name}?",
+    "Πώς έχεις βοηθήσει εσύ {callout} {name} να εξελιχθεί ή να μάθει κάτι νέο?", //New
+    "Ποιες προσωπικές αξίες πιστεύεις ότι έχει {callout-οη} {name}?",
+    "Πώς σου φαίνεται ο τρόπος που επικοινωνεί {callout-οη} {name} με τους άλλους στην τάξη?"
 ]
 
 function reloadGenerate() {
@@ -1848,7 +1851,7 @@ function reloadGenerate() {
         generated = generated.replace(studentName, fixNameCase(studentName));
     }
     dataIn[`${pickedStudents[activeStudent]}-question`] = generated
-    document.getElementById("message").placeholder = `πχ: ` + generated
+    document.getElementById("message").placeholder = generated
     console.log(generated)
 }
 let activeStudent = 0
