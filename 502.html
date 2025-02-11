@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body,
+    html {
+        width: 100%;
+        height: 100%;
+        background-color: #e0e0e0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .container {
+        width: 400px;
+        height: auto;
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+        border-radius: 30px;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+        }
+
+        body,
+        html {
+            background-color: #ffffff;
+        }
+
+    }
+
+    h3 {
+
+        font-size: 21px;
+        font-weight: bold;
+        margin: 0;
+        margin-top: 20px;
+    }
+
+    p {
+        font-size: 16px;
+        margin: 0;
+        margin-top: 5px;
+        font-weight: 600;
+        color: #343434;
+    }
+
+    span {
+        font-size: 15px;
+        color: #343434;
+    }
+
+    button {
+        width: 90%;
+        margin-top: 20px;
+        border: none;
+        font-size: 14px;
+        background-color: #295bff;
+        border-radius: 10px;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #e0e0e0;
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        background-color: #004cff;
+    }
+
+    .projects {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        margin-top: 20px;
+        gap: 10px;
+    }
+
+    .proj {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        justify-content: center;
+        align-items: center;
+        color: #7a7a7a;
+        gap: 10px;
+        cursor: pointer;
+
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .proj:hover {
+        transform: translateY(-2px);
+    }
+
+    .proj img {
+        width: 70px;
+        height: 70px;
+        background-color: #e0e0e0;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        object-fit: cover;
+    }
+
+    .proj p {
+        font-size: 14px;
+        font-weight: bold;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24" fill="none">
+            <path opacity="0.5"
+                d="M12 3C9.68925 3 8.23007 5.58716 5.31171 10.7615L4.94805 11.4063C2.52291 15.7061 1.31034 17.856 2.40626 19.428C3.50217 21 6.21356 21 11.6363 21H12.3637C17.7864 21 20.4978 21 21.5937 19.428C22.6897 17.856 21.4771 15.7061 19.0519 11.4063L18.6883 10.7615C15.7699 5.58716 14.3107 3 12 3Z"
+                fill="#ff3f3f" />
+            <path
+                d="M12 7.25C12.4142 7.25 12.75 7.58579 12.75 8V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V8C11.25 7.58579 11.5858 7.25 12 7.25Z"
+                fill="#ff3f3f" />
+            <path
+                d="M12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z"
+                fill="#ff3f3f" />
+        </svg>
+        <h3>Servers Restarting</h3>
+        <p>Evox is working on it. Please try again shortly.</p>
+
+        <button onclick="window.location.href = 'https://data.evoxs.xyz'">Try again</button>
+        <div class="projects">
+            <div onclick="red(this)" class="proj">
+                <img src="https://evoxs.xyz/evox-epsilon-beta/evox-logo-apple.png">
+                <p>Nexus</p>
+            </div>
+            <div onclick="red(this)" class="proj">
+                <img src="https://evoxs.xyz/oasaMobile/spoiler.png">
+                <p>OASA</p>
+            </div>
+            <div onclick="red(this)" class="proj">
+                <img src="https://evoxs.xyz/jeanne/appLogoV2.png">
+                <p>Jeanne d'Arc</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function red(a) {
+            if (a.innerText.includes("Nexus")) {
+                window.location.href = "https://evoxs.xyz/evox-epsilon-beta"
+            } else if (a.innerText.includes("OASA")) {
+                window.location.href = "https://evoxs.xyz/oasaMobile"
+            } else {
+                window.location.href = "https://evoxs.xyz/jeanne"
+            }
+        }
+    </script>
+</body>
+
+</html>
