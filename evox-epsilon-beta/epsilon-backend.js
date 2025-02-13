@@ -318,7 +318,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '8.0.1'
+const appVersion = '8.2.1'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -4128,3 +4128,297 @@ function sendFile(e, up) {
 
     }
 }
+
+function getOasaInfo() {
+    fetch(`https://data.evoxs.xyz/oasa?epsilon=true&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+        .then(response => response.json())
+        .then(data => {
+            if (!data.message) {
+                document.getElementById("card-oasa").style.display = null
+                processOasaInfo(data)
+            }
+            //alert(JSON.stringify(data))
+
+        })
+        .catch(error => {
+            console.warn("Skipping OASA", error)
+            //resolve(null)
+        });
+
+}
+
+getOasaInfo()
+
+function capitalizeWords(str) {
+    return str
+        .toLowerCase() // Ensure the rest of the letters are lowercase
+        .replace(/h/g, 'η') // Replace all lowercase "h" with "η"
+        .split(' ') // Split the string into an array of words
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+        .join(' '); // Join the words back into a single string
+}
+
+function processOasaInfo(data) {
+    if (!data) { return; }
+    navigator.geolocation.getCurrentPosition(function (position) {
+        const currentLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        };
+        console.log(currentLocation);
+    }, function (error) {
+        console.error("Error getting location: ", error);
+    });
+    //console.log(data, "OASA1")
+    const container = document.getElementById("oasa-info")
+    container.innerHTML = ''
+    const lines = data.lines.sort((a, b) => Number(b.user_count) - Number(a.user_count));
+    const stations = data.stations.sort((a, b) => Number(b.user_count) - Number(a.user_count));
+
+    //console.log(lines, "OASA2")
+    function spawnNext(line) {
+        return new Promise((resolve) => {
+            let randomId = Math.floor(1000000000 + Math.random() * 9000000000);
+            container.innerHTML += `<div class="socialUser fade-in-slide-up">
+                            <img class="slUserPFP social" style="width: 30px;height: 30px;" src="bus-oasa.svg">
+                            <p>${line.id}</p><span id="remaining-time-${randomId}">Wait..</span>
+
+                        </div>`;
+            const targetUrl = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${line.line_code}&keyOrigin=evoxEpsilon`);
+            function displayRemainingTimeLIVE(nextBusTime) {
+                const currentTime = new Date();
+                const nextBusDate = new Date();
+                nextBusDate.setHours(nextBusTime.hour, nextBusTime.minutes, 0);
+                const remainingTimeMs = nextBusDate - currentTime;
+                const remainingMinutes = Math.floor(remainingTimeMs / 1000 / 60);
+                const remainingHours = Math.floor(remainingMinutes / 60);
+                const displayMinutes = remainingMinutes % 60;
+
+                const remainingTimeText = remainingHours > 0 ? `${remainingHours} ώρες` : `${displayMinutes} ${displayMinutes === 1 ? "λεπτό" : "λεπτά"}`;
+                document.getElementById(`remaining-time-${randomId}`).innerHTML = remainingTimeText;
+                spawnNear(line)
+                resolve()
+            }
+            function getNextBusTimeLIVE(times) {
+                ////console.log("getting times", times);
+                const currentTime = new Date();
+                const currentHour = currentTime.getHours();
+                const currentMinutes = currentTime.getMinutes();
+
+                for (let time of times) {
+                    const [hour, minutes] = time.split(':').map(Number);
+                    if (hour > currentHour || (hour === currentHour && minutes > currentMinutes)) {
+                        return { hour, minutes };
+                    }
+                }
+                return null;
+            }
+            function formatTime(dateTimeString) {
+                if (!dateTimeString) {
+                    console.error("Invalid dateTimeString:", dateTimeString);
+                    return "Invalid";
+                }
+
+                const parts = dateTimeString.split(' ');
+                if (parts.length !== 2) {
+                    console.error("Invalid dateTimeString format:", dateTimeString);
+                    return "Invalid";
+                }
+
+                const timePart = parts[1]; // "HH:MM:SS"
+                const timeParts = timePart.split(':');
+                if (timeParts.length !== 3) {
+                    console.error("Invalid time format:", timePart);
+                    return "Invalid";
+                }
+
+                const hours = timeParts[0];
+                const minutes = timeParts[1];
+
+                if (hours.length !== 2 || minutes.length !== 2) {
+                    console.error("Invalid time components:", hours, minutes);
+                    return "Invalid";
+                }
+
+                return `${hours}:${minutes}`;
+            }
+            fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${targetUrl}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.come && !data.go) {
+                        console.log(data)
+                        return;
+                    } else {
+                        console.log("Come and go for ", line.id, "\n", data)
+                    }
+                    var times = data.go.map(item => {
+                        return formatTime(item.sde_start1);
+                    });
+                    const nextBusTime = getNextBusTimeLIVE(times);
+
+                    if (nextBusTime) {
+                        localStorage.setItem(`${line.id}_Timetable`, JSON.stringify(data));
+                        localStorage.setItem(`${line.id}_Times`, JSON.stringify(times));
+                        displayRemainingTimeLIVE(nextBusTime);
+                    } else {
+                        document.getElementById(`remaining-time-${randomId}`).innerHTML = 'None';
+                        //Do nothing
+                    }
+                })
+                .catch(error => {
+                    console.warn("Skipping Line", line, error)
+                    document.getElementById(`remaining-time-${randomId}`).innerHTML = 'Failed';
+                    resolve()
+
+                });
+        });
+    }
+
+
+    function spawnNear(line) {
+        const stopsFinal = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${line.route_code}&keyOrigin=evoxEpsilon`);
+        fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stopsFinal}`)
+            .then(response => response.json())
+            .then(bata => {
+                console.log("OASA", bata)
+
+                const getDistance = (lat1, lon1, lat2, lon2) => {
+                    const toRad = (value) => (value * Math.PI) / 180;
+                    const R = 6371; // Earth radius in km
+                    const dLat = toRad(lat2 - lat1);
+                    const dLon = toRad(lon2 - lon1);
+                    const a =
+                        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    return R * c;
+                };
+                const closestStop = bata.stops.reduce((closest, stop) => {
+                    const distance = getDistance(
+                        currentLocation.lat,
+                        currentLocation.lng,
+                        parseFloat(stop.StopLat),
+                        parseFloat(stop.StopLng)
+                    );
+                    return distance < closest.distance
+                        ? { stop, distance }
+                        : closest;
+                }, { distance: Infinity });
+
+                console.log('Closest Stop: OASA', closestStop.stop);
+                const randomId = Math.floor(1000000000 + Math.random() * 9000000000);
+                container.innerHTML += `<div class="socialUser fade-in-slide-up">
+                    <vox class="slUserPFP social oasa-icon station">${line.id}</vox>
+                    <p>${capitalizeWords(closestStop.stop.StopDescr)}</p><span id="station-${randomId}">Wait..</span>
+
+                </div>`;
+
+                const work = line.route_code
+                const stop_url = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${closestStop.stop.StopCode}&keyOrigin=evoxEpsilon`);
+                fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url}`)
+                    .then(response => response.json())
+                    .then(arrivals => {
+                        let matchFound = false;
+                        arrivals.forEach(arrive => {
+                            if (arrive.route_code === work && matchFound === false) {
+                                document.getElementById(`station-${randomId}`).innerHTML = `σε ${arrive.btime2} ${arrive.btime2 === 1 ? "λεπτό" : "λεπτά"}`
+                                //alert(`${arrive.btime2} λεπτά`);
+                                matchFound = true; // Set flag to true if a match is found
+                            }
+                        });
+
+
+                        // If no match was found, alert the user
+                        if (!matchFound) {
+                            document.getElementById(`station-${randomId}`).innerHTML = `None`
+                            //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [!matchFound]");
+                        }
+                    })
+                    .catch(error => {
+                        document.getElementById(`station-${randomId}`).innerHTML = `None`
+                        console.log("getStop [2] error:", error);
+                    });
+            })
+            .catch(error => {
+                console.log("FindStops [2] error:", error);
+            });
+    }
+    spawnNext(lines[0]);
+
+    function spawnStation(station) {
+        const st2 = station
+        console.log("OASA", station)
+        const stopsFinal = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${station.line_route_code}&keyOrigin=evoxEpsilon`);
+        fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stopsFinal}`)
+            .then(response => response.json())
+            .then(bata => {
+                console.log("OASA", bata)
+
+                const getDistance = (lat1, lon1, lat2, lon2) => {
+                    const toRad = (value) => (value * Math.PI) / 180;
+                    const R = 6371; // Earth radius in km
+                    const dLat = toRad(lat2 - lat1);
+                    const dLon = toRad(lon2 - lon1);
+                    const a =
+                        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    return R * c;
+                };
+
+
+                function findStationByStopCode(stopCode) {
+                    return bata.stops.find(stop => stop.StopCode === stopCode);
+                }
+                const stationFound = findStationByStopCode(station.id);
+                if (stationFound) {
+                    console.log("OASA", stationFound);
+                } else {
+                    console.log("OASA Station not found.");
+                }
+
+                const randomId2 = Math.floor(1000000000 + Math.random() * 9000000000);
+                const stopDistance = getDistance(
+                    currentLocation.lat,
+                    currentLocation.lng,
+                    parseFloat(stationFound.StopLat),
+                    parseFloat(stationFound.StopLng)
+                );
+
+                container.innerHTML += `<div class="socialUser fade-in-slide-up">
+                    <vox class="slUserPFP social oasa-icon station">${st2.line_match}</vox>
+                    <p>${capitalizeWords(stationFound.StopDescr)}</p><span id="station-distance-${randomId2}">${stopDistance * 1000 > 100 ? `${Math.floor(stopDistance) !== 0 ? Math.floor(stopDistance) : Math.floor(stopDistance * 10) / 10}km` : `${Math.floor(stopDistance * 1000)}m`}</span>
+                </div>`;
+                const stop_url2 = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${st2.id}&keyOrigin=evoxEpsilon`);
+                fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url2}`)
+                    .then(response => response.json())
+                    .then(arrivals => {
+                        let matchFound = false;
+                        arrivals.forEach(arrive => {
+                            if (arrive.route_code === st2.line_route_code && matchFound === false) {
+                                document.getElementById(`station-distance-${randomId2}`).innerHTML += ` - σε ${arrive.btime2} ${arrive.btime2 === 1 ? "λεπτό" : "λεπτά"}`
+                                //alert(`${arrive.btime2} λεπτά`);
+                                matchFound = true; // Set flag to true if a match is found
+                            }
+                        });
+                        if (!matchFound) {
+                            document.getElementById(`station-distance-${randomId2}`).innerHTML = `None`
+                            //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [!matchFound]");
+                        }
+                    })
+                    .catch(error => {
+                        //document.getElementById(`station-distance-${randomId}`).innerHTML = `None`
+                        console.log("getStop [2] error:", error);
+                    });
+
+            })
+            .catch(error => {
+                console.log("FindStops [2] error:", error);
+            });
+    }
+    spawnStation(stations[0])
+    spawnStation(stations[1])
+}
+

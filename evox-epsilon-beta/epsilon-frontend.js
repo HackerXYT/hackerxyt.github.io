@@ -817,6 +817,7 @@ function startLogin() {
                         console.log("Ext Email:", email)
                     }
                     localStorage.getItem("2FA_READY", "false")
+                    
                     const credentialsString = data;
                     const match = credentialsString.match(/Username:(\w+)/);
 
@@ -908,6 +909,7 @@ function startLogin() {
                     returnToLoginMenu('nosound')
                     localStorage.removeItem("aitAnalytics")
                     loadAit()
+                    getOasaInfo()
                     setTimeout(function () {
                         $("#connectionContainer").fadeOut("fast")
                         verificationComplete()
@@ -928,6 +930,7 @@ function startLogin() {
                             });
                     }
 
+                    const params = new URLSearchParams(window.location.search);
                     if (params.has('jeanDarc')) {
                         const value = params.get('jeanDarc');
                         if (value === 'redaktoni') {
@@ -1098,6 +1101,8 @@ function on2FAComplete() {
                         });
                 }
                 PWACheck()
+                getOasaInfo()
+                const params = new URLSearchParams(window.location.search);
                 if (params.has('jeanDarc')) {
                     const value = params.get('jeanDarc');
                     if (value === 'redaktoni') {
@@ -1137,6 +1142,8 @@ function on2FAComplete() {
                     aitPlay('beta_intro')
                 }, 1000)
                 PWACheck()
+                getOasaInfo()
+                const params = new URLSearchParams(window.location.search);
                 if (params.has('jeanDarc')) {
                     const value = params.get('jeanDarc');
                     if (value === 'redaktoni') {
@@ -2736,6 +2743,7 @@ function launchAppN(app) {
         activeAppThis.classList.remove('fullscreen');
         document.body.classList.remove('no-scroll');
         document.getElementById("gatewayActions").classList.remove("top")
+        document.getElementById("card-oasa").style.transform = null
         document.getElementById("card-secureline").style.transform = null
         document.getElementById("card-social").style.transform = null
         document.getElementById("card-settings").style.transform = null
@@ -3431,6 +3439,7 @@ function animateM(e, app) {
             $("#bottomButtonsFocus").fadeIn("fast")
         })
         document.getElementById("gatewayActions").classList.add("top")
+        document.getElementById("card-oasa").style.transform = 'translateY(150%)'
         document.getElementById("card-secureline").style.transform = 'translateY(250%)'
         document.getElementById("card-social").style.transform = 'translateY(150%)'
         document.getElementById("card-settings").style.transform = 'translateY(150%)'
@@ -3472,6 +3481,7 @@ function animateM(e, app) {
         item.classList.remove('fullscreen');
         document.body.classList.remove('no-scroll');
         document.getElementById("gatewayActions").classList.remove("top")
+        document.getElementById("card-oasa").style.transform = null
         document.getElementById("card-secureline").style.transform = null
         document.getElementById("card-social").style.transform = null
         document.getElementById("card-settings").style.transform = null

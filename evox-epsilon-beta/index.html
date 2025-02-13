@@ -480,6 +480,7 @@
 
             <!--Cards-->
             <div id="gatewayExploreScroll" class="gatewayExplore">
+
                 <div id="card-apps" class="card">
                     <div id="apps" class="appCarousel">
                         <!--<div id="app1" class="evoxApp">
@@ -562,6 +563,52 @@
                             </svg>
 
                             Edit
+                        </a>
+                    </div>
+                </div>
+                <div id="card-oasa" class="card fade-in-slide-up" style="display: none;">
+                    <h2><img src="../oasaResign/oasastandalone-white.png">OASA</h2>
+                    <div id="oasa-info" class="socialInfo oasa">
+                        <div class="socialUser">
+                            <img class="slUserPFP social oasa-icon" src="bus-oasa.svg">
+                            <p>16</p><span>10 λεπτά</span>
+
+                        </div>
+                        <div class="socialUser">
+                            <img class="slUserPFP social oasa-icon" src="bus-oasa.svg">
+                            <p>831</p><span>53 λεπτά</span>
+
+                        </div>
+                        <div class="socialUser">
+                            <vox class="slUserPFP social oasa-icon station">16</vox>
+                            <p>Παναγίτσα</p><span>σε 6 λεπτά</span>
+
+                        </div>
+
+                    </div>
+                    <div class="bottomButtons">
+                        <a id="social-manage2" onclick="activeAPP = 'oasa';bottomButtonPress('launch', this)" class="firstChild" href="#oasa-launch">
+                            <svg style="transition: transform 1s ease-in-out;margin-right: 5px;"
+                                xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM8 12C8 9.79086 9.79086 8 12 8C12.5523 8 13 7.55228 13 7C13 6.44772 12.5523 6 12 6C8.68629 6 6 8.68629 6 12C6 12.5523 6.44772 13 7 13C7.55228 13 8 12.5523 8 12ZM17 11C17.5523 11 18 11.4477 18 12C18 15.3137 15.3137 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C14.2091 16 16 14.2091 16 12C16 11.4477 16.4477 11 17 11ZM12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10Z"
+                                    fill="#dbdde3"></path>
+                            </svg>
+                            Launch
+
+                        </a>
+                        <a onclick="document.getElementById('card-oasa').classList.remove('fade-in-slide-up');document.getElementById('card-oasa').classList.add('fade-out-slide-down');setTimeout(function() {document.getElementById('card-oasa').style.display = 'none'}, 300)" href="#oasa-settings">
+                            <svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="25px"
+                                height="25px" viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M22.75 17.5C22.75 17.91 22.41 18.25 22 18.25H15V18.5C15 20 14.1 20.5 13 20.5H7C5.9 20.5 5 20 5 18.5V18.25H2C1.59 18.25 1.25 17.91 1.25 17.5C1.25 17.09 1.59 16.75 2 16.75H5V16.5C5 15 5.9 14.5 7 14.5H13C14.1 14.5 15 15 15 16.5V16.75H22C22.41 16.75 22.75 17.09 22.75 17.5Z"
+                                    fill="#dbdde3" />
+                                <path
+                                    d="M22.75 6.5C22.75 6.91 22.41 7.25 22 7.25H19V7.5C19 9 18.1 9.5 17 9.5H11C9.9 9.5 9 9 9 7.5V7.25H2C1.59 7.25 1.25 6.91 1.25 6.5C1.25 6.09 1.59 5.75 2 5.75H9V5.5C9 4 9.9 3.5 11 3.5H17C18.1 3.5 19 4 19 5.5V5.75H22C22.41 5.75 22.75 6.09 22.75 6.5Z"
+                                    fill="#dbdde3" />
+                            </svg>
+                            Configure
                         </a>
                     </div>
                 </div>
@@ -675,6 +722,7 @@
                         </a>
                     </div>
                 </div>
+
                 <div id="card-settings" class="card"> <!--Settings-->
                     <h2 onclick="enableTab({innerHTML: 'svg', classList: 'active', mirror: this})">Settings</h2>
                     <div class="settingsBlocks">
@@ -1612,7 +1660,8 @@
             transition: top 1s ease-in-out, left 1s ease-in-out, transform 1s ease-in-out;">
 
     </div>
-    <input type="file" style="display: none;" id="secureline-upload-box" accept="/*" onchange="sendFile(null, 'upload')">
+    <input type="file" style="display: none;" id="secureline-upload-box" accept="/*"
+        onchange="sendFile(null, 'upload')">
     <input type="file" id="upload-box" accept="image/*" onchange="handleFileSelect()">
     <input style="display:none" type="file" id="upload-ground" accept="image/*" onchange="groundHandle()">
     <input style="display: none;" type="file" id="upload-box-sline" accept="image/*" onchange="attach_file()">
@@ -1873,7 +1922,7 @@
         <div id="cmn_2" class="rowCentered" style="text-align: center;">
             Would you like to install the Evox Nexus app to your device?
         </div>
-        <div id="cmn_bt" class="bottomButtonsSline changeColors msgEdit"  style="margin-bottom: 60px;">
+        <div id="cmn_bt" class="bottomButtonsSline changeColors msgEdit" style="margin-bottom: 60px;">
             <a class="firstChild" onclick="bottomButtonPress('downloadIOS', this)" id="cmn_dl">
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 5px;" width="20px" height="20px"
@@ -1896,15 +1945,18 @@
             <a class="firstChild" onclick="bottomButtonPress('dismissDownloadDontAsk', this)">
                 <span>
 
-                    <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 5px;" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="margin-right: 5px;" width="20px" height="20px"
+                        viewBox="0 0 24 24" fill="none">
                         <g>
-                        <path d="M5.75 5.75L18.25 18.25M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z" stroke="#dbdde3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path
+                                d="M5.75 5.75L18.25 18.25M12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21Z"
+                                stroke="#dbdde3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </g>
-                        </svg></span>
+                    </svg></span>
                 <span>Don't Show Again</span>
             </a>
         </div>
-        
+
 
 
     </div>

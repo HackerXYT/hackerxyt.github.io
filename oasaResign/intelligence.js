@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.0.3'
+const currentVersion = '2.0.4'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -102,6 +102,8 @@ function openSearch() {
     map.resize()
   })
   document.getElementById("recommendSpawn").innerHTML = ''
+  document.getElementById("recommendSpawn").innerHTML += `<div class="Block"><img src="../evox-epsilon-beta/epsilon-transparent.png" width="20px" height="20px">Evox
+                    </div>`
   document.getElementById("recommendSpawn").innerHTML += `<div class="Block"><svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g opacity="0.5">
 <path d="M3 8.70938V16.8377C3 17.8813 3 18.4031 3.28314 18.7959C3.56627 19.1888 4.06129 19.3538 5.05132 19.6838L6.21609 20.072C7.58318 20.5277 8.26674 20.7556 8.95493 20.6634C8.96999 20.6614 8.98501 20.6593 9 20.6569V6.65705C8.88712 6.67391 8.77331 6.68433 8.6591 6.68823C8.11989 6.70664 7.58626 6.52877 6.51901 6.17302C5.12109 5.70705 4.42213 5.47406 3.89029 5.71066C3.70147 5.79466 3.53204 5.91678 3.39264 6.06935C3 6.49907 3 7.23584 3 8.70938Z" fill="#fff"/>
@@ -137,6 +139,8 @@ function openSearch() {
 </svg>${bus}
                     </div>`
   })
+
+  
 
   //andMore
 }
@@ -1597,6 +1601,7 @@ let shownTimeTable = 0
 let keepForVerticalStations;
 let latestHorizontalIntelligence;
 function processInfo(evoxId, type, addMore, comego) {
+
   if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
     const element = document.getElementById('main-wrapper');
     element.scrollTop = 0;
@@ -1632,8 +1637,10 @@ function processInfo(evoxId, type, addMore, comego) {
         console.log("personalizedAutoBus", matchingLines)
       }
       const working = matchingLines[0]
+      //alert(JSON.stringify(personalizedAutoBus[busInfo.bus]))
       const descr = working.LineDescr
       const lineCode = working.LineCode
+
       document.getElementById("busInfoID").innerHTML = `${busInfo.bus}`//${busInfo.multiple ? "<svg width='25px' height='25px' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' style='transform: rotate(-90deg)'><path d='M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z' fill='#fff'></path></svg>" : ''}`
 
       let formattedText = descr.replace(/\((.*)\)/, "<br>($1)");
@@ -2351,7 +2358,9 @@ async function findBusInfo2(id, getJustLineCode = false, getJustRouteCode = true
 
     if (matchingLines.length > 0) {
       const selectedLine = matchingLines[0];
-      return await routeOasa(selectedLine.LineCode);
+      const resu = await routeOasa(selectedLine.LineCode)
+      triggerSave(id, selectedLine.LineCode, resu)
+      return resu;
     } else {
       throw new Error("No matching lines found.");
     }
@@ -2359,6 +2368,7 @@ async function findBusInfo2(id, getJustLineCode = false, getJustRouteCode = true
 
   return await nextUp();
 }
+
 
 async function findCurrentBusLocation(routeCode, retries = 5, delay = 10) {
   const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -3259,10 +3269,10 @@ function showVerticalStations() {
       if (leastTime[0]) {
         document.getElementById(`global-vertical-station-${leastTime[0].StopCode}`).classList.add("currentLocation")
       }
-      
+
       const promise = new Promise((resolve) => {
         arrivals.forEach((stop, index) => {
-          if(isOld) {
+          if (isOld) {
             document.getElementById(`global-vertical-station-${stop.StopCode}`).classList.add("previous")
           } else {
             try {
@@ -3332,11 +3342,11 @@ function showVerticalStations() {
       });
     }
 
-    if(latestHorizontalIntelligence) {
+    if (latestHorizontalIntelligence) {
       spawnIntelli(latestHorizontalIntelligence, 'old')
     }
-    let afasterfix = setInterval(function() {
-      if(isFetching === true && latestHorizontalIntelligence) {
+    let afasterfix = setInterval(function () {
+      if (isFetching === true && latestHorizontalIntelligence) {
         spawnIntelli(latestHorizontalIntelligence, 'old')
         clearInterval(afasterfix)
       }
@@ -3472,6 +3482,7 @@ function convert2Base() {
 }
 
 function showStopDetails(stopCode, stopName) {
+  triggerSave(evoxIds[activeEvoxId].bus, null, activeRouteCode, 'station')
   document.getElementById("stationInfoName").innerText = stopName
 
 
@@ -3996,4 +4007,45 @@ function addActivity(stationName, stationId, currentMinEl) {
   }
   console.log("Set!", startingJson)
   handleActivity(startingJson);
+}
+
+function triggerSave(busId, busLineCode, RouteCode, type) {
+  if (!type) {
+    console.log("EPSILON:", busId, busLineCode, RouteCode)
+    const json = JSON.stringify({
+      "id": busId,
+      "line_code": busLineCode,
+      "route_code": RouteCode
+    })
+    fetch(`https://data.evoxs.xyz/oasa?epsilon=edit&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&pushingjson=${json}&type=line`)
+      .then(response => response.text())
+      .then(data => {
+        console.log("EPSILON:", data)
+      })
+      .catch(error => {
+        console.log("SAVE [1] error:", error);
+      });
+  } else {
+    console.log("EPSILON:", busId, busLineCode, RouteCode, type)
+    const busInfo = evoxIds[activeEvoxId]
+    let matchingLines = fullLine.filter(line => line.LineID === busInfo.bus);
+    console.log("EPSILON: Found Matches:", matchingLines)
+    const working = matchingLines[0]
+    //alert(JSON.stringify(personalizedAutoBus[busInfo.bus]))
+    const lineCode = working.LineCode
+    const json = JSON.stringify({
+      "id": lineCode, //station id
+      "line_match": busId, //matching active line id
+      "line_route_code": RouteCode //matching active route code
+    })
+    fetch(`https://data.evoxs.xyz/oasa?epsilon=edit&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&pushingjson=${json}&type=station`)
+      .then(response => response.text())
+      .then(data => {
+        console.log("EPSILON:", data)
+      })
+      .catch(error => {
+        console.log("SAVE [2] error:", error);
+      });
+  }
+
 }
