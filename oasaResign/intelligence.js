@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.0.5'
+const currentVersion = '2.0.51'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -4017,7 +4017,7 @@ function triggerSave(busId, busLineCode, RouteCode, type) {
       "line_code": busLineCode,
       "route_code": RouteCode
     })
-    fetch(`https://data.evoxs.xyz/oasa?epsilon=edit&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&pushingjson=${json}&type=line`)
+    fetch(`https://data.evoxs.xyz/oasa?epsilon=edit&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&pushingjson=${json}&type=line&vevox=${randomString()}`)
       .then(response => response.text())
       .then(data => {
         console.log("EPSILON:", data)
@@ -4038,7 +4038,7 @@ function triggerSave(busId, busLineCode, RouteCode, type) {
       "line_match": busId, //matching active line id
       "line_route_code": RouteCode //matching active route code
     })
-    fetch(`https://data.evoxs.xyz/oasa?epsilon=edit&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&pushingjson=${json}&type=station`)
+    fetch(`https://data.evoxs.xyz/oasa?epsilon=edit&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&pushingjson=${json}&type=station&vevox=${randomString()}`)
       .then(response => response.text())
       .then(data => {
         console.log("EPSILON:", data)
