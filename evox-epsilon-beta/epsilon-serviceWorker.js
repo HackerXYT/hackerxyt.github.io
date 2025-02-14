@@ -20,8 +20,8 @@ self.addEventListener('notificationclick', function (event) {
   );
 });
 
-const STATIC_CACHE_NAME = 'epsilon-cache-v36';
-const APP_CACHE_NAME = 'epsilon-app-cache-v36';
+const STATIC_CACHE_NAME = 'epsilon-cache-v37';
+const APP_CACHE_NAME = 'epsilon-app-cache-v37';
 const CACHE_STATIC = [
   '/evox-epsilon-beta/epsilon-frontend-assets/epsilon.png',
   '/evox-epsilon-beta/epsilon-frontend-assets/customize.png',
