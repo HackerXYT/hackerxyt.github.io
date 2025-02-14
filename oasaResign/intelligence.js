@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.0.4'
+const currentVersion = '2.0.5'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -102,7 +102,7 @@ function openSearch() {
     map.resize()
   })
   document.getElementById("recommendSpawn").innerHTML = ''
-  document.getElementById("recommendSpawn").innerHTML += `<div class="Block"><img src="../evox-epsilon-beta/epsilon-transparent.png" width="20px" height="20px">Evox
+  document.getElementById("recommendSpawn").innerHTML += `<div onclick="window.location.href = '../'" class="Block"><img src="../evox-epsilon-beta/epsilon-transparent.png" width="20px" height="20px">Evox
                     </div>`
   document.getElementById("recommendSpawn").innerHTML += `<div class="Block"><svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g opacity="0.5">
