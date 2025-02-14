@@ -4130,12 +4130,16 @@ function sendFile(e, up) {
 }
 
 function getOasaInfo() {
-    fetch(`https://data.evoxs.xyz/oasa?epsilon=true&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}`)
+    fetch(`https://data.evoxs.xyz/oasa?epsilon=true&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&versionBypass=Math.floor(1000000000 + Math.random() * 9000000000)`)
         .then(response => response.json())
         .then(data => {
             if (!data.message) {
                 document.getElementById("card-oasa").style.display = null
                 processOasaInfo(data)
+            } else {
+                document.getElementById("card-oasa").style.display = null
+                const container = document.getElementById("oasa-info")
+                container.innerHTML = `<p style="text-align: center">Account does not own Oasa or hasn't used it yet. [DEBUG BETA]</p>`
             }
             //alert(JSON.stringify(data))
 
@@ -4242,7 +4246,7 @@ function processOasaInfo(data) {
 
                 return `${hours}:${minutes}`;
             }
-            fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${targetUrl}`)
+            fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${targetUrl}&versionBypass=Math.floor(1000000000 + Math.random() * 9000000000)`)
                 .then(response => response.json())
                 .then(data => {
                     if (!data.come && !data.go) {
@@ -4277,7 +4281,7 @@ function processOasaInfo(data) {
 
     function spawnNear(line) {
         const stopsFinal = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${line.route_code}&keyOrigin=evoxEpsilon`);
-        fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stopsFinal}`)
+        fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stopsFinal}&versionBypass=Math.floor(1000000000 + Math.random() * 9000000000)`)
             .then(response => response.json())
             .then(bata => {
                 console.log("OASA", bata)
@@ -4350,7 +4354,7 @@ function processOasaInfo(data) {
         const st2 = station
         console.log("OASA", station)
         const stopsFinal = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutesDetailsAndStops&p1=${station.line_route_code}&keyOrigin=evoxEpsilon`);
-        fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stopsFinal}`)
+        fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stopsFinal}&versionBypass=Math.floor(1000000000 + Math.random() * 9000000000)`)
             .then(response => response.json())
             .then(bata => {
                 console.log("OASA", bata)
@@ -4392,7 +4396,7 @@ function processOasaInfo(data) {
                     <p>${capitalizeWords(stationFound.StopDescr)}</p><span id="station-distance-${randomId2}">${stopDistance * 1000 > 100 ? `${Math.floor(stopDistance) !== 0 ? Math.floor(stopDistance) : Math.floor(stopDistance * 10) / 10}km` : `${Math.floor(stopDistance * 1000)}m`}</span>
                 </div>`;
                 const stop_url2 = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${st2.id}&keyOrigin=evoxEpsilon`);
-                fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url2}`)
+                fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url2}&versionBypass=Math.floor(1000000000 + Math.random() * 9000000000)`)
                     .then(response => response.json())
                     .then(arrivals => {
                         let matchFound = false;
