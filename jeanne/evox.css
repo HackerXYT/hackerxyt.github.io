@@ -1124,9 +1124,9 @@ input {
   transform: translateX(100%);
   /* Initially off-screen to the left */
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(35px);
-  -webkit-backdrop-filter: blur(35px);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   /* Adjusting content height to fill the viewport */
 }
 

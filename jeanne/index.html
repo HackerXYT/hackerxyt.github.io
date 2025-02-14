@@ -82,6 +82,17 @@
         media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
     <link rel="apple-touch-startup-image" href="https://evoxs.xyz/jean/splashScreens/apple-splash-1136-640.png"
         media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    <style>
+        html {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-behavior: smooth;
+        }
+
+        html::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -168,7 +179,7 @@
             <span>registered under Evox©</span>
             <p>Διεύθυνση IP: <span id="ipIdent"></span></p>
             <p>Συσκευή: <span id="deviceInfo"></span></p>
-            <p>Έκδοση: <span>0.9.7</span></p>
+            <p>Έκδοση: <span>0.9.8</span></p>
             <p>Δοκιμαστική λειτουργία: <span>Ανενεργή</span></p>
             <p>Επανεκκίνηση: <span onclick="window.location.reload()">Τώρα</span></p>
         </div>
@@ -304,11 +315,21 @@
                             </svg>
                         </div>
                         <div onclick="help()" class="optionButton">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="17.5px" height="17.5px" viewBox="0 0 24 24"
+
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20.5px" height="20.5px" viewBox="0 0 24 24"
                                 fill="none">
                                 <path
-                                    d="M4 21V19.5C4 16.4624 6.46243 14 9.5 14H12.5C15.5376 14 18 16.4624 18 19.5V21M7 21V18M15 21V18M16.5 6L16.8367 5.49493C17.1969 4.95461 17.9371 4.82782 18.4566 5.21745C19.0073 5.63047 19.0645 6.43549 18.5778 6.92224L17.8536 7.64645C17.6272 7.87282 17.5 8.17986 17.5 8.5M17.5 10V10.2M13.8281 4.89801C14.6435 3.74945 15.9842 3 17.5 3C19.9853 3 22 5.01472 22 7.5C22 9.98528 19.9853 12 17.5 12C16.2549 12 15.1279 11.4943 14.3131 10.6771M15 8.00001C15 5.79086 13.2091 4 11 4C8.79086 4 7 5.79086 7 8.00001C7 10.2092 8.79086 12 11 12C11.8312 12 12.6032 11.7465 13.2429 11.3125C14.3033 10.5931 15 9.37794 15 8.00001Z"
-                                    stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4" />
+                                    d="M22 12C22 6.49 17.51 2 12 2C6.49 2 2 6.49 2 12C2 14.9 3.25 17.51 5.23 19.34C5.23 19.35 5.23 19.35 5.22 19.36C5.32 19.46 5.44 19.54 5.54 19.63C5.6 19.68 5.65 19.73 5.71 19.77C5.89 19.92 6.09 20.06 6.28 20.2C6.35 20.25 6.41 20.29 6.48 20.34C6.67 20.47 6.87 20.59 7.08 20.7C7.15 20.74 7.23 20.79 7.3 20.83C7.5 20.94 7.71 21.04 7.93 21.13C8.01 21.17 8.09 21.21 8.17 21.24C8.39 21.33 8.61 21.41 8.83 21.48C8.91 21.51 8.99 21.54 9.07 21.56C9.31 21.63 9.55 21.69 9.79 21.75C9.86 21.77 9.93 21.79 10.01 21.8C10.29 21.86 10.57 21.9 10.86 21.93C10.9 21.93 10.94 21.94 10.98 21.95C11.32 21.98 11.66 22 12 22C12.34 22 12.68 21.98 13.01 21.95C13.05 21.95 13.09 21.94 13.13 21.93C13.42 21.9 13.7 21.86 13.98 21.8C14.05 21.79 14.12 21.76 14.2 21.75C14.44 21.69 14.69 21.64 14.92 21.56C15 21.53 15.08 21.5 15.16 21.48C15.38 21.4 15.61 21.33 15.82 21.24C15.9 21.21 15.98 21.17 16.06 21.13C16.27 21.04 16.48 20.94 16.69 20.83C16.77 20.79 16.84 20.74 16.91 20.7C17.11 20.58 17.31 20.47 17.51 20.34C17.58 20.3 17.64 20.25 17.71 20.2C17.91 20.06 18.1 19.92 18.28 19.77C18.34 19.72 18.39 19.67 18.45 19.63C18.56 19.54 18.67 19.45 18.77 19.36C18.77 19.35 18.77 19.35 18.76 19.34C20.75 17.51 22 14.9 22 12ZM16.94 16.97C14.23 15.15 9.79 15.15 7.06 16.97C6.62 17.26 6.26 17.6 5.96 17.97C4.44 16.43 3.5 14.32 3.5 12C3.5 7.31 7.31 3.5 12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 14.32 19.56 16.43 18.04 17.97C17.75 17.6 17.38 17.26 16.94 16.97Z"
+                                    fill="#fff" />
+                                <path
+                                    d="M12 6.92969C9.93 6.92969 8.25 8.60969 8.25 10.6797C8.25 12.7097 9.84 14.3597 11.95 14.4197C11.98 14.4197 12.02 14.4197 12.04 14.4197C12.06 14.4197 12.09 14.4197 12.11 14.4197C12.12 14.4197 12.13 14.4197 12.13 14.4197C14.15 14.3497 15.74 12.7097 15.75 10.6797C15.75 8.60969 14.07 6.92969 12 6.92969Z"
+                                    fill="#fff" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20.5px" height="20.5px"
+                                viewBox="0 0 56 56">
+                                <path
+                                    d="M 27.9999 51.9063 C 41.0546 51.9063 51.9063 41.0781 51.9063 28 C 51.9063 14.9453 41.0312 4.0937 27.9765 4.0937 C 14.8983 4.0937 4.0937 14.9453 4.0937 28 C 4.0937 41.0781 14.9218 51.9063 27.9999 51.9063 Z M 27.5546 33.0859 C 26.2655 33.0859 25.5858 32.4297 25.5858 31.1641 L 25.5858 30.8359 C 25.5858 28.4219 26.8749 27.1094 28.6562 25.8906 C 30.8358 24.4141 31.8436 23.5703 31.8436 21.8828 C 31.8436 20.0312 30.3905 18.7656 28.1405 18.7656 C 26.5234 18.7656 25.2812 19.5859 24.5312 20.9219 C 23.7343 21.8594 23.4999 22.5859 22.0936 22.5859 C 21.2968 22.5859 20.4062 22 20.4062 20.8984 C 20.4062 20.4766 20.4999 20.0781 20.6171 19.6797 C 21.2499 17.4063 24.0858 15.4375 28.3046 15.4375 C 32.4999 15.4375 36.1327 17.6172 36.1327 21.6953 C 36.1327 24.6484 34.4218 26.0547 32.0312 27.6719 C 30.3436 28.8203 29.4999 29.6641 29.4999 31.0469 L 29.4999 31.3516 C 29.4999 32.3125 28.7733 33.0859 27.5546 33.0859 Z M 27.6249 40.1406 C 26.2890 40.1406 24.9999 39.0625 24.9999 37.6094 C 24.9999 36.1563 26.2655 35.0781 27.6249 35.0781 C 29.0077 35.0781 30.2499 36.1328 30.2499 37.6094 C 30.2499 39.0859 28.9843 40.1406 27.6249 40.1406 Z" />
                             </svg>
                         </div>
                     </div>
@@ -341,7 +362,25 @@
 
     <div id="tasks" class="tasks" style="display: none;">
         <div id="taskLoading" class="loading">
-            <div class="loading-spinner"></div>
+            <div id="typewriter" class="typewriter">
+                <div class="slide"><i></i></div>
+                <div class="paper"></div>
+                <div class="keyboard"></div>
+            </div>
+            <div id="spinnerApple" class="spinner center" style="display: none;">
+                <div class="spinner-blade"></div>
+                <div class="spinner-blade"></div>
+                <div class="spinner-blade"></div>
+                <div class="spinner-blade"></div>
+                <div class="spinner-blade"></div>
+                <div class="spinner-blade"></div>
+                <div class="spinner-blade"></div>
+                <div class="spinner-blade"></div>
+                <div class="spinner-blade"></div>
+                <div class="spinner-blade"></div>
+                <div class="spinner-blade"></div>
+                <div class="spinner-blade"></div>
+            </div>
         </div>
         <vox id="tempLoader" style="display: none;margin-bottom: 10px;">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="35px"
@@ -361,6 +400,20 @@
 
     <div onclick="window.location.reload()" id="hexa" class="tasks">
         <img src="logo.png">
+        <div class="jelly-triangle">
+            <div class="jelly-triangle__dot"></div>
+            <div class="jelly-triangle__traveler"></div>
+        </div>
+        
+        <svg width="0" height="0" class="jelly-maker">
+            <defs>
+                <filter id="uib-jelly-triangle-ooze">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="7.3" result="blur"></feGaussianBlur>
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="ooze"></feColorMatrix>
+                    <feBlend in="SourceGraphic" in2="ooze"></feBlend>
+                </filter>
+            </defs>
+        </svg>
     </div>
 
     <div style="display: none;" id="lock">
@@ -709,7 +762,20 @@
                                 <circle cx="32" cy="32" r="28" class="circle-fill" />
                             </svg>
                             <div id="isDone" class="percentage-label">
-                                <div class="loading-spinner"></div>
+                                <div class="jelly-triangle">
+                                    <div class="jelly-triangle__dot"></div>
+                                    <div class="jelly-triangle__traveler"></div>
+                                </div>
+                                
+                                <svg width="0" height="0" class="jelly-maker">
+                                    <defs>
+                                        <filter id="uib-jelly-triangle-ooze">
+                                            <feGaussianBlur in="SourceGraphic" stdDeviation="7.3" result="blur"></feGaussianBlur>
+                                            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="ooze"></feColorMatrix>
+                                            <feBlend in="SourceGraphic" in2="ooze"></feBlend>
+                                        </filter>
+                                    </defs>
+                                </svg>
                             </div>
                         </div>
                     </div>
@@ -720,7 +786,7 @@
 
             </div>
             <div class="toyou" id="toyou">
-                <div class="aclass">
+                <div class="aclass fade-in-slide-up">
                     <div class="left">
                         Προς εσένα
                     </div>
@@ -864,7 +930,20 @@
                 <p>ΠΛΗΡΟΦΟΡΙΕΣ</p>
                 <div id="tags">
                     <div style="display: flex;width: 100%;padding: 10px;justify-content: center;">
-                        <div class="loading-spinner"></div>
+                        <div class="jelly-triangle">
+                            <div class="jelly-triangle__dot"></div>
+                            <div class="jelly-triangle__traveler"></div>
+                        </div>
+                        
+                        <svg width="0" height="0" class="jelly-maker">
+                            <defs>
+                                <filter id="uib-jelly-triangle-ooze">
+                                    <feGaussianBlur in="SourceGraphic" stdDeviation="7.3" result="blur"></feGaussianBlur>
+                                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="ooze"></feColorMatrix>
+                                    <feBlend in="SourceGraphic" in2="ooze"></feBlend>
+                                </filter>
+                            </defs>
+                        </svg>
                     </div>
                 </div>
             </div>
@@ -926,7 +1005,33 @@
                         </svg>
                         <span>Αλλαγή Τάξης</span>
                     </div>
-                    <div onclick="reset()" class="anInfo" style="margin-top: 20px;">
+                    <div class="anInfo">
+                        &nbsp;
+                        <div class="x-line"></div>
+                    </div>
+                    <div class="anInfo">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25px"
+                            height="25px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g transform="translate(-1488.000000, -48.000000)" fill-rule="nonzero">
+                                    <g transform="translate(1488.000000, 48.000000)">
+                                        <path opacity="0.4"
+                                            d="M24,0 L24,24 L0,24 L0,0 L24,0 Z M12.5934901,23.257841 L12.5819402,23.2595131 L12.5108777,23.2950439 L12.4918791,23.2987469 L12.4918791,23.2987469 L12.4767152,23.2950439 L12.4056548,23.2595131 C12.3958229,23.2563662 12.3870493,23.2590235 12.3821421,23.2649074 L12.3780323,23.275831 L12.360941,23.7031097 L12.3658947,23.7234994 L12.3769048,23.7357139 L12.4804777,23.8096931 L12.4953491,23.8136134 L12.4953491,23.8136134 L12.5071152,23.8096931 L12.6106902,23.7357139 L12.6232938,23.7196733 L12.6232938,23.7196733 L12.6266527,23.7031097 L12.609561,23.275831 C12.6075724,23.2657013 12.6010112,23.2592993 12.5934901,23.257841 L12.5934901,23.257841 Z M12.8583906,23.1452862 L12.8445485,23.1473072 L12.6598443,23.2396597 L12.6498822,23.2499052 L12.6498822,23.2499052 L12.6471943,23.2611114 L12.6650943,23.6906389 L12.6699349,23.7034178 L12.6699349,23.7034178 L12.678386,23.7104931 L12.8793402,23.8032389 C12.8914285,23.8068999 12.9022333,23.8029875 12.9078286,23.7952264 L12.9118235,23.7811639 L12.8776777,23.1665331 C12.8752882,23.1545897 12.8674102,23.1470016 12.8583906,23.1452862 L12.8583906,23.1452862 Z M12.1430473,23.1473072 C12.1332178,23.1423925 12.1221763,23.1452606 12.1156365,23.1525954 L12.1099173,23.1665331 L12.0757714,23.7811639 C12.0751323,23.7926639 12.0828099,23.8018602 12.0926481,23.8045676 L12.108256,23.8032389 L12.3092106,23.7104931 L12.3186497,23.7024347 L12.3186497,23.7024347 L12.3225043,23.6906389 L12.340401,23.2611114 L12.337245,23.2485176 L12.337245,23.2485176 L12.3277531,23.2396597 L12.1430473,23.1473072 Z"
+                                            fill-rule="nonzero">
+    
+                                        </path>
+                                        <path opacity="0.7"
+                                            d="M20.2451,14.75 C21.18,15.3637 21.1371,16.7868 20.1165,17.3263 L12.9348,21.1225 C12.35,21.4316 11.6503,21.4316 11.0655,21.1225 L3.88381,17.3263 C2.86325,16.7868 2.82034,15.3638 3.75508,14.75 L3.817995,14.7892 L3.817995,14.7892 L11.0654,18.6222 C11.6502,18.9313 12.35,18.9313 12.9347,18.6222 L20.1164,14.826 C20.1612,14.8023 20.2041,14.7769 20.2451,14.75 Z M20.2451,10.75 C21.1393522,11.3370174 21.138982,12.6645822 20.2440771,13.2510586 L20.1165,13.3263 L12.9348,17.1225 C12.4031636,17.4035 11.7765686,17.4290455 11.227667,17.1991364 L11.0655,17.1225 L3.88381,13.3263 C2.86325,12.7868 2.82034,11.3638 3.75508,10.75 L3.817995,10.7892 L3.817995,10.7892 L11.0654,14.6222 C11.5970364,14.9032 12.223714,14.9287455 12.7725555,14.6988364 L12.9347,14.6222 L20.1164,10.826 C20.1612,10.8023 20.2041,10.7769 20.2451,10.75 Z M12.9347,2.87782 L20.1164,6.67404 C21.1818,7.23718 21.1818,8.76316 20.1164,9.32629 L12.9347,13.1225 C12.35,13.4316 11.6502,13.4316 11.0654,13.1225 L3.88373,9.32629 C2.81838,8.76315 2.81838,7.23718 3.88373,6.67404 L11.0654,2.87782 C11.6502,2.56872 12.35,2.56872 12.9347,2.87782 Z"
+                                            fill="#fff">
+    
+                                        </path>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                        <span>Έκδοση 0.9.8</span>
+                    </div>
+                    <div onclick="reset()" class="anInfo">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
                             fill="none">
                             <path opacity="0.4"
@@ -938,12 +1043,14 @@
                         </svg>
                         <span style="color: #c03f3f;">Αποσύνδεση</span>
                     </div>
+                    
+
                 </div>
+                
             </div>
 
             <p style="font-size: 13px;color: #ffffff82;margin-top: 10px;padding: 20px;">Το όνομα χρήστη σας στο
                 Instagram εμφανίζεται μόνο σε εσάς, οι άλλοι χρήστες βλέπουν μόνο την εικόνα προφίλ σας.</p>
-
 
         </div>
 

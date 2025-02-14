@@ -650,7 +650,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         .then(response => response.json())
                         .then(names => {
                             namesData = names
-                            
+
                             setTimeout(function () {
 
                                 document.getElementById("loadText").innerText = 'Έγινε σύνδεση'
@@ -686,34 +686,34 @@ document.addEventListener("DOMContentLoaded", function () {
                                 }, 500)
                             }, 500)
 
-try {
+                            try {
                                 if (names.matchedAccounts) {
-                            if (names.matchedAccounts.length > 0) {
-                                //runIdentifier
-                                ipLog = names.matchedAccounts[0]
-                                getEvoxProfile(names.matchedAccounts[0]).then(profileSrc => {
-                                    document.getElementById('matchedPfp').src = profileSrc
-                                });
-                                document.getElementById("longAgo").innerText = timeAgo(names.ZeroLastLogin)
-                                document.getElementById("nameIp").innerText = names.matchedAccounts[0]
+                                    if (names.matchedAccounts.length > 0) {
+                                        //runIdentifier
+                                        ipLog = names.matchedAccounts[0]
+                                        getEvoxProfile(names.matchedAccounts[0]).then(profileSrc => {
+                                            document.getElementById('matchedPfp').src = profileSrc
+                                        });
+                                        document.getElementById("longAgo").innerText = timeAgo(names.ZeroLastLogin)
+                                        document.getElementById("nameIp").innerText = names.matchedAccounts[0]
 
-                                $("#appInfo").fadeOut("fast")
-                                $("#textDialog").fadeOut("fast", function () {
-                                    const boxUp = document.getElementById("boxUp");
-                                    const currentHeight = boxUp.offsetHeight + 'px';
-                                    boxUpDefaultHeight = currentHeight
-                                    boxUp.style.transition = 'height 1s';
-                                    boxUp.style.height = currentHeight;
-                                    setTimeout(() => {
-                                        boxUp.style.height = '300px';
-                                    }, 10);
-                                    $('#boxUp').children().not('#helpMe, .loginByName').fadeOut(function () {
-                                        $("#loginByIp").fadeIn("fast")
-                                    });
+                                        $("#appInfo").fadeOut("fast")
+                                        $("#textDialog").fadeOut("fast", function () {
+                                            const boxUp = document.getElementById("boxUp");
+                                            const currentHeight = boxUp.offsetHeight + 'px';
+                                            boxUpDefaultHeight = currentHeight
+                                            boxUp.style.transition = 'height 1s';
+                                            boxUp.style.height = currentHeight;
+                                            setTimeout(() => {
+                                                boxUp.style.height = '300px';
+                                            }, 10);
+                                            $('#boxUp').children().not('#helpMe, .loginByName').fadeOut(function () {
+                                                $("#loginByIp").fadeIn("fast")
+                                            });
 
-                                })
-                            }
-                            }
+                                        })
+                                    }
+                                }
                             } catch (error) {
                                 console.error("Ip Login Failed")
                             }
@@ -722,6 +722,9 @@ try {
                             console.error("Jeanne D'arc Database is offline.")
                             document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
                             $("#tasks").fadeIn("fast")
+                            $("#hexa").fadeOut("fast")
+                            document.getElementById("typewriter").style.display = 'none'
+                            document.getElementById("spinnerApple").style.display = null
                             console.log('Error:', error);
                         });
 
@@ -897,6 +900,8 @@ function clickPIN(element) {
                             document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
                             $("#tasks").fadeIn("fast")
                             $("#hexa").fadeOut("fast")
+                            document.getElementById("typewriter").style.display = 'none'
+                            document.getElementById("spinnerApple").style.display = null
                             console.log('Error:', error);
                         });
 
@@ -946,6 +951,8 @@ function clickPIN(element) {
                             document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
                             $("#tasks").fadeIn("fast")
                             $("#hexa").fadeOut("fast")
+                            document.getElementById("typewriter").style.display = 'none'
+                            document.getElementById("spinnerApple").style.display = null
                             console.log('Error:', error);
                         });
 
@@ -1029,6 +1036,8 @@ function clickPIN(element) {
                                 document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
                                 $("#tasks").fadeIn("fast")
                                 $("#hexa").fadeOut("fast")
+                                document.getElementById("typewriter").style.display = 'none'
+                                document.getElementById("spinnerApple").style.display = null
                                 console.log('Error:', error);
                             });
                     } else {
@@ -1208,6 +1217,8 @@ function autoLogin() {
                     document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
                     $("#tasks").fadeIn("fast")
                     $("#hexa").fadeOut("fast")
+                    document.getElementById("typewriter").style.display = 'none'
+                    document.getElementById("spinnerApple").style.display = null
                     //alert("a")
                     retryInt = setInterval(function () {
                         fetch(`https://arc.evoxs.xyz/?metode=pin&pin=${process}&emri=${foundName}`)
@@ -1215,6 +1226,8 @@ function autoLogin() {
                             .then(status => {
                                 clearInterval(retryInt)
                                 autoLogin()
+                                document.getElementById("typewriter").style.display = null
+                                document.getElementById("spinnerApple").style.display = 'none'
                             }).catch(error => {
                                 console.log("Still Offline")
                             })
