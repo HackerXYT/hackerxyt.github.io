@@ -3264,9 +3264,14 @@ function openDiscovery(el) {
             console.log('Error:', error);
         });
 
+        if(foundName.includes("παποστόλ")) {
+            document.getElementById("main-block").querySelector("vox").remove()
+            document.getElementById("main-block").querySelector(".summary").style = null
+        }
 
     const toUser = document.getElementById("toyou")
     toUser.style.display = 'none'
+    document.getElementById("sum").style.display = 'none'
     const val = localStorage.getItem("jeanDarc_accountData")
     if (val) {
         const json = JSON.parse(val)
@@ -3275,7 +3280,8 @@ function openDiscovery(el) {
             .then(response => response.json())
             .then(complete => {
                 if (complete.total !== 0) {
-                    toUser.style.display = 'flex'
+                    //toUser.style.display = 'flex'
+                    document.getElementById("sum").style.display = null
                     toUser.querySelector(".right").innerHTML = `${complete.total} ${complete.total === 1 ? "καταχώρηση" : "καταχωρήσεις"}`
                 }
 
@@ -3424,4 +3430,52 @@ function timeAgo(isoString) {
                 : `πριν ${count} ${unit.name[1]}`;
         }
     }
+}
+
+function analyzeUser() {
+    setTimeout(function () {
+        document.getElementById("aitext").classList.add('btn-shine')
+        document.getElementById("aitext").innerText = 'Σύνδεση..'
+        const val = localStorage.getItem("jeanDarc_accountData")
+        if (val) {
+            const json = JSON.parse(val)
+            const process = atob(json.pin)
+            document.getElementById("aitext").innerText = 'Επεξεργασία..'
+            fetch(`https://arc.evoxs.xyz/?metode=AIT&emri=${foundName}&pin=${process}`)
+                .then(response => response.json())
+                .then(complete => {
+                    if (complete.error) {
+                        document.getElementById("aitext").classList.remove('btn-shine')
+                        document.getElementById("aitext").innerText = 'Αποτυχία'
+                    } else if (complete.response) {
+                        setTimeout(function () {
+                            const find = complete.response
+                            if (find === 'Access Denied') {
+                                document.getElementById("summaryTxt").innerText = 'Λάθος κωδικός'
+                                document.getElementById("aitext").innerText = 'Αποτυχία'
+                            } else if (find === 'AIT is currently sleeping') {
+                                document.getElementById("summaryTxt").innerHTML = 'Το όριο περιλήψεων έχει εξαντληθεί.<br>Δοκιμάστε ξανά αύριο.'
+                                document.getElementById("aitext").innerText = 'Αποτυχία'
+                            } else if (find === '0 Entries') {
+                                document.getElementById("summaryTxt").innerText = 'Δεν έχεις καμία καταχώρηση'
+                                document.getElementById("aitext").innerText = 'Επανάληψη'
+                            } else {
+                                //Success
+                                document.getElementById("summaryTxt").innerText = find
+                                document.getElementById("aitext").innerText = 'Επανάληψη'
+                            }
+                            $("#summaryTxt").fadeIn("fast")
+                            document.getElementById("aitext").classList.remove('btn-shine')
+                        }, 700)
+
+                    }
+                }).catch(error => {
+                    console.error("Progress error", error)
+                    document.getElementById("aitext").classList.remove('btn-shine')
+                    document.getElementById("aitext").innerText = 'Αποτυχία'
+                });
+        }
+    }, 250)
+
+
 }
