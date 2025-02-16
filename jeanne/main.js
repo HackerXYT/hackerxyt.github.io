@@ -3264,10 +3264,15 @@ function openDiscovery(el) {
             console.log('Error:', error);
         });
 
-        if(foundName.includes("παποστόλ")) {
+    if (foundName.includes("παποστόλ")) {
+        try {
             document.getElementById("main-block").querySelector("vox").remove()
             document.getElementById("main-block").querySelector(".summary").style = null
+        } catch (error) {
+            console.warn("err", error)
         }
+
+    }
 
     const toUser = document.getElementById("toyou")
     toUser.style.display = 'none'
