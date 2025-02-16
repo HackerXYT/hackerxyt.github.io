@@ -3276,6 +3276,7 @@ function openDiscovery(el) {
 
     const toUser = document.getElementById("toyou")
     toUser.style.display = 'none'
+    document.getElementById("main-block").style.display = 'none'
     document.getElementById("sum").style.display = 'none'
     const val = localStorage.getItem("jeanDarc_accountData")
     if (val) {
@@ -3287,6 +3288,7 @@ function openDiscovery(el) {
                 if (complete.total !== 0) {
                     //toUser.style.display = 'flex'
                     document.getElementById("sum").style.display = null
+                    document.getElementById("main-block").style.display = null
                     toUser.querySelector(".right").innerHTML = `${complete.total} ${complete.total === 1 ? "καταχώρηση" : "καταχωρήσεις"}`
                 }
 
