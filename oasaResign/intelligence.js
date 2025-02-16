@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.0.51'
+const currentVersion = '2.0.52'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -3482,7 +3482,7 @@ function convert2Base() {
 }
 
 function showStopDetails(stopCode, stopName) {
-  triggerSave(evoxIds[activeEvoxId].bus, null, activeRouteCode, 'station')
+  triggerSave(evoxIds[activeEvoxId].bus, null, activeRouteCode, 'station', stopCode)
   document.getElementById("stationInfoName").innerText = stopName
 
 
@@ -4009,7 +4009,7 @@ function addActivity(stationName, stationId, currentMinEl) {
   handleActivity(startingJson);
 }
 
-function triggerSave(busId, busLineCode, RouteCode, type) {
+function triggerSave(busId, busLineCode, RouteCode, type, stopCode) {
   if (!type) {
     console.log("EPSILON:", busId, busLineCode, RouteCode)
     const json = JSON.stringify({
@@ -4034,7 +4034,7 @@ function triggerSave(busId, busLineCode, RouteCode, type) {
     //alert(JSON.stringify(personalizedAutoBus[busInfo.bus]))
     const lineCode = working.LineCode
     const json = JSON.stringify({
-      "id": lineCode, //station id
+      "id": stopCode, //station id
       "line_match": busId, //matching active line id
       "line_route_code": RouteCode //matching active route code
     })
