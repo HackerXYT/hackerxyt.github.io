@@ -165,6 +165,7 @@
             i.resolution = 2,
             i.anchor.set(.5, 0),
             i.zIndex = 2,
+            
             e.hanger.addChild(i),
             this.fadeAlpha = 0,
             !0
@@ -188,12 +189,12 @@
             let {renderer: e} = this
               , t = this.getSize();
             return new PIXI.TextStyle({
-                fontSize: 12, //vanilla text size, no zoom
-                fill: e.colors.text.rgb,
+                fontSize: 13, //vanilla text size, no zoom
+                fill: 0x000000,
                 fontFamily: 'ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft YaHei Light", sans-serif',
                 wordWrap: !0,
                 wordWrapWidth: 300,
-                align: "center"
+                align: "center",
             })
         }
         render() {
@@ -310,6 +311,8 @@
             let n = this.line = new PIXI.Sprite(PIXI.Texture.WHITE);
             n.eventMode = "none";
             let r = e.colors.line;
+            
+            console.log(r)
             n.alpha = ie * r.a,
             n.tint = r.rgb,
             t.addChild(n);
@@ -532,7 +535,7 @@
                         , 300)
                     }
                 }
-                , 50)
+                , 250)
             }
         }
         destroy() {
@@ -585,10 +588,11 @@
                 t && t.contentWindow.WebGL2RenderingContext && (window.WebGL2RenderingContext = t.contentWindow.WebGL2RenderingContext),
                 i = this.px = new PIXI.Application({
                     view: e,
-                    antialias: !0,
-                    backgroundAlpha: 1, //changed to 1 from 0
-                    autoStart: !1
-                })
+                    antialias: true,
+                    backgroundAlpha: 1,
+                    backgroundColor: 0xDDDDDD, // White color
+                    autoStart: false
+                });
             } finally {
                 window.WebGL2RenderingContext = s
             }
@@ -1155,7 +1159,7 @@
         }
         updateZoom() {
             let {scale: e, targetScale: t, panX: n, panY: r} = this;
-            t = this.targetScale = Math.min(5, Math.max(3 / 4, t)); // Increased max zoom to 2
+            t = this.targetScale = Math.min(5, Math.max(2.4 / 4, t)); // Increased max zoom to 2
             if ((e > t ? e / t : t / e) - 1 >= .01) {
                 let {zoomCenterX: s, zoomCenterY: f} = this;
                 if (s === 0 && f === 0) {

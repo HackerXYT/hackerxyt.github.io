@@ -7,7 +7,12 @@
 </head>
 <style>
     body {
-        background-color: transparent;
+        background-color: #ddd;
+    }
+
+    .graph-view.color-line {
+        color: #8080803c !important;
+        /* grey */
     }
 </style>
 
@@ -94,7 +99,7 @@
 
                             // Create an array of promises for fetching friends of each evox user
                             const friendPromises = evox_users.map(user => {
-                                return fetch(`https://data.evoxs.xyz/social?username=${user}&todo=friends`)
+                                return fetch(`jeanne.json`)
                                     .then(response => {
                                         if (!response.ok) {
                                             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -141,7 +146,7 @@
                         let count = 0
                         // Include the client user first
                         e_friends[client_username] = {
-                            color: "#3dcc9f", // Self-user color
+                            color: "#000000", // Self-user color
                             links: social_data.all_friends // Links to all friends
                         };
                         console.log(social_data)
@@ -155,14 +160,14 @@
                                 if (JSON.stringify(social_data.all_friends).includes(username)) {
                                     console.log(JSON.stringify(social_data.all_friends).includes(username), social_data.all_friends, username)
                                     e_friends[username] = {
-                                        color: user.favorite ? "#3c8f82" : undefined, // Assign color if favorite
+                                        color: user.favorite ? "#000000" : "#101114", // Assign color if favorite
                                         links: user.friends // Links to their friends
                                     };
                                 } else {
                                     console.log(JSON.stringify(social_data.all_friends).includes(username), social_data.all_friends, username)
                                     count = count + 1
                                     e_friends[count] = {
-                                        color: "#616161", // Assign color if favorite
+                                        color: "#000000", // Assign color if favorite
                                         links: user.friends // Links to their friends
                                     };
                                 }
