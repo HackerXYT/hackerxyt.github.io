@@ -14,6 +14,14 @@
     scroll-behavior: smooth;
 }
 
+:root {
+    --color-theme: #298ef2;
+    --color-theme-light: rgb(102, 179, 255);
+    --color-theme-select: #298ef255;
+}
+
+
+
 html,
 body {
     height: 100%;
@@ -1044,7 +1052,7 @@ img {
 }
 
 .progress-ring circle.progress {
-    stroke: #298ef2;
+    stroke: var(--color-theme);
     /* Highlighted color */
     stroke-dasharray: 176;
     stroke-dashoffset: calc(176 - (176 * var(--progress)) / 100);
@@ -1350,7 +1358,7 @@ img {
     left: 0;
     height: 100%;
     width: 10%;
-    background-color: #298ef2;
+    background-color: var(--color-theme);
     /*Bar Color*/
     box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.8);
     border-radius: 50px;
@@ -1412,7 +1420,7 @@ img {
     height: auto;
     padding: 5px 20px;
     border-radius: 50px;
-    background-color: #ffffff10;
+    background-color: #0000005e;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -1441,7 +1449,7 @@ img {
 }
 
 .navigation .bar .item.active svg path {
-    fill: #298ef2;
+    fill: var(--color-theme);
 }
 
 .navigation .bar .item svg {
@@ -1518,7 +1526,10 @@ img {
 
 .topActions .backArrow {
     padding: 10px;
-    background-color: #000;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    background-color: #1c1c1c;
+    border: 1px solid #0b0b0b;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -1601,14 +1612,21 @@ img {
     margin-top: -50px;
     margin-bottom: 5px;
     position: relative;
-    transition: height 0.5s ease, width 0.5s ease;
+    border-radius: 50%;
+    transition: height 0.5s ease, width 0.5s ease, border-radius 0.5s ease;
     flex-shrink: 0;
 }
 
 .darc-user-self.fullimage {
-    width: 155px;
-    height: 155px;
+    width: 165px;
+    height: 165px;
+    border-radius: 10px;
 }
+
+.darc-user-self.fullimage img {
+    border-radius: 10px;
+}
+
 
 .darc-user-self .corner-svg {
     position: absolute;
@@ -1627,13 +1645,14 @@ img {
     object-fit: cover;
     border-radius: 50%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    border: 4px solid black;
+    /*border: 4px solid black;*/
     display: block;
     position: relative;
     flex-shrink: 0;
     /* Establish a new stacking context for the image */
     z-index: 1;
     /* Image stays behind the SVG */
+    transition: height 0.5s ease, width 0.5s ease, border-radius 0.5s ease;
 }
 
 
@@ -2839,7 +2858,6 @@ input:-webkit-autofill:active {
 .big-info p {
     color: #ffffffb9;
     margin-top: 5px;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 16px;
     font-weight: normal;
 }
@@ -2891,7 +2909,7 @@ input:-webkit-autofill:active {
 
 .aStudent.picked {
     /*background-color: #01617c99;*/
-    border: 3px solid #298ef255 !important;
+    border: 3px solid var( --color-theme-select) !important;
     border-radius: 20px !important;
 }
 
@@ -3143,6 +3161,7 @@ input:-webkit-autofill:active {
 }
 
 .tracker-card {
+    margin-top: 10px;
     width: 100%;
     padding: 20px;
     border-radius: 15px;
@@ -3158,7 +3177,6 @@ input:-webkit-autofill:active {
 
 .tracker-title {
     font-size: 18px;
-    font-weight: bold;
 }
 
 .tracker-info {
@@ -3168,7 +3186,7 @@ input:-webkit-autofill:active {
 }
 
 .tracker-info span.a {
-    color: #36c157;
+    color: var(--color-theme-light); /*#36c157;*/
 }
 
 .part2 {
@@ -3205,7 +3223,7 @@ input:-webkit-autofill:active {
 }
 
 .progress-circle .circle-fill {
-    stroke: #36c157;
+    stroke: var(--color-theme-light);
     stroke-linecap: round;
     stroke-dasharray: 188;
     stroke-dashoffset: calc(188 - (188 * 36) / 100);
@@ -3860,7 +3878,32 @@ input:-webkit-autofill:active {
     overflow: hidden;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
+    position: relative;
 }
+
+.aclass.skeleton::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: loadingS 1.5s infinite;
+    border-radius: 15px;
+}
+
+@keyframes loadingS {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
 
 .summary .aclass p {
     width: 100%;
@@ -3912,7 +3955,7 @@ input:-webkit-autofill:active {
 }
 
 .aibtn:hover {
-    background: linear-gradient(0deg, #601ce8, #601ce8);
+    background: linear-gradient(20deg, #7155a8, #5500ff);
     box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.05),
         inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
         0px 0px 0px 4px rgba(255, 255, 255, 0.05),
@@ -4000,4 +4043,38 @@ input:-webkit-autofill:active {
     100% {
         background-position: 180px;
     }
+}
+
+.topicHead {
+    font-size: 19px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    display: flex;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    padding-left: 5px;
+    font-weight: bold;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+#rightToMe.right svg path {
+    stroke: var(--color-theme-light)
+}
+
+.img-replacement {
+    display: inline-block;
+    width: auto;
+    /* Adjust size */
+    height: auto;
+    /* Adjust size */
+    background-image: url('snap.png');
+    background-size: cover;
+    vertical-align: middle;
+    /* Adjust vertical alignment */
+}
+
+#title-progress svg path {
+    fill: var(--color-theme-light)
+
 }

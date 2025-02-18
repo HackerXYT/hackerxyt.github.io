@@ -1125,11 +1125,19 @@ function autoLogin() {
         document.getElementById("topImg").style.opacity = '0'
         //$("#tasks").fadeOut("fast", function () {
 
+
         $("#loginContainer").fadeOut("fast", function () {
             document.getElementById("loginContainer").style.display = 'none'
             //$("#lock").fadeIn("fast")
             const json = JSON.parse(val)
             foundName = json.name
+            const color = getGender(foundName.split(" ")[0]) === "Male" ? "#298ef2" : "Female"
+            if (getGender(foundName.split(" ")[0]) === "Female") {
+                document.documentElement.style.setProperty('--color-theme', '#ae6cff');
+                document.documentElement.style.setProperty('--color-theme-light', '#bf8bff');
+                document.documentElement.style.setProperty('--color-theme-select', '#ae6cff55');
+
+            }
             const process = atob(json.pin)
             fetch(`https://arc.evoxs.xyz/?metode=getProgress&emri=${foundName}&pin=${process}`)
                 .then(response => response.json())
@@ -3196,6 +3204,20 @@ function openDiscovery(el) {
     document.getElementById("home-switch").classList.remove("active")
     document.getElementById("home").style.display = 'none'
     document.getElementById("discover").style.display = 'block'
+    let skeleton = ``
+    for (let i = 0; i < 6; i++) {
+        skeleton += `<div class="aclass skeleton">
+                    <div class="left">
+                        &nbsp;
+                        <p>&nbsp;<vox class="smallto">&nbsp;</vox>
+                        </p>
+                    </div>
+                    <div class="right">
+                        &nbsp;
+                    </div>
+                </div>`
+    }
+    document.getElementById("classes").innerHTML = skeleton
     fetch('https://arc.evoxs.xyz/?metode=progresin')
         .then(response => response.json())
         .then(progress_global => {
@@ -3216,24 +3238,9 @@ function openDiscovery(el) {
                     <p>${value.have_participated}<vox class="smallto">/${value.total}</vox></p>
                     </div>
                     <div class="right">
-                        ${key === 'ΓΥΓ' ? `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 32 32">
-
-<defs>
-
-<style>.cls-1{fill:#e291a8;}.cls-2{fill:#dd2853;}</style>
-
-</defs>
-
-<title/>
-
-<g data-name="Layer 22" id="Layer_22">
-
-<path class="cls-1" d="M27.31,7.54a8,8,0,0,0-5.64-2.3h-.09A8,8,0,0,0,16,7.58a8.2,8.2,0,0,0-5.71-2.26,8.17,8.17,0,0,0-5.62,14l.43.39a1.07,1.07,0,0,0,.14.16l10.22,10a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.3l10-10.23a1.06,1.06,0,0,0,.24-.39l.32-.31a8.08,8.08,0,0,0-.12-11.39Z"/>
-
-<path class="cls-2" d="M29,15.13,18.26,15h0a1,1,0,0,0-.92.61L17,14.28a1,1,0,0,0-.61-.67,1,1,0,0,0-.91.11l-1.26.85-1.4-4a1,1,0,0,0-.8-.66,1,1,0,0,0-1,.4L7.57,15,3,15.13a1,1,0,0,0,.06,2L8.11,17a1,1,0,0,0,.78-.41L11.52,13l1.2,3.45a1,1,0,0,0,.63.62,1,1,0,0,0,.88-.12l1.18-.8.79,2.9a1,1,0,0,0,.92.74h.05a1,1,0,0,0,.93-.64L18.93,17,29,17.13h0a1,1,0,0,0,0-2Z"/>
-
-</g>
-
+                        ${key === 'ΓΥΓ' ? `<svg xmlns="http://www.w3.org/2000/svg" fill="#FFF" width="25px" height="25px" viewBox="0 0 32 32" version="1.1">
+<title>health</title>
+<path d="M29.125 10.375h-7.5v-7.5c0-1.036-0.839-1.875-1.875-1.875h-7.5c-1.036 0-1.875 0.84-1.875 1.875v7.5h-7.5c-1.036 0-1.875 0.84-1.875 1.875v7.5c0 1.036 0.84 1.875 1.875 1.875h7.5v7.5c0 1.036 0.84 1.875 1.875 1.875h7.5c1.036 0 1.875-0.84 1.875-1.875v-7.5h7.5c1.035 0 1.875-0.839 1.875-1.875v-7.5c0-1.036-0.84-1.875-1.875-1.875z"/>
 </svg>`: key.includes('ΓΑΝΘ') ? `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
 <polygon style="fill:#B4B4B4;" points="435.298,32.603 256,32.603 235.102,272.301 256,512 435.298,512 "/>
 <rect x="76.706" y="32.601" style="fill:#E0E0E0;" width="179.294" height="479.399"/>
@@ -3264,37 +3271,81 @@ function openDiscovery(el) {
             console.log('Error:', error);
         });
 
-    if (foundName.includes("παποστόλ")) {
-        try {
-            document.getElementById("main-block").querySelector("vox").remove()
-            document.getElementById("main-block").querySelector(".summary").style = null
-        } catch (error) {
-            console.warn("err", error)
-        }
 
-    }
 
     const toUser = document.getElementById("toyou")
     toUser.style.display = 'none'
-    document.getElementById("main-block").style.display = 'none'
+    //document.getElementById("main-block").style.display = 'none'
     document.getElementById("sum").style.display = 'none'
     const val = localStorage.getItem("jeanDarc_accountData")
     if (val) {
         const json = JSON.parse(val)
         const process = atob(json.pin)
+        try {
+            document.getElementById("sum").style = null
+            fetch(`https://arc.evoxs.xyz/?metode=AITreload&emri=${foundName}&pin=${process}`)
+                .then(response => response.json())
+                .then(aitInfo => {
+                    if (aitInfo.message === 'U gjeten listime te reja') {
+                        if (localStorage.getItem("Jeanne_lastAit_summary")) {
+                            document.getElementById("summaryTxt").innerHTML = `Έχεις ${aitInfo.new_count === 1 ? "1 νέα καταχώρηση" : `${aitInfo.new_count} νέες καταχωρήσεις`}.<br>Η προηγούμενη περίληψη δεν ισχύει.`
+                            $("#summaryTxt").fadeIn("fast")
+                        }
+                    } else {
+                        if (localStorage.getItem("Jeanne_lastAit_summary")) {
+                            document.getElementById("summaryTxt").innerHTML = localStorage.getItem("Jeanne_lastAit_summary")
+                            $("#summaryTxt").fadeIn("fast")
+                        }
+                    }
+
+                }).catch(error => {
+                    console.error("Progress error", error)
+                });
+
+        } catch (error) {
+            console.warn("err", error)
+        }
         fetch(`https://arc.evoxs.xyz/?metode=toMe&emri=${foundName}&pin=${process}`)
             .then(response => response.json())
             .then(complete => {
+                if (localStorage.getItem("toMe") || sessionStorage.getItem("keepTrendUp")) {
+                    if (complete.total > localStorage.getItem("toMe") || sessionStorage.getItem("keepTrendUp")) {
+                        sessionStorage.setItem("keepTrendUp", 'true')
+                        document.getElementById("rightToMe").style.display = null
+                    } else {
+                        if (!sessionStorage.getItem("keepTrendUp")) {
+                            document.getElementById("rightToMe").style.display = 'none'
+                        }
+                    }
+                }
+
                 if (complete.total !== 0) {
-                    //toUser.style.display = 'flex'
                     document.getElementById("sum").style.display = null
-                    document.getElementById("main-block").style.display = null
-                    toUser.querySelector(".right").innerHTML = `${complete.total} ${complete.total === 1 ? "καταχώρηση" : "καταχωρήσεις"}`
+                    document.getElementById("toMe").innerHTML = `${complete.total}<vox class="smallto">&nbsp;${complete.total === 1 ? "καταχώρηση" : "καταχωρήσεις"}`
+                    //toUser.querySelector(".right").innerHTML = `${complete.total} ${complete.total === 1 ? "καταχώρηση" : "καταχωρήσεις"}`
+                } else {
+                    document.getElementById("toMe").innerHTML = `0<vox class="smallto">&nbsp;καταχωρήσεις`
+                }
+                localStorage.setItem("toMe", complete.total)
+
+            }).catch(error => {
+                console.error("Progress error", error)
+            });
+        fetch(`https://arc.evoxs.xyz/?metode=fromMe&emri=${foundName}&pin=${process}`)
+            .then(response => response.json())
+            .then(complete => {
+                if (complete.total !== 0) {
+
+                    document.getElementById("fromMe").innerHTML = `${complete.total}<vox class="smallto">&nbsp;${complete.total === 1 ? "καταχώρηση" : "καταχωρήσεις"}`
+                    //toUser.querySelector(".right").innerHTML = `${complete.total} ${complete.total === 1 ? "καταχώρηση" : "καταχωρήσεις"}`
+                } else {
+                    document.getElementById("fromMe").innerHTML = `0<vox class="smallto">&nbsp;καταχωρήσεις`
                 }
 
             }).catch(error => {
                 console.error("Progress error", error)
             });
+
     }
 
 }
@@ -3439,7 +3490,16 @@ function timeAgo(isoString) {
     }
 }
 
-function analyzeUser() {
+function analyzeUser(e) {
+    $("#summaryTxt").fadeOut("fast")
+    e.blur()
+    setTimeout(function () {
+        const btn = e;
+        btn.style.pointerEvents = 'none';
+        setTimeout(() => {
+            btn.style.pointerEvents = '';
+        }, 10);
+    }, 400)
     setTimeout(function () {
         document.getElementById("aitext").classList.add('btn-shine')
         document.getElementById("aitext").innerText = 'Σύνδεση..'
@@ -3455,25 +3515,37 @@ function analyzeUser() {
                         document.getElementById("aitext").classList.remove('btn-shine')
                         document.getElementById("aitext").innerText = 'Αποτυχία'
                     } else if (complete.response) {
-                        setTimeout(function () {
-                            const find = complete.response
-                            if (find === 'Access Denied') {
-                                document.getElementById("summaryTxt").innerText = 'Λάθος κωδικός'
-                                document.getElementById("aitext").innerText = 'Αποτυχία'
-                            } else if (find === 'AIT is currently sleeping') {
-                                document.getElementById("summaryTxt").innerHTML = 'Το όριο περιλήψεων έχει εξαντληθεί.<br>Δοκιμάστε ξανά αύριο.'
-                                document.getElementById("aitext").innerText = 'Αποτυχία'
-                            } else if (find === '0 Entries') {
-                                document.getElementById("summaryTxt").innerText = 'Δεν έχεις καμία καταχώρηση'
-                                document.getElementById("aitext").innerText = 'Επανάληψη'
-                            } else {
-                                //Success
-                                document.getElementById("summaryTxt").innerText = find
-                                document.getElementById("aitext").innerText = 'Επανάληψη'
-                            }
-                            $("#summaryTxt").fadeIn("fast")
+                        try {
+                            setTimeout(function () {
+                                let find = complete.response
+
+                                if (find === 'Access Denied') {
+                                    document.getElementById("summaryTxt").innerText = 'Λάθος κωδικός'
+                                    document.getElementById("aitext").innerText = 'Αποτυχία'
+                                } else if (find === 'AIT is currently sleeping') {
+                                    document.getElementById("summaryTxt").innerHTML = 'Το όριο περιλήψεων έχει εξαντληθεί.<br>Δοκιμάστε ξανά αύριο.'
+                                    document.getElementById("aitext").innerText = 'Αποτυχία'
+                                } else if (find === '0 Entries') {
+                                    document.getElementById("summaryTxt").innerText = 'Δεν έχεις καμία καταχώρηση'
+                                    document.getElementById("aitext").innerText = 'Επανάληψη'
+                                } else {
+                                    //Success
+                                    //find = find.replace(/�/g, '<span class="img-replacement"></span>')
+                                    document.getElementById("summaryTxt").innerHTML = find
+                                    document.getElementById("aitext").innerText = 'Επανάληψη'
+                                    localStorage.setItem("Jeanne_lastAit_summary", find)
+                                    localStorage.setItem("Jeanne_lastAit_countIn", localStorage.getItem("toMe"))
+                                }
+                                $("#summaryTxt").fadeIn("fast")
+
+                                document.getElementById("aitext").classList.remove('btn-shine')
+                            }, 700)
+                        } catch (error) {
+                            console.error(error)
                             document.getElementById("aitext").classList.remove('btn-shine')
-                        }, 700)
+                            document.getElementById("aitext").innerText = 'Αποτυχία'
+                        }
+
 
                     }
                 }).catch(error => {
