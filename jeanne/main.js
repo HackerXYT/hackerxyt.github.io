@@ -1131,7 +1131,10 @@ function autoLogin() {
             //$("#lock").fadeIn("fast")
             const json = JSON.parse(val)
             foundName = json.name
-            const color = getGender(foundName.split(" ")[0]) === "Male" ? "#298ef2" : "Female"
+            if(foundName.includes("παποστόλ") || foundName.includes("Λιλάντα") || foundName.includes("Γερακιανάκη")) {
+                document.getElementById("admin-preview").style.display = null
+            }
+            //const color = getGender(foundName.split(" ")[0]) === "Male" ? "#298ef2" : "Female"
             if (getGender(foundName.split(" ")[0]) === "Female") {
                 document.documentElement.style.setProperty('--color-theme', '#ae6cff');
                 document.documentElement.style.setProperty('--color-theme-light', '#bf8bff');
