@@ -1135,7 +1135,7 @@ function autoLogin() {
                 document.getElementById("admin-preview").style.display = null
             }
             //const color = getGender(foundName.split(" ")[0]) === "Male" ? "#298ef2" : "Female"
-            if (getGender(foundName.split(" ")[0]) === "Female") {
+            if (getGender(removeTonos(foundName.split(" ")[0])) === "Female") {
                 document.documentElement.style.setProperty('--color-theme', '#ae6cff');
                 document.documentElement.style.setProperty('--color-theme-light', '#bf8bff');
                 document.documentElement.style.setProperty('--color-theme-select', '#ae6cff55');
