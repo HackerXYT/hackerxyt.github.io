@@ -3298,17 +3298,7 @@ function openDiscovery(el) {
             fetch(`https://arc.evoxs.xyz/?metode=AITreload&emri=${foundName}&pin=${process}`)
                 .then(response => response.json())
                 .then(aitInfo => {
-                    if (aitInfo.message === 'U gjeten listime te reja') {
-                        if (localStorage.getItem("Jeanne_lastAit_summary")) {
-                            //document.getElementById("summaryTxt").innerHTML = `Έχεις ${aitInfo.new_count === 1 ? "1 νέα καταχώρηση" : `${aitInfo.new_count} νέες καταχωρήσεις`}.<br>Η προηγούμενη περίληψη δεν ισχύει.`
-                            $("#summaryTxt").fadeIn("fast")
-                        }
-                    } else {
-                        if (localStorage.getItem("Jeanne_lastAit_summary")) {
-                            //document.getElementById("summaryTxt").innerHTML = localStorage.getItem("Jeanne_lastAit_summary")
-                            $("#summaryTxt").fadeIn("fast")
-                        }
-                    }
+                    
 
                     if (aitInfo.message === 'U gjeten listime te reja' || aitInfo.message === 'Asnje lajm') {
                         fetch(`https://arc.evoxs.xyz/?metode=isAITavailable`)
@@ -3320,7 +3310,24 @@ function openDiscovery(el) {
                                     document.getElementById("summaryTxt").innerHTML = `Η περίληψη AI έχει απενεργοποιηθεί από τους διαχειριστές.`
                                     document.getElementById("aitbtn").style.display = 'none'
                                 } else {
+                                    try {
+                                        document.getElementById("summaryTxt").classList.remove("warnTxt")
+                                    } catch (err) {
+                                        console.warn("summary txt didnt have warn class")
+                                    }
                                     document.getElementById("aitbtn").style.display = null
+                                    document.getElementById("sum").style.display = null
+                                    if (aitInfo.message === 'U gjeten listime te reja') {
+                        if (localStorage.getItem("Jeanne_lastAit_summary")) {
+                            document.getElementById("summaryTxt").innerHTML = `Έχεις ${aitInfo.new_count === 1 ? "1 νέα καταχώρηση" : `${aitInfo.new_count} νέες καταχωρήσεις`}.<br>Η προηγούμενη περίληψη δεν ισχύει.`
+                            $("#summaryTxt").fadeIn("fast")
+                        }
+                    } else {
+                        if (localStorage.getItem("Jeanne_lastAit_summary")) {
+                            document.getElementById("summaryTxt").innerHTML = localStorage.getItem("Jeanne_lastAit_summary")
+                            $("#summaryTxt").fadeIn("fast")
+                        }
+                    }
                                 }
 
                             }).catch(error => {
