@@ -3977,73 +3977,26 @@ input:-webkit-autofill:active {
     padding: 12px 48px;
     color: #fff;
     background: linear-gradient(to right, #9f9f9f 0, #fff 10%, #868686 20%);
-    background-position: 0;
+    background-size: 200% 100%;
+    background-position: -100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: shine 3s infinite linear;
-    animation-fill-mode: forwards;
-    -webkit-text-size-adjust: none;
+    animation: shine 1s infinite linear;
     font-weight: 600;
     font-size: 16px;
     text-decoration: none;
     white-space: nowrap;
 }
 
-@-moz-keyframes shine {
-    0% {
-        background-position: 0;
-    }
-
-    60% {
-        background-position: 180px;
-    }
-
-    100% {
-        background-position: 180px;
-    }
-}
-
-@-webkit-keyframes shine {
-    0% {
-        background-position: 0;
-    }
-
-    60% {
-        background-position: 180px;
-    }
-
-    100% {
-        background-position: 180px;
-    }
-}
-
-@-o-keyframes shine {
-    0% {
-        background-position: 0;
-    }
-
-    60% {
-        background-position: 180px;
-    }
-
-    100% {
-        background-position: 180px;
-    }
-}
-
 @keyframes shine {
     0% {
-        background-position: 0;
+        background-position: 100%;
     }
-
-    60% {
-        background-position: 180px;
-    }
-
     100% {
-        background-position: 180px;
+        background-position: -100%;
     }
 }
+
 
 .topicHead {
     font-size: 19px;
@@ -4077,4 +4030,8 @@ input:-webkit-autofill:active {
 #title-progress svg path {
     fill: var(--color-theme-light)
 
+}
+
+.warnTxt {
+    color: rgb(255 75 75);
 }

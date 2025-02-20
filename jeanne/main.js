@@ -1131,7 +1131,7 @@ function autoLogin() {
             //$("#lock").fadeIn("fast")
             const json = JSON.parse(val)
             foundName = json.name
-            if(foundName.includes("παποστόλ") || foundName.includes("Λιλάντα") || foundName.includes("Γερακιανάκη")) {
+            if (foundName.includes("παποστόλ") || foundName.includes("Λιλάντα") || foundName.includes("Γερακιανάκη")) {
                 document.getElementById("admin-preview").style.display = null
             }
             //const color = getGender(foundName.split(" ")[0]) === "Male" ? "#298ef2" : "Female"
@@ -1266,12 +1266,12 @@ function autoLogin() {
 
         //})
 
-        if (localStorage.getItem("jeanneBackup")) {
-            const backup = JSON.parse(localStorage.getItem("jeanneBackup"))
-            dataIn = backup
-            saveRatings()
-            localStorage.removeItem("jeanneBackup")
-        }
+        //if (localStorage.getItem("jeanneBackup")) {
+        //    const backup = JSON.parse(localStorage.getItem("jeanneBackup"))
+        //    dataIn = backup
+        //    saveRatings()
+        //    localStorage.removeItem("jeanneBackup")
+        //}
 
 
 
@@ -3291,14 +3291,34 @@ function openDiscovery(el) {
                 .then(aitInfo => {
                     if (aitInfo.message === 'U gjeten listime te reja') {
                         if (localStorage.getItem("Jeanne_lastAit_summary")) {
-                            document.getElementById("summaryTxt").innerHTML = `Έχεις ${aitInfo.new_count === 1 ? "1 νέα καταχώρηση" : `${aitInfo.new_count} νέες καταχωρήσεις`}.<br>Η προηγούμενη περίληψη δεν ισχύει.`
+                            //document.getElementById("summaryTxt").innerHTML = `Έχεις ${aitInfo.new_count === 1 ? "1 νέα καταχώρηση" : `${aitInfo.new_count} νέες καταχωρήσεις`}.<br>Η προηγούμενη περίληψη δεν ισχύει.`
                             $("#summaryTxt").fadeIn("fast")
                         }
                     } else {
                         if (localStorage.getItem("Jeanne_lastAit_summary")) {
-                            document.getElementById("summaryTxt").innerHTML = localStorage.getItem("Jeanne_lastAit_summary")
+                            //document.getElementById("summaryTxt").innerHTML = localStorage.getItem("Jeanne_lastAit_summary")
                             $("#summaryTxt").fadeIn("fast")
                         }
+                    }
+
+                    if (aitInfo.message === 'U gjeten listime te reja' || aitInfo.message === 'Asnje lajm') {
+                        fetch(`https://arc.evoxs.xyz/?metode=isAITavailable`)
+                            .then(response => response.text())
+                            .then(AIT_STAT => {
+                                if (AIT_STAT === 'false') {
+                                    document.getElementById("sum").style.display = null
+                                    document.getElementById("summaryTxt").classList.add("warnTxt")
+                                    document.getElementById("summaryTxt").innerHTML = `Η περίληψη AI έχει απενεργοποιηθεί από τους διαχειριστές.`
+                                    document.getElementById("aitbtn").style.display = 'none'
+                                } else {
+                                    document.getElementById("aitbtn").style.display = null
+                                }
+
+                            }).catch(error => {
+                                console.error("Progress error", error)
+                            });
+                    } else {
+                        document.getElementById("sum").style.display = 'none'
                     }
 
                 }).catch(error => {
@@ -3321,7 +3341,6 @@ function openDiscovery(el) {
                         }
                     }
                 }
-
                 if (complete.total !== 0) {
                     //document.getElementById("sum").style.display = null
                     document.getElementById("toMe").innerHTML = `${complete.total}<vox class="smallto">&nbsp;${complete.total === 1 ? "καταχώρηση" : "καταχωρήσεις"}`
@@ -3560,4 +3579,29 @@ function analyzeUser(e) {
     }, 250)
 
 
+}
+
+function checkForLocal() {
+    const lc = localStorage.getItem("jeanneBackup")
+    if (lc) {
+        if (confirm("Βρέθηκαν αντίγραφα ασφαλείας της επετηρίδας. Θέλετε να τα επαναφέρετε;")) {
+            console.log("OK pressed");
+            const json = JSON.parse(lc)
+            let start = 'Θα επαναφερθούν τα ακόλουθα δεδομένα:\n'
+            Object.entries(json).forEach(([key, user]) => {
+                // key -> emri, user -> data
+                if (!key.includes("question")) {
+                    start += `${key}: ${user}\n`
+                }
+                
+
+            });
+            alert(start)
+            const backup = JSON.parse(localStorage.getItem("jeanneBackup"))
+            dataIn = backup
+            saveRatings()
+        } else {
+            console.log("Cancel pressed");
+        }
+    }
 }

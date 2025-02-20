@@ -591,7 +591,7 @@
                 <div onclick="clickCard(this)" data-evox="yearbook" class="card">
                     <div class="background">
                         <img src="recap.png">
-                        
+
                     </div>
 
                     <div class="progress-bar" data-progress="20">
@@ -604,7 +604,8 @@
                         Ανασκόπηση
                     </div>
                 </div>
-                <div style="display: none;" id="admin-preview" onclick="window.location.href = '../jeanneAdmin/'" data-evox="admin" class="card fade-in-slide-up">
+                <div style="display: none;" id="admin-preview" onclick="window.location.href = '../jeanneAdmin/'"
+                    data-evox="admin" class="card fade-in-slide-up">
                     <div class="background">
                         <video autoplay loop muted playsinline>
                             <source src="ai.mp4" type="video/mp4">
@@ -903,12 +904,13 @@
                 left: 50%;
                 transform: translate(-50%, -50%);color:#48cc74;z-index: 999;font-size: 20px;text-shadow: #000 1px 0px 19px;">
                     Σε εξέλιξη..</vox>-->
-            <div id="sum" class="summary" style="opacity:0;visibility:hidden;style:display:none;">
+            <div id="sum" class="summary">
                 <div class="aclass fade-in-slide-up">
                     <p>Περίληψη&nbsp;<vo style="color: var(--color-theme-light);"> [AI]</vo>
                     </p>
                     <span>Ανακάλυψε τις εντυπώσεις που άφησες στους συμμαθητές σου, χωρίς να καταλάβεις ποιος έγραψε το
                         κείμενο.</span>
+
                     <vox id="summaryTxt"></vox>
 
                     <button onclick="analyzeUser(this)" class="aibtn" id="aitbtn">
@@ -1139,6 +1141,15 @@
                         </svg>
                         <span>Αλλαγή Τάξης</span>
                     </div>
+                    <div onclick="checkForLocal()" class="anInfo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm-1.5-5.009c0-.867.659-1.491 1.491-1.491.85 0 1.509.624 1.509 1.491 0 .867-.659 1.509-1.509 1.509-.832 0-1.491-.642-1.491-1.509zM11.172 6a.5.5 0 0 0-.499.522l.306 7a.5.5 0 0 0 .5.478h1.043a.5.5 0 0 0 .5-.478l.305-7a.5.5 0 0 0-.5-.522h-1.655z"
+                                fill="#efefef93" />
+                        </svg>
+                        <span>Επιδιόρθωση σφαλμάτων</span>
+                    </div>
                     <div class="anInfo">
                         &nbsp;
                         <div class="x-line"></div>
@@ -1232,7 +1243,8 @@
                 <button class="search-button"></button>
             </div>-->
             <div class="inv-button creds"
-                style="width: 90%;height: 60px !important;position: relative;min-height: 60px;" onclick="document.getElementById('yb-input').focus()">
+                style="width: 90%;height: 60px !important;position: relative;min-height: 60px;"
+                onclick="document.getElementById('yb-input').focus()">
                 <vo class="icon"><svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                         fill="currentColor">
                         <path fill-rule="evenodd"
@@ -1246,7 +1258,7 @@
             </div>
             <div class="spawnPeople" id="searchPeople" style="display: none;"></div>
             <div class="spawnPeople parent" id="spawnPeople">
-                
+
             </div>
 
         </div>
