@@ -3309,6 +3309,7 @@ function openDiscovery(el) {
                                     document.getElementById("summaryTxt").classList.add("warnTxt")
                                     document.getElementById("summaryTxt").innerHTML = `Η περίληψη AI έχει απενεργοποιηθεί από τους διαχειριστές.`
                                     document.getElementById("aitbtn").style.display = 'none'
+                                    $("#summaryTxt").fadeIn("fast")
                                 } else {
                                     try {
                                         document.getElementById("summaryTxt").classList.remove("warnTxt")
