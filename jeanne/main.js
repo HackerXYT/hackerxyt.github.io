@@ -3603,5 +3603,7 @@ function checkForLocal() {
         } else {
             console.log("Cancel pressed");
         }
+    } else {
+        alert("Δεν βρέθηκαν αντίγραφα ασφαλείας της επετηρίδας.")
     }
 }
