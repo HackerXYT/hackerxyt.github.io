@@ -3285,7 +3285,7 @@ function openDiscovery(el) {
         const json = JSON.parse(val)
         const process = atob(json.pin)
         try {
-            document.getElementById("sum").style = null
+            //document.getElementById("sum").style = null
             fetch(`https://arc.evoxs.xyz/?metode=AITreload&emri=${foundName}&pin=${process}`)
                 .then(response => response.json())
                 .then(aitInfo => {
@@ -3323,7 +3323,7 @@ function openDiscovery(el) {
                 }
 
                 if (complete.total !== 0) {
-                    document.getElementById("sum").style.display = null
+                    //document.getElementById("sum").style.display = null
                     document.getElementById("toMe").innerHTML = `${complete.total}<vox class="smallto">&nbsp;${complete.total === 1 ? "καταχώρηση" : "καταχωρήσεις"}`
                     //toUser.querySelector(".right").innerHTML = `${complete.total} ${complete.total === 1 ? "καταχώρηση" : "καταχωρήσεις"}`
                 } else {
