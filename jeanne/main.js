@@ -1646,11 +1646,20 @@ function activateYearbook() {
 
                                             processNames(sent).then(result => {
                                                 console.log(result);
+
                                                 result.forEach(name_el => {
-                                                    const workOn = usersElems[name_el].ranId
-                                                    document.getElementById(`user-${workOn}`).classList.add("seen")
-                                                    document.getElementById(`user-${workOn}`).setAttribute("evox-c", "require-resee")
+                                                    try {
+                                                        console.log(name_el)
+                                                        const workOn = usersElems[name_el].ranId
+                                                        document.getElementById(`user-${workOn}`).classList.add("seen")
+                                                        document.getElementById(`user-${workOn}`).setAttribute("evox-c", "require-resee")
+                                                    } catch (error) {
+                                                        alert(`Βρέθηκε σφάλμα κατά την επεξεργασία των δεδομένων του χρήστη: ${name_el}\nΕπικοινωνήστε άμεσα με τους διαχειρηστές.`)
+
+                                                    }
+
                                                 })
+
                                             });
                                             readyToShow()
 
@@ -3593,7 +3602,7 @@ function checkForLocal() {
                 if (!key.includes("question")) {
                     start += `${key}: ${user}\n`
                 }
-                
+
 
             });
             alert(start)
