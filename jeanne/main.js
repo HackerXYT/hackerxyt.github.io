@@ -1426,11 +1426,21 @@ function changePin(e, event) {
 function showProfile(e) {
     document.body.style.overflow = 'hidden'
     stopPull = true
-    const img = e.querySelector('img')
-    img.style.transform = "scale(0.9)"
+    let img = 'no'
+    if (e) {
+        img = e.querySelector('img')
+        img.style.transform = "scale(0.9)"
+        openProfile(document.getElementById("profile-switch"))
+    }
+
+
+
 
     setTimeout(function () {
-        img.style.transform = ""
+        if (img !== 'no') {
+            img.style.transform = ""
+        }
+
         document.getElementById("darc-user-self-profile").src = 'reloading-pfp.gif'
         getEvoxProfile(foundName).then(profileSrc => {
             if (profileSrc.includes("data.evoxs.xyz")) { document.getElementById("instagramedProfile").style.display = 'none' } else { document.getElementById("instagramedProfile").style.display = null }
@@ -1468,8 +1478,9 @@ function showProfile(e) {
                 console.error("Jeanne D'arc Database is offline.")
                 console.log('Error:', error);
             });
-
-        document.getElementById("profilePage").classList.add("active")
+        //if (img !== 'no') {
+        //    document.getElementById("profilePage").classList.add("active")
+        //}
     }, 100)
 
 }
@@ -1500,11 +1511,13 @@ let classes = {}
 let usersElems = {}
 let marresit = [];
 let marresit_more;
+let marresi_fix = {}
 function activateYearbook() {
     allUsers = {}
     classes = {}
     usersElems = {}
     marresit_more = []
+    marresi_fix = {}
     $("#app").fadeOut("fast", function () {
         document.getElementById("loadText").innerHTML = 'Φόρτωση..'
         $("#tasks").fadeIn("fast", function () {
@@ -1633,6 +1646,7 @@ function activateYearbook() {
                                     fetch(`https://arc.evoxs.xyz/?metode=userSent&pin=${pars.pin}&emri=${pars.name}`)
                                         .then(response => response.json())
                                         .then(sent => {
+                                            console.log(marresit_more)
                                             marresit_more = sent;
                                             const processNames = (sent) => {
                                                 return new Promise((resolve) => {
@@ -1654,7 +1668,31 @@ function activateYearbook() {
                                                         document.getElementById(`user-${workOn}`).classList.add("seen")
                                                         document.getElementById(`user-${workOn}`).setAttribute("evox-c", "require-resee")
                                                     } catch (error) {
-                                                        alert(`Βρέθηκε σφάλμα κατά την επεξεργασία των δεδομένων του χρήστη: ${name_el}\nΕπικοινωνήστε άμεσα με τους διαχειρηστές.`)
+                                                        if (!document.getElementById("error-cont")) {
+                                                            document.getElementById("spawnPeople").innerHTML += `<div class="spawnPeople upup2" id="error-cont">Σφάλματα που βρέθηκαν</div>`
+                                                        }
+                                                        Object.entries(marresit_more).forEach(([key, value]) => {
+                                                            console.log("Out:", key, name_el, value)
+                                                            if (value.marresi === name_el && !document.getElementById("error-cont").innerHTML.includes(`user-${name_el.replace(' ', '_')}`)) {
+                                                                console.log("Inside:", value)
+                                                                marresi_fix[name_el] = value
+                                                                document.getElementById("error-cont").innerHTML += `<div id="user-${name_el.replace(' ', '_')}" class="aStudent fade-in-slide-up seen" onclick="pickStudent('${name_el}', this, 'maressi')" evox-c="require-resee">
+                                                                <div class="studentImage">
+                                                                    <img alt="Αποτυχία" src="snap.png" style="visibility: visible;">
+                                                                </div>
+                                                                <div class="studentInfo">
+                                                                    <p>${name_el}</p>
+                                                                </div>
+                                                            </div>`
+                                                            } else {
+                                                                console.log("Already inside")
+                                                            }
+                                                        })
+
+
+
+                                                        //document.getElementById("spawnPeople").innerHTML = `${document.getElementById("spawnPeople").innerHTML}`
+                                                        //alert(`Βρέθηκε σφάλμα κατά την επεξεργασία των δεδομένων του χρήστη: ${name_el}\nΕπικοινωνήστε άμεσα με τους διαχειρηστές.`)
 
                                                     }
 
@@ -1906,18 +1944,36 @@ function startYbRate(e, event) {
             e.innerHTML = 'Συνέχεια'
         }, 800)
     }, 500)
-    document.getElementById("currentName").innerText = pickedStudents[activeStudent]
-    document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
-    document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
-    document.getElementById("message").value = ''
-    reloadGenerate()
-    if (marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
-        const searchValue = pickedStudents[activeStudent];
-        const result = marresit_more.find(item => item.marresi === searchValue);
-        if (result) {
-            document.getElementById("message").value = result.contents.vleresim
+    try {
+        document.getElementById("currentName").innerText = pickedStudents[activeStudent]
+        document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
+        document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
+        document.getElementById("message").value = ''
+        reloadGenerate()
+        if (marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
+            const searchValue = pickedStudents[activeStudent];
+            const result = marresit_more.find(item => item.marresi === searchValue);
+            if (result) {
+                document.getElementById("message").value = result.contents.vleresim
+            }
         }
+        document.getElementById("contCurre").style.display = null;
+        document.getElementById("noError").style.display = null
+        document.getElementById("unicode_error").style.display = 'none'
+    } catch (error) {
+        //Marresi
+        document.getElementById("contCurre").style.display = 'none'
+        console.warn("Error:", error);
+        document.getElementById("currentName").innerText = marresi_fix[pickedStudents[activeStudent]].marresi
+        document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
+        document.getElementById("currentPic").src = 'snap.png'//pickedStudents[pickedStudents[activeStudent]].info.foto
+        document.getElementById("message").value = marresi_fix[pickedStudents[activeStudent]].contents.vleresim
+        reloadGenerate()
+        document.getElementById("noError").style.display = 'none'
+        document.getElementById("unicode_error").style.display = null
     }
+
+
     //testPick()
 
     //yearbook-screen-2
@@ -2052,32 +2108,76 @@ let dataIn = {}
 function continueCurrent() {
     if (document.getElementById("message").value === '') { return; }
     console.log(pickedStudents.length, activeStudent)
-    if (pickedStudents.length === activeStudent + 1) {
-        dataIn[document.getElementById("currentName").innerText] = document.getElementById("message").value
-        saveRatings()
-        return;
-    }
-    activeStudent++
-    dataIn[document.getElementById("currentName").innerText] = document.getElementById("message").value
-    $("#centerContent-rate").fadeOut("fast", function () {
-        document.getElementById("currentPic").src = 'reloading-pfp.gif'
-        document.getElementById("message").value = ""
-        document.getElementById("currentName").innerText = pickedStudents[activeStudent]
-        document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
-        document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
-        reloadGenerate()
-        setTimeout(function () {
-            $("#centerContent-rate").fadeIn("fast")
-        }, 300)
-        if (marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
-            const searchValue = pickedStudents[activeStudent];
-            const result = marresit_more.find(item => item.marresi === searchValue);
-            if (result) {
-                document.getElementById("message").value = result.contents.vleresim
-            }
+    try {
+        if (pickedStudents.length === activeStudent + 1) {
+            dataIn[document.getElementById("currentName").innerText] = document.getElementById("message").value
+            saveRatings()
+            return;
         }
+        activeStudent++
+        dataIn[document.getElementById("currentName").innerText] = document.getElementById("message").value
+        $("#centerContent-rate").fadeOut("fast", function () {
+            try {
+                document.getElementById("currentPic").src = 'reloading-pfp.gif'
+                document.getElementById("message").value = ""
+                document.getElementById("currentName").innerText = pickedStudents[activeStudent]
+                document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
 
-    })
+                const studentKey = pickedStudents[activeStudent];
+                if (!usersElems[studentKey]) {
+                    console.warn(`User data not found for: ${studentKey}`);
+                    document.getElementById("currentPic").src = 'snap.png';
+                    document.getElementById("contCurre").style.display = 'none'
+                    document.getElementById("currentName").innerText = marresi_fix[pickedStudents[activeStudent]].marresi
+                    document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
+                    document.getElementById("currentPic").src = 'snap.png'//pickedStudents[pickedStudents[activeStudent]].info.foto
+                    document.getElementById("message").value = marresi_fix[pickedStudents[activeStudent]].contents.vleresim
+                    reloadGenerate()
+                    setTimeout(function () {
+                        $("#centerContent-rate").fadeIn("fast")
+                    }, 300)
+                    document.getElementById("noError").style.display = 'none'
+                    document.getElementById("unicode_error").style.display = null;
+                    return;
+                }
+
+                document.getElementById("noError").style.display = null
+                document.getElementById("unicode_error").style.display = 'none'
+
+                document.getElementById("currentPic").src = usersElems[studentKey].info.foto
+                reloadGenerate()
+                setTimeout(function () {
+                    $("#centerContent-rate").fadeIn("fast")
+                }, 300)
+
+                if (marresit && marresit.includes(studentKey) && marresit_more) {
+                    const result = marresit_more.find(item => item.marresi === studentKey);
+                    if (result) {
+                        document.getElementById("message").value = result.contents.vleresim;
+                    }
+                }
+                document.getElementById("contCurre").style.display = null;
+            } catch (error) {
+                console.warn("Caught error inside fadeOut callback:", error);
+            }
+        });
+    } catch (error) {
+        //Marresi
+        $("#centerContent-rate").fadeOut("fast", function () {
+            document.getElementById("contCurre").style.display = 'none'
+            console.warn("Error:", error);
+            document.getElementById("currentName").innerText = marresi_fix[pickedStudents[activeStudent]].marresi
+            document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
+            document.getElementById("currentPic").src = 'snap.png'//pickedStudents[pickedStudents[activeStudent]].info.foto
+            document.getElementById("message").value = marresi_fix[pickedStudents[activeStudent]].contents.vleresim
+            reloadGenerate()
+            setTimeout(function () {
+                $("#centerContent-rate").fadeIn("fast")
+            }, 300)
+        })
+        document.getElementById("noError").style.display = 'none'
+        document.getElementById("unicode_error").style.display = null
+    }
 }
 
 function skipCurrentRate() {
@@ -2087,25 +2187,51 @@ function skipCurrentRate() {
     }
     activeStudent++
     $("#centerContent-rate").fadeOut("fast", function () {
-        document.getElementById("currentPic").src = 'reloading-pfp.gif'
-        document.getElementById("message").value = ""
-        document.getElementById("currentName").innerText = pickedStudents[activeStudent]
-        document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
-        document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
-        reloadGenerate()
-        setTimeout(function () {
-            $("#centerContent-rate").fadeIn("fast")
-        }, 300)
+        try {
+            document.getElementById("currentPic").src = 'reloading-pfp.gif'
+            document.getElementById("message").value = ""
+            document.getElementById("currentName").innerText = pickedStudents[activeStudent]
+            document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
 
-        if (marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
-            const searchValue = pickedStudents[activeStudent];
-            const result = marresit_more.find(item => item.marresi === searchValue);
-            if (result) {
-                document.getElementById("message").value = result.contents.vleresim
+            const studentKey = pickedStudents[activeStudent];
+            if (!usersElems[studentKey]) {
+                console.warn(`User data not found for: ${studentKey}`);
+                document.getElementById("currentPic").src = 'snap.png';
+                document.getElementById("contCurre").style.display = 'none'
+                document.getElementById("currentName").innerText = marresi_fix[pickedStudents[activeStudent]].marresi
+                document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
+                document.getElementById("currentPic").src = 'snap.png'//pickedStudents[pickedStudents[activeStudent]].info.foto
+                document.getElementById("message").value = marresi_fix[pickedStudents[activeStudent]].contents.vleresim
+                reloadGenerate()
+                setTimeout(function () {
+                    $("#centerContent-rate").fadeIn("fast")
+                }, 300)
+                document.getElementById("noError").style.display = 'none'
+                document.getElementById("unicode_error").style.display = null;
+                return;
             }
-        }
 
-    })
+            document.getElementById("noError").style.display = null
+            document.getElementById("unicode_error").style.display = 'none'
+
+            document.getElementById("currentPic").src = usersElems[studentKey].info.foto
+            reloadGenerate()
+            setTimeout(function () {
+                $("#centerContent-rate").fadeIn("fast")
+            }, 300)
+
+            if (marresit && marresit.includes(studentKey) && marresit_more) {
+                const result = marresit_more.find(item => item.marresi === studentKey);
+                if (result) {
+                    document.getElementById("message").value = result.contents.vleresim;
+                }
+            }
+            document.getElementById("contCurre").style.display = null;
+        } catch (error) {
+            console.warn("Caught error inside fadeOut callback:", error);
+        }
+    });
+
 }
 function actionClick(event, e) {
     event.preventDefault(); // Prevent default behavior
@@ -3211,10 +3337,36 @@ function updateProgress(percentage) {
     circle.style.strokeDashoffset = offset;
 }
 
+function openProfile(el) {
+    showProfile(null)
+    document.getElementById("home-switch").classList.remove("active")
+    document.getElementById("discovery-switch").classList.remove("active")
+    el.classList.add('active')
+    document.getElementById("home").style.display = 'none'
+    document.getElementById("discover").style.display = 'none'
+    document.getElementById("profile").style.display = 'block'
+
+}
+
+function greekToGreeklish(text) {
+    const map = {
+        'Α': 'A', 'Β': 'V', 'Γ': 'G', 'Δ': 'D', 'Ε': 'E', 'Ζ': 'Z', 'Η': 'I', 'Θ': 'Th',
+        'Ι': 'I', 'Κ': 'K', 'Λ': 'L', 'Μ': 'M', 'Ν': 'N', 'Ξ': 'X', 'Ο': 'O', 'Π': 'P',
+        'Ρ': 'R', 'Σ': 'S', 'Τ': 'T', 'Υ': 'Y', 'Φ': 'F', 'Χ': 'Ch', 'Ψ': 'Ps', 'Ω': 'O',
+        'ά': 'a', 'έ': 'e', 'ή': 'i', 'ί': 'i', 'ό': 'o', 'ύ': 'y', 'ώ': 'o', 'ς': 's',
+        'α': 'a', 'β': 'v', 'γ': 'g', 'δ': 'd', 'ε': 'e', 'ζ': 'z', 'η': 'i', 'θ': 'th',
+        'ι': 'i', 'κ': 'k', 'λ': 'l', 'μ': 'm', 'ν': 'n', 'ξ': 'x', 'ο': 'o', 'π': 'p',
+        'ρ': 'r', 'σ': 's', 'τ': 't', 'υ': 'y', 'φ': 'f', 'χ': 'ch', 'ψ': 'ps', 'ω': 'o'
+    };
+    return text.split('').map(char => map[char] || char).join('');
+}
+
 function openDiscovery(el) {
     el.classList.add('active')
     document.getElementById("home-switch").classList.remove("active")
+    document.getElementById("profile-switch").classList.remove("active")
     document.getElementById("home").style.display = 'none'
+    document.getElementById("profile").style.display = 'none'
     document.getElementById("discover").style.display = 'block'
     let skeleton = ``
     for (let i = 0; i < 6; i++) {
@@ -3228,6 +3380,9 @@ function openDiscovery(el) {
                         &nbsp;
                     </div>
                 </div>`
+    }
+    if(btoa(greekToGreeklish(foundName)).includes("R3JpZ29yaXM")) {
+        document.getElementById("done").style.display = null
     }
     document.getElementById("classes").innerHTML = skeleton
     fetch('https://arc.evoxs.xyz/?metode=progresin')
@@ -3298,9 +3453,20 @@ function openDiscovery(el) {
             fetch(`https://arc.evoxs.xyz/?metode=AITreload&emri=${foundName}&pin=${process}`)
                 .then(response => response.json())
                 .then(aitInfo => {
-                    
+                    //if (aitInfo.message === 'U gjeten listime te reja') {
+                    //    if (localStorage.getItem("Jeanne_lastAit_summary")) {
+                    //        //document.getElementById("summaryTxt").innerHTML = `Έχεις ${aitInfo.new_count === 1 ? "1 νέα καταχώρηση" : `${aitInfo.new_count} νέες καταχωρήσεις`}.<br>Η προηγούμενη περίληψη δεν ισχύει.`
+                    //        $("#summaryTxt").fadeIn("fast")
+                    //    }
+                    //} else {
+                    //    if (localStorage.getItem("Jeanne_lastAit_summary")) {
+                    //        //document.getElementById("summaryTxt").innerHTML = localStorage.getItem("Jeanne_lastAit_summary")
+                    //        $("#summaryTxt").fadeIn("fast")
+                    //    }
+                    //}
 
                     if (aitInfo.message === 'U gjeten listime te reja' || aitInfo.message === 'Asnje lajm') {
+                        document.getElementById("thFY").style.display = null;
                         fetch(`https://arc.evoxs.xyz/?metode=isAITavailable`)
                             .then(response => response.text())
                             .then(AIT_STAT => {
@@ -3319,16 +3485,16 @@ function openDiscovery(el) {
                                     document.getElementById("aitbtn").style.display = null
                                     document.getElementById("sum").style.display = null
                                     if (aitInfo.message === 'U gjeten listime te reja') {
-                        if (localStorage.getItem("Jeanne_lastAit_summary")) {
-                            document.getElementById("summaryTxt").innerHTML = `Έχεις ${aitInfo.new_count === 1 ? "1 νέα καταχώρηση" : `${aitInfo.new_count} νέες καταχωρήσεις`}.<br>Η προηγούμενη περίληψη δεν ισχύει.`
-                            $("#summaryTxt").fadeIn("fast")
-                        }
-                    } else {
-                        if (localStorage.getItem("Jeanne_lastAit_summary")) {
-                            document.getElementById("summaryTxt").innerHTML = localStorage.getItem("Jeanne_lastAit_summary")
-                            $("#summaryTxt").fadeIn("fast")
-                        }
-                    }
+                                        if (localStorage.getItem("Jeanne_lastAit_summary")) {
+                                            document.getElementById("summaryTxt").innerHTML = `Έχεις ${aitInfo.new_count === 1 ? "1 νέα καταχώρηση" : `${aitInfo.new_count} νέες καταχωρήσεις`}.<br>Η προηγούμενη περίληψη δεν ισχύει.`
+                                            $("#summaryTxt").fadeIn("fast")
+                                        }
+                                    } else {
+                                        if (localStorage.getItem("Jeanne_lastAit_summary")) {
+                                            document.getElementById("summaryTxt").innerHTML = localStorage.getItem("Jeanne_lastAit_summary")
+                                            $("#summaryTxt").fadeIn("fast")
+                                        }
+                                    }
                                 }
 
                             }).catch(error => {
@@ -3336,6 +3502,8 @@ function openDiscovery(el) {
                             });
                     } else {
                         document.getElementById("sum").style.display = 'none'
+                        document.getElementById("thFY").style.display = 'none'
+                        
                     }
 
                 }).catch(error => {
@@ -3392,7 +3560,9 @@ function openDiscovery(el) {
 function openHome(el) {
     el.classList.add('active')
     document.getElementById("discovery-switch").classList.remove("active")
+    document.getElementById("profile-switch").classList.remove("active")
     document.getElementById("home").style.display = 'block'
+    document.getElementById("profile").style.display = 'none'
     document.getElementById("discover").style.display = 'none'
 }
 

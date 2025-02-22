@@ -1609,7 +1609,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: -50px;
+    margin-top: 10px;
     margin-bottom: 5px;
     position: relative;
     border-radius: 50%;
@@ -1693,15 +1693,24 @@ img {
     /*padding-left: 20px;
     padding-right: 20px;*/
 
-    background-color: #141414;
+    background-color: #ffffff1d;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     padding: 10px;
     border-radius: 10px;
-    border: 1px hsl(0, 0%, 10%) solid;
+    /*border: 1px hsl(0, 0%, 10%) solid;*/
     overflow-wrap: break-word;
     word-break: break-word;
     max-width: 100%;
     box-sizing: border-box;
     margin-top: 20px;
+}
+
+.assets .moreInfo#settings {
+    padding: 0;
+    background-color: transparent;
+    border-radius: 0;
+    border: none;
 }
 
 #tags {
@@ -1757,7 +1766,7 @@ img {
     align-items: center;
     justify-content: center;
     /*margin-left: 10px;*/
-    background-color: #1e1e1e;
+    background-color: #ffffff1d;
     border-radius: 20px;
     box-sizing: border-box;
     padding: 5px 5px;
@@ -1775,15 +1784,18 @@ img {
 #settings-sp .anInfo {
     border-radius: 0px;
     position: relative;
+    background-color: #ffffff1d;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 #settings-sp .anInfo:first-child {
-    border-radius: 20px 20px 0px 0px;
+    border-radius: 15px 15px 0px 0px;
     padding-top: 10px;
 }
 
 #settings-sp .anInfo:last-child {
-    border-radius: 0px 0px 20px 20px;
+    border-radius: 0px 0px 15px 15px;
     padding-bottom: 10px;
 }
 
@@ -1824,13 +1836,15 @@ img {
 }
 
 .buttons .message {
-    background-color: #1e1e1e;
+    background-color: #ffffff1d;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     padding: 10px 40px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    border: 2px solid #282828;
+    /*border: 2px solid #282828;*/
     border-radius: 50px;
     height: 50px;
 }
@@ -2884,6 +2898,10 @@ input:-webkit-autofill:active {
     order: -1;
 }
 
+.spawnPeople.upup2 {
+    order: -2;
+}
+
 .aStudent {
     width: 100%;
     height: auto;
@@ -2909,7 +2927,7 @@ input:-webkit-autofill:active {
 
 .aStudent.picked {
     /*background-color: #01617c99;*/
-    border: 3px solid var( --color-theme-select) !important;
+    border: 3px solid var(--color-theme-select) !important;
     border-radius: 20px !important;
 }
 
@@ -3107,6 +3125,13 @@ input:-webkit-autofill:active {
     flex-direction: row;
     width: 100%;
     align-items: center;
+}
+
+.topOption vox {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
     gap: 10px;
 }
 
@@ -3186,7 +3211,8 @@ input:-webkit-autofill:active {
 }
 
 .tracker-info span.a {
-    color: var(--color-theme-light); /*#36c157;*/
+    color: var(--color-theme-light);
+    /*#36c157;*/
 }
 
 .part2 {
@@ -3992,6 +4018,7 @@ input:-webkit-autofill:active {
     0% {
         background-position: 100%;
     }
+
     100% {
         background-position: -100%;
     }
@@ -4029,7 +4056,6 @@ input:-webkit-autofill:active {
 
 #title-progress svg path {
     fill: var(--color-theme-light)
-
 }
 
 .warnTxt {
