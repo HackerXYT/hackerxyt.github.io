@@ -1089,3 +1089,8 @@ p {
     flex-direction: column;
     text-align: left;
 }
+
+.today {
+    font-size: 14px;
+    margin-left: 5px;
+}

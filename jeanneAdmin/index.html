@@ -258,11 +258,11 @@
                     </div>
 
                     <div class="statistics">
-                        <span>Απομένουν: <br>10 μαθητές</span>
+                        <span>Απομένουν: <br><span id="howMany">10 μαθητές</span></span>
                     </div>
                 </div>
                 <div class="card downl">
-                    <div class="rowTop">Excel <span style="margin-left: auto;">/2025</span></div>
+                    <div class="rowTop">Excel <span style="margin-left: auto;">LIVE</span></div>
                     <button onclick="downl()" style="margin-top: auto;" class="cssbuttons-io-button">
                         Λήψη
                         <div class="icon">
@@ -279,24 +279,25 @@
                     <div class="rowTop">Πρόσφατα <span style="margin-left: auto;">/</span></div>
                     <div class="days">
                         <div class="day dark">
-                            <div class="dayTop">Δευ</div>
-                            <div class="dayBottom">5</div>
+                            <div class="dayTop" id="yesterdayDay">Δευ</div>
+                            <div class="dayBottom" id="yesterdayNum">5</div>
                         </div>
                         <div class="day main">
-                            <div class="dayTop">Τρι</div>
-                            <div class="dayBottom">6</div>
+                            <div class="dayTop" id="todayDay">Τρι</div>
+                            <div class="dayBottom" id="todayNum">6</div>
                         </div>
                         <div class="day dark">
-                            <div class="dayTop">Τετ</div>
-                            <div class="dayBottom">7</div>
+                            <div class="dayTop" id="tomorrowDay">Τετ</div>
+                            <div class="dayBottom" id="tomorrowNum">7</div>
                         </div>
                     </div>
                     <div class="stats">
-                       <span class="bigPerc">+19</span>
+                       <span class="bigPerc" id="today">+?<vox class='today'>Σήμερα</vox></span>
+                       
                        <div class="verti"></div>
                        <span class="smallPerc">
-                        <vox>+19</vox>
-                        <vox>Από χθες</vox>
+                           <vox>Εχθές</vox>
+                        <vox id="yesterday">?</vox>
                        </span>
                     </div>
                 </div>

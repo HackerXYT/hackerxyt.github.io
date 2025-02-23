@@ -1,3 +1,61 @@
+function conv(data) {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    // Function to format date for comparison
+    const formatDate = (date) => {
+        const d = new Date(date);
+        return d.toISOString().split('T')[0]; // returns YYYY-MM-DD
+    };
+
+    // Check if the input date is today or yesterday
+    const findRecentInputs = (data) => {
+        const recentInputs = [];
+
+        Object.keys(data).forEach(key => {
+            const inputs = data[key]?.inputs; // Use optional chaining here
+            if (inputs) { // Check if inputs is not null or undefined
+                Object.keys(inputs).forEach(inputKey => {
+                    try {
+                        const input = JSON.parse(inputs[inputKey]);
+                        const inputDate = formatDate(input.date);
+
+                        if (inputDate === formatDate(today) || inputDate === formatDate(yesterday)) {
+                            recentInputs.push(input);
+                        }
+                    } catch (e) {
+                        console.error('Error parsing input:', e);
+                    }
+                });
+            }
+        });
+
+        return recentInputs;
+    };
+
+
+    // Output recent inputs
+    console.log('NLN', findRecentInputs(data));
+    return findRecentInputs(data);
+}
+
+function sortByDate(obj) {
+    Object.keys(obj).forEach(name => {
+        const inputs = obj[name].inputs;
+        const sortedInputs = Object.fromEntries(
+            Object.entries(inputs)
+                .sort(([, a], [, b]) => {
+                    const dateA = JSON.parse(a).date;
+                    const dateB = JSON.parse(b).date;
+                    return new Date(dateA) - new Date(dateB);
+                })
+        );
+        obj[name].inputs = sortedInputs;
+    });
+    return obj;
+}
+
 
 let allUsers = {}
 let selfClass;
@@ -13,7 +71,7 @@ function runNow() {
 
 
     if (userInput !== null) {
-        
+
 
 
         fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
@@ -98,68 +156,99 @@ function runNow() {
                         });
                     });
 
-                    fetch(`https://arc.evoxs.xyz/?metode=inputs&pin=${userInput}`) //base64Pin
-            .then(response => response.text())
-            .then(datas => {
-                if (datas === 'Ndodhi nje gabim ne Evox!') {
-                    return;
-                } else {
-                    
-                    document.querySelector(".accepted").style.opacity = '1'
-                    document.querySelector(".accepted").style.display = 'flex'
-                    document.querySelector(".login").style.opacity = '0'
-                    setTimeout(function () {
-                        document.querySelector(".login").style.display = 'none'
-                    }, 500)
-                }
-                const data = JSON.parse(datas)
-                document.getElementById("myuser").innerText = data.Self.username
-                document.getElementById("selfImg").src = data.Self.foto
-                document.getElementById("students").innerHTML = ''
-                localStorage.setItem("pinMeta", userInput)
+                const today = new Date();
+                const options = { weekday: 'long' }; // Gets the full day name
+                const dayInGreek = today.toLocaleDateString('el-GR', options);
+                const day = today.getDate();
+                document.getElementById("todayDay").innerText = dayInGreek.slice(0, 3);
+                document.getElementById("todayNum").innerText = day
+                document.getElementById("yesterdayDay").innerText = new Date(new Date().setDate(new Date().getDate() - 1)).toLocaleDateString('el-GR', options).slice(0, 3);
+                document.getElementById("yesterdayNum").innerText = new Date(new Date().setDate(new Date().getDate() - 1)).getDate()
+                document.getElementById("tomorrowDay").innerText = new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString('el-GR', options).slice(0, 3);
+                document.getElementById("tomorrowNum").innerText = new Date(new Date().setDate(new Date().getDate() + 1)).getDate()
+                fetch(`https://arc.evoxs.xyz/?metode=inputs&pin=${userInput}`) //base64Pin
+                    .then(response => response.text())
+                    .then(datas => {
 
-                document.getElementById("inputs").innerHTML = ''
+                        if (datas === 'Ndodhi nje gabim ne Evox!') {
+                            return;
+                        } else {
 
-                Object.entries(data).forEach(([key, value]) => { //each user
-                    if (value.count === 0) { return; }
-                    console.log("as", key)
-                    if(key.includes("�") || key.includes("Self")) {
-                        console.warn("Invalid character detected in name. Skipping...");
-                        return;
-                    }
-                    let inputs = ``
-                    let count = 0
+                            document.querySelector(".accepted").style.opacity = '1'
+                            document.querySelector(".accepted").style.display = 'flex'
+                            document.querySelector(".login").style.opacity = '0'
+                            setTimeout(function () {
+                                document.querySelector(".login").style.display = 'none'
+                            }, 500)
+                        }
+                        const data = JSON.parse(datas)
+                        //alert(JSON.stringify(conv(data)))
+                        //const sortedData = sortByDate(data);
+                        let today_in = 0
+                        let yesterday_in = 0
+                        Object.entries(data).forEach(([key, value]) => {
+                            if (key === 'Self' || key.includes('�')) {
+                                return;
+                            }
+                            Object.entries(value.inputs).forEach(([inputNameEvox, inputVals]) => {
+                                const workIng = JSON.parse(inputVals);
+                                if (workIng.date.includes(new Date().toISOString().split('T')[0])) {
+                                    today_in++;
+                                } else if (workIng.date.includes(new Date(new Date().setDate(new Date().getDate() - 1)).toISOString().split('T')[0])) {
+                                    yesterday_in++;
+                                }
+                            })
 
-                    document.getElementById("inputs").innerHTML += `<div id="${key.replace(" ", "-")}" class="showInputs">
+                        })
+                        document.getElementById("today").innerHTML = `+${today_in}<vox class='today'>Σήμερα</vox>`
+                        document.getElementById("yesterday").innerText = `+${yesterday_in}`
+                        document.getElementById("myuser").innerText = data.Self.username
+                        document.getElementById("selfImg").src = data.Self.foto
+                        document.getElementById("students").innerHTML = ''
+                        localStorage.setItem("pinMeta", userInput)
+
+                        document.getElementById("inputs").innerHTML = ''
+
+                        Object.entries(data).forEach(([key, value]) => { //each user
+                            if (value.count === 0) { return; }
+                            console.log("as", key)
+                            if (key.includes("�") || key.includes("Self")) {
+                                console.warn("Invalid character detected in name. Skipping...");
+                                return;
+                            }
+                            let inputs = ``
+                            let count = 0
+
+                            document.getElementById("inputs").innerHTML += `<div id="${key.replace(" ", "-")}" class="showInputs">
 <p>${key}</p></div>`
 
 
-                    Object.entries(value.inputs).forEach(([nameEvox, input]) => { //each input
-                        console.log(nameEvox.replace('.evox', ''))
-                        console.log(allUsers[nameEvox.replace('.evox', '')])
-                        count++
-                        const ranId = Math.floor(Math.random() * 909999) + 1
-                        inputs += `<div class="avatar">
+                            Object.entries(value.inputs).forEach(([nameEvox, input]) => { //each input
+                                console.log(nameEvox.replace('.evox', ''))
+                                console.log(allUsers[nameEvox.replace('.evox', '')])
+                                count++
+                                const ranId = Math.floor(Math.random() * 909999) + 1
+                                inputs += `<div class="avatar">
                     <img src="reloading-pfp.gif" alt="evx-error" id="${ranId}-evox">
                 </div>` //<vox class="nameInput">${count}. ${nameEvox.replace('.evox', '')}</vox>
 
 
-                        // Load actual image
-                        try {
-                            const tempImage = new Image();
-                            tempImage.src = allUsers[nameEvox.replace(".evox", "")].foto;
-                            tempImage.onload = () => {
-                                document.getElementById(`${ranId}-evox`).src = tempImage.src; // Swap to the loaded image
-                            };
-                        } catch(error) {
-                            console.error(error)
-                            document.getElementById(`${ranId}-evox`).src = 'snap.png'
-                        }
-                        
+                                // Load actual image
+                                try {
+                                    const tempImage = new Image();
+                                    tempImage.src = allUsers[nameEvox.replace(".evox", "")].foto;
+                                    tempImage.onload = () => {
+                                        document.getElementById(`${ranId}-evox`).src = tempImage.src; // Swap to the loaded image
+                                    };
+                                } catch (error) {
+                                    console.error(error)
+                                    document.getElementById(`${ranId}-evox`).src = 'snap.png'
+                                }
 
-                        const inputToWork = JSON.parse(input)
 
-                        document.getElementById(key.replace(" ", "-")).innerHTML += `<div class="students details">
+                                const inputToWork = JSON.parse(input)
+
+                                document.getElementById(key.replace(" ", "-")).innerHTML += `<div class="students details">
                     <div class="student">
                         <div class="topRow">
                             <div class="avatar">
@@ -187,17 +276,17 @@ function runNow() {
                         </div>
                     </div>
                 </div>`
-                    })
-                    console.log(`Name: ${key}`);
-                    if(key.includes("�")) {
-                        console.warn("Invalid character detected in name. Skipping...");
-                        return;
-                    }
-                    console.log(value.foto !== null, "Fotos:", value.foto, value)
-                    const ranId = Math.floor(Math.random() * 909999) + 1
+                            })
+                            console.log(`Name: ${key}`);
+                            if (key.includes("�")) {
+                                console.warn("Invalid character detected in name. Skipping...");
+                                return;
+                            }
+                            console.log(value.foto !== null, "Fotos:", value.foto, value)
+                            const ranId = Math.floor(Math.random() * 909999) + 1
 
 
-                    document.getElementById("students").innerHTML += `<div class="student">
+                            document.getElementById("students").innerHTML += `<div class="student">
                     <div class="topRow">
                 <div class="avatar">
                     <img id="${ranId}-evox-user" src="user.gif" alt="evx-error">
@@ -212,43 +301,51 @@ function runNow() {
                     <p>${inputs}</p>
                 </div>
             </div>`
-                    try {
-                        const tempImage = new Image();
-                        tempImage.src = value.foto !== undefined ? value.foto : allUsers[key].foto;
-                        tempImage.onload = () => {
-                            document.getElementById(`${ranId}-evox-user`).src = tempImage.src; // Swap to the loaded image
-                        };
-                        Object.entries(value.inputs).forEach(([file, content]) => {
-                            console.log(`File: ${file}`);
-                            console.log(`Content: ${content}`);
+                            try {
+                                const tempImage = new Image();
+                                tempImage.src = value.foto !== undefined ? value.foto : allUsers[key].foto;
+                                tempImage.onload = () => {
+                                    document.getElementById(`${ranId}-evox-user`).src = tempImage.src; // Swap to the loaded image
+                                };
+                                Object.entries(value.inputs).forEach(([file, content]) => {
+                                    console.log(`File: ${file}`);
+                                    console.log(`Content: ${content}`);
+                                });
+                            } catch (error) {
+                                document.getElementById(`${ranId}-evox-user`).src = 'snap.png'
+                            }
+
+
                         });
-                    } catch (error) {
-                        document.getElementById(`${ranId}-evox-user`).src = 'snap.png'
-                    }
+                    }).catch(error => {
+                        console.error("Jeanne D'arc Database is offline.")
+                        console.log('Error:', error);
+                    });
 
 
-                });
-            }).catch(error => {
-                console.error("Jeanne D'arc Database is offline.")
-                console.log('Error:', error);
-            });
+                fetch('https://arc.evoxs.xyz/?metode=progresin')
+                    .then(response => response.json())
+                    .then(progress_global => {
 
 
-        fetch('https://arc.evoxs.xyz/?metode=progresin')
-            .then(response => response.json())
-            .then(progress_global => {
-                const progress = progress_global.global
-                document.getElementById("countDone").innerHTML = progress.have_participated
-                document.getElementById("countFull").innerHTML = progress.total_users
-                document.getElementById("countLeft").innerHTML = progress.total_users - progress.have_participated
-                const percentage = Number.parseInt(100 * progress.have_participated / progress.total_users)
-                //document.getElementById("isDone").innerHTML = percentage + "%"
-                updateProgress(percentage);
-                const progress_class = progress_global.byclass
-                document.getElementById("classes").innerHTML = ''
-                Object.entries(progress_class.class_counts).forEach(([key, value]) => {
-                    if (key === 'ΚΑΘ') { return; }
-                    document.getElementById("classes").innerHTML += `<div class="aclass">
+                        const progress = progress_global.global
+
+                        document.getElementById("countDone").innerHTML = progress.have_participated
+                        document.getElementById("countFull").innerHTML = progress.total_users
+                        document.getElementById("countLeft").innerHTML = progress.total_users - progress.have_participated
+                        const percentage = Number.parseInt(100 * progress.have_participated / progress.total_users)
+                        document.getElementById("progress-ring").style = `--progress: ${percentage};`
+                        document.getElementById("percentage").innerText = percentage + "%"
+                        const apomenoun = progress.total_users - progress.have_participated
+                        document.getElementById("howMany").innerText = `${apomenoun} ${apomenoun === 1 ? "μαθητής" : "μαθητές"}`
+                        //document.getElementById("isDone").innerHTML = percentage + "%"
+                        //updateProgress(percentage);
+                        return;
+                        const progress_class = progress_global.byclass
+                        document.getElementById("classes").innerHTML = ''
+                        Object.entries(progress_class.class_counts).forEach(([key, value]) => {
+                            if (key === 'ΚΑΘ') { return; }
+                            document.getElementById("classes").innerHTML += `<div class="aclass">
                 <div class="left">
                 ${key === "ΓΥΓ" ? "Υγείας" : key.includes("ΓΑΝΘ1") ? "Θεωρητ. 1" : key === 'ΓΟΠ1' ? "Οικον. 1" : key === 'ΓΟΠ2' ? "Οικον. 2" : key === "ΓΑΝΘ2" ? "Θεωρητ. 2" : key === "ΓΘΤ" ? "Θετικών" : key}
                 <p>${value.have_participated}<vox class="smallto">/${value.total}</vox></p>
@@ -296,11 +393,11 @@ function runNow() {
 </svg>` : key.includes("ΓΘΤ") ? `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 1024 1024" class="icon" version="1.1"><path d="M857.7 583.1c-6.7-11.8-21.8-15.8-33.5-9-11.8 6.7-15.8 21.8-9.1 33.5 66.6 115.9 83.4 212.6 43.8 252.2-75.7 75.8-311.6-54.5-476-218.9-41.5-41.5-78.8-84.7-111.3-127.9 33.4-45.1 71.3-89.2 111.3-129.2C547.2 219.5 783.1 89.3 858.9 165c30.9 30.9 27.7 97.6-8.9 183-40.1 93.6-114.7 197.7-210 293-22.3 22.3-45.4 43.8-68.7 63.8-10.3 8.8-11.4 24.4-2.6 34.6 8.9 10.3 24.4 11.4 34.6 2.6 24.2-20.8 48.2-43.2 71.4-66.3 99.6-99.6 177.9-209.1 220.4-308.3 45.6-106.3 45-190.5-1.5-237C802 38.8 562.4 135 348.2 349.3c-39.9 39.9-75.7 80.7-107 121.2-28.1-41.7-51.4-83-68.3-122.4-36.6-85.3-39.8-152-8.9-183 39.6-39.6 136.1-22.9 252 43.6 11.7 6.7 26.8 2.7 33.5-9.1 6.7-11.8 2.7-26.8-9.1-33.5-140-80.3-253.4-93.4-311.1-35.7-46.6 46.6-47.1 130.7-1.5 237 20 46.8 48.2 95.8 82.6 145C97.5 674.2 60.7 825.9 129.3 894.5c23.8 23.8 57 35.5 97.6 35.5 58.7 0 132.9-24.6 216.5-73 11.7-6.8 15.7-21.8 8.9-33.6-6.8-11.7-21.8-15.7-33.6-8.9-117.1 68-214.7 85.3-254.7 45.3-51.6-51.6-7.5-177.6 77.8-304.7 31.6 40.9 67.3 81.5 106.3 120.5 99.6 99.6 209.1 177.8 308.4 220.4 52.5 22.5 99.7 33.8 139.6 33.8 40.8 0 73.9-11.8 97.5-35.3 57.7-57.7 44.6-171.2-35.9-311.4zM511.5 430.5c-45.2 0-81.9 36.7-81.9 81.9s36.7 81.9 81.9 81.9 81.9-36.7 81.9-81.9c-0.1-45.2-36.7-81.9-81.9-81.9z" fill="#FFF"/></svg>` : "error"}
                 </div>
             </div>`
-                    console.log(`Class: ${key}, Total: ${value.total}, Participated: ${value.have_participated}`);
-                });
-            }).catch(error => {
-                console.log('Error:', error);
-            });
+                            console.log(`Class: ${key}, Total: ${value.total}, Participated: ${value.have_participated}`);
+                        });
+                    }).catch(error => {
+                        console.log('Error:', error);
+                    });
 
 
 
