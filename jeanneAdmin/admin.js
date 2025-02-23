@@ -295,7 +295,7 @@ function runNow() {
                 <p>${key.split(" ")[1]}</p>
                 <span>${key.split(" ")[0]}</span>
                 </div>
-                
+                <p>${count}</p>
                 </div>
                 <div class="moreInfo nameInput">
                     <p>${inputs}</p>
