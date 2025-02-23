@@ -1666,6 +1666,7 @@ function activateYearbook() {
                                                         console.log(name_el)
                                                         const workOn = usersElems[name_el].ranId
                                                         document.getElementById(`user-${workOn}`).classList.add("seen")
+                                                        //document.getElementById(`user-${workOn}`).classList.add("goupup")
                                                         document.getElementById(`user-${workOn}`).setAttribute("evox-c", "require-resee")
                                                     } catch (error) {
                                                         if (!document.getElementById("error-cont")) {
