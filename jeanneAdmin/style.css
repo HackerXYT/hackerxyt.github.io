@@ -13,6 +13,13 @@ body {
     src: url('SFPRODISPLAYMEDIUM.OTF');
 }
 
+:root {
+    --color-theme: #298ef2;
+    --color-theme-light: rgb(102, 179, 255);
+    --color-theme-select: #298ef255;
+}
+
+
 body {
     background-color: #000;
     font-family: "SF";
@@ -757,10 +764,328 @@ p {
     color: #000;
 }
 
-.accepted, .login {
+.accepted,
+.login {
     transition: opacity 0.5s ease;
-    opacity: 0; /* Initially hidden */
+    opacity: 0;
+    /* Initially hidden */
 }
+
 .accepted {
-    opacity: 0; /* Visible after fadeIn */
+    opacity: 0;
+    /* Visible after fadeIn */
+}
+
+.card {
+    width: 100%;
+    background: #141414;
+    padding: 25px 20px;
+    border-radius: 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: "SF";
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+}
+
+.card.downlf {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background-image: url('../jeanne/aura.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.card.downl {
+    background-image: url('excel.png');
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Dark overlay */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-blend-mode: darken;
+    /* Or try "multiply" for a different effect */
+}
+
+.card.rate {
+    background-color: rgba(173, 173, 173, 0.756);
+    /* Dark overlay */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.card {
+    position: relative;
+    overflow: hidden;
+}
+
+
+.rowTop {
+    font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.ring {
+    width: 100px;
+    height: 100px;
+    margin: 20px auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: conic-gradient(#bbb var(--progress, 0%), #222 0%);
+}
+
+.ring::before {
+    content: '';
+    width: 80%;
+    height: 80%;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.ring span {
+    font-size: 17px;
+    font-weight: bold;
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.statistics {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-top: 10px;
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Circular Progress Ring with Neumorphism */
+.progress-ring {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-right: 15px;
+    flex-shrink: 0;
+    background: #2a2a2a;
+    border-radius: 50%;
+    box-shadow:
+        inset 8px 8px 16px rgba(0, 0, 0, 0.2),
+        inset -8px -8px 16px #1f1f1fc0;
+    /* Inset shadow */
+}
+
+.progress-ring svg {
+    width: 100%;
+    height: 100%;
+}
+
+.progress-ring circle {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+}
+
+.progress-ring circle.track {
+    stroke: #313131;
+    /* Subtle contrast */
+}
+
+
+.progress-ring circle.progress {
+    stroke: var(--color-theme);
+    /* Highlighted color */
+    stroke-dasharray: 314;
+    stroke-dashoffset: calc(314 - (314 * var(--progress)) / 100);
+    /* Use CSS variable */
+    transform: rotate(-90deg);
+    /* Start from the top */
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.9s ease-in-out;
+    /* Animate the stroke-dashoffset */
+    box-shadow:
+        inset -8px -8px 16px rgba(0, 0, 0, 0.5),
+        inset -8px -8px 16px #1f1f1fc0;
+    /* Inset shadow */
+}
+
+
+/* Centering the Percentage */
+.percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    color: #e2e2e2;
+}
+
+
+/* Text Content */
+.text-content {
+    display: flex;
+    flex-direction: column;
+    max-width: 250px;
+    margin-right: auto;
+    /* Limits text width */
+}
+
+.home {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.home .row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.cssbuttons-io-button {
+    background: var(--color-theme);
+    color: white;
+    font-family: inherit;
+    padding: 0.35em;
+    padding-left: 1.2em;
+    font-size: 17px;
+    font-weight: 500;
+    border-radius: 0.9em;
+    border: none;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    box-shadow: inset 0 0 1.6em -0.6em var(--color-theme);
+    overflow: hidden;
+    position: relative;
+    height: 2.8em;
+    padding-right: 3.3em;
+    cursor: pointer;
+}
+
+.cssbuttons-io-button .icon {
+    background: white;
+    margin-left: 1em;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.2em;
+    width: 2.2em;
+    border-radius: 0.7em;
+    box-shadow: 0.1em 0.1em 0.6em 0.2em #7b52b9;
+    right: 0.3em;
+    transition: all 0.3s;
+}
+
+.cssbuttons-io-button:hover .icon {
+    width: calc(100% - 0.6em);
+}
+
+.cssbuttons-io-button .icon svg {
+    width: 1.1em;
+    transition: transform 0.3s;
+    color: #7b52b9;
+}
+
+.cssbuttons-io-button:hover .icon svg {
+    transform: translateX(0.1em);
+}
+
+.cssbuttons-io-button:active .icon {
+    transform: scale(0.95);
+}
+
+.days {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 10px;
+}
+.days .day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 10px;
+    padding: 20px 15px;
+    border: 2px solid #141414;
+    border-radius: 15px;
+}
+
+.days .day.main {
+    background-color: #141414;
+}
+
+.dayTop {
+    font-size: 13px;
+}
+
+.card.rate .stats {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    gap: 5px;
+    align-items: center;
+    width: 100%;
+}
+
+.stats {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.stats .verti {
+    height: 100%;
+    background-color: #141414;
+    width: 2px;
+    border-radius: 10px;
+}
+
+.stats .bigPerc {
+    font-size: 35px;
+}
+
+.stats .smallPerc {
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
 }

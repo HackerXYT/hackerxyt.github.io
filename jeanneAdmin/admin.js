@@ -13,12 +13,98 @@ function runNow() {
 
 
     if (userInput !== null) {
-        fetch(`https://arc.evoxs.xyz/?metode=inputs&pin=${userInput}`) //base64Pin
+        
+
+
+        fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
+            .then(response => response.json())
+            .then(names => {
+                //namesData = names
+                const fullNames = Object.keys(names.names);
+                document.getElementById("allSt").innerHTML = '';
+                let selfClass = null
+                const fetchPromises = fullNames.map(name => {
+                    return fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
+                        .then(response => response.json())
+                        .then(info => {
+                            if (info.emri !== foundName) {
+
+                            } else {
+                                selfClass = `${info.seksioni}${info.klasa}`
+                            }
+                            allUsers[info.emri] = info;
+
+                        })
+                        .catch(error => {
+                            console.error("Jeanne D'arc Database is offline.");
+                            console.log('Error:', error);
+                        });
+                });
+
+                Promise.all(fetchPromises)
+                    .then(() => {
+                        Object.entries(allUsers).forEach(([key, user]) => {
+                            // key -> emri, user -> data
+                            if (classes[`${user.seksioni}${user.klasa}`]) {
+                                classes[`${user.seksioni}${user.klasa}`].push(user);
+                            } else {
+                                classes[`${user.seksioni}${user.klasa}`] = [user];
+                            }
+
+                            document.getElementById("allSt").innerHTML += `<div class="student">
+                <div class="topRow">
+            <div class="avatar">
+                <img src="${user.foto}" alt="evx-error">
+            </div>
+            <div class="coll">
+            <p>${key.split(" ")[1]}</p>
+            <span>${key.split(" ")[0]}</span>
+            </div>
+            
+            </div>
+        </div>`
+                        });
+                        //runNow()
+
+                        console.log(classes);
+
+                        return;
+                        Object.entries(classes).forEach(([key, aclass]) => {
+                            if (!document.getElementById("allSt").innerText.includes(key)) {
+                                document.getElementById("allSt").innerHTML += `<div class="student">
+                <div class="topRow">
+            <div class="avatar">
+                <img src="${null}" alt="evx-error">
+            </div>
+            <div class="coll">
+            <p>${key.split(" ")[1]}</p>
+            <span>${key.split(" ")[0]}</span>
+            </div>
+            
+            </div>
+        </div>` //${key.includes("ΚΑΘ") ? " style='display: none'" : ""}
+                            }
+                            console.log(key, aclass)
+
+
+
+
+                            // key -> class, user -> data
+                            if (key === selfClass) {
+
+                                //classes[`${user.seksioni}${user.klasa}`].push(user);
+                            }
+
+                        });
+                    });
+
+                    fetch(`https://arc.evoxs.xyz/?metode=inputs&pin=${userInput}`) //base64Pin
             .then(response => response.text())
             .then(datas => {
                 if (datas === 'Ndodhi nje gabim ne Evox!') {
                     return;
                 } else {
+                    
                     document.querySelector(".accepted").style.opacity = '1'
                     document.querySelector(".accepted").style.display = 'flex'
                     document.querySelector(".login").style.opacity = '0'
@@ -27,6 +113,8 @@ function runNow() {
                     }, 500)
                 }
                 const data = JSON.parse(datas)
+                document.getElementById("myuser").innerText = data.Self.username
+                document.getElementById("selfImg").src = data.Self.foto
                 document.getElementById("students").innerHTML = ''
                 localStorage.setItem("pinMeta", userInput)
 
@@ -34,6 +122,11 @@ function runNow() {
 
                 Object.entries(data).forEach(([key, value]) => { //each user
                     if (value.count === 0) { return; }
+                    console.log("as", key)
+                    if(key.includes("�") || key.includes("Self")) {
+                        console.warn("Invalid character detected in name. Skipping...");
+                        return;
+                    }
                     let inputs = ``
                     let count = 0
 
@@ -52,11 +145,17 @@ function runNow() {
 
 
                         // Load actual image
-                        const tempImage = new Image();
-                        tempImage.src = allUsers[nameEvox.replace(".evox", "")].foto;
-                        tempImage.onload = () => {
-                            document.getElementById(`${ranId}-evox`).src = tempImage.src; // Swap to the loaded image
-                        };
+                        try {
+                            const tempImage = new Image();
+                            tempImage.src = allUsers[nameEvox.replace(".evox", "")].foto;
+                            tempImage.onload = () => {
+                                document.getElementById(`${ranId}-evox`).src = tempImage.src; // Swap to the loaded image
+                            };
+                        } catch(error) {
+                            console.error(error)
+                            document.getElementById(`${ranId}-evox`).src = 'snap.png'
+                        }
+                        
 
                         const inputToWork = JSON.parse(input)
 
@@ -90,6 +189,10 @@ function runNow() {
                 </div>`
                     })
                     console.log(`Name: ${key}`);
+                    if(key.includes("�")) {
+                        console.warn("Invalid character detected in name. Skipping...");
+                        return;
+                    }
                     console.log(value.foto !== null, "Fotos:", value.foto, value)
                     const ranId = Math.floor(Math.random() * 909999) + 1
 
@@ -109,15 +212,20 @@ function runNow() {
                     <p>${inputs}</p>
                 </div>
             </div>`
-                    const tempImage = new Image();
-                    tempImage.src = value.foto !== undefined ? value.foto : allUsers[key].foto;
-                    tempImage.onload = () => {
-                        document.getElementById(`${ranId}-evox-user`).src = tempImage.src; // Swap to the loaded image
-                    };
-                    Object.entries(value.inputs).forEach(([file, content]) => {
-                        console.log(`File: ${file}`);
-                        console.log(`Content: ${content}`);
-                    });
+                    try {
+                        const tempImage = new Image();
+                        tempImage.src = value.foto !== undefined ? value.foto : allUsers[key].foto;
+                        tempImage.onload = () => {
+                            document.getElementById(`${ranId}-evox-user`).src = tempImage.src; // Swap to the loaded image
+                        };
+                        Object.entries(value.inputs).forEach(([file, content]) => {
+                            console.log(`File: ${file}`);
+                            console.log(`Content: ${content}`);
+                        });
+                    } catch (error) {
+                        document.getElementById(`${ranId}-evox-user`).src = 'snap.png'
+                    }
+
 
                 });
             }).catch(error => {
@@ -134,7 +242,7 @@ function runNow() {
                 document.getElementById("countFull").innerHTML = progress.total_users
                 document.getElementById("countLeft").innerHTML = progress.total_users - progress.have_participated
                 const percentage = Number.parseInt(100 * progress.have_participated / progress.total_users)
-                document.getElementById("isDone").innerHTML = percentage + "%"
+                //document.getElementById("isDone").innerHTML = percentage + "%"
                 updateProgress(percentage);
                 const progress_class = progress_global.byclass
                 document.getElementById("classes").innerHTML = ''
@@ -195,89 +303,6 @@ function runNow() {
             });
 
 
-        fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
-            .then(response => response.json())
-            .then(names => {
-                //namesData = names
-                const fullNames = Object.keys(names.names);
-                document.getElementById("allSt").innerHTML = '';
-                let selfClass = null
-                const fetchPromises = fullNames.map(name => {
-                    return fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
-                        .then(response => response.json())
-                        .then(info => {
-                            if (info.emri !== foundName) {
-
-                            } else {
-                                selfClass = `${info.seksioni}${info.klasa}`
-                            }
-                            allUsers[info.emri] = info;
-
-                        })
-                        .catch(error => {
-                            console.error("Jeanne D'arc Database is offline.");
-                            console.log('Error:', error);
-                        });
-                });
-
-                Promise.all(fetchPromises)
-                    .then(() => {
-                        Object.entries(allUsers).forEach(([key, user]) => {
-                            // key -> emri, user -> data
-                            if (classes[`${user.seksioni}${user.klasa}`]) {
-                                classes[`${user.seksioni}${user.klasa}`].push(user);
-                            } else {
-                                classes[`${user.seksioni}${user.klasa}`] = [user];
-                            }
-
-                            document.getElementById("allSt").innerHTML += `<div class="student">
-                <div class="topRow">
-            <div class="avatar">
-                <img src="${user.foto}" alt="evx-error">
-            </div>
-            <div class="coll">
-            <p>${key.split(" ")[1]}</p>
-            <span>${key.split(" ")[0]}</span>
-            </div>
-            
-            </div>
-        </div>`
-                        });
-                        runNow()
-
-                        console.log(classes);
-
-                        return;
-                        Object.entries(classes).forEach(([key, aclass]) => {
-                            if (!document.getElementById("allSt").innerText.includes(key)) {
-                                document.getElementById("allSt").innerHTML += `<div class="student">
-                <div class="topRow">
-            <div class="avatar">
-                <img src="${null}" alt="evx-error">
-            </div>
-            <div class="coll">
-            <p>${key.split(" ")[1]}</p>
-            <span>${key.split(" ")[0]}</span>
-            </div>
-            
-            </div>
-        </div>` //${key.includes("ΚΑΘ") ? " style='display: none'" : ""}
-                            }
-                            console.log(key, aclass)
-
-
-
-
-                            // key -> class, user -> data
-                            if (key === selfClass) {
-
-                                //classes[`${user.seksioni}${user.klasa}`].push(user);
-                            }
-
-                        });
-                    });
-
-
 
 
             }).catch(error => {
@@ -304,6 +329,7 @@ if (!localStorage.getItem("pinMeta")) {
     setTimeout(function () {
         document.querySelector(".accepted").style.display = 'none'
     }, 500)
+
     //userInput = prompt("Please enter Evox© access code:");
 } else {
 
@@ -313,6 +339,7 @@ if (!localStorage.getItem("pinMeta")) {
         document.querySelector(".login").style.display = 'none'
     }, 500)
     userInput = localStorage.getItem("pinMeta")
+    runNow()
 }
 let foundName = ""
 if (localStorage.getItem("jeanDarc_accountData")) {

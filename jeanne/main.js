@@ -3730,7 +3730,7 @@ function analyzeUser(e) {
                                 let find = complete.response
 
                                 if (find === 'Access Denied') {
-                                    document.getElementById("summaryTxt").innerText = 'Λάθος κωδικός'
+                                    document.getElementById("summaryTxt").innerText = 'Απενεργοποιημένο για τώρα'
                                     document.getElementById("aitext").innerText = 'Αποτυχία'
                                 } else if (find === 'AIT is currently sleeping') {
                                     document.getElementById("summaryTxt").innerHTML = 'Το όριο περιλήψεων έχει εξαντληθεί.<br>Δοκιμάστε ξανά αύριο.'
