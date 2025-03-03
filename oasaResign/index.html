@@ -209,7 +209,7 @@
     </style>
 
     <script>
-        var currentBuild = "2.0.0ALPHA"
+        var currentBuild = "2.0.6ALPHA"
         console.log(`%cCurrent Build: ${currentBuild}`, "color: #8bdd8f; font-family:sans-serif; font-size: 20px");
         //window.onerror = function (message, source, lineno, colno, error) {
         //    try {
@@ -531,6 +531,13 @@
                                 fill="#fff" />
                         </svg>Synnu
                     </div>
+                </div>
+                <div class="busInfo-2" style="display: none;">
+                    <div class="lefto">
+                        <p>049</p>
+                        <span>infoName</span>
+                    </div>
+                    
                 </div>
                 <div class="behind">
                     <div id="map-io" class="oasa-map"></div>
@@ -1313,7 +1320,7 @@
                             <div class="pinned-favorites live-activity">
                                 <div class="item">
                                     <div class="busName">
-                                        <span style="font-size: 20px;">Προς <b id="to-?" style="font-size: 21px;">Γούναρη</b></span><span id="busidNoReq"></span><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <span style="font-size: 20px;">Προς <b id="to-?" style="font-size: 21px;">Γούναρη</b></span><span id="busidNoReq"></span><svg onclick="removeAct()" width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M14.5 19.9815C16.0728 19.9415 17.1771 19.815 18 19.4151V20.9999C18 21.5522 17.5523 21.9999 17 21.9999H15.5C14.9477 21.9999 14.5 21.5522 14.5 20.9999V19.9815Z" fill="#FFF"/>
                                             <path d="M6 19.415C6.82289 19.815 7.9272 19.9415 9.5 19.9815V20.9999C9.5 21.5522 9.05228 21.9999 8.5 21.9999H7C6.44772 21.9999 6 21.5522 6 20.9999V19.415Z" fill="#FFF"/>
                                             <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M5.17157 3.17157C6.34315 2 8.22876 2 12 2C15.7712 2 17.6569 2 18.8284 3.17157C19.8915 4.23467 19.99 5.8857 19.9991 9L20 13C19.9909 16.1143 19.8915 17.7653 18.8284 18.8284C18.5862 19.0706 18.3136 19.2627 18 19.4151C17.1771 19.8151 16.0728 19.9415 14.5 19.9815C13.7729 19.9999 12.9458 20 12 20C11.0542 20 10.2271 20 9.5 19.9815C7.9272 19.9415 6.82289 19.815 6 19.415C5.68645 19.2626 5.41375 19.0706 5.17157 18.8284C4.10848 17.7653 4.00911 16.1143 4 13L4.00093 9C4.01004 5.8857 4.10848 4.23467 5.17157 3.17157Z" fill="#FFF"/>

@@ -230,6 +230,7 @@
 
 #searchContainer .topSearch.recommend {
     margin-top: 20px;
+    
 }
 
 .topSearch {
@@ -260,6 +261,66 @@
     /* Element is visible */
     transition: opacity 0.5s ease-in-out, visibility 0s 0.5s;
     /* Fade and delay visibility change */
+    touch-action: pan-x;
+    overflow-x: auto;
+    white-space: nowrap;
+    pointer-events: auto;
+    outline: 20px solid transparent; /* Extends click area */
+}
+
+.busInfo-2 {
+    margin-top: 10px;
+    display: flex;
+    height: auto;
+    overflow-x: auto;
+    /* Space between items */
+    scroll-snap-type: x mandatory;
+    /* Enables snapping */
+    scroll-behavior: smooth;
+    /* Smooth scrolling */
+    -webkit-overflow-scrolling: touch;
+    z-index: 5;
+   
+    opacity: 1;
+    /* Fully visible by default */
+    visibility: visible;
+    /* Element is visible */
+    transition: opacity 0.5s ease-in-out, visibility 0s 0.5s;
+    /* Fade and delay visibility change */
+    touch-action: pan-x;
+    overflow-x: auto;
+    white-space: nowrap;
+    pointer-events: auto;
+    background-color: #000;
+    justify-content: left;
+    align-items:left;
+    width: 96%;
+    padding:10px;
+    margin-left: 15px;
+    margin-right: 15px;
+    box-sizing: border-box;
+    background-color: #41474763;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+.busInfo-2 .lefto {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 10px;
+}
+.busInfo-2 .Block {
+    width: auto;
+    padding: 7.5px 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    background-color: #41474763;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .topSearch.recommend.hidden {
@@ -1051,7 +1112,14 @@
     cursor: pointer;
 }
 
+.button-action .loadingInfi {
+    margin-left: 10px;
+    display: none;
+}
 
+.button-action.loading .loadingInfi {
+    display: flex;
+}
 
 .skeleton-text,
 .skeleton-button {
@@ -1152,6 +1220,11 @@
     font-size: 37px;
 }
 
+.busInfo-2 p {
+    margin: 0;
+    font-size: 37px;
+}
+
 .timetableItem .busInfo p#stationInfoName {
     margin: 0;
     font-size: 25px;
@@ -1163,6 +1236,9 @@
     font-size: 15px;
 }
 
+.busInfo-2 span {
+    font-size: 15px;
+}
 
 .busInfo .busInfoSelector {
     display: flex;

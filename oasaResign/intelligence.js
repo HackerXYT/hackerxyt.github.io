@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.0.52'
+const currentVersion = '2.0.6'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -94,6 +94,9 @@ function openSearch() {
   bottomSearchParent.classList.add('scrolled');
 
   spawnMyLocation()
+  setInterval(function () {
+    spawnMyLocation()
+  }, 500)
   $("#searchIn").fadeOut("fast", function () {
     document.getElementById("insideSearch").style.display = 'flex';
     iconInC.style.display = 'none';
@@ -140,7 +143,7 @@ function openSearch() {
                     </div>`
   })
 
-  
+
 
   //andMore
 }
@@ -564,8 +567,21 @@ function updateLocation(locationName) {
   document.getElementById("searchInSearch").placeholder = `Αναζητήστε ${prefix} ${toAccusative(locationName)}`
 }
 
+let mylocationMarker = null;
 
 function spawnMyLocation() {
+  if (mylocationMarker) {
+    console.log("Reloading location marker")
+    mylocationMarker.remove()
+    mylocationMarker = null
+    navigator.geolocation.getCurrentPosition(function (position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      locationReady = true
+      const loc = [longitude, latitude]
+      myLoc = loc
+    })
+  }
   const markerElement = document.createElement('div');
   markerElement.style.width = '10px'; // smaller size
   markerElement.style.height = '10px';
@@ -577,6 +593,7 @@ function spawnMyLocation() {
   const marker = new mapboxgl.Marker({ element: markerElement })
     .setLngLat(myLoc) // coordinates for the marker
     .addTo(map);
+  mylocationMarker = marker
   markers_global.push(marker)
 }
 
@@ -784,22 +801,7 @@ if (localStorage.getItem("oasa_favorites")) {
   console.log(favoriteBuses)
 }
 
-fetch(`famousBuses.json?vevox=${randomString()}`)
-  .then(response => response.json())
-  .then(data => {
-    console.log("famous")
-    let uniqueBuses = data.list.filter(bus =>
-      !frequentBuses.includes(bus) && !favoriteBuses.includes(bus)
-    );
-    console.log("Unique famous:", uniqueBuses)
-    famousBuses = uniqueBuses
 
-
-  })
-  .catch(error => {
-    $("#famousFeed").fadeOut("fast")
-    console.warn("Cannot load famous")
-  });
 
 function loadOasa() {
   //let spawnInFreq = {}; // This is unused but retained for future reference
@@ -1249,11 +1251,14 @@ function setupServiceWorkerMessaging() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  setInterval(function () {
+
+  function loop() {
     console.log('Calling handleActivity');
     handleActivity(startingJson);
-  }, 10000);
+    setTimeout(loop, 10000);
+  }
 
+  loop();
   function getCookie(name) {
     // Find the cookie in document.cookie string
     const value = `; ${document.cookie}`;
@@ -1410,6 +1415,23 @@ document.addEventListener('DOMContentLoaded', () => {
       getReady()
     }
   }
+
+  fetch(`famousBuses.json?vevox=${randomString()}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log("famous")
+      let uniqueBuses = data.list.filter(bus =>
+        !frequentBuses.includes(bus) && !favoriteBuses.includes(bus)
+      );
+      console.log("Unique famous:", uniqueBuses)
+      famousBuses = uniqueBuses
+
+
+    })
+    .catch(error => {
+      $("#famousFeed").fadeOut("fast")
+      console.warn("Cannot load famous")
+    });
 
 
   const allLines = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetLines&keyOrigin=evoxEpsilon`);
@@ -1937,7 +1959,7 @@ function processInfo(evoxId, type, addMore, comego) {
                                                 </div>
                                             </div>
                                             <div class="fav-actions">
-                                            <div id="start-schedo-station-${station.StopCode}" onclick="addInfinity('${busInfo.bus}', '${station.StopCode}', 'showUp')" style="display:none" class="button-action glowUpGBSM">
+                                            <div id="start-schedo-station-${station.StopCode}" onclick="addInfinity('${busInfo.bus}', '${station.StopCode}', 'showUp', this)" style="display:none" class="button-action glowUpGBSM">
                                                     <svg class="glowUpGlobaltxt_title" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M15.5023 14.3674L20.5319 9.35289C21.2563 8.63072 21.6185 8.26963 21.8092 7.81046C22 7.3513 22 6.84065 22 5.81937V5.33146C22 3.76099 22 2.97576 21.5106 2.48788C21.0213 2 20.2337 2 18.6585 2H18.1691C17.1447 2 16.6325 2 16.172 2.19019C15.7114 2.38039 15.3493 2.74147 14.6249 3.46364L9.59522 8.47817C8.74882 9.32202 8.224 9.84526 8.02078 10.3506C7.95657 10.5103 7.92446 10.6682 7.92446 10.8339C7.92446 11.5238 8.48138 12.0791 9.59522 13.1896L9.74492 13.3388L11.4985 11.5591C11.7486 11.3053 12.1571 11.3022 12.4109 11.5523C12.6647 11.8024 12.6678 12.2109 12.4177 12.4647L10.6587 14.2499L10.7766 14.3674C11.8905 15.4779 12.4474 16.0331 13.1394 16.0331C13.2924 16.0331 13.4387 16.006 13.5858 15.9518C14.1048 15.7607 14.6345 15.2325 15.5023 14.3674ZM17.8652 8.47854C17.2127 9.12904 16.1548 9.12904 15.5024 8.47854C14.8499 7.82803 14.8499 6.77335 15.5024 6.12284C16.1548 5.47233 17.2127 5.47233 17.8652 6.12284C18.5177 6.77335 18.5177 7.82803 17.8652 8.47854Z" fill="#FFF"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M2.77409 12.4814C3.07033 12.778 3.07004 13.2586 2.77343 13.5548L2.61779 13.7103C2.48483 13.8431 2.48483 14.058 2.61779 14.1908C2.75125 14.3241 2.96801 14.3241 3.10147 14.1908L4.8136 12.4807C5.1102 12.1845 5.59079 12.1848 5.88704 12.4814C6.18328 12.778 6.18298 13.2586 5.88638 13.5548L4.17426 15.2648C3.4481 15.9901 2.27116 15.9901 1.545 15.2648C0.818334 14.5391 0.818333 13.362 1.545 12.6362L1.70065 12.4807C1.99725 12.1845 2.47784 12.1848 2.77409 12.4814ZM7.29719 16.696C7.5903 16.9957 7.58495 17.4762 7.28525 17.7693L5.55508 19.4614C5.25538 19.7545 4.77481 19.7491 4.48171 19.4494C4.1886 19.1497 4.19395 18.6692 4.49365 18.3761L6.22382 16.684C6.52352 16.3909 7.00409 16.3963 7.29719 16.696ZM11.4811 18.118C11.7774 18.4146 11.7771 18.8952 11.4805 19.1915L9.76834 20.9015C9.63539 21.0343 9.63539 21.2492 9.76834 21.382C9.9018 21.5153 10.1186 21.5153 10.252 21.382L10.4077 21.2265C10.7043 20.9303 11.1849 20.9306 11.4811 21.2272C11.7774 21.5238 11.7771 22.0044 11.4805 22.3006L11.3248 22.4561C10.5987 23.1813 9.42171 23.1813 8.69556 22.4561C7.96889 21.7303 7.96889 20.5532 8.69556 19.8274L10.4077 18.1174C10.7043 17.8211 11.1849 17.8214 11.4811 18.118Z" fill="#FFF"/>
@@ -1950,14 +1972,40 @@ function processInfo(evoxId, type, addMore, comego) {
 <path d="M10.4954 17.369C10.7918 17.0726 10.7918 16.592 10.4954 16.2956C10.1989 15.9992 9.71835 15.9992 9.42193 16.2956L7.29417 18.4233C6.99774 18.7198 6.99774 19.2003 7.29417 19.4968C7.59059 19.7932 8.07118 19.7932 8.36761 19.4968L10.4954 17.369Z" fill="#FFF"/>
 </g>
 </svg>
+<svg class="loadingInfi" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="25px"
+                            viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+                            <path opacity="0.2" fill="#fff"
+                                d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                     s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                     c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" />
+                            <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                     C22.32,8.481,24.301,9.057,26.013,10.047z">
+                                <animateTransform attributeType="xml" attributeName="transform" type="rotate"
+                                    from="0 20 20" to="360 20 20" dur="0.3s" repeatCount="indefinite" />
+                            </path>
+                        </svg>
                                                 </div>
-                                                <div id="2min-schedo-station-${station.StopCode}" onclick="addInfinity('${busInfo.bus}', '${station.StopCode}', '2min')" class="button-action">
+                                                <div id="2min-schedo-station-${station.StopCode}" onclick="addInfinity('${busInfo.bus}', '${station.StopCode}', '2min', this)" class="button-action">
                                                     <svg class="glowUpGlobaltxt_title" xmlns="http://www.w3.org/2000/svg" fill="#fff" width="20px"
                                                         height="20px" viewBox="-1 0 19 19" class="cf-icon-svg">
                                                         <path
                                                             d="M16.417 9.6A7.917 7.917 0 1 1 8.5 1.683 7.917 7.917 0 0 1 16.417 9.6zm-5.431 2.113H8.309l1.519-1.353q.223-.203.43-.412a2.974 2.974 0 0 0 .371-.449 2.105 2.105 0 0 0 .255-.523 2.037 2.037 0 0 0 .093-.635 1.89 1.89 0 0 0-.2-.889 1.853 1.853 0 0 0-.532-.63 2.295 2.295 0 0 0-.76-.37 3.226 3.226 0 0 0-.88-.12 2.854 2.854 0 0 0-.912.144 2.373 2.373 0 0 0-.764.42 2.31 2.31 0 0 0-.55.666 2.34 2.34 0 0 0-.274.89l1.491.204a1.234 1.234 0 0 1 .292-.717.893.893 0 0 1 1.227-.056.76.76 0 0 1 .222.568 1.002 1.002 0 0 1-.148.536 2.42 2.42 0 0 1-.389.472L6.244 11.77v1.295h4.742z">
                                                         </path>
                                                     </svg>
+                                                    <svg class="loadingInfi" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="25px"
+                            viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+                            <path opacity="0.2" fill="#fff"
+                                d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+                     s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+                     c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" />
+                            <path fill="#fff" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+                     C22.32,8.481,24.301,9.057,26.013,10.047z">
+                                <animateTransform attributeType="xml" attributeName="transform" type="rotate"
+                                    from="0 20 20" to="360 20 20" dur="0.3s" repeatCount="indefinite" />
+                            </path>
+                        </svg>
                                                 </div>
                                                 <div class="button-action">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
@@ -1965,6 +2013,7 @@ function processInfo(evoxId, type, addMore, comego) {
                                                         <path d="M8 3.5C8 2.67157 8.67157 2 9.5 2H14.5C15.3284 2 16 2.67157 16 3.5V4.5C16 5.32843 15.3284 6 14.5 6H9.5C8.67157 6 8 5.32843 8 4.5V3.5Z" fill="#fff"/>
                                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M6.25 10.5C6.25 10.0858 6.58579 9.75 7 9.75H7.5C7.91421 9.75 8.25 10.0858 8.25 10.5C8.25 10.9142 7.91421 11.25 7.5 11.25H7C6.58579 11.25 6.25 10.9142 6.25 10.5ZM9.75 10.5C9.75 10.0858 10.0858 9.75 10.5 9.75H17C17.4142 9.75 17.75 10.0858 17.75 10.5C17.75 10.9142 17.4142 11.25 17 11.25H10.5C10.0858 11.25 9.75 10.9142 9.75 10.5ZM6.25 14C6.25 13.5858 6.58579 13.25 7 13.25H7.5C7.91421 13.25 8.25 13.5858 8.25 14C8.25 14.4142 7.91421 14.75 7.5 14.75H7C6.58579 14.75 6.25 14.4142 6.25 14ZM9.75 14C9.75 13.5858 10.0858 13.25 10.5 13.25H17C17.4142 13.25 17.75 13.5858 17.75 14C17.75 14.4142 17.4142 14.75 17 14.75H10.5C10.0858 14.75 9.75 14.4142 9.75 14ZM6.25 17.5C6.25 17.0858 6.58579 16.75 7 16.75H7.5C7.91421 16.75 8.25 17.0858 8.25 17.5C8.25 17.9142 7.91421 18.25 7.5 18.25H7C6.58579 18.25 6.25 17.9142 6.25 17.5ZM9.75 17.5C9.75 17.0858 10.0858 16.75 10.5 16.75H17C17.4142 16.75 17.75 17.0858 17.75 17.5C17.75 17.9142 17.4142 18.25 17 18.25H10.5C10.0858 18.25 9.75 17.9142 9.75 17.5Z" fill="#fff"/>
                                                         </svg>
+                                                        
                                                 </div>
                                             </div>
                                         </div>`
@@ -2667,7 +2716,18 @@ function spawnNearby() {
 
   function addIt(coordinates, asNearStops) {
     console.log(coordinates);
+    markers_global.forEach(marker => marker.remove());
+    markers_intel.forEach((marker) => marker.remove());
 
+    markers_intel = []; // Clear marker references
+
+    // Remove layer and source
+    if (map.getLayer(`route-${previouslines}`)) {
+      map.removeLayer(`route-${previouslines}`);
+    }
+    if (map.getSource(`route-${previouslines}`)) {
+      map.removeSource(`route-${previouslines}`);
+    }
     // Fly to the first coordinate
     map.flyTo({
       center: [parseFloat(coordinates[0].lng), parseFloat(coordinates[0].lat)],
@@ -2773,10 +2833,23 @@ function spawnNearby() {
   }
 }
 function spawnAndShowInfo(bus, remain) {
+
+  markers_intel.forEach((marker) => marker.remove());
+
+  markers_intel = []; // Clear marker references
+
+  // Remove layer and source
+  if (map.getLayer(`route-${previouslines}`)) {
+    map.removeLayer(`route-${previouslines}`);
+  }
+  if (map.getSource(`route-${previouslines}`)) {
+    map.removeSource(`route-${previouslines}`);
+  }
   //get the bus stops
   if (remain === 'deleteAfter' && previouslines) {
     // Remove markers
     markers_intel.forEach((marker) => marker.remove());
+
     markers_intel = []; // Clear marker references
 
     // Remove layer and source
@@ -2795,12 +2868,12 @@ function spawnAndShowInfo(bus, remain) {
       "#ffff33", "#fff", "#ffffff", "#808080", "#ff9900", "#660066"
     ];
 
-    function addIt(coordinates) {
-      console.log(coordinates);
+    function addIt(coordinates, near) {
+      console.log('addIt', coordinates);
 
       // Fly to the first coordinate
       map.flyTo({
-        center: [parseFloat(coordinates[0].lng), parseFloat(coordinates[0].lat)],
+        center: [parseFloat(near.lng), parseFloat(near.lat)],
         zoom: 16,
         curve: 1,
         easing(t) {
@@ -2856,6 +2929,7 @@ function spawnAndShowInfo(bus, remain) {
             }
 
           }
+
           dot.setAttribute("data-status", 'hidden')
           dot.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
 <path d="M14.5 19.9815C16.0728 19.9415 17.1771 19.815 18 19.4151V20.9999C18 21.5522 17.5523 21.9999 17 21.9999H15.5C14.9477 21.9999 14.5 21.5522 14.5 20.9999V19.9815Z" fill="#fff"/>
@@ -2867,6 +2941,13 @@ function spawnAndShowInfo(bus, remain) {
 <path d="M2.4 11.8L4 13L4.00093 9H3C2.44772 9 2 9.44772 2 10V11C2 11.3148 2.14819 11.6111 2.4 11.8Z" fill="#fff"/>
 <path d="M21 9H19.999L20 13L21.6 11.8C21.8518 11.6111 22 11.3148 22 11V10C22 9.44772 21.5522 9 21 9Z" fill="#fff"/>
 </svg>`;
+          if (coord === near) {
+            dot.innerHTML = `<p>${capitalizeWords(coord.StopDescr)}</p><svg onclick="openStation('${coord.StopCode}', '${capitalizeWords(coord.StopDescr)}');" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`
+            dot.setAttribute("data-status", 'visible')
+            console.log("Clicking dot")
+          }
         }
 
         const marker = new mapboxgl.Marker({ element: dot, offset: offset })
@@ -2964,7 +3045,21 @@ function spawnAndShowInfo(bus, remain) {
       const workOn = JSON.parse(learning);
       if (workOn[bus]) {
         if (workOn[bus][0].StopCode) {
-          addIt(workOn[bus]);
+          console.log("inth stops local", workOn[bus])
+          navigator.geolocation.getCurrentPosition(
+            position => {
+              const userLat = position.coords.latitude;
+              const userLng = position.coords.longitude;
+              const nearestStop = findNearestStop(workOn[bus], userLat, userLng);
+              //addIt(workOn[bus]);
+              addIt(workOn[bus], nearestStop);
+              console.log("Nearest Stop:", nearestStop);
+            },
+            error => console.error("Error getting location:", error),
+            { enableHighAccuracy: true }
+          );
+
+
           return;
         } else {
           localStorage.removeItem('oasa-intelligence')
@@ -2986,6 +3081,7 @@ function spawnAndShowInfo(bus, remain) {
             StopCode: stop.StopCode
           }))
           .sort((a, b) => a.RouteStopOrder - b.RouteStopOrder);
+        console.log("inth stops", coordinates)
 
         if (localStorage.getItem("oasa-intelligence")) {
           const current = JSON.parse(localStorage.getItem("oasa-intelligence"));
@@ -2995,8 +3091,20 @@ function spawnAndShowInfo(bus, remain) {
           const json = { [bus]: coordinates };
           localStorage.setItem("oasa-intelligence", JSON.stringify(json));
         }
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const userLat = position.coords.latitude;
+            const userLng = position.coords.longitude;
+            const nearestStop = findNearestStop(coordinates, userLat, userLng);
+            //addIt(workOn[bus]);
+            addIt(coordinates, nearestStop);
+            console.log("Nearest Stop:", nearestStop);
+          },
+          error => console.error("Error getting location:", error),
+          { enableHighAccuracy: true }
+        );
 
-        addIt(coordinates);
+        //addIt(coordinates);
       })
       .catch(error => console.error('Error:', error));
 
@@ -3482,113 +3590,156 @@ function convert2Base() {
 }
 
 function showStopDetails(stopCode, stopName) {
-  triggerSave(evoxIds[activeEvoxId].bus, null, activeRouteCode, 'station', stopCode)
-  document.getElementById("stationInfoName").innerText = stopName
+  try {
+    triggerSave(evoxIds[activeEvoxId].bus, null, activeRouteCode, 'station', stopCode)
+    document.getElementById("stationInfoName").innerText = stopName
 
 
-  if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
-    const element = document.getElementById('main-wrapper');
-    element.scrollTop = 0;
-  }
-  document.getElementById("stationsVertical").classList.add('fade-out-slide-down')
+    if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
+      const element = document.getElementById('main-wrapper');
+      element.scrollTop = 0;
+    }
+    document.getElementById("stationsVertical").classList.add('fade-out-slide-down')
 
-  setTimeout(function () { document.getElementById("stationsVertical").style.display = 'none'; document.getElementById("stationsVertical").classList.remove('fade-out-slide-down'); document.getElementById("stationsVertical").classList.remove('shown'); }, 200)
-  document.getElementById("stationInfo").style.display = 'block'
-  setTimeout(function () { document.getElementById("stationInfo").classList.add('shown') }, 200)
+    setTimeout(function () { document.getElementById("stationsVertical").style.display = 'none'; document.getElementById("stationsVertical").classList.remove('fade-out-slide-down'); document.getElementById("stationsVertical").classList.remove('shown'); }, 200)
+    document.getElementById("stationInfo").style.display = 'block'
+    setTimeout(function () { document.getElementById("stationInfo").classList.add('shown') }, 200)
 
-  fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`)
-    .then(response => response.json())
-    .then(buses => {
-      if (buses === null) {
-        console.log("None coming to station")
-      } else {
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`)
+      .then(response => response.json())
+      .then(buses => {
+        if (buses === null) {
+          console.log("None coming to station")
+        } else {
 
-      }
-    })
-    .catch(error => {
-      console.log("intelligence [1] error:", error);
-    });
+        }
+      })
+      .catch(error => {
+        console.log("intelligence [1] error:", error);
+      });
 
 
-  document.getElementById("busesComingtoStation").innerHTML = `<div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div>`
-  const stop_url_1 = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webRoutesForStop&p1=${stopCode}&keyOrigin=evoxEpsilon`);
-  fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url_1}&vevox=${randomString()}`)
-    .then(response => response.json())
-    .then(stop => {
-      let start = {};
-      let isReady = false;
-      let count = 0;
-      let finale = '';
-      const stop_url = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`);
-      fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url}&vevox=${randomString()}`)
-        .then(response => response.json())
-        .then(arrivals => {
-          document.getElementById("busesComingtoStation").innerHTML = '';
-          let matchFound = false;
-          let busesArrivals = {}; // Object to keep track of buses and their arrival times
+    document.getElementById("busesComingtoStation").innerHTML = `<div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div><div class="timeItem skeleton-button2"></div>`
+    const stop_url_1 = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webRoutesForStop&p1=${stopCode}&keyOrigin=evoxEpsilon`);
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url_1}&vevox=${randomString()}`)
+      .then(response => response.json())
+      .then(stop => {
+        let start = {};
+        let isReady = false;
+        let count = 0;
+        let finale = '';
+        const stop_url = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${stopCode}&keyOrigin=evoxEpsilon`);
+        fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stop_url}&vevox=${randomString()}`)
+          .then(response => response.json())
+          .then(arrivals => {
+            document.getElementById("busesComingtoStation").innerHTML = '';
+            let matchFound = false;
+            let busesArrivals = {}; // Object to keep track of buses and their arrival times
 
-          stop.forEach(data => {
-            count++;
-            start[data.LineID] = {
-              "desc": data.LineDescr,
-              "lineCode": data.LineCode,
-              "routeCode": data.RouteCode,
-              "id": data.LineID
-            };
-            if (count === stop.length) {
-              isReady = true;
-            }
-
-            arrivals.forEach(arrive => {
-              if (arrive.route_code === data.RouteCode) {
-                if (!busesArrivals[data.LineID]) {
-                  busesArrivals[data.LineID] = new Set(); // Initialize a Set for this bus to store unique times
-                }
-
-                busesArrivals[data.LineID].add(arrive.btime2); // Add the new arrival time to the Set (automatically handles duplicates)
-
-                matchFound = true; // Set flag to true if a match is found
+            stop.forEach(data => {
+              count++;
+              start[data.LineID] = {
+                "desc": data.LineDescr,
+                "lineCode": data.LineCode,
+                "routeCode": data.RouteCode,
+                "id": data.LineID
+              };
+              if (count === stop.length) {
+                isReady = true;
               }
-            });
-          });
 
-          // After collecting all arrival times, create HTML
-          Object.keys(busesArrivals).forEach(lineID => {
-            const arrivalTimes = Array.from(busesArrivals[lineID]).join("', "); // Convert Set to array and join times with a comma
-            const busDesc = start[lineID].desc;
-            document.getElementById("busesComingtoStation").innerHTML += `
-                        <div class="timeItem">
-                            <p>${lineID}</p>
-                            <div class="actions">
-                                <span>${arrivalTimes}'</span>
-                                <svg style="transform: rotate(180deg);margin-left:5px;" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                                    <path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#fff"></path>
-                                </svg>
-                            </div>
-                        </div>
-                    `;
+              arrivals.forEach(arrive => {
+                if (arrive.route_code === data.RouteCode) {
+                  if (!busesArrivals[data.LineID]) {
+                    busesArrivals[data.LineID] = new Set(); // Initialize a Set for this bus to store unique times
+                  }
+
+                  busesArrivals[data.LineID].add(arrive.btime2); // Add the new arrival time to the Set (automatically handles duplicates)
+
+                  matchFound = true; // Set flag to true if a match is found
+                }
+              });
+            });
+
+            // After collecting all arrival times, create HTML
+            Object.keys(busesArrivals).forEach(lineID => {
+              const arrivalTimes = Array.from(busesArrivals[lineID]).join("', "); // Convert Set to array and join times with a comma
+              const busDesc = start[lineID].desc;
+              document.getElementById("busesComingtoStation").innerHTML += `
+                          <div class="timeItem">
+                              <p>${lineID}</p>
+                              <div class="actions">
+                                  <span>${arrivalTimes}'</span>
+                                  <svg style="transform: rotate(180deg);margin-left:5px;" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                                      <path d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z" fill="#fff"></path>
+                                  </svg>
+                              </div>
+                          </div>
+                      `;
+            });
+          })
+          .catch(error => {
+            document.getElementById("busesComingtoStation").innerHTML = `
+                      <div class="failed">
+                          <img src="snap.png" class="failed-icon">
+                          <vox class="failed-message">Δεν βρέθηκαν λεωφορεία</vox>
+                          <span class="failed-subtext">Κανένα λεωφορείο δεν κατευθύνεται προς την στάση ${stopName}</span>
+                      </div>
+                  `;
+            console.log("getStop [65] error:", error);
           });
-        })
-        .catch(error => {
-          document.getElementById("busesComingtoStation").innerHTML = `
-                    <div class="failed">
-                        <img src="snap.png" class="failed-icon">
-                        <vox class="failed-message">Δεν βρέθηκαν λεωφορεία</vox>
-                        <span class="failed-subtext">Κανένα λεωφορείο δεν κατευθύνεται προς την στάση ${stopName}</span>
-                    </div>
-                `;
-          console.log("getStop [65] error:", error);
-        });
-    })
-    .catch(error => {
-      document.getElementById("busesComingtoStation").innerHTML = `<div class="failed">
-    <img src="snap.png" class="failed-icon">
-    <vox class="failed-message">Δεν βρέθηκαν λεωφορεία</vox>
-    <span class="failed-subtext">Κανένα λεωφορείο δεν κατευθύνεται προς την στάση ${stopName}</span>
-</div>`
-      //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]");
-      console.log("getStop [63] error:", error);
-    });
+      })
+      .catch(error => {
+        document.getElementById("busesComingtoStation").innerHTML = `<div class="failed">
+      <img src="snap.png" class="failed-icon">
+      <vox class="failed-message">Δεν βρέθηκαν λεωφορεία</vox>
+      <span class="failed-subtext">Κανένα λεωφορείο δεν κατευθύνεται προς την στάση ${stopName}</span>
+  </div>`
+        //alert("Δεν βρέθηκαν αντιστοιχίες για την καθορισμένη διαδρομή. [E]");
+        console.log("getStop [63] error:", error);
+      });
+  } catch (error) {
+    console.error("new funcs failed", error)
+    document.getElementById("top-navigate").classList.remove('hidden');
+    // $("#userFeed").fadeIn("fast")
+    document.getElementById("userFeed").classList.remove('focused');
+    document.getElementById("userFeed").style.display = 'block';
+
+    document.getElementById("busTimetable").classList.remove('shown');
+    document.getElementById("busTimetable").style.display = 'none';
+
+    setTimeout(function () {
+      document.getElementById("busTimetable").style.display = 'block';
+      document.getElementById("busTimetable").classList.remove('fade-out-slide-down');
+    }, 200);
+
+    setTimeout(function () {
+      document.getElementById("userFeed").classList.add('focused');
+
+      if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
+        const element = document.getElementById('main-wrapper');
+        element.scrollTop = 0;
+      }
+
+      document.getElementById("stationsVertical").classList.remove('fade-out-slide-down');
+      document.getElementById("stationsVertical").classList.remove('shown');
+      document.getElementById("stationsVertical").style.display = 'block';
+
+      setTimeout(function () { document.getElementById("stationsVertical").classList.add('shown'); }, 200);
+
+      setTimeout(function () {
+        document.getElementById("busTimetable").style.display = 'none';
+        document.getElementById("busTimetable").classList.remove('shown');
+      }, 200);
+
+      closeSearch();
+      document.getElementById("searchIntelli").classList.remove('notLoaded');
+    }, 400);
+
+    directBack = false;
+
+  }
+
 }
 
 directBack = false
@@ -3765,7 +3916,8 @@ function levenshteinDistance(a, b) {
   return matrix[a.length][b.length];
 }
 
-function addInfinity(busLineId, stationCode, type) {
+function addInfinity(busLineId, stationCode, type, el) {
+  el.classList.add('loading')
   const toFindRouteCode = evoxIds[activeEvoxId]
   const linesSearch = fullLine.filter(item => item.LineID === busLineId);
   let routeCode = null
@@ -3794,6 +3946,7 @@ function addInfinity(busLineId, stationCode, type) {
           if (!matched) {
             alert("Σφάλμα εύρεσης της γραμμής.")
             //console.log("No matching route found.");
+            el.classList.remove('loading')
             return;
           } else {
             console.log("OKAY")
@@ -3803,6 +3956,7 @@ function addInfinity(busLineId, stationCode, type) {
                   .then(response => response.text())
                   .then(data => {
                     console.log("SchedoInfi:", data)
+                    el.classList.remove('loading')
                     //set
                   })
                   .catch(error => {
@@ -3815,6 +3969,7 @@ function addInfinity(busLineId, stationCode, type) {
         }
       })
       .catch(error => {
+        el.classList.remove('loading')
         console.error("Failed to check for updates");
       });
   });
@@ -3822,6 +3977,26 @@ function addInfinity(busLineId, stationCode, type) {
 
 
 }
+
+function findNearestStop(stops, userLat, userLng) {
+  function haversine(lat1, lon1, lat2, lon2) {
+    const toRad = x => x * Math.PI / 180;
+    const R = 6371; // Earth's radius in km
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat / 2) ** 2 +
+      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+
+  return stops.reduce((nearest, stop) => {
+    const distance = haversine(userLat, userLng, stop.lat, stop.lng);
+    return distance < nearest.distance ? { stop, distance } : nearest;
+  }, { stop: null, distance: Infinity }).stop;
+}
+
+
 
 function switchRouteTo(el) {
   const text = el?.textContent.trim();
@@ -3962,7 +4137,7 @@ function handleActivity(startingJson, te) {
         if (filteredData[0]) {
           const min = filteredData[0].btime2;
           if (min > startingJson.start_min) {
-            document.getElementById("activity").style.display = 'none'
+            //document.getElementById("activity").style.display = 'none'
           }
           //const min = te
           //const x = (startingJson.start_min - min / startingJson.start_min) * 100
@@ -4005,10 +4180,28 @@ function addActivity(stationName, stationId, currentMinEl) {
     "start_min": current,
     "startTime": new Date()
   }
+  localStorage.setItem("currentActivity", JSON.stringify(startingJson))
   console.log("Set!", startingJson)
   handleActivity(startingJson);
 }
 
+function removeAct() {
+  localStorage.removeItem("currentActivity")
+  document.getElementById("activity").style.display = 'none'
+  startingJson = {}
+}
+
+if (localStorage.getItem("currentActivity")) {
+  startingJson = JSON.parse(localStorage.getItem("currentActivity"))
+  handleActivity(startingJson);
+  function loop() {
+    console.log('Calling handleActivity saved');
+    handleActivity(startingJson);
+    setTimeout(loop, 5000);
+  }
+
+  loop();
+}
 function triggerSave(busId, busLineCode, RouteCode, type, stopCode) {
   if (!type) {
     console.log("EPSILON:", busId, busLineCode, RouteCode)
