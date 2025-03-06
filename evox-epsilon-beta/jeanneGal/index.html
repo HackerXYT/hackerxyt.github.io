@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Visualization with Zoom and Pan</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #canvas {
+            display: block;
+            background-color: #111;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Initial zoom setup
+        let zoom = 1;
+        let zoomOriginX = canvas.width / 2;
+        let zoomOriginY = canvas.height / 2;
+
+        // Mouse panning control variables
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+
+        const nodes = [
+            { x: 300, y: 250, name: 'Kyriakos', connections: [1, 2], hoverOpacity: 1, isHovered: false },
+            { x: 300, y: 150, name: 'Philosophy', connections: [0, 2], hoverOpacity: 1, isHovered: false },
+            { x: 400, y: 150, name: 'Books', connections: [0, 1], hoverOpacity: 1, isHovered: false },
+            { x: 500, y: 100, name: '', connections: [2], hoverOpacity: 1, isHovered: false },
+            { x: 300, y: 400, name: 'papostol', connections: [1], hoverOpacity: 1, isHovered: false }
+        ];
+
+        const fadeSpeed = 0.05; // Adjust for faster or slower fading
+
+        // Calculate centroid (center of mass) of the nodes
+        function calculateCentroid() {
+            let totalX = 0;
+            let totalY = 0;
+            nodes.forEach(node => {
+                totalX += node.x;
+                totalY += node.y;
+            });
+            const centroidX = totalX / nodes.length;
+            const centroidY = totalY / nodes.length;
+            return { x: centroidX, y: centroidY };
+        }
+
+        // Initialize zoom origin at the centroid of the nodes
+        const centroid = calculateCentroid();
+        zoomOriginX = (canvas.width / 2) - centroid.x * zoom; // Center the centroid on canvas
+        zoomOriginY = (canvas.height / 2) - centroid.y * zoom;
+
+        // To draw nodes with opacity changes
+        function drawNode(node) {
+            ctx.beginPath();
+            ctx.arc(node.x * zoom + zoomOriginX, node.y * zoom + zoomOriginY, 10 * zoom, 0, 2 * Math.PI);
+            ctx.fillStyle = `rgba(255, 255, 255, ${node.hoverOpacity})`;
+            ctx.fill();
+            ctx.closePath();
+
+            if (node.name) {
+                ctx.font = `${14 * zoom}px Arial`;
+                ctx.fillStyle = `rgba(255, 255, 255, ${node.hoverOpacity})`;
+
+                // Center text horizontally and place it below the dot
+                const textWidth = ctx.measureText(node.name).width;
+                const textX = node.x * zoom + zoomOriginX - textWidth / 2;
+                const textY = node.y * zoom + zoomOriginY + 25 * zoom;
+
+                ctx.fillText(node.name, textX, textY);
+            }
+        }
+
+        // To draw connections between nodes
+        function drawConnection(node1, node2, opacity) {
+            ctx.beginPath();
+            ctx.moveTo(node1.x * zoom + zoomOriginX, node1.y * zoom + zoomOriginY);
+            ctx.lineTo(node2.x * zoom + zoomOriginX, node2.y * zoom + zoomOriginY);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+            ctx.lineWidth = 2 * zoom;
+            ctx.stroke();
+            ctx.closePath();
+        }
+
+        // Main drawing function
+        function drawGraph() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw connections first
+            nodes.forEach((node, index) => {
+                node.connections.forEach(connection => {
+                    const connectedNode = nodes[connection];
+                    const opacity = Math.max(node.hoverOpacity, connectedNode.hoverOpacity); // Use the max opacity between connected nodes
+                    drawConnection(node, connectedNode, opacity);
+                });
+            });
+
+            // Draw nodes
+            nodes.forEach(node => {
+                drawNode(node);
+            });
+        }
+
+        // Handle hover over nodes
+        function updateHoverState(mouseX, mouseY) {
+            let nodeHovered = false;
+            nodes.forEach(node => {
+                const distance = Math.sqrt(
+                    ((node.x * zoom + zoomOriginX) - mouseX) ** 2 + 
+                    ((node.y * zoom + zoomOriginY) - mouseY) ** 2
+                );
+
+                if (distance < 20 * zoom) {
+                    node.isHovered = true;
+                    nodeHovered = true;
+                    node.hoverOpacity = Math.min(1, node.hoverOpacity + fadeSpeed);  // Fade in
+                } else {
+                    node.isHovered = false;
+                    node.hoverOpacity = Math.max(0.2, node.hoverOpacity - fadeSpeed);  // Fade out
+                }
+            });
+
+            drawGraph();
+
+            // Continue animation for smooth fading
+            if (nodeHovered) {
+                requestAnimationFrame(() => updateHoverState(mouseX, mouseY));
+            }
+        }
+
+        // Track mouse movement and update hover
+        canvas.addEventListener('mousemove', function (e) {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+
+            // Update hover state
+            updateHoverState(mouseX, mouseY);
+
+            // If dragging, update the origin points for panning
+            if (isDragging) {
+                const deltaX = e.clientX - dragStartX;
+                const deltaY = e.clientY - dragStartY;
+
+                dragStartX = e.clientX;
+                dragStartY = e.clientY;
+
+                zoomOriginX += deltaX;
+                zoomOriginY += deltaY;
+
+                drawGraph(); // Redraw after panning
+            }
+        });
+
+        // Start panning when mouse is pressed down
+        canvas.addEventListener('mousedown', function (e) {
+            isDragging = true;
+            dragStartX = e.clientX;
+            dragStartY = e.clientY;
+        });
+
+        // Stop panning when mouse is released
+        canvas.addEventListener('mouseup', function () {
+            isDragging = false;
+        });
+
+        // Stop panning when mouse leaves the canvas
+        canvas.addEventListener('mouseleave', function () {
+            isDragging = false;
+        });
+
+        // Handle zoom using mouse wheel
+        canvas.addEventListener('wheel', function (e) {
+            const zoomAmount = 0.1;
+            const oldZoom = zoom;
+
+            // Update zoom based on scroll direction
+            if (e.deltaY < 0) {
+                zoom = Math.min(2, zoom + zoomAmount); // Zoom in
+            } else {
+                zoom = Math.max(0.5, zoom - zoomAmount); // Zoom out
+            }
+
+            // Adjust zoom origin to keep the center of the graph in the same place
+            zoomOriginX -= (canvas.width / 2 - zoomOriginX) * (zoom - oldZoom);
+            zoomOriginY -= (canvas.height / 2 - zoomOriginY) * (zoom - oldZoom);
+
+            // Redraw graph after zooming
+            drawGraph();
+        });
+
+        // Ensure the graph is drawn initially without any interaction
+        drawGraph();
+    </script>
+</body>
+</html>

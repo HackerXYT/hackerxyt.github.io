@@ -1,0 +1,207 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="total.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=0.9, user-scalable=no">
+</head>
+<style>
+    body {
+        background-color: transparent;
+    }
+</style>
+
+<body>
+    <div id="canvases" class="select-none cursor-default min-h-[100%] max-w-[180%] demo-graph"
+        style="padding: 0px; overflow: hidden; position: relative;"><canvas
+            style="position: absolute; left: 0px; top: 0px; margin: 0px; padding: 0px; border: 0px; width: 100%; height: 100%; overflow: hidden; touch-action: none; cursor: inherit;"
+            width="415" height="373"></canvas><canvas
+            style="margin: 0px; padding: 0px; border: 0px; width: 415px; height: 373px; overflow: hidden;" width="415"
+            height="373"></canvas></div>
+</body>
+<script>
+    let full = null
+
+    function destroy() {
+        const canvas = document.getElementById("canvas1")
+
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+
+    function allowAttachment() {
+        function loadScript(src, callback) {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = () => {
+                console.log(`${src} loaded`);
+                if (callback) callback();
+            };
+            script.onerror = () => console.error(`Error loading script: ${src}`);
+            document.head.appendChild(script);
+        }
+
+        const scripts = [
+            'fish.js',
+            // 'download.js', // Uncomment if you want to load this script
+            'pixi.min.js',
+            'ietabapi_wp.js',
+            'graph.js'
+        ];
+
+        // Load scripts in order
+        function loadScriptsSequentially(scripts) {
+            if (scripts.length === 0) return;
+            loadScript(scripts[0], () => loadScriptsSequentially(scripts.slice(1)));
+        }
+
+
+        const self = localStorage.getItem("t50-username");
+
+if (self) {
+    fetch(`https://data.evoxs.xyz/social?username=${self}&todo=friends`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => { // data contains user's friends
+            return fetch(`https://data.evoxs.xyz/accounts?method=getAllEvoxUsers&origin=${localStorage.getItem("t50-username")}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(evox_users => {
+                    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                    let friends = {
+                        all_friends: data,
+                        details: []
+                    };
+
+                    console.log("Initial Friends Data:", friends);
+
+                    // Create an array of promises for fetching friends of each evox user
+                    const friendPromises = evox_users.map(user => {
+                        return fetch(`https://data.evoxs.xyz/social?username=${user}&todo=friends`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(`HTTP error! Status: ${response.status}`);
+                                }
+                                return response.json();
+                            })
+                            .then(friends_of_friend => {
+                                const isFriend = data.includes(user);
+                                const isFavorite = favorites.includes(user);
+
+                                const userDetails = {
+                                    name: user,
+                                    isFriend: isFriend,
+                                    favorite: isFavorite,
+                                    friends: friends_of_friend
+                                };
+
+                                if(data.length > 6 && isFriend === false || isFriend === true) {
+                                    friends.details.push(userDetails);
+                                }
+
+                                
+                            })
+                            .catch(error => {
+                                console.warn(`Server connection failed for friend: ${user}`, error);
+                            });
+                    });
+
+                    // Wait for all friend promises to complete
+                    return Promise.all(friendPromises).then(() => friends);
+                });
+        })
+        .then(friends => {
+            // All friends data fetched successfully
+            console.log('All friends data:', friends);
+
+            const client_username = self;
+            let e_friends = {};
+
+            // Function to generate the JSON structure
+            function generateJSON(client_username, social_data) {
+                // Include the client user first
+                e_friends[client_username] = {
+                    color: "#22c55e", // Self-user color
+                    links: social_data.all_friends // Links to all friends
+                };
+
+                social_data.details.forEach(user => {
+                    const username = user.name;
+
+                    // Skip the self user since it's already added
+                    if (username !== client_username) {
+                        e_friends[username] = {
+                            color: user.favorite ? "#aac522" : undefined, // Assign color if favorite
+                            links: user.friends // Links to their friends
+                        };
+                    }
+                });
+            }
+
+            // Generate the JSON structure
+            generateJSON(client_username, friends);
+
+            console.log("Final e_friends structure:", e_friends);
+            loadScriptsSequentially(scripts);  // Assuming `scripts` is already defined elsewhere
+            full = e_friends; // Store the full object in a global variable (if needed)
+        })
+        .catch(error => {
+            console.warn("Server connection failed:", error);
+        });
+} else {
+    console.warn("No username found in localStorage");
+}
+
+    }
+
+    let isShown = false
+
+    setInterval(function () {
+        const val = sessionStorage.getItem("attachGalaxy")
+        if (val && isShown) {
+            document.getElementById("canvases").style.display = 'none'
+            window.location.reload()
+            return;
+        }
+        if (val) {
+            sessionStorage.removeItem("attachGalaxy")
+            allowAttachment()
+            isShown = true
+        }
+    }, 200)
+    allowAttachment()
+    
+    function startGalaxyRotation(graphicsApp) {
+    let angle = 0;
+
+    function rotate() {
+        angle += 0.01; // Adjust rotation speed as needed
+
+        // Apply rotation to the whole canvas (or specific elements)
+        graphicsApp.hanger.rotation = angle; // Assuming 'hanger' is the main container for your graphics
+
+        graphicsApp.queueRender(); // Request a new render to apply changes
+
+        requestAnimationFrame(rotate); // Continue the animation
+    }
+
+    rotate(); // Start the rotation
+}
+</script>
+<script src="fish.js"></script><!--static-->
+<!--<script src="download.js"></script>-->
+<script src="pixi.min.js"></script>
+<script src="ietabapi_wp.js"></script>
+
+<script src="graph.js"></script>
+
+</html>

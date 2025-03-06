@@ -1460,10 +1460,11 @@ function hideChats() {
     chatsVisible = false
     $("#bggradient").fadeIn("fast")
     $("#galaxy").fadeOut("fast")
+    $("#galaxyBackTo").fadeOut("fast")
     play('rocket_push')
 
     const securelinePopup = document.querySelector('#secureline');
-    removeScrollListener(securelinePopup)
+    //removeScrollListener(securelinePopup)
     securelinePopup.classList.remove("active")
 
     document.getElementById("secureline-back").style.opacity = '0'
@@ -1532,7 +1533,7 @@ function showChats() {
         setTimeout(function () {
 
             const securelinePopup = document.querySelector('#secureline');
-            addScrollListener(securelinePopup)
+            //addScrollListener(securelinePopup)
             const popup = document.getElementById("secureline")
             popup.classList.add("active")
             document.getElementById("secureline-back").style.display = 'flex'
@@ -1547,6 +1548,7 @@ function showChats() {
         //$("#bggradient").fadeOut("fast")
         sessionStorage.setItem("attachGalaxy", true)
         $("#galaxy").fadeIn("fast")
+       
         //attachGalaxy()
     }, 200)
 
@@ -1618,6 +1620,7 @@ function add_favorite(event, element, customColor, customDimen) {
 function openChat(data, location) {
     chatsVisible = false
     $("#galaxy").fadeOut("fast")
+    $("#galaxyBackTo").fadeOut("fast")
     $("#bggradient").fadeIn("fast")
     sessionStorage.removeItem("current_sline")
     play('rocket')
@@ -1646,7 +1649,7 @@ function openChat(data, location) {
     } else {
         console.log("Location: friends")
         const securelinePopup = document.querySelector('#secureline');
-        removeScrollListener(securelinePopup)
+        //removeScrollListener(securelinePopup)
         securelinePopup.classList.remove("active")
 
         setTimeout(function () {
@@ -1799,7 +1802,7 @@ function goBackMessenger() {
     $("#messenger").fadeOut('fast')
 
     const securelinePopup = document.querySelector('#secureline');
-    addScrollListener(securelinePopup)
+    //addScrollListener(securelinePopup)
 
     loadSecurelineHome()
 

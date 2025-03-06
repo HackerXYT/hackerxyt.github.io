@@ -706,6 +706,41 @@ body.no-scroll {
   vertical-align: middle;
 }
 
+.socialInfo .socialUser.over {
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent background */
+  backdrop-filter: blur(5px);
+  /* Adjust the blur amount as needed */
+  -webkit-backdrop-filter: blur(5px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: row;
+  position: relative; /* Added to position the span above the text */
+}
+
+.socialInfo .socialUser.over p {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.socialInfo .socialUser.over span {
+  color: #6e6f7b;
+  font-size: 15px;
+  font-weight: normal;
+  margin: 0;
+  position: absolute; /* Makes it positioned above the text */
+  top: -20px; /* Adjust to move it above */
+  left: 10px; /* Align with the left side, adjust as necessary */
+  display: inline-flex;
+  align-items: center;
+}
+
 .socialInfo.oasa .socialUser img {
   margin-right: 7px;
 }
@@ -5604,6 +5639,38 @@ a {
   transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
 }
 
+.galaxyBackTo {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: rgba(60, 62, 70, 0.614);
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 10px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1001;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  flex-direction: column;
+  /* Not needed if align-items and justify-content are enough */
+  justify-content: center;
+  align-items: center;
+  /* Start hidden but still in document flow */
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  opacity: 1;
+}
+
+.galaxyBackTo > * {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .backButton.visible {
   opacity: 1;
   visibility: visible;
@@ -6467,41 +6534,35 @@ a {
 
   .securelinePopup {
     position: fixed;
-    top: 50%;
     left: 50%;
-    width: 420px;
-    /* Adjust the width as needed */
-    height: 80%;
-    /* Adjust the height as needed */
+    bottom: 0;
+    width: 420px; /* Adjust as needed */
+    height: 80%; /* Adjust as needed */
     padding: 0 30px 30px 30px;
     display: flex;
-    /* Use flexbox to align content inside the div */
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background: #0c0d16d9;
     z-index: 1000;
     box-sizing: border-box;
-    opacity: 1;
+    opacity: 0;
     visibility: hidden;
-    transform: translate(-50%, -50%);
-    /* Center the div */
-    transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 0.5s ease-in-out;
+    transform: translateX(-50%) translateY(100%);
+    transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out;
     border-top-left-radius: 2rem;
     border-top-right-radius: 2rem;
     overflow-x: hidden;
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
-  }
+}
 
-  .securelinePopup.active {
+.securelinePopup.active {
     opacity: 1;
-    /* Show the popup */
     visibility: visible;
-    /* Show the popup */
-    transform: translate(-50%, -50%);
-    /* Slide the popup into view */
-  }
+    transform: translateX(-50%) translateY(0);
+}
+
 }
 
 .settingsBlocks {
@@ -7486,7 +7547,6 @@ vox.svgIconAnimated {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
 
 
 .codeEditorStyle {

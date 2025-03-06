@@ -318,7 +318,7 @@ function checkForUpdates() {
 }
 
 
-const appVersion = '8.2.3'
+const appVersion = '8.3.0'
 function loadAppAbout() {
     document.getElementById("appVersion").innerHTML = appVersion
     try {
@@ -1126,11 +1126,11 @@ inputSecureline.addEventListener('input', function (event) {
 
 
 function runSearch(inputValue) {
-    if (staticDevHeight.toString().includes("%")) {
-        document.getElementById("secureline").style.height = parseInt(staticDevHeight) + 20 + '%'
-    } else {
-        document.getElementById("secureline").style.height = parseInt(staticDevHeight) + 100 + 'px'
-    }
+    //if (staticDevHeight.toString().includes("%")) {
+    //    document.getElementById("secureline").style.height = parseInt(staticDevHeight) + 20 + '%'
+    //} else {
+    //    document.getElementById("secureline").style.height = parseInt(staticDevHeight) + 100 + 'px'
+    //}
 
 
     const friends_a = localStorage.getItem("friends");
@@ -1168,6 +1168,68 @@ function runSearch(inputValue) {
         console.error("Friends are not locally saved!");
     }
 }
+
+function grabberEvents(id) {
+
+    const notice = document.getElementById(id);
+    let startY, currentY, isDragging = false;
+
+    // Initialize event listeners for touch/mouse events
+    notice.addEventListener("mousedown", startDrag);
+    notice.addEventListener("touchstart", startDrag);
+    notice.addEventListener("mousemove", drag);
+    notice.addEventListener("touchmove", drag);
+    notice.addEventListener("mouseup", endDrag);
+    notice.addEventListener("touchend", endDrag);
+
+    function startDrag(e) {
+        startY = e.touches ? e.touches[0].clientY : e.clientY;
+        isDragging = true;
+        notice.style.transition = "none";  // Disable transitions for smoother dragging
+    }
+
+    function drag(e) {
+        if (!isDragging) return;
+
+        currentY = e.touches ? e.touches[0].clientY : e.clientY;
+        let deltaY = currentY - startY;
+
+        if (deltaY > 0) {  // Only allow downward dragging
+            notice.style.transform = `translateY(${deltaY}px)`;
+        }
+    }
+
+    function endDrag() {
+        isDragging = false;
+        notice.style.transition = "transform 0.3s ease";  // Add smooth return or dismiss transition
+        console.log(currentY - startY)
+        if (currentY - startY > 400) {
+
+            notice.style.transform = `translateY(100vh)`;
+
+            if (id === 'secureline') {
+                $("#galaxyBackTo").fadeIn("fast")
+                //getthis
+            }
+            notice.addEventListener("transitionend", () => {
+                notice.classList.remove("active");
+                notice.style.transform = ``;
+
+            }, { once: true });
+        } else {
+            notice.style.transform = ``;  // Reset if not dismissed
+        }
+    }
+}
+grabberEvents("secureline")
+
+function reOpenSl() {
+    $("#galaxyBackTo").fadeOut("fast", function () {
+        document.getElementById("secureline").style.height = '80%';
+        document.getElementById("secureline").classList.add("active");
+    })
+
+}
 // Helper function to format date and time
 let lastScrollTop = 0; // Variable to keep track of the last scroll position
 let isListening = false;
@@ -1189,9 +1251,13 @@ function handleScroll(event) {
         if (isGalaxied === false) {
             const e = document.getElementById("showHideClick")
             //previousHeight = document.getElementById("secureline").style.height
-            document.getElementById("secureline").style.height = '50px'
-            isGalaxied = true
-            e.setAttribute('data-c', 'true')
+            if (isMobileDevice()) {
+                return;
+                document.getElementById("secureline").style.height = '50px'
+                isGalaxied = true
+                e.setAttribute('data-c', 'true')
+            }
+
             //securelinePopup.style.height = "60%"
             return;
         } else {
@@ -1698,6 +1764,12 @@ function securelineHome(data, appending) {
                 reloadFavs()
             }
 
+            if (localStorage.getItem("favorites")) {
+                const favs = JSON.parse(localStorage.getItem("favorites"))
+                if (favs.length === 1) {
+                    document.querySelectorAll("#favorites-recommended .block")[0].style.flexGrow = 1
+                }
+            }
             console.log("All friends have been loaded and displayed.");
             const securelinePopup = document.querySelector('#secureline');
 
@@ -3014,6 +3086,102 @@ function loadProfile(reload, withoutCanvas) {
             console.error('Failed to update tags', error)
         });
 
+    function loadNotifications() {
+        fetch(`${srv}/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}&rand=${Math.floor(Math.random() * 100000)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log("Fetching Notifications")
+                if (data === `{"notifications":[]}` || data === "No notifications!") {
+                    console.log("No Notifications")
+                    //Do nothing
+                } else {
+                    const container = document.getElementById("lastNotis")
+                    container.innerHTML = ''
+                    let notifications = JSON.parse(data)
+                    const numNotifications = notifications.notifications.length;
+                    console.log("Notifications:", numNotifications)
+                    notifications.notifications = notifications.notifications.slice().reverse();
+                    notifications = notifications.notifications
+
+                    console.log(notifications);
+                    function addNotif(n) {
+                        console.log("Working on notification:", n)
+                        const knownWebFiles = ['Cryptox.png', 'Error.png', 'Evox LTS 2.0 Beacon.png', 'Gateway.png', 'Gateway-2.png', 'Images.png', 'Notice.png', 'Secureline.png', 'Tasco.png']
+                        finalImage = n.image
+                        if (n.image.includes("Gateway.png")) {
+                            finalImage = "evox-logo-apple.png"
+                            nowComplete()
+                        } else {
+                            if (finalImage.includes("http")) {
+                                //finalImage.replace("%20", " ")
+                                const filename = new URL(finalImage).pathname.split('/').pop();
+                                console.log(n.app, filename)
+                                if (!knownWebFiles.includes(filename)) {
+                                    let isOk = true
+                                    fetch(finalImage)
+                                        .then(response => {
+                                            if (!response.ok) {
+                                                isOk = false; // Mark as false if response is not OK (e.g., 404)
+                                                finalImage = 'evox-logo-apple.png'
+                                                nowComplete()
+                                                throw new Error(`HTTP error! Status: ${response.status}`); // Stop further execution
+                                            }
+                                            return response.text();
+                                        })
+                                        .then(data => {
+                                            nowComplete()
+                                        })
+                                        .catch(error => {
+                                            isOk = false; // Also set false in case of network errors
+                                            finalImage = 'evox-logo-apple.png'
+                                            nowComplete()
+                                            console.error('Fetch error:', error);
+                                        });
+                                } else {
+                                    nowComplete()
+                                }
+                            } else {
+                                loadPFPget(finalImage)
+                                    .then(profileImage => {
+                                        finalImage = profileImage
+                                        nowComplete()
+                                    }).catch(error => {
+                                        //setNetworkStatus('off')
+                                        console.error(error);
+                                        finalImage = 'evox-logo-apple.png'
+                                        nowComplete()
+                                    });
+                            }
+
+
+                        }
+
+                        function nowComplete() {
+                            container.innerHTML += `<div class="socialUser">
+                            <img class="slUserPFP social" src="${finalImage}">
+                            <p>${truncateText(n.content, 32)}</p>
+
+                        </div>`
+                        }
+                    }
+                    addNotif(notifications[0])
+                    addNotif(notifications[1])
+                    addNotif(notifications[2])
+                    addNotif(notifications[3])
+                }
+
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+            });
+    }
+
+    loadNotifications()
     // Function to handle the canvas status check
     function checkCanvasStatus() {
         if (withoutCanvas) {
@@ -3294,6 +3462,10 @@ function loadProfile(reload, withoutCanvas) {
 
     // Call the main function
     executeAfterAll();
+}
+
+function truncateText(text, maxLength) {
+    return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
 }
 
 function setUserCover() {

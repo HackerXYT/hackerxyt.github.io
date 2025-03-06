@@ -587,7 +587,8 @@
 
                     </div>
                     <div class="bottomButtons">
-                        <a id="social-manage2" onclick="activeAPP = 'oasa';bottomButtonPress('launch', this)" class="firstChild" href="#oasa-launch">
+                        <a id="social-manage2" onclick="activeAPP = 'oasa';bottomButtonPress('launch', this)"
+                            class="firstChild" href="#oasa-launch">
                             <svg style="transition: transform 1s ease-in-out;margin-right: 5px;"
                                 xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
                                 fill="none">
@@ -598,7 +599,8 @@
                             Launch
 
                         </a>
-                        <a onclick="document.getElementById('card-oasa').classList.remove('fade-in-slide-up');document.getElementById('card-oasa').classList.add('fade-out-slide-down');setTimeout(function() {document.getElementById('card-oasa').style.display = 'none'}, 300)" href="#oasa-settings">
+                        <a onclick="document.getElementById('card-oasa').classList.remove('fade-in-slide-up');document.getElementById('card-oasa').classList.add('fade-out-slide-down');setTimeout(function() {document.getElementById('card-oasa').style.display = 'none'}, 300)"
+                            href="#oasa-settings">
                             <svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="25px"
                                 height="25px" viewBox="0 0 24 24" fill="none">
                                 <path
@@ -719,6 +721,51 @@
                                     stroke-linejoin="round" />
                             </svg>
                             Discover
+                        </a>
+                    </div>
+                </div>
+
+                <div id="card-notifications" class="card">
+                    <h2>Notifications</h2>
+                    <div id="lastNotis" class="socialInfo">
+                        <div class="fullWidth">
+                            <p>Fetching Your Notifications</p>
+                            <svg style="margin-top: 5px;
+                    display: inline-flex;
+                    align-items: center;
+                    vertical-align: middle;" version="1.1" width="25px" height="25px"
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                                y="0px" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50;"
+                                xml:space="preserve">
+                                <path fill="#fff"
+                                    d="M43.935,25.145c0-10.318-8.364-18.683-18.683-18.683c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615c8.072,0,14.615,6.543,14.615,14.615H43.935z">
+                                    <animateTransform attributeType="XML" attributeName="transform" type="rotate"
+                                        from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite" />
+                                </path>
+                            </svg>
+                        </div>
+
+                    </div>
+                    <div class="bottomButtons">
+                        <a id="notifs-manage" onclick="bottomButtonPress('notifsViewAll', this)" class="firstChild" href="#notifs-viewall">
+                            <svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                                <path opacity="0.5" d="M18.7491 9V9.7041C18.7491 10.5491 18.9903 11.3752 19.4422 12.0782L20.5496 13.8012C21.5612 15.3749 20.789 17.5139 19.0296 18.0116C14.4273 19.3134 9.57274 19.3134 4.97036 18.0116C3.21105 17.5139 2.43882 15.3749 3.45036 13.8012L4.5578 12.0782C5.00972 11.3752 5.25087 10.5491 5.25087 9.7041V9C5.25087 5.13401 8.27256 2 12 2C15.7274 2 18.7491 5.13401 18.7491 9Z" fill="#dbdde3"/>
+                                <path d="M7.24316 18.5454C7.8941 20.5506 9.77767 22.0002 11.9998 22.0002C14.222 22.0002 16.1055 20.5506 16.7565 18.5454C13.611 19.1357 10.3886 19.1357 7.24316 18.5454Z" fill="#dbdde3"/>
+                                </svg>
+                            View all
+
+                        </a>
+                        <a onclick="bottomButtonPress('notifsConf', this)" href="#notifs-conf">
+                            <svg style="margin-right: 5px;" xmlns="http://www.w3.org/2000/svg" width="25px"
+                                height="25px" viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M22.75 17.5C22.75 17.91 22.41 18.25 22 18.25H15V18.5C15 20 14.1 20.5 13 20.5H7C5.9 20.5 5 20 5 18.5V18.25H2C1.59 18.25 1.25 17.91 1.25 17.5C1.25 17.09 1.59 16.75 2 16.75H5V16.5C5 15 5.9 14.5 7 14.5H13C14.1 14.5 15 15 15 16.5V16.75H22C22.41 16.75 22.75 17.09 22.75 17.5Z"
+                                    fill="#dbdde3" />
+                                <path
+                                    d="M22.75 6.5C22.75 6.91 22.41 7.25 22 7.25H19V7.5C19 9 18.1 9.5 17 9.5H11C9.9 9.5 9 9 9 7.5V7.25H2C1.59 7.25 1.25 6.91 1.25 6.5C1.25 6.09 1.59 5.75 2 5.75H9V5.5C9 4 9.9 3.5 11 3.5H17C18.1 3.5 19 4 19 5.5V5.75H22C22.41 5.75 22.75 6.09 22.75 6.5Z"
+                                    fill="#dbdde3" />
+                            </svg>
+                            Configure
                         </a>
                     </div>
                 </div>
@@ -1960,6 +2007,9 @@
 
 
     </div>
+
+    <button onclick="reOpenSl()" class="galaxyBackTo" id="galaxyBackTo">
+        <img src="securelineBanner-LOGO.png" style="width: 25px;height: 25px;object-fit: cover;display: flex;justify-content: center;align-items: center;"></button>
 
     <div class="galaxy" id="galaxy">
         <iframe id="galaxyIframe" style="width: 100%;

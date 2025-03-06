@@ -165,7 +165,7 @@
             i.resolution = 2,
             i.anchor.set(.5, 0),
             i.zIndex = 2,
-
+            
             e.hanger.addChild(i),
             this.fadeAlpha = 0,
             !0
@@ -189,18 +189,18 @@
             let {renderer: e} = this
               , t = this.getSize();
             return new PIXI.TextStyle({
-                fontSize: 12, //vanilla text size, no zoom
-                fill: e.colors.text.rgb,
+                fontSize: 13, //vanilla text size, no zoom
+                fill: 0x000000,
                 fontFamily: 'ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Microsoft YaHei Light", sans-serif',
                 wordWrap: !0,
                 wordWrapWidth: 300,
-                align: "center"
+                align: "center",
             })
         }
         render() {
             if (!this.rendered)
                 return;
-
+            
             let {renderer: e, x: t, y: n, circle: r, highlight: i, text: s, fadeAlpha: f, moveText: b} = this
               , m = this.getSize()
               , T = this.getFillColor()
@@ -311,8 +311,8 @@
             let n = this.line = new PIXI.Sprite(PIXI.Texture.WHITE);
             n.eventMode = "none";
             let r = e.colors.line;
-
-
+            
+            console.log(r)
             n.alpha = ie * r.a,
             n.tint = r.rgb,
             t.addChild(n);
@@ -351,8 +351,8 @@
         render() {
             if (!this.rendered)
                 return;
-
-
+            
+            
             let {px: e, line: t, arrow: n, renderer: r, source: i, target: s} = this
               , f = r.getHighlightNode()
               , b = i === f || s === f
@@ -535,7 +535,7 @@
                         , 300)
                     }
                 }
-                , 50)
+                , 250)
             }
         }
         destroy() {
@@ -588,11 +588,11 @@
                 t && t.contentWindow.WebGL2RenderingContext && (window.WebGL2RenderingContext = t.contentWindow.WebGL2RenderingContext),
                 i = this.px = new PIXI.Application({
                     view: e,
-                    antialias: !0,
-                    backgroundAlpha: 1, //changed to 1 from 0
-                    autoStart: !1
-                })
-
+                    antialias: true,
+                    backgroundAlpha: 1,
+                    backgroundColor: 0xDDDDDD, // White color
+                    autoStart: false
+                });
             } finally {
                 window.WebGL2RenderingContext = s
             }
@@ -981,9 +981,9 @@
                 m = false,
                 T = false,
                 I = 0;
-
+        
             let sizeFactor = 250; // Factor to increase dot sizes
-
+        
             // Update existing nodes or prepare to add new ones
             for (let l of t) {
                 if (!i.hasOwnProperty(l.id)) {
@@ -994,18 +994,18 @@
                 I = Math.max(I, l.x * l.x + l.y * l.y);
                 s[l.id] = false;
             }
-
+        
             let v = Math.sqrt(I),
                 N = [];
-
+        
             for (let l in i) {
                 if (!i.hasOwnProperty(l)) continue;
                 let u = i[l];
-
+        
                 if (n.hasOwnProperty(l)) {
                     let c = u.color || null,
                         d = n[l];
-
+        
                     if (d.color !== c) {
                         d.color = c;
                         T = true;
@@ -1025,20 +1025,20 @@
                     N.push(c);
                 }
             }
-
+        
             // Link management
             for (let l in i) {
                 if (!i.hasOwnProperty(l) || !n.hasOwnProperty(l)) continue;
                 let u = n[l],
                     d = i[l].links;
-
+        
                 for (let w in u.forward) {
                     if (u.forward.hasOwnProperty(w) && !d.hasOwnProperty(w)) {
                         b.push(u.forward[w]);
                         m = true;
                     }
                 }
-
+        
                 for (let w in d) {
                     if (!d.hasOwnProperty(w) || u.forward.hasOwnProperty(w) || !n.hasOwnProperty(w)) continue;
                     let L = n[w],
@@ -1049,21 +1049,21 @@
                     m = true;
                 }
             }
-
+        
             let P = l => {
                 l.clearGraphics();
                 r.remove(l);
                 delete l.source.forward[l.target.id];
                 delete l.target.reverse[l.source.id];
             };
-
+        
             for (let l of b) P(l);
             for (let l of f) {
                 l.clearGraphics();
                 t.remove(l);
                 delete n[l.id];
                 let { forward: u, reverse: c } = l;
-
+        
                 for (let d in u) {
                     if (u.hasOwnProperty(d)) P(u[d]);
                 }
@@ -1071,19 +1071,19 @@
                     if (c.hasOwnProperty(d)) P(c[d]);
                 }
             }
-
+        
             let C = N.length;
             if (C > 0) {
                 let l = C * 60 * 60,
                     u = Math.sqrt(l / Math.PI + v * v) - v,
                     c = Math.sqrt(l);
-
+        
                 for (let d of N) {
                     let w = 0,
                         L = 0,
                         H = 0,
                         h = d.getRelated();
-
+        
                     for (let p of h) {
                         if (n.hasOwnProperty(p)) {
                             let a = n[p];
@@ -1094,7 +1094,7 @@
                             }
                         }
                     }
-
+        
                     if (H > 0) {
                         d.x = w / H + (Math.random() - 0.5) * c;
                         d.y = L / H + (Math.random() - 0.5) * c;
@@ -1107,38 +1107,38 @@
                     s[d.id] = [d.x, d.y];
                 }
             }
-
+        
             let x = e.weights;
             for (let l in n) {
                 if (!n.hasOwnProperty(l)) continue;
                 let u = n[l],
                     c = u.weight;
-
+        
                 x ? (x.hasOwnProperty(l) ? (c = x[l]) : (c = 0)) : (c = u.getRelated().length);
                 if (u.weight !== c) {
                     u.weight = c;
                     m = true;
                 }
             }
-
+        
             if (!m) {
                 T && this.changed();
                 return;
             }
-
+        
             let E = [];
             for (let l of r) E.push([l.source.id, l.target.id]);
-
+        
             this.worker.postMessage({
                 nodes: s,
                 links: E,
                 alpha: 0.3,
                 run: true
             });
-
+        
             this.changed();
         }
-
+        
         setRenderOptions(e) {
             let {nodeSizeMultiplier: t, lineSizeMultiplier: n, showArrow: r, textFadeMultiplier: i} = e;
             Number.isNumber(t) && (this.fNodeSizeMult = t),
@@ -1159,7 +1159,7 @@
         }
         updateZoom() {
             let {scale: e, targetScale: t, panX: n, panY: r} = this;
-            t = this.targetScale = Math.min(5, Math.max(3 / 4, t)); // Increased max zoom to 2
+            t = this.targetScale = Math.min(5, Math.max(2.4 / 4, t)); // Increased max zoom to 2
             if ((e > t ? e / t : t / e) - 1 >= .01) {
                 let {zoomCenterX: s, zoomCenterY: f} = this;
                 if (s === 0 && f === 0) {
@@ -1353,7 +1353,7 @@
         let o = Se("./pixi.min.js");
         Re($, () => {
             let e = full;
-
+            
 
             let p3 = {
                 1: {
@@ -1514,8 +1514,8 @@
                     links: ["26", "27", "32", "talamagkas","Kyriakos", "41", "43", "40"]
                 }
             }
-
-
+            
+            
             for (let n in e)
                 if (e.hasOwnProperty(n)) {
                     let r = e[n];
