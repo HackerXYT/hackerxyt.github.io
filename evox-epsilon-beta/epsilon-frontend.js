@@ -817,7 +817,7 @@ function startLogin() {
                         console.log("Ext Email:", email)
                     }
                     localStorage.getItem("2FA_READY", "false")
-                    
+
                     const credentialsString = data;
                     const match = credentialsString.match(/Username:(\w+)/);
 
@@ -1270,7 +1270,7 @@ function verificationComplete() {
                     return response.json();
                 })
                 .then(jd => {
-                    if(jd) {
+                    if (jd) {
                         localStorage.setItem("jeanDarc_accountData", JSON.stringify(jd))
                         console.log("JEANDARC IS READY")
                         window.location.href = '../jean/'
@@ -1548,7 +1548,7 @@ function showChats() {
         //$("#bggradient").fadeOut("fast")
         sessionStorage.setItem("attachGalaxy", true)
         $("#galaxy").fadeIn("fast")
-       
+
         //attachGalaxy()
     }, 200)
 
@@ -1754,10 +1754,200 @@ function showSocial(el) {
             }, 150)
         }, 200)
     }
-
-
-
 }
+
+function hideNotifs() {
+    play('closePanel')
+    const notifsPopup = document.getElementById("notifications-popup")
+    notifsPopup.classList.remove("active")
+    document.getElementById("notifs-back").style.opacity = '0'
+    setTimeout(function () {
+        document.getElementById("notifs-back").style.display = 'none'
+    }, 200)
+    $("#container").fadeIn("fast")
+    document.getElementById("bottomActionsNotifs").classList.remove("visible")
+    setTimeout(function () {
+        notifsPopup.scrollTop = 0;
+        notifsPopup.style.height = "60%"
+    }, 500)
+}
+function showNotifs(el) {
+    play('openPanel')
+    el.style.transform = 'scale(0.96)'
+    const notifsPopup = document.getElementById("notifications-popup")
+
+
+    if (el.innerText.toString().includes("View all")) {
+        notifsPopup.classList.add("active")
+        setTimeout(function () {
+            //workingElem.style.transform = 'rotate(0deg)'
+            el.style.transform = 'scale(1)'
+            $("#container").fadeOut("fast")
+            document.getElementById("notifs-back").style.display = 'flex'
+            setTimeout(function () {
+                document.getElementById("notifs-back").style.opacity = '1'
+            }, 200)
+            document.getElementById("notifConf").style.display = 'none'
+            document.getElementById("notificationsAll").style.display = null
+            document.getElementById("menu-conf-notif").classList.remove("active")
+            //loadFriendsSocial()
+            loadNotificationsAll()
+            setTimeout(function () {
+                document.getElementById("bottomActionsNotifs").classList.add("visible")
+            }, 150)
+        }, 200)
+    } else if (el.innerText.toString().includes("Configure")) {
+        epsilonDiscover()
+        document.getElementById("social-users").style.display = 'none'
+        document.getElementById("social-discover").style.display = null
+        document.getElementById("menu-manage").classList.remove("active")
+        document.getElementById("menu-discover").classList.add("active")
+        const workingElem = document.getElementById("discover-home-svg")
+        workingElem.style.transform = 'rotate(180deg) scale(1.1)'
+        setTimeout(function () {
+            workingElem.style.transform = 'rotate(0deg) scale(1)'
+        }, 550)
+        setTimeout(function () {
+            notifsPopup.classList.add("active")
+
+            //workingElem.style.transform = 'rotate(0deg)'
+            el.style.transform = 'scale(1)'
+            $("#container").fadeOut("fast")
+            document.getElementById("social-back").style.display = 'flex'
+            setTimeout(function () {
+                document.getElementById("social-back").style.opacity = '1'
+            }, 200)
+
+
+
+            setTimeout(function () {
+                document.getElementById("bottomActionsNotifs").classList.add("visible")
+            }, 150)
+        }, 200)
+    }
+}
+
+function loadNotificationsAll() {
+    document.getElementById("notifConf").style.display = 'flex'
+    const load = document.getElementById("notificationsAll-load")
+
+    $(container).fadeOut("fast", function () {
+        $(load).fadeIn("fast")
+    })
+    const nc = document.getElementById("notificationsAll")
+
+    fetch(`${srv}/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}&rand=${Math.floor(Math.random() * 100000)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(data => {
+            console.log("Fetching Notifications")
+            if (data === `{"notifications":[]}` || data === "No notifications!") {
+                console.log("No Notifications")
+                container.innerHTML = `<h3>You have no notifications</h3>`
+                //Do nothing
+            } else {
+                const container = nc
+                container.innerHTML = ''
+                let notifications = JSON.parse(data)
+                const numNotifications = notifications.notifications.length;
+                console.log("Notifications:", numNotifications)
+                notifications.notifications = notifications.notifications.slice().reverse();
+                notifications = notifications.notifications
+
+                console.log(notifications);
+                function addNotif(n) {
+                    console.log("Working on notification:", n)
+                    const knownWebFiles = ['Cryptox.png', 'Error.png', 'Evox LTS 2.0 Beacon.png', 'Gateway.png', 'Gateway-2.png', 'Images.png', 'Notice.png', 'Secureline.png', 'Tasco.png']
+                    finalImage = n.image
+                    if (n.image.includes("Gateway.png")) {
+                        finalImage = "evox-logo-apple.png"
+                        nowComplete()
+                    } else {
+                        if (finalImage.includes("http")) {
+                            //finalImage.replace("%20", " ")
+                            const filename = new URL(finalImage).pathname.split('/').pop();
+                            console.log(n.app, filename)
+                            if (!knownWebFiles.includes(filename)) {
+                                let isOk = true
+                                fetch(finalImage)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            isOk = false; // Mark as false if response is not OK (e.g., 404)
+                                            finalImage = 'evox-logo-apple.png'
+                                            nowComplete()
+                                            throw new Error(`HTTP error! Status: ${response.status}`); // Stop further execution
+                                        }
+                                        return response.text();
+                                    })
+                                    .then(data => {
+                                        nowComplete()
+                                    })
+                                    .catch(error => {
+                                        isOk = false; // Also set false in case of network errors
+                                        finalImage = 'evox-logo-apple.png'
+                                        nowComplete()
+                                        console.error('Fetch error:', error);
+                                    });
+                            } else {
+                                nowComplete()
+                            }
+                        } else {
+                            loadPFPget(finalImage)
+                                .then(profileImage => {
+                                    finalImage = profileImage
+                                    nowComplete()
+                                }).catch(error => {
+                                    //setNetworkStatus('off')
+                                    console.error(error);
+                                    finalImage = 'evox-logo-apple.png'
+                                    nowComplete()
+                                });
+                        }
+
+
+                    }
+
+                    function nowComplete() {
+                        $(load).fadeOut("fast")
+                        $(container).fadeIn("fast")
+                        container.innerHTML += `<div class="user">
+        <div class="icon">
+                <img class="slUserPFP social" src="${finalImage}">
+        </div>
+        <div class="column">
+                <p>${truncateText(n.content, 32)}</p>
+        </div>
+        <div class="show-user-info">
+                ${formatTimeDifference(n.timestamp) + " ago"}
+        </div>
+</div>`
+                    }
+                }
+                notifications.forEach((notif, index) => {
+                    if (index === 6) {
+                        container.innerHTML += `<div class="user">
+        
+        <div class="column">
+                <p>Load more</p>
+        </div>
+        
+</div>`
+                    }
+                    if (index > 5) return;
+                    addNotif(notif)
+                })
+            }
+
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+}
+
 
 function hideSocial() {
     play('closePanel')
