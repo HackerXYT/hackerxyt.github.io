@@ -3382,9 +3382,15 @@ function openDiscovery(el) {
                     </div>
                 </div>`
     }
-    if(btoa(greekToGreeklish(foundName)).includes("R3JpZ29yaXM")) {
-        document.getElementById("done").style.display = null
+    try {
+        console.log(greekToGreeklish(foundName))
+        if(btoa(greekToGreeklish(foundName)).includes("R3JpZ29yaXM")) {
+            document.getElementById("done").style.display = null
+        }
+    } catch (e) {
+        console.log(e)
     }
+    
     document.getElementById("classes").innerHTML = skeleton
     fetch('https://arc.evoxs.xyz/?metode=progresin')
         .then(response => response.json())
