@@ -1827,7 +1827,9 @@ function showNotifs(el) {
     }
 }
 
-function loadNotificationsAll() {
+let currentShowingNotifications = 6
+
+function loadNotificationsAll(targetNotifications) {
     document.getElementById("notifConf").style.display = 'flex'
     const load = document.getElementById("notificationsAll-load")
 
@@ -1835,7 +1837,8 @@ function loadNotificationsAll() {
         $(load).fadeIn("fast")
     })
     const nc = document.getElementById("notificationsAll")
-
+    let targetSpawn = targetNotifications ? targetNotifications : 6
+    let spawned = 0
     fetch(`${srv}/notifications?process=get&email=${localStorage.getItem("t50-email")}&password=${atob(localStorage.getItem("t50pswd"))}&username=${localStorage.getItem("t50-username")}&rand=${Math.floor(Math.random() * 100000)}`)
         .then(response => {
             if (!response.ok) {
@@ -1879,7 +1882,8 @@ function loadNotificationsAll() {
                                             isOk = false; // Mark as false if response is not OK (e.g., 404)
                                             finalImage = 'evox-logo-apple.png'
                                             nowComplete()
-                                            throw new Error(`HTTP error! Status: ${response.status}`); // Stop further execution
+                                            return;
+                                            //throw new Error(`HTTP error! Status: ${response.status}`); // Stop further execution
                                         }
                                         return response.text();
                                     })
@@ -1896,53 +1900,92 @@ function loadNotificationsAll() {
                                 nowComplete()
                             }
                         } else {
+                            const username = finalImage
                             loadPFPget(finalImage)
                                 .then(profileImage => {
+                                    
                                     finalImage = profileImage
-                                    nowComplete()
-                                }).catch(error => {
-                                    //setNetworkStatus('off')
-                                    console.error(error);
-                                    finalImage = 'evox-logo-apple.png'
-                                    nowComplete()
-                                });
-                        }
+
+                                    fetch(`${srv}/canvas/${username}.evox/has?v=${Math.floor(Math.random() * 100000)}`)
+                                        .then(response => {
+                                            if (!response.ok) {
+                                                throw new Error(`HTTP error! Status: ${response.status}`);
+                                            }
+                                            return response.text();
+                                        })
+                                        .then(canvasStatus => {
+                                            if (canvasStatus === 'true') {
+                                                finalImage = profileImage
+                                                nowComplete(`${srv}/canvas/${username}.evox`)
+
+
+                                            } else {
+                                                nowComplete(null)
+                                            }
+
+                                        }).catch(error => {
+                                            console.error(error);
+                                            finalImage = 'evox-logo-apple.png'
+                                            nowComplete()
+                                        })
+
+                                        
+                                        }).catch(error => {
+                                            //setNetworkStatus('off')
+                                            console.error(error);
+                                            finalImage = 'evox-logo-apple.png'
+                                            nowComplete()
+                                        });
+                                }
 
 
                     }
 
-                    function nowComplete() {
-                        $(load).fadeOut("fast")
-                        $(container).fadeIn("fast")
-                        container.innerHTML += `<div class="user">
+                        function nowComplete(canvas) {
+
+                            $(load).fadeOut("fast")
+                            $(container).fadeIn("fast")
+                            container.innerHTML += `<div class="user fade-in-slide-up ${canvas ? "bgvid" : ""}">
+                        ${canvas ? `<video autoplay muted loop class="bg-video">
+        <source src="${canvas}" type="video/mp4">
+    </video>` : ""}
         <div class="icon">
                 <img class="slUserPFP social" src="${finalImage}">
         </div>
-        <div class="column">
-                <p>${truncateText(n.content, 32)}</p>
+        <div class="column" style="font-size: 15px;margin-right: 5px;">
+                <p>${truncateText(n.content, n.content.includes("IP") ? 25 : 32)}</p>
         </div>
-        <div class="show-user-info">
+        <div class="show-user-info" style="transform: rotate(0deg);text-align:right;">
                 ${formatTimeDifference(n.timestamp) + " ago"}
         </div>
 </div>`
+                            spawned++
+                        }
                     }
-                }
-                notifications.forEach((notif, index) => {
-                    if (index === 6) {
-                        container.innerHTML += `<div class="user">
-        
-        <div class="column">
-                <p>Load more</p>
-        </div>
-        
-</div>`
-                    }
-                    if (index > 5) return;
-                    addNotif(notif)
-                })
-            }
+                    Promise.all(
+                        notifications.slice(0, targetSpawn).map(notif => addNotif(notif))
+                    ).then(() => {
+                        console.log("All notifications added");
+                        let tempInt = setInterval(function () {
+                            if (spawned === targetSpawn) {
+                                clearInterval(tempInt)
+                                container.innerHTML += `<div onclick="currentShowingNotifications = currentShowingNotifications + 6;loadNotificationsAll(currentShowingNotifications);" class="user">
 
-        })
+                            <div class="column" style="width: 100%;justify-content:center;align-items:center;display: flex;flex-direction:row;">
+                                    <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM13 8C13 7.44772 12.5523 7 12 7C11.4477 7 11 7.44772 11 8L11 13.5858L9.70711 12.2929C9.31658 11.9024 8.68342 11.9024 8.29289 12.2929C7.90237 12.6834 7.90237 13.3166 8.29289 13.7071L11.2059 16.6201C11.2209 16.6351 11.2363 16.6497 11.252 16.6637C11.4352 16.87 11.7024 17 12 17C12.2976 17 12.5648 16.87 12.748 16.6637C12.7637 16.6497 12.7791 16.6351 12.7941 16.6201L15.7071 13.7071C16.0976 13.3166 16.0976 12.6834 15.7071 12.2929C15.3166 11.9024 14.6834 11.9024 14.2929 12.2929L13 13.5858L13 8Z" fill="#dbdde3"/>
+</svg><p>Load more</p>
+                            </div>
+                            
+                            </div>`
+                            }
+                        }, 200)
+
+                    });
+
+                }
+
+            })
         .catch(error => {
             console.error('Fetch error:', error);
         });
@@ -2623,6 +2666,21 @@ function clickNanimate(part) {
             $("#social-discover").fadeIn("fast")
         })
         epsilonDiscover()
+    } else if (part === 'notifAll') {
+        play("pickCatB")
+        const workingElem = document.getElementById("allnotifsvg")
+        workingElem.style.transform = 'rotate(180deg) scale(1.2)'
+        setTimeout(function () {
+            workingElem.style.transform = 'rotate(0deg) scale(1)'
+        }, 250)
+        loadNotificationsAll(currentShowingNotifications)
+
+        //menu_discover.classList.add("active")
+        //menu_manage.classList.remove("active")
+        //$("#social-users").fadeOut("fast", function () {
+        //    $("#social-discover").fadeIn("fast")
+        //})
+        //epsilonDiscover()
     }
 }
 
