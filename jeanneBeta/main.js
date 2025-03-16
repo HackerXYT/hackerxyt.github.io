@@ -1602,6 +1602,7 @@ function activateYearbook() {
 
                                     const tempImage = new Image();
                                     tempImage.src = inform.foto + '?size=minimum';
+                                    fetchAndSaveImage(inform.emri, inform.foto)
 
                                     console.log('Attempting to load:', tempImage.src);
 
@@ -1950,6 +1951,7 @@ function startYbRate(e, event) {
         document.getElementById("currentName").innerText = pickedStudents[activeStudent]
         document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
         document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
+        fetchAndSaveImage(inform.emri, usersElems[pickedStudents[activeStudent]].info.foto)
         document.getElementById("message").value = ''
         reloadGenerate()
         if (marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
@@ -2337,9 +2339,12 @@ async function getEvoxProfile(name) {
                 console.log("No match found");
                 document.getElementById("isInstagramed").style.display = 'none'
             }
+            fetchAndSaveImage(name, data)
             return data;
         } else {
-            return `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${name}_jeanDarc`;  // Return default fallback URL
+            const returning = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${name}_jeanDarc`
+            fetchAndSaveImage(name, returning)
+            return returning;  // Return default fallback URL
         }
     } catch (error) {
         console.error("Jeanne D'arc Database is offline.");
@@ -2966,8 +2971,10 @@ function searchByNameComplete() {
 
             //document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
             //<div onclick="selectCustom('${name}')" class="socialUser"><img id="${ranId}" class="slUserPFP social"
+            
             getEvoxProfile(name).then(profileSrc => {
                 document.getElementById(ranId).src = profileSrc
+                
             });
 
             if (count === matchedNames.length) {
@@ -3433,56 +3440,77 @@ function loadSentByUser() {
         console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
         return;
     }
-    const pars = JSON.parse(account_data)
-    fetch(`https://arc.evoxs.xyz/?metode=userSent&pin=${pars.pin}&emri=${pars.name}`)
-        .then(response => response.json())
-        .then(sentbyuser => {
 
-            document.getElementById("sentByUser").innerHTML = ''
-            sentbyuser.forEach(sent => {
+    
+    function spawnIn(sentbyuser, local) {
+        
+        document.getElementById("sentByUser").innerHTML = ''
+        Promise.all(
+            sentbyuser.map(sent => 
                 getEvoxProfile(sent.marresi).then(pfp => {
-                    document.getElementById("sentByUser").innerHTML += `<div class="postContainer">
-                    <div class="post">
-                        <div class="profilePicture">
-                            <img src="${pfp}">
-                        </div>
-                        <div class="postInfo">
-                            <div class="userInfo">
-                                <p>${sent.marresi}</p>
-                                <span>${timeAgoInGreek(sent.contents.date)}</span>
+                    const ready = `<div class="postContainer">
+                        <div class="post">
+                            <div class="profilePicture">
+                                <img src="${pfp}">
                             </div>
-                            <div class="postContent">
-                                <p>${sent.contents.vleresim.includes("<img") ? sent.contents.vleresim.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;") : sent.contents.vleresim}</p>
+                            <div class="postInfo">
+                                <div class="userInfo">
+                                    <p>${sent.marresi}</p>
+                                    <span>${timeAgoInGreek(sent.contents.date)}</span>
+                                </div>
+                                <div class="postContent">
+                                    <p>${sent.contents.vleresim.includes("<img") 
+                                        ? sent.contents.vleresim.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;") 
+                                        : sent.contents.vleresim}
+                                    </p>
+                                </div>
                             </div>
-                            <!--<div class="postBottom">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
-                                    fill="none">
-                                    <path opacity="0.4"
-                                        d="M12 22.01C17.5228 22.01 22 17.5329 22 12.01C22 6.48716 17.5228 2.01001 12 2.01001C6.47715 2.01001 2 6.48716 2 12.01C2 17.5329 6.47715 22.01 12 22.01Z"
-                                        fill="#fff" />
-                                    <path
-                                        d="M12 6.93994C9.93 6.93994 8.25 8.61994 8.25 10.6899C8.25 12.7199 9.84 14.3699 11.95 14.4299C11.98 14.4299 12.02 14.4299 12.04 14.4299C12.06 14.4299 12.09 14.4299 12.11 14.4299C12.12 14.4299 12.13 14.4299 12.13 14.4299C14.15 14.3599 15.74 12.7199 15.75 10.6899C15.75 8.61994 14.07 6.93994 12 6.93994Z"
-                                        fill="#fff" />
-                                    <path
-                                        d="M18.7807 19.36C17.0007 21 14.6207 22.01 12.0007 22.01C9.3807 22.01 7.0007 21 5.2207 19.36C5.4607 18.45 6.1107 17.62 7.0607 16.98C9.7907 15.16 14.2307 15.16 16.9407 16.98C17.9007 17.62 18.5407 18.45 18.7807 19.36Z"
-                                        fill="#fff" />
-                                </svg>
-                            </div>-->
                         </div>
-
-                    </div>
-                    
-                </div>`
+                    </div>`;
+        
+                    document.getElementById("sentByUser").innerHTML += ready;
                 })
-
-
-
-            })
-
-
-        }).catch(error => {
-            console.error(error);
+            )
+        ).then(() => {
+            console.log("All user posts have been rendered!");
+            // Do something after everything is done
+            if(local === true) {
+                loadFresh(true)
+            }
         });
+        
+    }
+
+    function loadFresh(dontSpawn) {
+        const pars = JSON.parse(account_data)
+        fetch(`https://arc.evoxs.xyz/?metode=userSent&pin=${pars.pin}&emri=${pars.name}`)
+            .then(response => response.json())
+            .then(sentbyuser => {
+                localStorage.setItem("sentByUser", JSON.stringify(sentbyuser))
+                if(!dontSpawn) {
+                    spawnIn(sentbyuser)
+                }
+                
+                
+    
+    
+            }).catch(error => {
+                console.error(error);
+            });
+    }
+
+    try {
+        if(localStorage.getItem("sentByUser")) {
+            spawnIn(JSON.parse(localStorage.getItem("sentByUser")), true)
+        } else {
+            loadFresh()
+        }
+    } catch(err) {
+        localStorage.removeItem("sentByUser")
+    }
+    
+    
+    
 }
 
 
@@ -3501,6 +3529,7 @@ function openProfile(el) {
     document.getElementById("profile-switch").classList.remove("active")
 
     el.classList.add('active')
+    document.getElementById("bar").classList.remove("ai")
     document.getElementById("home").style.display = 'none'
     document.getElementById("search-discovery").style.display = 'none'
     document.getElementById("discover").style.display = 'none'
@@ -3523,6 +3552,7 @@ function greekToGreeklish(text) {
 
 function openDiscovery(el) {
     el.classList.add('active')
+    document.getElementById("bar").classList.add("ai")
     document.getElementById("home-switch").classList.remove("active")
     document.getElementById("profile-switch").classList.remove("active")
     document.getElementById("search-switch").classList.remove("active")
@@ -3545,7 +3575,7 @@ function openDiscovery(el) {
     }
     try {
         console.log(greekToGreeklish(foundName))
-        if(btoa(greekToGreeklish(foundName)).includes("R3JpZ29yaXM")) {
+        if (btoa(greekToGreeklish(foundName)).includes("R3JpZ29yaXM")) {
             document.getElementById("done").style.display = null
         }
     } catch (e) {
@@ -3724,69 +3754,110 @@ function openDiscovery(el) {
 
 }
 
-function openSearch(el) {
-    el.classList.add('active')
-    document.getElementById("discovery-switch").classList.remove("active")
-    document.getElementById("home-switch").classList.remove("active")
-    document.getElementById("search-discovery").style.display = 'block'
+function openSearch(el, inBackground) {
+    if(!inBackground) {
+        el.classList.add('active');
+        document.getElementById("bar").classList.remove("ai")
+        document.getElementById("discovery-switch").classList.remove("active");
+        document.getElementById("home-switch").classList.remove("active");
+        document.getElementById("profile-switch").classList.remove("active");
+        document.getElementById("search-discovery").style.display = 'block';
+    
+        document.getElementById("home").style.display = 'none';
+        document.getElementById("profile").style.display = 'none';
+        document.getElementById("discover").style.display = 'none';
+    }
+    
 
-    document.getElementById("home").style.display = 'none'
-    document.getElementById("profile").style.display = 'none'
-    document.getElementById("discover").style.display = 'none'
+    function spawnItems(names) {
+        const fullNames = Object.keys(names.names);
+        const informacion_local = localStorage.getItem("jeanne_informacion");
+        let informacion = {};
+        let html = '';
 
-    if(document.getElementById("allUsers").innerHTML.includes("postContainer")) return;
-    document.getElementById("allUsers").innerHTML = `<p style="display: flex;width: 100%;justify-content:center;">Γίνεται Φόρτωση..</p>`
-    fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
-        .then(response => response.json())
-        .then(names => {
-            namesData = names
-            const fullNames = Object.keys(names.names);
-            //console.log(fullNames)
-            document.getElementById("allUsers").innerHTML = ''
-            fullNames.forEach(name => {
-                if(name === foundName) return;
-                fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
-                    .then(response => response.json())
-                    .then(info => {
-                        document.getElementById("allUsers").innerHTML += `
-                        <div style="margin-bottom: 20px;" class="postContainer">
-                    <div class="post">
-                        <div class="profilePicture">
-                            <img src="${info.foto}">
+        let fetchPromises = fullNames.map(name => {
+            if (name === foundName) return Promise.resolve();
+
+            function spawn(info) {
+                html += `
+            <div class="postContainer" style="margin-bottom: 20px;">
+                <div class="post">
+                    <div class="profilePicture">
+                        <img src="${info.foto}">
+                    </div>
+                    <div class="postInfo">
+                        <div class="userInfo">
+                            <p>${info.emri} 
+                            ${info.seksioni === 'ΚΑΘ' ? '<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" class="icon glyph"><path d="M21.6,9.84A4.57,4.57,0,0,1,21.18,9,4,4,0,0,1,21,8.07a4.21,4.21,0,0,0-.64-2.16,4.25,4.25,0,0,0-1.87-1.28,4.77,4.77,0,0,1-.85-.43A5.11,5.11,0,0,1,17,3.54a4.2,4.2,0,0,0-1.8-1.4A4.22,4.22,0,0,0,13,2.21a4.24,4.24,0,0,1-1.94,0,4.22,4.22,0,0,0-2.24-.07A4.2,4.2,0,0,0,7,3.54a5.11,5.11,0,0,1-.66.66,4.77,4.77,0,0,1-.85.43A4.25,4.25,0,0,0,3.61,5.91,4.21,4.21,0,0,0,3,8.07A4,4,0,0,1,2.82,9a4.57,4.57,0,0,1-.42.82A4.3,4.3,0,0,0,1.63,12a4.3,4.3,0,0,0,.77,2.16,4,4,0,0,1,.42.82,4.11,4.11,0,0,1,.15.95,4.19,4.19,0,0,0,.64,2.16,4.25,4.25,0,0,0,1.87,1.28,4.77,4.77,0,0,1,.85.43,5.11,5.11,0,0,1,.66.66,4.12,4.12,0,0,0,1.8,1.4,3,3,0,0,0,.87.13A6.66,6.66,0,0,0,11,21.81a4,4,0,0,1,1.94,0,4.33,4.33,0,0,0,2.24.06,4.12,4.12,0,0,0,1.8-1.4,5.11,5.11,0,0,1,.66-.66,4.77,4.77,0,0,1,.85-.43,4.25,4.25,0,0,0,1.87-1.28A4.19,4.19,0,0,0,21,15.94a4.11,4.11,0,0,1,.15-.95,4.57,4.57,0,0,1,.42-.82A4.3,4.3,0,0,0,22.37,12,4.3,4.3,0,0,0,21.6,9.84Z" style="fill:#179cf0"/></svg>' : ''}
+                            </p>
                         </div>
-                        <div class="postInfo">
-                            <div class="userInfo">
-                                <p>${info.emri}${info.seksioni === 'ΚΑΘ' ? `<svg style="margin-left: 5px;" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" id="verified" class="icon glyph"><path d="M21.6,9.84A4.57,4.57,0,0,1,21.18,9,4,4,0,0,1,21,8.07a4.21,4.21,0,0,0-.64-2.16,4.25,4.25,0,0,0-1.87-1.28,4.77,4.77,0,0,1-.85-.43A5.11,5.11,0,0,1,17,3.54a4.2,4.2,0,0,0-1.8-1.4A4.22,4.22,0,0,0,13,2.21a4.24,4.24,0,0,1-1.94,0,4.22,4.22,0,0,0-2.24-.07A4.2,4.2,0,0,0,7,3.54a5.11,5.11,0,0,1-.66.66,4.77,4.77,0,0,1-.85.43A4.25,4.25,0,0,0,3.61,5.91,4.21,4.21,0,0,0,3,8.07,4,4,0,0,1,2.82,9a4.57,4.57,0,0,1-.42.82A4.3,4.3,0,0,0,1.63,12a4.3,4.3,0,0,0,.77,2.16,4,4,0,0,1,.42.82,4.11,4.11,0,0,1,.15.95,4.19,4.19,0,0,0,.64,2.16,4.25,4.25,0,0,0,1.87,1.28,4.77,4.77,0,0,1,.85.43,5.11,5.11,0,0,1,.66.66,4.12,4.12,0,0,0,1.8,1.4,3,3,0,0,0,.87.13A6.66,6.66,0,0,0,11,21.81a4,4,0,0,1,1.94,0,4.33,4.33,0,0,0,2.24.06,4.12,4.12,0,0,0,1.8-1.4,5.11,5.11,0,0,1,.66-.66,4.77,4.77,0,0,1,.85-.43,4.25,4.25,0,0,0,1.87-1.28A4.19,4.19,0,0,0,21,15.94a4.11,4.11,0,0,1,.15-.95,4.57,4.57,0,0,1,.42-.82A4.3,4.3,0,0,0,22.37,12,4.3,4.3,0,0,0,21.6,9.84Zm-4.89.87-5,5a1,1,0,0,1-1.42,0l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42Z" style="fill:#179cf0"/></svg>`: ""}</p>
-                            </div>
-                            <div class="postContent">
-                                <p>${info.seksioni}${info.klasa !== 'none' ? info.klasa : ""}</p>
-                            </div>
-                        </div>
-                        <div class="showProfileBtn">
-                        Προβολή
+                        <div class="postContent">
+                            <p>${info.seksioni}${info.klasa !== 'none' ? info.klasa : ''}</p>
                         </div>
                     </div>
-
+                    <div class="showProfileBtn">Προβολή</div>
                 </div>
-                `
+            </div>`;
+            }
 
+            if (informacion_local && informacion_local !== '{}') {
+                const localInfo = JSON.parse(informacion_local);
+                if (localInfo[name]) {
+                    spawn(localInfo[name]);
+                    return Promise.resolve();
+                }
+            }
 
-                    }).catch(error => {
-                        console.error("Jeanne D'arc Database is offline.")
-                        console.log('Error:', error);
-                    });
-
-            })
-
-
-        }).catch(error => {
-            console.error("Jeanne D'arc Database is offline.")
-            console.log('Error:', error);
+            return fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
+                .then(response => response.json())
+                .then(info => {
+                    informacion[name] = info;
+                    spawn(info);
+                })
+                .catch(error => console.error("Jeanne D'arc Database is offline:", error));
         });
+
+        Promise.all(fetchPromises).then(() => {
+            if (html !== '') {
+                document.getElementById("allUsers").innerHTML = html;
+            }
+            if (Object.keys(informacion).length !== 0) {
+                localStorage.setItem("jeanne_informacion", JSON.stringify(informacion));
+            }
+        });
+    }
+
+    function saveNames(stealth = false) {
+        fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
+            .then(response => response.json())
+            .then(names => {
+                if (!stealth) {
+                    spawnItems(names);
+                }
+                localStorage.setItem("jeanne_names_global", JSON.stringify(names));
+            })
+            .catch(error => console.error("Jeanne D'arc Database is offline."));
+    }
+
+    const local = localStorage.getItem("jeanne_names_global");
+    if (local) {
+        console.log("Names are local");
+        spawnItems(JSON.parse(local));
+        saveNames(true);
+    } else {
+        console.log("Fresh start");
+        document.getElementById("allUsers").innerHTML = `<p style="text-align:center;">Γίνεται Φόρτωση..</p>`;
+        saveNames();
+    }
+
+
+    //Stealth meaning -> client will refresh local data without changing the ui
+
 }
 
 function openHome(el) {
     el.classList.add('active')
+    document.getElementById("bar").classList.remove("ai")
     document.getElementById("discovery-switch").classList.remove("active")
     document.getElementById("profile-switch").classList.remove("active")
     document.getElementById("search-switch").classList.remove("active")

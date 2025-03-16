@@ -1421,19 +1421,26 @@ img {
     width: 100%;
     height: auto;
     padding: 10px 20px;
-    /*border-radius: 50px;*/
+    /* border-radius: 50px; */
     box-sizing: border-box;
-    background-color: #00000085;
+    background-color: #070707df;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    backdrop-filter: blur(10px);
-    /* Adjust the blur amount as needed */
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     gap: 5px;
-    box-shadow: 0px 0px 20px 0px rgb(35 35 35 / 89%), -3px -3px 8px rgba(20, 20, 20, 0.1);
+    box-shadow: 0px 0px 20px 0px #070707df, -3px -3px 8px #00000052;
     padding-bottom: env(safe-area-inset-bottom);
+    transition: background-color 0.5s ease-in-out, backdrop-filter 0.5s ease-in-out, box-shadow 0.5s ease-in-out, -webkit-backdrop-filter 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+}
+
+.navigation .bar.ai {
+    background-color: #473c5e45;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0px 0px 20px 0px #14111a4e, -3px -3px 8px rgba(57, 49, 72, 0.153);
 }
 
 .navigation .bar .item {
@@ -1451,7 +1458,7 @@ img {
     border-radius: 15px;
     width: 65px;
     height: 50px;
-    background-color: #1e1e1ea1;
+    background-color: #1e1e1edf;
 }
 
 
@@ -4312,4 +4319,10 @@ input:-webkit-autofill:active {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.disable-scroll-snap {
+    scroll-snap-type: none !important;
+    scroll-padding-top: 0 !important;
+    scroll-padding-bottom: 0 !important;
 }
