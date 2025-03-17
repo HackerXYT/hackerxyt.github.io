@@ -453,8 +453,19 @@ function capitalizeFirstLetter(string) {
 }
 
 
-function findFullNames(input) {
-    const results = [];
+function findFullNames(input, removeFoundName) {
+    if (!namesData) {
+        fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
+            .then(response => response.json())
+            .then(names => {
+                namesData = names
+                findFullNames(input)
+            }).catch(error => {
+                console.error("Jeanne D'arc Database is offline.")
+            });
+        return;
+    }
+    let results = [];
 
     for (const [fullName, nameVariations] of Object.entries(namesData.names)) {
         const normalizedInput = input.toLowerCase().replace(/\s+/g, '');
@@ -485,9 +496,22 @@ function findFullNames(input) {
         }
     }
 
+    if (removeFoundName) {
+        results = results.filter(item => item !== foundName);
+    }
+
     return results;
 }
 
+function focusOnIcon(el) {
+    const work = el.querySelectorAll("svg path")
+    work.forEach(path => {
+        path.style.fill = "#dedede"
+        setTimeout(function () {
+            path.style.fill = "#808080"
+        }, 900)
+    })
+}
 
 function storiesSpawned() {
     document.querySelectorAll('.app .stories .story').forEach(story => {
@@ -2397,27 +2421,62 @@ function showSocial() {
 
 }
 
+function closePostCreate(frontend) {
+    document.body.style.overflow = null;
+
+    document.getElementById("app").style.transform = null;
+    document.getElementById("gradColored").style.opacity = null;
+    document.getElementById("gradColored").style.borderRadius = null;
+    document.getElementById("gradColored").style.transform = null;
+    document.getElementById("app").style.opacity = null;
+    document.body.style.backgroundColor = null;
+
+    function finalize(frn) {
+
+        if (!frn) {
+            document.getElementById("createPost").style.transform = '';
+            document.getElementById("createPost").classList.remove("active");
+        } else {
+            document.getElementById("createPost").style.transform = 'translateY(100vh)';
+            setTimeout(function () {
+                document.getElementById("createPost").classList.remove("active");
+                setTimeout(function () {
+                    document.getElementById("createPost").style.transform = null;
+                }, 200)
+            }, 450)
+        }
+    }
+    if (frontend) {
+        finalize(true)
+    } else {
+        setTimeout(function () {
+            finalize()
+        }, 500);
+    }
+
+}
+
 function hideSocial() {
     document.getElementById("social").classList.remove("active")
 }
 
 function grabberEvents(id) {
-
     const notice = document.getElementById(id);
-    let startY, currentY, isDragging = false;
+    let startY, currentY, isDragging = false, moved = false;
 
     // Initialize event listeners for touch/mouse events
     notice.addEventListener("mousedown", startDrag);
-    notice.addEventListener("touchstart", startDrag);
+    notice.addEventListener("touchstart", startDrag, { passive: true });
     notice.addEventListener("mousemove", drag);
-    notice.addEventListener("touchmove", drag);
+    notice.addEventListener("touchmove", drag, { passive: true });
     notice.addEventListener("mouseup", endDrag);
     notice.addEventListener("touchend", endDrag);
 
     function startDrag(e) {
         startY = e.touches ? e.touches[0].clientY : e.clientY;
         isDragging = true;
-        notice.style.transition = "none";  // Disable transitions for smoother dragging
+        moved = false;  // Reset movement flag
+        notice.style.transition = "none"; // Disable transitions for smooth dragging
     }
 
     function drag(e) {
@@ -2426,41 +2485,57 @@ function grabberEvents(id) {
         currentY = e.touches ? e.touches[0].clientY : e.clientY;
         let deltaY = currentY - startY;
 
-        if (deltaY > 0) {  // Only allow downward dragging
+        if (Math.abs(deltaY) > 10) {
+            moved = true; // Only consider as dragging if movement exceeds 10px
+        }
+
+        if (deltaY > 0) {
             notice.style.transform = `translateY(${deltaY}px)`;
         }
     }
 
     function endDrag() {
+        if (!isDragging) return;
         isDragging = false;
-        notice.style.transition = "transform 0.3s ease";  // Add smooth return or dismiss transition
+        notice.style.transition = "transform 0.3s ease";
+
+        if (!moved) {
+            // If the user tapped but didn't drag, don't close
+            notice.style.transform = ``;
+            return;
+        }
 
         if (currentY - startY > 150) {
             notice.style.transform = `translateY(100vh)`;
 
             if (id === 'notice') {
-                document.body.style.overflow = null
-                document.getElementById("app").style.transform = ""
-                document.getElementById("app").style.opacity = "1"
+                document.body.style.overflow = null;
+                document.getElementById("app").style.transform = "";
+                document.getElementById("app").style.opacity = "1";
             }
 
             if (id === 'classChange') {
-                document.body.style.overflow = null
-                document.getElementById("app").style.transform = ""
-                document.getElementById("app").style.opacity = "1"
-                document.getElementById("profilePage").style.transform = ""
-                document.getElementById("profilePage").style.opacity = "1"
+                document.body.style.overflow = null;
+                document.getElementById("app").style.transform = "";
+                document.getElementById("app").style.opacity = "1";
+                document.getElementById("profilePage").style.transform = "";
+                document.getElementById("profilePage").style.opacity = "1";
             }
+
+            if (id === 'createPost') {
+                closePostCreate();
+            }
+
             notice.addEventListener("transitionend", () => {
                 notice.classList.remove("active");
                 notice.style.transform = ``;
-
             }, { once: true });
         } else {
-            notice.style.transform = ``;  // Reset if not dismissed
+            notice.style.transform = ``; // Reset if not dismissed
         }
     }
 }
+
 grabberEvents("notice")
 
 function grabberEventsNoDismiss(id) {
@@ -2971,10 +3046,10 @@ function searchByNameComplete() {
 
             //document.getElementById("multimatch").innerHTML = `${document.getElementById("multimatch").innerHTML}
             //<div onclick="selectCustom('${name}')" class="socialUser"><img id="${ranId}" class="slUserPFP social"
-            
+
             getEvoxProfile(name).then(profileSrc => {
                 document.getElementById(ranId).src = profileSrc
-                
+
             });
 
             if (count === matchedNames.length) {
@@ -3435,7 +3510,7 @@ function timeAgoInGreek(isoDate) {
 }
 
 function loadSentByUser() {
-    document.getElementById("sentByUser").innerHTML = `<div class="postContainer skel loading">
+    document.getElementById("sentByUser").innerHTML = `<div class="postContainer skel loading" style="padding-bottom: 10px;padding-top: 10px;">
                         <div class="post">
                             <div style="display: flex;flex-direction: row;align-items:center;">
                                 <div class="profilePicture">
@@ -3515,21 +3590,20 @@ function loadSentByUser() {
                             
                         </div>
                     </div>`
-
     const account_data = localStorage.getItem("jeanDarc_accountData")
     if (!account_data) {
         console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
         return;
     }
 
-    
+
     function spawnIn(sentbyuser, local) {
         let html = ''
-        
+
         Promise.all(
-            sentbyuser.map(sent => 
+            sentbyuser.map(sent =>
                 getEvoxProfile(sent.marresi).then(pfp => {
-                    const ready = `<div class="postContainer">
+                    const ready = `<div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
                         <div class="post">
                             <div class="profilePicture">
                                 <img src="${pfp}">
@@ -3540,28 +3614,28 @@ function loadSentByUser() {
                                     <span>${timeAgoInGreek(sent.contents.date)}</span>
                                 </div>
                                 <div class="postContent">
-                                    <p>${sent.contents.vleresim.includes("<img") 
-                                        ? sent.contents.vleresim.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;") 
-                                        : sent.contents.vleresim}
+                                    <p>${sent.contents.vleresim.includes("<img")
+                            ? sent.contents.vleresim.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
+                            : sent.contents.vleresim}
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </div>`;
-        
+
                     html += ready
-                    
+
                 })
             )
         ).then(() => {
             console.log("All user posts have been rendered!");
             // Do something after everything is done
-            if(local === true) {
+            if (local === true) {
                 loadFresh(true)
             }
             document.getElementById("sentByUser").innerHTML = html;
         });
-        
+
     }
 
     function loadFresh(dontSpawn) {
@@ -3570,30 +3644,30 @@ function loadSentByUser() {
             .then(response => response.json())
             .then(sentbyuser => {
                 localStorage.setItem("sentByUser", JSON.stringify(sentbyuser))
-                if(!dontSpawn) {
+                if (!dontSpawn) {
                     spawnIn(sentbyuser)
                 }
-                
-                
-    
-    
+
+
+
+
             }).catch(error => {
                 console.error(error);
             });
     }
 
     try {
-        if(localStorage.getItem("sentByUser")) {
+        if (localStorage.getItem("sentByUser")) {
             spawnIn(JSON.parse(localStorage.getItem("sentByUser")), true)
         } else {
             loadFresh()
         }
-    } catch(err) {
+    } catch (err) {
         localStorage.removeItem("sentByUser")
     }
-    
-    
-    
+
+
+
 }
 
 
@@ -3633,6 +3707,287 @@ function greekToGreeklish(text) {
     return text.split('').map(char => map[char] || char).join('');
 }
 
+//document.getE
+//input-textarea
+let selectedPeople = []
+function setTag(emri, el) {
+    const textarea = document.getElementById('input-textarea');
+    const match = textarea.value.match(/@(\p{L}+)/u);
+    const result = match ? match[1] : "";
+    textarea.value = textarea.value.replace(`@${result}`, '')
+    document.getElementById("floatingDiv").style.display = 'none'
+    document.getElementById("floatingDiv").innerHTML = '';
+
+    selectedPeople.push(emri)
+    //document.getElementById("selectedPeople").innerHTML = ''
+    //selectedPeople.forEach(user => {
+    document.getElementById("selectedPeople").innerHTML += `<div id="tag-${emri}-02" class="postContainer fade-in-slide-up">
+                        <div class="post">
+                            <div class="profilePicture">
+                                <img src="${el.querySelector(".post .profilePicture img").src}">
+                            </div>
+                            <div class="postInfo" style="flex-direction: row;">
+                                <div class="userInfo">
+                                    <p>${el.querySelector(".post .postInfo .userInfo p").innerHTML}</p>
+                                    <span onclick="removeTag('${emri}')" style="margin-left: auto"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM8.29289 8.29289C8.68342 7.90237 9.31658 7.90237 9.70711 8.29289L12 10.5858L14.2929 8.29289C14.6834 7.90237 15.3166 7.90237 15.7071 8.29289C16.0976 8.68342 16.0976 9.31658 15.7071 9.70711L13.4142 12L15.7071 14.2929C16.0976 14.6834 16.0976 15.3166 15.7071 15.7071C15.3166 16.0976 14.6834 16.0976 14.2929 15.7071L12 13.4142L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L10.5858 12L8.29289 9.70711C7.90237 9.31658 7.90237 8.68342 8.29289 8.29289Z" fill="#808080"/>
+</svg></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+    //})
+}
+
+function removeTag(emri) {
+    document.getElementById(`tag-${emri}-02`).remove()
+    selectedPeople = selectedPeople.filter(item => item !== emri);
+}
+document.getElementById('input-textarea').addEventListener('input', function () {
+    const textarea = this;
+
+    if (this.value !== '') {
+        document.getElementById("postButton").classList.remove("not-ready")
+    } else {
+        document.getElementById("postButton").classList.add("not-ready")
+    }
+
+    const match = textarea.value.match(/@(\p{L}+)/u);
+    const result = match ? match[1] : "";
+    const matchedNames = findFullNames(result, 'removeFoundName');
+
+    if (this.value.includes("@") && matchedNames) {
+        if (matchedNames.length === 0) { return; }
+        floatingDiv.style.display = 'block'; // Show the floating div
+
+        console.log(matchedNames)
+        if (matchedNames) {
+            function setupPersonalInfo(emri) {
+                return new Promise((resolve, reject) => {
+                    function rejected() {
+                        fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${emri}`)
+                            .then(response => response.json())
+                            .then(found => {
+                                const informacion_local = localStorage.getItem("jeanne_informacion");
+                                if (informacion_local) {
+                                    const lc = JSON.parse(informacion_local);
+                                    lc[emri] = found;
+                                    localStorage.setItem("jeanne_informacion", JSON.stringify(lc));
+                                } else {
+                                    const json = { [emri]: found };
+                                    localStorage.setItem("jeanne_informacion", JSON.stringify(json));
+                                }
+                                resolve(found); // Resolve with profile picture
+                            })
+                            .catch(error => {
+                                console.error("Jeanne D'arc Database is offline:", error);
+                                reject(error);
+                            });
+                    }
+
+                    const informacion_local = localStorage.getItem("jeanne_informacion");
+                    if (informacion_local) {
+                        const lc = JSON.parse(informacion_local);
+                        const found = lc[emri];
+                        if (found) {
+                            console.log("Using localstorage");
+                            resolve(found); // Resolve with profile picture from local storage
+                        } else {
+                            console.log("Localstorage doesn't include self");
+                            rejected();
+                        }
+                    } else {
+                        console.log("Localstorage informacion doesn't exist");
+                        rejected();
+                    }
+                });
+            }
+
+            document.getElementById("floatingDiv").innerHTML = '';
+            matchedNames.forEach(user => {
+                console.log("Found:", user);
+                setupPersonalInfo(user)
+                    .then((info) => {
+                        const existingElement = document.querySelector(`[data-user="${user}"]`);
+                        if (existingElement) return; // Prevent duplicates
+
+                        const postContainer = document.createElement("div");
+                        postContainer.classList.add("postContainer");
+                        postContainer.setAttribute("data-user", user); // Unique identifier
+                        postContainer.onclick = function () {
+                            setTag(user, this)
+                        }
+
+                        postContainer.innerHTML = `
+                            <div class="post">
+                                <div class="profilePicture">
+                                    <img src="${info.foto}">
+                                </div>
+                                <div class="postInfo" style="flex-direction: row;">
+                                    <div class="userInfo">
+                                        <p>${user}
+                                        ${info.seksioni === 'ΚΑΘ' ? '<svg style="margin-left: 5px" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" id="verified" class="icon glyph"><path d="M21.6,9.84A4.57,4.57,0,0,1,21.18,9,4,4,0,0,1,21,8.07a4.21,4.21,0,0,0-.64-2.16,4.25,4.25,0,0,0-1.87-1.28,4.77,4.77,0,0,1-.85-.43A5.11,5.11,0,0,1,17,3.54a4.2,4.2,0,0,0-1.8-1.4A4.22,4.22,0,0,0,13,2.21a4.24,4.24,0,0,1-1.94,0,4.22,4.22,0,0,0-2.24-.07A4.2,4.2,0,0,0,7,3.54a5.11,5.11,0,0,1-.66.66,4.77,4.77,0,0,1-.85.43A4.25,4.25,0,0,0,3.61,5.91,4.21,4.21,0,0,0,3,8.07,4,4,0,0,1,2.82,9a4.57,4.57,0,0,1-.42.82A4.3,4.3,0,0,0,1.63,12a4.3,4.3,0,0,0,.77,2.16,4,4,0,0,1,.42.82,4.11,4.11,0,0,1,.15.95,4.19,4.19,0,0,0,.64,2.16,4.25,4.25,0,0,0,1.87,1.28,4.77,4.77,0,0,1,.85.43,5.11,5.11,0,0,1,.66.66,4.12,4.12,0,0,0,1.8,1.4,3,3,0,0,0,.87.13A6.66,6.66,0,0,0,11,21.81a4,4,0,0,1,1.94,0,4.33,4.33,0,0,0,2.24.06,4.12,4.12,0,0,0,1.8-1.4,5.11,5.11,0,0,1,.66-.66,4.77,4.77,0,0,1,.85-.43,4.25,4.25,0,0,0,1.87-1.28A4.19,4.19,0,0,0,21,15.94a4.11,4.11,0,0,1,.15-.95,4.57,4.57,0,0,1,.42-.82A4.3,4.3,0,0,0,22.37,12,4.3,4.3,0,0,0,21.6,9.84Zm-4.89.87-5,5a1,1,0,0,1-1.42,0l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42Z" style="fill:#179cf0"/></svg>' : ''}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        document.getElementById("floatingDiv").appendChild(postContainer);
+                    })
+                    .catch((error) => {
+                        console.error('There was an issue setting up personal info:', error);
+                    });
+            });
+
+        }
+
+    } else {
+        floatingDiv.style.display = 'none';
+    }
+
+    // Create a hidden div to mirror the textarea
+    let mirrorDiv = document.getElementById("mirror-div");
+    if (!mirrorDiv) {
+        mirrorDiv = document.createElement("div");
+        mirrorDiv.id = "mirror-div";
+        document.body.appendChild(mirrorDiv);
+    }
+
+    // Apply the same styles as the textarea
+    mirrorDiv.style.position = "absolute";
+    mirrorDiv.style.visibility = "hidden";
+    mirrorDiv.style.whiteSpace = "pre-wrap";
+    mirrorDiv.style.wordWrap = "break-word";
+    mirrorDiv.style.font = window.getComputedStyle(textarea).font;
+    mirrorDiv.style.width = textarea.clientWidth + "px";
+    mirrorDiv.style.padding = window.getComputedStyle(textarea).padding;
+    mirrorDiv.style.lineHeight = window.getComputedStyle(textarea).lineHeight;
+
+    // Preserve manual and automatic line breaks
+    mirrorDiv.innerHTML = textarea.value.replace(/\n/g, "<br>&#8203;") || " ";
+
+    // Measure the height and calculate the number of lines
+    const lineHeight = parseFloat(window.getComputedStyle(textarea).lineHeight);
+    const lines = Math.round(mirrorDiv.clientHeight / lineHeight);
+
+    console.log("Total lines (including wraps and manual line breaks):", lines);
+
+    // Adjust textarea height dynamically
+    textarea.style.height = (lines * lineHeight) + "px";
+});
+
+function openKeyboard() {
+    let hiddenInput = document.getElementById("hidden-input");
+    let textarea = document.getElementById("input-textarea");
+
+    // Focus hidden input to trigger keyboard
+    hiddenInput.focus();
+
+    setTimeout(() => {
+        // Transfer text from hidden input to textarea (in case Safari locks input focus)
+        hiddenInput.addEventListener("input", () => {
+            textarea.value = hiddenInput.value;
+            hiddenInput.blur();
+            textarea.focus();
+        });
+
+        // Blur hidden input, then focus textarea
+        //
+    }, 50);
+}
+
+const footer = document.querySelector(".popup-footer");
+
+function adjustFooterPosition() {
+    if (window.visualViewport) {
+        footer.style.bottom = (window.innerHeight - window.visualViewport.height) + "px";
+    }
+}
+
+window.visualViewport.addEventListener("resize", adjustFooterPosition);
+window.visualViewport.addEventListener("scroll", adjustFooterPosition);
+
+
+
+function createPost(el) {
+    document.getElementById("selectedPeople").innerHTML = ''
+    selectedPeople = []
+
+    function setupPersonalInfo() {
+        return new Promise((resolve, reject) => {
+            document.getElementById("name-sur").innerText = foundName;
+
+            function rejected() {
+                fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${foundName}`)
+                    .then(response => response.json())
+                    .then(found => {
+                        document.getElementById("profilePicture-main").src = found.foto;
+                        document.getElementById("profilePicture-small").src = found.foto;
+                        const informacion_local = localStorage.getItem("jeanne_informacion");
+                        if (informacion_local) {
+                            const lc = JSON.parse(informacion_local);
+                            lc[foundName] = found
+                            localStorage.setItem("jeanne_informacion", JSON.stringify(lc));
+                        } else {
+                            const json = { foundName: found }
+                            localStorage.setItem("jeanne_informacion", JSON.stringify(json));
+                        }
+                        resolve();  // Resolving the promise after successful fetch
+                    })
+                    .catch(error => {
+                        console.error("Jeanne D'arc Database is offline:", error);
+                        reject(error);  // Rejecting the promise if there is an error
+                    });
+            }
+            const informacion_local = localStorage.getItem("jeanne_informacion");
+            if (informacion_local) {
+                const lc = JSON.parse(informacion_local);
+                const found = lc[foundName];
+                if (found) {
+                    console.log("Using localstorage")
+                    document.getElementById("profilePicture-main").src = found.foto;
+                    document.getElementById("profilePicture-small").src = found.foto;
+                    resolve();  // Resolving the promise when local data is successfully loaded
+                } else {
+                    console.log("Localstorage doesn't include self")
+                    rejected()
+                }
+
+            } else {
+                console.log("Localstorage informacion doesn't exist")
+                rejected()
+            }
+        });
+    }
+
+    document.getElementById("createPostSvg").querySelector("path").style.fill = "#fff"
+    setTimeout(function () {
+        setupPersonalInfo()
+            .then(() => {
+                console.log('Personal info setup successfully');
+                document.getElementById("createPost").classList.add("active")
+                document.getElementById("app").style.transform = 'scale(0.95)'
+                document.getElementById("gradColored").style.opacity = '0.8'
+                document.getElementById("gradColored").style.borderRadius = '20px'
+                document.getElementById("gradColored").style.transform = 'scale(0.9)'
+                document.getElementById("app").style.opacity = '0.8'
+                document.body.style.backgroundColor = '#000'
+                document.getElementById("createPostSvg").querySelector("path").style.fill = "#efefef93"
+
+            })
+            .catch((error) => {
+                console.error('There was an issue setting up personal info:', error);
+            });
+    }, 150)
+
+
+
+
+}
+
+grabberEvents("createPost")
+
 function openDiscovery(el) {
     el.classList.add('active')
     document.getElementById("bar").classList.add("ai")
@@ -3645,7 +4000,7 @@ function openDiscovery(el) {
     document.getElementById("discover").style.display = 'block'
     let skeleton = ``
     for (let i = 0; i < 6; i++) {
-        skeleton += `<div class="aclass skeleton">
+        skeleton += `<div class="aclass skeleton" style="border-radius: 15px;">
                     <div class="left">
                         &nbsp;
                         <p>&nbsp;<vox class="smallto">&nbsp;</vox>
@@ -3838,19 +4193,19 @@ function openDiscovery(el) {
 }
 
 function openSearch(el, inBackground) {
-    if(!inBackground) {
+    if (!inBackground) {
         el.classList.add('active');
         document.getElementById("bar").classList.remove("ai")
         document.getElementById("discovery-switch").classList.remove("active");
         document.getElementById("home-switch").classList.remove("active");
         document.getElementById("profile-switch").classList.remove("active");
         document.getElementById("search-discovery").style.display = 'block';
-    
+
         document.getElementById("home").style.display = 'none';
         document.getElementById("profile").style.display = 'none';
         document.getElementById("discover").style.display = 'none';
     }
-    
+
 
     function spawnItems(names) {
         const fullNames = Object.keys(names.names);
@@ -3863,7 +4218,7 @@ function openSearch(el, inBackground) {
 
             function spawn(info) {
                 html += `
-            <div class="postContainer" style="margin-bottom: 20px;">
+            <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
                 <div class="post">
                     <div class="profilePicture">
                         <img src="${info.foto}">

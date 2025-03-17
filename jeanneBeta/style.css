@@ -36,7 +36,7 @@ body {
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    transition: background-color 0.3s ease-in-out;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     margin-top: env(safe-area-inset-top) !important;
 
 }
@@ -1407,7 +1407,7 @@ img {
 
 .navigation {
     position: fixed;
-    bottom: 0px;
+    bottom: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1415,6 +1415,12 @@ img {
     width: 100vw;
     margin-left: -5px;
     padding: 0px;
+
+    transition: all 0.5s ease-in-out;
+    will-change: transform;
+
+    transform: translateY(0);
+    /* Ensure it doesn’t move */
 }
 
 .navigation .bar {
@@ -1431,9 +1437,10 @@ img {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     gap: 5px;
-    box-shadow: 0px 0px 20px 0px #070707df, -3px -3px 8px #00000052;
-    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0px 0px 20px 0px #252525df, -3px -3px 8px #00000052;
+    padding-bottom: calc(5px + env(safe-area-inset-bottom));
     transition: background-color 0.5s ease-in-out, backdrop-filter 0.5s ease-in-out, box-shadow 0.5s ease-in-out, -webkit-backdrop-filter 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+
 }
 
 .navigation .bar.ai {
@@ -1604,7 +1611,7 @@ img {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    
+
 }
 
 .userCollumn {
@@ -1651,6 +1658,7 @@ img {
 .classIcons img:first-child {
     margin-left: 0;
 }
+
 .banner {
     z-index: 1;
 }
@@ -2427,7 +2435,7 @@ img {
     background-color: #101010;
     /*background: linear-gradient(40deg, var(--color-bg1), var(--color-bg2));*/
     opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    transition: transform 0.4s ease-in-out, opacity 0.3s ease-in-out, border-radius 0.3s ease-in-out;
     margin-top: 0px;
     margin-bottom: 0px;
     filter: brightness(0.5);
@@ -4165,15 +4173,17 @@ input:-webkit-autofill:active {
     font-weight: bold;
     letter-spacing: 0.5px;
 }
+
 .semiCarousel {
     margin-top: 20px;
     width: 100%;
     padding: 5px 0;
     display: flex;
     justify-content: space-evenly;
-    border-bottom: 1px solid #565656; /* Main border */
+    border-bottom: 1px solid #565656;
+    /* Main border */
     position: relative;
-    
+
 }
 
 .carouselItem {
@@ -4181,7 +4191,8 @@ input:-webkit-autofill:active {
     font-size: 14px;
     color: #888;
     cursor: pointer;
-    padding-bottom: 10px; /* Adjust spacing */
+    padding-bottom: 10px;
+    /* Adjust spacing */
 }
 
 .carouselItem.active {
@@ -4192,13 +4203,16 @@ input:-webkit-autofill:active {
 .carouselItem.active::after {
     content: "";
     position: absolute;
-    bottom: -6px; /* Keeps it aligned with the border */
+    bottom: -6px;
+    /* Keeps it aligned with the border */
     left: 50%;
-    width: 95%; /* Increase this to make the line wider */
+    width: 95%;
+    /* Increase this to make the line wider */
     height: 2px;
     background-color: #fff;
     transform: translateX(-50%);
-    transition: width 0.2s ease-in-out; /* Smooth effect when switching tabs */
+    transition: width 0.2s ease-in-out;
+    /* Smooth effect when switching tabs */
 }
 
 .sentByUser {
@@ -4206,30 +4220,37 @@ input:-webkit-autofill:active {
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 5px;
+    padding: 10px;
+    padding-top: 0px;
 }
+
 .postContainer {
     margin-bottom: 10px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     width: 100%;
     height: auto;
     padding-bottom: 10px;
-    border-bottom: 1px solid #1a1a1a; /* Main border */
+    border-bottom: 1px solid #1a1a1a;
+    /* Main border */
 }
 
 .postBottom.skel {
     border-bottom: 0px solid transparent;
 }
+
 .post {
     display: flex;
     flex-direction: row;
     width: 100%;
 }
+
 .post .profilePicture {
     display: flex;
     flex-direction: column;
     height: 100%;
+    justify-content: center;
 }
 
 .post .profilePicture img {
@@ -4240,7 +4261,7 @@ input:-webkit-autofill:active {
     height: 45px;
     border-radius: 50%;
     object-fit: cover;
-    flex-shrink: none;
+    flex-shrink: 0;
 }
 
 .postInfo {
@@ -4366,9 +4387,11 @@ input:-webkit-autofill:active {
     0% {
         background-color: #1b1b1b;
     }
+
     50% {
         background-color: #1b1b1b;
     }
+
     100% {
         background-color: #1b1b1b;
     }
@@ -4399,4 +4422,291 @@ input:-webkit-autofill:active {
 .postContent p.skeleton {
     width: 90%;
     height: 10px;
+}
+
+.applePopup {
+    font-family: "SF";
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    /* for Internet Explorer, Edge */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90%;
+    display: block;
+    padding: 30px;
+    align-items: center;
+    /* Change from 'visible' to 'auto' */
+    scroll-behavior: smooth;
+    background: #191919;
+
+    /* Semi-transparent black overlay */
+    z-index: 998;
+    box-sizing: border-box;
+    /* Include padding in the element's total width and height */
+    box-shadow: 0 0 10px rgba(20, 20, 20, 0.628);
+    color: white;
+    opacity: 1;
+    /* Initially hidden */
+    visibility: hidden;
+    /* Initially hidden */
+    transform: translateY(100vh);
+    /* Initially off-screen to the left */
+    transition: transform 0.3s ease-in-out, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 1s ease-in-out;
+
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+    /* Transition for sliding effect, opacity, and visibility */
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: calc(99% - env(safe-area-inset-top));
+    padding: 10px;
+    touch-action: none;
+    /* Prevent unintended touch events */
+    user-select: none;
+    /* Prevent accidental text selection */
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.applePopup.active {
+    opacity: 1;
+    /* Show the popup */
+    visibility: visible;
+    /* Show the popup */
+    transform: translateX(0);
+    /* Slide the popup into view */
+}
+
+.topActionsPopup {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Pushes left and right elements to edges */
+    width: 100%;
+    position: relative;
+    padding: 0px 10px;
+    padding-bottom: 15px;
+}
+
+.border {
+    border-bottom: 1px solid #2c2c2c;
+    width: 120%;
+    margin-left: -20px;
+}
+
+.title-popup {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    /* Prevents text from breaking */
+    font-weight: bold;
+    /* Optional: Makes the title stand out */
+}
+
+.postInput {
+    margin-top: 5px;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+}
+
+.profilePicture-in {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 40px;
+    align-items: center;
+}
+
+.profilePicture-in img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+    flex-shrink: 0;
+}
+
+.profilePicture-in img.small {
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    display: flex;
+    justify-content: center;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+    flex-shrink: 0;
+    opacity: 0.5;
+}
+
+.input-post {
+    margin-top: 10px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input-post p {
+    font-weight: bold;
+}
+
+.input-post textarea {
+    width: 100%;
+    height: 25px;
+    border: none;
+    background-color: transparent;
+    color: #fff;
+    font-size: 16px;
+    line-height: 1.5;
+    resize: vertical;
+    /* Allow vertical resizing */
+    box-sizing: border-box;
+    resize: none;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    transition: height 0.1s cubic-bezier(1, 0, 0, 1.05);
+    margin-top: 5px;
+    margin-left: 0px;
+    padding-left: 0px;
+    box-sizing: border-box;
+}
+
+.input-post textarea::placeholder {
+    color: #636363;
+}
+
+.input-post textarea:focus {
+    outline: none;
+}
+
+.icons {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+}
+
+.line-x {
+    width: 2px;
+    height: 100%;
+    background-color: #636363;
+    border-radius: 5px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+.addmore {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #747474;
+    font-size: 14px;
+}
+
+#createPostSvg path {
+    transition: fill 0.1s ease-in-out;
+}
+
+.popup-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 5px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    color: #808080;
+    margin-bottom: 20px;
+    justify-content: space-around;
+    background-color: #191919c6;
+    backdrop-filter: blur(1px);
+}
+
+.popup-footer p {
+    color: #808080;
+}
+
+select {
+    color: #808080;
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+}
+
+select option {
+    background-color: transparent;
+    color: inherit;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+select {
+    position: relative;
+}
+
+select:hover,
+select:focus {
+    opacity: 0.8;
+}
+
+.postButton {
+    margin-left: auto;
+    color: #191919;
+    background-color: #fff;
+    padding: 10px 15px;
+    border-radius: 25px;
+    font-size: 15px;
+    font-weight: bold;
+    margin-right: 10px;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.postButton.not-ready {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.floating-div {
+    position: absolute;
+    top: calc(100% + 5px);
+    /* Moves it below the textarea with some spacing */
+    left: -15px;
+    width: 105%;
+    padding: 10px;
+    /*background-color: #242424;*/
+    background-color: #242424de;
+    backdrop-filter: blur(2px);
+    border-radius: 20px;
+    display: none;
+    z-index: 9992;
+    /* Hidden by default */
+}
+
+.floating-div .postContainer:last-child {
+    border: none;
+    padding-bottom: 0px;
+}
+
+.selectedPeople {
+    margin-top: 20px;
+    margin-left: -25px;
+}
+
+.iconA svg path {
+    transition: fill 0.3s ease-in-out;
 }
