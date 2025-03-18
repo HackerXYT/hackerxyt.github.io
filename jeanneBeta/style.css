@@ -846,6 +846,7 @@ img {
     scroll-snap-type: y mandatory;
     scroll-padding-top: 10px;
     scroll-padding-bottom: 10px;
+    overflow-anchor: none;
 }
 
 .app>* {
