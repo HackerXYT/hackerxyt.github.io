@@ -48,10 +48,17 @@ async function getImage(id) {
     const store = tx.objectStore(STORE_NAME);
     return new Promise((resolve) => {
         const request = store.get(id);
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => resolve(null);
+        request.onsuccess = () => {
+            console.log('Image fetched:', request.result);  // Log the result
+            resolve(request.result);
+        };
+        request.onerror = () => {
+            console.error('Error fetching image for ID:', id);  // Log error
+            resolve(null);
+        };
     });
 }
+
 
 async function clearDatabase() {
     const db = await openDB();

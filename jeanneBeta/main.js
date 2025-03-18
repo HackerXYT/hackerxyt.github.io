@@ -1337,7 +1337,7 @@ function attach() {
     document.body.style.backgroundColor = '#101010'//'rgb(5,2,16)'
     $("#hexa").fadeOut("fast", function () {
         $("#tasks").fadeOut("fast")
-
+        document.getElementById("name-sur-view").innerText = foundName
         const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
         const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
         const f = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
@@ -1345,6 +1345,7 @@ function attach() {
         if (f.length > 1) {
 
             document.getElementById("emri").innerText = `${transformGreekName(foundName, 0)}`
+
         } else {
             document.getElementById("emri").innerText = `${transformGreekName(foundName, 0)} ${transformGreekName(foundName, 1)}`
         }
@@ -1356,7 +1357,136 @@ function attach() {
         $("#app").fadeIn("fast")
 
     })
+    
+    spawnRandom()
+    
+
 }
+
+async function spawnRandom(redo) {
+    const lc = localStorage.getItem("jeanDarc_accountData");
+    if (!lc) return;
+
+    const pars = JSON.parse(lc);
+    const pin = atob(pars.pin);
+    if(!redo) {
+        document.getElementById("foryou").innerHTML = '';
+    }
+    
+
+    try {
+        const response = await fetch(`https://arc.evoxs.xyz/?metode=randomPost&emri=${foundName}&pin=${pin}&id=6`);
+        const ranData = await response.text();
+
+        console.log("randata:",ranData)
+        if (ranData !== 'Denied') {
+            const data = JSON.parse(ranData);
+
+            for (const post of data) {
+                if (redo) {
+                    const children = document.getElementById("foryou").querySelectorAll("div.postContainer"); // Ensure selecting only relevant containers
+                
+                    children.forEach((child, index) => {
+                        console.log(`Div ${index + 1}:`, child);
+                
+                        const userInfo = child.querySelector('.post .postInfo .userInfo p');
+                        const mentionInfo = child.querySelector('.post .postInfo .postContent p span');
+                
+                        if (userInfo && mentionInfo) { // Ensure elements exist before accessing properties
+                            if (userInfo.innerText === post.emri && mentionInfo.innerText === `@${post.marresi}`) {
+                                console.log("User:", post.emri, post.marresi, "is already spawned!");
+                                return;
+                            }
+                        } else {
+                            console.warn("Missing userInfo or mentionInfo in:", child);
+                        }
+                    });
+                }
+                
+                //post.emri .. the refferer
+                const profileSrc = await getImage(post.emri); //the image of the person reffered
+                const pfp = await getEvoxProfile(post.emri);
+
+                let src = pfp; // Default to pfp value from getEvoxProfile
+                console.log('Profile image fetched:', profileSrc);
+
+                if (profileSrc) {
+                    src = profileSrc.imageData; // Use profile image if available
+                }
+
+                await fetchAndSaveImage(post.emri, pfp);
+
+                document.getElementById("foryou").innerHTML += `
+                    <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
+                        <div class="post">
+                            <div class="profilePicture">
+                                <img src="${src}">
+                            </div>
+                            <div class="postInfo">
+                                <div class="userInfo">
+                                    <p>${post.emri}</p>
+                                    <span>${timeAgoInGreek(post.date)}</span>
+                                </div>
+                                <div class="postContent">
+                                    <p>
+                                    <span class="mention ${getGender(removeTonos(post.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${post.marresi}</span>
+                                    ${post.vleresim}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+        } else {
+            document.getElementById("foryou").innerHTML = `
+                    <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
+                        <div class="post">
+                            <div class="profilePicture">
+                                <img src="../evox-epsilon-beta/epsilon-assets/android-chrome-512x512.png">
+                            </div>
+                            <div class="postInfo">
+                                <div class="userInfo">
+                                    <p>Evox</p>
+                                    <span>μόλις τώρα</span>
+                                </div>
+                                <div class="postContent">
+                                    <p>
+                                    <span class="mention ${getGender(removeTonos(foundName.split(" ")[0])) === "Female" ? "female" : "male"}">@${foundName}</span><br>
+                                    Δεν μπορείς να δεις τις δημόσιες αναρτήσεις ακόμα, δοκίμασε ξανά σε λίγες μέρες ή ζήτα πρόσβαση από τους διαχειριστές.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+        }
+    } catch (error) {
+        console.error("Jeanne D'arc Database is offline.");
+        console.log('Error:', error);
+    }
+}
+
+let foryoudiv = document.getElementById("home");
+let loadingIndicatorFy = document.getElementById("loadingIndicator-fy");
+let isLoading2 = false; // Prevent multiple triggers
+
+foryoudiv.addEventListener("scroll", function () {
+    if (isLoading2) return;
+
+    // Check if user scrolled to the bottom
+    if (foryoudiv.scrollTop + foryoudiv.clientHeight >= foryoudiv.scrollHeight - 10) {
+        isLoading2 = true;
+        loadingIndicatorFy.classList.add("scaleUp")
+        loadingIndicatorFy.style.opacity = "1";
+
+        setTimeout(() => {
+            console.log("triggering more load")
+            spawnRandom(true)
+            isLoading2 = false;
+            loadingIndicatorFy.style.opacity = "0";
+            loadingIndicatorFy.classList.remove("scaleUp")
+        }, 1500);
+    }
+});
 
 function shake_me(what) {
     document.getElementById(`${what}`).classList.add('shake');
@@ -2430,12 +2560,13 @@ function closePostCreate(frontend) {
     document.getElementById("gradColored").style.transform = null;
     document.getElementById("app").style.opacity = null;
     document.body.style.backgroundColor = null;
-
+    footer.style.display = 'none'
     function finalize(frn) {
 
         if (!frn) {
             document.getElementById("createPost").style.transform = '';
             document.getElementById("createPost").classList.remove("active");
+
         } else {
             document.getElementById("createPost").style.transform = 'translateY(100vh)';
             setTimeout(function () {
@@ -2473,9 +2604,14 @@ function grabberEvents(id) {
     notice.addEventListener("touchend", endDrag);
 
     function startDrag(e) {
+        if (notice.scrollTop > 0) {
+            // Prevent drag if the user has scrolled down
+            return;
+        }
+
         startY = e.touches ? e.touches[0].clientY : e.clientY;
         isDragging = true;
-        moved = false;  // Reset movement flag
+        moved = false; // Reset movement flag
         notice.style.transition = "none"; // Disable transitions for smooth dragging
     }
 
@@ -2489,7 +2625,7 @@ function grabberEvents(id) {
             moved = true; // Only consider as dragging if movement exceeds 10px
         }
 
-        if (deltaY > 0) {
+        if (deltaY > 0 && notice.scrollTop === 0) {
             notice.style.transform = `translateY(${deltaY}px)`;
         }
     }
@@ -2505,7 +2641,7 @@ function grabberEvents(id) {
             return;
         }
 
-        if (currentY - startY > 150) {
+        if (currentY - startY > 150 && notice.scrollTop === 0) {
             notice.style.transform = `translateY(100vh)`;
 
             if (id === 'notice') {
@@ -2535,6 +2671,7 @@ function grabberEvents(id) {
         }
     }
 }
+
 
 grabberEvents("notice")
 
@@ -3512,9 +3649,9 @@ function timeAgoInGreek(isoDate) {
 function loadSentByUser() {
     document.getElementById("sentByUser").innerHTML = `<div class="postContainer skel loading" style="padding-bottom: 10px;padding-top: 10px;">
                         <div class="post">
-                            <div style="display: flex;flex-direction: row;align-items:center;">
+                            <div style="display: flex;flex-direction: row;">
                                 <div class="profilePicture">
-                                    <span style="background-color: #1c1c1c;width: 45px;height: 45px;border-radius: 50%;">
+                                    <span style="background-color: #4c4c4c;width: 45px;height: 45px;border-radius: 50%;">
                                 </div>
                                 <div class="postInfo">
                                     <div class="userInfo">
@@ -3522,7 +3659,13 @@ function loadSentByUser() {
                                         <span class="skeleton"></span>
                                     </div>
                                     <div class="postContent">
-                                        <p class="skeleton"></p>
+                                       <p class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
                                         <p style="margin-top: 5px;" class="skeleton"></p>
                                     </div>
                                 </div>
@@ -3532,9 +3675,9 @@ function loadSentByUser() {
                     </div>
                     <div class="postContainer skel loading">
                         <div class="post">
-                            <div style="display: flex;flex-direction: row;align-items:center;">
+                            <div style="display: flex;flex-direction: row;">
                                 <div class="profilePicture">
-                                    <span style="background-color: #1c1c1c;width: 45px;height: 45px;border-radius: 50%;">
+                                    <span style="background-color: #4c4c4c;width: 45px;height: 45px;border-radius: 50%;">
                                 </div>
                                 <div class="postInfo">
                                     <div class="userInfo">
@@ -3544,25 +3687,11 @@ function loadSentByUser() {
                                     <div class="postContent">
                                         <p class="skeleton"></p>
                                         <p style="margin-top: 5px;" class="skeleton"></p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <div class="postContainer skel loading">
-                        <div class="post">
-                            <div style="display: flex;flex-direction: row;align-items:center;">
-                                <div class="profilePicture">
-                                    <span style="background-color: #1c1c1c;width: 45px;height: 45px;border-radius: 50%;">
-                                </div>
-                                <div class="postInfo">
-                                    <div class="userInfo">
-                                        <p class="skeleton"></p>
-                                        <span class="skeleton"></span>
-                                    </div>
-                                    <div class="postContent">
-                                        <p class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
                                         <p style="margin-top: 5px;" class="skeleton"></p>
                                     </div>
                                 </div>
@@ -3572,9 +3701,9 @@ function loadSentByUser() {
                     </div>
                     <div class="postContainer skel loading">
                         <div class="post">
-                            <div style="display: flex;flex-direction: row;align-items:center;">
+                            <div style="display: flex;flex-direction: row;">
                                 <div class="profilePicture">
-                                    <span style="background-color: #1c1c1c;width: 45px;height: 45px;border-radius: 50%;">
+                                    <span style="background-color: #4c4c4c;width: 45px;height: 45px;border-radius: 50%;">
                                 </div>
                                 <div class="postInfo">
                                     <div class="userInfo">
@@ -3583,6 +3712,38 @@ function loadSentByUser() {
                                     </div>
                                     <div class="postContent">
                                         <p class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="postContainer skel loading">
+                        <div class="post">
+                            <div style="display: flex;flex-direction: row;">
+                                <div class="profilePicture">
+                                    <span style="background-color: #4c4c4c;width: 45px;height: 45px;border-radius: 50%;">
+                                </div>
+                                <div class="postInfo">
+                                    <div class="userInfo">
+                                        <p class="skeleton"></p>
+                                        <span class="skeleton"></span>
+                                    </div>
+                                    <div class="postContent">
+                                        <p class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
                                         <p style="margin-top: 5px;" class="skeleton"></p>
                                     </div>
                                 </div>
@@ -3600,41 +3761,63 @@ function loadSentByUser() {
     function spawnIn(sentbyuser, local) {
         let html = ''
 
+        // Assuming getImage and getEvoxProfile are asynchronous functions that return promises.
         Promise.all(
-            sentbyuser.map(sent =>
-                getEvoxProfile(sent.marresi).then(pfp => {
-                    const ready = `<div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
-                        <div class="post">
-                            <div class="profilePicture">
-                                <img src="${pfp}">
-                            </div>
-                            <div class="postInfo">
-                                <div class="userInfo">
-                                    <p>${sent.marresi}</p>
-                                    <span>${timeAgoInGreek(sent.contents.date)}</span>
-                                </div>
-                                <div class="postContent">
-                                    <p>${sent.contents.vleresim.includes("<img")
-                            ? sent.contents.vleresim.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
-                            : sent.contents.vleresim}
-                                    </p>
-                                </div>
-                            </div>
+            sentbyuser.map(async (sent) => {
+                // Wait for both image and profile data to be fetched.
+                const profileSrc = await getImage(sent.marresi);
+                const pfp = await getEvoxProfile(sent.marresi);
+
+                let src = pfp; // Default to the pfp value from getEvoxProfile
+                console.log('Profile image fetched:', profileSrc);
+
+                if (profileSrc) {
+                    src = profileSrc.imageData; // If profile image is available, use it.
+                }
+
+                fetchAndSaveImage(sent.marresi, pfp);
+                // Build the HTML for the post.
+                const ready = `
+            <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
+                <div class="post">
+                    <div class="profilePicture">
+                        <img src="${src}">
+                    </div>
+                    <div class="postInfo">
+                        <div class="userInfo">
+                            <p>${sent.marresi}</p>
+                            <span>${timeAgoInGreek(sent.contents.date)}</span>
                         </div>
-                    </div>`;
+                        <div class="postContent">
+                            <p>
+                                ${sent.contents.vleresim.includes("<img")
+                        ? sent.contents.vleresim.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
+                        : sent.contents.vleresim}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
 
-                    html += ready
+                // Assuming fetchAndSaveImage is another async function that needs to be called
 
-                })
-            )
-        ).then(() => {
+
+                // Accumulate the generated HTML to be added later
+                return ready;
+            })
+        ).then((htmlArray) => {
+            // Join all the HTML strings into one large HTML block.
+            const html = htmlArray.join('');
             console.log("All user posts have been rendered!");
+
             // Do something after everything is done
             if (local === true) {
-                loadFresh(true)
+                loadFresh(true);
             }
             document.getElementById("sentByUser").innerHTML = html;
         });
+
 
     }
 
@@ -3656,15 +3839,18 @@ function loadSentByUser() {
             });
     }
 
-    try {
-        if (localStorage.getItem("sentByUser")) {
-            spawnIn(JSON.parse(localStorage.getItem("sentByUser")), true)
-        } else {
-            loadFresh()
+    setTimeout(function () {
+        try {
+            if (localStorage.getItem("sentByUser")) {
+                spawnIn(JSON.parse(localStorage.getItem("sentByUser")), true)
+            } else {
+                loadFresh()
+            }
+        } catch (err) {
+            localStorage.removeItem("sentByUser")
         }
-    } catch (err) {
-        localStorage.removeItem("sentByUser")
-    }
+    }, 800)
+
 
 
 
@@ -3683,6 +3869,7 @@ function openProfile(el) {
     document.getElementById("home-switch").classList.remove("active")
     document.getElementById("discovery-switch").classList.remove("active")
     document.getElementById("search-switch").classList.remove("active")
+    document.getElementById("search-cont-3").style.display = 'none'
     document.getElementById("profile-switch").classList.remove("active")
 
     el.classList.add('active')
@@ -3875,6 +4062,17 @@ document.getElementById('input-textarea').addEventListener('input', function () 
 
     // Adjust textarea height dynamically
     textarea.style.height = (lines * lineHeight) + "px";
+
+    const div = document.getElementById("postInput") // Select the div
+    const div_a = document.getElementById("createPost")
+
+    // Check if vertical scroll is needed
+    if (div_a.scrollHeight > div_a.clientHeight) {
+        console.log("Vertical scrolling is required.");
+        div.classList.add("scrolly")
+    } else {
+        div.classList.remove("scrolly")
+    }
 });
 
 function openKeyboard() {
@@ -3974,7 +4172,7 @@ function createPost(el) {
                 document.getElementById("app").style.opacity = '0.8'
                 document.body.style.backgroundColor = '#000'
                 document.getElementById("createPostSvg").querySelector("path").style.fill = "#efefef93"
-
+                footer.style.display = 'flex'
             })
             .catch((error) => {
                 console.error('There was an issue setting up personal info:', error);
@@ -3988,12 +4186,65 @@ function createPost(el) {
 
 grabberEvents("createPost")
 
+document.getElementById("search-discovery").addEventListener("scroll", function () {
+    if (this.scrollTop > 70) {
+        document.getElementById("search-cont-3").style.display = 'block'
+    } else {
+        document.getElementById("search-cont-3").style.display = 'none'
+    }
+});
+let allUsersDiv = document.getElementById("search-discovery");
+let loadingIndicator = document.getElementById("loadingIndicator");
+let isLoading = false; // Prevent multiple triggers
+
+allUsersDiv.addEventListener("scroll", function () {
+    if (isLoading) return;
+
+    // Check if user scrolled to the bottom
+    if (allUsersDiv.scrollTop + allUsersDiv.clientHeight >= allUsersDiv.scrollHeight - 10) {
+        isLoading = true;
+        loadingIndicator.classList.add("scaleUp")
+        loadingIndicator.style.opacity = "1";
+
+        setTimeout(() => {
+            loadMoreUsers();
+            isLoading = false;
+            loadingIndicator.style.opacity = "0";
+            loadingIndicator.classList.remove("scaleUp")
+        }, 1500);
+    }
+});
+
+
+
+function loadMoreUsers() {
+    const ac = localStorage.getItem("jeanDarc_accountData");
+    if (!ac) { return; }
+    const parsed = JSON.parse(ac)
+    fetch(`https://arc.evoxs.xyz/?metode=rekomandimet&emri=${parsed.name}&pin=${atob(parsed.pin)}&loaded=${JSON.stringify(search_loadedUsers)}`)
+        .then(response => response.json())
+        .then(names => {
+
+            let json = { names: {} }
+            names.forEach(name => {
+                json.names[name] = {}
+            })
+            spawnItems(json, 'loadMore', names);
+
+
+        })
+        .catch(error => console.error("Jeanne D'arc Database is offline."));
+}
+
+
+
 function openDiscovery(el) {
     el.classList.add('active')
     document.getElementById("bar").classList.add("ai")
     document.getElementById("home-switch").classList.remove("active")
     document.getElementById("profile-switch").classList.remove("active")
     document.getElementById("search-switch").classList.remove("active")
+    document.getElementById("search-cont-3").style.display = 'none'
     document.getElementById("home").style.display = 'none'
     document.getElementById("profile").style.display = 'none'
     document.getElementById("search-discovery").style.display = 'none'
@@ -4191,8 +4442,109 @@ function openDiscovery(el) {
     }
 
 }
+function spawnItems(names, loadMore, oringinal) {
 
+    const fullNames = Object.keys(names.names);
+    const informacion_local = localStorage.getItem("jeanne_informacion");
+    let informacion = {};
+    let html = '';
+    let count = 0
+    let target = oringinal.length
+    let fetchPromises = fullNames.map(name => {
+        return new Promise((resolve, reject) => {
+            if (search_loadedUsers.includes(name)) {
+                console.log("Included name", name, search_loadedUsers);
+                resolve(); // Resolve immediately if the name is already included
+                return;
+            }
+
+            if (name === foundName) {
+                resolve(Promise.resolve()); // Resolve if it's the found name
+                return;
+            }
+
+            async function spawn(info) {
+                let src = info.foto;
+                try {
+                    const profileSrc = await getImage(info.emri); // Wait for getImage to resolve
+                    console.log(profileSrc);
+                    if (profileSrc) {
+                        src = profileSrc.imageData;
+                    }
+
+                    html += `
+                    <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
+                        <div class="post">
+                            <div class="profilePicture">
+                                <img src="${src}">
+                            </div>
+                            <div class="postInfo">
+                                <div class="userInfo">
+                                    <p>${info.emri} 
+                                    ${info.seksioni === 'ΚΑΘ' ? '<svg style="margin-left: 5px" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" id="verified" class="icon glyph"><path d="M21.6,9.84A4.57,4.57,0,0,1,21.18,9,4,4,0,0,1,21,8.07a4.21,4.21,0,0,0-.64-2.16,4.25,4.25,0,0,0-1.87-1.28,4.77,4.77,0,0,1-.85-.43A5.11,5.11,0,0,1,17,3.54a4.2,4.2,0,0,0-1.8-1.4A4.22,4.22,0,0,0,13,2.21a4.24,4.24,0,0,1-1.94,0,4.22,4.22,0,0,0-2.24-.07A4.2,4.2,0,0,0,7,3.54a5.11,5.11,0,0,1-.66.66,4.77,4.77,0,0,1-.85.43A4.25,4.25,0,0,0,3.61,5.91,4.21,4.21,0,0,0,3,8.07,4,4,0,0,1,2.82,9a4.57,4.57,0,0,1-.42.82A4.3,4.3,0,0,0,1.63,12a4.3,4.3,0,0,0,.77,2.16,4,4,0,0,1,.42.82,4.11,4.11,0,0,1,.15.95,4.19,4.19,0,0,0,.64,2.16,4.25,4.25,0,0,0,1.87,1.28,4.77,4.77,0,0,1,.85.43,5.11,5.11,0,0,1,.66.66,4.12,4.12,0,0,0,1.8,1.4,3,3,0,0,0,.87.13A6.66,6.66,0,0,0,11,21.81a4,4,0,0,1,1.94,0,4.33,4.33,0,0,0,2.24.06,4.12,4.12,0,0,0,1.8-1.4,5.11,5.11,0,0,1,.66-.66,4.77,4.77,0,0,1,.85-.43,4.25,4.25,0,0,0,1.87-1.28A4.19,4.19,0,0,0,21,15.94a4.11,4.11,0,0,1,.15-.95,4.57,4.57,0,0,1,.42-.82A4.3,4.3,0,0,0,22.37,12,4.3,4.3,0,0,0,21.6,9.84Zm-4.89.87-5,5a1,1,0,0,1-1.42,0l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42Z" style="fill:#179cf0"/></svg>' : ''}</p>
+                                </div>
+                                <div class="postContent">
+                                    <p>${info.seksioni}${info.klasa !== 'none' ? info.klasa : ''}</p>
+                                </div>
+                            </div>
+                            <div class="showProfileBtn">Προβολή</div>
+                        </div>
+                    </div>`;
+                    fetchAndSaveImage(info.emri, info.foto); // Store the image locally
+
+                    // Check if count meets target, resolve the promise
+                    if (count >= target) {
+                        resolve();
+                    }
+
+                } catch (error) {
+                    console.error("Error fetching image:", error);
+                    reject(error); // Reject promise in case of error
+                }
+            }
+
+            if (informacion_local && informacion_local !== '{}') {
+                const localInfo = JSON.parse(informacion_local);
+                if (localInfo[name]) {
+                    spawn(localInfo[name]);
+                }
+            } else {
+                fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
+                    .then(response => response.json())
+                    .then(info => {
+                        informacion[name] = info;
+                        spawn(info);
+                    })
+                    .catch(error => {
+                        console.error("Jeanne D'arc Database is offline:", error);
+                        reject(error); // Reject promise if fetch fails
+                    });
+            }
+
+            count++;
+        });
+    });
+
+
+    Promise.all(fetchPromises).then(() => {
+        search_loadedUsers = [...search_loadedUsers, ...oringinal]
+        console.log("HTML", html)
+        if (html !== '') {
+            if (loadMore) {
+                document.getElementById("allUsers").innerHTML += html;
+            } else {
+                document.getElementById("allUsers").innerHTML = html;
+            }
+        }
+        if (Object.keys(informacion).length !== 0) {
+            localStorage.setItem("jeanne_informacion", JSON.stringify(informacion));
+        }
+    });
+}
+
+let search_loadedUsers = []
 function openSearch(el, inBackground) {
+
     if (!inBackground) {
         el.classList.add('active');
         document.getElementById("bar").classList.remove("ai")
@@ -4207,63 +4559,7 @@ function openSearch(el, inBackground) {
     }
 
 
-    function spawnItems(names) {
-        const fullNames = Object.keys(names.names);
-        const informacion_local = localStorage.getItem("jeanne_informacion");
-        let informacion = {};
-        let html = '';
 
-        let fetchPromises = fullNames.map(name => {
-            if (name === foundName) return Promise.resolve();
-
-            function spawn(info) {
-                html += `
-            <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
-                <div class="post">
-                    <div class="profilePicture">
-                        <img src="${info.foto}">
-                    </div>
-                    <div class="postInfo">
-                        <div class="userInfo">
-                            <p>${info.emri} 
-                            ${info.seksioni === 'ΚΑΘ' ? '<svg style="margin-left: 5px" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" id="verified" class="icon glyph"><path d="M21.6,9.84A4.57,4.57,0,0,1,21.18,9,4,4,0,0,1,21,8.07a4.21,4.21,0,0,0-.64-2.16,4.25,4.25,0,0,0-1.87-1.28,4.77,4.77,0,0,1-.85-.43A5.11,5.11,0,0,1,17,3.54a4.2,4.2,0,0,0-1.8-1.4A4.22,4.22,0,0,0,13,2.21a4.24,4.24,0,0,1-1.94,0,4.22,4.22,0,0,0-2.24-.07A4.2,4.2,0,0,0,7,3.54a5.11,5.11,0,0,1-.66.66,4.77,4.77,0,0,1-.85.43A4.25,4.25,0,0,0,3.61,5.91,4.21,4.21,0,0,0,3,8.07,4,4,0,0,1,2.82,9a4.57,4.57,0,0,1-.42.82A4.3,4.3,0,0,0,1.63,12a4.3,4.3,0,0,0,.77,2.16,4,4,0,0,1,.42.82,4.11,4.11,0,0,1,.15.95,4.19,4.19,0,0,0,.64,2.16,4.25,4.25,0,0,0,1.87,1.28,4.77,4.77,0,0,1,.85.43,5.11,5.11,0,0,1,.66.66,4.12,4.12,0,0,0,1.8,1.4,3,3,0,0,0,.87.13A6.66,6.66,0,0,0,11,21.81a4,4,0,0,1,1.94,0,4.33,4.33,0,0,0,2.24.06,4.12,4.12,0,0,0,1.8-1.4,5.11,5.11,0,0,1,.66-.66,4.77,4.77,0,0,1,.85-.43,4.25,4.25,0,0,0,1.87-1.28A4.19,4.19,0,0,0,21,15.94a4.11,4.11,0,0,1,.15-.95,4.57,4.57,0,0,1,.42-.82A4.3,4.3,0,0,0,22.37,12,4.3,4.3,0,0,0,21.6,9.84Zm-4.89.87-5,5a1,1,0,0,1-1.42,0l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42Z" style="fill:#179cf0"/></svg>' : ''}
-                            </p>
-                        </div>
-                        <div class="postContent">
-                            <p>${info.seksioni}${info.klasa !== 'none' ? info.klasa : ''}</p>
-                        </div>
-                    </div>
-                    <div class="showProfileBtn">Προβολή</div>
-                </div>
-            </div>`;
-            }
-
-            if (informacion_local && informacion_local !== '{}') {
-                const localInfo = JSON.parse(informacion_local);
-                if (localInfo[name]) {
-                    spawn(localInfo[name]);
-                    return Promise.resolve();
-                }
-            }
-
-            return fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
-                .then(response => response.json())
-                .then(info => {
-                    informacion[name] = info;
-                    spawn(info);
-                })
-                .catch(error => console.error("Jeanne D'arc Database is offline:", error));
-        });
-
-        Promise.all(fetchPromises).then(() => {
-            if (html !== '') {
-                document.getElementById("allUsers").innerHTML = html;
-            }
-            if (Object.keys(informacion).length !== 0) {
-                localStorage.setItem("jeanne_informacion", JSON.stringify(informacion));
-            }
-        });
-    }
 
     function saveNames(stealth = false) {
         fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
@@ -4280,13 +4576,31 @@ function openSearch(el, inBackground) {
     const local = localStorage.getItem("jeanne_names_global");
     if (local) {
         console.log("Names are local");
-        spawnItems(JSON.parse(local));
-        saveNames(true);
+        //spawnItems(JSON.parse(local));
+        //saveNames(true);
     } else {
         console.log("Fresh start");
         document.getElementById("allUsers").innerHTML = `<p style="text-align:center;">Γίνεται Φόρτωση..</p>`;
-        saveNames();
+        //saveNames();
     }
+    const ac = localStorage.getItem("jeanDarc_accountData");
+    if (!ac) { return; }
+    search_loadedUsers = []
+    const parsed = JSON.parse(ac)
+    fetch(`https://arc.evoxs.xyz/?metode=rekomandimet&emri=${parsed.name}&pin=${atob(parsed.pin)}`)
+        .then(response => response.json())
+        .then(names => {
+
+            let json = { names: {} }
+            names.forEach(name => {
+                json.names[name] = {}
+            })
+
+            spawnItems(json, null, names);
+
+
+        })
+        .catch(error => console.error("Jeanne D'arc Database is offline."));
 
 
     //Stealth meaning -> client will refresh local data without changing the ui
@@ -4299,6 +4613,7 @@ function openHome(el) {
     document.getElementById("discovery-switch").classList.remove("active")
     document.getElementById("profile-switch").classList.remove("active")
     document.getElementById("search-switch").classList.remove("active")
+    document.getElementById("search-cont-3").style.display = 'none'
 
     document.getElementById("home").style.display = 'block'
     document.getElementById("profile").style.display = 'none'
