@@ -14,7 +14,6 @@ document.addEventListener('gesturestart', function (e) {
   e.preventDefault();
 });
 function login() {
-  return;
   let email = document.getElementById("email").value
   let password = document.getElementById("password").value
   console.log(email, "********")
@@ -34,26 +33,43 @@ function login() {
         console.log("Welcome Abroad")
         localStorage.setItem("t50pswd", `${btoa(password)}`)
         const credentialsString = data;
-        if (data !== "IP Not Verified") {
+        let username = null
+        if (!data.includes("IP Not Verified")) {
           const match = credentialsString.match(/Username:(\w+)/);
-          const username = match && match[1];
+          //const username = match && match[1];
           //localStorage.setItem("t50-autologin", false)
-          localStorage.setItem("t50-username", username)
+
         }
-        localStorage.setItem("t50-email", email)
-        sessionStorage.setItem("loaded", true)
-        sessionStorage.setItem("loggedin", email)
-        sessionStorage.setItem("loggedinpswd", btoa(password))
-        if (localStorage.getItem("restart-for-florida")) {
-          console.log("Florida Override!")
-          localStorage.removeItem("restart-for-florida")
-          localStorage.setItem("t50-autologin", true)
-          localStorage.setItem("remove-autolg", true)
-          restart()
-          return;
-        }
-        setup()
-      } else if (data === "Credentials Incorrect") {
+        fetch(`https://data.evoxs.xyz/accounts?method=getUserbyEmail&email=${email}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+          })
+          .then(username_data => {
+            console.log(data)
+            username = username_data
+            localStorage.setItem("t50-username", username)
+            localStorage.setItem("t50-email", email)
+            sessionStorage.setItem("loaded", true)
+            sessionStorage.setItem("loggedin", email)
+            sessionStorage.setItem("loggedinpswd", btoa(password))
+            if (localStorage.getItem("restart-for-florida")) {
+              console.log("Florida Override!")
+              localStorage.removeItem("restart-for-florida")
+              localStorage.setItem("t50-autologin", true)
+              localStorage.setItem("remove-autolg", true)
+              restart()
+              return;
+            }
+            setup()
+
+          }).catch(error => {
+            console.error('Fetch error:', error);
+          });
+
+      } else if (data.includes("Credentials Incorrect")) {
         fadeError("2")
         console.log("Wrong Email/Password")
         email = ""

@@ -32,7 +32,7 @@
     --palette-hue-rotate-by: 0;
     --palette-chroma: 0;
 
-    --surface-1: light-dark(white, var(--color-15));
+    --surface-1: light-dark(rgb(0, 0, 0), var(--color-15));
     --surface-2: light-dark(var(--color-2), var(--color-13));
     --surface-3: light-dark(var(--color-6), var(--color-10));
     --text-1: light-dark(black, var(--color-2));
@@ -247,7 +247,9 @@
 .head p {
   margin: 0;
   margin-top: 25px;
-  font-size: 28px;
+  font-size: 23px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .head span {
