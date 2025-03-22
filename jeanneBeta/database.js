@@ -22,7 +22,7 @@ async function saveImage(id, imageData) {
     const existing = await getImage(id); // Separate transaction for reading
 
     if (existing && existing.imageData === imageData) {
-        console.log('Image already exists and is the same, skipping update.');
+        //console.log('Image already exists and is the same, skipping update.');
         return;
     }
 
@@ -34,7 +34,7 @@ async function saveImage(id, imageData) {
         const request = store.put({ id, imageData });
 
         request.onsuccess = () => {
-            console.log('Image saved/updated successfully.');
+            //console.log('Image saved/updated successfully.');
             resolve();
         };
         request.onerror = () => reject(request.error);
@@ -49,7 +49,7 @@ async function getImage(id) {
     return new Promise((resolve) => {
         const request = store.get(id);
         request.onsuccess = () => {
-            console.log('Image fetched:', request.result);  // Log the result
+            //console.log('Image fetched:', request.result);  // Log the result
             resolve(request.result);
         };
         request.onerror = () => {

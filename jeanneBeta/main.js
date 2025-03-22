@@ -35,6 +35,10 @@
 //window.addEventListener('wheel', disableScroll, { passive: false });
 //window.addEventListener('touchstart', touchMoveHandler, { passive: false });
 
+let isSocialed = false;
+let socialSection = 'none'
+let socialUsername = 'none'
+
 function cardProgress() {
     fetch('https://arc.evoxs.xyz/?metode=progresin')
         .then(response => response.json())
@@ -55,7 +59,7 @@ function isIOS() {
 }
 
 if (isIOS()) {
-    console.log(isIOS())
+    console.log("Device is IOS")
     document.getElementById("gradColored").style.opacity = '1'
 }
 
@@ -562,12 +566,12 @@ function continueToLogin(ev) {
     })
 }
 function hideElementOnAndroid(elementId) {
-    if (navigator.userAgent.toLowerCase().includes('android')) {
-        const element = document.getElementById(elementId);
-        if (element) {
-            element.style.display = 'none';
-        }
+    //if (navigator.userAgent.toLowerCase().includes('android')) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.style.display = 'none';
     }
+    //}
 }
 
 function connectWithIp() {
@@ -618,7 +622,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     hideElementOnAndroid('gradColored');
     hideElementOnAndroid('bgGrd');
-    if (window.innerWidth > 768 && !localStorage.getItem("devBypass")) {
+    if (window.innerWidth > 768 && localStorage.getItem("devBypass")) {
         //console.log("This is not a mobile device");
         //$("#tasks").fadeOut("fast", function () {
         $("#loginContainer").fadeOut("fast", function () {
@@ -862,7 +866,7 @@ function clickPIN(element) {
                         .then(response => response.text())
                         .then(status => {
                             if (status === 'Granted') {
-                                console.log("Success")
+                                console.log("Access Granted to", foundName)
 
                                 proccessingPIN = false
                                 //console.log("Correct")
@@ -1161,23 +1165,24 @@ function autoLogin() {
             //const color = getGender(foundName.split(" ")[0]) === "Male" ? "#298ef2" : "Female"
             if (getGender(removeTonos(foundName.split(" ")[0])) === "Female") {
                 document.documentElement.style.setProperty('--color-theme', '#ae6cff');
+                document.documentElement.style.setProperty('--color-theme', '#fff');
                 document.documentElement.style.setProperty('--color-theme-light', '#bf8bff');
                 document.documentElement.style.setProperty('--color-theme-select', '#ae6cff55');
 
             }
             const process = atob(json.pin)
-            fetch(`https://arc.evoxs.xyz/?metode=getProgress&emri=${foundName}&pin=${process}`)
-                .then(response => response.json())
-                .then(complete => {
-                    const progress = complete.progress
-                    document.getElementById("title-progress").innerHTML = complete.title
-                    document.getElementById("desc-progress").innerHTML = complete.desc
-                    console.log("Progress Success!", complete)
-                    document.getElementById("percentage").innerText = progress
-                    document.getElementById("progress-ring").style = `--progress: ${progress.replace("%", "")};`
-                }).catch(error => {
-                    console.error("Progress error", error)
-                });
+            //fetch(`https://arc.evoxs.xyz/?metode=getProgress&emri=${foundName}&pin=${process}`)
+            //    .then(response => response.json())
+            //    .then(complete => {
+            //        const progress = complete.progress
+            //        document.getElementById("title-progress").innerHTML = complete.title
+            //        document.getElementById("desc-progress").innerHTML = complete.desc
+            //        console.log("Progress Success!", complete)
+            //        document.getElementById("percentage").innerText = progress
+            //        document.getElementById("progress-ring").style = `--progress: ${progress.replace("%", "")};`
+            //    }).catch(error => {
+            //        console.error("Progress error", error)
+            //    });
             fetch(`https://arc.evoxs.xyz/?metode=pin&pin=${process}&emri=${foundName}`)
                 .then(response => response.text())
                 .then(status => {
@@ -1189,7 +1194,7 @@ function autoLogin() {
 
                     //alert(status)
                     if (status === 'Granted') {
-                        console.log("Success")
+                        console.log("Access Granted to", foundName)
                         document.getElementById("selfPfp").src = 'reloading-pfp.gif'
                         getEvoxProfile(foundName).then(profileSrc => {
                             console.log(profileSrc)
@@ -1363,15 +1368,46 @@ function attach() {
 
 }
 
-
+let hasCurrentSixLoaded = true;
 async function spawnRandom(redo) {
     const lc = localStorage.getItem("jeanDarc_accountData");
     if (!lc) return;
 
     const pars = JSON.parse(lc);
     const pin = atob(pars.pin);
+    hasCurrentSixLoaded = false;
+    const j = 6
+    let skel = ''
+    for (let i = 0; i < j; i++) {
+        skel += `<div class="postContainer skel loading" style="padding-bottom: 10px;padding-top: 10px;">
+                        <div class="post">
+                            <div style="display: flex;flex-direction: row;">
+                                <div class="profilePicture">
+                                    <span style="background-color: #4c4c4c;width: 45px;height: 45px;border-radius: 50%;">
+                                </div>
+                                <div class="postInfo">
+                                    <div class="userInfo">
+                                        <p class="skeleton"></p>
+                                        <span class="skeleton"></span>
+                                    </div>
+                                    <div class="postContent">
+                                       <p class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>`
+    }
     if (!redo) {
-        document.getElementById("foryou").innerHTML = '';
+        document.getElementById("foryou").innerHTML = skel;
     }
 
 
@@ -1379,7 +1415,7 @@ async function spawnRandom(redo) {
         const response = await fetch(`https://arc.evoxs.xyz/?metode=randomPost&emri=${foundName}&pin=${pin}&id=6`);
         const ranData = await response.text();
 
-        console.log("randata:", ranData)
+        //console.log("randata:", ranData)
         if (ranData !== 'Denied') {
             const data = JSON.parse(ranData);
 
@@ -1474,6 +1510,14 @@ async function spawnRandom(redo) {
                 //        </div>
                 //        
                 //    </div>`;
+                if (post === data[0]) {
+                    const children = document.getElementById("foryou").querySelectorAll("div.postContainer.skel"); // Ensure selecting only relevant containers
+
+                    children.forEach((child, index) => {
+                        child.remove()
+                    });
+                }
+
                 document.getElementById("foryou").innerHTML += `<div class="postInput" style="margin-bottom:10px;padding-bottom: 0;">
             <div class="profilePicture-in">
                 <img src="${src}">
@@ -1521,7 +1565,9 @@ async function spawnRandom(redo) {
                 </div>
             </div>
         </div>`
+
             }
+            hasCurrentSixLoaded = true;
         } else {
             document.getElementById("foryou").innerHTML = `
                     <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
@@ -1543,6 +1589,7 @@ async function spawnRandom(redo) {
                             </div>
                         </div>
                     </div>`;
+            hasCurrentSixLoaded = true;
         }
     } catch (error) {
         console.error("Jeanne D'arc Database is offline.");
@@ -1550,6 +1597,7 @@ async function spawnRandom(redo) {
         setTimeout(function () {
             spawnRandom(true)
         }, 400)
+        hasCurrentSixLoaded = true;
     }
 }
 
@@ -1562,6 +1610,10 @@ foryoudiv.addEventListener("scroll", function () {
 
     // Check if user scrolled to the bottom
     if (foryoudiv.scrollTop + foryoudiv.clientHeight >= foryoudiv.scrollHeight - 10) {
+        if (hasCurrentSixLoaded === false) {
+            console.log("Still loading previous data, aborting new load")
+            return;
+        }
         isLoading2 = true;
         loadingIndicatorFy.classList.add("scaleUp")
         loadingIndicatorFy.style.opacity = "1";
@@ -1569,6 +1621,7 @@ foryoudiv.addEventListener("scroll", function () {
         setTimeout(() => {
             console.log("triggering more load")
             spawnRandom(true)
+
             isLoading2 = false;
             loadingIndicatorFy.style.opacity = "0";
             loadingIndicatorFy.classList.remove("scaleUp")
@@ -2270,7 +2323,7 @@ function saveRatings() {
                                 document.getElementById("yearbook-screen-2").style.display = 'none';
                                 document.getElementById("yearbook-screen-2").style.opacity = '0';
                                 setTimeout(() => {
-                                    reloadProgress();
+                                    //reloadProgress();
                                     $("#tasks").fadeOut("fast");
                                 }, 200);
                             }, 200);
@@ -2293,7 +2346,7 @@ function saveRatings() {
                             document.getElementById("yearbook-screen-2").style.display = 'none';
                             document.getElementById("yearbook-screen-2").style.opacity = '0';
                             setTimeout(() => {
-                                reloadProgress();
+                                //reloadProgress();
                                 $("#tasks").fadeOut("fast");
                             }, 200);
                         }, 200);
@@ -2330,7 +2383,7 @@ function saveRatingsOld() {
                                 document.getElementById("yearbook-screen-2").style.display = 'none'
                                 document.getElementById("yearbook-screen-2").style.opacity = '0'
                                 setTimeout(function () {
-                                    reloadProgress()
+                                    //reloadProgress()
                                     $("#tasks").fadeOut("fast")
                                 }, 200)
                             }, 200)
@@ -2547,9 +2600,6 @@ function animateNumberChange(element, targetValue) {
     update();
 }
 
-let isSocialed = false;
-let socialSection = 'none'
-let socialUsername = 'none'
 async function getEvoxProfile(name) {
     if (name === null) { return; }
     //console.log("Getting pfp for", name);
@@ -2575,11 +2625,16 @@ async function getEvoxProfile(name) {
             if (match) {
                 const extracted = match[1];
                 socialUsername = extracted;
-                document.getElementById("instausername-SELF").innerText = socialUsername
-                document.getElementById("isInstagramed").style.display = null
+                if (name === foundName) {
+                    document.getElementById("instausername-SELF").innerText = socialUsername
+                    document.getElementById("isInstagramed").style.display = null
+                }
+
             } else {
                 console.log("No match found");
-                document.getElementById("isInstagramed").style.display = 'none'
+                if (name === foundName) {
+                    document.getElementById("isInstagramed").style.display = 'none'
+                }
             }
             fetchAndSaveImage(name, data)
             return data;

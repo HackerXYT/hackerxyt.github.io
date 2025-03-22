@@ -16,6 +16,7 @@
 
 :root {
     --color-theme: #298ef2;
+    --color-theme: #fff;
     --color-theme-light: rgb(102, 179, 255);
     --color-theme-select: #298ef255;
 }
@@ -32,6 +33,7 @@ body {
     margin: 0;
     color: #fff;
     background: rgb(6, 2, 19);
+    background-color: rgb(16, 16, 16);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1466,6 +1468,10 @@ img {
     flex-shrink: 0;
 }
 
+.navigation .bar .item span {
+    display: none;
+}
+
 .navigation .bar .item.create {
     border-radius: 15px;
     width: 65px;
@@ -1507,6 +1513,21 @@ img {
     align-items: center;
     border-radius: 50%;
     flex-shrink: 0;
+}
+
+.noscript {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 999;
+    text-align: center;
+    padding: 20px;
 }
 
 .spamStop {
@@ -1749,8 +1770,9 @@ img {
     font-size: 20px;
     font-weight: bolder;
     display: flex;
-    justify-content: center;
+    /*justify-content: center;
     align-items: center;
+    */
 }
 
 .assets p svg {
@@ -4839,7 +4861,8 @@ select:focus {
 
 .carouseli-item {
     flex: 0 0 auto;
-    width: 200px; /* Adjust as needed */
+    width: 200px;
+    /* Adjust as needed */
     scroll-snap-align: center;
 }
 
@@ -4871,7 +4894,6 @@ select:focus {
 .carouseliItem p {
     font-size: 14px;
     font-weight: bold;
-    margin-bottom: 5px;
 }
 
 .carouseliItem span {
@@ -4888,6 +4910,7 @@ select:focus {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    gap: 10px;
 }
 
 .buttonCarouseli {
@@ -4904,7 +4927,8 @@ select:focus {
 .morePfps {
     margin-top: auto;
     position: relative;
-    width: 60px; /* Adjust container size if needed */
+    width: 60px;
+    /* Adjust container size if needed */
     height: 60px;
 }
 
@@ -4930,4 +4954,190 @@ select:focus {
     left: 28px;
     width: 20px;
     height: 20px;
+}
+
+/*PC*/
+@media (min-width: 1024px) {
+    .navigation {
+        position: fixed;
+        left: 0;
+        display: flex;
+        flex-direction: row;
+        top: 0;
+        justify-content: left;
+        align-items: center;
+        height: 100vh;
+        width: auto;
+        margin-left: -5px;
+        padding: 0px;
+        transition: all 0.5s ease-in-out;
+        will-change: transform;
+        transform: translateY(0);
+    }
+
+    .navigation .bar {
+        width: auto;
+        height: 100%;
+        flex-direction: column;
+        justify-content: left;
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+
+    .navigation .bar .item {
+        padding: 10px;
+        border-radius: 50px;
+        width: auto;
+        height: 40px;
+        gap: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    .navigation .bar .item span {
+        display: block;
+    }
+
+    .navigation .bar .item.active span {
+        color: #fff !important;
+    }
+
+    .navigation .bar .item span {
+        color: #efefef93 !important;
+    }
+
+    .navigation .bar .item.create {
+        border-radius: 15px;
+        width: 55px;
+        height: 40px;
+        background-color: #1e1e1edf;
+    }
+
+    .navigation .bar .item svg {
+        width: 25px;
+        height: 25px;
+    }
+
+    .navigation .bar .item.create svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    #app {
+        margin-left: 180px;
+    }
+
+
+    #app .app {
+        padding-left: 25% !important;
+        padding-right: 25% !important;
+        padding-top: 20px !important;
+        padding-bottom: 20px !important;
+    }
+
+    .search-container-2.showTop {
+        margin-left: -70px;
+        padding-left: 25% !important;
+        padding-right: 25% !important;
+        margin-top: 20px !important;
+    }
+
+    .search-container-2.showTop .search-icon {
+        display: none;
+    }
+
+    .border {
+        width: 102%;
+    }
+
+    .userRow {
+        justify-content: space-between;
+    }
+
+    #assetImg {
+        margin-top: 10px;
+        display: block !important;
+    }
+
+    .navigation .bar.ai {
+        background-color: #070707df;
+        box-shadow: 0px 0px 20px 0px #252525df, -3px -3px 8px #00000052;
+    }
+
+    ::-webkit-scrollbar {
+        width: 14px;
+        height: 18px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        height: 6px;
+        border: 4px solid rgba(0, 0, 0, 0);
+        background-clip: padding-box;
+        background-color: rgba(255, 255, 255, 0.2);
+        -webkit-border-radius: 7px;
+        -webkit-box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05),
+            inset 1px 1px 0px rgba(0, 0, 0, 0.05);
+    }
+
+    ::-webkit-scrollbar-button {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+
+    ::-webkit-scrollbar-corner {
+        background-color: transparent;
+    }
+
+    #loadingIndicator {
+        margin-bottom: 10%;
+    }
+
+    .appInfoText {
+        display: flex !important;
+    }
+
+    .PCCONTAINER {
+        display: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        box-sizing: border-box;
+        padding-left: 25% !important;
+        padding-right: 25% !important;
+        margin-top: 20px;
+    }
+
+    .popup-footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 5px;
+        text-align: center;
+        display: flex;
+        flex-direction: row;
+        color: #808080;
+        padding-bottom: 20px;
+        justify-content: space-around;
+        background-color: #191919c6;
+        backdrop-filter: blur(1px);
+        z-index: 9999;
+        padding-left: 25% !important;
+        padding-right: 25% !important;
+    }
+
+    .applePopup {
+        position: relative;
+    }
+
+    .PCCONTAINER:has(.applePopup.active) {
+        display: flex;
+    }
+
 }
