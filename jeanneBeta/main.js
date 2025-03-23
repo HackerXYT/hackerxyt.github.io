@@ -4922,7 +4922,7 @@ function showProfileInfo(emri) {
                 const foto = info.foto;
                 document.getElementById("darc-user-search-profile").src = foto
                 if (classMates_class) {
-                    document.getElementById("seksioni-search").innerText = `${classMates_class[selfClass].length} συμμαθητές${selfClass === `${myInfo.seksioni}${myInfo.klasa}` ? ' ⋅ στην τάξη σου' : ''}`;
+                    document.getElementById("seksioni-search").innerText = `${classMates_class[selfClass].length} συμμαθητές`;//${selfClass === `${myInfo.seksioni}${myInfo.klasa}` ? ' ⋅ στην τάξη σου' : ''}
                 } else {
                     if (selfClass === `${myInfo.seksioni}${myInfo.klasa}`) {
                         document.getElementById("seksioni-search").innerText = 'Στην τάξη σου';
