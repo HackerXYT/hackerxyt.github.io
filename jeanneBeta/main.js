@@ -5407,3 +5407,35 @@ function checkForLocal() {
         alert("Δεν βρέθηκαν αντίγραφα ασφαλείας της επετηρίδας.")
     }
 }
+
+function registerSW() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./service-worker.js')
+            .then(registration => {
+                console.log('Service Worker registered with scope:', registration.scope);
+                alert(`Service Worker registered with scope: ${registration.scope}`)
+            })
+            .catch(error => {
+                alert(`Service Worker registration failed: ${error}`)
+                console.error('Service Worker registration failed:', error);
+            });
+    }
+    
+}
+
+function unregisterSW() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(registrations => {
+            registrations.forEach(registration => {
+                registration.unregister().then(() => {
+                    alert('Service Worker unregistered:', registration);s
+                    console.log('Service Worker unregistered:', registration);
+                });
+            });
+        }).catch(error => {
+            alert(`Error unregistering Service Worker: ${error}`)
+            console.error('Error unregistering Service Worker:', error);
+        });
+    }
+    
+}
