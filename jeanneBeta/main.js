@@ -39,6 +39,19 @@ let isSocialed = false;
 let socialSection = 'none'
 let socialUsername = 'none'
 
+function saveLastPage(which) {
+    const json = {
+        lastActive: which,
+        timestamp: Date.now()
+
+    }
+    if (which === 'home' || which === 'search' || which === 'discover' || which === 'profile') {
+        localStorage.setItem('jeanne_persistance', JSON.stringify(json));
+    } else {
+        console.error("Invalid app name");
+    }
+}
+
 function cardProgress() {
     fetch('https://arc.evoxs.xyz/?metode=progresin')
         .then(response => response.json())
@@ -1327,6 +1340,7 @@ function transformGreekName(name, num) {
     return transformedName;
 }
 
+let myInfo = null
 function attach() {
     document.getElementById("gradColored").style.opacity = '1'
     if (atob(JSON.parse(localStorage.getItem("jeanDarc_accountData")).pin) === '0000') {
@@ -1363,8 +1377,31 @@ function attach() {
 
     })
 
+    if (localStorage.getItem("jeanne_persistance")) {
+        const persistance = JSON.parse(localStorage.getItem("jeanne_persistance"));
+        if (persistance) {
+            const open = persistance.lastActive;
+            if (open === 'search') {
+                openSearch(document.getElementById("search-switch"))
+            } else if (open === 'discover') {
+                openDiscovery(document.getElementById("discovery-switch"))
+            } else if (open === 'profile') {
+                openProfile(document.getElementById("profile-switch"))
+            }
+        }
+    }
+
     spawnRandom()
 
+    fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${foundName}`)
+        .then(response => response.json())
+        .then(info => {
+            myInfo = info
+        })
+        .catch(error => {
+            console.error("Jeanne D'arc Database is offline.");
+            console.log('Error:', error);
+        });
 
 }
 
@@ -3701,6 +3738,7 @@ function updateProgress(percentage) {
     circle.style.strokeDashoffset = offset;
 }
 let classmatesCount = 0
+let classMates_class = null
 async function getRandomClassmates(foundName) {
     try {
         const response = await fetch('https://arc.evoxs.xyz/?metode=merrniEmrat');
@@ -3740,6 +3778,7 @@ async function getRandomClassmates(foundName) {
         }
 
         classmatesCount = classes[selfClass].length;
+        classMates_class = classes
 
         // Filter users from the same class (excluding self)
         let classUsers = classes[selfClass].filter(user => user.emri !== foundName);
@@ -3901,24 +3940,31 @@ function loadSentByUser() {
     }
 
 
-    function spawnIn(sentbyuser, local) {
+    async function spawnIn(sentbyuser, local) {
         let html = ''
+        const profileSrc = await getImage(foundName);
+        const pfp = await getEvoxProfile(foundName);
 
+        let src = pfp; // Default to the pfp value from getEvoxProfile
+        console.log('Profile image fetched:', profileSrc);
+
+        if (profileSrc) {
+            src = profileSrc.imageData; // If profile image is available, use it.
+        }
+
+        fetchAndSaveImage(foundName, pfp);
         // Assuming getImage and getEvoxProfile are asynchronous functions that return promises.
         Promise.all(
             sentbyuser.map(async (sent) => {
                 // Wait for both image and profile data to be fetched.
-                const profileSrc = await getImage(sent.marresi);
-                const pfp = await getEvoxProfile(sent.marresi);
-
-                let src = pfp; // Default to the pfp value from getEvoxProfile
-                console.log('Profile image fetched:', profileSrc);
-
-                if (profileSrc) {
-                    src = profileSrc.imageData; // If profile image is available, use it.
-                }
-
-                fetchAndSaveImage(sent.marresi, pfp);
+                //const profileSrc = await getImage(sent.marresi);
+                //const pfp = await getEvoxProfile(sent.marresi);
+                //let src = pfp; // Default to the pfp value from getEvoxProfile
+                //console.log('Profile image fetched:', profileSrc);
+                //if (profileSrc) {
+                //    src = profileSrc.imageData; // If profile image is available, use it.
+                //}
+                //fetchAndSaveImage(sent.marresi, pfp);
                 // Build the HTML for the post.
                 const ready = `
             <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
@@ -3928,11 +3974,11 @@ function loadSentByUser() {
                     </div>
                     <div class="postInfo">
                         <div class="userInfo">
-                            <p>${sent.marresi}</p>
+                            <p>${foundName}</p>
                             <span>${timeAgoInGreek(sent.contents.date)}</span>
                         </div>
                         <div class="postContent">
-                            <p>
+                            <p><span class="mention ${getGender(removeTonos(sent.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${sent.marresi}</span>
                                 ${sent.contents.vleresim.includes("<img")
                         ? sent.contents.vleresim.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
                         : sent.contents.vleresim}
@@ -3993,14 +4039,11 @@ function loadSentByUser() {
             localStorage.removeItem("sentByUser")
         }
     }, 800)
-
-
-
-
 }
 
 
 function openProfile(el) {
+    saveLastPage('profile')
     getRandomClassmates(foundName).then(usersJson => {
         document.getElementById("classIcons").innerHTML = '';
         usersJson.forEach(user => {
@@ -4382,6 +4425,7 @@ function loadMoreUsers() {
 
 
 function openDiscovery(el) {
+    saveLastPage('discover')
     el.classList.add('active')
     document.getElementById("bar").classList.add("ai")
     document.getElementById("home-switch").classList.remove("active")
@@ -4630,7 +4674,7 @@ function spawnItems(names, loadMore, oringinal) {
                                     <p>${info.seksioni}${info.klasa !== 'none' ? info.klasa : ''}</p>
                                 </div>
                             </div>
-                            <div class="showProfileBtn">Προβολή</div>
+                            <div onclick="showProfileInfo('${info.emri}')" class="showProfileBtn">Προβολή</div>
                         </div>
                     </div>`;
                     fetchAndSaveImage(info.emri, info.foto); // Store the image locally
@@ -4685,9 +4729,379 @@ function spawnItems(names, loadMore, oringinal) {
     });
 }
 
+let lastActiveSearchUser = null
+function switchToSentToUser(el) {
+    document.getElementById("carouseli01").classList.remove("active")
+    el.classList.add("active")
+    document.getElementById("kataxoriseis").style.display = 'none'
+    document.getElementById("touser").style.display = 'flex'
+    loadSentToUser(lastActiveSearchUser)
+}
+
+function switchToHome_Search(el, justfront) {
+    document.getElementById("carouseli02").classList.remove("active")
+    if(!el) {
+        document.getElementById("carouseli01").classList.add("active")
+    } else {
+        el.classList.add("active")
+    }
+    document.getElementById("kataxoriseis").style.display = 'flex'
+    document.getElementById("touser").style.display = 'none'
+    if(!justfront) {
+        showProfileInfo(lastActiveSearchUser)
+    }
+    
+}
+
+function loadSentToUser(emri, redo) {
+    const j = 6
+    let skel = ''
+    for (let i = 0; i < j; i++) {
+        skel += `<div class="postContainer skel loading" style="padding-bottom: 10px;padding-top: 10px;">
+                            <div class="post">
+                                <div style="display: flex;flex-direction: row;">
+                                    <div class="profilePicture">
+                                        <span style="background-color: #4c4c4c;width: 45px;height: 45px;border-radius: 50%;">
+                                    </div>
+                                    <div class="postInfo">
+                                        <div class="userInfo">
+                                            <p class="skeleton"></p>
+                                            <span class="skeleton"></span>
+                                        </div>
+                                        <div class="postContent">
+                                           <p class="skeleton"></p>
+                                            <p style="margin-top: 5px;" class="skeleton"></p>
+                                            <p style="margin-top: 5px;" class="skeleton"></p>
+                                            <p style="margin-top: 5px;" class="skeleton"></p>
+                                            <p style="margin-top: 5px;" class="skeleton"></p>
+                                            <p style="margin-top: 5px;" class="skeleton"></p>
+                                            <p style="margin-top: 5px;" class="skeleton"></p>
+                                            <p style="margin-top: 5px;" class="skeleton"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>`
+    }
+    if (!redo) {
+        document.getElementById("sentToSelectedUser").innerHTML = skel;
+    }
+
+    const account_data_lc = localStorage.getItem("jeanDarc_accountData")
+    if (!account_data_lc) {
+        console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
+        return;
+    }
+
+    const account_data = JSON.parse(account_data_lc)
+
+    const pars = {
+        pin: account_data.pin, //self pin
+        emri: foundName,
+        name: emri //target user
+    }
+
+
+    async function spawnIn(sentbyuser, local) {
+        let html = '';
+    
+        // Convert entries into an array of promises using map
+        const promises = Object.entries(sentbyuser)
+            .filter(([key]) => key !== "Name" && key !== "length")
+            .map(async ([key, value]) => {
+                const profileSrc = await getImage(key);
+                const pfp = await getEvoxProfile(key);
+                let src = pfp; // Default to the pfp value from getEvoxProfile
+    
+                console.log('Profile image fetched:', profileSrc);
+    
+                if (profileSrc) {
+                    src = profileSrc.imageData; // If profile image is available, use it.
+                }
+    
+                const emri = key; // Assuming 'emri' should be the key (username or name)
+                fetchAndSaveImage(emri, pfp);
+                console.log(`${key}: ${value}`);
+    
+                return `
+                    <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
+                        <div class="post">
+                            <div class="profilePicture">
+                                <img src="${src}">
+                            </div>
+                            <div class="postInfo">
+                                <div class="userInfo">
+                                    <p>${key}</p>
+                                </div>
+                                <div class="postContent">
+                                    <p><span class="mention ${getGender(removeTonos(pars.name.split(" ")[0])) === "Female" ? "female" : "male"}">@${pars.name}</span>
+                                        ${value.includes("<img")
+                                            ? value.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
+                                            : value}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+    
+        // Wait for all promises to resolve
+        const htmlArray = await Promise.all(promises);
+        html = htmlArray.join('');
+    
+        console.log("All user posts have been rendered!");
+    
+        if (local === true) {
+            loadFresh(true);
+        }
+    
+        document.getElementById("sentToSelectedUser").innerHTML = html;
+    }
+    
+
+    function loadFresh(dontSpawn) {
+        fetch(`https://arc.evoxs.xyz/?metode=usersTo&pin=${pars.pin}&emri=${pars.emri}&id=${pars.name}`)
+            .then(response => response.json())
+            .then(sentbyuser => {
+                localStorage.setItem(`sentToUser-${emri}`, JSON.stringify(sentbyuser))
+                if (!dontSpawn) {
+                    spawnIn(sentbyuser)
+                }
+
+
+
+
+            }).catch(error => {
+                console.error(error);
+            });
+    }
+
+    setTimeout(function () {
+        try {
+            if (localStorage.getItem(`sentToUser-${emri}`)) {
+                spawnIn(JSON.parse(localStorage.getItem(`sentToUser-${emri}`)), true)
+            } else {
+                loadFresh()
+            }
+        } catch (err) {
+            localStorage.removeItem(`sentToUser-${emri}`)
+        }
+    }, 800)
+}
+
+function showProfileInfo(emri) {
+    lastActiveSearchUser = emri
+    const container = document.getElementById("search-in");
+    const prevContainer = document.getElementById("search-discovery")
+    
+    document.getElementById("userName-search").innerText = emri
+    getRandomClassmates(emri).then(usersJson => {
+        document.getElementById("classIcons-search").innerHTML = '';
+        usersJson.forEach(user => {
+            document.getElementById("classIcons-search").innerHTML += `<img src="${user.icon}" alt="${user.name}">`;
+        })
+    });
+    async function final() {
+        const profileSrc = await getImage(emri); //the image of the person reffered
+        const pfp = await getEvoxProfile(emri);
+
+        let src = pfp; // Default to pfp value from getEvoxProfile
+        console.log('Profile image fetched:', profileSrc);
+
+        if (profileSrc) {
+            src = profileSrc.imageData; // Use profile image if available
+        }
+        document.getElementById("darc-user-search-profile").src = src;
+
+        fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${emri}`)
+            .then(response => response.json())
+            .then(info => {
+                const selfClass = `${info.seksioni}${info.klasa}`
+                const foto = info.foto;
+                document.getElementById("darc-user-search-profile").src = foto
+                if (classMates_class) {
+                    document.getElementById("seksioni-search").innerText = `${classMates_class[selfClass].length} συμμαθητές${selfClass === `${myInfo.seksioni}${myInfo.klasa}` ? ' ⋅ στην τάξη σου' : ''}`;
+                } else {
+                    if (selfClass === `${myInfo.seksioni}${myInfo.klasa}`) {
+                        document.getElementById("seksioni-search").innerText = 'Στην τάξη σου';
+                    } else {
+                        document.getElementById("seksioni-search").innerText = selfClass.replace("none", "");
+                    }
+                    console.warn("Classmates class not available")
+                }
+
+                container.style.display = 'block'
+                prevContainer.style.display = 'none'
+                document.getElementById("search-cont-3").style.display = 'none'
+            })
+            .catch(error => {
+                console.error("Jeanne D'arc Database is offline.");
+                console.log('Error:', error);
+            });
+        await fetchAndSaveImage(emri, pfp);
+    }
+    final()
+    function loadSentByUser(emri, redo) {
+        const j = 6
+        let skel = ''
+        for (let i = 0; i < j; i++) {
+            skel += `<div class="postContainer skel loading" style="padding-bottom: 10px;padding-top: 10px;">
+                            <div class="post">
+                                <div style="display: flex;flex-direction: row;">
+                                    <div class="profilePicture">
+                                        <span style="background-color: #4c4c4c;width: 45px;height: 45px;border-radius: 50%;">
+                                    </div>
+                                    <div class="postInfo">
+                                        <div class="userInfo">
+                                            <p class="skeleton"></p>
+                                            <span class="skeleton"></span>
+                                        </div>
+                                        <div class="postContent">
+                                           <p class="skeleton"></p>
+                                            <p style="margin-top: 5px;" class="skeleton"></p>
+                                            <p style="margin-top: 5px;" class="skeleton"></p>
+                                            <p style="margin-top: 5px;" class="skeleton"></p>
+                                            <p style="margin-top: 5px;" class="skeleton"></p>
+                                            <p style="margin-top: 5px;" class="skeleton"></p>
+                                            <p style="margin-top: 5px;" class="skeleton"></p>
+                                            <p style="margin-top: 5px;" class="skeleton"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>`
+        }
+        if(!redo) {
+            document.getElementById("sentBySelectedUser").innerHTML = skel;
+        }
+        
+        const account_data_lc = localStorage.getItem("jeanDarc_accountData")
+        if (!account_data_lc) {
+            console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
+            return;
+        }
+    
+        const account_data = JSON.parse(account_data_lc)
+    
+        const pars = {
+            pin: account_data.pin, //self pin
+            name: emri //target user
+        }
+    
+    
+        async function spawnIn(sentbyuser, local) {
+            let html = ''
+            const profileSrc = await getImage(emri);
+            const pfp = await getEvoxProfile(emri);
+    
+            let src = pfp; // Default to the pfp value from getEvoxProfile
+            console.log('Profile image fetched:', profileSrc);
+    
+            if (profileSrc) {
+                src = profileSrc.imageData; // If profile image is available, use it.
+            }
+    
+            fetchAndSaveImage(emri, pfp);
+            // Assuming getImage and getEvoxProfile are asynchronous functions that return promises.
+            Promise.all(
+                sentbyuser.map(async (sent) => {
+                    // Wait for both image and profile data to be fetched.
+                    //const profileSrc = await getImage(sent.marresi);
+                    //const pfp = await getEvoxProfile(sent.marresi);
+                    //let src = pfp; // Default to the pfp value from getEvoxProfile
+                    //console.log('Profile image fetched:', profileSrc);
+                    //if (profileSrc) {
+                    //    src = profileSrc.imageData; // If profile image is available, use it.
+                    //}
+                    //fetchAndSaveImage(sent.marresi, pfp);
+                    // Build the HTML for the post.
+                    const ready = `
+                <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
+                    <div class="post">
+                        <div class="profilePicture">
+                            <img src="${src}">
+                        </div>
+                        <div class="postInfo">
+                            <div class="userInfo">
+                                <p>${emri}</p>
+                                <span>${timeAgoInGreek(sent.contents.date)}</span>
+                            </div>
+                            <div class="postContent">
+                                <p><span class="mention ${getGender(removeTonos(sent.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${sent.marresi}</span>
+                                    ${sent.contents.vleresim.includes("<img")
+                            ? sent.contents.vleresim.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
+                            : sent.contents.vleresim}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+                    return ready;
+                })
+            ).then((htmlArray) => {
+                // Join all the HTML strings into one large HTML block.
+                const html = htmlArray.join('');
+                console.log("All user posts have been rendered!");
+    
+                // Do something after everything is done
+                if (local === true) {
+                    loadFresh(true);
+                }
+                document.getElementById("sentBySelectedUser").innerHTML = html;
+            });
+    
+    
+        }
+    
+        function loadFresh(dontSpawn) {
+            fetch(`https://arc.evoxs.xyz/?metode=userSent&pin=${pars.pin}&emri=${pars.name}`)
+                .then(response => response.json())
+                .then(sentbyuser => {
+                    if(sentbyuser.length === 0) {
+                        document.getElementById("sentBySelectedUser").innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;text-align: center;margin-top:15px;"><svg xmlns="http://www.w3.org/2000/svg" width="45px" height="45px" viewBox="0 0 24 24" fill="none" style="margin-bottom: 10px;margin-top:10px;">
+<path d="M15.4998 5.50067L18.3282 8.3291M13.3254 7.67502L17.4107 3.58969C18.1918 2.80865 19.4581 2.80864 20.2392 3.58969C21.0202 4.37074 21.0202 5.63707 20.2392 6.41812L16.1538 10.5034M3 3L10.5002 10.5002M21 21L13.3286 13.3286M13.3286 13.3286L8.37744 18.2798C7.61579 19.0415 7.23497 19.4223 6.8012 19.7252C6.41618 19.994 6.00093 20.2167 5.56398 20.3887C5.07171 20.5824 4.54375 20.6889 3.48793 20.902L3 21.0004L3.04745 20.6683C3.21536 19.4929 3.29932 18.9052 3.49029 18.3565C3.65975 17.8697 3.89124 17.4067 4.17906 16.979C4.50341 16.497 4.92319 16.0772 5.76274 15.2377L10.5002 10.5002M13.3286 13.3286L10.5002 10.5002" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg><p style="">Ο χρήστης δεν έχει κάνει καμία καταχώρηση.</p></div>`;
+                        return;   
+                    }
+                    localStorage.setItem(`sentByUser-${emri}`, JSON.stringify(sentbyuser))
+                    if (!dontSpawn) {
+                        spawnIn(sentbyuser)
+                    }
+
+                    
+    
+    
+    
+    
+                }).catch(error => {
+                    console.error(error);
+                });
+        }
+    
+        setTimeout(function () {
+            try {
+                if (localStorage.getItem(`sentByUser-${emri}`)) {
+                    spawnIn(JSON.parse(localStorage.getItem(`sentByUser-${emri}`)), true)
+                } else {
+                    loadFresh()
+                }
+            } catch (err) {
+                localStorage.removeItem(`sentByUser-${emri}`)
+            }
+        }, 800)
+    }
+    loadSentByUser(emri)
+    switchToHome_Search(null, true)
+}
+
 let search_loadedUsers = []
 function openSearch(el, inBackground) {
-
+    document.getElementById("search-in").style.display = 'none'
+    saveLastPage('search')
     if (!inBackground) {
         el.classList.add('active');
         document.getElementById("bar").classList.remove("ai")
@@ -4751,6 +5165,7 @@ function openSearch(el, inBackground) {
 }
 
 function openHome(el) {
+    saveLastPage('home')
     el.classList.add('active')
     document.getElementById("bar").classList.remove("ai")
     document.getElementById("discovery-switch").classList.remove("active")

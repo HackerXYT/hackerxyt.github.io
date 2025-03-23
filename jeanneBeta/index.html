@@ -183,7 +183,7 @@
             <span>registered under Evox©</span>
             <p>Διεύθυνση IP: <span id="ipIdent"></span></p>
             <p>Συσκευή: <span id="deviceInfo"></span></p>
-            <p>Έκδοση: <span>1.7.0</span></p>
+            <p>Έκδοση: <span>1.7.2</span></p>
             <p>Δοκιμαστική λειτουργία: <span>Ενεργή [BETA]</span></p>
             <p>Επανεκκίνηση: <span onclick="window.location.reload()">Τώρα</span></p>
         </div>
@@ -1034,11 +1034,26 @@
                                     </svg>
                                 </div>
                                 <div class="bottom">
-                                    <p>Δημιουργήστε περίληψη</p>
+                                    <p>Δημιουργία περίληψης</p>
                                     <span>Δείτε τι έχουν να πουν για εσάς οι φίλοι σας.</span>
                                 </div>
                                 <div class="buttonCarouseli">
                                     Δημιουργία
+                                </div>
+
+                            </div>
+                            <div class="carouseliItem">
+                                <div class="icon-carouseli">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                                        <path d="M3 9H9.5M21 9H9.5M9.5 9L14.5 4M14.5 4H17.8C18.8467 4 19.4044 4 19.8221 4.1779M14.5 4H6.2C5.07989 4 4.51984 4 4.09202 4.21799C3.71569 4.40973 3.40973 4.71569 3.21799 5.09202C3 5.51984 3 6.07989 3 7.2V16.8C3 17.9201 3 18.4802 3.21799 18.908C3.40973 19.2843 3.71569 19.5903 4.09202 19.782C4.51984 20 5.07989 20 6.2 20H17.8C18.9201 20 19.4802 20 19.908 19.782C20.2843 19.5903 20.5903 19.2843 20.782 18.908C21 18.4802 21 17.9201 21 16.8V7.2C21 6.07989 21 5.51984 20.782 5.09202C20.5903 4.71569 20.2843 4.40973 19.908 4.21799C19.88 4.20371 19.8514 4.19037 19.8221 4.1779M9 4L4 9M15 9.00015L19.8221 4.1779" stroke="#fff" stroke-width="2"/>
+                                        </svg>
+                                </div>
+                                <div class="bottom">
+                                    <p>Ενισχύστε την ροή</p>
+                                    <span>Μοιραστείτε μία ανάμνηση με την χρήση φωτογραφιών και βίντεο.</span>
+                                </div>
+                                <div class="buttonCarouseli">
+                                    Εξερεύνηση
                                 </div>
 
                             </div>
@@ -1187,7 +1202,7 @@
                                     </g>
                                 </g>
                             </svg>
-                            <span>Έκδοση 1.7.0</span>
+                            <span>Έκδοση 1.7.2</span>
                         </div>
                         <div onclick="reset()" class="anInfo">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
@@ -1420,6 +1435,61 @@
             </div>
             <!--</div>-->
         </div>
+        <!--Connection Below-->
+        <div class="app fade-in-slide-up disable-scroll-snap" id="search-in" style="padding-top: 0px;">
+            <div class="assets" style="margin-bottom: 100px;">
+                <div class="userRow">
+                    <div class="userCollumn">
+                        <p id="userName-search">Ανάκτηση..</p>
+                        <span id="instausername-search"></span>
+                        <div class="classPreview">
+                            <div class="classIcons" id="classIcons-search">
+                                <img src="appLogoV2.png" alt="Profile 1">
+                                <img src="appLogoV2.png" alt="Profile 2">
+                                <img src="appLogoV2.png" alt="Profile 3">
+                            </div>
+                            <span id="seksioni-search" style="color: #b1b1b1">Φόρτωση..</span>
+                        </div>
+                    </div>
+                    <div onclick="this.classList.toggle('fullimage')" class="darc-user-self">
+                        <img id="darc-user-search-profile" src="reloading-pfp.gif">
+                    </div>
+                </div>
+                <div class="buttonsEdit">
+                    <div class="showProfileBtn editButton" style="height: auto;margin-right: 0;padding: 6px 25px;border:none">
+                        Επιλογή
+                    </div>
+                    <div class="editButton">
+                        Κοινοποίηση
+                    </div>
+                </div>
+                <div class="semiCarousel">
+                    <div class="carouselItem active" id="carouseli01" onclick="switchToHome_Search(this)">
+                        Καταχωρήσεις
+                    </div>
+                    <div class="carouselItem" id="carouseli02"
+                        onclick="switchToSentToUser(this)">
+                        Αποδοχές
+                    </div>
+                    <div onclick="window.location.reload()" class="carouselItem">
+                        Πολυμέσα
+                    </div>
+                </div>
+            
+                
+                <div class="fromMe_Slider" style="width: 100%;display: flex;flex-direction: column;" id="kataxoriseis">
+                    <div class="sentByUser" id="sentBySelectedUser">
+
+                    </div>
+                </div>
+                <div class="fromMe_Slider fade-in-slide-up" style="width: 100%;display: none;flex-direction: column;" id="touser">
+                    <div class="sentByUser" id="sentToSelectedUser">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
         <input type="text" id="hidden-input" style="opacity:0;position:absolute;">
 
         <div class="navigation">
@@ -1482,7 +1552,7 @@
                     style="margin-top: auto;display: flex;flex-direction: column;align-items: center;width: 100%;margin-bottom: 10px;display: none;">
                     <span
                         style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;text-align: center;">Jeanne
-                        d'Arc 1.7.0</span></span>
+                        d'Arc 1.7.2</span></span>
                     <span style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;display: flex;">©
                         2025 Evox <span
                             style="color: #ababab8d;font-size: 12px;font-weight: lighter;margin-left:auto;">Privacy</span></span>
