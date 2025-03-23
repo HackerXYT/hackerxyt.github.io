@@ -1567,11 +1567,11 @@ async function spawnRandom(redo) {
                 
             </div>
             <div class="input-post">
-                <p>${post.emri}<span style="font-size: 11.5px;color: #808080;padding: 0 5px;">${timeAgoInGreek(post.date)}</span></p>
+                <p onclick="extMention('${post.emri}')">${post.emri}<span style="font-size: 11.5px;color: #808080;padding: 0 5px;">${timeAgoInGreek(post.date)}</span></p>
                 
                 <div class="text-area-cont" style="position: relative;">
                     <p style="color: #fff;font-weight: normal;font-size: 14px;margin-top: 5px;">
-                        <span class="mention ${getGender(removeTonos(post.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${post.marresi}</span>
+                        <span onclick="extMention('${post.marresi}')" class="mention ${getGender(removeTonos(post.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${post.marresi}</span>
                         ${post.vleresim}
                     </p>
                 </div>
@@ -1619,7 +1619,7 @@ async function spawnRandom(redo) {
                                 </div>
                                 <div class="postContent">
                                     <p>
-                                    <span class="mention ${getGender(removeTonos(foundName.split(" ")[0])) === "Female" ? "female" : "male"}">@${foundName}</span><br>
+                                    <span onclick="extMention('${foundName}')" class="mention ${getGender(removeTonos(foundName.split(" ")[0])) === "Female" ? "female" : "male"}">@${foundName}</span><br>
                                     Δεν μπορείς να δεις τις δημόσιες αναρτήσεις ακόμα, δοκίμασε ξανά σε λίγες μέρες ή ζήτα πρόσβαση από τους διαχειριστές.
                                     </p>
                                 </div>
@@ -1928,7 +1928,7 @@ function activateYearbook() {
             <img alt="Αποτυχία" src="user.gif">
         </div>
         <div class="studentInfo">
-            <p>${inform.emri}</p>
+            <p onclick="extMention('${inform.emri}')">${inform.emri}</p>
         </div>
     </div>`;
 
@@ -3489,7 +3489,7 @@ function YbsearchByName() {
                         <img src="${info.foto}">
                     </div>
                     <div class="studentInfo">
-                        <p>${info.emri}</p>
+                        <p onclick="extMention('${info.emri}')">${info.emri}</p>
                     </div>
                   </div>`;
 
@@ -3974,11 +3974,11 @@ function loadSentByUser() {
                     </div>
                     <div class="postInfo">
                         <div class="userInfo">
-                            <p>${foundName}</p>
+                            <p onclick="extMention('${foundName}')">${foundName}</p>
                             <span>${timeAgoInGreek(sent.contents.date)}</span>
                         </div>
                         <div class="postContent">
-                            <p><span class="mention ${getGender(removeTonos(sent.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${sent.marresi}</span>
+                            <p><span onclick="extMention('${sent.marresi}')" class="mention ${getGender(removeTonos(sent.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${sent.marresi}</span>
                                 ${sent.contents.vleresim.includes("<img")
                         ? sent.contents.vleresim.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
                         : sent.contents.vleresim}
@@ -4667,7 +4667,7 @@ function spawnItems(names, loadMore, oringinal) {
                             </div>
                             <div class="postInfo">
                                 <div class="userInfo">
-                                    <p>${info.emri} 
+                                    <p onclick="extMention('${info.emri}')">${info.emri} 
                                     ${info.seksioni === 'ΚΑΘ' ? '<svg style="margin-left: 5px" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" id="verified" class="icon glyph"><path d="M21.6,9.84A4.57,4.57,0,0,1,21.18,9,4,4,0,0,1,21,8.07a4.21,4.21,0,0,0-.64-2.16,4.25,4.25,0,0,0-1.87-1.28,4.77,4.77,0,0,1-.85-.43A5.11,5.11,0,0,1,17,3.54a4.2,4.2,0,0,0-1.8-1.4A4.22,4.22,0,0,0,13,2.21a4.24,4.24,0,0,1-1.94,0,4.22,4.22,0,0,0-2.24-.07A4.2,4.2,0,0,0,7,3.54a5.11,5.11,0,0,1-.66.66,4.77,4.77,0,0,1-.85.43A4.25,4.25,0,0,0,3.61,5.91,4.21,4.21,0,0,0,3,8.07,4,4,0,0,1,2.82,9a4.57,4.57,0,0,1-.42.82A4.3,4.3,0,0,0,1.63,12a4.3,4.3,0,0,0,.77,2.16,4,4,0,0,1,.42.82,4.11,4.11,0,0,1,.15.95,4.19,4.19,0,0,0,.64,2.16,4.25,4.25,0,0,0,1.87,1.28,4.77,4.77,0,0,1,.85.43,5.11,5.11,0,0,1,.66.66,4.12,4.12,0,0,0,1.8,1.4,3,3,0,0,0,.87.13A6.66,6.66,0,0,0,11,21.81a4,4,0,0,1,1.94,0,4.33,4.33,0,0,0,2.24.06,4.12,4.12,0,0,0,1.8-1.4,5.11,5.11,0,0,1,.66-.66,4.77,4.77,0,0,1,.85-.43,4.25,4.25,0,0,0,1.87-1.28A4.19,4.19,0,0,0,21,15.94a4.11,4.11,0,0,1,.15-.95,4.57,4.57,0,0,1,.42-.82A4.3,4.3,0,0,0,22.37,12,4.3,4.3,0,0,0,21.6,9.84Zm-4.89.87-5,5a1,1,0,0,1-1.42,0l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42Z" style="fill:#179cf0"/></svg>' : ''}</p>
                                 </div>
                                 <div class="postContent">
@@ -4832,10 +4832,10 @@ function loadSentToUser(emri, redo) {
                             </div>
                             <div class="postInfo">
                                 <div class="userInfo">
-                                    <p>${key}</p>
+                                    <p onclick="extMention('${key}')">${key}</p>
                                 </div>
                                 <div class="postContent">
-                                    <p><span class="mention ${getGender(removeTonos(pars.name.split(" ")[0])) === "Female" ? "female" : "male"}">@${pars.name}</span>
+                                    <p><span onclick="extMention('${pars.name}')" class="mention ${getGender(removeTonos(pars.name.split(" ")[0])) === "Female" ? "female" : "male"}">@${pars.name}</span>
                                         ${value.includes("<img")
                                             ? value.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
                                             : value}
@@ -5026,11 +5026,11 @@ function showProfileInfo(emri) {
                         </div>
                         <div class="postInfo">
                             <div class="userInfo">
-                                <p>${emri}</p>
+                                <p onclick="extMention('${emri}')">${emri}</p>
                                 <span>${timeAgoInGreek(sent.contents.date)}</span>
                             </div>
                             <div class="postContent">
-                                <p><span class="mention ${getGender(removeTonos(sent.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${sent.marresi}</span>
+                                <p><span onclick="extMention('${sent.marresi}')" class="mention ${getGender(removeTonos(sent.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${sent.marresi}</span>
                                     ${sent.contents.vleresim.includes("<img")
                             ? sent.contents.vleresim.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
                             : sent.contents.vleresim}
@@ -5438,4 +5438,15 @@ function unregisterSW() {
         });
     }
     
+}
+
+function extMention(emri) {
+    if(emri === foundName) {
+        console.log("Is self user")
+        openProfile(document.getElementById("profile-switch"))
+        return;
+    }
+    console.log("Mentioned:", emri)
+    openSearch(document.getElementById("search-switch"))
+    showProfileInfo(emri)
 }

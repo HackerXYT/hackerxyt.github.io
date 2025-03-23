@@ -4801,6 +4801,7 @@ select:focus {
 }
 
 .mention {
+    cursor: pointer;
     font-size: 14px !important;
     font-weight: bold !important;
     margin-bottom: 2.5px;
