@@ -1426,9 +1426,13 @@ img {
 
     transition: all 0.5s ease-in-out;
     will-change: transform;
-
-    transform: translateY(0);
+    transition: transform 0.3s ease-in-out, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 1s ease-in-out;
+    transform: translateY(100vh);
     /* Ensure it doesn’t move */
+}
+
+.navigation.active {
+    transform: translateY(0);
 }
 
 .navigation .bar {
@@ -4512,7 +4516,6 @@ input:-webkit-autofill:active {
     color: white;
     opacity: 1;
     /* Initially hidden */
-    visibility: hidden;
     /* Initially hidden */
     transform: translateY(100vh);
     /* Initially off-screen to the left */
@@ -4540,7 +4543,6 @@ input:-webkit-autofill:active {
 .applePopup.active {
     opacity: 1;
     /* Show the popup */
-    visibility: visible;
     /* Show the popup */
     transform: translateX(0);
     /* Slide the popup into view */
@@ -4610,11 +4612,14 @@ input:-webkit-autofill:active {
     justify-content: center;
     object-fit: cover;
     cursor: pointer;
-    transition: transform 0.1s ease-in-out;
+    transition: transform 0.1s ease-in-out, opacity 0.2s ease-in-out;
     flex-shrink: 0;
     opacity: 0.5;
 }
 
+.profilePicture-in img.small.ready {
+    opacity: 1;
+}
 .input-post {
     margin-top: 10px;
     margin-left: 20px;
@@ -4678,6 +4683,11 @@ input:-webkit-autofill:active {
     font-weight: bold;
     color: #747474;
     font-size: 14px;
+    transition: color 0.2s ease-in-out;
+}
+
+.addmore.ready {
+    color: #ffffff;
 }
 
 #createPostSvg path {
@@ -4698,6 +4708,7 @@ input:-webkit-autofill:active {
     background-color: #191919c6;
     backdrop-filter: blur(1px);
     z-index: 9999;
+    padding-left: 20px;
 }
 
 .popup-footer p {
@@ -4751,13 +4762,14 @@ select:focus {
 
 .floating-div {
     position: absolute;
-    top: calc(100% + 5px);
-    /* Moves it below the textarea with some spacing */
+    /*top: calc(100% + 5px);
+     Moves it below the textarea with some spacing */
     left: -15px;
-    width: 105%;
+    width: 100%;
+    margin-top: 10px;
     padding: 10px;
     /*background-color: #242424;*/
-    background-color: #242424de;
+    background-color: #242424fa;
     backdrop-filter: blur(2px);
     border-radius: 20px;
     display: none;
@@ -4829,8 +4841,8 @@ select:focus {
     width: 100%;
     align-items: center;
     justify-content: space-between;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
 
 }
 
@@ -4878,7 +4890,7 @@ select:focus {
     align-items: center;
     justify-content: space-between;
     background-color: #1e1e1ea9;
-    border-radius: 20px;
+    border-radius: 17px;
     padding: 15px;
     flex-shrink: 0;
     gap: 5px;
@@ -4893,7 +4905,21 @@ select:focus {
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    position: relative;
 }
+
+.icon-carouseli svg:nth-child(2) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2; /* Ensure it's on top */
+}
+
+.icon-carouseli.done svg:nth-child(1) {
+    display: none;
+}
+
 
 .carouseliItem p {
     font-size: 14px;
@@ -4924,7 +4950,19 @@ select:focus {
     color: #000;
     font-weight: bold;
     padding: 6px 25px;
-    border-radius: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.buttonCarouseli.done {
+    width: 100%;
+    height: auto;
+    border: 1px solid #808080;
+    background-color: transparent;
+    color: #808080;
+    font-weight: bold;
+    padding: 6px 25px;
+    border-radius: 8px;
     font-size: 14px;
 }
 
@@ -4961,7 +4999,7 @@ select:focus {
 }
 
 /*PC*/
-@media (min-width: 1024px) {
+@media (min-width: 1024px) { 
     .navigation {
         position: fixed;
         left: 0;
@@ -4976,6 +5014,11 @@ select:focus {
         padding: 0px;
         transition: all 0.5s ease-in-out;
         will-change: transform;
+        transition: transform 0.3s ease-in-out, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 1s ease-in-out;
+        transform: translateX(-100vw);
+    }
+
+    .navigation.active {
         transform: translateY(0);
     }
 
@@ -5121,10 +5164,11 @@ select:focus {
     .popup-footer {
         position: fixed;
         bottom: 0;
-        width: 100%;
-        padding: 5px;
+        width: 50%;
+        /* padding: 5px; */
         text-align: center;
-        display: flex;
+        display: flex
+;
         flex-direction: row;
         color: #808080;
         padding-bottom: 20px;
@@ -5132,8 +5176,8 @@ select:focus {
         background-color: #191919c6;
         backdrop-filter: blur(1px);
         z-index: 9999;
-        padding-left: 25% !important;
-        padding-right: 25% !important;
+        padding-left: 20px !important;
+        /* padding-right: 50% !important; */
     }
 
     .applePopup {
@@ -5144,4 +5188,30 @@ select:focus {
         display: flex;
     }
 
+}
+
+.mediaContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+}
+
+.mediaContainer img, .mediaContainer video {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: cover;
+    border-radius: 10px;
+    flex: 0 0 auto;
+    /* Adjust as needed */
+    scroll-snap-align: center;
 }

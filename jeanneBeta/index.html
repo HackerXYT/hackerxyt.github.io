@@ -183,7 +183,7 @@
             <span>registered under Evox©</span>
             <p>Διεύθυνση IP: <span id="ipIdent"></span></p>
             <p>Συσκευή: <span id="deviceInfo"></span></p>
-            <p>Έκδοση: <span>1.7.2</span></p>
+            <p>Έκδοση: <span>1.7.4</span></p>
             <p>Δοκιμαστική λειτουργία: <span>Ενεργή [BETA]</span></p>
             <p>Επανεκκίνηση: <span onclick="window.location.reload()">Τώρα</span></p>
         </div>
@@ -488,7 +488,7 @@
         </div>
         <div onclick="goBackToLogin()" class="version"><img src="logo.png" height="55px"></div>
     </div>
-    <div id="app" class="app" style="overflow: hidden;">
+    <div id="app" class="app" style="overflow: auto;">
         <div class="app" style="display: block;padding: 0px;overscroll-behavior: auto;" id="home">
             <div class="topBar">
                 <div onclick="showProfile(this)" class="pfp" id="pfpContHome">
@@ -1018,30 +1018,13 @@
                                     <p>Δημιουργήστε ένα νήμα</p>
                                     <span>Πείτε τι σκέφτεστε για έναν συμμαθητή σας.</span>
                                 </div>
-                                <div class="buttonCarouseli">
+                                <div onclick="createPost(document.getElementById('create-switch'));openKeyboard()" class="buttonCarouseli">
                                     Δημιουργία
                                 </div>
 
                             </div>
 
-                            <div class="carouseliItem">
-                                <div class="icon-carouseli">
-                                    <svg height="25px" width="25px" fill="#FFFFFF" viewBox="0 0 24 24"
-                                        data-name="Layer 1" id="Layer_1" class="sparkle">
-                                        <path
-                                            d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <div class="bottom">
-                                    <p>Δημιουργία περίληψης</p>
-                                    <span>Δείτε τι έχουν να πουν για εσάς οι φίλοι σας.</span>
-                                </div>
-                                <div class="buttonCarouseli">
-                                    Δημιουργία
-                                </div>
-
-                            </div>
+                            
                             <div class="carouseliItem">
                                 <div class="icon-carouseli">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -1052,11 +1035,34 @@
                                     <p>Ενισχύστε την ροή</p>
                                     <span>Μοιραστείτε μία ανάμνηση με την χρήση φωτογραφιών και βίντεο.</span>
                                 </div>
-                                <div class="buttonCarouseli">
-                                    Εξερεύνηση
+                                <div onclick="createPost(document.getElementById('create-switch'));openKeyboard()" class="buttonCarouseli">
+                                    Δημιουργία
                                 </div>
 
                             </div>
+
+                            <div class="carouseliItem">
+                                <div class="icon-carouseli done">
+                                    <svg height="25px" width="25px" fill="#FFFFFF" viewBox="0 0 24 24"
+                                        data-name="Layer 1" id="Layer_1" class="sparkle">
+                                        <path
+                                            d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z">
+                                        </path>
+                                    </svg>
+                                    <svg class="checkMarkSvg" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 32 32" fill="none">
+                                        <path stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6.5 17l6 6 13-13"/>
+                                      </svg>
+                                </div>
+                                <div class="bottom">
+                                    <p>Δημιουργία περίληψης</p>
+                                    <span>Δείτε τι έχουν να πουν για εσάς οι φίλοι σας.</span>
+                                </div>
+                                <div onclick="openDiscovery(document.getElementById('discovery-switch'))" class="buttonCarouseli done">
+                                    Τέλος
+                                </div>
+
+                            </div>
+
                             <div class="carouseliItem">
                                 <div class="icon-carouseli">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
@@ -1071,9 +1077,31 @@
                                 </div>
                                 <div class="bottom">
                                     <p>Εξερευνήστε</p>
-                                    <span>Δείτε τι έχουν να οι υπόλοιποι για τους συμμαθητές σας.</span>
+                                    <span>Δείτε τι έχουν να πουν οι υπόλοιποι για τους συμμαθητές σας.</span>
                                 </div>
-                                <div class="buttonCarouseli">
+                                <div class="buttonCarouseli" onclick="openHome(document.getElementById('home-switch'))">
+                                    Αρχική
+                                </div>
+
+                            </div>
+
+                            <div class="carouseliItem">
+                                <div class="icon-carouseli">
+                                    <svg height="25px" width="25px" fill="#FFFFFF" viewBox="0 0 24 24"
+                                        data-name="Layer 1" id="Layer_1" class="sparkle">
+                                        <path
+                                            d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z">
+                                        </path>
+                                    </svg>
+                                    <svg class="checkMarkSvg" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 32 32" fill="none">
+                                        <path stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6.5 17l6 6 13-13"/>
+                                      </svg>
+                                </div>
+                                <div class="bottom">
+                                    <p>Δημιουργία περίληψης</p>
+                                    <span>Δείτε τι έχουν να πουν για εσάς οι φίλοι σας.</span>
+                                </div>
+                                <div onclick="openDiscovery(document.getElementById('discovery-switch'))" class="buttonCarouseli">
                                     Εξερεύνηση
                                 </div>
 
@@ -1216,7 +1244,7 @@
                                     </g>
                                 </g>
                             </svg>
-                            <span>Έκδοση 1.7.2</span>
+                            <span>Έκδοση 1.7.4</span>
                         </div>
                         <div onclick="reset()" class="anInfo">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
@@ -1506,75 +1534,77 @@
         </div>
         <input type="text" id="hidden-input" style="opacity:0;position:absolute;">
 
-        <div class="navigation">
+        
 
-            <div class="bar" id="bar">
-                <img id="assetImg" src="assetView-2.png"
-                    style="width: 35px;height: auto;padding-left: 5px;margin-bottom: 20px;display: none;">
-                <div onclick="openHome(this)" class="item active" id="home-switch">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
-                        fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M20.479 7.57827L15.093 3.12502C13.2787 1.62499 10.7213 1.62499 8.90703 3.12502L3.52097 7.57827C2.55059 8.38059 2 9.59705 2 10.8663V17.8109C2 20.066 3.73415 22 6 22H8C9.10457 22 10 21.1046 10 20V16.7478C10 15.4803 10.9521 14.5587 12 14.5587C13.0479 14.5587 14 15.4803 14 16.7478V20C14 21.1046 14.8954 22 16 22H18C20.2659 22 22 20.066 22 17.8109V10.8663C22 9.59706 21.4494 8.38059 20.479 7.57827Z"
-                            fill="#efefef93" />
-                    </svg>
-                    <span>Αρχική</span>
-                </div>
-                <div onclick="openSearch(this)" class="item" id="search-switch">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                    <span>Αναζήτηση</span>
-                </div>
-                <div onclick="createPost(this);openKeyboard()" class="item create" id="create-switch">
-                    <svg id="createPostSvg" xmlns="http://www.w3.org/2000/svg" width="800px" height="800px"
-                        viewBox="0 0 24 24" fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5C11 4.44772 11.4477 4 12 4Z"
-                            fill="#efefef93" />
-                    </svg>
-                </div>
-                <div style="display: none;" class="item" onclick="toggleDev()">
-                    <img src="reloading-pfp.gif" id="navbarpfp">
-                </div>
-                <div class="item" onclick="openDiscovery(this)" id="discovery-switch">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M14.7898 18.9746C8.49749 21.4915 5.35132 22.75 3.55428 21.5288C3.1282 21.2393 2.76071 20.8718 2.47117 20.4457C1.25001 18.6487 2.50848 15.5025 5.02542 9.21017C5.56228 7.86802 5.8307 7.19695 6.29238 6.67048C6.41002 6.53633 6.53633 6.41002 6.67048 6.29238C7.19695 5.8307 7.86802 5.56228 9.21017 5.02542C15.5025 2.50848 18.6487 1.25001 20.4457 2.47117C20.8718 2.7607 21.2393 3.1282 21.5288 3.55428C22.75 5.35132 21.4915 8.49749 18.9746 14.7898C18.4377 16.132 18.1693 16.8031 17.7076 17.3295C17.59 17.4637 17.4637 17.59 17.3295 17.7076C16.8031 18.1693 16.132 18.4377 14.7898 18.9746Z"
-                            fill="#efefef93" />
-                        <path style="fill: #070707df !important;"
-                            d="M12 8.25C9.92893 8.25 8.25 9.92893 8.25 12C8.25 14.0711 9.92893 15.75 12 15.75C14.0711 15.75 15.75 14.0711 15.75 12C15.75 9.92893 14.0711 8.25 12 8.25Z"
-                            fill="#efefef93" />
-                    </svg>
-                    <span>Εξερεύνηση</span>
-                </div>
-                <div class="item" onclick="openProfile(this)" id="profile-switch">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
-                        fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2Z"
-                            fill="#292D32" />
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M12 13C8.03683 13 5.48769 14.4462 4.13838 16.655C3.30094 18.0259 3.62147 19.4526 4.47764 20.4474C5.29895 21.4018 6.62227 22 7.99999 22H16C17.3777 22 18.701 21.4018 19.5224 20.4474C20.3785 19.4526 20.6991 18.0259 19.8616 16.655C18.5123 14.4462 15.9632 13 12 13Z"
-                            fill="#292D32" />
-                    </svg>
-                    <span>Προφίλ</span>
-                </div>
-                <div class="appInfoText"
-                    style="margin-top: auto;display: flex;flex-direction: column;align-items: center;width: 100%;margin-bottom: 10px;display: none;">
-                    <span
-                        style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;text-align: center;">Jeanne
-                        d'Arc 1.7.2</span></span>
-                    <span style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;display: flex;">©
-                        2025 Evox <span onclick="window.location.href= '../privacy/'"
-                            style="color: #ababab8d;font-size: 12px;font-weight: lighter;margin-left:auto;">Privacy</span></span>
-                </div>
+
+    </div>
+
+    <div class="navigation" id="navigation">
+
+        <div class="bar" id="bar">
+            <img id="assetImg" src="assetView-2.png"
+                style="width: 35px;height: auto;padding-left: 5px;margin-bottom: 20px;display: none;">
+            <div onclick="openHome(this)" class="item active" id="home-switch">
+                <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
+                    fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M20.479 7.57827L15.093 3.12502C13.2787 1.62499 10.7213 1.62499 8.90703 3.12502L3.52097 7.57827C2.55059 8.38059 2 9.59705 2 10.8663V17.8109C2 20.066 3.73415 22 6 22H8C9.10457 22 10 21.1046 10 20V16.7478C10 15.4803 10.9521 14.5587 12 14.5587C13.0479 14.5587 14 15.4803 14 16.7478V20C14 21.1046 14.8954 22 16 22H18C20.2659 22 22 20.066 22 17.8109V10.8663C22 9.59706 21.4494 8.38059 20.479 7.57827Z"
+                        fill="#efefef93" />
+                </svg>
+                <span>Αρχική</span>
+            </div>
+            <div onclick="openSearch(this)" class="item" id="search-switch">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                <span>Αναζήτηση</span>
+            </div>
+            <div onclick="createPost(this);openKeyboard()" class="item create" id="create-switch">
+                <svg id="createPostSvg" xmlns="http://www.w3.org/2000/svg" width="800px" height="800px"
+                    viewBox="0 0 24 24" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5C11 4.44772 11.4477 4 12 4Z"
+                        fill="#efefef93" />
+                </svg>
+            </div>
+            <div style="display: none;" class="item" onclick="toggleDev()">
+                <img src="reloading-pfp.gif" id="navbarpfp">
+            </div>
+            <div class="item" onclick="openDiscovery(this)" id="discovery-switch">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M14.7898 18.9746C8.49749 21.4915 5.35132 22.75 3.55428 21.5288C3.1282 21.2393 2.76071 20.8718 2.47117 20.4457C1.25001 18.6487 2.50848 15.5025 5.02542 9.21017C5.56228 7.86802 5.8307 7.19695 6.29238 6.67048C6.41002 6.53633 6.53633 6.41002 6.67048 6.29238C7.19695 5.8307 7.86802 5.56228 9.21017 5.02542C15.5025 2.50848 18.6487 1.25001 20.4457 2.47117C20.8718 2.7607 21.2393 3.1282 21.5288 3.55428C22.75 5.35132 21.4915 8.49749 18.9746 14.7898C18.4377 16.132 18.1693 16.8031 17.7076 17.3295C17.59 17.4637 17.4637 17.59 17.3295 17.7076C16.8031 18.1693 16.132 18.4377 14.7898 18.9746Z"
+                        fill="#efefef93" />
+                    <path style="fill: #070707df !important;"
+                        d="M12 8.25C9.92893 8.25 8.25 9.92893 8.25 12C8.25 14.0711 9.92893 15.75 12 15.75C14.0711 15.75 15.75 14.0711 15.75 12C15.75 9.92893 14.0711 8.25 12 8.25Z"
+                        fill="#efefef93" />
+                </svg>
+                <span>Εξερεύνηση</span>
+            </div>
+            <div class="item" onclick="openProfile(this)" id="profile-switch">
+                <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
+                    fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2Z"
+                        fill="#292D32" />
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M12 13C8.03683 13 5.48769 14.4462 4.13838 16.655C3.30094 18.0259 3.62147 19.4526 4.47764 20.4474C5.29895 21.4018 6.62227 22 7.99999 22H16C17.3777 22 18.701 21.4018 19.5224 20.4474C20.3785 19.4526 20.6991 18.0259 19.8616 16.655C18.5123 14.4462 15.9632 13 12 13Z"
+                        fill="#292D32" />
+                </svg>
+                <span>Προφίλ</span>
+            </div>
+            <div class="appInfoText"
+                style="margin-top: auto;display: flex;flex-direction: column;align-items: center;width: 100%;margin-bottom: 10px;display: none;">
+                <span
+                    style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;text-align: center;">Jeanne
+                    d'Arc 1.7.4</span></span>
+                <span style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;display: flex;">©
+                    2025 Evox <span onclick="window.location.href= '../privacy/'"
+                        style="color: #ababab8d;font-size: 12px;font-weight: lighter;margin-left:auto;">Privacy</span></span>
             </div>
         </div>
-
-
     </div>
 
     <div class="sliding" id="profilePage">
@@ -1820,30 +1850,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="postContainer">
-                                <div class="post">
-                                    <div class="profilePicture">
-                                        <img src="https://arc.evoxs.xyz/foto/instagram/lilanda_adamidi.evox">
-                                    </div>
-                                    <div class="postInfo" style="flex-direction: row;">
-                                        <div class="userInfo">
-                                            <p>Λιλάντα Αδαμίδη
-                                                <svg style="margin-left: 5px" xmlns="http://www.w3.org/2000/svg"
-                                                    width="20px" height="20px" viewBox="0 0 24 24" id="verified"
-                                                    class="icon glyph">
-                                                    <path
-                                                        d="M21.6,9.84A4.57,4.57,0,0,1,21.18,9,4,4,0,0,1,21,8.07a4.21,4.21,0,0,0-.64-2.16,4.25,4.25,0,0,0-1.87-1.28,4.77,4.77,0,0,1-.85-.43A5.11,5.11,0,0,1,17,3.54a4.2,4.2,0,0,0-1.8-1.4A4.22,4.22,0,0,0,13,2.21a4.24,4.24,0,0,1-1.94,0,4.22,4.22,0,0,0-2.24-.07A4.2,4.2,0,0,0,7,3.54a5.11,5.11,0,0,1-.66.66,4.77,4.77,0,0,1-.85.43A4.25,4.25,0,0,0,3.61,5.91,4.21,4.21,0,0,0,3,8.07,4,4,0,0,1,2.82,9a4.57,4.57,0,0,1-.42.82A4.3,4.3,0,0,0,1.63,12a4.3,4.3,0,0,0,.77,2.16,4,4,0,0,1,.42.82,4.11,4.11,0,0,1,.15.95,4.19,4.19,0,0,0,.64,2.16,4.25,4.25,0,0,0,1.87,1.28,4.77,4.77,0,0,1,.85.43,5.11,5.11,0,0,1,.66.66,4.12,4.12,0,0,0,1.8,1.4,3,3,0,0,0,.87.13A6.66,6.66,0,0,0,11,21.81a4,4,0,0,1,1.94,0,4.33,4.33,0,0,0,2.24.06,4.12,4.12,0,0,0,1.8-1.4,5.11,5.11,0,0,1,.66-.66,4.77,4.77,0,0,1,.85-.43,4.25,4.25,0,0,0,1.87-1.28A4.19,4.19,0,0,0,21,15.94a4.11,4.11,0,0,1,.15-.95,4.57,4.57,0,0,1,.42-.82A4.3,4.3,0,0,0,22.37,12,4.3,4.3,0,0,0,21.6,9.84Zm-4.89.87-5,5a1,1,0,0,1-1.42,0l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42Z"
-                                                        style="fill:#179cf0"></path>
-                                                </svg>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
+                        <div class="mediaContainer" id="evox-media-container">
+
+                        </div>
+                        
                     </div>
-                    <input type="file" style="display: none;" id="evox-upload-box" accept="/*"
-                    onchange="sendFile(null, 'upload')">
+                    <input type="file" style="display: none;" id="evox-upload-box" accept="image/*,video/*" multiple onchange="processFile(null, 'upload')">
+
                     <div class="icons">
                         <div onclick="uploadFile();focusOnIcon(this)" class="iconA">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
@@ -1883,8 +1897,8 @@
                     <div id="selectedPeople" class="selectedPeople">
 
                     </div>
-                    <div class="addmore">
-                        Πρόσθεσε στο νήμα
+                    <div onclick="addMore(this)" class="addmore" id="addMore">
+                        Πρόσθεσε στην καταχώρηση
                     </div>
                 </div>
             </div>

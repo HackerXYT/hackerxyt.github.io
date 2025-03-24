@@ -534,6 +534,57 @@ function uploadFile() {
     document.getElementById('evox-upload-box').click();
 }
 
+function processFile(event, type) {
+    const input = document.getElementById('evox-upload-box');
+    const files = input.files;
+    const container = document.getElementById('evox-media-container');
+    
+    if (!files.length) return;
+    
+    container.innerHTML = ''; // Clear previous content
+    container.style.marginTop = "10px"
+    document.getElementById("floatingDiv").style.width = "89%"
+    if (files.length === 1) {
+        container.style.paddingRight = "0"
+        const file = files[0];
+        
+        if (file.type.startsWith('image/')) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '360px';
+            container.appendChild(img);
+        } else if (file.type.startsWith('video/')) {
+            const video = document.createElement('video');
+            video.src = URL.createObjectURL(file);
+            video.controls = true;
+            video.style.maxWidth = '100%';
+            video.style.maxHeight = '360px';
+            container.appendChild(video);
+        }
+    } else {
+        container.style.paddingRight = "20%"
+        Array.from(files).forEach(file => {
+            if (file.type.startsWith('image/')) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.style.width = '180px';
+                img.style.height = '250px';
+                img.style.objectFit = 'cover';
+                container.appendChild(img);
+            } else if (file.type.startsWith('video/')) {
+                const video = document.createElement('video');
+                video.src = URL.createObjectURL(file);
+                video.controls = true;
+                video.style.width = '180px';
+                video.style.height = '250px';
+                container.appendChild(video);
+            }
+        });
+        container.appendChild(gallery);
+    }
+}
+
 function sendFile(e, up) {
     console.log(up === 'upload' && sessionStorage.getItem("current_sline") && localStorage.getItem("t50-username"))
     if (e) {
@@ -1095,6 +1146,7 @@ function clickPIN(element) {
                                                         setTimeout(function () {
                                                             $("#tasks").fadeOut("fast")
                                                             $("#app").fadeIn("fast")
+                                                            document.getElementById("navigation").classList.add("active")
                                                             document.body.style.overflow = null
                                                             document.getElementById("app").style.transform = ""
                                                             document.getElementById("app").style.opacity = "1"
@@ -1436,6 +1488,7 @@ function attach() {
         }
 
         $("#app").fadeIn("fast")
+        document.getElementById("navigation").classList.add("active")
 
     })
 
@@ -1544,7 +1597,7 @@ async function spawnRandom(redo) {
                 const pfp = await getEvoxProfile(post.emri);
 
                 let src = pfp; // Default to pfp value from getEvoxProfile
-                console.log('Profile image fetched:', profileSrc);
+                //console.log('Profile image fetched:', profileSrc);
 
                 if (profileSrc) {
                     src = profileSrc.imageData; // Use profile image if available
@@ -1556,7 +1609,7 @@ async function spawnRandom(redo) {
                 const pfp_receiver = await getEvoxProfile(post.marresi);
 
                 let src2 = pfp_receiver; // Default to pfp value from getEvoxProfile
-                console.log('Profile image fetched:', profileReceiver);
+                //console.log('Profile image fetched:', profileReceiver);
 
                 if (profileReceiver) {
                     src2 = profileReceiver.imageData; // Use profile image if available
@@ -2863,7 +2916,7 @@ function grabberEvents(id) {
         currentY = e.touches ? e.touches[0].clientY : e.clientY;
         let deltaY = currentY - startY;
 
-        if (Math.abs(deltaY) > 10) {
+        if (Math.abs(deltaY) > 30) {
             moved = true; // Only consider as dragging if movement exceeds 10px
         }
 
@@ -3081,6 +3134,7 @@ function goBackToLogin() {
         deletePIN()
         $("#lock").fadeOut("fast", function () {
             $("#app").fadeIn("fast")
+            document.getElementById("navigation").classList.add("active")
             document.body.style.overflow = null
             document.getElementById("app").style.transform = ""
             document.getElementById("app").style.opacity = "1"
@@ -4008,7 +4062,7 @@ function loadSentByUser() {
         const pfp = await getEvoxProfile(foundName);
 
         let src = pfp; // Default to the pfp value from getEvoxProfile
-        console.log('Profile image fetched:', profileSrc);
+        //console.log('Profile image fetched:', profileSrc);
 
         if (profileSrc) {
             src = profileSrc.imageData; // If profile image is available, use it.
@@ -4183,7 +4237,11 @@ document.getElementById('input-textarea').addEventListener('input', function () 
 
     if (this.value !== '') {
         document.getElementById("postButton").classList.remove("not-ready")
+        document.getElementById("profilePicture-small").classList.add("ready")
+        document.getElementById("addMore").classList.add("ready")
     } else {
+        document.getElementById("profilePicture-small").classList.remove("ready")
+        document.getElementById("addMore").classList.remove("ready")
         document.getElementById("postButton").classList.add("not-ready")
     }
 
@@ -4334,6 +4392,7 @@ function openKeyboard() {
         // Transfer text from hidden input to textarea (in case Safari locks input focus)
         hiddenInput.addEventListener("input", () => {
             textarea.value = hiddenInput.value;
+            hiddenInput.value = ''
             hiddenInput.blur();
             textarea.focus();
         });
@@ -4348,6 +4407,99 @@ const footer = document.querySelector(".popup-footer");
 function adjustFooterPosition() {
     if (window.visualViewport) {
         footer.style.bottom = (window.innerHeight - window.visualViewport.height) + "px";
+    }
+}
+
+function addMore(el) {
+    if(el.classList.contains("ready")) {
+        document.getElementById("postInput").style.marginBottom = '0'
+        document.getElementById("addMore").remove()
+        
+        document.getElementById("createPost").innerHTML += `<div class="postInput" id="postInput">
+                <div class="profilePicture-in">
+                    <img src="${document.getElementById("profilePicture-main").src}">
+                    <div class="line-x"></div>
+                    <img class="small" src="${document.getElementById("profilePicture-small").src}">
+                </div>
+                <div class="input-post">
+                    <p>${document.getElementById("name-sur").innerText}</p>
+                    <div class="text-area-cont" style="position: relative;">
+
+                        <textarea id="input-textarea-2" placeholder="Τι νέο υπάρχει;"></textarea>
+                        <div id="floatingDiv-2" class="floating-div fade-in-slide-up">
+                            <div class="postContainer">
+                                <div class="post">
+                                    <div class="profilePicture">
+                                        <img src="https://arc.evoxs.xyz/foto/instagram/lilanda_adamidi.evox">
+                                    </div>
+                                    <div class="postInfo" style="flex-direction: row;">
+                                        <div class="userInfo">
+                                            <p>Λιλάντα Αδαμίδη
+                                                <svg style="margin-left: 5px" xmlns="http://www.w3.org/2000/svg"
+                                                    width="20px" height="20px" viewBox="0 0 24 24" id="verified"
+                                                    class="icon glyph">
+                                                    <path
+                                                        d="M21.6,9.84A4.57,4.57,0,0,1,21.18,9,4,4,0,0,1,21,8.07a4.21,4.21,0,0,0-.64-2.16,4.25,4.25,0,0,0-1.87-1.28,4.77,4.77,0,0,1-.85-.43A5.11,5.11,0,0,1,17,3.54a4.2,4.2,0,0,0-1.8-1.4A4.22,4.22,0,0,0,13,2.21a4.24,4.24,0,0,1-1.94,0,4.22,4.22,0,0,0-2.24-.07A4.2,4.2,0,0,0,7,3.54a5.11,5.11,0,0,1-.66.66,4.77,4.77,0,0,1-.85.43A4.25,4.25,0,0,0,3.61,5.91,4.21,4.21,0,0,0,3,8.07,4,4,0,0,1,2.82,9a4.57,4.57,0,0,1-.42.82A4.3,4.3,0,0,0,1.63,12a4.3,4.3,0,0,0,.77,2.16,4,4,0,0,1,.42.82,4.11,4.11,0,0,1,.15.95,4.19,4.19,0,0,0,.64,2.16,4.25,4.25,0,0,0,1.87,1.28,4.77,4.77,0,0,1,.85.43,5.11,5.11,0,0,1,.66.66,4.12,4.12,0,0,0,1.8,1.4,3,3,0,0,0,.87.13A6.66,6.66,0,0,0,11,21.81a4,4,0,0,1,1.94,0,4.33,4.33,0,0,0,2.24.06,4.12,4.12,0,0,0,1.8-1.4,5.11,5.11,0,0,1,.66-.66,4.77,4.77,0,0,1,.85-.43,4.25,4.25,0,0,0,1.87-1.28A4.19,4.19,0,0,0,21,15.94a4.11,4.11,0,0,1,.15-.95,4.57,4.57,0,0,1,.42-.82A4.3,4.3,0,0,0,22.37,12,4.3,4.3,0,0,0,21.6,9.84Zm-4.89.87-5,5a1,1,0,0,1-1.42,0l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42Z"
+                                                        style="fill:#179cf0"></path>
+                                                </svg>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mediaContainer" id="evox-media-container-2">
+
+                        </div>
+                        
+                    </div>
+                    <input type="file" style="display: none;" id="evox-upload-box-2" accept="image/*,video/*" multiple onchange="processFile(null, '2')">
+
+                    <div class="icons">
+                        <div onclick="uploadFile();focusOnIcon(this)" class="iconA">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path
+                                    d="M2.58078 19.0112L2.56078 19.0312C2.29078 18.4413 2.12078 17.7713 2.05078 17.0312C2.12078 17.7613 2.31078 18.4212 2.58078 19.0112Z"
+                                    fill="#808080" />
+                                <path
+                                    d="M9.00109 10.3811C10.3155 10.3811 11.3811 9.31553 11.3811 8.00109C11.3811 6.68666 10.3155 5.62109 9.00109 5.62109C7.68666 5.62109 6.62109 6.68666 6.62109 8.00109C6.62109 9.31553 7.68666 10.3811 9.00109 10.3811Z"
+                                    fill="#808080" />
+                                <path
+                                    d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.19C2 17.28 2.19 18.23 2.56 19.03C3.42 20.93 5.26 22 7.81 22H16.19C19.83 22 22 19.83 22 16.19V13.9V7.81C22 4.17 19.83 2 16.19 2ZM20.37 12.5C19.59 11.83 18.33 11.83 17.55 12.5L13.39 16.07C12.61 16.74 11.35 16.74 10.57 16.07L10.23 15.79C9.52 15.17 8.39 15.11 7.59 15.65L3.85 18.16C3.63 17.6 3.5 16.95 3.5 16.19V7.81C3.5 4.99 4.99 3.5 7.81 3.5H16.19C19.01 3.5 20.5 4.99 20.5 7.81V12.61L20.37 12.5Z"
+                                    fill="#808080" />
+                            </svg>
+                        </div>
+                        <div onclick="focusOnIcon(this)" class="iconA">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M11.2383 2.79888C10.6243 2.88003 9.86602 3.0542 8.7874 3.30311L7.55922 3.58654C6.6482 3.79677 6.02082 3.94252 5.54162 4.10698C5.07899 4.26576 4.81727 4.42228 4.61978 4.61978C4.42228 4.81727 4.26576 5.07899 4.10698 5.54162C3.94252 6.02082 3.79677 6.6482 3.58654 7.55922L3.30311 8.7874C3.0542 9.86602 2.88003 10.6243 2.79888 11.2383C2.71982 11.8365 2.73805 12.2413 2.84358 12.6092C2.94911 12.9772 3.14817 13.3301 3.53226 13.7954C3.92651 14.2731 4.47607 14.8238 5.25882 15.6066L7.08845 17.4362C8.44794 18.7957 9.41533 19.7608 10.247 20.3954C11.0614 21.0167 11.6569 21.25 12.2623 21.25C12.8678 21.25 13.4633 21.0167 14.2776 20.3954C15.1093 19.7608 16.0767 18.7957 17.4362 17.4362C18.7957 16.0767 19.7608 15.1093 20.3954 14.2776C21.0167 13.4633 21.25 12.8678 21.25 12.2623C21.25 11.6569 21.0167 11.0614 20.3954 10.247C19.7608 9.41533 18.7957 8.44794 17.4362 7.08845L15.6066 5.25882C14.8238 4.47607 14.2731 3.92651 13.7954 3.53226C13.3301 3.14817 12.9772 2.94911 12.6092 2.84358C12.2413 2.73805 11.8365 2.71982 11.2383 2.79888ZM11.0418 1.31181C11.7591 1.21701 12.3881 1.21969 13.0227 1.4017C13.6574 1.58372 14.1922 1.91482 14.7502 2.37538C15.2897 2.82061 15.8905 3.4214 16.641 4.17197L18.5368 6.06774C19.8474 7.37835 20.8851 8.41598 21.5879 9.33714C22.311 10.2849 22.75 11.197 22.75 12.2623C22.75 13.3276 22.311 14.2397 21.5879 15.1875C20.8851 16.1087 19.8474 17.1463 18.5368 18.4569L18.4569 18.5368C17.1463 19.8474 16.1087 20.8851 15.1875 21.5879C14.2397 22.311 13.3276 22.75 12.2623 22.75C11.197 22.75 10.2849 22.311 9.33714 21.5879C8.41598 20.8851 7.37833 19.8474 6.06771 18.5368L4.17196 16.641C3.4214 15.8905 2.82061 15.2897 2.37538 14.7502C1.91482 14.1922 1.58372 13.6574 1.4017 13.0227C1.21969 12.3881 1.21701 11.7591 1.31181 11.0418C1.40345 10.3484 1.59451 9.52048 1.83319 8.48622L2.13385 7.18334C2.33302 6.32023 2.49543 5.61639 2.68821 5.05469C2.88955 4.46806 3.14313 3.9751 3.55912 3.55912C3.9751 3.14313 4.46806 2.88955 5.05469 2.68821C5.61639 2.49543 6.32023 2.33302 7.18335 2.13385L8.48622 1.83319C9.52047 1.59451 10.3484 1.40345 11.0418 1.31181ZM9.49094 7.99514C9.00278 7.50699 8.21133 7.50699 7.72317 7.99514C7.23502 8.4833 7.23502 9.27476 7.72317 9.76291C8.21133 10.2511 9.00278 10.2511 9.49094 9.76291C9.97909 9.27476 9.97909 8.4833 9.49094 7.99514ZM6.66251 6.93448C7.73645 5.86054 9.47766 5.86054 10.5516 6.93448C11.6255 8.00843 11.6255 9.74963 10.5516 10.8236C9.47766 11.8975 7.73645 11.8975 6.66251 10.8236C5.58857 9.74963 5.58857 8.00843 6.66251 6.93448ZM19.0511 10.9902C19.344 11.2831 19.344 11.7579 19.0511 12.0508L12.0721 19.0301C11.7792 19.323 11.3043 19.323 11.0114 19.0301C10.7185 18.7372 10.7185 18.2623 11.0114 17.9694L17.9904 10.9902C18.2833 10.6973 18.7582 10.6973 19.0511 10.9902Z"
+                                    fill="#808080" />
+                            </svg>
+                        </div>
+                        <div class="iconA">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path d="M11 16L13 8" stroke="#808080" stroke-width="2" stroke-linecap="round" />
+                                <path
+                                    d="M17 15L19.6961 12.3039V12.3039C19.8639 12.1361 19.8639 11.8639 19.6961 11.6961V11.6961L17 9"
+                                    stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path
+                                    d="M7 9L4.32151 11.6785V11.6785C4.14394 11.8561 4.14394 12.1439 4.32151 12.3215V12.3215L7 15"
+                                    stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div id="selectedPeople-2" class="selectedPeople">
+
+                    </div>
+                    <div onclick="addMore(this)" class="addmore" id="addMore">
+                        Πρόσθεσε στην καταχώρηση
+                    </div>
+                </div>
+            </div>`
+            document.getElementById("profilePicture-small").remove()
     }
 }
 
@@ -4876,7 +5028,7 @@ function loadSentToUser(emri, redo) {
                 const pfp = await getEvoxProfile(key);
                 let src = pfp; // Default to the pfp value from getEvoxProfile
     
-                console.log('Profile image fetched:', profileSrc);
+                //console.log('Profile image fetched:', profileSrc);
     
                 if (profileSrc) {
                     src = profileSrc.imageData; // If profile image is available, use it.
@@ -4970,7 +5122,7 @@ function showProfileInfo(emri) {
         const pfp = await getEvoxProfile(emri);
 
         let src = pfp; // Default to pfp value from getEvoxProfile
-        console.log('Profile image fetched:', profileSrc);
+        //console.log('Profile image fetched:', profileSrc);
 
         if (profileSrc) {
             src = profileSrc.imageData; // Use profile image if available
@@ -5060,7 +5212,7 @@ function showProfileInfo(emri) {
             const pfp = await getEvoxProfile(emri);
     
             let src = pfp; // Default to the pfp value from getEvoxProfile
-            console.log('Profile image fetched:', profileSrc);
+            //console.log('Profile image fetched:', profileSrc);
     
             if (profileSrc) {
                 src = profileSrc.imageData; // If profile image is available, use it.
