@@ -569,7 +569,7 @@
                             style="color: #636363;font-size: 14px;margin-top: 5px;margin-left: 0px;padding-left: 0px;width: 100%;font-weight: normal;">
                             Τι νέο υπάρχει;</p>
                     </div>
-
+                    
                     <div class="icons">
                         <div onclick="focusOnIcon(this)" class="iconA">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
@@ -1842,9 +1842,10 @@
                             </div>
                         </div>
                     </div>
-
+                    <input type="file" style="display: none;" id="evox-upload-box" accept="/*"
+                    onchange="sendFile(null, 'upload')">
                     <div class="icons">
-                        <div onclick="focusOnIcon(this)" class="iconA">
+                        <div onclick="uploadFile();focusOnIcon(this)" class="iconA">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
                                 fill="none">
                                 <path

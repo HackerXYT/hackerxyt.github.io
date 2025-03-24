@@ -530,6 +530,68 @@ function focusOnIcon(el) {
     })
 }
 
+function uploadFile() {
+    document.getElementById('evox-upload-box').click();
+}
+
+function sendFile(e, up) {
+    console.log(up === 'upload' && sessionStorage.getItem("current_sline") && localStorage.getItem("t50-username"))
+    if (e) {
+        
+        setTimeout(function () {
+            document.getElementById("secureline-upload-box").click()
+        }, 450)
+    } else if (up === 'upload' && sessionStorage.getItem("current_sline") && localStorage.getItem("t50-username")) {
+
+        const input = document.getElementById('evox-upload-box');
+        const file = input.files[0];
+
+        if (file) {
+            // Extract the file type (extension)
+            const fileType = file.name.split('.').pop(); // Get the part after the last dot
+            console.log('File Type:', fileType);
+
+
+            const reader = new FileReader();
+            reader.onload = function (el) {
+                const base64String = el.target.result;
+
+                console.log(base64String);
+
+                fetch(`https://data.evoxs.xyz/secureline`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        method: 'uploadFile',
+                        username: localStorage.getItem("t50-username"),
+                        recipient: sessionStorage.getItem("current_sline"),
+                        file: base64String,
+                        fileType: fileType
+                    })
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log(data);
+                        alert(`Req Complete ${data}`)
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        // Reset the input value to allow selecting the same file again
+        input.value = '';
+
+    } else {
+        console.warn("Secureline instance not found")
+    }
+}
+
 function storiesSpawned() {
     document.querySelectorAll('.app .stories .story').forEach(story => {
         const color1 = getRandomColor();
