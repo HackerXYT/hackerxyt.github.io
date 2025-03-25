@@ -1,6 +1,6 @@
 //Jeanne Service Worker.
 
-const CACHE_NAME = 'jeanne-cache-v2';
+const CACHE_NAME = 'jeanne-cache-v3';
 const STATIC_ASSETS = [
     '/jeanneBeta/',
 ];

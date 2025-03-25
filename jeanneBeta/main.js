@@ -534,61 +534,177 @@ function uploadFile() {
     document.getElementById('evox-upload-box').click();
 }
 
+let uploadedFiles = [];
+
 function processFile(event, type) {
     const input = document.getElementById('evox-upload-box');
     const files = input.files;
     const container = document.getElementById('evox-media-container');
-    
+
     if (!files.length) return;
-    
+
     container.innerHTML = ''; // Clear previous content
     container.style.marginTop = "10px"
+    const beforeData = `<div class="media">
+                                <div class="loadIndicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
+                                        <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
+                                </div>`
+    const afterData = `</div>`
     document.getElementById("floatingDiv").style.width = "89%"
+
+    const account = localStorage.getItem("jeanDarc_accountData")
+    if (!account) {
+        alert("Account Not Found")
+        return;
+    }
+    const par = JSON.parse(account)
+    const pin = par.pin
+    const name = par.name
+
     if (files.length === 1) {
         container.style.paddingRight = "0"
         const file = files[0];
-        
+
+        const randomString = [...Array(15)]
+            .map(() => Math.random().toString(36)[2])
+            .join('');
+
         if (file.type.startsWith('image/')) {
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(file);
-            img.style.maxWidth = '100%';
-            img.style.maxHeight = '360px';
-            container.appendChild(img);
+            container.innerHTML += `<div id="file-${randomString}" class="media" style="max-width: 100%; max-height: 360px;">
+                                <div id="file-media-${randomString}" class="loadIndicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
+                                        <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
+                                </div><img src="${URL.createObjectURL(file)}" style="max-width: 100%; max-height: 360px;">${afterData}`;
         } else if (file.type.startsWith('video/')) {
-            const video = document.createElement('video');
-            video.src = URL.createObjectURL(file);
-            video.controls = true;
-            video.style.maxWidth = '100%';
-            video.style.maxHeight = '360px';
-            container.appendChild(video);
+            container.innerHTML += `<div id="file-${randomString}" class="media" style="max-width: 100%; max-height: 360px;">
+                                <div id="file-media-${randomString}" class="loadIndicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
+                                        <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
+                                </div><video src="${URL.createObjectURL(file)}" style="max-width: 100%; max-height: 360px;" controls autoplay muted loop playsinline></video>${afterData}`;
+        } else {
+            return;
         }
+        const fileType = file.name.split('.').pop();
+        console.log('File Type:', fileType);
+
+        const reader = new FileReader();
+        reader.onload = function (el) {
+            const base64String = el.target.result;
+
+            //console.log(base64String);
+
+            fetch(`https://arc.evoxs.xyz/uploadFile`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    method: 'uploadFile',
+                    name: name,
+                    pin: pin,
+                    file: base64String,
+                    fileType: fileType
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById(`file-media-${randomString}`).style.display = 'none'
+                    //alert(data.file)
+                    uploadedFiles.push({
+                        server: data.server,
+                        name: data.file,
+                        type: data.fileType
+                    })
+                })
+                .catch(error => {
+                    console.error("Media upload error:", error);
+                    document.getElementById(`file-media-${randomString}`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="42px" height="42px" viewBox="0 0 24 24" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M11 13C11 13.5523 11.4477 14 12 14C12.5523 14 13 13.5523 13 13V10C13 9.44772 12.5523 9 12 9C11.4477 9 11 9.44772 11 10V13ZM13 15.9888C13 15.4365 12.5523 14.9888 12 14.9888C11.4477 14.9888 11 15.4365 11 15.9888V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V15.9888ZM9.37735 4.66136C10.5204 2.60393 13.4793 2.60393 14.6223 4.66136L21.2233 16.5431C22.3341 18.5427 20.8882 21 18.6008 21H5.39885C3.11139 21 1.66549 18.5427 2.77637 16.5431L9.37735 4.66136Z"
+                    fill="#fffb47" />
+            </svg>`
+                });
+        };
+
+        reader.readAsDataURL(file);
     } else {
         container.style.paddingRight = "20%"
         Array.from(files).forEach(file => {
+            const randomString = [...Array(15)]
+                .map(() => Math.random().toString(36)[2])
+                .join('');
             if (file.type.startsWith('image/')) {
-                const img = document.createElement('img');
-                img.src = URL.createObjectURL(file);
-                img.style.width = '180px';
-                img.style.height = '250px';
-                img.style.objectFit = 'cover';
-                container.appendChild(img);
+                container.innerHTML += `<div id="file-${randomString}" class="media" style="max-width: 100%; max-height: 360px;">
+                                <div id="file-media-${randomString}" class="loadIndicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
+                                        <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
+                                </div><img src="${URL.createObjectURL(file)}" style="max-width: 100%; max-height: 360px;">${afterData}`;
             } else if (file.type.startsWith('video/')) {
-                const video = document.createElement('video');
-                video.src = URL.createObjectURL(file);
-                video.controls = true;
-                video.style.width = '180px';
-                video.style.height = '250px';
-                container.appendChild(video);
+                container.innerHTML += `<div id="file-${randomString}" class="media" style="max-width: 100%; max-height: 360px;">
+                                <div id="file-media-${randomString}" class="loadIndicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
+                                        <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
+                                </div><video src="${URL.createObjectURL(file)}" style="max-width: 100%; max-height: 360px;" controls autoplay muted loop playsinline></video>${afterData}`;
+            } else {
+                return;
             }
+            const fileType = file.name.split('.').pop();
+            console.log('File Type:', fileType);
+
+            const reader = new FileReader();
+            reader.onload = function (el) {
+                const base64String = el.target.result;
+
+                //console.log(base64String);
+
+                fetch(`https://arc.evoxs.xyz/uploadFile`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        method: 'uploadFile',
+                        name: name,
+                        pin: pin,
+                        file: base64String,
+                        fileType: fileType
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById(`file-media-${randomString}`).style.display = 'none'
+                        uploadedFiles.push({
+                            server: data.server,
+                            name: data.file,
+                            type: data.fileType
+                        })
+                        //alert(data.file)
+                    })
+                    .catch(error => {
+                        console.error("Media upload error:", error);
+                        document.getElementById(`file-media-${randomString}`).innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="42px" height="42px" viewBox="0 0 24 24" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M11 13C11 13.5523 11.4477 14 12 14C12.5523 14 13 13.5523 13 13V10C13 9.44772 12.5523 9 12 9C11.4477 9 11 9.44772 11 10V13ZM13 15.9888C13 15.4365 12.5523 14.9888 12 14.9888C11.4477 14.9888 11 15.4365 11 15.9888V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V15.9888ZM9.37735 4.66136C10.5204 2.60393 13.4793 2.60393 14.6223 4.66136L21.2233 16.5431C22.3341 18.5427 20.8882 21 18.6008 21H5.39885C3.11139 21 1.66549 18.5427 2.77637 16.5431L9.37735 4.66136Z"
+                    fill="#fffb47" />
+            </svg>`
+                    });
+            };
+
+            reader.readAsDataURL(file);
         });
-        container.appendChild(gallery);
     }
+
+    Array.from(files).forEach(file => {
+        console.log(file)
+
+    })
 }
 
 function sendFile(e, up) {
     console.log(up === 'upload' && sessionStorage.getItem("current_sline") && localStorage.getItem("t50-username"))
     if (e) {
-        
+
         setTimeout(function () {
             document.getElementById("secureline-upload-box").click()
         }, 450)
@@ -607,7 +723,7 @@ function sendFile(e, up) {
             reader.onload = function (el) {
                 const base64String = el.target.result;
 
-                console.log(base64String);
+                //console.log(base64String);
 
                 fetch(`https://data.evoxs.xyz/secureline`, {
                     method: 'POST',
@@ -874,7 +990,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         }).catch(error => {
                             console.error("Jeanne D'arc Database is offline.")
-                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
+                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Περιμένετε..`
                             $("#tasks").fadeIn("fast")
                             $("#hexa").fadeOut("fast")
                             document.getElementById("typewriter").style.display = 'none'
@@ -1051,7 +1167,7 @@ function clickPIN(element) {
                             }
                         }).catch(error => {
                             console.error("Jeanne D'arc Database is offline.")
-                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
+                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Περιμένετε..`
                             $("#tasks").fadeIn("fast")
                             $("#hexa").fadeOut("fast")
                             document.getElementById("typewriter").style.display = 'none'
@@ -1102,7 +1218,7 @@ function clickPIN(element) {
                             }
                         }).catch(error => {
                             console.error("Jeanne D'arc Database is offline.")
-                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
+                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Περιμένετε..`
                             $("#tasks").fadeIn("fast")
                             $("#hexa").fadeOut("fast")
                             document.getElementById("typewriter").style.display = 'none'
@@ -1188,7 +1304,7 @@ function clickPIN(element) {
                                 }
                             }).catch(error => {
                                 console.error("Jeanne D'arc Database is offline.")
-                                document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
+                                document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Περιμένετε..`
                                 $("#tasks").fadeIn("fast")
                                 $("#hexa").fadeOut("fast")
                                 document.getElementById("typewriter").style.display = 'none'
@@ -1381,7 +1497,7 @@ function autoLogin() {
 
                 }).catch(error => {
                     console.error("Jeanne D'arc Database is offline.")
-                    document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Γίνεται επανασύνδεση..`
+                    document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Περιμένετε..`
                     $("#tasks").fadeIn("fast")
                     $("#hexa").fadeOut("fast")
                     document.getElementById("typewriter").style.display = 'none'
@@ -1670,6 +1786,8 @@ async function spawnRandom(redo) {
                     });
                 }
 
+                const cleaned = post.vleresim.replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
+
                 document.getElementById("foryou").innerHTML += `<div class="postInput" style="margin-bottom:10px;padding-bottom: 0;">
             <div class="profilePicture-in">
                 <img src="${src}">
@@ -1686,8 +1804,8 @@ async function spawnRandom(redo) {
                 
                 <div class="text-area-cont" style="position: relative;">
                     <p style="color: #fff;font-weight: normal;font-size: 14px;margin-top: 5px;">
-                        <span onclick="extMention('${post.marresi}')" class="mention ${getGender(removeTonos(post.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${post.marresi}</span>
-                        ${post.vleresim}
+                        <vox onclick="extMention('${post.marresi}')" class="mention ${getGender(removeTonos(post.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${post.marresi}</vox>
+                        ${cleaned}
                     </p>
                 </div>
                 
@@ -1734,7 +1852,7 @@ async function spawnRandom(redo) {
                                 </div>
                                 <div class="postContent">
                                     <p>
-                                    <span onclick="extMention('${foundName}')" class="mention ${getGender(removeTonos(foundName.split(" ")[0])) === "Female" ? "female" : "male"}">@${foundName}</span><br>
+                                    <vox onclick="extMention('${foundName}')" class="mention ${getGender(removeTonos(foundName.split(" ")[0])) === "Female" ? "female" : "male"}">@${foundName}</vox><br>
                                     Δεν μπορείς να δεις τις δημόσιες αναρτήσεις ακόμα, δοκίμασε ξανά σε λίγες μέρες ή ζήτα πρόσβαση από τους διαχειριστές.
                                     </p>
                                 </div>
@@ -2773,7 +2891,7 @@ async function getEvoxProfile(name) {
             }
             const regex = /\/([^\/]+)\.evox$/;
             const match = data.match(regex);
-            console.log(match)
+            //console.log(match)
             if (match) {
                 const extracted = match[1];
                 socialUsername = extracted;
@@ -4082,6 +4200,31 @@ function loadSentByUser() {
                 //}
                 //fetchAndSaveImage(sent.marresi, pfp);
                 // Build the HTML for the post.
+                const regex = /%img:server\((.*?)\):mediaId\((.*?)\):mediaType\((.*?)\)%/g;
+                const postFiles = [];
+                let match;
+                while ((match = regex.exec(sent.contents.vleresim)) !== null) {
+                    postFiles.push({ server: match[1], id: match[2], type: match[3] });
+                }
+                const cleanText = sent.contents.vleresim.replace(regex, '');
+                if (postFiles.length > 0) {
+                    console.log("postFiles:", postFiles);
+                    console.log("cleanText:", cleanText.trim());
+                }
+                let media = ''
+                const acc = JSON.parse(account_data)
+                let hasMedia = false
+                postFiles.forEach(async (file) => {
+                    hasMedia = true
+                    media += `<div class="media" style="max-width: 100%; max-height: 360px;">
+                                <div style="display:none" class="loadIndicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
+                                        <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
+                                </div>
+                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://arc.evoxs.xyz/?metode=getFile&emri=${foundName}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}` : "snap.png"}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
+                })
+
+                const cleaned = cleanText.trim().replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
                 const ready = `
             <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
                 <div class="post">
@@ -4093,12 +4236,15 @@ function loadSentByUser() {
                             <p onclick="extMention('${foundName}')">${foundName}</p>
                             <span>${timeAgoInGreek(sent.contents.date)}</span>
                         </div>
-                        <div class="postContent">
-                            <p><span onclick="extMention('${sent.marresi}')" class="mention ${getGender(removeTonos(sent.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${sent.marresi}</span>
-                                ${sent.contents.vleresim.includes("<img")
-                        ? sent.contents.vleresim.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
-                        : sent.contents.vleresim}
+                        <div class="postContent" style="height: auto;">
+                            <p><vox onclick="extMention('${sent.marresi}')" class="mention ${getGender(removeTonos(sent.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${sent.marresi}</vox>
+                                ${cleaned.includes("<img")
+                        ? cleaned.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
+                        : cleaned}
                             </p>
+                        </div>
+                        <div class="mediaContainer"${hasMedia ? "style='margin-top: 10px;'" : ""}>
+                        ${media}
                         </div>
                     </div>
                 </div>
@@ -4147,6 +4293,8 @@ function loadSentByUser() {
     setTimeout(function () {
         try {
             if (localStorage.getItem("sentByUser")) {
+                loadFresh()
+                return;
                 spawnIn(JSON.parse(localStorage.getItem("sentByUser")), true)
             } else {
                 loadFresh()
@@ -4226,6 +4374,87 @@ function setTag(emri, el) {
                         </div>
                     </div>`
     //})
+}
+
+function postNow(el) {
+    //Work on dataIn
+    dataIn = {}
+    if (!el.classList.contains("not-ready")) {
+        closePostCreate('frontend')
+        document.getElementById("icon-checkmark").style.display = 'none'
+        document.getElementById("icon-error").style.display = 'none'
+        document.getElementById("icon-spinner").style.display = null;
+        document.getElementById("notice-text").innerText = 'Γίνεται μεταφόρτωση..'
+        document.getElementById("notice-main").classList.add("active")
+        selectedPeople.forEach(person => {
+            let files = ''
+            uploadedFiles.forEach(file => {
+                files += `%img:server(${file.server}):mediaId(${file.name}):mediaType(${file.type})%`
+            })
+            let tags = ''
+            selectedPeople.filter(item => item !== person).forEach(tag => {
+                tags += `@${tag} `
+            })
+            dataIn[person] = `${tags}${document.getElementById("input-textarea").value}${files}`
+            dataIn[`${person}-question`] = 'Τι νέο υπάρχει;'
+        })
+        console.log("PostData:", dataIn)
+        const userData = JSON.parse(localStorage.getItem("jeanDarc_accountData"));
+        const payload = {
+            metode: "vleresimet",
+            emri: foundName || userData.name,
+            pin: userData.pin,
+            parashtresat: JSON.stringify(dataIn),
+        };
+
+        fetch("https://arc.evoxs.xyz/saveRatings", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        })
+            .then(response => response.text())
+            .then(data => {
+                if (data === "Kontrolloni json!") {
+                    document.getElementById("icon-error").style.display = null
+                    document.getElementById("icon-checkmark").style.display = 'none';
+                    document.getElementById("icon-spinner").style.display = 'none';
+                    document.getElementById("notice-text").innerText = 'Τα δεδομένα δεν είναι σωστά δομημένα.'
+                    setTimeout(function () {
+                        alert("Αποτυχία σύνδεσης με τον διακομιστή. Οι καταχωρήσεις σας αποθηκεύτηκαν στην συσκευή σας. Δοκιμάστε αργότερα ή επανεκκινήστε την εφαρμογή.");
+                        document.getElementById("notice-main").classList.remove("active")
+                    }, 10000)
+                    console.error("JSON error:", data, dataIn);
+                } else {
+                    const res = JSON.parse(data);
+                    console.log("Success", res);
+                    document.getElementById("icon-checkmark").style.display = null
+                    document.getElementById("icon-spinner").style.display = 'none';
+                    document.getElementById("notice-text").innerText = 'Επιτυχία!'
+                    setTimeout(function () {
+                        document.getElementById("notice-main").classList.remove("active")
+                    }, 4000)
+
+                }
+            })
+            .catch(error => {
+                localStorage.setItem("jeanneBackup", JSON.stringify(dataIn));
+                if (!hasLoginFailed) {
+                    document.getElementById("icon-error").style.display = null
+                    document.getElementById("icon-checkmark").style.display = 'none';
+                    document.getElementById("icon-spinner").style.display = 'none';
+                    document.getElementById("notice-text").innerText = 'Αποτυχία. Επανεκκινήστε την εφαρμογή.'
+                    setTimeout(function () {
+                        alert("Αποτυχία σύνδεσης με τον διακομιστή. Οι καταχωρήσεις σας αποθηκεύτηκαν στην συσκευή σας. Δοκιμάστε αργότερα ή επανεκκινήστε την εφαρμογή.");
+                        document.getElementById("notice-main").classList.remove("active")
+                    }, 10000)
+                    //
+                }
+                console.error("Jeanne D'arc Database is offline.");
+                console.log("Error:", error);
+            });
+    } else {
+        alert("Το περιεχόμενο είναι κενό")
+    }
 }
 
 function removeTag(emri) {
@@ -4411,10 +4640,10 @@ function adjustFooterPosition() {
 }
 
 function addMore(el) {
-    if(el.classList.contains("ready")) {
+    if (el.classList.contains("ready")) {
         document.getElementById("postInput").style.marginBottom = '0'
         document.getElementById("addMore").remove()
-        
+
         document.getElementById("createPost").innerHTML += `<div class="postInput" id="postInput">
                 <div class="profilePicture-in">
                     <img src="${document.getElementById("profilePicture-main").src}">
@@ -4499,7 +4728,7 @@ function addMore(el) {
                     </div>
                 </div>
             </div>`
-            document.getElementById("profilePicture-small").remove()
+        document.getElementById("profilePicture-small").remove()
     }
 }
 
@@ -4929,7 +5158,7 @@ function spawnItems(names, loadMore, oringinal) {
 
     Promise.all(fetchPromises).then(() => {
         search_loadedUsers = [...search_loadedUsers, ...oringinal]
-        console.log("HTML", html)
+        //console.log("HTML", html)
         if (html !== '') {
             if (loadMore) {
                 document.getElementById("allUsers").innerHTML += html;
@@ -4954,17 +5183,17 @@ function switchToSentToUser(el) {
 
 function switchToHome_Search(el, justfront) {
     document.getElementById("carouseli02").classList.remove("active")
-    if(!el) {
+    if (!el) {
         document.getElementById("carouseli01").classList.add("active")
     } else {
         el.classList.add("active")
     }
     document.getElementById("kataxoriseis").style.display = 'flex'
     document.getElementById("touser").style.display = 'none'
-    if(!justfront) {
+    if (!justfront) {
         showProfileInfo(lastActiveSearchUser)
     }
-    
+
 }
 
 function loadSentToUser(emri, redo) {
@@ -5019,7 +5248,7 @@ function loadSentToUser(emri, redo) {
 
     async function spawnIn(sentbyuser, local) {
         let html = '';
-    
+
         // Convert entries into an array of promises using map
         const promises = Object.entries(sentbyuser)
             .filter(([key]) => key !== "Name" && key !== "length")
@@ -5027,17 +5256,43 @@ function loadSentToUser(emri, redo) {
                 const profileSrc = await getImage(key);
                 const pfp = await getEvoxProfile(key);
                 let src = pfp; // Default to the pfp value from getEvoxProfile
-    
+
                 //console.log('Profile image fetched:', profileSrc);
-    
+
                 if (profileSrc) {
                     src = profileSrc.imageData; // If profile image is available, use it.
                 }
-    
+
                 const emri = key; // Assuming 'emri' should be the key (username or name)
                 fetchAndSaveImage(emri, pfp);
                 console.log(`${key}: ${value}`);
-    
+
+                const regex = /%img:server\((.*?)\):mediaId\((.*?)\):mediaType\((.*?)\)%/g;
+                const postFiles = [];
+                let match;
+                while ((match = regex.exec(value)) !== null) {
+                    postFiles.push({ server: match[1], id: match[2], type: match[3] });
+                }
+                const cleanText = value.replace(regex, '');
+                if (postFiles.length > 0) {
+                    console.log("postFiles:", postFiles);
+                    console.log("cleanText:", cleanText.trim());
+                }
+                let media = ''
+                const acc = account_data
+                let hasMedia = false
+                postFiles.forEach(async (file) => {
+                    hasMedia = true
+                    media += `<div class="media" style="max-width: 100%; max-height: 360px;">
+                                <div style="display:none" class="loadIndicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
+                                        <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
+                                </div>
+                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://arc.evoxs.xyz/?metode=getFile&emri=${key}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}` : "snap.png"}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
+                })
+
+                const cleaned = cleanText.trim().replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
+
                 return `
                     <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
                         <div class="post">
@@ -5048,32 +5303,36 @@ function loadSentToUser(emri, redo) {
                                 <div class="userInfo">
                                     <p onclick="extMention('${key}')">${key}</p>
                                 </div>
-                                <div class="postContent">
-                                    <p><span onclick="extMention('${pars.name}')" class="mention ${getGender(removeTonos(pars.name.split(" ")[0])) === "Female" ? "female" : "male"}">@${pars.name}</span>
-                                        ${value.includes("<img")
-                                            ? value.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
-                                            : value}
+                                <div class="postContent" style="height: auto;">
+                                    <p><vox onclick="extMention('${pars.name}')" class="mention ${getGender(removeTonos(pars.name.split(" ")[0])) === "Female" ? "female" : "male"}">@${pars.name}</vox>
+                                        ${cleaned.includes("<img")
+                        ? cleaned.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
+                        : cleaned}
                                     </p>
                                 </div>
+                                <div class="mediaContainer"${hasMedia ? "style='margin-top: 10px;'" : ""}>
+                                ${media}
+                                </div>
                             </div>
+                            
                         </div>
                     </div>
                 `;
             });
-    
+
         // Wait for all promises to resolve
         const htmlArray = await Promise.all(promises);
         html = htmlArray.join('');
-    
+
         console.log("All user posts have been rendered!");
-    
+
         if (local === true) {
             loadFresh(true);
         }
-    
+
         document.getElementById("sentToSelectedUser").innerHTML = html;
     }
-    
+
 
     function loadFresh(dontSpawn) {
         fetch(`https://arc.evoxs.xyz/?metode=usersTo&pin=${pars.pin}&emri=${pars.emri}&id=${pars.name}`)
@@ -5109,7 +5368,7 @@ function showProfileInfo(emri) {
     lastActiveSearchUser = emri
     const container = document.getElementById("search-in");
     const prevContainer = document.getElementById("search-discovery")
-    
+
     document.getElementById("userName-search").innerText = emri
     getRandomClassmates(emri).then(usersJson => {
         document.getElementById("classIcons-search").innerHTML = '';
@@ -5188,36 +5447,36 @@ function showProfileInfo(emri) {
                             </div>
                         </div>`
         }
-        if(!redo) {
+        if (!redo) {
             document.getElementById("sentBySelectedUser").innerHTML = skel;
         }
-        
+
         const account_data_lc = localStorage.getItem("jeanDarc_accountData")
         if (!account_data_lc) {
             console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
             return;
         }
-    
+
         const account_data = JSON.parse(account_data_lc)
-    
+
         const pars = {
             pin: account_data.pin, //self pin
             name: emri //target user
         }
-    
-    
+
+
         async function spawnIn(sentbyuser, local) {
             let html = ''
             const profileSrc = await getImage(emri);
             const pfp = await getEvoxProfile(emri);
-    
+
             let src = pfp; // Default to the pfp value from getEvoxProfile
             //console.log('Profile image fetched:', profileSrc);
-    
+
             if (profileSrc) {
                 src = profileSrc.imageData; // If profile image is available, use it.
             }
-    
+
             fetchAndSaveImage(emri, pfp);
             // Assuming getImage and getEvoxProfile are asynchronous functions that return promises.
             Promise.all(
@@ -5232,6 +5491,35 @@ function showProfileInfo(emri) {
                     //}
                     //fetchAndSaveImage(sent.marresi, pfp);
                     // Build the HTML for the post.
+                    const regex = /%img:server\((.*?)\):mediaId\((.*?)\):mediaType\((.*?)\)%/g;
+                    const postFiles = [];
+                    let match;
+                    while ((match = regex.exec(sent.contents.vleresim)) !== null) {
+                        postFiles.push({ server: match[1], id: match[2], type: match[3] });
+                    }
+                    const cleanText = sent.contents.vleresim.replace(regex, '');
+                    if (postFiles.length > 0) {
+                        console.log("postFiles:", postFiles);
+                        console.log("cleanText:", cleanText.trim());
+                    }
+                    let media = ''
+                    const acc = account_data
+                    let hasMedia = false
+                    postFiles.forEach(async (file) => {
+                        hasMedia = true
+                        media += `<div class="media" style="max-width: 100%; max-height: 360px;">
+                                <div style="display:none" class="loadIndicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
+                                        <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
+                                </div>
+                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://arc.evoxs.xyz/?metode=getFile&emri=${emri}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}` : "snap.png"}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
+                    })
+
+                    const cleaned = cleanText.trim().replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
+
+
+
+
                     const ready = `
                 <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
                     <div class="post">
@@ -5243,12 +5531,15 @@ function showProfileInfo(emri) {
                                 <p onclick="extMention('${emri}')">${emri}</p>
                                 <span>${timeAgoInGreek(sent.contents.date)}</span>
                             </div>
-                            <div class="postContent">
-                                <p><span onclick="extMention('${sent.marresi}')" class="mention ${getGender(removeTonos(sent.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${sent.marresi}</span>
-                                    ${sent.contents.vleresim.includes("<img")
-                            ? sent.contents.vleresim.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
-                            : sent.contents.vleresim}
+                            <div class="postContent" style="height: auto;">
+                                <p><vox onclick="extMention('${sent.marresi}')" class="mention ${getGender(removeTonos(sent.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${sent.marresi}</vox>
+                                    ${cleaned.includes("<img")
+                            ? cleaned.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
+                            : cleaned}
                                 </p>
+                            </div>
+                            <div class="mediaContainer"${hasMedia ? "style='margin-top: 10px;'" : ""}>
+                            ${media}
                             </div>
                         </div>
                     </div>
@@ -5260,42 +5551,42 @@ function showProfileInfo(emri) {
                 // Join all the HTML strings into one large HTML block.
                 const html = htmlArray.join('');
                 console.log("All user posts have been rendered!");
-    
+
                 // Do something after everything is done
                 if (local === true) {
                     loadFresh(true);
                 }
                 document.getElementById("sentBySelectedUser").innerHTML = html;
             });
-    
-    
+
+
         }
-    
+
         function loadFresh(dontSpawn) {
             fetch(`https://arc.evoxs.xyz/?metode=userSent&pin=${pars.pin}&emri=${pars.name}`)
                 .then(response => response.json())
                 .then(sentbyuser => {
-                    if(sentbyuser.length === 0) {
+                    if (sentbyuser.length === 0) {
                         document.getElementById("sentBySelectedUser").innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;text-align: center;margin-top:15px;"><svg xmlns="http://www.w3.org/2000/svg" width="45px" height="45px" viewBox="0 0 24 24" fill="none" style="margin-bottom: 10px;margin-top:10px;">
 <path d="M15.4998 5.50067L18.3282 8.3291M13.3254 7.67502L17.4107 3.58969C18.1918 2.80865 19.4581 2.80864 20.2392 3.58969C21.0202 4.37074 21.0202 5.63707 20.2392 6.41812L16.1538 10.5034M3 3L10.5002 10.5002M21 21L13.3286 13.3286M13.3286 13.3286L8.37744 18.2798C7.61579 19.0415 7.23497 19.4223 6.8012 19.7252C6.41618 19.994 6.00093 20.2167 5.56398 20.3887C5.07171 20.5824 4.54375 20.6889 3.48793 20.902L3 21.0004L3.04745 20.6683C3.21536 19.4929 3.29932 18.9052 3.49029 18.3565C3.65975 17.8697 3.89124 17.4067 4.17906 16.979C4.50341 16.497 4.92319 16.0772 5.76274 15.2377L10.5002 10.5002M13.3286 13.3286L10.5002 10.5002" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg><p style="">Ο χρήστης δεν έχει κάνει καμία καταχώρηση.</p></div>`;
-                        return;   
+                        return;
                     }
                     localStorage.setItem(`sentByUser-${emri}`, JSON.stringify(sentbyuser))
                     if (!dontSpawn) {
                         spawnIn(sentbyuser)
                     }
 
-                    
-    
-    
-    
-    
+
+
+
+
+
                 }).catch(error => {
                     console.error(error);
                 });
         }
-    
+
         setTimeout(function () {
             try {
                 if (localStorage.getItem(`sentByUser-${emri}`)) {
@@ -5634,7 +5925,7 @@ function registerSW() {
                 console.error('Service Worker registration failed:', error);
             });
     }
-    
+
 }
 
 function unregisterSW() {
@@ -5642,7 +5933,7 @@ function unregisterSW() {
         navigator.serviceWorker.getRegistrations().then(registrations => {
             registrations.forEach(registration => {
                 registration.unregister().then(() => {
-                    alert('Service Worker unregistered:', registration);s
+                    alert('Service Worker unregistered:', registration); s
                     console.log('Service Worker unregistered:', registration);
                 });
             });
@@ -5651,11 +5942,11 @@ function unregisterSW() {
             console.error('Error unregistering Service Worker:', error);
         });
     }
-    
+
 }
 
 function extMention(emri) {
-    if(emri === foundName) {
+    if (emri === foundName) {
         console.log("Is self user")
         openProfile(document.getElementById("profile-switch"))
         return;
