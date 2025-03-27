@@ -17,7 +17,7 @@ self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
     
     // Allow network requests for non-evoxs.xyz and exclude data.evoxs.xyz
-    if (!url.hostname.endsWith('evoxs.xyz') || url.hostname.startsWith('data.')) {
+    if (!url.hostname.endsWith('evoxs.xyz') || url.hostname.startsWith('data.') || url.hostname.startsWith('arc.')) {
         return;
     }
     
