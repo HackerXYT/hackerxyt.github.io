@@ -5075,11 +5075,13 @@ function openDiscovery(el) {
 function spawnItems(names, loadMore, oringinal) {
 
     const fullNames = Object.keys(names.names);
+    console.log("fn:",fullNames)
     const informacion_local = localStorage.getItem("jeanne_informacion");
     let informacion = {};
     let html = '';
     let count = 0
     let target = oringinal.length
+    console.log("spawning")
     let fetchPromises = fullNames.map(name => {
         return new Promise((resolve, reject) => {
             if (search_loadedUsers.includes(name)) {
@@ -5100,6 +5102,8 @@ function spawnItems(names, loadMore, oringinal) {
                     console.log(profileSrc);
                     if (profileSrc) {
                         src = profileSrc.imageData;
+                    } else {
+                        src = info.foto
                     }
 
                     html += `
@@ -5137,6 +5141,18 @@ function spawnItems(names, loadMore, oringinal) {
                 const localInfo = JSON.parse(informacion_local);
                 if (localInfo[name]) {
                     spawn(localInfo[name]);
+                } else {
+                    console.log("No localInfo name")
+                    fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
+                    .then(response => response.json())
+                    .then(info => {
+                        informacion[name] = info;
+                        spawn(info);
+                    })
+                    .catch(error => {
+                        console.error("Jeanne D'arc Database is offline:", error);
+                        reject(error); // Reject promise if fetch fails
+                    });
                 }
             } else {
                 fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
@@ -5158,13 +5174,16 @@ function spawnItems(names, loadMore, oringinal) {
 
     Promise.all(fetchPromises).then(() => {
         search_loadedUsers = [...search_loadedUsers, ...oringinal]
-        //console.log("HTML", html)
+        console.log("HTML", html)
         if (html !== '') {
+            console.log("more", loadMore)
             if (loadMore) {
                 document.getElementById("allUsers").innerHTML += html;
             } else {
                 document.getElementById("allUsers").innerHTML = html;
             }
+        } else {
+            console.log("html is empty")
         }
         if (Object.keys(informacion).length !== 0) {
             localStorage.setItem("jeanne_informacion", JSON.stringify(informacion));
@@ -5652,7 +5671,7 @@ function openSearch(el, inBackground) {
     fetch(`https://arc.evoxs.xyz/?metode=rekomandimet&emri=${parsed.name}&pin=${atob(parsed.pin)}`)
         .then(response => response.json())
         .then(names => {
-
+            console.log("spawning items")
             let json = { names: {} }
             names.forEach(name => {
                 json.names[name] = {}
