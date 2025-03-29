@@ -629,7 +629,7 @@ function processFile(event, type) {
 
         reader.readAsDataURL(file);
     } else {
-        container.style.paddingRight = "20%"
+        container.style.paddingRight = "30%"
         Array.from(files).forEach(file => {
             const randomString = [...Array(15)]
                 .map(() => Math.random().toString(36)[2])
@@ -1636,8 +1636,13 @@ function attach() {
 
 }
 
+function scrollOneItemUp(element) {
+    document.getElementById(element).scrollIntoView({ behavior: "smooth" });
+}
+
+
 let hasCurrentSixLoaded = true;
-async function spawnRandom(redo) {
+async function spawnRandom(redo, frontEndLoading) {
     const lc = localStorage.getItem("jeanDarc_accountData");
     if (!lc) return;
 
@@ -1686,8 +1691,10 @@ async function spawnRandom(redo) {
         //console.log("randata:", ranData)
         if (ranData !== 'Denied') {
             const data = JSON.parse(ranData);
-
+            let icount = 0
             for (const post of data) {
+                icount++
+
                 if (redo) {
                     const children = document.getElementById("foryou").querySelectorAll("div.postContainer"); // Ensure selecting only relevant containers
 
@@ -1712,26 +1719,25 @@ async function spawnRandom(redo) {
                 const profileSrc = await getImage(post.emri); //the image of the person reffered
                 const pfp = await getEvoxProfile(post.emri);
 
-                let src = pfp; // Default to pfp value from getEvoxProfile
-                //console.log('Profile image fetched:', profileSrc);
+                let src = pfp;
 
                 if (profileSrc) {
-                    src = profileSrc.imageData; // Use profile image if available
+                    src = profileSrc.imageData;
                 }
 
-                await fetchAndSaveImage(post.emri, pfp);
+                //await fetchAndSaveImage(post.emri, pfp);
 
                 const profileReceiver = await getImage(post.marresi); //the image of the person reffered
                 const pfp_receiver = await getEvoxProfile(post.marresi);
 
-                let src2 = pfp_receiver; // Default to pfp value from getEvoxProfile
-                //console.log('Profile image fetched:', profileReceiver);
+                let src2 = pfp_receiver;
 
                 if (profileReceiver) {
-                    src2 = profileReceiver.imageData; // Use profile image if available
+                    src2 = profileReceiver.imageData;
                 }
 
-                await fetchAndSaveImage(post.marresi, pfp_receiver);
+
+                //await fetchAndSaveImage(post.marresi, pfp_receiver); evoxnew
 
 
                 //
@@ -1747,37 +1753,6 @@ async function spawnRandom(redo) {
                     srcs.push(srcd)
                 }
                 //await fetchAndSaveImage(post.marresi, pfp_receiver);
-
-
-
-                //document.getElementById("foryou").innerHTML += `
-                //    <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
-                //        <div class="post">
-                //            <div class="profilePicture">
-                //                <img src="${src}">
-                //            </div>
-                //            <div class="postInfo">
-                //                <div class="userInfo">
-                //                    <p>${post.emri}</p>
-                //                    <span>${timeAgoInGreek(post.date)}</span>
-                //                </div>
-                //                <div class="postContent">
-                //                    <p>
-                //                    <span class="mention ${getGender(removeTonos(post.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${post.marresi}</span>
-                //                    ${post.vleresim}
-                //                    </p>
-                //                </div>
-                //                <div class="postBottom">
-                //                    <div class="postAction">
-                //                    <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                //                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                //                    </svg>
-                //                    </div>
-                //                </div>
-                //            </div>
-                //        </div>
-                //        
-                //    </div>`;
                 if (post === data[0]) {
                     const children = document.getElementById("foryou").querySelectorAll("div.postContainer.skel"); // Ensure selecting only relevant containers
 
@@ -1786,9 +1761,13 @@ async function spawnRandom(redo) {
                     });
                 }
 
-                const cleaned = post.vleresim.replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
+                if (document.getElementById("scrollToMe")) {
+                    document.getElementById("scrollToMe").id = ""
+                }
 
-                document.getElementById("foryou").innerHTML += `<div class="postInput" style="margin-bottom:10px;padding-bottom: 0;">
+                const cleaned = post.vleresim.replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
+                console.log('Spawning ForYou', post.emri)
+                document.getElementById("foryou").innerHTML += `<div ${icount === 1 ? `id="scrollToMe"` : ""} class="postInput" style="margin-bottom:10px;padding-bottom: 0;">
             <div class="profilePicture-in">
                 <img src="${src}">
                 <div class="line-x"></div>
@@ -1835,6 +1814,18 @@ async function spawnRandom(redo) {
                 </div>
             </div>
         </div>`
+                if (icount === 1) {
+                    console.log("i is 0")
+                    //scrollOneItemUp(document.getElementById("scrollToMe"));
+                } else {
+                    console.warn(i)
+                }
+
+            }
+            if (frontEndLoading) {
+                isLoading2 = false;
+                loadingIndicatorFy.style.opacity = "0";
+                loadingIndicatorFy.classList.remove("scaleUp")
 
             }
             hasCurrentSixLoaded = true;
@@ -1871,6 +1862,52 @@ async function spawnRandom(redo) {
     }
 }
 
+function downloadProfiles() {
+    fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
+        .then(response => response.json())
+        .then(names => {
+            namesData = names
+            const fullNames = Object.keys(names.names);
+            //console.log(fullNames)
+            let downloaded = 0
+            fullNames.forEach(name => {
+                getImage(name).then(profileSrc => {
+                    if (profileSrc) {
+                        downloaded++
+                    } else {
+                        const checkDl = setInterval(function () {
+                            getImage(name, 'DONTMAKENEWAJAX').then(profileSrc => {
+                                if (profileSrc) {
+                                    downloaded++
+                                    clearInterval(checkDl)
+                                }
+                            });
+                        }, 1500)
+                    }
+
+                });
+
+            })
+            const intmain = setInterval(function () {
+                const all = fullNames.length
+                //current = downloaded
+                const percentage = Number.parseInt((downloaded * 100) / all)
+                //document.getElementById("downloaded").innerHTML = percentage + "%"
+                //console.log(percentage)
+                if(percentage === 100) {
+                    clearInterval(intmain)
+                }
+            }, 200)
+
+
+        }).catch(error => {
+            console.error("Jeanne D'arc Database is offline.")
+            console.log('Error:', error);
+        });
+
+}
+
+downloadProfiles()
 let foryoudiv = document.getElementById("home");
 let loadingIndicatorFy = document.getElementById("loadingIndicator-fy");
 let isLoading2 = false; // Prevent multiple triggers
@@ -1890,7 +1927,7 @@ foryoudiv.addEventListener("scroll", function () {
 
         setTimeout(() => {
             console.log("triggering more load")
-            spawnRandom(true)
+            spawnRandom(true, "loadingActive")
 
             isLoading2 = false;
             loadingIndicatorFy.style.opacity = "0";
@@ -2873,8 +2910,7 @@ function animateNumberChange(element, targetValue) {
 async function getEvoxProfile(name) {
     if (name === null) { return; }
     //console.log("Getting pfp for", name);
-
-    try {
+    async function rn() {
         const response = await fetch(`https://arc.evoxs.xyz/?metode=fotoMerrni&emri=${name}`);
         const data = await response.text();
 
@@ -2906,13 +2942,23 @@ async function getEvoxProfile(name) {
                     document.getElementById("isInstagramed").style.display = 'none'
                 }
             }
+            localStorage.setItem(`ProfileSrc_${name}`, data)
             fetchAndSaveImage(name, data)
             return data;
         } else {
             const returning = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${name}_jeanDarc`
+            localStorage.setItem(`ProfileSrc_${name}`, `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${name}_jeanDarc`)
             fetchAndSaveImage(name, returning)
             return returning;  // Return default fallback URL
         }
+    }
+    try {
+        if (localStorage.getItem(`ProfileSrc_${name}`)) {
+            return localStorage.getItem(`ProfileSrc_${name}`);
+        } else {
+            return await rn()
+        }
+
     } catch (error) {
         console.error("Jeanne D'arc Database is offline.");
         console.log('Error:', error);
@@ -5075,7 +5121,7 @@ function openDiscovery(el) {
 function spawnItems(names, loadMore, oringinal) {
 
     const fullNames = Object.keys(names.names);
-    console.log("fn:",fullNames)
+    console.log("fn:", fullNames)
     const informacion_local = localStorage.getItem("jeanne_informacion");
     let informacion = {};
     let html = '';
@@ -5144,15 +5190,15 @@ function spawnItems(names, loadMore, oringinal) {
                 } else {
                     console.log("No localInfo name")
                     fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
-                    .then(response => response.json())
-                    .then(info => {
-                        informacion[name] = info;
-                        spawn(info);
-                    })
-                    .catch(error => {
-                        console.error("Jeanne D'arc Database is offline:", error);
-                        reject(error); // Reject promise if fetch fails
-                    });
+                        .then(response => response.json())
+                        .then(info => {
+                            informacion[name] = info;
+                            spawn(info);
+                        })
+                        .catch(error => {
+                            console.error("Jeanne D'arc Database is offline:", error);
+                            reject(error); // Reject promise if fetch fails
+                        });
                 }
             } else {
                 fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
@@ -5174,9 +5220,9 @@ function spawnItems(names, loadMore, oringinal) {
 
     Promise.all(fetchPromises).then(() => {
         search_loadedUsers = [...search_loadedUsers, ...oringinal]
-        console.log("HTML", html)
+        //console.log("HTML", html)
         if (html !== '') {
-            console.log("more", loadMore)
+            //console.log("more", loadMore)
             if (loadMore) {
                 document.getElementById("allUsers").innerHTML += html;
             } else {
@@ -5973,4 +6019,56 @@ function extMention(emri) {
     console.log("Mentioned:", emri)
     openSearch(document.getElementById("search-switch"))
     showProfileInfo(emri)
+}
+
+function notificationsStart() {
+    async function subscribeToPush() {
+        const registration = await navigator.serviceWorker.ready;
+        const subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: 'BA15u7YIY1VPm9ulrTmaG_dTL1tJj59pso6K46lc2i45u-r1bmdl1t6KOrHxMmzyn8ZDQelik0mGn_blW9gAhg4'
+        });
+        console.log("Push Subscription:", JSON.stringify(subscription));
+
+        const account = localStorage.getItem("jeanDarc_accountData")
+        if(account) {
+            const info = JSON.parse(account)
+            const payload = {
+                emri: info.name,
+                pin: atob(info.pin),
+                subscription: subscription
+            }
+            // Send subscription to your server
+            await fetch('https://arc.evoxs.xyz/subscribeFL', {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: { 'Content-Type': 'application/json' }
+            });
+        }
+        
+    }
+
+    async function requestNotificationPermission() {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+            alert("Notification permission granted.");
+            subscribeToPush();
+        } else {
+            alert("Notification permission denied.");
+        }
+    }
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+        navigator.serviceWorker.register('./service-worker.js')
+            .then(registration => {
+                requestNotificationPermission();
+            })
+            .catch(error => {
+                console.error('Service Worker registration failed:', error);
+            });
+    }
+    
+    
+
+    
+    
 }

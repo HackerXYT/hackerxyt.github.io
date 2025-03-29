@@ -42,7 +42,8 @@ async function saveImage(id, imageData) {
 }
 
 
-async function getImage(id) {
+async function getImage(id, DONTMAKENEWAJAX) {
+    //console.log(id)
     const db = await openDB();
     const tx = db.transaction(STORE_NAME, 'readonly');
     const store = tx.objectStore(STORE_NAME);
@@ -51,6 +52,12 @@ async function getImage(id) {
         request.onsuccess = () => {
             //console.log('Image fetched:', request.result);  // Log the result
             resolve(request.result);
+            if(!DONTMAKENEWAJAX) {
+                getEvoxProfile(id).then(profileSrc => {
+                    fetchAndSaveImage(id, profileSrc)
+                });
+            }
+            
         };
         request.onerror = () => {
             console.error('Error fetching image for ID:', id);  // Log error
@@ -80,6 +87,6 @@ async function fetchAndSaveImage(id, imageUrl) {
             saveImage(id, reader.result); // Store as base64
         };
     } catch (error) {
-        console.error('Error fetching image:', error);
+        //console.error('Error fetching image:', error);
     }
 }

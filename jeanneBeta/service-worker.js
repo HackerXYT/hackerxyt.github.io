@@ -1,6 +1,15 @@
 //Jeanne Service Worker.
 
-const CACHE_NAME = 'jeanne-cache-v3';
+self.addEventListener('push', event => {
+    const data = event.data ? event.data.json() : {};
+    self.registration.showNotification(data.title, {
+        body: data.message,
+        icon: './appLogoV2.png',
+    });
+});
+
+
+const CACHE_NAME = 'jeanne-cache-v4';
 const STATIC_ASSETS = [
     '/jeanneBeta/',
 ];

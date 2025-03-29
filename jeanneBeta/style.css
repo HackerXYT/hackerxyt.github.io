@@ -838,7 +838,7 @@ img {
     display: flex;
     display: none;
     flex-direction: column;
-    padding: 5px;
+    /*padding: 5px;*/
 
     position: relative;
     overflow: hidden;
