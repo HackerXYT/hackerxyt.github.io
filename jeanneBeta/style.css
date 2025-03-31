@@ -838,21 +838,21 @@ img {
     display: flex;
     display: none;
     flex-direction: column;
-    /*padding: 5px;*/
+    /*padding: 5px;
 
-    position: relative;
+    position: relative;*/
     overflow: hidden;
     overflow-y: auto;
     transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-    overflow-y: scroll;
+    /*overflow-y: scroll;
     scroll-snap-type: y mandatory;
     scroll-padding-top: 10px;
-    scroll-padding-bottom: 10px;
+    scroll-padding-bottom: 10px;*/
     overflow-anchor: none;
 }
 
 .app>* {
-    scroll-snap-align: start;
+    /*scroll-snap-align: start;*/
 }
 
 
@@ -1480,7 +1480,7 @@ img {
     padding: 10px 20px;
     /* border-radius: 50px; */
     box-sizing: border-box;
-    background-color: #141414e8;
+    background-color: #090909; /*141414e8*/
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -4455,6 +4455,7 @@ input:-webkit-autofill:active {
     justify-content: center;
     align-items: center;
     margin-right: 5px;
+    cursor: pointer;
 }
 
 .disable-scroll-snap {
@@ -4908,6 +4909,8 @@ select:focus {
     scroll-behavior: smooth;
     gap: 10px;
     padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .carouseli-recommend::-webkit-scrollbar {
@@ -4923,7 +4926,7 @@ select:focus {
 
 
 .carouseliItem {
-    width: 200px;
+    width: 220px;
     height: auto;
     display: flex;
     flex-direction: column;

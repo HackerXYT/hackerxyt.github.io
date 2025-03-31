@@ -5441,6 +5441,9 @@ function showProfileInfo(emri) {
             document.getElementById("classIcons-search").innerHTML += `<img src="${user.icon}" alt="${user.name}">`;
         })
     });
+    container.style.display = 'block'
+                prevContainer.style.display = 'none'
+                document.getElementById("search-cont-3").style.display = 'none'
     async function final() {
         const profileSrc = await getImage(emri); //the image of the person reffered
         const pfp = await getEvoxProfile(emri);
@@ -5470,9 +5473,7 @@ function showProfileInfo(emri) {
                     console.warn("Classmates class not available")
                 }
 
-                container.style.display = 'block'
-                prevContainer.style.display = 'none'
-                document.getElementById("search-cont-3").style.display = 'none'
+                
             })
             .catch(error => {
                 console.error("Jeanne D'arc Database is offline.");
@@ -5572,7 +5573,7 @@ function showProfileInfo(emri) {
                     let hasMedia = false
                     postFiles.forEach(async (file) => {
                         hasMedia = true
-                        media += `<div class="media" style="max-width: 100%; max-height: 360px;">
+                        media += `<div class="media" style="max-width: 80%; max-height: 360px;">
                                 <div style="display:none" class="loadIndicator">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
