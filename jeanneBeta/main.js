@@ -1108,6 +1108,15 @@ function clickPIN(element) {
                         .then(response => response.text())
                         .then(status => {
                             if (status === 'Granted') {
+                                fetch('allowedUsers.evox')
+                                    .then(response => response.json())
+                                    .then(status => {
+                                        if (!status.includes(foundName)) {
+                                            window.location.href = "deny.html"
+                                        }
+                                    }).catch(error => {
+                                        console.log('Error:', error);
+                                    });
                                 console.log("Access Granted to", foundName)
 
                                 proccessingPIN = false
@@ -1182,6 +1191,15 @@ function clickPIN(element) {
                         .then(response => response.text())
                         .then(status => {
                             if (status === 'Granted') {
+                                fetch('allowedUsers.evox')
+                                    .then(response => response.json())
+                                    .then(status => {
+                                        if (!status.includes(foundName)) {
+                                            window.location.href = "deny.html"
+                                        }
+                                    }).catch(error => {
+                                        console.log('Error:', error);
+                                    });
                                 console.log("Success")
 
                                 proccessingPIN = false
@@ -1437,6 +1455,15 @@ function autoLogin() {
 
                     //alert(status)
                     if (status === 'Granted') {
+                        fetch('allowedUsers.evox')
+                            .then(response => response.json())
+                            .then(status => {
+                                if (!status.includes(foundName)) {
+                                    window.location.href = "deny.html"
+                                }
+                            }).catch(error => {
+                                console.log('Error:', error);
+                            });
                         console.log("Access Granted to", foundName)
                         document.getElementById("selfPfp").src = 'reloading-pfp.gif'
                         getEvoxProfile(foundName).then(profileSrc => {
@@ -1575,12 +1602,14 @@ function attach() {
     document.getElementById("gradColored").style.opacity = '1'
     if (atob(JSON.parse(localStorage.getItem("jeanDarc_accountData")).pin) === '0000') {
         console.log("Request PIN Change")
-        document.getElementById("notice").classList.add("active")
-        document.body.style.overflow = "hidden"
+        //document.getElementById("notice").classList.add("active")
+        document.getElementById("pin-notice").classList.add("active")
+        //document.body.style.overflow = "hidden"
         //setTimeout(function () {
-        document.getElementById("app").style.opacity = "0.7"
-        document.getElementById("app").style.transform = "scale(0.97)"
+        //document.getElementById("app").style.opacity = "0.7"
+        //document.getElementById("app").style.transform = "scale(0.97)"
         //}, 500)
+        showNotice()
 
     }
     document.body.style.backgroundColor = '#101010'//'rgb(5,2,16)'
@@ -1633,6 +1662,8 @@ function attach() {
             console.error("Jeanne D'arc Database is offline.");
             console.log('Error:', error);
         });
+
+    //seksioni->
 
 }
 
@@ -1871,18 +1902,21 @@ function downloadProfiles() {
             //console.log(fullNames)
             let downloaded = 0
             fullNames.forEach(name => {
-                getImage(name).then(profileSrc => {
+                getImage(name, 'DONTMAKENEWAJAX').then(profileSrc => {
                     if (profileSrc) {
                         downloaded++
                     } else {
-                        const checkDl = setInterval(function () {
-                            getImage(name, 'DONTMAKENEWAJAX').then(profileSrc => {
-                                if (profileSrc) {
-                                    downloaded++
-                                    clearInterval(checkDl)
-                                }
-                            });
-                        }, 1500)
+                        getImage(name).then(profileSrc_0 => {
+                            const checkDl = setInterval(function () {
+                                getImage(name, 'DONTMAKENEWAJAX').then(profileSrc => {
+                                    if (profileSrc) {
+                                        downloaded++
+                                        clearInterval(checkDl)
+                                    }
+                                });
+                            }, 1500)
+                        });
+
                     }
 
                 });
@@ -1894,7 +1928,8 @@ function downloadProfiles() {
                 const percentage = Number.parseInt((downloaded * 100) / all)
                 //document.getElementById("downloaded").innerHTML = percentage + "%"
                 //console.log(percentage)
-                if(percentage === 100) {
+                if (percentage === 100) {
+                    console.warn("All profiles are downloaded")
                     clearInterval(intmain)
                 }
             }, 200)
@@ -1995,7 +2030,7 @@ function changePinRedo() {
 }
 
 let pinAction = null;
-function changePin(e, event) {
+function changePin(e, event, newMetode) {
     if (event) {
         event.preventDefault();
         event.stopPropagation();
@@ -2004,6 +2039,12 @@ function changePin(e, event) {
     getEvoxProfile(foundName).then(profileSrc => {
         document.getElementById('userPinPfp').src = profileSrc
     });
+    if (newMetode) {
+        document.getElementById("pin-notice").classList.remove("active")
+        setTimeout(function () {
+            document.getElementById("pin-notice").style.display = 'none'
+        }, 300)
+    }
     if (e) {
         e.innerHTML = loadingHTML
     }
@@ -5442,8 +5483,8 @@ function showProfileInfo(emri) {
         })
     });
     container.style.display = 'block'
-                prevContainer.style.display = 'none'
-                document.getElementById("search-cont-3").style.display = 'none'
+    prevContainer.style.display = 'none'
+    document.getElementById("search-cont-3").style.display = 'none'
     async function final() {
         const profileSrc = await getImage(emri); //the image of the person reffered
         const pfp = await getEvoxProfile(emri);
@@ -5473,7 +5514,7 @@ function showProfileInfo(emri) {
                     console.warn("Classmates class not available")
                 }
 
-                
+
             })
             .catch(error => {
                 console.error("Jeanne D'arc Database is offline.");
@@ -6032,7 +6073,7 @@ function notificationsStart() {
         console.log("Push Subscription:", JSON.stringify(subscription));
 
         const account = localStorage.getItem("jeanDarc_accountData")
-        if(account) {
+        if (account) {
             const info = JSON.parse(account)
             const payload = {
                 emri: info.name,
@@ -6046,7 +6087,7 @@ function notificationsStart() {
                 headers: { 'Content-Type': 'application/json' }
             });
         }
-        
+
     }
 
     async function requestNotificationPermission() {
@@ -6067,9 +6108,89 @@ function notificationsStart() {
                 console.error('Service Worker registration failed:', error);
             });
     }
-    
-    
 
-    
-    
+
+
+
+
+}
+
+function showNotice() {
+    getImage(foundName).then(profileSrc => {
+        document.getElementById("cloudsProfile").innerHTML = `<div class="mainIcon"><img id="myProfile-Animt" class="new" src="${profileSrc.imageData}"></div>`;
+        document.getElementById("myProfile-Animt").addEventListener('animationend', function () {
+            document.getElementById("myProfile-Animt").classList.remove("new")
+        });
+        getRandomClassmates(foundName).then(usersJson => {
+            let count = 0
+            usersJson.forEach(user => {
+                console.log("Cloud:", user)
+
+                let html;
+                getImage(user.name).then(userSrc => {
+                    count++
+                    console.log("Cloud has image:", userSrc !== null)
+                    const randomString = [...Array(15)]
+                        .map(() => Math.random().toString(36)[2])
+                        .join('');
+                    if (count === 1) {
+                        html = `<div style="position: absolute;margin-right: 110px;z-index: 998;margin-bottom: 70px;">
+                        <img id="${randomString}" class="new" style="width: 60px;height: 60px;border-radius: 50%;" src="${userSrc ? userSrc.imageData : user.icon}">
+                    </div>`;
+                        document.getElementById("cloudsProfile").innerHTML += html
+                    } else if (count === 2) {
+                        html = `<div style="position: absolute;margin-right: 110px;z-index: 998;margin-top: 90px;">
+                        <img id="${randomString}" class="new" style="width: 50px;height: 50px;border-radius: 50%;" src="${userSrc ? userSrc.imageData : user.icon}">
+                    </div>`
+                        document.getElementById("cloudsProfile").innerHTML += html
+                    } else if (count === 3) {
+                        html = `<div style="position: absolute;margin-left: 120px;z-index: 998;margin-bottom: 55px;">
+                        <img id="${randomString}" class="new" style="width: 50px;height: 50px;border-radius: 50%;" src="${userSrc ? userSrc.imageData : user.icon}">
+                    </div>`
+                        document.getElementById("cloudsProfile").innerHTML += html
+                    } else if (count === 4) {
+                        html = `<div style="position: absolute;margin-left: 110px;z-index: 998;margin-top: 80px;">
+                        <img id="${randomString}" class="new" style="width: 40px;height: 40px;border-radius: 50%;" src="${userSrc ? userSrc.imageData : user.icon}">
+                    </div>`
+                        document.getElementById("cloudsProfile").innerHTML += html
+                    } else {
+                        return;
+                    }
+                    document.getElementById(randomString).addEventListener('animationend', function () {
+                        document.getElementById(randomString).classList.remove("new")
+                    });
+
+
+                })
+
+
+
+            })
+        });
+        getRandomClassmates(foundName).then(usersJson => {
+            let count2 = 0
+            usersJson.forEach(user => {
+
+                let html;
+                getImage(user.name).then(userSrc => {
+                    const randomString = [...Array(15)]
+                        .map(() => Math.random().toString(36)[2])
+                        .join('');
+                    count2++
+                    if (count2 === 1) {
+                        html = `<div style="position: absolute;margin-left: 110px;z-index: 998;margin-top: 80px;">
+                    <img id="${randomString}" class="new" style="width: 40px;height: 40px;border-radius: 50%;" src="${userSrc ? userSrc.imageData : user.icon}">
+                </div>`;
+                        document.getElementById("cloudsProfile").innerHTML += html
+                        document.getElementById(randomString).addEventListener('animationend', function () {
+                            document.getElementById(randomString).classList.remove("new")
+                        });
+                    }
+                })
+            })
+
+        });
+    });
+
+
 }
