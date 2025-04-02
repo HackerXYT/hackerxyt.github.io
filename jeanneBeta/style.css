@@ -3,15 +3,81 @@
     src: url('Inter-VariableFont_opsz,wght.ttf');
 }
 
-@font-face {
+/*@font-face {
     font-family: "SF";
     src: url('SFUIText-Medium.ttf');
+}*/
+
+@font-face {
+    font-family: 'SF';
+    src: url('./evox-fonts/source/SFPRODISPLAYREGULAR.OTF') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SF';
+    src: url('./evox-fonts/source/SFPRODISPLAYTHINITALIC.OTF') format('opentype');
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'SF';
+    src: url('./evox-fonts/source/SFPRODISPLAYLIGHTITALIC.OTF') format('opentype');
+    font-weight: 300;
+    font-style: thin;
+}
+
+@font-face {
+    font-family: 'SF';
+    src: url('./evox-fonts/source/SFPRODISPLAYTHINITALIC.OTF') format('opentype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'SF';
+    src: url('./evox-fonts/source/SFPRODISPLAYMEDIUM.OTF') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SF';
+    src: url('./evox-fonts/source/SFPRODISPLAYBOLD.OTF') format('opentype');
+    font-weight: 700;
+    font-weight: 500;
+    font-style: bold;
+    font-style: bolder;
+}
+
+@font-face {
+    font-family: 'SF';
+    src: url('./evox-fonts/source/SFPRODISPLAYHEAVYITALIC.OTF') format('opentype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'SF';
+    src: url('./evox-fonts/source/SFPRODISPLAYBOLD.OTF') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SF';
+    src: url('./evox-fonts/source/SFPRODISPLAYHEAVYITALIC.OTF') format('opentype');
+    font-weight: 900;
+    font-style: italic;
 }
 
 
 * {
     touch-action: manipulation;
     scroll-behavior: smooth;
+    font-family: 'SF';
 }
 
 :root {
@@ -21,13 +87,16 @@
     --color-theme-select: #298ef255;
 }
 
+.app {
+    font-family: 'SF';
+}
 
 
 html,
 body {
     height: 100%;
     width: 100%;
-    font-family: "SF";
+    font-family: 'SF';
 
     padding: 0;
     margin: 0;
@@ -321,16 +390,20 @@ vo input::placeholder {
 
 
 .tasks {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
+    position: fixed;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
     align-items: center;
+    /* position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);*/
+    cursor: pointer;
     z-index: 999;
-    margin-top: calc(env(safe-area-inset-top) + 10px) !important;
+    /*margin-top: calc(env(safe-area-inset-top) + 10px) !important;*/
 
     /* Adding bottom safe area inset */
 }
@@ -633,7 +706,7 @@ img {
 .socialUser span {
     color: #6e6f7b;
     font-size: 15px;
-    font-weight: normal;
+    font-weight: 100;
     margin: 0;
     display: inline-flex;
     align-items: center;
@@ -919,7 +992,6 @@ img {
 
 .app .topBar .wlcmTxt .bottomTxt {
     font-size: 16px;
-    font-family: "SF";
 }
 
 .app .topBar .rightItem {
@@ -1108,7 +1180,6 @@ img {
     display: flex;
     font-size: 17px;
     margin-bottom: 5px;
-    font-family: "SF";
     flex-direction: row;
     align-items: center;
 }
@@ -1465,7 +1536,7 @@ img {
 
     transition: all 0.5s ease-in-out;
     will-change: transform;
-    transition: transform 0.3s ease-in-out, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 1s ease-in-out;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.7s ease-in-out, height 1s ease-in-out;
     transform: translateY(100vh);
     /* Ensure it doesn’t move */
 }
@@ -1707,7 +1778,6 @@ img {
     align-items: center;
     gap: 8px;
     color: white;
-    font-family: Arial, sans-serif;
     margin-top: 10px;
     border-radius: 8px;
     justify-content: left;
@@ -3021,7 +3091,6 @@ input:-webkit-autofill:active {
 }
 
 .big-info h2 {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 23px;
     font-weight: 500;
 }
@@ -3030,7 +3099,7 @@ input:-webkit-autofill:active {
     color: #ffffffb9;
     margin-top: 5px;
     font-size: 16px;
-    font-weight: normal;
+    font-weight: 100;
 }
 
 .spawnPeople {
@@ -3249,7 +3318,6 @@ input:-webkit-autofill:active {
     /* Allow vertical resizing */
     box-sizing: border-box;
     resize: none;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .yb-text:focus {
@@ -3703,15 +3771,108 @@ input:-webkit-autofill:active {
     }
 }
 
+
+.blasting {
+    width: 48px;
+    height: 48px;
+    position: relative;
+}
+
+.blasting::before,
+.blasting::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 48em;
+    height: 48em;
+    background-image: radial-gradient(circle 10px, #ecce69 100%, transparent 0),
+        radial-gradient(circle 10px, #ecce69 100%, transparent 0),
+        radial-gradient(circle 10px, #ecce69 100%, transparent 0),
+        radial-gradient(circle 10px, #ecce69 100%, transparent 0),
+        radial-gradient(circle 10px, #ecce69 100%, transparent 0),
+        radial-gradient(circle 10px, #ecce69 100%, transparent 0),
+        radial-gradient(circle 10px, #ecce69 100%, transparent 0),
+        radial-gradient(circle 10px, #ecce69 100%, transparent 0);
+    background-position: 0em -18em, 0em 18em, 18em 0em, -18em 0em,
+        13em -13em, -13em -13em, 13em 13em, -13em 13em;
+    background-repeat: no-repeat;
+    font-size: 0.5px;
+    border-radius: 50%;
+    animation: blast 1s ease-in infinite;
+}
+
+.blasting::after {
+    font-size: 1px;
+    background: #eccd6900;
+    animation: bounce 1s ease-in infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        font-size: 0.75px
+    }
+
+    50% {
+        font-size: 1.5px
+    }
+}
+
+@keyframes blast {
+
+    0%,
+    40% {
+        font-size: 0.5px;
+    }
+
+    70% {
+        opacity: 1;
+        font-size: 4px;
+    }
+
+    90% {
+        font-size: 6px;
+    }
+
+    100% {
+        font-size: 0.5px;
+        opacity: 0;
+    }
+}
+
 .jelly-triangle {
     --uib-size: 1.8rem;
     --uib-speed: 1.25s;
     --uib-color: #cfcfcf;
-    position: relative;
+    /*position: relative;*/
     height: var(--uib-size);
     width: var(--uib-size);
     filter: url('#uib-jelly-triangle-ooze');
     margin-bottom: 5px;
+    position: fixed;
+    bottom: calc(20px + env(safe-area-inset-bottom));
+}
+
+.native-loading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+    position: fixed;
+    bottom: calc(20px + env(safe-area-inset-bottom));
+}
+
+.native-loading span {
+    opacity: 0;
+}
+
+.native-loading svg {
+    width: 25px !important;
 }
 
 .jelly-triangle__dot,
@@ -4112,6 +4273,9 @@ input:-webkit-autofill:active {
     margin-top: 10px;
     text-align: center;
     padding: 0px 10px;
+    font-weight: 900;
+    line-height: 18px;
+    letter-spacing: 0.2px;
 }
 
 .aibtn {
@@ -4196,7 +4360,6 @@ input:-webkit-autofill:active {
     align-items: center;
     padding-left: 5px;
     font-weight: bold;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 #rightToMe.right svg path {
@@ -4533,7 +4696,6 @@ input:-webkit-autofill:active {
 }
 
 .applePopup {
-    font-family: "SF";
     scrollbar-width: none;
     -ms-overflow-style: none;
     /* for Internet Explorer, Edge */
@@ -4687,7 +4849,6 @@ input:-webkit-autofill:active {
     box-sizing: border-box;
     resize: none;
     overflow: hidden;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     transition: height 0.1s cubic-bezier(1, 0, 0, 1.05);
     margin-top: 5px;
     margin-left: 0px;
@@ -5418,7 +5579,7 @@ select:focus {
     }
 }
 
-.pin-notice {
+.evox-notice {
     position: fixed;
     top: 0;
     left: 0;
@@ -5428,13 +5589,13 @@ select:focus {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     z-index: 9999;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
     opacity: 0;
 }
 
-.pin-notice .popnotice {
+.evox-notice .popnotice {
     width: 320px;
     height: auto;
     background-color: #1414144d;
@@ -5443,23 +5604,24 @@ select:focus {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 50px;
+    border-radius: 45px;
     padding: 25px;
     text-align: center;
     box-sizing: border-box;
     border: solid 0.4px #ffffff38;
-    gap: 10px;
+    gap: 20px;
     box-shadow: 0 0 8px 1px rgb(255 255 255 / 13%);
-    
+
 }
 
-.pin-notice.active {
+.evox-notice.active {
     opacity: 1;
     display: flex !important;
+    /*background-color: rgba(0, 0, 0, 0.8);*/
 }
 
-.pin-notice.active .popnotice {
-    
+.evox-notice.active .popnotice {
+
     animation: popIn 0.2s ease forwards;
 }
 
@@ -5492,7 +5654,8 @@ select:focus {
     transition: background-color 0.5s ease;
 }
 
-.buttonsPIN div:active, .buttonsPIN div:hover  {
+.buttonsPIN div:active,
+.buttonsPIN div:hover {
     background-color: #60656dd8;
 }
 
@@ -5508,7 +5671,7 @@ select:focus {
 
 @keyframes popIn {
     0% {
-        transform: scale(0.7);
+        transform: scale(1.2);
     }
 
     100% {
@@ -5517,28 +5680,34 @@ select:focus {
 }
 
 .cloudProfile div img {
-    animation: none; /* Disable the animation by default */
+    animation: none;
+    /* Disable the animation by default */
 }
 
 .cloudProfile div img.new {
-    animation: popIn 0.5s ease forwards; /* Pop-in animation for newly added images */
+    animation: popIn 0.5s ease forwards;
+    /* Pop-in animation for newly added images */
 }
 
 
 .cloudProfile div:nth-child(2) {
-    animation: floating_upright 2.5s infinite ease-in-out; /* Floating effect for the second child */
+    animation: floating_upright 2.5s infinite ease-in-out;
+    /* Floating effect for the second child */
 }
 
 .cloudProfile div:nth-child(3) {
-    animation:floating_downright 2.5s infinite ease-in-out; /* Floating effect for the third child */
+    animation: floating_downright 2.5s infinite ease-in-out;
+    /* Floating effect for the third child */
 }
 
 .cloudProfile div:nth-child(4) {
-    animation:floating_downleft 2.5s infinite ease-in-out; /* Floating effect for the fourth child */
+    animation: floating_downleft 2.5s infinite ease-in-out;
+    /* Floating effect for the fourth child */
 }
 
 .cloudProfile div:nth-child(5) {
-    animation:floating_upleft 2.5s infinite ease-in-out; /* Floating effect for the fifth child */
+    animation: floating_upleft 2.5s infinite ease-in-out;
+    /* Floating effect for the fifth child */
 }
 
 @keyframes floating_upright {
@@ -5611,4 +5780,28 @@ select:focus {
     height: 100px;
     border-radius: 50%;
     box-shadow: 0 0 8px 1px rgb(255 255 255 / 13%);
+}
+
+.actionUnlocked {
+    gap: 10px;
+    padding: 20px;
+    width: 100%;
+    background-color: #5e5e5e8d;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: left;
+    align-items: center;
+}
+
+.actionUnlocked .actionunlockedtext {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.actionUnlocked .actionunlockedtext desc {
+    font-size: 13px;
+    color: #aeaeae
 }

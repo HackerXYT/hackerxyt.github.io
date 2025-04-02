@@ -35,6 +35,24 @@
 //window.addEventListener('wheel', disableScroll, { passive: false });
 //window.addEventListener('touchstart', touchMoveHandler, { passive: false });
 
+function changeLoadingText(msg) {
+    const elem = document.getElementById("loading-text-evox")
+    if (elem.classList.contains("fade-in-slide-up")) {
+        elem.classList.add("fade-out-slide-down")
+        setTimeout(function () {
+            elem.classList.remove("fade-in-slide-up")
+        }, 100)
+        setTimeout(function () {
+            elem.classList.remove("fade-out-slide-down")
+            elem.classList.add("fade-in-slide-up")
+            elem.innerText = msg
+        }, 200)
+    } else {
+        elem.innerText = msg
+        elem.classList.add("fade-in-slide-up")
+    }
+}
+
 let isSocialed = false;
 let socialSection = 'none'
 let socialUsername = 'none'
@@ -140,6 +158,7 @@ function selectCustom(name) {
             document.getElementById("loadText").style.opacity = '0'
             setTimeout(function () {
                 document.getElementById("loadText").innerHTML = `Επιτυχία`
+                changeLoadingText('Επιτυχία')
                 document.getElementById("loadText").style.opacity = '1'
                 setTimeout(function () {
                     document.getElementById("loadText").style.opacity = '0'
@@ -147,6 +166,7 @@ function selectCustom(name) {
                         const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
                         const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
                         document.getElementById("loadText").innerHTML = `Καλωσόρισες,<br>${transformGreekName(matchedNames[0], 0)} ${transformGreekName(matchedNames[0], 1)}`
+                        changeLoadingText(`Καλωσόρισες,<br>${transformGreekName(matchedNames[0], 0)} ${transformGreekName(matchedNames[0], 1)}`)
                         document.getElementById("loadText").style.opacity = '1'
                         setTimeout(function () {
                             document.getElementById("topImg").style.opacity = '0'
@@ -874,7 +894,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         //})
 
-    } else if (spammingDetected) {
+    } else if (spammingDetected === 'REMOVEFORSTABLE') {
         //$("#tasks").fadeOut("fast", function () {
         $("#loginContainer").fadeOut("fast", function () {
             $("#hexa").fadeOut('fast')
@@ -915,6 +935,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log("IP:", geo.ip)
                     ip = geo.ip
                     document.getElementById("loadText").innerText = 'Αναγνωριστικό έτοιμο'
+                    //changeLoadingText('Αναγνωριστικό έτοιμο')
 
                     fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
                         .then(response => response.json())
@@ -924,6 +945,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             setTimeout(function () {
 
                                 document.getElementById("loadText").innerText = 'Έγινε σύνδεση'
+                                changeLoadingText('Επιτυχία')
                                 setTimeout(function () {
                                     document.getElementById("setupPage").style.display = ''
                                     //document.getElementById("topImg").style.opacity = '1'
@@ -990,7 +1012,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         }).catch(error => {
                             console.error("Jeanne D'arc Database is offline.")
+                            changeLoadingText(`Η σύνδεση απέτυχε.<br>Περιμένετε..`)
                             document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Περιμένετε..`
+                            changeLoadingText(`Η σύνδεση απέτυχε.<br>Περιμένετε..`)
+
                             $("#tasks").fadeIn("fast")
                             $("#hexa").fadeOut("fast")
                             document.getElementById("typewriter").style.display = 'none'
@@ -1599,6 +1624,33 @@ function transformGreekName(name, num) {
 
 let myInfo = null
 function attach() {
+    downloadProfiles()
+    EvalertNext({
+        "title": "Καλωσόρισες ξανά 👋",
+        "description": "Μπορείς πλέον να δημιουργήσεις περίληψη των καταχωρήσεων σου χωρίς να καταλάβεις ποιος έγραψε τι.",
+        "buttons": ["Συνέχεια"],
+        "buttonAction": [],
+        "addons": [
+            {
+                "icon": "lock",
+                "title": "Evox AIT",
+                "desc": "Παραχωρήθηκε πρόσβαση."
+            },
+            {
+                "icon": "jeanne:logo",
+                "title": "Jeanne d'Arc",
+                "desc": "Ο λογαριασμός ενημερώθηκε."
+            }
+        ]
+    })
+    
+    
+    if (!sessionStorage.getItem('isNewUser')) {
+        document.getElementById("welcmtxt").innerHTML = `Καλώς ήρθες ξανά 👋`
+        changeLoadingText(`Καλώς ήρθες ξανά 👋`)
+    } else {
+        changeLoadingText(`Καλώς ήρθες!`)
+    }
     document.getElementById("gradColored").style.opacity = '1'
     if (atob(JSON.parse(localStorage.getItem("jeanDarc_accountData")).pin) === '0000') {
         console.log("Request PIN Change")
@@ -1613,6 +1665,7 @@ function attach() {
 
     }
     document.body.style.backgroundColor = '#101010'//'rgb(5,2,16)'
+    //return;
     $("#hexa").fadeOut("fast", function () {
         $("#tasks").fadeOut("fast")
         document.getElementById("name-sur-view").innerText = foundName
@@ -1628,9 +1681,7 @@ function attach() {
             document.getElementById("emri").innerText = `${transformGreekName(foundName, 0)} ${transformGreekName(foundName, 1)}`
         }
 
-        if (!sessionStorage.getItem('isNewUser')) {
-            document.getElementById("welcmtxt").innerHTML = `Καλώς ήρθες ξανά 👋`
-        }
+
 
         $("#app").fadeIn("fast")
         document.getElementById("navigation").classList.add("active")
@@ -1813,7 +1864,7 @@ async function spawnRandom(redo, frontEndLoading) {
                 <p onclick="extMention('${post.emri}')">${post.emri}<span style="font-size: 11.5px;color: #808080;padding: 0 5px;">${timeAgoInGreek(post.date)}</span></p>
                 
                 <div class="text-area-cont" style="position: relative;">
-                    <p style="color: #fff;font-weight: normal;font-size: 14px;margin-top: 5px;">
+                    <p style="color: #fff;font-weight: 100;font-size: 14px;margin-top: 5px;">
                         <vox onclick="extMention('${post.marresi}')" class="mention ${getGender(removeTonos(post.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${post.marresi}</vox>
                         ${cleaned}
                     </p>
@@ -1922,15 +1973,34 @@ function downloadProfiles() {
                 });
 
             })
+            let runned = false;
             const intmain = setInterval(function () {
                 const all = fullNames.length
                 //current = downloaded
                 const percentage = Number.parseInt((downloaded * 100) / all)
                 //document.getElementById("downloaded").innerHTML = percentage + "%"
                 //console.log(percentage)
-                if (percentage === 100) {
+                if (percentage === 100 && runned === true && !localStorage.getItem("profilesDlOk")) {
+                    localStorage.setItem("profilesDlOk", "200")
                     console.warn("All profiles are downloaded")
+                    EvalertNext({
+                        "title": "Η λήψη ολοκληρώθηκε με επιτυχία",
+                        "description": "Τα απαιτούμενα δεδομένα έχουν ληφθεί.<br>Οι λειτουργίες της εφαρμογής θα εκτελούνται πλέον πιο γρήγορα.",
+                        "buttons": ["Συνέχεια"],
+                        "buttonAction": [],
+                        "addons": []
+                    })
                     clearInterval(intmain)
+                } else if(runned === false && !localStorage.getItem("profilesDlOk")) {
+                    EvalertNext({
+                        "title": `Γίνεται λήψη δεδομένων.`,
+                        "description": "Η εφαρμογή ίσως είναι πιο αργή όσο γίνεται αυτό. Θα ειδοποιηθείς μόλις όλα είναι έτοιμα.",
+                        "buttons": ["Εντάξει"],
+                        "buttonAction": [],
+                        "addons": [
+                        ]
+                    })
+                    runned = true;
                 }
             }, 200)
 
@@ -1942,7 +2012,7 @@ function downloadProfiles() {
 
 }
 
-downloadProfiles()
+
 let foryoudiv = document.getElementById("home");
 let loadingIndicatorFy = document.getElementById("loadingIndicator-fy");
 let isLoading2 = false; // Prevent multiple triggers
@@ -5924,7 +5994,19 @@ function timeAgo(isoString) {
     }
 }
 
-function analyzeUser(e) {
+function analyzeUser(e, rej) {
+    if(rej) {
+        Evalert({
+            "title": `Να επιτρέπεται στο "AIT" να έχει πρόσβαση στα δεδομένα σας;`,
+            "description": "Το AIT θα μπορεί να διαβάσει και να επεξεργαστεί τα δεδομένα σας.",
+            "buttons": ["Να επιτρέπεται", "Να μην επιτρέπεται"],
+            "buttonAction": ["analyzeUser(document.getElementById('aitbtn'))"],
+            "addons": [],
+            "clouds": true,
+            "clouds_data": ["SELF", "EVOX"]
+        })
+        return;
+    }
     $("#summaryTxt").fadeOut("fast")
     e.blur()
     setTimeout(function () {
@@ -6063,7 +6145,25 @@ function extMention(emri) {
     showProfileInfo(emri)
 }
 
-function notificationsStart() {
+function acceptFlorida() {
+    Evalert({
+        "title": `Να επιτρέπεται στο "Evox" να σας στέλνει ειδοποιήσεις;`,
+        "description": "Οι ειδοποιήσεις μπορεί να περιλαμβάνουν νέες καταχωρήσεις, νέες συνδέσεις και ενημερώσεις ασφαλείας.",
+        "buttons": ["Να επιτρέπεται", "Να μην επιτρέπεται"],
+        "buttonAction": ["notificationsStart(true)"],
+        "addons": [],
+        "clouds": true,
+        "clouds_data": ["SELF", "EVOX", "Jeanne"]
+    })
+   
+}
+
+function notificationsStart(ready) {
+    if(!ready) {
+        acceptFlorida()
+        return;
+    }
+    console.log("Accepted")
     async function subscribeToPush() {
         const registration = await navigator.serviceWorker.ready;
         const subscription = await registration.pushManager.subscribe({
@@ -6193,4 +6293,111 @@ function showNotice() {
     });
 
 
+}
+
+function Evalert(message) {
+    const exampleMessage = {
+        "title": "",
+        "description": "",
+        "buttons": ["Συνέχεια"],
+        "addons": []
+    }
+    document.getElementById("buttonsEvalert").innerHTML = ''
+    const el = document.getElementById("evox-notice")
+    document.getElementById("navigation").style.opacity = '0'
+    el.querySelector(".popnotice").querySelector('h2').innerHTML = message.title
+    el.querySelector(".popnotice").querySelector('p').innerHTML = message.description
+    let btnCount = 0
+    message.buttons.forEach(button => {
+
+        document.getElementById("buttonsEvalert").innerHTML += `<div
+                    onclick="${message.buttonAction[btnCount] ? message.buttonAction[btnCount]+';evalertclose()' : 'evalertclose()'}">
+                    ${button}
+                </div>`
+        btnCount++
+    })
+    if (message.addons.length !== 0) {
+        console.log("triggering 1")
+        document.getElementById("cloudEvoxMain").style.gap = "10px"
+        document.getElementById("cloudEvoxMain").innerHTML = ''
+    } else {
+        console.log("triggering 2")
+        document.getElementById("cloudEvoxMain").style.gap = "0"
+        document.getElementById("cloudEvoxMain").innerHTML = ''
+        document.getElementById("cloudEvoxMain").style.display = 'none'
+    }
+    message.addons.forEach(add => {
+        document.getElementById("cloudEvoxMain").innerHTML += `<div class="actionUnlocked">
+                    ${add.icon === 'lock' ? `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                        fill="none">
+                        <path
+                            d="M18 2c-2.762 0-5 2.238-5 5v3H4.6c-.88 0-1.6.72-1.6 1.6v7C3 19.92 4.08 21 5.4 21h9.2c1.32 0 2.4-1.08 2.4-2.4v-7c0-.88-.72-1.6-1.6-1.6H15V7c0-1.658 1.342-3 3-3s3 1.342 3 3v3a1 1 0 1 0 2 0V7c0-2.762-2.238-5-5-5Z"
+                            fill="#FFF" />
+                    </svg>`: add.icon === 'jeanne:logo' ? `<img src="assetView-2.png" style="width: 25px;height: 25px;">` : `<img src="assetView-2.png" style="width: 25px;height: 25px;">`}
+                    <div class="actionunlockedtext">
+                        <span>${add.title}</span>
+                        <desc>${add.desc}</desc>
+                    </div>
+                </div>`
+    })
+    if (message.clouds === true) {
+        document.getElementById("cloudingNotice").style.display = null;
+        document.getElementById("cloudingNotice").style.padding = "10px";
+        document.getElementById("cloudingNotice").innerHTML = ''
+
+        message.clouds_data.forEach(cloud => {
+            if (cloud === 'SELF' && foundName) {
+                getImage(foundName).then(profileSrc => {
+                    document.getElementById("cloudingNotice").innerHTML += `<div class="mainIcon">
+                    <img src="${profileSrc.imageData}">
+                </div>`
+                })
+            } else if (cloud === 'EVOX') {
+                document.getElementById("cloudingNotice").innerHTML += `<div style="position: absolute;margin-right: 110px;z-index: 998;margin-bottom: 70px;">
+                     <img style="width: 60px;height: 60px;border-radius: 50%;" src="../evox-epsilon-beta/evox-logo-apple.png">
+                </div>`
+            } else if (cloud === 'Jeanne') {
+                document.getElementById("cloudingNotice").innerHTML += `<div style="position: absolute;margin-left: 120px;z-index: 998;margin-bottom: 55px;">
+                     <img style="width: 50px;height: 50px;border-radius: 50%;" src="appLogoV2.png">
+                </div>`
+            } else {
+                getImage(cloud).then(profileSrc => {
+                    document.getElementById("cloudingNotice").innerHTML += `<div style="position: absolute;margin-left: 120px;z-index: 998;margin-bottom: 55px;">
+                     <img style="width: 50px;height: 50px;border-radius: 50%;" src="${profileSrc.imageData}">
+                </div>`
+                })
+            }
+
+
+        })
+
+    } else {
+        document.getElementById("cloudingNotice").style.padding = '0';
+        document.getElementById("cloudingNotice").style.gap = "0"
+        document.getElementById("cloudingNotice").innerHTML = ''
+        document.getElementById("cloudingNotice").style.display = 'none'
+    }
+    //document.getElementById("app").style.opacity = "0.1"
+    el.classList.add("active")
+}
+
+function evalertclose() {
+    setTimeout(function () {
+        document.getElementById('evox-notice').classList.remove('active');
+        //document.getElementById('app').style.opacity = '1'
+        document.getElementById("navigation").style.opacity = '1'
+    }, 300)
+}
+
+function EvalertNext(json) {
+    if(document.getElementById("evox-notice").classList.contains("active")) {
+        let main = setInterval(function() {
+            if(!document.getElementById("evox-notice").classList.contains("active")) {
+                Evalert(json)
+                clearInterval(main)
+            }
+        }, 500)
+    } else {
+        Evalert(json)
+    }
 }

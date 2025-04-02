@@ -23,7 +23,7 @@ body {
   overflow: hidden;
   height: 100%;
   /* Ensure the height is 100% */
-  font-family: "SF";
+  /*font-family: "SF";/*
   overscroll-behavior: none !important;
   /* Adjusting content height to fill the viewport */
 }
@@ -66,7 +66,7 @@ span,
 a,
 p {
   color: rgb(var(--font-color));
-  font-family: "SF";
+  /*font-family: "SF";*/
   font-size: 1rem;
   font-weight: 400;
   margin: 0px;
@@ -315,7 +315,7 @@ input {
 }
 
 #apps-container p {
-  font-family: "Noto Sans", sans-serif;
+  /*font-family: "Noto Sans", sans-serif;*/
   font-weight: bold;
   text-shadow: rgba(0, 0, 0, 0.341) 0px 2px 5px;
 
@@ -430,7 +430,7 @@ input {
 }
 
 #custom-container p {
-  font-family: "Noto Sans", sans-serif;
+  /*font-family: "Noto Sans", sans-serif;*/
   font-weight: bold;
   text-shadow: rgba(0, 0, 0, 0.341) 0px 2px 5px;
 
@@ -596,14 +596,14 @@ input {
   display: inline-block;
   width: 10px;
   /* Adjust based on the font and size */
-  font-family: monospace;
+  /*font-family: monospace;*/
   /* Use a monospaced font for consistent width */
   font-size: 16px;
   /* Ensure this matches your text size */
 }
 
 .popup {
-  font-family: "SF";
+  /*font-family: "SF";*/
   scrollbar-width: none;
   -ms-overflow-style: none;
   /* for Internet Explorer, Edge */
@@ -938,7 +938,7 @@ input {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  font-family: "SF";
+  /*font-family: "SF";*/
 }
 
 #newUser img {
@@ -1097,7 +1097,7 @@ input {
 
 .sliding {
 
-  font-family: "SF";
+  /*font-family: "SF";*/
   scrollbar-width: none;
   -ms-overflow-style: none;
   /* for Internet Explorer, Edge */
@@ -1142,7 +1142,7 @@ input {
 
 .simple-ontop {
 
-  font-family: "SF";
+  /*font-family: "SF";*/
   scrollbar-width: none;
   -ms-overflow-style: none;
   /* for Internet Explorer, Edge */
@@ -1259,7 +1259,7 @@ input {
   justify-content: center;
   border-radius: 15px;
   height: auto;
-  font-family: "SF";
+  /*font-family: "SF";*/
   transition: transform 0.2s ease-out, background-color 0.2s ease-out, color 0.2s ease-out;
 }
 
@@ -1277,7 +1277,7 @@ input {
   justify-content: center;
   border-radius: 15px;
   height: auto;
-  font-family: "SF";
+  /*font-family: "SF";*/
   transition: transform 0.2s ease-out, background-color 0.2s ease-out, color 0.2s ease-out;
 }
 

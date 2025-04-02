@@ -79,6 +79,10 @@ async function clearDatabase() {
 async function fetchAndSaveImage(id, imageUrl) {
     try {
         const response = await fetch(imageUrl);
+        //console.log("Fetch Image",response)
+        if(!response.ok) {
+            return;
+        }
         const blob = await response.blob();
 
         const reader = new FileReader();
@@ -87,6 +91,6 @@ async function fetchAndSaveImage(id, imageUrl) {
             saveImage(id, reader.result); // Store as base64
         };
     } catch (error) {
-        //console.error('Error fetching image:', error);
+        console.error('Error saving image:', error);
     }
 }

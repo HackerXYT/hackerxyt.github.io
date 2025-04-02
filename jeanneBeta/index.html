@@ -183,7 +183,7 @@
             <span>registered under Evox©</span>
             <p>Διεύθυνση IP: <span id="ipIdent"></span></p>
             <p>Συσκευή: <span id="deviceInfo"></span></p>
-            <p>Έκδοση: <span>1.8.5</span></p>
+            <p>Έκδοση: <span>1.8.7</span></p>
             <p>Δοκιμαστική λειτουργία: <span>Ενεργή [BETA]</span></p>
             <p>Επανεκκίνηση: <span onclick="window.location.reload()">Τώρα</span></p>
         </div>
@@ -412,8 +412,19 @@
     </div>
 
     <div onclick="window.location.reload()" id="hexa" class="tasks">
-        <img src="logo.png">
-        <div class="jelly-triangle">
+        <img src="logo.png" style="z-index: 11;">
+        <!--<div class="blasting" style="z-index: 10;position: fixed;"></div>-->
+        <div class="native-loading">
+            <span id="loading-text-evox" class="fade-in-slide-up">Γίνεται Σύνδεση..</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #eadf6b;
+            --track-upload: #64542b;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg>
+        </div>
+        <div style="display: none;" class="jelly-triangle">
             <div class="jelly-triangle__dot"></div>
             <div class="jelly-triangle__traveler"></div>
         </div>
@@ -566,7 +577,7 @@
                     <p id="name-sur-view">Φόρτωση..</p>
                     <div class="text-area-cont" style="position: relative;">
                         <p onclick="createPost(document.getElementById('create-switch'));openKeyboard()"
-                            style="color: #636363;font-size: 14px;margin-top: 5px;margin-left: 0px;padding-left: 0px;width: 100%;font-weight: normal;">
+                            style="color: #636363;font-size: 14px;margin-top: 5px;margin-left: 0px;padding-left: 0px;width: 100%;font-weight: 100;">
                             Τι νέο υπάρχει;</p>
                     </div>
 
@@ -1252,7 +1263,7 @@
                                     </g>
                                 </g>
                             </svg>
-                            <span>Έκδοση 1.8.5</span>
+                            <span>Έκδοση 1.8.7</span>
                         </div>
                         <div onclick="reset()" class="anInfo">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
@@ -1428,7 +1439,7 @@
 
                     <vox id="summaryTxt"></vox>
 
-                    <button onclick="analyzeUser(this)" class="aibtn" id="aitbtn">
+                    <button onclick="analyzeUser(this, 'reject')" class="aibtn" id="aitbtn">
                         <svg height="20px" width="20px" fill="#FFFFFF" viewBox="0 0 24 24" data-name="Layer 1"
                             id="Layer_1" class="sparkle">
                             <path
@@ -1639,7 +1650,7 @@
                 style="margin-top: auto;display: flex;flex-direction: column;align-items: center;width: 100%;margin-bottom: 10px;display: none;">
                 <span
                     style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;text-align: center;">Jeanne
-                    d'Arc 1.8.5</span></span>
+                    d'Arc 1.8.7</span></span>
                 <span style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;display: flex;">©
                     2025 Evox <span onclick="window.location.href= '../privacy/'"
                         style="color: #ababab8d;font-size: 12px;font-weight: lighter;margin-left:auto;">Privacy</span></span>
@@ -1970,7 +1981,7 @@
 
     </div>
 
-    <div class="pin-notice" id="pin-notice" style="display: none;">
+    <div class="evox-notice" id="pin-notice" style="display: none;">
         <div class="popnotice">
             <h2>Αδύναμο PIN</h2>
             <p>Το PIN σου είναι πολύ απλό και οποιοσδήποτε μπορεί να αποκτήσει πρόσβαση στα δεδομένα σου.</p>
@@ -2001,8 +2012,46 @@
                 <div onclick="setTimeout(function () {changePin(null, null, 'newMetode')}, 300)">
                     Αλλαγή τώρα
                 </div>
-                <div onclick="setTimeout(function () {document.getElementById('pin-notice').classList.remove('active')}, 300)">
+                <div
+                    onclick="setTimeout(function () {document.getElementById('pin-notice').classList.remove('active')}, 300)">
                     Ακύρωση
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="evox-notice" id="evox-notice" style="display: none;">
+        <div class="popnotice">
+            <h2>Η εφαρμογή ενημερώθηκε</h2>
+            <p>Σε περίπτωση σφαλμάτων μπορείς να επιστρέψεις στη παλιά έκδοση.</p>
+            <div class="cloudProfile" style="padding: 0;" id="cloudEvoxMain">
+
+            </div>
+            <div class="cloudProfile" style="padding: 0;" id="cloudingNotice" style="display: none;">
+                <div class="mainIcon">
+                    <img src="../evox-epsilon-beta/evox-logo-apple.png">
+                </div>
+                <div style="position: absolute;margin-right: 110px;z-index: 998;margin-bottom: 70px;">
+                    <img style="width: 60px;height: 60px;border-radius: 50%;" src="appLogoV2.png">
+                </div>
+                <div style="position: absolute;margin-right: 110px;z-index: 998;margin-top: 90px;">
+                    <img style="width: 50px;height: 50px;border-radius: 50%;"
+                        src="../evox-epsilon-beta/evox-logo-apple.png">
+                </div>
+
+                <div style="position: absolute;margin-left: 120px;z-index: 998;margin-bottom: 55px;">
+                    <img style="width: 50px;height: 50px;border-radius: 50%;" src="appLogoV2.png">
+                </div>
+
+                <div style="position: absolute;margin-left: 110px;z-index: 998;margin-top: 80px;">
+                    <img style="width: 40px;height: 40px;border-radius: 50%;"
+                        src="../evox-epsilon-beta/evox-logo-apple.png">
+                </div>
+            </div>
+            <div class="buttonsPIN" id="buttonsEvalert">
+                <div onclick="evalertclose()">
+                    Συνέχεια
                 </div>
             </div>
         </div>
@@ -2650,7 +2699,7 @@
     </div>
 
     <div class="spamStop" id="spamStop" style="display: none;">
-        <img src="angry.svg">
+        <img src="angry.svg" width="70px" height="70px">
         <h1>Το spamming είναι κακό!</h1>
         <p>Οι διακομιστές θα υπερφορτωθούν λόγω των επαναλαμβανόμενων ανανεώσεων, έτσι η εμπειρία των χρηστών θα
             υποβαθμιστεί.</p>
