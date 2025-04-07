@@ -4422,7 +4422,7 @@ function loadSentByUser() {
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
                                 </div>
-                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://arc.evoxs.xyz/?metode=getFile&emri=${foundName}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}` : "snap.png"}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
+                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://cdn.evoxs.xyz/jeannedarc/${foundName}/${file.id}` :`https://arc.evoxs.xyz/?metode=getFile&emri=${foundName}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}`}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
                 })
 
                 const cleaned = cleanText.trim().replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
@@ -5528,7 +5528,7 @@ function loadSentToUser(emri, redo) {
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
                                 </div>
-                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://arc.evoxs.xyz/?metode=getFile&emri=${key}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}` : "snap.png"}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
+                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://cdn.evoxs.xyz/jeannedarc/${key}/${file.id}` :`https://arc.evoxs.xyz/?metode=getFile&emri=${key}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}`}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
                 })
 
                 const cleaned = cleanText.trim().replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
@@ -5773,7 +5773,7 @@ function showProfileInfo(emri) {
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
                                 </div>
-                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://arc.evoxs.xyz/?metode=getFile&emri=${emri}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}` : "snap.png"}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
+                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://cdn.evoxs.xyz/jeannedarc/${emri}/${file.id}` : `https://arc.evoxs.xyz/?metode=getFile&emri=${emri}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}`}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
                     })
 
                     const cleaned = cleanText.trim().replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
