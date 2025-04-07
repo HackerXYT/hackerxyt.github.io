@@ -9,7 +9,7 @@ self.addEventListener('push', event => {
 });
 
 
-const CACHE_NAME = 'jeanne-cache-v7';
+const CACHE_NAME = 'jeanne-cache-v8';
 const STATIC_ASSETS = [
     '/jeanneBeta/',
 ];

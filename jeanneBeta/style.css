@@ -4991,8 +4991,13 @@ select:focus {
 }
 
 .iconA svg path {
-    transition: fill 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
+
+.iconA svg {
+    transition: all 0.3s ease-in-out;
+}
+
 
 #loadingIndicator {
     transition: opacity 0.3s ease-in-out;

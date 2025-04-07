@@ -2,31 +2,38 @@ let skipScreen;
 function disableRightClick(imageSrc) {
     skipScreen = 0;
     document.addEventListener("contextmenu", function (event) {
-        if(skipScreen == 21) return;
+        if (skipScreen == 21) return;
         event.preventDefault();
-        if (skipScreen > 2) {
+        if (skipScreen > 1) {
             skipScreen = 21;
-            document.getElementById("loginContainer").style.display = null
-            document.getElementById("loadText").innerHTML = `Dev Mode Enabled`
-            document.getElementById("loadText").style.opacity = '1'
+            EvalertNext({
+                "title": "Καλωσόρισες ξανά 👋",
+                "description": "Η λειτουργία προγραμματιστή είναι πλέον ενεργή.",
+                "buttons": ["Συνέχεια"],
+                "buttonAction": [],
+                "addons": []
+            })
+            //document.getElementById("loginContainer").style.display = null
+            //document.getElementById("loadText").innerHTML = `Dev Mode Enabled`
+            //document.getElementById("loadText").style.opacity = '1'
+//
+//
+            //localStorage.setItem("devBypass", "temp")
+//
+            //$("#device-warning").fadeOut("fast")
+            //$("#hexa").fadeOut('fast')
+            //$("#tasks").fadeIn("fast")
+            //setTimeout(function () {
+            //    document.dispatchEvent(new Event("DOMContentLoaded"));
+            //    setTimeout(function () {
+            //        localStorage.removeItem("devBypass")
+            //    }, 800)
+            //}, 700)
 
-
-            localStorage.setItem("devBypass", "temp")
-
-            $("#device-warning").fadeOut("fast")
-            $("#hexa").fadeOut('fast')
-            $("#tasks").fadeIn("fast")
-            setTimeout(function () {
-                document.dispatchEvent(new Event("DOMContentLoaded"));
-                setTimeout(function () {
-                    localStorage.removeItem("devBypass")
-                }, 800)
-            }, 700)
-            
 
 
         } else {
-            
+            skipScreen = 21;
             const img = document.createElement("img");
             img.src = imageSrc;
             img.style.position = "absolute";
@@ -45,4 +52,5 @@ function disableRightClick(imageSrc) {
     });
 }
 
-disableRightClick("../evox-epsilon-beta/epsilon-transparent.png");
+//disableRightClick("../evox-epsilon-beta/epsilon-transparent.png");
+disableRightClick("assetView-2.png");
