@@ -549,8 +549,8 @@ function focusOnIcon(el) {
     if (el.dataset.focusKey) {
         const key = el.dataset.focusKey;
         const savedFills = focusedIconsDictionary[key];
-        
-        
+
+
 
         el.style.transition = "transform 0.3s ease";
         el.style.transform = "scale(1.2)";
@@ -1687,8 +1687,8 @@ function attach() {
             }
         ]
     })
-    
-    
+
+
     if (!sessionStorage.getItem('isNewUser')) {
         document.getElementById("welcmtxt").innerHTML = `Καλώς ήρθες ξανά 👋`
         changeLoadingText(`Καλώς ήρθες ξανά 👋`)
@@ -2035,7 +2035,7 @@ function downloadProfiles() {
                         "addons": []
                     })
                     clearInterval(intmain)
-                } else if(runned === false && !localStorage.getItem("profilesDlOk")) {
+                } else if (runned === false && !localStorage.getItem("profilesDlOk")) {
                     EvalertNext({
                         "title": `Γίνεται λήψη δεδομένων.`,
                         "description": "Η εφαρμογή ίσως είναι πιο αργή όσο γίνεται αυτό. Θα ειδοποιηθείς μόλις όλα είναι έτοιμα.",
@@ -4422,7 +4422,7 @@ function loadSentByUser() {
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
                                 </div>
-                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://cdn.evoxs.xyz/jeannedarc/${foundName}/${file.id}` :`https://arc.evoxs.xyz/?metode=getFile&emri=${foundName}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}`}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
+                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://cdn.evoxs.xyz/jeannedarc/${foundName}/${file.id}` : `https://arc.evoxs.xyz/?metode=getFile&emri=${foundName}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}`}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
                 })
 
                 const cleaned = cleanText.trim().replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
@@ -4528,6 +4528,10 @@ function loadSentByUser() {
 
 
 function openProfile(el) {
+    document.getElementById("media").style.display = 'none'
+    document.getElementById("carouselItem-1").classList.add("active")
+    document.getElementById("carouselItem-2").classList.remove("active")
+    document.getElementById("carouselItem-3").classList.remove("active")
     saveLastPage('profile')
     getRandomClassmates(foundName).then(usersJson => {
         document.getElementById("classIcons").innerHTML = '';
@@ -5528,7 +5532,7 @@ function loadSentToUser(emri, redo) {
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
                                 </div>
-                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://cdn.evoxs.xyz/jeannedarc/${key}/${file.id}` :`https://arc.evoxs.xyz/?metode=getFile&emri=${key}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}`}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
+                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://cdn.evoxs.xyz/jeannedarc/${key}/${file.id}` : `https://arc.evoxs.xyz/?metode=getFile&emri=${key}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}`}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
                 })
 
                 const cleaned = cleanText.trim().replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
@@ -6099,7 +6103,7 @@ function timeAgo(isoString) {
 }
 
 function analyzeUser(e, rej) {
-    if(rej) {
+    if (rej) {
         Evalert({
             "title": `Να επιτρέπεται στο "AIT" να έχει πρόσβαση στα δεδομένα σας;`,
             "description": "Το AIT θα μπορεί να διαβάσει και να επεξεργαστεί τα δεδομένα σας.",
@@ -6259,11 +6263,11 @@ function acceptFlorida() {
         "clouds": true,
         "clouds_data": ["SELF", "EVOX", "Jeanne"]
     })
-   
+
 }
 
 function notificationsStart(ready) {
-    if(!ready) {
+    if (!ready) {
         acceptFlorida()
         return;
     }
@@ -6415,7 +6419,7 @@ function Evalert(message) {
     message.buttons.forEach(button => {
 
         document.getElementById("buttonsEvalert").innerHTML += `<div
-                    onclick="${message.buttonAction[btnCount] ? message.buttonAction[btnCount]+';evalertclose()' : 'evalertclose()'}">
+                    onclick="${message.buttonAction[btnCount] ? message.buttonAction[btnCount] + ';evalertclose()' : 'evalertclose()'}">
                     ${button}
                 </div>`
         btnCount++
@@ -6494,9 +6498,9 @@ function evalertclose() {
 }
 
 function EvalertNext(json) {
-    if(document.getElementById("evox-notice").classList.contains("active")) {
-        let main = setInterval(function() {
-            if(!document.getElementById("evox-notice").classList.contains("active")) {
+    if (document.getElementById("evox-notice").classList.contains("active")) {
+        let main = setInterval(function () {
+            if (!document.getElementById("evox-notice").classList.contains("active")) {
                 Evalert(json)
                 clearInterval(main)
             }
@@ -6504,4 +6508,58 @@ function EvalertNext(json) {
     } else {
         Evalert(json)
     }
+}
+
+function showMedia(el) {
+    document.getElementById("carouselItem-1").classList.remove("active")
+    document.getElementById("carouselItem-2").classList.remove("active")
+    document.getElementById("carouselItem-3").classList.remove("active")
+    el.classList.add('active')
+    document.getElementById("fromMe").style.display = 'none'
+    document.getElementById("media").style.display = 'flex'
+    const account_data = localStorage.getItem("jeanDarc_accountData")
+    if (!account_data) { return; }
+    const pars = JSON.parse(account_data)
+    document.getElementById("allMedia").classList.add("centerIt")
+    document.getElementById("allMedia").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="width: 25px;--active-upload: #eadf6b;
+            --track-upload: #64542b;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg>
+            <p>Γίνεται λήψη των πολυμέσων σου.</p>`
+    fetch(`https://arc.evoxs.xyz/?metode=getMedia&emri=${foundName}&pin=${atob(pars.pin)}`)
+        .then(response => response.json())
+        .then(mediaFiles => {
+            let html = '';
+            const promises = mediaFiles.map(media => {
+                return new Promise(resolve => {
+                    const img = new Image();
+                    img.src = `https://cdn.evoxs.xyz/jeannedarc/${foundName}/${media}/1`;
+                    //img.onload = () => resolve(`<img class="fade-in-slide-up" src="${img.src}" />`);
+                    resolve(`<img class="fade-in-slide-up" src="${img.src}" />`)
+                    img.onerror = () => resolve(`<img src="${img.src}" class="broken" />`); // Optional: handle broken image
+                });
+            });
+
+            Promise.all(promises).then(results => {
+                html = results.join('');
+                document.getElementById("allMedia").classList.remove("centerIt")
+                document.getElementById("allMedia").innerHTML = html;
+            });
+
+
+        }).catch(error => {
+            console.log('Error:', error);
+        });
+}
+
+function showFromMe(el) {
+    document.getElementById("carouselItem-1").classList.remove("active")
+    document.getElementById("carouselItem-2").classList.remove("active")
+    document.getElementById("carouselItem-3").classList.remove("active")
+    el.classList.add('active')
+    document.getElementById("fromMe").style.display = null
+    document.getElementById("media").style.display = 'none'
 }

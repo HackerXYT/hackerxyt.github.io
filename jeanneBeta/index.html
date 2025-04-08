@@ -183,7 +183,7 @@
             <span>registered under Evox©</span>
             <p>Διεύθυνση IP: <span id="ipIdent"></span></p>
             <p>Συσκευή: <span id="deviceInfo"></span></p>
-            <p>Έκδοση: <span>1.8.9</span></p>
+            <p>Έκδοση: <span>1.9.0</span></p>
             <p>Δοκιμαστική λειτουργία: <span>Ενεργή [BETA]</span></p>
             <p>Επανεκκίνηση: <span onclick="window.location.reload()">Τώρα</span></p>
         </div>
@@ -938,19 +938,19 @@
                     <div class="editButton">
                         Επεξεργασία
                     </div>
-                    <div class="editButton">
+                    <div onclick="window.location.reload()" class="editButton">
                         Ρυθμίσεις
                     </div>
                 </div>
                 <div class="semiCarousel">
-                    <div class="carouselItem active">
+                    <div class="carouselItem active" id="carouselItem-1" onclick="showFromMe(this)">
                         Καταχωρήσεις
                     </div>
-                    <div class="carouselItem"
+                    <div class="carouselItem" id="carouselItem-2"
                         onclick="document.getElementById('devActions').style.display = 'flex';document.getElementById('settings').style.display = 'flex'">
                         Προς εσένα
                     </div>
-                    <div onclick="window.location.reload()" class="carouselItem">
+                    <div onclick="showMedia(this)" class="carouselItem" id="carouselItem-3">
                         Πολυμέσα
                     </div>
                 </div>
@@ -1004,7 +1004,17 @@
                         </svg>
                     </div>
                 </div>
-                <div class="fromMe_Slider" style="width: 100%;display: flex;flex-direction: column;">
+                <div style="width: 100%;display: flex;flex-direction: column;display: none;" id="media">
+                    <div class="media-grid" id="allMedia">
+                        <img src="choiceb.jpg" />
+                        <img src="fleur.png" />
+                        <img src="image_processing20210917-11582-kv16qe.png" />
+                        <img src="bn.jpg" />
+                        <img src="recap.png" />
+                        <!-- More images will just keep filling in a grid -->
+                      </div>
+                </div>
+                <div class="fromMe_Slider" style="width: 100%;display: flex;flex-direction: column;" id="fromMe">
                     <div class="finishSetup">
                         <div class="rowInfo">
                             <p>Ολοκληρώστε το προφίλ σας</p>
@@ -1263,7 +1273,7 @@
                                     </g>
                                 </g>
                             </svg>
-                            <span>Έκδοση 1.8.9</span>
+                            <span>Έκδοση 1.9.0</span>
                         </div>
                         <div onclick="reset()" class="anInfo">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
@@ -1650,7 +1660,7 @@
                 style="margin-top: auto;display: flex;flex-direction: column;align-items: center;width: 100%;margin-bottom: 10px;display: none;">
                 <span
                     style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;text-align: center;">Jeanne
-                    d'Arc 1.8.9</span></span>
+                    d'Arc 1.9.0</span></span>
                 <span style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;display: flex;">©
                     2025 Evox <span onclick="window.location.href= '../privacy/'"
                         style="color: #ababab8d;font-size: 12px;font-weight: lighter;margin-left:auto;">Privacy</span></span>
