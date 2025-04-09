@@ -1669,24 +1669,28 @@ function transformGreekName(name, num) {
 let myInfo = null
 function attach() {
     downloadProfiles()
-    EvalertNext({
-        "title": "Καλωσόρισες ξανά 👋",
-        "description": "Μπορείς πλέον να δημιουργήσεις περίληψη των καταχωρήσεων σου χωρίς να καταλάβεις ποιος έγραψε τι.",
-        "buttons": ["Συνέχεια"],
-        "buttonAction": [],
-        "addons": [
-            {
-                "icon": "lock",
-                "title": "Evox AIT",
-                "desc": "Παραχωρήθηκε πρόσβαση."
-            },
-            {
-                "icon": "jeanne:logo",
-                "title": "Jeanne d'Arc",
-                "desc": "Ο λογαριασμός ενημερώθηκε."
-            }
-        ]
-    })
+    if (!sessionStorage.getItem("betaSession")) {
+        EvalertNext({
+            "title": "Καλωσόρισες ξανά 👋",
+            "description": "Μπορείς πλέον να δημιουργήσεις περίληψη των καταχωρήσεων σου χωρίς να καταλάβεις ποιος έγραψε τι.",
+            "buttons": ["Συνέχεια"],
+            "buttonAction": [],
+            "addons": [
+                {
+                    "icon": "lock",
+                    "title": "Evox AIT",
+                    "desc": "Παραχωρήθηκε πρόσβαση."
+                },
+                {
+                    "icon": "jeanne:logo",
+                    "title": "Jeanne d'Arc",
+                    "desc": "Ο λογαριασμός ενημερώθηκε."
+                }
+            ]
+        })
+        sessionStorage.setItem("betaSession", 'true')
+    }
+
 
 
     if (!sessionStorage.getItem('isNewUser')) {
@@ -6532,22 +6536,33 @@ function showMedia(el) {
     fetch(`https://arc.evoxs.xyz/?metode=getMedia&emri=${foundName}&pin=${atob(pars.pin)}`)
         .then(response => response.json())
         .then(mediaFiles => {
-            let html = '';
-            const promises = mediaFiles.map(media => {
-                return new Promise(resolve => {
-                    const img = new Image();
-                    img.src = `https://cdn.evoxs.xyz/jeannedarc/${foundName}/${media}/1`;
-                    //img.onload = () => resolve(`<img class="fade-in-slide-up" src="${img.src}" />`);
-                    resolve(`<img class="fade-in-slide-up" src="${img.src}" />`)
-                    img.onerror = () => resolve(`<img src="${img.src}" class="broken" />`); // Optional: handle broken image
-                });
+
+            const container = document.getElementById("allMedia");
+            let cn = 0
+
+            mediaFiles.forEach(media => {
+                const img = new Image();
+                
+                img.className = 'fade-in-slide-up';
+                img.src = `https://cdn.evoxs.xyz/jeannedarc/${foundName}/${media}/1`;
+
+                img.onload = () => {
+                    container.appendChild(img);
+                    cn++
+                    if (cn === 1) {
+                        container.innerHTML = ''
+                        container.classList.remove("centerIt");
+                    }
+                };
+
+                img.onerror = () => {
+                    img.className = 'broken';
+                    img.src= 'https://cdn.evoxs.xyz/jeannedarc/404/404.png/1'
+                    container.appendChild(img);
+                };
             });
 
-            Promise.all(promises).then(results => {
-                html = results.join('');
-                document.getElementById("allMedia").classList.remove("centerIt")
-                document.getElementById("allMedia").innerHTML = html;
-            });
+
 
 
         }).catch(error => {
