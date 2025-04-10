@@ -183,7 +183,7 @@
             <span>registered under Evox©</span>
             <p>Διεύθυνση IP: <span id="ipIdent"></span></p>
             <p>Συσκευή: <span id="deviceInfo"></span></p>
-            <p>Έκδοση: <span>1.9.0</span></p>
+            <p>Έκδοση: <span>1.9.3</span></p>
             <p>Δοκιμαστική λειτουργία: <span>Ενεργή [BETA]</span></p>
             <p>Επανεκκίνηση: <span onclick="window.location.reload()">Τώρα</span></p>
         </div>
@@ -214,8 +214,7 @@
                 <h2>Jeanne d'Arc</h2>
             </div>
 
-
-            <div class="boxUp" id="boxUp">
+            <div class="boxUp PCHANDLER" id="boxUp">
 
                 <div class="loginByName" id="loginByName" style="display: none;">
 
@@ -267,7 +266,8 @@
                 <div class="lsl" id="helpMe" style="display: none;">
 
                     <p>Λάβετε βοήθεια</p>
-                    <span>Δεν βρίσκετε το όνομά σας ή δεν μπορείτε να συνδεθείτε; Πληκτρολογήστε το όνομά σας παρακάτω
+                    <span>Δεν βρίσκετε το όνομά σας ή δεν μπορείτε να συνδεθείτε; Πληκτρολογήστε το όνομά σας
+                        παρακάτω
                         και θα σας βοηθήσουμε σύντομα!</span>
                     <div class="inputsLogin">
                         <div class="inv-button creds">
@@ -367,18 +367,13 @@
     <div id="tasks" class="tasks" style="display: none;">
         <div id="taskLoading" class="loading">
             <div id="typewriter" class="spinner center">
-                <div class="spinner-blade"></div>
-                <div class="spinner-blade"></div>
-                <div class="spinner-blade"></div>
-                <div class="spinner-blade"></div>
-                <div class="spinner-blade"></div>
-                <div class="spinner-blade"></div>
-                <div class="spinner-blade"></div>
-                <div class="spinner-blade"></div>
-                <div class="spinner-blade"></div>
-                <div class="spinner-blade"></div>
-                <div class="spinner-blade"></div>
-                <div class="spinner-blade"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+            --track-upload: #4a4a4a;width: 25px;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg>
             </div>
             <div id="spinnerApple" class="spinner center" style="display: none;">
                 <div class="spinner-blade"></div>
@@ -560,11 +555,11 @@
                 </div>
             </div>
             <div class="semiCarousel large" id="semiCarousel-fy">
-                <div class="carouselItem active">
+                <div id="foryou-carousel" class="carouselItem active">
                     Για εσένα
                 </div>
-                <div class="carouselItem"
-                    onclick="document.getElementById('devActions').style.display = 'flex';document.getElementById('settings').style.display = 'flex'">
+                <div id="mentioned-carousel" class="carouselItem"
+                    onclick="showMentioned()">
                     Αναφερόμενοι
                 </div>
             </div>
@@ -624,6 +619,9 @@
             <div style="margin-top: 10px;" class="border"></div>
 
             <div class="foryou-discovery" id="foryou">
+
+            </div>
+            <div class="foryou-discovery mentioned" id="mentioned">
 
             </div>
             <div id="loadingIndicator-fy" style="opacity: 0; text-align: center; padding: 10px;padding-bottom: 30%;">
@@ -1012,9 +1010,9 @@
                         <img src="bn.jpg" />
                         <img src="recap.png" />
                         <!-- More images will just keep filling in a grid -->
-                      </div>
+                    </div>
                 </div>
-                <div class="fromMe_Slider" style="width: 100%;display: flex;flex-direction: column;" id="fromMe">
+                <div class="fromMe_Slider" style="width: 100%;display: flex;flex-direction: column;" id="fromMe_Slider">
                     <div class="finishSetup">
                         <div class="rowInfo">
                             <p>Ολοκληρώστε το προφίλ σας</p>
@@ -1273,7 +1271,7 @@
                                     </g>
                                 </g>
                             </svg>
-                            <span>Έκδοση 1.9.0</span>
+                            <span>Έκδοση 1.9.3</span>
                         </div>
                         <div onclick="reset()" class="anInfo">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
@@ -1660,7 +1658,7 @@
                 style="margin-top: auto;display: flex;flex-direction: column;align-items: center;width: 100%;margin-bottom: 10px;display: none;">
                 <span
                     style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;text-align: center;">Jeanne
-                    d'Arc 1.9.0</span></span>
+                    d'Arc 1.9.3</span></span>
                 <span style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;display: flex;">©
                     2025 Evox <span onclick="window.location.href= '../privacy/'"
                         style="color: #ababab8d;font-size: 12px;font-weight: lighter;margin-left:auto;">Privacy</span></span>

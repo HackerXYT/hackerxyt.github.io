@@ -1151,17 +1151,19 @@ function clickPIN(element) {
 
     if (pin.length <= 3) {
         if (pin.length == 0) {
-            document.getElementById("ps1").style.width = "10px"
-            document.getElementById("ps1").style.height = "10px"
-        } else if (pin.length == 1) {
-            document.getElementById("ps2").style.width = "10px"
-            document.getElementById("ps2").style.height = "10px"
-        } else if (pin.length == 2) {
-            document.getElementById("ps3").style.width = "10px"
-            document.getElementById("ps3").style.height = "10px"
-        } else if (pin.length == 3) {
-            document.getElementById("ps4").style.width = "10px"
-            document.getElementById("ps4").style.height = "10px"
+            document.getElementById(`ps1`).classList.add("active")
+            //document.getElementById("ps1").style.width = "10px"
+            //document.getElementById("ps1").style.height = "10px"
+        } else if (pin.length >= 1 && pin.length <= 3) {
+            const id = pin.length + 1
+            try {
+                document.getElementById(`ps${id}`).classList.add("active")
+                //document.getElementById(`ps${id}`).style.width = "10px"
+                //document.getElementById(`ps${id}`).style.height = "10px"
+            } catch (error) {
+                console.error("Error:", error)
+            }
+
         }
         //not full
         pin = `${pin}${number}`
@@ -1177,6 +1179,7 @@ function clickPIN(element) {
                         .then(response => response.text())
                         .then(status => {
                             if (status === 'Granted') {
+                                hasLoginFailed = false
                                 fetch('allowedUsers.evox')
                                     .then(response => response.json())
                                     .then(status => {
@@ -1260,6 +1263,7 @@ function clickPIN(element) {
                         .then(response => response.text())
                         .then(status => {
                             if (status === 'Granted') {
+                                hasLoginFailed = false
                                 fetch('allowedUsers.evox')
                                     .then(response => response.json())
                                     .then(status => {
@@ -1477,6 +1481,7 @@ function reloadProgress() {
 }
 let retryInt;
 let hasLoginFailed = false;
+let informacionDictionary = {}
 function autoLogin() {
     const val = localStorage.getItem("jeanDarc_accountData")
     if (val) {
@@ -1524,6 +1529,7 @@ function autoLogin() {
 
                     //alert(status)
                     if (status === 'Granted') {
+                        hasLoginFailed = false
                         fetch('allowedUsers.evox')
                             .then(response => response.json())
                             .then(status => {
@@ -1552,9 +1558,17 @@ function autoLogin() {
 
                             document.getElementById("loadText").innerText = 'Επιτυχία'
                             //$("#tasks").fadeIn("fast", function () {
-                            setTimeout(function () {
-                                attach()
-                            }, 1200)
+                            fetch(`https://arc.evoxs.xyz/?metode=completeInformacion`)
+                                .then(response => response.json())
+                                .then(dictionary => {
+                                    informacionDictionary = dictionary
+                                    setTimeout(function () {
+                                        attach()
+                                    }, 1000)
+                                }).catch(error => {
+                                    console.log("informacion failed", error)
+                                })
+
                             //})
                             document.getElementById("loadText").style.opacity = '1'
                         }, 300)
@@ -1646,6 +1660,17 @@ function autoLogin() {
     } else {
         console.error("AutoLogin Failed")
     }
+}
+
+function informacion(emri) {
+    return new Promise((resolve, reject) => {
+        const info = informacionDictionary[emri];
+        if (info) {
+            resolve(info);
+        } else {
+            reject(new Error("Informacion not found"));
+        }
+    });
 }
 
 function transformGreekName(name, num) {
@@ -1752,15 +1777,10 @@ function attach() {
 
     spawnRandom()
 
-    fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${foundName}`)
-        .then(response => response.json())
+    informacion(foundName)
         .then(info => {
             myInfo = info
         })
-        .catch(error => {
-            console.error("Jeanne D'arc Database is offline.");
-            console.log('Error:', error);
-        });
 
     //seksioni->
 
@@ -1947,8 +1967,6 @@ async function spawnRandom(redo, frontEndLoading) {
                 if (icount === 1) {
                     console.log("i is 0")
                     //scrollOneItemUp(document.getElementById("scrollToMe"));
-                } else {
-                    console.warn(i)
                 }
 
             }
@@ -2103,20 +2121,13 @@ function deletePIN() {
         return;
     }
     if (pin.length == 0) {
-        document.getElementById("ps1").style.width = "5px"
-        document.getElementById("ps1").style.height = "5px"
-    } else if (pin.length == 1) {
-        document.getElementById("ps1").style.width = "5px"
-        document.getElementById("ps1").style.height = "5px"
-    } else if (pin.length == 2) {
-        document.getElementById("ps2").style.width = "5px"
-        document.getElementById("ps2").style.height = "5px"
-    } else if (pin.length == 3) {
-        document.getElementById("ps3").style.width = "5px"
-        document.getElementById("ps3").style.height = "5px"
-    } else if (pin.length == 4) {
-        document.getElementById("ps4").style.width = "5px"
-        document.getElementById("ps4").style.height = "5px"
+        document.getElementById(`ps1`).classList.remove('active')
+        //document.getElementById("ps1").style.width = "5px"
+        //document.getElementById("ps1").style.height = "5px"
+    } else if (pin.length >= 1 && pin.length <= 4) {
+        document.getElementById(`ps${pin.length}`).classList.remove('active')
+        //document.getElementById(`ps${pin.length}`).style.width = "5px"
+        //document.getElementById(`ps${pin.length}`).style.height = "5px"
     }
 
     pin = pin.slice(0, -1);
@@ -2220,7 +2231,7 @@ function showProfile(e) {
                     .then(response => response.json())
                     .then(tagsData => {
                         document.getElementById("tags").innerHTML = ''
-                        document.getElementById("mySeksioni").innerText = `${classmatesCount} συμμαθητές` //${seksioniData.seksioni}${seksioniData.klasa !== "none" ? seksioniData.klasa : ""}
+                        document.getElementById("mySeksioni").innerText = `${classmatesCount} ${classmatesCount > 1 ? "συμμαθητές" : "συμμαθήτρια"}` //${seksioniData.seksioni}${seksioniData.klasa !== "none" ? seksioniData.klasa : ""}
                         document.getElementById("tags").innerHTML = `<div class="anInfo">
                     🏫
                     <span id="seksioni">${seksioniData.seksioni}${seksioniData.klasa !== "none" ? seksioniData.klasa : ""}</span>
@@ -2292,8 +2303,7 @@ function activateYearbook() {
                     let selfClass = null
                     let waitMore = false
                     const fetchPromises = fullNames.map(name => {
-                        return fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
-                            .then(response => response.json())
+                        return informacion(name)
                             .then(info => {
                                 if (info.emri !== foundName) {
                                     allUsers[info.emri] = info;
@@ -2305,10 +2315,6 @@ function activateYearbook() {
                                 }
 
                             })
-                            .catch(error => {
-                                console.error("Jeanne D'arc Database is offline.");
-                                console.log('Error:', error);
-                            });
                     });
 
                     Promise.all(fetchPromises)
@@ -2363,7 +2369,7 @@ function activateYearbook() {
 
                                     const tempImage = new Image();
                                     tempImage.src = inform.foto + '?size=minimum';
-                                    fetchAndSaveImage(inform.emri, inform.foto)
+                                    //fetchAndSaveImage(inform.emri, inform.foto)
 
                                     console.log('Attempting to load:', tempImage.src);
 
@@ -2712,7 +2718,7 @@ function startYbRate(e, event) {
         document.getElementById("currentName").innerText = pickedStudents[activeStudent]
         document.getElementById("currentCount").innerText = `${activeStudent + 1}/${pickedStudents.length}`
         document.getElementById("currentPic").src = usersElems[pickedStudents[activeStudent]].info.foto
-        fetchAndSaveImage(inform.emri, usersElems[pickedStudents[activeStudent]].info.foto)
+        //fetchAndSaveImage(inform.emri, usersElems[pickedStudents[activeStudent]].info.foto)
         document.getElementById("message").value = ''
         reloadGenerate()
         if (marresit && marresit.includes(pickedStudents[activeStudent]) && marresit_more) {
@@ -3102,12 +3108,12 @@ async function getEvoxProfile(name) {
                 }
             }
             localStorage.setItem(`ProfileSrc_${name}`, data)
-            fetchAndSaveImage(name, data)
+            //fetchAndSaveImage(name, data)
             return data;
         } else {
             const returning = `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${name}_jeanDarc`
             localStorage.setItem(`ProfileSrc_${name}`, `https://data.evoxs.xyz/profiles?authorize=imagePfp&name=${name}_jeanDarc`)
-            fetchAndSaveImage(name, returning)
+            //fetchAndSaveImage(name, returning)
             return returning;  // Return default fallback URL
         }
     }
@@ -3140,8 +3146,7 @@ function merrniEmrat() {
             //console.log(fullNames)
             document.getElementById("socialSpawn").innerHTML = ''
             fullNames.forEach(name => {
-                fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
-                    .then(response => response.json())
+                informacion(name)
                     .then(info => {
                         document.getElementById("socialSpawn").innerHTML += `<div class="socialUser">
                 <img class="slUserPFP social"
@@ -3150,10 +3155,7 @@ function merrniEmrat() {
             </div>`
 
 
-                    }).catch(error => {
-                        console.error("Jeanne D'arc Database is offline.")
-                        console.log('Error:', error);
-                    });
+                    })
 
             })
 
@@ -3427,6 +3429,7 @@ function toggleDev() {
 
 function goBackToLogin() {
     if (hasLoginFailed) {
+        return;
         //localStorage.clear()
         //sessionStorage.clear()
         //setTimeout(function () {
@@ -3920,8 +3923,7 @@ function YbsearchByName() {
         }
         if (!spawnedSearches.includes(part)) {
             //spawnedSearches.push(part)
-            fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${part}`)
-                .then(response => response.json())
+            informacion(part)
                 .then(info => {
                     el.innerHTML += `<div onclick="addFromSearch('${info.emri}', this)" class="aStudent fade-in-slide-up ${pickedStudents.includes(info.emri) ? "picked" : ""}">
                     <div class="studentImage">
@@ -4190,8 +4192,7 @@ async function getRandomClassmates(foundName) {
         // Fetch information for each user
         await Promise.all(fullNames.map(async name => {
             try {
-                const userResponse = await fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`);
-                const info = await userResponse.json();
+                const info = await informacion(name);
 
                 if (info.emri !== foundName) {
                     allUsers[info.emri] = info;
@@ -4226,7 +4227,15 @@ async function getRandomClassmates(foundName) {
         classUsers = classUsers.filter(user => !user.foto.includes("data.evoxs.xyz"));
 
         if (classUsers.length < 3) {
-            return [];
+            let fallback = []
+            classUsers.forEach(user => {
+                fallback.push({
+                    name: user.emri,
+                    icon: user.foto ? user.foto + '?size=minimum' : 'https://example.com/default-icon.png',
+                    class: selfClass
+                })
+            })
+            return fallback;
         }
 
         // Shuffle and pick 3 random users
@@ -4391,7 +4400,7 @@ function loadSentByUser() {
             src = profileSrc.imageData; // If profile image is available, use it.
         }
 
-        fetchAndSaveImage(foundName, pfp);
+        //fetchAndSaveImage(foundName, pfp);
         // Assuming getImage and getEvoxProfile are asynchronous functions that return promises.
         Promise.all(
             sentbyuser.map(async (sent) => {
@@ -4540,7 +4549,10 @@ function openProfile(el) {
     getRandomClassmates(foundName).then(usersJson => {
         document.getElementById("classIcons").innerHTML = '';
         usersJson.forEach(user => {
-            document.getElementById("classIcons").innerHTML += `<img src="${user.icon}" alt="${user.name}">`;
+            getImage(user.name).then(profileSrc => {
+                document.getElementById("classIcons").innerHTML += `<img src="${profileSrc.imageData}" alt="${user.name}">`;
+            })
+
         })
         showProfile(null)
     });
@@ -4716,8 +4728,7 @@ document.getElementById('input-textarea').addEventListener('input', function () 
             function setupPersonalInfo(emri) {
                 return new Promise((resolve, reject) => {
                     function rejected() {
-                        fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${emri}`)
-                            .then(response => response.json())
+                        informacion(emri)
                             .then(found => {
                                 const informacion_local = localStorage.getItem("jeanne_informacion");
                                 if (informacion_local) {
@@ -4730,10 +4741,6 @@ document.getElementById('input-textarea').addEventListener('input', function () 
                                 }
                                 resolve(found); // Resolve with profile picture
                             })
-                            .catch(error => {
-                                console.error("Jeanne D'arc Database is offline:", error);
-                                reject(error);
-                            });
                     }
 
                     const informacion_local = localStorage.getItem("jeanne_informacion");
@@ -4769,10 +4776,16 @@ document.getElementById('input-textarea').addEventListener('input', function () 
                             setTag(user, this)
                         }
 
+                        const randomString = [...Array(15)]
+                        .map(() => Math.random().toString(36)[2])
+                        .join('');
+                        getImage(user).then(profileSrc => {
+                            document.getElementById(randomString).src = profileSrc.imageData;
+                        })
                         postContainer.innerHTML = `
                             <div class="post">
                                 <div class="profilePicture">
-                                    <img src="${info.foto}">
+                                    <img id="${randomString}" src="reloading-pfp.gif">
                                 </div>
                                 <div class="postInfo" style="flex-direction: row;">
                                     <div class="userInfo">
@@ -4782,7 +4795,8 @@ document.getElementById('input-textarea').addEventListener('input', function () 
                                     </div>
                                 </div>
                             </div>
-                        `;
+                            `
+
 
                         document.getElementById("floatingDiv").appendChild(postContainer);
                     })
@@ -4975,11 +4989,13 @@ function createPost(el) {
             document.getElementById("name-sur").innerText = foundName;
 
             function rejected() {
-                fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${foundName}`)
-                    .then(response => response.json())
+                informacion(foundName)
                     .then(found => {
-                        document.getElementById("profilePicture-main").src = found.foto;
-                        document.getElementById("profilePicture-small").src = found.foto;
+                        getImage(foundName).then(profileSrc => {
+                            document.getElementById("profilePicture-main").src = profileSrc.imageData;
+                            document.getElementById("profilePicture-small").src = profileSrc.imageData;
+                        })
+
                         const informacion_local = localStorage.getItem("jeanne_informacion");
                         if (informacion_local) {
                             const lc = JSON.parse(informacion_local);
@@ -5328,7 +5344,7 @@ function spawnItems(names, loadMore, oringinal) {
                 let src = info.foto;
                 try {
                     const profileSrc = await getImage(info.emri); // Wait for getImage to resolve
-                    console.log(profileSrc);
+                    //console.log(profileSrc);
                     if (profileSrc) {
                         src = profileSrc.imageData;
                     } else {
@@ -5353,7 +5369,7 @@ function spawnItems(names, loadMore, oringinal) {
                             <div onclick="showProfileInfo('${info.emri}')" class="showProfileBtn">Προβολή</div>
                         </div>
                     </div>`;
-                    fetchAndSaveImage(info.emri, info.foto); // Store the image locally
+                    //fetchAndSaveImage(info.emri, info.foto); // Store the image locally
 
                     // Check if count meets target, resolve the promise
                     if (count >= target) {
@@ -5372,8 +5388,7 @@ function spawnItems(names, loadMore, oringinal) {
                     spawn(localInfo[name]);
                 } else {
                     console.log("No localInfo name")
-                    fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
-                        .then(response => response.json())
+                    informacion(name)
                         .then(info => {
                             informacion[name] = info;
                             spawn(info);
@@ -5384,8 +5399,7 @@ function spawnItems(names, loadMore, oringinal) {
                         });
                 }
             } else {
-                fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${name}`)
-                    .then(response => response.json())
+                informacion(name)
                     .then(info => {
                         informacion[name] = info;
                         spawn(info);
@@ -5512,7 +5526,7 @@ function loadSentToUser(emri, redo) {
                 }
 
                 const emri = key; // Assuming 'emri' should be the key (username or name)
-                fetchAndSaveImage(emri, pfp);
+                //fetchAndSaveImage(emri, pfp);
                 console.log(`${key}: ${value}`);
 
                 const regex = /%img:server\((.*?)\):mediaId\((.*?)\):mediaType\((.*?)\)%/g;
@@ -5615,6 +5629,10 @@ function loadSentToUser(emri, redo) {
 
 
             }).catch(error => {
+                document.getElementById("sentToSelectedUser").innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;text-align: center;margin-top:15px;gap: 5px;"><svg xmlns="http://www.w3.org/2000/svg" width="45px" height="45px" viewBox="0 0 24 24" fill="none">
+<path d="M5.67139 4.25705L19.7431 18.3287C21.1538 16.6049 22.0001 14.4013 22.0001 12C22.0001 6.47715 17.523 2 12.0001 2C9.59885 2 7.39526 2.84637 5.67139 4.25705Z" fill="#f54248"/>
+<path d="M4.25705 5.67126C2.84637 7.39514 2 9.59873 2 12C2 17.5228 6.47715 22 12 22C14.4013 22 16.6049 21.1536 18.3287 19.7429L4.25705 5.67126Z" fill="#f54248"/>
+</svg><p style="">Σφάλμα Δικαιωμάτων</p></div>`;
                 console.error(error);
             });
     }
@@ -5659,8 +5677,7 @@ function showProfileInfo(emri) {
         }
         document.getElementById("darc-user-search-profile").src = src;
 
-        fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${emri}`)
-            .then(response => response.json())
+        informacion(emri)
             .then(info => {
                 const selfClass = `${info.seksioni}${info.klasa}`
                 const foto = info.foto;
@@ -5682,7 +5699,7 @@ function showProfileInfo(emri) {
                 console.error("Jeanne D'arc Database is offline.");
                 console.log('Error:', error);
             });
-        await fetchAndSaveImage(emri, pfp);
+        //await fetchAndSaveImage(emri, pfp);
     }
     final()
     function loadSentByUser(emri, redo) {
@@ -5746,7 +5763,7 @@ function showProfileInfo(emri) {
                 src = profileSrc.imageData; // If profile image is available, use it.
             }
 
-            fetchAndSaveImage(emri, pfp);
+            //fetchAndSaveImage(emri, pfp);
             // Assuming getImage and getEvoxProfile are asynchronous functions that return promises.
             Promise.all(
                 sentbyuser.map(async (sent) => {
@@ -5856,7 +5873,7 @@ function showProfileInfo(emri) {
                 .then(response => response.json())
                 .then(sentbyuser => {
                     if (sentbyuser.length === 0) {
-                        document.getElementById("sentBySelectedUser").innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;text-align: center;margin-top:15px;"><svg xmlns="http://www.w3.org/2000/svg" width="45px" height="45px" viewBox="0 0 24 24" fill="none" style="margin-bottom: 10px;margin-top:10px;">
+                        document.getElementById("sentBySelectedUser").innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;text-align: center;margin-top:15px;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="45px" height="45px" viewBox="0 0 24 24" fill="none" style="margin-bottom: 10px;margin-top:10px;">
 <path d="M15.4998 5.50067L18.3282 8.3291M13.3254 7.67502L17.4107 3.58969C18.1918 2.80865 19.4581 2.80864 20.2392 3.58969C21.0202 4.37074 21.0202 5.63707 20.2392 6.41812L16.1538 10.5034M3 3L10.5002 10.5002M21 21L13.3286 13.3286M13.3286 13.3286L8.37744 18.2798C7.61579 19.0415 7.23497 19.4223 6.8012 19.7252C6.41618 19.994 6.00093 20.2167 5.56398 20.3887C5.07171 20.5824 4.54375 20.6889 3.48793 20.902L3 21.0004L3.04745 20.6683C3.21536 19.4929 3.29932 18.9052 3.49029 18.3565C3.65975 17.8697 3.89124 17.4067 4.17906 16.979C4.50341 16.497 4.92319 16.0772 5.76274 15.2377L10.5002 10.5002M13.3286 13.3286L10.5002 10.5002" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg><p style="">Ο χρήστης δεν έχει κάνει καμία καταχώρηση.</p></div>`;
                         return;
@@ -5872,6 +5889,10 @@ function showProfileInfo(emri) {
 
 
                 }).catch(error => {
+                    document.getElementById("sentBySelectedUser").innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;text-align: center;margin-top:15px;gap: 5px;"><svg xmlns="http://www.w3.org/2000/svg" width="45px" height="45px" viewBox="0 0 24 24" fill="none">
+<path d="M5.67139 4.25705L19.7431 18.3287C21.1538 16.6049 22.0001 14.4013 22.0001 12C22.0001 6.47715 17.523 2 12.0001 2C9.59885 2 7.39526 2.84637 5.67139 4.25705Z" fill="#f54248"/>
+<path d="M4.25705 5.67126C2.84637 7.39514 2 9.59873 2 12C2 17.5228 6.47715 22 12 22C14.4013 22 16.6049 21.1536 18.3287 19.7429L4.25705 5.67126Z" fill="#f54248"/>
+</svg><p style="">Σφάλμα Δικαιωμάτων</p></div>`;
                     console.error(error);
                 });
         }
@@ -5951,7 +5972,11 @@ function openSearch(el, inBackground) {
 
 
         })
-        .catch(error => console.error("Jeanne D'arc Database is offline."));
+        .catch(error => {
+            document.getElementById("allUsers").innerHTML = `<p style="text-align:center;">Κάτι απέτυχε.</p>`;
+            console.error("Jeanne D'arc Database is offline?", error)
+
+        });
 
 
     //Stealth meaning -> client will refresh local data without changing the ui
@@ -6022,8 +6047,7 @@ function changeClass() {
     document.body.style.overflow = "hidden"
     document.getElementById("classChange").classList.add("active")
     document.getElementById("spawnClasses").innerHTML = `<div class="loading-spinner"></div>`
-    fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${foundName}`)
-        .then(response => response.json())
+    informacion(foundName)
         .then(info => {
             document.getElementById("spawnClasses").innerHTML = ''
             const selfClass = `${info.seksioni}${info.klasa}`
@@ -6519,7 +6543,7 @@ function showMedia(el) {
     document.getElementById("carouselItem-2").classList.remove("active")
     document.getElementById("carouselItem-3").classList.remove("active")
     el.classList.add('active')
-    document.getElementById("fromMe").style.display = 'none'
+    document.getElementById("fromMe_Slider").style.display = 'none'
     document.getElementById("media").style.display = 'flex'
     const account_data = localStorage.getItem("jeanDarc_accountData")
     if (!account_data) { return; }
@@ -6542,7 +6566,7 @@ function showMedia(el) {
 
             mediaFiles.forEach(media => {
                 const img = new Image();
-                
+
                 img.className = 'fade-in-slide-up';
                 img.src = `https://cdn.evoxs.xyz/jeannedarc/${foundName}/${media}/1`;
 
@@ -6557,10 +6581,15 @@ function showMedia(el) {
 
                 img.onerror = () => {
                     img.className = 'broken';
-                    img.src= 'https://cdn.evoxs.xyz/jeannedarc/404/404.png/1'
+                    img.src = 'https://cdn.evoxs.xyz/jeannedarc/404/404.png/1'
                     container.appendChild(img);
                 };
             });
+
+            if (mediaFiles.length === 0) {
+                document.getElementById("allMedia").innerHTML = ` <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="40px" height="40px" viewBox="0 0 24 24" data-name="Layer 1"><path d="M19.5,4H10a1,1,0,0,0,0,2H19.5a1,1,0,0,1,1,1v6.76l-1.88-1.88a3,3,0,0,0-1.14-.71,1,1,0,1,0-.64,1.9.82.82,0,0,1,.36.23l3.31,3.29a.66.66,0,0,0,0,.15.83.83,0,0,0,0,.15,1.18,1.18,0,0,0,.13.18.48.48,0,0,0,.09.11.9.9,0,0,0,.2.14.6.6,0,0,0,.11.06.91.91,0,0,0,.37.08,1,1,0,0,0,1-1V7A3,3,0,0,0,19.5,4ZM3.21,2.29A1,1,0,0,0,1.79,3.71L3.18,5.1A3,3,0,0,0,2.5,7V17a3,3,0,0,0,3,3H18.09l1.7,1.71a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42ZM4.5,7a1,1,0,0,1,.12-.46L7.34,9.25a3,3,0,0,0-1,.63L4.5,11.76Zm1,11a1,1,0,0,1-1-1V14.58l3.3-3.29a1,1,0,0,1,1.4,0L15.91,18Z"/></svg>
+            <p>Η συλλογή σου είναι άδεια.</p>`
+            }
 
 
 
@@ -6575,6 +6604,53 @@ function showFromMe(el) {
     document.getElementById("carouselItem-2").classList.remove("active")
     document.getElementById("carouselItem-3").classList.remove("active")
     el.classList.add('active')
-    document.getElementById("fromMe").style.display = null
+    document.getElementById("fromMe_Slider").style.display = null
     document.getElementById("media").style.display = 'none'
+}
+
+function showMentioned() {
+    document.getElementById("foryou-carousel").classList.remove("active")
+    document.getElementById("mentioned-carousel").classList.add("active")
+
+    document.getElementById("foryou").style.display = 'none'
+    document.getElementById("mentioned").classList.remove("mentioned")
+
+    const lc = localStorage.getItem("jeanDarc_accountData");
+    if (!lc) return;
+
+    const pars = JSON.parse(lc);
+    const pin = atob(pars.pin);
+    hasCurrentSixLoaded = false;
+    const j = 6
+    let skel = `<p>[EVOX] Not ready yet..</p>`
+    for (let i = 0; i < j; i++) {
+        skel += `<div class="postContainer skel loading" style="padding-bottom: 10px;padding-top: 10px;">
+                        <div class="post">
+                            <div style="display: flex;flex-direction: row;">
+                                <div class="profilePicture">
+                                    <span style="background-color: #4c4c4c;width: 45px;height: 45px;border-radius: 50%;">
+                                </div>
+                                <div class="postInfo">
+                                    <div class="userInfo">
+                                        <p class="skeleton"></p>
+                                        <span class="skeleton"></span>
+                                    </div>
+                                    <div class="postContent">
+                                       <p class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                        <p style="margin-top: 5px;" class="skeleton"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>`
+    }
+    document.getElementById("mentioned").innerHTML = skel
+    //https://arc.evoxs.xyz/?metode=toMe&emri=${foundName}&pin=${process}
 }

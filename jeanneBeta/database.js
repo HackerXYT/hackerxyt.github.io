@@ -52,16 +52,30 @@ async function getImage(id, DONTMAKENEWAJAX) {
         request.onsuccess = () => {
             //console.log('Image fetched:', request.result);  // Log the result
             resolve(request.result);
-            if(!DONTMAKENEWAJAX) {
-                getEvoxProfile(id).then(profileSrc => {
-                    fetchAndSaveImage(id, profileSrc)
-                });
+            if (!DONTMAKENEWAJAX) {
+                    fetch(`https://arc.evoxs.xyz/?metode=hasChanged&emri=${id}`)
+                    .then(response => response.json())
+                    .then(part => {
+                        if(request.result && part.part && request.result.imageData.includes(part.part)) {
+                            //console.log("Image is up to date.", id);
+                        } else {
+                            console.warn("Updating image", id);
+                            getEvoxProfile(id).then(profileSrc => {
+                                fetchAndSaveImage(id, profileSrc)
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Could not fetch new image:", error);
+                    });
             }
-            
         };
         request.onerror = () => {
             console.error('Error fetching image for ID:', id);  // Log error
-            resolve(null);
+            getEvoxProfile(id).then(profileSrc => {
+                resolve({imageData: profileSrc});
+                fetchAndSaveImage(id, profileSrc)
+            });
         };
     });
 }
@@ -80,7 +94,7 @@ async function fetchAndSaveImage(id, imageUrl) {
     try {
         const response = await fetch(imageUrl);
         //console.log("Fetch Image",response)
-        if(!response.ok) {
+        if (!response.ok) {
             return;
         }
         const blob = await response.blob();
