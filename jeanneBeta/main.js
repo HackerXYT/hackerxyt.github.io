@@ -1082,6 +1082,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+function informacion(emri) {
+    return new Promise((resolve, reject) => {
+        const info = informacionDictionary[emri];
+        if (info) {
+            resolve(info);
+        } else {
+            reject(new Error("Informacion not found"));
+        }
+    });
+}
+
 const loadingHTML = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" width="25px"
                 height="25px" style="enable-background:new 0 0 50 50;" xml:space="preserve">
@@ -1662,16 +1673,7 @@ function autoLogin() {
     }
 }
 
-function informacion(emri) {
-    return new Promise((resolve, reject) => {
-        const info = informacionDictionary[emri];
-        if (info) {
-            resolve(info);
-        } else {
-            reject(new Error("Informacion not found"));
-        }
-    });
-}
+
 
 function transformGreekName(name, num) {
     const firstName = name.split(' ')[num].replace(/[σς]+$/, ''); // Remove trailing σ/ς
@@ -4777,8 +4779,8 @@ document.getElementById('input-textarea').addEventListener('input', function () 
                         }
 
                         const randomString = [...Array(15)]
-                        .map(() => Math.random().toString(36)[2])
-                        .join('');
+                            .map(() => Math.random().toString(36)[2])
+                            .join('');
                         getImage(user).then(profileSrc => {
                             document.getElementById(randomString).src = profileSrc.imageData;
                         })
@@ -5322,7 +5324,7 @@ function spawnItems(names, loadMore, oringinal) {
     const fullNames = Object.keys(names.names);
     console.log("fn:", fullNames)
     const informacion_local = localStorage.getItem("jeanne_informacion");
-    let informacion = {};
+    let informacion_2 = {};
     let html = '';
     let count = 0
     let target = oringinal.length
@@ -5390,7 +5392,7 @@ function spawnItems(names, loadMore, oringinal) {
                     console.log("No localInfo name")
                     informacion(name)
                         .then(info => {
-                            informacion[name] = info;
+                            informacion_2[name] = info;
                             spawn(info);
                         })
                         .catch(error => {
@@ -5401,13 +5403,14 @@ function spawnItems(names, loadMore, oringinal) {
             } else {
                 informacion(name)
                     .then(info => {
-                        informacion[name] = info;
+                        informacion_2[name] = info;
                         spawn(info);
                     })
                     .catch(error => {
                         console.error("Jeanne D'arc Database is offline:", error);
                         reject(error); // Reject promise if fetch fails
                     });
+
             }
 
             count++;
@@ -5952,7 +5955,13 @@ function openSearch(el, inBackground) {
         //saveNames(true);
     } else {
         console.log("Fresh start");
-        document.getElementById("allUsers").innerHTML = `<p style="text-align:center;">Γίνεται Φόρτωση..</p>`;
+        document.getElementById("allUsers").innerHTML = `<div style="display:flex;flex-direction:column;width:100%;align-items:center;gap:5px;justify-content:center;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+            --track-upload: #4a4a4a;width: 25px;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg><p style="text-align:center;">Γίνεται Φόρτωση..</p></div>`;
         //saveNames();
     }
     const ac = localStorage.getItem("jeanDarc_accountData");
