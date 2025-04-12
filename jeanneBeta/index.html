@@ -183,7 +183,7 @@
             <span>registered under Evox©</span>
             <p>Διεύθυνση IP: <span id="ipIdent"></span></p>
             <p>Συσκευή: <span id="deviceInfo"></span></p>
-            <p>Έκδοση: <span>1.9.4</span></p>
+            <p>Έκδοση: <span>1.9.5</span></p>
             <p>Δοκιμαστική λειτουργία: <span>Ενεργή [BETA]</span></p>
             <p>Επανεκκίνηση: <span onclick="window.location.reload()">Τώρα</span></p>
         </div>
@@ -933,7 +933,7 @@
                     </div>
                 </div>
                 <div class="buttonsEdit">
-                    <div class="editButton">
+                    <div class="editButton" onclick="openEditProfile()">
                         Επεξεργασία
                     </div>
                     <div onclick="window.location.reload()" class="editButton">
@@ -1271,7 +1271,7 @@
                                     </g>
                                 </g>
                             </svg>
-                            <span>Έκδοση 1.9.4</span>
+                            <span>Έκδοση 1.9.5</span>
                         </div>
                         <div onclick="reset()" class="anInfo">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
@@ -1483,6 +1483,9 @@
                     </svg></span>
                 <input type="text" class="search-box" placeholder="Αναζήτηση" id="search-box">
             </div>
+            <div style="margin-top: 20px;display: none;" class="fade-in-slide-up" id="searchedUsers">
+
+            </div>
             <div style="margin-top: 20px;" id="allUsers">
 
             </div>
@@ -1658,7 +1661,7 @@
                 style="margin-top: auto;display: flex;flex-direction: column;align-items: center;width: 100%;margin-bottom: 10px;display: none;">
                 <span
                     style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;text-align: center;">Jeanne
-                    d'Arc 1.9.4</span></span>
+                    d'Arc 1.9.5</span></span>
                 <span style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;display: flex;">©
                     2025 Evox <span onclick="window.location.href= '../privacy/'"
                         style="color: #ababab8d;font-size: 12px;font-weight: lighter;margin-left:auto;">Privacy</span></span>
@@ -1959,6 +1962,35 @@
                     <div onclick="addMore(this)" class="addmore" id="addMore">
                         Πρόσθεσε στην καταχώρηση
                     </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+    <div class="PCCONTAINER">
+        <div id="editProfile" class="applePopup" style="padding: 0;">
+            <div class="topActionsPopup" style="padding: 10px;">
+                <div onclick="closePostCreate('frontend')" class="cancel">
+                    Ακύρωση
+                </div>
+                <div class="title-popup">
+                    Επεξεργασία προφίλ
+                </div>
+                <div class="moreActions">
+                    Τέλος
+
+                </div>
+
+            </div>
+            <div class="border"></div>
+
+            <div style="display: flex;flex-direction: column;align-items: center;justify-content: center;width: 100%;height: 100%;background-color: #121212;">
+                <div style="display: flex;flex-direction: column;border-radius: 30px;padding: 50px;border: 1px solid #fff;justify-content: flex-start;">
+                    όνομα
                 </div>
             </div>
 

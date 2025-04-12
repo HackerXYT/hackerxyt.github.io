@@ -5060,7 +5060,18 @@ function createPost(el) {
 
 }
 
+function openEditProfile() {
+    document.getElementById("editProfile").classList.add("active")
+    document.getElementById("app").style.transform = 'scale(0.95)'
+    document.getElementById("gradColored").style.opacity = '0.8'
+    document.getElementById("gradColored").style.borderRadius = '20px'
+    document.getElementById("gradColored").style.transform = 'scale(0.9)'
+    document.getElementById("app").style.opacity = '0.8'
+    document.body.style.backgroundColor = '#000'
+}
+
 grabberEvents("createPost")
+grabberEvents("editProfile")
 
 document.getElementById("search-discovery").addEventListener("scroll", function () {
     if (this.scrollTop > 70) {
@@ -5322,6 +5333,7 @@ function openDiscovery(el) {
 function spawnItems(names, loadMore, oringinal) {
 
     const fullNames = Object.keys(names.names);
+    console.warn("FLNAMS:", names)
     console.log("fn:", fullNames)
     const informacion_local = localStorage.getItem("jeanne_informacion");
     let informacion_2 = {};
@@ -5423,6 +5435,11 @@ function spawnItems(names, loadMore, oringinal) {
         //console.log("HTML", html)
         if (html !== '') {
             //console.log("more", loadMore)
+            if (loadMore === "searched") {
+                console.log("searched!")
+                document.getElementById("searchedUsers").innerHTML = html;
+                return;
+            }
             if (loadMore) {
                 document.getElementById("allUsers").innerHTML += html;
             } else {
@@ -5431,8 +5448,8 @@ function spawnItems(names, loadMore, oringinal) {
         } else {
             console.log("html is empty")
         }
-        if (Object.keys(informacion).length !== 0) {
-            localStorage.setItem("jeanne_informacion", JSON.stringify(informacion));
+        if (Object.keys(informacion_2).length !== 0) {
+            localStorage.setItem("jeanne_informacion", JSON.stringify(informacion_2));
         }
     });
 }
@@ -6558,8 +6575,8 @@ function showMedia(el) {
     if (!account_data) { return; }
     const pars = JSON.parse(account_data)
     document.getElementById("allMedia").classList.add("centerIt")
-    document.getElementById("allMedia").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="width: 25px;--active-upload: #eadf6b;
-            --track-upload: #64542b;">
+    document.getElementById("allMedia").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="width: 25px;--active-upload: #ffffff;
+            --track-upload: #4a4a4a;">
                 <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
                     class="active-upload"></circle>
                 <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
@@ -6663,3 +6680,122 @@ function showMentioned() {
     document.getElementById("mentioned").innerHTML = skel
     //https://arc.evoxs.xyz/?metode=toMe&emri=${foundName}&pin=${process}
 }
+
+
+function searchByInput() {
+    const el = document.getElementById("search-box")
+    const queryParts = el.value.split(" ");
+    let complete = []
+    queryParts.forEach(part => {
+        if (part.length > 0) {
+            const matchedNames = findFullNames(part);
+            matchedNames.forEach(name => {
+                if (!complete.includes(name)) {
+                    complete.push(name)
+                }
+            })
+        }
+    })
+    document.getElementById("searchedUsers").innerHTML = ``;
+    console.warn("Search Results, Cleared:", complete)
+    let target = complete.length;
+    let workingOn = 0
+    console.warn("Lengths:", el.value.length)
+    if (complete.length === 0 && el.value.length >= 2) {
+        document.getElementById("searchedUsers").innerHTML = `<div id="temp-load-indi-search" style="display:flex;flex-direction:column;width:100%;align-items:center;gap:5px;justify-content:center;"><svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="25px" height="25px" viewBox="0 0 32 32" version="1.1">
+<path d="M30.885 29.115l-10.132-10.132c1.555-1.9 2.497-4.355 2.497-7.029 0-3.092-1.26-5.89-3.294-7.909l-0.001-0.001h-0.002c-2.036-2.040-4.851-3.301-7.961-3.301-6.213 0-11.249 5.036-11.249 11.249 0 3.11 1.262 5.924 3.301 7.961l0 0c2.019 2.036 4.817 3.297 7.91 3.297 2.674 0 5.128-0.942 7.048-2.513l-0.020 0.016 10.132 10.132c0.226 0.226 0.539 0.366 0.884 0.366 0.691 0 1.251-0.56 1.251-1.251 0-0.345-0.14-0.658-0.366-0.884l0 0zM5.813 18.186c-1.583-1.583-2.563-3.771-2.563-6.187 0-4.832 3.917-8.749 8.749-8.749 2.416 0 4.603 0.979 6.187 2.563h0.002c1.583 1.583 2.563 3.77 2.563 6.186s-0.979 4.602-2.561 6.185l0-0-0.004 0.002-0.003 0.004c-1.583 1.582-3.769 2.56-6.183 2.56-2.417 0-4.604-0.98-6.187-2.564l-0-0zM13.768 12l1.944-1.944c0.226-0.226 0.366-0.539 0.366-0.884 0-0.69-0.56-1.25-1.25-1.25-0.345 0-0.658 0.14-0.884 0.366l-1.944 1.944-1.944-1.944c-0.226-0.226-0.539-0.366-0.884-0.366-0.69 0-1.25 0.56-1.25 1.25 0 0.345 0.14 0.658 0.366 0.884v0l1.944 1.944-1.944 1.944c-0.226 0.226-0.366 0.539-0.366 0.884 0 0.69 0.56 1.25 1.25 1.25 0.345 0 0.658-0.14 0.884-0.366v0l1.944-1.944 1.944 1.944c0.226 0.226 0.539 0.366 0.884 0.366 0.69 0 1.25-0.56 1.25-1.25 0-0.345-0.14-0.658-0.366-0.884v0z"/>
+</svg><p style="text-align:center;">Δεν βρέθηκαν αποτελέσματα.</p></div>`
+        return;
+    }
+    if (complete.length === 0 && el.value.length === 0 || el.value.length <= 2) {
+        console.warn("Triggered hide")
+        document.getElementById("allUsers").style.display = null
+        document.getElementById("searchedUsers").style.display = 'none';
+    } else {
+
+        console.warn("Triggered show")
+        document.getElementById("searchedUsers").innerHTML = `<div id="temp-load-indi-search" style="display:flex;flex-direction:column;width:100%;align-items:center;gap:5px;justify-content:center;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+            --track-upload: #4a4a4a;width: 25px;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg><p style="text-align:center;">Γίνεται Αναζήτηση..</p></div>`
+        document.getElementById("allUsers").style.display = 'none'
+        document.getElementById("searchedUsers").style.display = 'block';
+    }
+    setTimeout(function () {
+        complete.forEach(name => {
+            workingOn++
+            informacion(name)
+                .then(info => {
+                    let src = info.foto;
+                    try {
+                        if (document.getElementById("searchedUsers").innerHTML.includes(name)) {
+                            return;
+                        }
+                        getImage(info.emri).then(profileSrc => {
+                            //console.log(profileSrc);
+                            if (profileSrc) {
+                                src = profileSrc.imageData;
+                            } else {
+                                src = info.foto
+                            }
+
+                            document.getElementById("searchedUsers").innerHTML += `
+    <div class="postContainer fade-in-slide-up" style="padding-bottom: 10px;padding-top: 10px;">
+        <div class="post">
+            <div class="profilePicture">
+                <img src="${src}">
+            </div>
+            <div class="postInfo">
+                <div class="userInfo">
+                    <p onclick="extMention('${info.emri}')">${info.emri} 
+                    ${info.seksioni === 'ΚΑΘ' ? '<svg style="margin-left: 5px" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" id="verified" class="icon glyph"><path d="M21.6,9.84A4.57,4.57,0,0,1,21.18,9,4,4,0,0,1,21,8.07a4.21,4.21,0,0,0-.64-2.16,4.25,4.25,0,0,0-1.87-1.28,4.77,4.77,0,0,1-.85-.43A5.11,5.11,0,0,1,17,3.54a4.2,4.2,0,0,0-1.8-1.4A4.22,4.22,0,0,0,13,2.21a4.24,4.24,0,0,1-1.94,0,4.22,4.22,0,0,0-2.24-.07A4.2,4.2,0,0,0,7,3.54a5.11,5.11,0,0,1-.66.66,4.77,4.77,0,0,1-.85.43A4.25,4.25,0,0,0,3.61,5.91,4.21,4.21,0,0,0,3,8.07,4,4,0,0,1,2.82,9a4.57,4.57,0,0,1-.42.82A4.3,4.3,0,0,0,1.63,12a4.3,4.3,0,0,0,.77,2.16,4,4,0,0,1,.42.82,4.11,4.11,0,0,1,.15.95,4.19,4.19,0,0,0,.64,2.16,4.25,4.25,0,0,0,1.87,1.28,4.77,4.77,0,0,1,.85.43,5.11,5.11,0,0,1,.66.66,4.12,4.12,0,0,0,1.8,1.4,3,3,0,0,0,.87.13A6.66,6.66,0,0,0,11,21.81a4,4,0,0,1,1.94,0,4.33,4.33,0,0,0,2.24.06,4.12,4.12,0,0,0,1.8-1.4,5.11,5.11,0,0,1,.66-.66,4.77,4.77,0,0,1,.85-.43,4.25,4.25,0,0,0,1.87-1.28A4.19,4.19,0,0,0,21,15.94a4.11,4.11,0,0,1,.15-.95,4.57,4.57,0,0,1,.42-.82A4.3,4.3,0,0,0,22.37,12,4.3,4.3,0,0,0,21.6,9.84Zm-4.89.87-5,5a1,1,0,0,1-1.42,0l-3-3a1,1,0,1,1,1.42-1.42L11,13.59l4.29-4.3a1,1,0,0,1,1.42,1.42Z" style="fill:#179cf0"/></svg>' : ''}</p>
+                </div>
+                <div class="postContent">
+                    <p>${info.seksioni}${info.klasa !== 'none' ? info.klasa : ''}</p>
+                </div>
+            </div>
+            <div onclick="showProfileInfo('${info.emri}')" class="showProfileBtn">Προβολή</div>
+        </div>
+    </div>`;
+                            //fetchAndSaveImage(info.emri, info.foto); // Store the image locally
+
+                            // Check if count meets target, resolve the promise
+                            if (workingOn >= target) {
+
+                                try {
+                                    if (document.getElementById("temp-load-indi-search")) {
+                                        document.getElementById("temp-load-indi-search").style.display = 'none'
+                                    }
+                                } catch (err) {
+                                    console.warn(err)
+                                }
+                            }
+                        })
+
+
+
+
+                    } catch (error) {
+                        console.error("Error fetching image:", error);
+                    }
+                })
+                .catch(error => {
+                    console.error("Jeanne D'arc Database is offline:", error);
+                });
+        })
+    }, 500)
+
+}
+document.getElementById("search-box-2").addEventListener("input", () => {
+    document.getElementById("search-box").value = document.getElementById("search-box-2").value
+    searchByInput()
+    document.getElementById("search-box").focus()
+})
+
+document.getElementById("search-box").addEventListener("input", () => {
+    searchByInput()
+    document.getElementById("search-box-2").value = document.getElementById("search-box").value
+});
