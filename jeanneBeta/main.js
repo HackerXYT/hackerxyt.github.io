@@ -1845,6 +1845,7 @@ async function spawnRandom(redo, frontEndLoading) {
             const data = JSON.parse(ranData);
             let icount = 0
             for (const post of data) {
+                console.log("post",post)
                 icount++
 
                 if (redo) {
@@ -4406,6 +4407,7 @@ function loadSentByUser() {
         // Assuming getImage and getEvoxProfile are asynchronous functions that return promises.
         Promise.all(
             sentbyuser.map(async (sent) => {
+                console.log("Sent By User:", sent)
                 // Wait for both image and profile data to be fetched.
                 //const profileSrc = await getImage(sent.marresi);
                 //const pfp = await getEvoxProfile(sent.marresi);
@@ -4466,7 +4468,7 @@ function loadSentByUser() {
                     <div onclick="focusOnIcon(this)" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        </svg>${sent.contents.likes ? sent.contents.likes.count ? `<p>${sent.contents.likes.count}</p>` : "" : ""}
                     </div>
                     <div onclick="focusOnIcon(this)" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="25px" height="25px" viewBox="0 0 24 24"><path d="M12,2a10,10,0,1,0,4.924,18.7l3.76,1.253A1.014,1.014,0,0,0,21,22a1,1,0,0,0,.948-1.316L20.7,16.924A9.988,9.988,0,0,0,12,2Zm6.653,15.121.766,2.3-2.3-.766a.994.994,0,0,0-.851.1,8.02,8.02,0,1,1,2.488-2.488A1,1,0,0,0,18.653,17.121Z"/></svg>

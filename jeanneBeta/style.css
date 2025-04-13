@@ -5000,6 +5000,14 @@ select:focus {
     margin-left: -25px;
 }
 
+.iconA {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
 .iconA svg path {
     transition: all 0.3s ease-in-out;
 }
