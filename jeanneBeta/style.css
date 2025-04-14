@@ -4556,14 +4556,15 @@ input:-webkit-autofill:active {
     height: 100%;
     width: 100%;
     text-align: left;
-    word-break: break-word;
-    overflow-wrap: anywhere;
-    white-space: normal;
+    
 }
 
 .postInfo .postContent p {
     font-size: 13px;
     color: #b1b1b1;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
 }
 
 
