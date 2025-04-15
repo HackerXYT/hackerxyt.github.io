@@ -1990,9 +1990,6 @@ img {
 .notch-hidden {
     position: absolute;
     top: -5px;
-    left: 50%;
-    /* Start in the middle */
-    transform: translateX(-50%);
     /* Center it */
     width: 100%;
     /* Adjust to the notch width */
@@ -2011,6 +2008,7 @@ img {
     align-items: center;
     justify-content: center;
     /* Prevent interactions */
+    right: 8px;
     /* Optional: round the edges */
 }
 
