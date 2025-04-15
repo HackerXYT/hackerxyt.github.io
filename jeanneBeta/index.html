@@ -93,15 +93,17 @@
             display: none;
         }
 
+        html,
         body {
+            overflow: hidden;
             overscroll-behavior: none;
         }
     </style>
 </head>
 
 <body>
-    <div class="notch-hidden">
-        <span>placeholder</span>
+    <div class="notch-hidden" onclick="window.location.href= '../privacy/'">
+        <img src="notch.png">
     </div>
     <!--<div class="background-effect">
 
@@ -183,7 +185,7 @@
             <span>registered under Evox©</span>
             <p>Διεύθυνση IP: <span id="ipIdent"></span></p>
             <p>Συσκευή: <span id="deviceInfo"></span></p>
-            <p>Έκδοση: <span>1.9.5</span></p>
+            <p>Έκδοση: <span>1.9.6</span></p>
             <p>Δοκιμαστική λειτουργία: <span>Ενεργή [BETA]</span></p>
             <p>Επανεκκίνηση: <span onclick="window.location.reload()">Τώρα</span></p>
         </div>
@@ -494,8 +496,8 @@
         </div>
         <div onclick="goBackToLogin()" class="version"><img src="logo.png" height="55px"></div>
     </div>
-    <div id="app" class="app" style="overflow: hidden;">
-        <div class="app" style="display: block;padding: 0px;overscroll-behavior: auto;margin-top:20px;" id="home">
+    <div id="app" class="appContainer">
+        <div class="app" style="display: block;padding: 0px;overscroll-behavior: auto;" id="home">
             <div class="topBar">
                 <div onclick="showProfile(this)" class="pfp" id="pfpContHome">
                     <img style="width: 45px;height: 45px;" src="assetView-2.png" />
@@ -870,9 +872,7 @@
 
         </div>
 
-        <div class="app fade-in-slide-up" id="profile" style="padding-top: 0px;scroll-snap-type: none;
-        scroll-padding-top: none;
-        scroll-padding-bottom: none;padding: 0px;">
+        <div class="app fade-in-slide-up" id="profile" style="padding-top: 0px;">
             <!--<div class="topActions">
                 <div class="backArrow" onclick="goBackFromProfile(this)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -1271,7 +1271,7 @@
                                     </g>
                                 </g>
                             </svg>
-                            <span>Έκδοση 1.9.5</span>
+                            <span>Έκδοση 1.9.6</span>
                         </div>
                         <div onclick="reset()" class="anInfo">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
@@ -1472,7 +1472,7 @@
                 </svg></span>
             <input type="text" class="search-box" placeholder="Αναζήτηση" id="search-box-2">
         </div>
-        <div class="app fade-in-slide-up disable-scroll-snap" id="search-discovery" style="padding-top: 0px;">
+        <div class="app fade-in-slide-up" id="search-discovery" style="padding-top: 0px;">
             <h2 class="topicHead">Αναζήτηση</h2>
             <div class="search-container-2" id="search-cont-2">
                 <span class="search-icon"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
@@ -1508,7 +1508,7 @@
             <!--</div>-->
         </div>
         <!--Connection Below-->
-        <div class="app fade-in-slide-up disable-scroll-snap" id="search-in" style="padding-top: 0px;">
+        <div class="app fade-in-slide-up" id="search-in" style="padding-top: 0px;">
             <div class="assets" style="margin-bottom: 100px;">
                 <div class="userRow">
                     <div class="userCollumn">
@@ -1661,7 +1661,7 @@
                 style="margin-top: auto;display: flex;flex-direction: column;align-items: center;width: 100%;margin-bottom: 10px;display: none;">
                 <span
                     style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;text-align: center;">Jeanne
-                    d'Arc 1.9.5</span></span>
+                    d'Arc 1.9.6</span></span>
                 <span style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;display: flex;">©
                     2025 Evox <span onclick="window.location.href= '../privacy/'"
                         style="color: #ababab8d;font-size: 12px;font-weight: lighter;margin-left:auto;">Privacy</span></span>

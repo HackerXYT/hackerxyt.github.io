@@ -4550,6 +4550,13 @@ function openProfile(el) {
     document.getElementById("carouselItem-2").classList.remove("active")
     document.getElementById("carouselItem-3").classList.remove("active")
     saveLastPage('profile')
+    el.classList.add('active')
+    el.style.transition = "transform 0.3s ease";
+    el.style.transform = "scale(1.2)";
+
+    setTimeout(() => {
+        el.style.transform = "scale(1)";
+    }, 300);
     getRandomClassmates(foundName).then(usersJson => {
         document.getElementById("classIcons").innerHTML = '';
         usersJson.forEach(user => {
@@ -5129,6 +5136,13 @@ function loadMoreUsers() {
 
 function openDiscovery(el) {
     saveLastPage('discover')
+    el.classList.add('active')
+    el.style.transition = "transform 0.3s ease";
+    el.style.transform = "scale(1.2)";
+
+    setTimeout(() => {
+        el.style.transform = "scale(1)";
+    }, 300);
     el.classList.add('active')
     document.getElementById("bar").classList.add("ai")
     document.getElementById("home-switch").classList.remove("active")
@@ -5939,6 +5953,13 @@ let search_loadedUsers = []
 function openSearch(el, inBackground) {
     document.getElementById("search-in").style.display = 'none'
     saveLastPage('search')
+    el.classList.add('active')
+    el.style.transition = "transform 0.3s ease";
+    el.style.transform = "scale(1.2)";
+
+    setTimeout(() => {
+        el.style.transform = "scale(1)";
+    }, 300);
     if (!inBackground) {
         el.classList.add('active');
         document.getElementById("bar").classList.remove("ai")
@@ -6014,6 +6035,12 @@ function openSearch(el, inBackground) {
 function openHome(el) {
     saveLastPage('home')
     el.classList.add('active')
+    el.style.transition = "transform 0.3s ease";
+    el.style.transform = "scale(1.2)";
+
+    setTimeout(() => {
+        el.style.transform = "scale(1)";
+    }, 300);
     document.getElementById("bar").classList.remove("ai")
     document.getElementById("discovery-switch").classList.remove("active")
     document.getElementById("profile-switch").classList.remove("active")

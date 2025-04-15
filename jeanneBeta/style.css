@@ -94,8 +94,8 @@
 
 html,
 body {
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     font-family: 'SF';
 
     padding: 0;
@@ -108,8 +108,20 @@ body {
     align-items: center;
     box-sizing: border-box;
     transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    margin-top: env(safe-area-inset-top) !important;
+    overflow: hidden;
+}
 
+body {
+    overflow: hidden !important;
+    padding-top: env(safe-area-inset-top) !important;
+    overscroll-behavior: none !important;
+    /* prevents bounce scrolling */
+    touch-action: none !important;
+    /* disables all default gestures like panning */
+}
+
+html {
+    overflow: hidden !important;
 }
 
 
@@ -915,11 +927,29 @@ img {
     display: flex;
     display: none;
     flex-direction: column;
+    padding: 5px;
+
+    position: relative;
+    overflow: hidden;
+    overflow-y: auto;
+    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 10px;
+    scroll-padding-bottom: 10px;
+    overflow-anchor: none;
+}
+
+.appContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    display: none;
+    flex-direction: column;
     /*padding: 5px;
 
     position: relative;*/
     overflow: hidden;
-    overflow-y: auto;
     transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
     /*overflow-y: scroll;
     scroll-snap-type: y mandatory;
@@ -929,7 +959,7 @@ img {
 }
 
 .app>* {
-    /*scroll-snap-align: start;*/
+    scroll-snap-align: start;
 }
 
 
@@ -938,6 +968,7 @@ img {
     flex-direction: row;
     align-items: center;
     padding: 10px;
+    box-sizing: border-box;
     padding-bottom: 0;
     padding-top: 0;
 }
@@ -1537,7 +1568,7 @@ img {
     width: 100vw;
     margin-left: -5px;
     padding: 0px;
-
+    overflow: hidden;
     transition: all 0.5s ease-in-out;
     will-change: transform;
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.7s ease-in-out, height 1s ease-in-out;
@@ -1690,6 +1721,7 @@ img {
     left: 0px;
     width: 100%;
     z-index: 2;
+    margin-top: 10px;
     margin-top: env(safe-area-inset-top) !important;
 }
 
@@ -1957,28 +1989,34 @@ img {
 
 .notch-hidden {
     position: absolute;
-    top: 0;
+    top: -5px;
     left: 50%;
     /* Start in the middle */
     transform: translateX(-50%);
     /* Center it */
-    width: 120px;
+    width: 100%;
     /* Adjust to the notch width */
     height: env(safe-area-inset-top);
     /* Adjust for the notch height */
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.8);
     /* Semi-transparent background */
     color: white;
     font-size: 14px;
     z-index: 9999;
     pointer-events: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     /* Prevent interactions */
-    border-radius: 20px;
     /* Optional: round the edges */
-    display: none;
+}
+
+.notch-hidden img {
+    width: 100px;
+    height: auto;
 }
 
 .assets .moreInfo p {
@@ -4561,6 +4599,9 @@ input:-webkit-autofill:active {
 .postInfo .postContent p {
     font-size: 13px;
     color: #b1b1b1;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
 }
 
 
@@ -4630,6 +4671,15 @@ input:-webkit-autofill:active {
     align-items: center;
     margin-right: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.showProfileBtn:active {
+    background-color: #ababab;
+}
+
+.showProfileBtn:hover {
+    background-color: #ababab;
 }
 
 .disable-scroll-snap {
@@ -5229,6 +5279,9 @@ select:focus {
 
 /*PC*/
 @media (min-width: 1024px) {
+    .notch-hidden {
+        display: none;
+    }
     .navigation {
         position: fixed;
         left: 0;
