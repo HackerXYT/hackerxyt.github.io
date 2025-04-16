@@ -938,6 +938,7 @@ img {
     scroll-padding-top: 10px;
     scroll-padding-bottom: 10px;
     overflow-anchor: none;
+    overscroll-behavior-y: contain;
 }
 
 .appContainer {
