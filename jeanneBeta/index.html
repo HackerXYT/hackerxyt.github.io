@@ -371,11 +371,11 @@
             <div id="typewriter" class="spinner center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
             --track-upload: #4a4a4a;width: 25px;">
-                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
-                    class="active-upload"></circle>
-                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
-                    class="track-upload"></circle>
-            </svg>
+                    <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                        class="active-upload"></circle>
+                    <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                        class="track-upload"></circle>
+                </svg>
             </div>
             <div id="spinnerApple" class="spinner center" style="display: none;">
                 <div class="spinner-blade"></div>
@@ -560,8 +560,7 @@
                 <div id="foryou-carousel" class="carouselItem active">
                     Για εσένα
                 </div>
-                <div id="mentioned-carousel" class="carouselItem"
-                    onclick="showMentioned()">
+                <div id="mentioned-carousel" class="carouselItem" onclick="showMentioned()">
                     Αναφερόμενοι
                 </div>
             </div>
@@ -1291,9 +1290,11 @@
 
                 </div>
 
-                <p style="font-size: 13px;color: #ffffff82;margin-top: 10px;padding: 20px;display:none;">Το όνομα χρήστη
+                <p style="font-size: 13px;color: #ffffff82;margin-top: 10px;padding: 20px;"></p>
+
+                <!--Το όνομα χρήστη
                     σας στο
-                    Instagram εμφανίζεται μόνο σε εσάς, οι άλλοι χρήστες βλέπουν μόνο την εικόνα προφίλ σας.</p>
+                    Instagram εμφανίζεται μόνο σε εσάς, οι άλλοι χρήστες βλέπουν μόνο την εικόνα προφίλ σας.-->
 
             </div>
         </div>
@@ -1973,7 +1974,7 @@
 
     <div class="PCCONTAINER">
         <div id="editProfile" class="applePopup" style="padding: 0;">
-            <div class="topActionsPopup" style="padding: 10px;">
+            <div class="topActionsPopup" style="padding: 10px 20px;">
                 <div onclick="closePostCreate('frontend')" class="cancel">
                     Ακύρωση
                 </div>
@@ -1988,9 +1989,24 @@
             </div>
             <div class="border"></div>
 
-            <div style="display: flex;flex-direction: column;align-items: center;justify-content: center;width: 100%;height: 100%;background-color: #121212;">
-                <div style="display: flex;flex-direction: column;border-radius: 30px;padding: 50px;border: 1px solid #fff;justify-content: flex-start;">
-                    όνομα
+            <div class="borderboxcontainer">
+                <div class="borderbox">
+                    <div class="topHead">
+                        <div class="settings-cont">
+                            <p>Όνομα</p>
+                            <span>placeholder</span>
+                        </div>
+                        <img class="icon-setting" src="user.gif">
+                    </div>
+                    <div class="generalItem">
+                        <p>Τάξη</p>
+                        <span>placeholder</span>
+                    </div>
+                    <div class="generalItem">
+                        <p>Tags</p>
+                        <div style="margin-top: 5px;display: grid; grid-template-columns: repeat(2, 1fr);width: 100%;justify-content: center;align-items: center;gap:5px;"
+                            id="tagsmk"></div>
+                    </div>
                 </div>
             </div>
 

@@ -1845,7 +1845,7 @@ async function spawnRandom(redo, frontEndLoading) {
             const data = JSON.parse(ranData);
             let icount = 0
             for (const post of data) {
-                console.log("post",post)
+                console.log("post", post)
                 icount++
 
                 if (redo) {
@@ -3208,6 +3208,10 @@ function closePostCreate(frontend) {
         }, 500);
     }
 
+
+    document.getElementById("input-textarea").blur()
+    document.getElementById("hidden-input").blur()
+
 }
 
 function hideSocial() {
@@ -4551,12 +4555,14 @@ function openProfile(el) {
     document.getElementById("carouselItem-3").classList.remove("active")
     saveLastPage('profile')
     el.classList.add('active')
+    el.classList.add("dropToBase")
     el.style.transition = "transform 0.3s ease";
-    el.style.transform = "scale(1.2)";
+    //el.style.transform = "scale(1.2)";
 
     setTimeout(() => {
-        el.style.transform = "scale(1)";
-    }, 300);
+        el.classList.remove("dropToBase")
+        //el.style.transform = "scale(1)";
+    }, 1300);
     getRandomClassmates(foundName).then(usersJson => {
         document.getElementById("classIcons").innerHTML = '';
         usersJson.forEach(user => {
@@ -5072,11 +5078,24 @@ function createPost(el) {
 function openEditProfile() {
     document.getElementById("editProfile").classList.add("active")
     document.getElementById("app").style.transform = 'scale(0.95)'
-    document.getElementById("gradColored").style.opacity = '0.8'
     document.getElementById("gradColored").style.borderRadius = '20px'
     document.getElementById("gradColored").style.transform = 'scale(0.9)'
-    document.getElementById("app").style.opacity = '0.8'
     document.body.style.backgroundColor = '#000'
+    fetch(`https://arc.evoxs.xyz/?metode=tags&emri=${foundName}`)
+        .then(response => response.json())
+        .then(tagsData => {
+            document.getElementById("tagsmk").innerHTML = ''
+            tagsData.forEach(tag => {
+                document.getElementById("tagsmk").innerHTML = `${document.getElementById("tags").innerHTML}<div class="anInfo">
+                    ${tag === "Evox" ? `<img src="../oasaResign/evox-logo-dark.png" width="17.5px" height="17.5px">` : "🏛️"}
+                    <span>${tag}</span>
+                </div>`
+            })
+
+        }).catch(error => {
+            console.error("Jeanne D'arc Database is offline.")
+            console.log('Error:', error);
+        });
 }
 
 grabberEvents("createPost")
