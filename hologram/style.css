@@ -23,7 +23,7 @@ body {
 .container {
     width: 100%;
     height: 100%;
-    padding: 20px;
+    /*padding: 20px;*/
     box-sizing: border-box;
     /* Include padding within the width */
     transition: transform 0.7s ease-in-out;
@@ -64,20 +64,24 @@ body {
 }
 
 .stories .user.new {
-    background: -webkit-linear-gradient(left top, rgb(5, 255, 18) 0%, rgb(115, 0, 255) 100%);
+    background: -webkit-linear-gradient(left top, rgb(0, 212, 255) 0%, rgb(33, 147, 176) 100%);
 }
 
 .stories .user.new2 {
-    background: -webkit-linear-gradient(left top, rgb(193, 5, 255) 0%, rgb(255, 0, 72) 100%);
+    background: -webkit-linear-gradient(left top, rgb(255, 94, 98) 0%, rgb(255, 42, 104) 100%);
 }
 
 .stories .user.new3 {
-    background: -webkit-linear-gradient(left top, rgb(176, 255, 5) 0%, rgb(255, 0, 0) 100%);
+    background: -webkit-linear-gradient(left top, rgb(255, 195, 113) 0%, rgb(255, 87, 34) 100%);
 }
 
 .stories .user.new4 {
-    background: -webkit-linear-gradient(left top, rgb(5, 255, 226) 0%, rgb(255, 170, 0) 100%);
+    background: -webkit-linear-gradient(left top, rgb(140, 82, 255) 0%, rgb(0, 232, 255) 100%);
 }
+.stories .user.new5 {
+    background: -webkit-linear-gradient(left top, rgb(168, 0, 255) 0%, rgb(255, 0, 128) 100%);
+}
+
 
 .stories .user.me {
     background: transparent;
@@ -125,7 +129,8 @@ body {
 
 .filter {
     padding-top: 0;
-    width: 100%;
+    /*width: 100%;*/
+    margin-left: 10px;
     display: flex;
     /*flex-wrap: wrap;  Allow items to wrap to the next line */
     flex-direction: row;
@@ -157,45 +162,41 @@ body {
     display: inline-block;
     /* Ensure options align in a row */
     padding: 10px;
-    color: #ffffffcd;
-    background-color: #17412600;
+    color: #2287c5;
+    background-color: #172541;
     border-radius: 35px;
-    border: #22c55e 0.7px solid;
+    border: #2287c5 1px solid; /* Border color 22c55e */
     cursor: pointer;
     transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, border 0.5s ease-in-out;
     text-transform: capitalize;
 }
 
 .filter .option:hover {
-    color: #22c55ecd;
-    background-color: #174126;
+    color: #2287c5;
+    background-color: #172541;
     border-radius: 35px;
-    border: #22c55e 0.7px solid;
+    border: #2287c5 0.7px solid;
 }
 
 .filter .option.active {
-    color: #22c55ecd;
-    background-color: #174126;
+    color: #ffffff;
+    background-color: #0088ff8b;
     border-radius: 35px;
-    border: #22c55e 0.7px solid;
+    border: #2287c500 1px solid;
 }
 
 .title {
     color: #fff;
+    padding: 0px 10px;
 }
 
 .gallery {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    /* Two columns for mobile devices */
-    gap: 10px;
-    /* Space between images */
-    padding: 0;
-    /* Remove padding from the grid to avoid overflow */
-    margin: 0;
-    /* Remove margin to avoid overflow */
-    box-sizing: border-box;
-    /* Include padding in width calculation */
+}
+
+.gallery > * {
+    direction: ltr; /* keeps content inside items normal */
 }
 
 .image {
@@ -221,7 +222,7 @@ body {
     object-fit: cover;
     /* Cover the container, cropping if necessary */
     display: block;
-    border-radius: 25px;
+    border-radius: 0px;
     /* Apply border-radius to the image directly */
 }
 
@@ -598,18 +599,34 @@ body {
 }
 
 .pin-pad button {
-    width: 64px;
-    height: 64px;
-    font-size: 24px;
-    background-color: #cecece;
+    width: 74px;
+    height: 74px;
+    font-size: 22px;
+    background-color: #ffffff;
     border: none;
     color: #000;
-    border-radius: 50%;
+    border-radius: 30px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .pin-pad button:active {
-    background-color: #888888;
+    background-color: #ffffffb6;
+    animation: scaleBounce 0.3s ease;
+}
+
+@keyframes scaleBounce {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .delete-button {

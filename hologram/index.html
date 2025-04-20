@@ -147,9 +147,9 @@
         if (localStorage.getItem("srv")) {
             srv = localStorage.getItem("srv")
         } else {
-            srv = 'http://192.168.1.126:4000'
+            srv = 'http://192.168.1.69:4000'
         }
-        const version = '0.4'
+        const version = '0.51'
         
     </script>
 </head>
@@ -171,11 +171,13 @@
             <button class="otpButton" onclick="window.location.href = '../evox-epsilon/'">Go To Epsilon</button>
         </div>
     </div>
+    <span id="loadPercent"
+                style="position: fixed;top:10px;right:10px;float: right;transition: opacity 0.5s ease-in-out">0%</span>
     <div id="mainContainer" class="container">
         <h2 class="title" style="margin-top: 0;"><img src="hologramW.png" height="15px"><img
                 onclick="alert('Hologram Reloading..');window.location.reload()" src='arrow-down.svg'
-                style="vertical-align: middle;width: 20px;height: 20px;"><span id="loadPercent"
-                style="margin-left: auto;float: right;transition: opacity 0.5s ease-in-out">0%</span></h2>
+                style="vertical-align: middle;width: 20px;height: 20px;">
+                </h2>
         <div class="stories">
 
             <div onclick="onlineMode()" class="user me">
@@ -193,12 +195,12 @@
             <div class="user new4">
                 <img id="u4" src="searching_users.gif">
             </div>
-            <div class="user new">
+            <div class="user new5">
                 <img id="u5" src="searching_users.gif">
             </div>
 
         </div>
-        <p class="title">Select Grouping:</p>
+        <p class="title">Filter By Databases:</p>
         <div class="filter">
             <div onclick="begin('bypass')" id="op0" class="option active">
                 None
@@ -329,7 +331,7 @@
                         stroke="#dedede" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg></button>
         </div>
-        <div class="version">Evox Epsilon. All rights reserved.</div>
+        <div class="version">Evox Epsilon 2025. All rights reserved.</div>
     </div>
     <div id="nav-container" class="nav-container">
         <div onclick="navigate(this)" id="discover" class="nav-item active">
