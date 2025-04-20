@@ -2,6 +2,13 @@ const containerEl = document.querySelector(".container");
 const canvasEl = document.querySelector("canvas#neuro");
 const devicePixelRatio = Math.min(window.devicePixelRatio, 2);
 
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    document.body.classList.add("blur");
+  } else {
+    document.body.classList.remove("blur");
+  }
+});
 
 const pointer = {
     x: 0,
