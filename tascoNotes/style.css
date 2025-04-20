@@ -41,6 +41,10 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    transition: filter 0.2s ease;
+}
+body.blur {
+  filter: blur(12px);
 }
 
 
