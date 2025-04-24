@@ -3289,6 +3289,10 @@ function grabberEvents(id) {
                 closePostCreate();
             }
 
+            if (id === 'share-profile') {
+                document.getElementById("share-profile").classList.remove("active");
+            }
+
             notice.addEventListener("transitionend", () => {
                 notice.classList.remove("active");
                 notice.style.transform = ``;
@@ -3299,6 +3303,7 @@ function grabberEvents(id) {
     }
 }
 
+grabberEvents("share-profile")
 
 grabberEvents("notice")
 
@@ -5705,11 +5710,20 @@ function loadSentToUser(emri, redo) {
     }, 800)
 }
 
+function activateShare(el) {
+    if(el.getAttribute("data-active") !== "null") {
+        document.getElementById("share-profile").classList.add("active")
+        document.getElementById("share-qr").src = `https://arc.evoxs.xyz/qr/${el.getAttribute("data-active")}`
+    } else {
+        console.warn("No active user")
+    }
+}
 function showProfileInfo(emri) {
     lastActiveSearchUser = emri
     const container = document.getElementById("search-in");
     const prevContainer = document.getElementById("search-discovery")
 
+    document.getElementById("share-start").setAttribute("data-active", `${emri}`)
     document.getElementById("userName-search").innerText = emri
     getRandomClassmates(emri).then(usersJson => {
         document.getElementById("classIcons-search").innerHTML = '';
@@ -5731,6 +5745,7 @@ function showProfileInfo(emri) {
             src = profileSrc.imageData; // Use profile image if available
         }
         document.getElementById("darc-user-search-profile").src = src;
+
 
         informacion(emri)
             .then(info => {
