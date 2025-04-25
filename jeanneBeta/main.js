@@ -1697,24 +1697,25 @@ let myInfo = null
 function attach() {
     downloadProfiles()
     if (!sessionStorage.getItem("betaSession")) {
-        EvalertNext({
-            "title": "Καλωσόρισες ξανά 👋",
-            "description": "Μπορείς πλέον να δημιουργήσεις περίληψη των καταχωρήσεων σου χωρίς να καταλάβεις ποιος έγραψε τι.",
-            "buttons": ["Συνέχεια"],
-            "buttonAction": [],
-            "addons": [
-                {
-                    "icon": "lock",
-                    "title": "Evox AIT",
-                    "desc": "Παραχωρήθηκε πρόσβαση."
-                },
-                {
-                    "icon": "jeanne:logo",
-                    "title": "Jeanne d'Arc",
-                    "desc": "Ο λογαριασμός ενημερώθηκε."
-                }
-            ]
-        })
+        //return;
+        //EvalertNext({
+        //    "title": "Καλωσόρισες ξανά 👋",
+        //    "description": "Μπορείς πλέον να δημιουργήσεις περίληψη των καταχωρήσεων σου χωρίς να καταλάβεις ποιος έγραψε τι.",
+        //    "buttons": ["Συνέχεια"],
+        //    "buttonAction": [],
+        //    "addons": [
+        //        {
+        //            "icon": "lock",
+        //            "title": "Evox AIT",
+        //            "desc": "Παραχωρήθηκε πρόσβαση."
+        //        },
+        //        {
+        //            "icon": "jeanne:logo",
+        //            "title": "Jeanne d'Arc",
+        //            "desc": "Ο λογαριασμός ενημερώθηκε."
+        //        }
+        //    ]
+        //})
         sessionStorage.setItem("betaSession", 'true')
     }
 
@@ -4663,11 +4664,16 @@ function postNow(el) {
         })
         console.log("PostData:", dataIn)
         const userData = JSON.parse(localStorage.getItem("jeanDarc_accountData"));
+        const selectElement = document.getElementById("visibility");
+        const selectedValue = selectElement.value;
+        console.warn("Selected Visibility:", selectedValue);
+
         const payload = {
             metode: "vleresimet",
             emri: foundName || userData.name,
             pin: userData.pin,
             parashtresat: JSON.stringify(dataIn),
+            visibility: selectedValue,
         };
 
         fetch("https://arc.evoxs.xyz/saveRatings", {
@@ -4686,6 +4692,7 @@ function postNow(el) {
                         alert("Αποτυχία σύνδεσης με τον διακομιστή. Οι καταχωρήσεις σας αποθηκεύτηκαν στην συσκευή σας. Δοκιμάστε αργότερα ή επανεκκινήστε την εφαρμογή.");
                         document.getElementById("notice-main").classList.remove("active")
                     }, 10000)
+
                     console.error("JSON error:", data, dataIn);
                 } else {
                     const res = JSON.parse(data);
@@ -4696,6 +4703,8 @@ function postNow(el) {
                     setTimeout(function () {
                         document.getElementById("notice-main").classList.remove("active")
                     }, 4000)
+                    uploadedFiles = []
+                    document.getElementById("evox-media-container").innerHTML = ''
 
                 }
             })
@@ -4710,6 +4719,7 @@ function postNow(el) {
                         alert("Αποτυχία σύνδεσης με τον διακομιστή. Οι καταχωρήσεις σας αποθηκεύτηκαν στην συσκευή σας. Δοκιμάστε αργότερα ή επανεκκινήστε την εφαρμογή.");
                         document.getElementById("notice-main").classList.remove("active")
                     }, 10000)
+
                     //
                 }
                 console.error("Jeanne D'arc Database is offline.");
@@ -4726,6 +4736,31 @@ function removeTag(emri) {
 }
 document.getElementById('input-textarea').addEventListener('input', function () {
     const textarea = this;
+
+    const wordsArray = this.value.split(" ");
+    console.log(wordsArray);
+    let possible = []
+    wordsArray.forEach(word => {
+        const matchedNames = findFullNames(word, 'removeFoundName');
+        if (matchedNames) {
+            matchedNames.forEach(name => {
+                possible.push(name)
+            })
+        }
+
+    })
+    console.log("Possible:", possible)
+    if (possible[0] && !selectedPeople.includes(possible[0])) {
+        document.getElementById("icons-possible").style.display = 'flex'
+        document.getElementById("tontin-input").innerHTML = getGender(removeTonos(possible[0].split(" ")[0])) === "Male" ? "τον" : "την"
+        //document.getElementById("tontin-input-2").innerHTML = getGender(removeTonos((possible[0].split(" ")[0]))) === "Male" ? "τον" : "την"
+        document.getElementById("name-input-possible").innerHTML = fixNameCase(possible[0].split(" ")[0])
+        document.getElementById("name-input-possible").style.color = getGender(removeTonos(possible[0].split(" ")[0])) === "Female" ? "#ae6cff" : "#298ef2"
+        document.getElementById("name-input-possible-2@").innerHTML = "@" + possible[0]
+        document.getElementById("name-input-possible-2@").style.color = getGender(removeTonos(possible[0].split(" ")[0])) === "Female" ? "#ae6cff" : "#298ef2"
+    } else {
+        document.getElementById("icons-possible").style.display = 'none'
+    }
 
     if (this.value !== '') {
         document.getElementById("postButton").classList.remove("not-ready")
@@ -5711,7 +5746,7 @@ function loadSentToUser(emri, redo) {
 }
 
 function activateShare(el) {
-    if(el.getAttribute("data-active") !== "null") {
+    if (el.getAttribute("data-active") !== "null") {
         document.getElementById("share-profile").classList.add("active")
         document.getElementById("share-qr").src = `https://arc.evoxs.xyz/qr/${el.getAttribute("data-active")}`
     } else {

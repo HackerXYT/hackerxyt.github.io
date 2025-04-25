@@ -6111,3 +6111,7 @@ select:focus {
     margin-left: 5px;
     margin-bottom: 5px;
 }
+
+.text-area-cont p {
+    user-select: text;
+}
