@@ -1,5 +1,3 @@
-
-
 //const disableScroll = (e) => {
 //    // For wheel events
 //    if (e.deltaY !== 0) {
@@ -542,10 +540,31 @@ function findFullNames(input, removeFoundName) {
 
 let focusedIconsDictionary = {};
 
-function focusOnIcon(el) {
+function focusOnIcon(el, act, writer, receiver) { //focusOnIcon(this, 'likeBtn', '${post.emri}', '${post.marresi}')
     const work = el.querySelectorAll("svg path");
 
     // If previously focused, restore original fills
+    if (act === 'likeBtn') {
+        fetch(`https://arc.evoxs.xyz/?metode=oneway-precryptox&pin=${atob(JSON.parse(localStorage.getItem('jeanDarc_accountData')).pin)}&emri=${foundName}&id=${writer.replace(" ", "-")}:${receiver.replace(" ", "-")}`)
+            .then(response => response.json())
+            .then(resultCryptox => {
+                console.log(resultCryptox)
+                //alert(resultCryptox.count)
+                if (resultCryptox.count !== 0) {
+                    el.querySelector("p").classList.add("pop")
+                    setTimeout(function () {
+                        el.querySelector("p").classList.remove("pop")
+                    }, 450)
+                    el.querySelector("p").innerText = resultCryptox.count || '🤯'
+                } else {
+                    el.querySelector("p").innerHTML = ''
+                }
+
+            }).catch(error => {
+                console.error("Jeanne D'arc Database is offline.")
+                console.log('Error:', error);
+            });
+    }
     if (el.dataset.focusKey) {
         const key = el.dataset.focusKey;
         const savedFills = focusedIconsDictionary[key];
@@ -568,8 +587,11 @@ function focusOnIcon(el) {
             delete el.dataset.focusKey;
         }, 200);
 
+
         return;
     }
+
+
 
     // First-time focus: store original fills and highlight
     const originalFills = [];
@@ -1943,10 +1965,11 @@ async function spawnRandom(redo, frontEndLoading) {
                 </div>
                 
                 <div class="icons">
-                    <div onclick="focusOnIcon(this)" class="iconA">
+                    <div onclick="focusOnIcon(this, 'likeBtn', '${post.emri}', '${post.marresi}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
+                        ${post.likes ? post.likes.count ? `<p class='pop-text'>${post.likes.count}</p>` : "<p class='pop-text'></p>" : "<p class='pop-text'></p>"}
                     </div>
                     <div onclick="focusOnIcon(this)" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="25px" height="25px" viewBox="0 0 24 24"><path d="M12,2a10,10,0,1,0,4.924,18.7l3.76,1.253A1.014,1.014,0,0,0,21,22a1,1,0,0,0,.948-1.316L20.7,16.924A9.988,9.988,0,0,0,12,2Zm6.653,15.121.766,2.3-2.3-.766a.994.994,0,0,0-.851.1,8.02,8.02,0,1,1,2.488-2.488A1,1,0,0,0,18.653,17.121Z"/></svg>
@@ -2013,6 +2036,8 @@ async function spawnRandom(redo, frontEndLoading) {
         hasCurrentSixLoaded = true;
     }
 }
+
+
 
 function downloadProfiles() {
     fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
@@ -4475,10 +4500,10 @@ function loadSentByUser() {
                         ${media}
                         </div>
                         <div class="icons">
-                    <div onclick="focusOnIcon(this)" class="iconA">
+                    <div onclick="focusOnIcon(this, 'likeBtn', '${sent.contents.emri}', '${sent.contents.marresi}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>${sent.contents.likes ? sent.contents.likes.count ? `<p>${sent.contents.likes.count}</p>` : "" : ""}
+                        </svg>${sent.contents.likes ? sent.contents.likes.count ? `<p class='pop-text'>${sent.contents.likes.count}</p>` : "<p class='pop-text'></p>" : "<p class='pop-text'></p>"}
                     </div>
                     <div onclick="focusOnIcon(this)" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="25px" height="25px" viewBox="0 0 24 24"><path d="M12,2a10,10,0,1,0,4.924,18.7l3.76,1.253A1.014,1.014,0,0,0,21,22a1,1,0,0,0,.948-1.316L20.7,16.924A9.988,9.988,0,0,0,12,2Zm6.653,15.121.766,2.3-2.3-.766a.994.994,0,0,0-.851.1,8.02,8.02,0,1,1,2.488-2.488A1,1,0,0,0,18.653,17.121Z"/></svg>
@@ -6125,9 +6150,6 @@ function openHome(el) {
 let noticeAction = null
 let noticeData = null
 function noticeFront(data) {
-    document.getElementById("notice-box").style.display = 'flex'
-    document.getElementById("notice-title").innerHTML = data.title
-    document.getElementById("notice-description").innerHTML = data.description
     if (data.function.name === 'fetch' && data.function.url) {
         const account_data = localStorage.getItem("jeanDarc_accountData")
         if (!account_data) {
@@ -6139,7 +6161,31 @@ function noticeFront(data) {
         //console.log(finalUrl)
         noticeAction = 'fetch'
         noticeData = finalUrl
+        const addon = data.function.icon === 'JD'
+            ? {
+                icon: "jeanne:logo",
+                title: "Jeanne d'Arc",
+                desc: data.function.innerAddonTxt
+            }
+            : null; // Use null, not empty string
+
+        EvalertNext({
+            title: data.title,
+            description: data.description,
+            buttons: ["Συνέχεια"],
+            buttonAction: [
+                'noticeFetch(noticeData)'
+            ],
+            addons: addon ? [addon] : [] // Only add if addon exists
+        });
+
     }
+
+    return;
+    document.getElementById("notice-box").style.display = 'flex'
+    document.getElementById("notice-title").innerHTML = data.title
+    document.getElementById("notice-description").innerHTML = data.description
+
 }
 
 function noticeFetch(url) {
