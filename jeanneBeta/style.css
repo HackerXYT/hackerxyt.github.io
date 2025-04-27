@@ -1587,7 +1587,7 @@ img {
     padding: 10px 20px;
     /* border-radius: 50px; */
     box-sizing: border-box;
-    background-color: #090909;
+    background-color: #09090994;
     /*141414e8*/
     display: flex;
     flex-direction: row;
@@ -2424,7 +2424,7 @@ img {
     --color-background-effect-color4: 188, 138, 51;
     --color-background-effect-color5: 216, 182, 87;
     --color-background-effect-color6: 188, 138, 51;
-    --color-background-effect-interactive: 216, 182, 87;
+    --color-background-effect-interactive: 255, 255, 255;
     --color-background-effect-size: 50%;
     /* Reduced size for minimal appearance */
     --color-background-effect-blending: hard-light;
@@ -2515,15 +2515,14 @@ img {
 
 .interactive {
     position: absolute;
-    background: radial-gradient(circle at center, rgba(var(--color-background-effect-interactive), 0.8) 0, rgba(var(--color-background-effect-interactive), 0) 35%) no-repeat;
-    mix-blend-mode: var(--color-background-effect-blending);
-
+    background: radial-gradient(circle at center, rgba(var(--color-interactive), 0.8) 0, rgba(var(--color-interactive), 0) 50%) no-repeat;
+    mix-blend-mode: color;
     width: 100%;
     height: 100%;
     top: -50%;
     left: -50%;
-
-    display: none;
+    opacity: 1;
+    display: block;
 }
 
 .moving-elements div {
@@ -2757,13 +2756,15 @@ img {
 
 .gradient-bg .interactive {
     position: absolute;
-    background: radial-gradient(circle at center, rgba(var(--color-interactive), 0.8) 0, rgba(var(--color-interactive), 0) 50%) no-repeat;
+    background: radial-gradient(circle at center, rgb(255 190 79 / 58%) 0, rgba(var(--color-interactive), 0) 50%) no-repeat;
     mix-blend-mode: var(--blending);
     width: 100%;
     height: 100%;
     top: -50%;
     left: -50%;
-    opacity: 0.7;
+    border-radius: 50%;
+    /* opacity: 0.7; */
+    display: block;
 }
 
 .allowPWA {
