@@ -929,6 +929,13 @@ document.addEventListener("DOMContentLoaded", function () {
     //        $("#lock").fadeIn("fast")
     //    })
     //}) testing
+    const safeAreaTop = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-top)') || 0);
+
+    if (safeAreaTop === 0) {
+        // Do something
+        document.querySelector(".notch-hidden").style.display = 'none'
+    }
+
     let countElems = 0
     document.querySelectorAll('.moving-elements div').forEach(interactive => {
         setTimeout(function () {
@@ -1770,7 +1777,7 @@ function attach() {
         const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
         const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
         const f = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
-        console.log(f.length)
+        //console.log(f.length)
         if (f.length > 1) {
 
             document.getElementById("emri").innerText = `${transformGreekName(foundName, 0)}`
@@ -1868,7 +1875,6 @@ async function spawnRandom(redo, frontEndLoading) {
             const data = JSON.parse(ranData);
             let icount = 0
             for (const post of data) {
-                console.log("post", post)
                 icount++
 
                 if (redo) {
@@ -1942,7 +1948,7 @@ async function spawnRandom(redo, frontEndLoading) {
                 }
 
                 const cleaned = post.vleresim.replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
-                console.log('Spawning ForYou', post.emri)
+                //'Spawning ForYou', post.emri
                 document.getElementById("foryou").innerHTML += `<div ${icount === 1 ? `id="scrollToMe"` : ""} class="postInput" style="margin-bottom:10px;padding-bottom: 0;">
             <div class="profilePicture-in">
                 <img src="${src}">
@@ -1992,7 +1998,6 @@ async function spawnRandom(redo, frontEndLoading) {
             </div>
         </div>`
                 if (icount === 1) {
-                    console.log("i is 0")
                     //scrollOneItemUp(document.getElementById("scrollToMe"));
                 }
 
@@ -4442,7 +4447,7 @@ function loadSentByUser() {
         // Assuming getImage and getEvoxProfile are asynchronous functions that return promises.
         Promise.all(
             sentbyuser.map(async (sent) => {
-                console.log("Sent By User:", sent)
+                //console.log("Sent By User:", sent)
                 // Wait for both image and profile data to be fetched.
                 //const profileSrc = await getImage(sent.marresi);
                 //const pfp = await getEvoxProfile(sent.marresi);
@@ -4461,8 +4466,8 @@ function loadSentByUser() {
                 }
                 const cleanText = sent.contents.vleresim.replace(regex, '');
                 if (postFiles.length > 0) {
-                    console.log("postFiles:", postFiles);
-                    console.log("cleanText:", cleanText.trim());
+                    //console.log("postFiles:", postFiles);
+                    //console.log("cleanText:", cleanText.trim());
                 }
                 let media = ''
                 const acc = JSON.parse(account_data)
@@ -4633,8 +4638,22 @@ function greekToGreeklish(text) {
     return text.split('').map(char => map[char] || char).join('');
 }
 
+function dismissRecommend() {
+    const emri = document.getElementById("mention-recommend").getAttribute("data-activate")
+    if (emri) {
+        recommendedPeopleRej.push(emri)
+        document.getElementById("icons-possible").classList.remove("fade-in-slide-up")
+        document.getElementById("icons-possible").classList.add("fade-out-slide-down")
+        setTimeout(() => {
+            document.getElementById("icons-possible").style.display = 'none'
+            document.getElementById("icons-possible").classList.remove("fade-out-slide-down")
+            document.getElementById("icons-possible").classList.add("fade-in-slide-up")
+        }, 300)
+    }
+}
 //document.getE
 //input-textarea
+let recommendedPeopleRej = [] //the rejected ones
 let selectedPeople = []
 function setTag(emri, el) {
     const textarea = document.getElementById('input-textarea');
@@ -4662,6 +4681,44 @@ function setTag(emri, el) {
                             </div>
                         </div>
                     </div>`
+    //})
+}
+
+function setTagEXT(el) {
+    const emri = el.getAttribute("data-activate")
+    document.getElementById("floatingDiv").style.display = 'none'
+    document.getElementById("floatingDiv").innerHTML = '';
+
+    selectedPeople.push(emri)
+    //document.getElementById("selectedPeople").innerHTML = ''
+    //selectedPeople.forEach(user => {
+    getImage(emri).then(profileSrc => {
+        document.getElementById("selectedPeople").innerHTML += `<div id="tag-${emri}-02" class="postContainer fade-in-slide-up">
+                        <div class="post">
+                            <div class="profilePicture">
+                                <img src="${profileSrc.imageData}">
+                            </div>
+                            <div class="postInfo" style="flex-direction: row;">
+                                <div class="userInfo">
+                                    <p>${emri}</p>
+                                    <span onclick="removeTag('${emri}')" style="margin-left: auto"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM8.29289 8.29289C8.68342 7.90237 9.31658 7.90237 9.70711 8.29289L12 10.5858L14.2929 8.29289C14.6834 7.90237 15.3166 7.90237 15.7071 8.29289C16.0976 8.68342 16.0976 9.31658 15.7071 9.70711L13.4142 12L15.7071 14.2929C16.0976 14.6834 16.0976 15.3166 15.7071 15.7071C15.3166 16.0976 14.6834 16.0976 14.2929 15.7071L12 13.4142L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L10.5858 12L8.29289 9.70711C7.90237 9.31658 7.90237 8.68342 8.29289 8.29289Z" fill="#808080"/>
+</svg></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+    })
+
+    document.getElementById("icons-possible").classList.remove("fade-in-slide-up")
+    document.getElementById("icons-possible").classList.add("fade-out-slide-down")
+    setTimeout(() => {
+        document.getElementById("icons-possible").style.display = 'none'
+        document.getElementById("icons-possible").classList.remove("fade-out-slide-down")
+        document.getElementById("icons-possible").classList.add("fade-in-slide-up")
+    }, 300)
+
+
     //})
 }
 
@@ -4774,8 +4831,10 @@ document.getElementById('input-textarea').addEventListener('input', function () 
         }
 
     })
-    console.log("Possible:", possible)
-    if (possible[0] && !selectedPeople.includes(possible[0])) {
+    possible = possible.filter(name => !selectedPeople.includes(name));
+
+    //console.log("Possible:", possible)
+    if (possible[0] && !selectedPeople.includes(possible[0]) && !recommendedPeopleRej.includes(possible[0])) {
         document.getElementById("icons-possible").style.display = 'flex'
         document.getElementById("tontin-input").innerHTML = getGender(removeTonos(possible[0].split(" ")[0])) === "Male" ? "τον" : "την"
         //document.getElementById("tontin-input-2").innerHTML = getGender(removeTonos((possible[0].split(" ")[0]))) === "Male" ? "τον" : "την"
@@ -4783,8 +4842,18 @@ document.getElementById('input-textarea').addEventListener('input', function () 
         document.getElementById("name-input-possible").style.color = getGender(removeTonos(possible[0].split(" ")[0])) === "Female" ? "#ae6cff" : "#298ef2"
         document.getElementById("name-input-possible-2@").innerHTML = "@" + possible[0]
         document.getElementById("name-input-possible-2@").style.color = getGender(removeTonos(possible[0].split(" ")[0])) === "Female" ? "#ae6cff" : "#298ef2"
+        document.getElementById("mention-recommend").setAttribute("data-activate", possible[0])
     } else {
-        document.getElementById("icons-possible").style.display = 'none'
+        if (document.getElementById("icons-possible").style.display !== 'none') {
+            document.getElementById("icons-possible").classList.remove("fade-in-slide-up")
+            document.getElementById("icons-possible").classList.add("fade-out-slide-down")
+            setTimeout(() => {
+                document.getElementById("icons-possible").style.display = 'none'
+                document.getElementById("icons-possible").classList.remove("fade-out-slide-down")
+                document.getElementById("icons-possible").classList.add("fade-in-slide-up")
+            }, 300)
+        }
+
     }
 
     if (this.value !== '') {
@@ -4918,7 +4987,7 @@ document.getElementById('input-textarea').addEventListener('input', function () 
     const lineHeight = parseFloat(window.getComputedStyle(textarea).lineHeight);
     const lines = Math.round(mirrorDiv.clientHeight / lineHeight);
 
-    console.log("Total lines (including wraps and manual line breaks):", lines);
+    //console.log("Total lines (including wraps and manual line breaks):", lines);
 
     // Adjust textarea height dynamically
     textarea.style.height = (lines * lineHeight) + "px";
@@ -6943,3 +7012,8 @@ document.getElementById("search-box").addEventListener("input", () => {
     searchByInput()
     document.getElementById("search-box-2").value = document.getElementById("search-box").value
 });
+
+function revertAlphaBackground() {
+    document.getElementById("bgGrd").style.display = document.getElementById("bgGrd").style.display === 'none' ? null : 'none'
+    document.getElementById("gradColored").style.display = document.getElementById("gradColored").style.display === 'none' ? null : 'none'
+}
