@@ -1,37 +1,52 @@
-//const disableScroll = (e) => {
-//    // For wheel events
-//    if (e.deltaY !== 0) {
-//        // Allow vertical scroll, prevent horizontal scroll
-//        e.preventDefault();
-//    }
-//};
+let hasBeenRateLimited = false
+function handleRateLimit() {
+    console.warn("Rate limit hit. Executing fallback logic...");
+    if (!hasBeenRateLimited) {
+        EvalertNext({
+            title: "Προσοχή",
+            description: "Έχεις φτάσει το όριο των αιτημάτων.<br>Προσπάθησε ξανά αργότερα.<br><br><i>Αν βλέπεις συχνά αυτό το μήνυμα, ενδέχεται η IP σου να έχει μπλοκαριστεί λόγω ασυνήθιστης δραστηριότητας.<br>Σε αυτή τη περίπτωση, επικοινώνησε άμεσα με τους διαχειριστές.</i>",
+            buttons: ["Εντάξει"],
+            buttonAction: [],
+            addons: []
+        });
+        hasBeenRateLimited = true
+    }
+}
 
-// For touch events, we prevent default only if the touch movement is horizontal
-//const touchMoveHandler = (e) => {
-//    const touch = e.touches[0];
-//    const startX = touch.clientX;
-//    const startY = touch.clientY;
-//
-//    const moveHandler = (e) => {
-//        const moveX = e.touches[0].clientX - startX;
-//        const moveY = e.touches[0].clientY - startY;
-//
-//        if (Math.abs(moveX) > Math.abs(moveY)) {
-//            e.preventDefault(); // Prevent horizontal movement
-//        }
-//    };
-//
-//    window.addEventListener('touchmove', moveHandler, { passive: false });
-//
-//    // Remove the event listener when the touch ends
-//    window.addEventListener('touchend', () => {
-//        window.removeEventListener('touchmove', moveHandler);
-//    }, { once: true });
-//};
-//
-//// Attach the event listeners
-//window.addEventListener('wheel', disableScroll, { passive: false });
-//window.addEventListener('touchstart', touchMoveHandler, { passive: false });
+let hasBeenBanned = false
+function handleBan(htmlContent) {
+    if (!hasBeenRateLimited) {
+        EvalertNext({
+            title: "Έχεις αποκλειστεί",
+            description: htmlContent.replace("\n", "<br>"),
+            buttons: ["Εντάξει"],
+            buttonAction: [],
+            addons: []
+        });
+        hasBeenBanned = true
+    }
+}
+
+const originalFetch = window.fetch;
+window.fetch = async function (input, init = {}) {
+    const method = (init.method || 'GET').toUpperCase();
+
+    const response = await originalFetch(input, init);
+
+    if (method === 'GET' && response.status === 429) {
+        handleRateLimit();
+    }
+    if (method === 'GET' && response.status === 403) {
+        
+        const clonedResponse = response.clone();
+        const text = await clonedResponse.text();
+        console.log('Response text:', text);
+        handleBan(text);
+    }
+
+    return response;
+};
+
 
 function changeLoadingText(msg) {
     const elem = document.getElementById("loading-text-evox")
@@ -564,6 +579,8 @@ function focusOnIcon(el, act, writer, receiver) { //focusOnIcon(this, 'likeBtn',
                 console.error("Jeanne D'arc Database is offline.")
                 console.log('Error:', error);
             });
+    } else if (act === 'likedLikeBtn') {
+        console.log(el)
     }
     if (el.dataset.focusKey) {
         const key = el.dataset.focusKey;
@@ -1949,6 +1966,9 @@ async function spawnRandom(redo, frontEndLoading) {
 
                 const cleaned = post.vleresim.replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
                 //'Spawning ForYou', post.emri
+                const randomString = [...Array(15)]
+                    .map(() => Math.random().toString(36)[2])
+                    .join('');
                 document.getElementById("foryou").innerHTML += `<div ${icount === 1 ? `id="scrollToMe"` : ""} class="postInput" style="margin-bottom:10px;padding-bottom: 0;">
             <div class="profilePicture-in">
                 <img src="${src}">
@@ -1971,7 +1991,7 @@ async function spawnRandom(redo, frontEndLoading) {
                 </div>
                 
                 <div class="icons">
-                    <div onclick="focusOnIcon(this, 'likeBtn', '${post.emri}', '${post.marresi}')" class="iconA">
+                    <div id="${randomString}" onclick="focusOnIcon(this, 'likeBtn', '${post.emri}', '${post.marresi}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -1997,6 +2017,10 @@ async function spawnRandom(redo, frontEndLoading) {
                 </div>
             </div>
         </div>`
+
+                if (post.likes && post.likes.liked.includes(foundName)) {
+                    focusOnIcon(document.getElementById(randomString), 'likedLikeBtn')
+                }
                 if (icount === 1) {
                     //scrollOneItemUp(document.getElementById("scrollToMe"));
                 }
@@ -4483,6 +4507,10 @@ function loadSentByUser() {
                 })
 
                 const cleaned = cleanText.trim().replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
+                const randomString = [...Array(15)]
+                    .map(() => Math.random().toString(36)[2])
+                    .join('');
+                const setRand = randomString
                 const ready = `
             <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
                 <div class="post">
@@ -4505,7 +4533,7 @@ function loadSentByUser() {
                         ${media}
                         </div>
                         <div class="icons">
-                    <div onclick="focusOnIcon(this, 'likeBtn', '${sent.contents.emri}', '${sent.contents.marresi}')" class="iconA">
+                    <div id="${setRand}" onclick="focusOnIcon(this, 'likeBtn', '${sent.contents.emri}', '${sent.contents.marresi}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>${sent.contents.likes ? sent.contents.likes.count ? `<p class='pop-text'>${sent.contents.likes.count}</p>` : "<p class='pop-text'></p>" : "<p class='pop-text'></p>"}
@@ -4529,22 +4557,35 @@ function loadSentByUser() {
             </div>
         `;
 
+
                 // Assuming fetchAndSaveImage is another async function that needs to be called
 
 
                 // Accumulate the generated HTML to be added later
-                return ready;
+                return { ready: ready, isLiked: sent.contents.likes && sent.contents.likes.liked.includes(foundName), id: setRand };
             })
         ).then((htmlArray) => {
             // Join all the HTML strings into one large HTML block.
-            const html = htmlArray.join('');
+            console.log(htmlArray)
+            //const html = htmlArray[htmlArray.length].ready.join('');
+            let finalHtml = ''
+            htmlArray.forEach((item) => {
+                finalHtml += item.ready;
+            })
+            document.getElementById("sentByUser").innerHTML = finalHtml;
             console.log("All user posts have been rendered!");
-
+            //document.getElementById("sentByUser").innerHTML = html;
             // Do something after everything is done
             if (local === true) {
                 loadFresh(true);
             }
-            document.getElementById("sentByUser").innerHTML = html;
+            htmlArray.forEach((item) => {
+                if (item.isLiked && item.id) {
+                    focusOnIcon(document.getElementById(item.id), 'likedLikeBtn')
+                }
+            })
+
+
         });
 
 
@@ -6818,7 +6859,7 @@ function showMedia(el) {
                     }
                 };
 
-                img.onclick = function() {
+                img.onclick = function () {
                     window.location.href = `https://cdn.evoxs.xyz/jeannedarc/${foundName}/${media}/all`;
                 }
 
