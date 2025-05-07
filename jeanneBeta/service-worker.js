@@ -1,15 +1,15 @@
 //Jeanne Service Worker.
 
-self.addEventListener('push', event => {
-    const data = event.data ? event.data.json() : {};
+self.addEventListener('push', function (event) {
+    const data = event.data.json();
     self.registration.showNotification(data.title, {
-        body: data.message,
-        icon: './appLogoV2.png',
+      body: data.body,
+      icon: 'appLogoV2.png'
     });
-});
+  });
 
 
-const CACHE_NAME = 'jeanne-cache-v19';
+const CACHE_NAME = 'jeanne-cache-v20';
 const STATIC_ASSETS = [
     '/jeanneBeta/',
 ];
