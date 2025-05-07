@@ -1399,3 +1399,203 @@ input {
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
 }
+
+.notification-center {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  scroll-behavior: smooth;
+  touch-action: auto;
+  align-items: center;
+  text-align: left;
+  background: #1f1f1f5a;
+  z-index: 1000;
+  box-sizing: border-box;
+  opacity: 1;
+  visibility: hidden;
+  transform: translateY(100%);
+  transition: transform 0.7s ease, opacity 0.7s ease-in-out, visibility 0.7s ease-in-out, height 0.5s ease-in-out;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  overflow-x: hidden;
+  backdrop-filter: blur(55px);
+  -webkit-backdrop-filter: blur(55px);
+}
+
+.notification-center.active {
+  opacity: 1;
+  /* Show the popup */
+  visibility: visible;
+  /* Show the popup */
+  transform: translateY(0);
+  /* Slide the popup into view */
+}
+
+.notification-center .header {
+  font-size: 19px;
+  color: #ffffffa5;
+  margin-right: auto;
+}
+
+.header.default {
+  margin-right: 0;
+}
+
+.notification-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #313131b5;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  padding: 20px;
+}
+
+.notification-card.b {
+  display: flex;
+  flex-direction: column;
+  background-color: #4a4a4a54;
+
+  border-radius: 0;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  padding: 25px;
+}
+
+.topRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.iconRow {
+  margin-right: 10px;
+}
+
+.iconRow img {
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  vertical-align: middle;
+  justify-content: center;
+}
+
+.textRow {
+  font-size: 18px;
+}
+
+.arrowRow {
+  margin-left: auto;
+  margin-right: 10px;
+  transition: transform 0.5s ease-in-out;
+}
+
+.notification-info {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  justify-content: center;
+}
+
+.aNotification {
+  width: 100%;
+  z-index: 100;
+  margin-top: auto;
+}
+
+.aNotification.more {
+  position: relative;
+  margin-top: -80px;
+  z-index: 99;
+  opacity: 0.5;
+}
+
+.rowCentered {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.optionsBoxMsg {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  /* Or relative, depending on your layout */
+  margin-left: -5px;
+  /* Adjust the initial position */
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, margin-left 0.5s ease-in-out;
+}
+
+.enlarged .optionsBoxMsg {
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+  /* Or use absolute if it fits your layout better */
+  margin-left: 5px;
+  /* Target position */
+}
+
+.bottomButtonsSline {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.bottomButtonsSline.msgEdit {
+  position: absolute;
+  bottom: 25px;
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.bottomButtonsSline a {
+  display: flex;
+  width: 87%;
+  padding: 15px 20px;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent background */
+  backdrop-filter: blur(5px);
+  /* Adjust the blur amount as needed */
+  -webkit-backdrop-filter: blur(5px);
+  text-decoration: none;
+  color: #dbdde3;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  /* Added shadow */
+  transition: transform 0.2s ease-in-out;
+}
+
+.bottomButtonsSline.changeColors a {
+  background-color: rgb(255 255 255 / 6%);
+}
+
+.bottomButtonsSline.changeColors>*:first-child {
+  margin-right: 10px;
+  /* Adjust as needed */
+}
+
+.bottomButtonsSline a .icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 5px;
+  /* Adjust this value as needed */
+}
+
+.bottomButtonsSline a svg {
+  vertical-align: middle;
+  transition: transform 0.2s ease-in-out, margin-left 0.7s ease-in-out;
+}

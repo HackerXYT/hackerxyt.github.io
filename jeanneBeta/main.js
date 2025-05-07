@@ -1719,6 +1719,20 @@ function autoLogin() {
     }
 }
 
+async function checkUrlAccessibility(url) {
+    try {
+        const response = await fetch(url, { method: 'HEAD' });
+
+        if (response.ok) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        //errors that occurred during the fetch
+        return false;
+    }
+}
 
 
 function transformGreekName(name, num) {
@@ -1833,6 +1847,55 @@ function attach() {
 
     //seksioni->
 
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    const showNotification = params.get('showNotification');
+    const metode = params.get('metode');
+    const title = params.get('title');
+    const content = params.get('content');
+
+    if (showNotification) {
+        hasPendingNotification = true
+        console.log('showNotification:', showNotification);
+        console.log('title:', title);
+        console.log('content:', content);
+        document.getElementById("currentNotif").innerText = title
+        document.getElementById("currentNotif-desc").innerText = content
+        let logoUrl = `./appLogoV2.png`
+        if(title.includes("AIT") || title.includes("🪄") || content.includes("AIT")) {
+            logoUrl = `../evox-epsilon-beta/evox-logo-apple.png`
+        }
+        checkUrlAccessibility(logoUrl)
+            .then(not404 => {
+                const el = document.getElementById("iconRow")
+                console.log(not404, "not404 res")
+                if (not404 === true) {
+                    document.getElementById("iconRow").innerHTML = `<img src="${logoUrl}">`
+                }
+                document.getElementById("notification-center").classList.add("active")
+                document.getElementById("app").style.opacity = '0.5'
+            }).catch(error => {
+                //setNetworkStatus('off')
+                console.error(error);
+            });
+    }
+}
+
+function dismissNotification(el) {
+    el.style.transform = 'scale(0.96)'
+    setTimeout(function () {
+        //workingElem.style.transform = 'rotate(0deg)'
+        el.style.transform = 'scale(1)'
+    }, 200)
+
+    const url = new URL(window.location.href);
+    const newUrl = url.origin + url.pathname.split('?')[0];
+    window.history.replaceState({}, document.title, newUrl);
+    //Remove the ? to avoid showing the notification after each reload.
+    document.getElementById("notification-center").classList.remove("active")
+    setTimeout(function () {
+        document.getElementById("app").style.opacity = null
+    }, 50)
 }
 
 function scrollOneItemUp(element) {
