@@ -684,7 +684,7 @@ function processFile(event, type) {
                                 <div id="file-media-${randomString}" class="loadIndicator">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
-                                </div><video src="${URL.createObjectURL(file)}" style="max-width: 100%; max-height: 360px;" controls autoplay muted loop playsinline></video>${afterData}`;
+                                </div><video src="${URL.createObjectURL(file)}" style="max-width: 100%; max-height: 360px;" controls autoplay loop playsinline></video>${afterData}`;
         } else {
             return;
         }
@@ -748,7 +748,7 @@ function processFile(event, type) {
                                 <div id="file-media-${randomString}" class="loadIndicator">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
-                                </div><video src="${URL.createObjectURL(file)}" style="max-width: 100%; max-height: 360px;" controls autoplay muted loop playsinline></video>${afterData}`;
+                                </div><video src="${URL.createObjectURL(file)}" style="max-width: 100%; max-height: 360px;" controls autoplay loop playsinline></video>${afterData}`;
             } else {
                 return;
             }
