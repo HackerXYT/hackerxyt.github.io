@@ -531,8 +531,7 @@ vo input::placeholder {
 
     font-size: 26px;
     margin-bottom: 5px;
-    background: linear-gradient(to right, #cfcfcfa2,
-            #fff, #fff, #cfcfcfa2);
+    background: linear-gradient(to right, #f1a97ced, #d7ba5d, #be8d35, #ff7d00ad);
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
 }
@@ -2561,6 +2560,9 @@ img {
 }
 
 
+  
+
+
 
 
 @keyframes moveInCircle {
@@ -4320,10 +4322,12 @@ input:-webkit-autofill:active {
     display: none;
     margin-top: 10px;
     text-align: center;
-    padding: 0px 10px;
-    font-weight: 900;
-    line-height: 18px;
-    letter-spacing: 0.2px;
+    padding: 0 2px;
+    font-weight: 200;
+    line-height: 20px;
+    letter-spacing: 0.3px;
+    white-space: pre-wrap; /* respects line breaks and spaces */
+    word-wrap: break-word;
 }
 
 .aibtn {

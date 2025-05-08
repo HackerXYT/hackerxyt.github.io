@@ -972,8 +972,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
     });
-    hideElementOnAndroid('gradColored');
-    hideElementOnAndroid('bgGrd');
+    //hideElementOnAndroid('gradColored');
+    //hideElementOnAndroid('bgGrd');
     if (window.innerWidth > 768 && localStorage.getItem("devBypass")) {
         //console.log("This is not a mobile device");
         //$("#tasks").fadeOut("fast", function () {
@@ -6567,9 +6567,12 @@ function analyzeUser(e, rej) {
                                 } else {
                                     //Success
                                     //find = find.replace(/�/g, '<span class="img-replacement"></span>')
-                                    document.getElementById("summaryTxt").innerHTML = find
+                                    const toSpawn = find.replace("**", `<vox style="display: flex;align-items:center;width:100%;justify-content:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M21.007 8.27C22.194 9.125 23 10.45 23 12c0 1.55-.806 2.876-1.993 3.73.24 1.442-.134 2.958-1.227 4.05-1.095 1.095-2.61 1.459-4.046 1.225C14.883 22.196 13.546 23 12 23c-1.55 0-2.878-.807-3.731-1.996-1.438.235-2.954-.128-4.05-1.224-1.095-1.095-1.459-2.611-1.217-4.05C1.816 14.877 1 13.551 1 12s.816-2.878 2.002-3.73c-.242-1.439.122-2.955 1.218-4.05 1.093-1.094 2.61-1.467 4.057-1.227C9.125 1.804 10.453 1 12 1c1.545 0 2.88.803 3.732 1.993 1.442-.24 2.956.135 4.048 1.227 1.093 1.092 1.468 2.608 1.227 4.05Zm-4.426-.084a1 1 0 0 1 .233 1.395l-5 7a1 1 0 0 1-1.521.126l-3-3a1 1 0 0 1 1.414-1.414l2.165 2.165 4.314-6.04a1 1 0 0 1 1.395-.232Z" fill="#179cf0"/></svg><strong>`)
+                                    .replace("**", "</strong></vox>")
+                                    .replace("Ρεαλιστική Περίληψη:", `<vox style="display: flex;align-items:center;width:100%;justify-content:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="m3.517 17 7.058-11.783a1.667 1.667 0 0 1 2.85 0L20.483 17a1.667 1.667 0 0 1-1.425 2.5H4.942A1.666 1.666 0 0 1 3.517 17ZM12 9a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Zm-1 7a1 1 0 0 1 1-1h.008a1 1 0 1 1 0 2H12a1 1 0 0 1-1-1Z" fill="#f2ff00"/></svg><strong>Ρεαλιστική Περίληψη:</strong></vox>`)
+                                    document.getElementById("summaryTxt").innerHTML = toSpawn
                                     document.getElementById("aitext").innerText = 'Επανάληψη'
-                                    localStorage.setItem("Jeanne_lastAit_summary", find)
+                                    localStorage.setItem("Jeanne_lastAit_summary", toSpawn)
                                     localStorage.setItem("Jeanne_lastAit_countIn", localStorage.getItem("toMe"))
                                 }
                                 $("#summaryTxt").fadeIn("fast")
@@ -7190,6 +7193,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     move();
 });
-
-revertAlphaBackground()
 
