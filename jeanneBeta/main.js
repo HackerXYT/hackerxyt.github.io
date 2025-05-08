@@ -1071,6 +1071,13 @@ document.addEventListener("DOMContentLoaded", function () {
                             try {
                                 if (names.matchedAccounts) {
                                     if (names.matchedAccounts.length > 0) {
+                                        document.getElementById("merrniEmratIP").innerHTML = ''
+                                        console.log(names.matchedAccounts)
+                                        names.matchedAccounts.forEach(name => {
+                                            document.getElementById("merrniEmratIP").innerHTML += `<div class="optionButton ${name === names.matchedAccounts[0] ? "focus" : ""} svgOnRight">
+                            ${name}</div>`
+                                        })
+                                        document.getElementById("ipLogin").style.display = null
                                         //runIdentifier
                                         ipLog = names.matchedAccounts[0]
                                         getEvoxProfile(names.matchedAccounts[0]).then(profileSrc => {
@@ -1089,7 +1096,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                             setTimeout(() => {
                                                 boxUp.style.height = '300px';
                                             }, 10);
-                                            $('#boxUp').children().not('#helpMe, .loginByName').fadeOut(function () {
+                                            $('#boxUp').children().not('#helpMe, .loginByName, #ipLoginSection').fadeOut(function () {
                                                 $("#loginByIp").fadeIn("fast")
                                             });
 
@@ -1862,7 +1869,7 @@ function attach() {
         document.getElementById("currentNotif").innerText = title
         document.getElementById("currentNotif-desc").innerText = content
         let logoUrl = `./appLogoV2.png`
-        if(title.includes("AIT") || title.includes("🪄") || content.includes("AIT")) {
+        if (title.includes("AIT") || title.includes("🪄") || content.includes("AIT")) {
             logoUrl = `../evox-epsilon-beta/evox-logo-apple.png`
         }
         checkUrlAccessibility(logoUrl)
@@ -3701,9 +3708,42 @@ function help() {
         setTimeout(() => {
             boxUp.style.height = '260px';
         }, 10);
-        $('#boxUp').children().not('#helpMe, .loginByName, #loginByIp').fadeOut(function () {
+        $('#boxUp').children().not('#helpMe, .loginByName, #loginByIp, #ipLoginSection').fadeOut(function () {
             $("#helpMe").fadeIn("fast")
         });
+
+    })
+}
+
+function ipLogin() {
+    document.getElementById("loading-text-evox").innerText = 'Συλλογή δεδομένων..'
+    
+    document.getElementById("topLeftBack").classList.add("active")
+    $("#appInfo").fadeOut("fast")
+    $("#textDialog").fadeOut("fast", function () {
+        $("#hexa").fadeIn("fast")
+        const boxUp = document.getElementById("boxUp");
+        $("#boxUp").fadeOut("fast", function () {
+            const currentHeight = boxUp.offsetHeight + 'px';
+            //boxUpDefaultHeight = currentHeight
+            boxUp.style.transition = 'height 1s'; // Adjust the duration as needed
+            boxUp.style.height = currentHeight;
+            setTimeout(() => {
+                boxUp.style.height = 'auto';
+                $('#boxUp').children().not('#helpMe, .loginByName, #loginByIp').fadeOut(function () {
+                    $("#ipLoginSection").fadeIn("fast")
+                });
+                
+            }, 10);
+
+            setTimeout(function() {
+                $("#hexa").fadeOut("fast", function() {
+                    $("#boxUp").fadeIn("fast")
+
+                })
+            }, 600)
+            
+        })
 
     })
 }
@@ -3719,9 +3759,10 @@ function goBackToMain() {
             boxUp.style.height = boxUpDefaultHeight;
         }, 10);
         $("#helpMe").fadeOut("fast")
+        $("#ipLoginSection").fadeOut("fast")
         $("#loginByIp").fadeOut("fast", function () {
             $("#loginByName").fadeOut("fast", function () {
-                $('#boxUp').children().not('.loginByName, #helpMe, #loginByIp').fadeIn(function () {
+                $('#boxUp').children().not('.loginByName, #helpMe, #loginByIp, #ipLoginSection').fadeIn(function () {
                     $("#textDialog").fadeIn("fast", function () {
                         $("#appInfo").fadeIn("fast")
 
