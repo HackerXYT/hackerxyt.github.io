@@ -2050,7 +2050,7 @@ async function spawnRandom(redo, frontEndLoading) {
                </div>
                 
             </div>
-            <div class="input-post">
+            <div class="input-post extpost">
                 <p onclick="extMention('${post.emri}')">${post.emri}<span style="font-size: 11.5px;color: #808080;padding: 0 5px;">${timeAgoInGreek(post.date)}</span></p>
                 
                 <div class="text-area-cont" style="position: relative;">
@@ -2068,7 +2068,9 @@ async function spawnRandom(redo, frontEndLoading) {
                         ${post.likes ? post.likes.count ? `<p class='pop-text'>${post.likes.count}</p>` : "<p class='pop-text'></p>" : "<p class='pop-text'></p>"}
                     </div>
                     <div onclick="focusOnIcon(this)" class="iconA">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="25px" height="25px" viewBox="0 0 24 24"><path d="M12,2a10,10,0,1,0,4.924,18.7l3.76,1.253A1.014,1.014,0,0,0,21,22a1,1,0,0,0,.948-1.316L20.7,16.924A9.988,9.988,0,0,0,12,2Zm6.653,15.121.766,2.3-2.3-.766a.994.994,0,0,0-.851.1,8.02,8.02,0,1,1,2.488-2.488A1,1,0,0,0,18.653,17.121Z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.663 3.04094 17.0829 4.73812 18.875L2.72681 21.1705C2.44361 21.4937 2.67314 22 3.10288 22H12Z" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
                     </div>
                     <div onclick="focusOnIcon(this)" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -4643,7 +4645,9 @@ function loadSentByUser() {
                         </svg>${sent.contents.likes ? sent.contents.likes.count ? `<p class='pop-text'>${sent.contents.likes.count}</p>` : "<p class='pop-text'></p>" : "<p class='pop-text'></p>"}
                     </div>
                     <div onclick="focusOnIcon(this)" class="iconA">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="25px" height="25px" viewBox="0 0 24 24"><path d="M12,2a10,10,0,1,0,4.924,18.7l3.76,1.253A1.014,1.014,0,0,0,21,22a1,1,0,0,0,.948-1.316L20.7,16.924A9.988,9.988,0,0,0,12,2Zm6.653,15.121.766,2.3-2.3-.766a.994.994,0,0,0-.851.1,8.02,8.02,0,1,1,2.488-2.488A1,1,0,0,0,18.653,17.121Z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.663 3.04094 17.0829 4.73812 18.875L2.72681 21.1705C2.44361 21.4937 2.67314 22 3.10288 22H12Z" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
                     </div>
                     <div onclick="focusOnIcon(this)" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -5916,7 +5920,9 @@ function loadSentToUser(emri, redo) {
                         </svg>
                     </div>
                     <div onclick="focusOnIcon(this)" class="iconA">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="25px" height="25px" viewBox="0 0 24 24"><path d="M12,2a10,10,0,1,0,4.924,18.7l3.76,1.253A1.014,1.014,0,0,0,21,22a1,1,0,0,0,.948-1.316L20.7,16.924A9.988,9.988,0,0,0,12,2Zm6.653,15.121.766,2.3-2.3-.766a.994.994,0,0,0-.851.1,8.02,8.02,0,1,1,2.488-2.488A1,1,0,0,0,18.653,17.121Z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.663 3.04094 17.0829 4.73812 18.875L2.72681 21.1705C2.44361 21.4937 2.67314 22 3.10288 22H12Z" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
                     </div>
                     <div onclick="focusOnIcon(this)" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -6178,7 +6184,9 @@ function showProfileInfo(emri) {
                         </svg>
                     </div>
                     <div onclick="focusOnIcon(this)" class="iconA">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="25px" height="25px" viewBox="0 0 24 24"><path d="M12,2a10,10,0,1,0,4.924,18.7l3.76,1.253A1.014,1.014,0,0,0,21,22a1,1,0,0,0,.948-1.316L20.7,16.924A9.988,9.988,0,0,0,12,2Zm6.653,15.121.766,2.3-2.3-.766a.994.994,0,0,0-.851.1,8.02,8.02,0,1,1,2.488-2.488A1,1,0,0,0,18.653,17.121Z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.663 3.04094 17.0829 4.73812 18.875L2.72681 21.1705C2.44361 21.4937 2.67314 22 3.10288 22H12Z" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
                     </div>
                     <div onclick="focusOnIcon(this)" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">

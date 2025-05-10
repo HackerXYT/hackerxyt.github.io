@@ -4936,6 +4936,39 @@ input:-webkit-autofill:active {
     width: 100%;
 }
 
+.input-post.extpost .icons div .pop-text {
+    font-size: 16px;
+    font-weight: 200;
+}
+
+.input-post.extpost .icons div svg {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    opacity: 1;
+}
+
+.input-post.extpost .icons div svg path {
+    stroke-width: 1;
+    stroke: #ffffff;
+}
+
+.input-post.extpost .icons div:nth-child(1) svg {
+    width: 21px;
+    height: 21px;
+}
+
+.input-post.extpost .icons div:nth-child(2) svg path {
+    stroke-width: 1;
+    stroke: #fff;
+    fill: none;
+}
+
+.input-post.extpost .icons div:nth-child(2) svg {
+    width: 18px;
+    height: 18px;
+}
 .line-x {
     width: 2px;
     height: 150%;
