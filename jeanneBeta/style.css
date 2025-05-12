@@ -5317,6 +5317,10 @@ select:focus {
 
 /*PC*/
 @media (min-width: 1024px) {
+    
+    #loadingIndicator-fy {
+        padding: 10px 10px 15%;
+    }
     .notch-hidden {
         display: none;
     }
@@ -6191,4 +6195,13 @@ select:focus {
     z-index: 9999;
     background-color: #0b0b0b;
     display: none;
+}
+
+.cryptox-info {
+    width: auto;
+    display: flex;
+    color: #919191;
+    font-weight: 300;
+    font-size: 15px;
+    margin-top: 5px;
 }

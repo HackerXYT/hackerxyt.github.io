@@ -2059,7 +2059,7 @@ async function spawnRandom(redo, frontEndLoading) {
                         ${cleaned}
                     </p>
                 </div>
-                
+                ${post.cryptox ? `<vox onclick="showInfoAboutCryptox('${post.emri}', '${post.marresi}')" class="cryptox-info">Cryptox Encrypted</vox>` : ''}
                 <div class="icons">
                     <div id="${randomString}" onclick="focusOnIcon(this, 'likeBtn', '${post.emri}', '${post.marresi}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -2542,7 +2542,7 @@ function activateYearbook() {
                                         return;
                                     }
                                     const pars = JSON.parse(account_data)
-                                    fetch(`https://arc.evoxs.xyz/?metode=userSent&pin=${pars.pin}&emri=${pars.name}`)
+                                    fetch(`https://arc.evoxs.xyz/?metode=userSent&pin=${pars.pin}&emri=${pars.name}&loggedIn=${pars.name}`)
                                         .then(response => response.json())
                                         .then(sent => {
                                             console.log(marresit_more)
@@ -4638,6 +4638,7 @@ function loadSentByUser() {
                         <div class="mediaContainer"${hasMedia ? "style='margin-top: 10px;'" : ""}>
                         ${media}
                         </div>
+                        ${sent.contents.cryptox ? `<vox onclick="showInfoAboutCryptox('${foundName}', '${sent.marresi}')" class="cryptox-info">Cryptox Encrypted</vox>` : ''}
                         <div class="icons">
                     <div id="${setRand}" onclick="focusOnIcon(this, 'likeBtn', '${sent.contents.emri}', '${sent.contents.marresi}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -4701,7 +4702,7 @@ function loadSentByUser() {
 
     function loadFresh(dontSpawn) {
         const pars = JSON.parse(account_data)
-        fetch(`https://arc.evoxs.xyz/?metode=userSent&pin=${pars.pin}&emri=${pars.name}`)
+        fetch(`https://arc.evoxs.xyz/?metode=userSent&pin=${pars.pin}&emri=${pars.name}&loggedIn=${pars.name}`)
             .then(response => response.json())
             .then(sentbyuser => {
                 localStorage.setItem("sentByUser", JSON.stringify(sentbyuser))
@@ -5851,7 +5852,7 @@ function loadSentToUser(emri, redo) {
 
         // Convert entries into an array of promises using map
         const promises = Object.entries(sentbyuser)
-            .filter(([key]) => key !== "Name" && key !== "length")
+            .filter(([key]) => key !== "Name" && key !== "length" && key !== "cryptoxed")
             .map(async ([key, value]) => {
                 const profileSrc = await getImage(key);
                 const pfp = await getEvoxProfile(key);
@@ -5913,6 +5914,7 @@ function loadSentToUser(emri, redo) {
                                 <div class="mediaContainer"${hasMedia ? "style='margin-top: 10px;'" : ""}>
                                 ${media}
                                 </div>
+                                ${sentbyuser.cryptoxed && sentbyuser.cryptoxed.includes(key) ? `<vox onclick="showInfoAboutCryptox('${key}', '${pars.name}')" class="cryptox-info">Cryptox Encrypted</vox>` : ''}
                                 <div class="icons">
                     <div onclick="focusOnIcon(this)" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -6177,6 +6179,7 @@ function showProfileInfo(emri) {
                             <div class="mediaContainer"${hasMedia ? "style='margin-top: 10px;'" : ""}>
                             ${media}
                             </div>
+                            ${sent.cryptox ? `<vox>Cryptox Encrypted</vox>` : ''}
                             <div class="icons">
                     <div onclick="focusOnIcon(this)" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -6221,7 +6224,7 @@ function showProfileInfo(emri) {
         }
 
         function loadFresh(dontSpawn) {
-            fetch(`https://arc.evoxs.xyz/?metode=userSent&pin=${pars.pin}&emri=${pars.name}`)
+            fetch(`https://arc.evoxs.xyz/?metode=userSent&pin=${pars.pin}&emri=${pars.name}&loggedIn=${foundName}`)
                 .then(response => response.json())
                 .then(sentbyuser => {
                     if (sentbyuser.length === 0) {
@@ -6892,11 +6895,20 @@ function Evalert(message) {
                      <img style="width: 50px;height: 50px;border-radius: 50%;" src="appLogoV2.png">
                 </div>`
             } else {
-                getImage(cloud).then(profileSrc => {
+                if(cloud === message.clouds_data[0]){
+getImage(cloud).then(profileSrc => {
+                    document.getElementById("cloudingNotice").innerHTML += `<div class="mainIcon">
+                    <img src="${profileSrc.imageData}">
+                </div>`
+                })
+                } else {
+getImage(cloud).then(profileSrc => {
                     document.getElementById("cloudingNotice").innerHTML += `<div style="position: absolute;margin-left: 120px;z-index: 998;margin-bottom: 55px;">
                      <img style="width: 50px;height: 50px;border-radius: 50%;" src="${profileSrc.imageData}">
                 </div>`
                 })
+                }
+                
             }
 
 
@@ -7202,3 +7214,14 @@ document.addEventListener("DOMContentLoaded", () => {
     move();
 });
 
+function showInfoAboutCryptox(meorother, user ) {
+    EvalertNext({
+            title: "Τι είναι το Cryptox",
+            description: "Το Cryptox κρυπτογραφεί τα δεδομένα σας και σας επιτρέπει να βλέπετε τις καταχωρήσεις σας, μόνο εσείς ή μαζί με άτομα που έχετε επιλέξει ή αναφέρει.",
+            buttons: ["Εντάξει"],
+            buttonAction: [],
+            addons: [],
+            "clouds": true,
+            "clouds_data": [meorother, user]
+        });
+}
