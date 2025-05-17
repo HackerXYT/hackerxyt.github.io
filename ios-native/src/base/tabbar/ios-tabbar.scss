@@ -1,0 +1,55 @@
+i-tabbar {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: calc(var(--i-bottom-menu-height) + var(--i-inset-bottom));
+	display: flex;
+	z-index: 3;
+	box-shadow: 0px -0.33px 0px 0px var(--i-separator-menu);
+
+	padding: 0 15px var(--i-inset-bottom) 15px;
+	box-sizing: border-box;
+
+	> i-tabbar-item {
+		height: 50px;
+		flex: 1;
+		
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: center;
+
+		box-sizing: content-box;
+		padding: -1px 0 3px 0;
+
+		color: var(--i-text-2);
+
+		> #tab-title {
+			font-size: 10px;
+			font-weight: 500;
+		}
+
+		> #tab-icon-container {
+			height: 40px;
+			width: 40px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+
+		&.selected {
+			color: var(--i-accent);
+		}
+	}
+}
+
+i-app.large-screen i-tabbar > i-tabbar-item {
+	flex-direction: row;
+	justify-content: center;
+	font-size: 10pt;
+	gap: 8px;
+
+	padding: 13px 0 12px 0;
+}

@@ -1,0 +1,16 @@
+﻿{
+	"tabs": [
+		{
+			"selected": true,
+			"name": "Home",
+			"id": "welcome",
+			"page": "pages/welcome"			
+		},
+		{
+			"name": "Controls",
+			"id": "overview",
+			"page": "pages/overview",
+			"icon": "stack.svg"
+		}
+	]
+}

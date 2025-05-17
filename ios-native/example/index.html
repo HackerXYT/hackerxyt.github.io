@@ -1,0 +1,39 @@
+﻿<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, viewport-fit=cover, user-scalable=no">
+		<meta http-equiv="Content-Language" content="en">
+		<meta charset="UTF-8">
+		<meta name="google" content="notranslate">
+
+		<link rel="icon" type="image/x-icon" href="resources/favicon.ico">
+		<link rel="manifest" href="manifest.webmanifest">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<link href="resources/splashscreens/iphone5_splash.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+		<link href="resources/splashscreens/iphone6_splash.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+		<link href="resources/splashscreens/iphoneplus_splash.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+		<link href="resources/splashscreens/iphonex_splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+		<link href="resources/splashscreens/iphonexr_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+		<link href="resources/splashscreens/iphonexsmax_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
+		<link href="resources/splashscreens/ipad_splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+		<link href="resources/splashscreens/ipadpro1_splash.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+		<link href="resources/splashscreens/ipadpro3_splash.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+		<link href="resources/splashscreens/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
+
+
+		<script src="../out/web-ios-app.js"></script>
+		<link rel="stylesheet" href="../out/web-ios-app.css" onload="IOSApp.notifyCSS()">
+
+		<script>
+			if ('serviceWorker' in navigator) 
+				navigator.serviceWorker.register('sw.js');
+			else fetch("/error")
+		</script>
+		<title>Web IOS App</title>
+	</head>
+
+	<body>
+		<i-app standalone manifest="app.appmanifest"></i-app>
+	</body>
+</html>
