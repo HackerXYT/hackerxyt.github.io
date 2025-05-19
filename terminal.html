@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1, viewport-fit=cover , user-scalable=no'>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon-precomposed" href="evox-logo-app.png">
+    <link rel="icon" type="image/png" href="evox-logo-app.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="evox-logo-app.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="evox-logo-app.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="evox-logo-app.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="evox-logo-app.png">
+    <title>Terminal</title>
+</head>
+<style>
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #000;
+        color: #fff;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    h2 {
+        margin: 0;
+    }
+
+    .terminal {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 20px;
+        gap: 10px;
+    }
+
+    .terminal span {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        align-items: center;
+        gap: 5px;
+        font-weight: 400;
+        color: #a3a3a3;
+    }
+
+    .terminal-inter {
+        width: 100%;
+        height: 400px;
+        background-color: #1c1c1e;
+        border-radius: 10px;
+        padding: 10px;
+        overflow-y: auto;
+        font-family: monospace;
+        color: #ffffff;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .terminal-btns {
+        width: 100%;
+        background-color: #1c1c1e;
+        border-radius: 10px;
+        padding: 10px;
+        font-family: monospace;
+        color: #ffffff;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .terminal-btns vox {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        background-color: #293d32;
+        padding: 10px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .terminal-inter span {
+        display: block;
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+</style>
+
+<body>
+    <h2>Jeanne d'Arc</h2>
+    <div class="terminal">
+        <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M4.707 5.293a1 1 0 0 0-1.414 1.414L8.586 12l-5.293 5.293a1 1 0 1 0 1.414 1.414l6-6a1 1 0 0 0 0-1.414l-6-6ZM12 17a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2h-8Z"
+                    fill="#a3a3a3" />
+            </svg>
+            LOGS
+        </span>
+        <div id="term" class="terminal-inter">
+        </div>
+    </div>
+
+    <div class="terminal">
+        <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M22 20h-3.278l-1.014-3.646c-.081.043-.17.076-.265.095-1.758.364-3.576.551-5.443.551-1.868 0-3.767-.197-5.564-.571a.999.999 0 0 1-.153-.045L5.278 20H2a1 1 0 1 0 0 2h20a1 1 0 1 0 0-2ZM6.817 14.466l.027.005C8.507 14.817 10.268 15 12 15c1.733 0 3.415-.173 5.037-.51a.995.995 0 0 1 .148-.019l-1.087-3.912a1.001 1.001 0 0 1-.275.094A20.875 20.875 0 0 1 12 11a21.351 21.351 0 0 1-4.108-.404l-1.075 3.87ZM8.43 8.665A19.33 19.33 0 0 0 12 9c1.181 0 2.34-.105 3.457-.313.039-.007.077-.012.116-.015L14.16 3.59a.801.801 0 0 0-.77-.59h-2.78c-.36 0-.67.24-.77.59L8.43 8.665Z"
+                    fill="#a3a3a3" />
+            </svg>
+            ACTIONS
+        </span>
+        <div class="terminal-btns">
+            <vox>
+                Restart
+            </vox>
+            <vox onclick="doFetch('clear', this)">
+                Clear Logs
+            </vox>
+            <vox onclick="window.location.reload();">
+                Reload
+            </vox>
+
+        </div>
+    </div>
+</body>
+<script>
+
+    function boot() {
+        setInterval(function () {
+            fetch(`https://arc.evoxs.xyz/?metode=logs&pin=${credentials.pin}`)
+                .then(response => response.text())
+                .then(data => {
+                    const newLines = data.split("\n");
+                    const diffLines = newLines.slice(lastLines.length); // Only get new lines
+
+                    diffLines.forEach(line => {
+                        const color = line.includes('[WARN]')
+                            ? 'yellow'
+                            : line.includes('[ERROR]') || line.includes('[STDERR]')
+                                ? 'red'
+                                : line.includes('Located at:')
+                                    ? 'cyan'
+                                    : '';
+
+                        const span = document.createElement('span');
+                        if (color) span.style.color = color;
+                        span.textContent = line;
+                        document.getElementById("term").appendChild(span);
+                        if (fetched === 0) {
+                            setTimeout(function () {
+                                document.getElementById("term").scrollTop = document.getElementById("term").scrollHeight;
+
+                            }, 500)
+                        }
+                        fetched++
+
+                    });
+
+                    lastLines = newLines;
+                })
+                .catch(error => {
+                    console.error("Failed to check");
+                    alert("Failed to connect to Jeanne d'Arc. Please check your credentials or try again later.");
+                    localStorage.removeItem('evox-credentials');
+                });
+        }, 1000);
+    }
+
+    let lastLines = [];
+
+    let fetched = 0;
+    let credentials = localStorage.getItem('evox-credentials');
+
+    if (credentials) {
+        credentials = JSON.parse(credentials);
+        boot()
+    } else {
+        let username = prompt("Root Username:");
+        let email = prompt("Root Email:");
+        let password = prompt("Root Password:");
+        let pin = prompt("Root Pin:");
+        credentials = {
+            username: username,
+            email: email,
+            password: password,
+            pin: pin
+        }
+        localStorage.setItem('evox-credentials', JSON.stringify(credentials));
+        boot()
+    }
+
+    function doFetch(m, el) {
+        if (m === 'clear') {
+            console.log("Clearing logs...");
+            fetch(`https://data.evoxs.xyz/house?username=${credentials.username}&email=${credentials.email}&password=${credentials.password}&method=novusJournal`)
+                .then(response => response.text())
+                .then(data => {
+                    console.log("Logs cleared successfully");
+                    el.innerHTML = 'Cleared ✅';
+                    setInterval(() => {
+                        el.innerHTML = 'Clear Logs';
+                    }, 2000);
+                })
+                .catch(error => {
+                    console.error("Failed to check for updates");
+                });
+        }
+    }
+
+
+
+
+
+</script>
+
+</html>
