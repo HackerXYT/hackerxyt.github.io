@@ -2283,6 +2283,12 @@ function dismissPINChange() {
 }
 
 function changePinRedo() {
+    document.getElementById("editProfile").classList.remove("active")
+    document.getElementById("app").style.transform = 'scale(1)'
+    document.getElementById("gradColored").style.borderRadius = null
+    document.getElementById("gradColored").style.transform = 'scale(1)'
+    document.body.style.backgroundColor = null
+
 
     document.getElementById("profilePage").classList.remove("active")
     changePin()
@@ -3414,6 +3420,14 @@ function grabberEvents(id) {
 
             if (id === 'createPost') {
                 closePostCreate();
+            }
+
+            if (id === 'editProfile') {
+                document.getElementById("editProfile").classList.remove("active")
+                document.getElementById("app").style.transform = 'scale(1)'
+                document.getElementById("gradColored").style.borderRadius = null
+                document.getElementById("gradColored").style.transform = 'scale(1)'
+                document.body.style.backgroundColor = null
             }
 
             if (id === 'share-profile') {
@@ -5365,12 +5379,39 @@ function openEditProfile() {
     document.getElementById("gradColored").style.borderRadius = '20px'
     document.getElementById("gradColored").style.transform = 'scale(0.9)'
     document.body.style.backgroundColor = '#000'
+    informacion(foundName)
+        .then(self => {
+            console.log(self)
+            document.getElementById("emri-edit").innerText = self.emri
+            const key = `${self.seksioni}${self.klasa !== 'none' ? self.klasa : ''}`
+            document.getElementById("klasa-edit").innerHTML = `${key === "ΓΥΓ" ? "Υγείας" : key.includes("ΓΑΝΘ1") ? "Θεωρητικών 1" : key === 'ΓΟΠ1' ? "Οικονομικών 1" : key === 'ΓΟΠ2' ? "Οικονομικών 2" : key === "ΓΑΝΘ2" ? "Θεωρητικών 2" : key === "ΓΘΤ" ? "Θετικών" : key}
+            <div style="margin-left:auto;width: auto;" onclick="changeClass()" class="buttonCarouseli">
+                                    Αλλαγή
+                                </div>`
+            
+            getImage(self.emri).then(profileSrc => {
+                            //console.log(profileSrc);
+                            let src;
+                            if (profileSrc) {
+                                src = profileSrc.imageData;
+                            } else {
+                                src = self.foto
+                            }
+
+                            document.getElementById("pfp-edit").src = src;
+                        })
+        })
     fetch(`https://arc.evoxs.xyz/?metode=tags&emri=${foundName}`)
         .then(response => response.json())
         .then(tagsData => {
+            if(tagsData.length === 0) {
+                document.getElementById("tags-item").style.display = 'none'
+            } else {
+                document.getElementById("tags-item").style.display = null
+            }
             document.getElementById("tagsmk").innerHTML = ''
             tagsData.forEach(tag => {
-                document.getElementById("tagsmk").innerHTML = `${document.getElementById("tags").innerHTML}<div class="anInfo">
+                document.getElementById("tagsmk").innerHTML = `${document.getElementById("tagsmk").innerHTML}<div ${tagsData.length % 2 !== 0 && tagsData[tagsData.length] === tag ? `style="grid-column: span 2;"` : ""} class="anInfo">
                     ${tag === "Evox" ? `<img src="../oasaResign/evox-logo-dark.png" width="17.5px" height="17.5px">` : "🏛️"}
                     <span>${tag}</span>
                 </div>`
@@ -5392,6 +5433,18 @@ document.getElementById("search-discovery").addEventListener("scroll", function 
         document.getElementById("search-cont-3").style.display = 'none'
     }
 });
+
+document.getElementById("home").addEventListener("scroll", function () {
+    if (this.scrollTop > 70) {
+        document.getElementById("semiCarousel-fy-fixed").style.display = 'flex'
+        document.getElementById("status-bar-color-for-semiCarousel").style.display = 'block'
+        
+    } else {
+        document.getElementById("semiCarousel-fy-fixed").style.display = 'none'
+        document.getElementById("status-bar-color-for-semiCarousel").style.display = 'none'
+    }
+});
+
 let allUsersDiv = document.getElementById("search-discovery");
 let loadingIndicator = document.getElementById("loadingIndicator");
 let isLoading = false; // Prevent multiple triggers
