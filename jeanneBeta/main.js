@@ -674,17 +674,17 @@ function processFile(event, type) {
             .join('');
 
         if (file.type.startsWith('image/')) {
-            container.innerHTML += `<div id="file-${randomString}" class="media" style="max-width: 100%; max-height: 360px;">
+            container.innerHTML += `<div id="file-${randomString}" class="media" style="width: 95%; height: 360px;">
                                 <div id="file-media-${randomString}" class="loadIndicator">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
-                                </div><img src="${URL.createObjectURL(file)}" style="max-width: 100%; max-height: 360px;">${afterData}`;
+                                </div><img src="${URL.createObjectURL(file)}" style="width: 95%; height: 360px;">${afterData}`;
         } else if (file.type.startsWith('video/')) {
-            container.innerHTML += `<div id="file-${randomString}" class="media" style="max-width: 100%; max-height: 360px;">
+            container.innerHTML += `<div id="file-${randomString}" class="media" style="width: 95%; height: 360px;">
                                 <div id="file-media-${randomString}" class="loadIndicator">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
-                                </div><video src="${URL.createObjectURL(file)}" style="max-width: 100%; max-height: 360px;" controls autoplay loop playsinline></video>${afterData}`;
+                                </div><video src="${URL.createObjectURL(file)}" style="width: 95%; height: 360px;" controls autoplay loop playsinline></video>${afterData}`;
         } else {
             return;
         }
@@ -738,17 +738,17 @@ function processFile(event, type) {
                 .map(() => Math.random().toString(36)[2])
                 .join('');
             if (file.type.startsWith('image/')) {
-                container.innerHTML += `<div id="file-${randomString}" class="media" style="max-width: 100%; max-height: 360px;">
+                container.innerHTML += `<div id="file-${randomString}" class="media" style="width: 95%; height: 360px;">
                                 <div id="file-media-${randomString}" class="loadIndicator">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
-                                </div><img src="${URL.createObjectURL(file)}" style="max-width: 100%; max-height: 360px;">${afterData}`;
+                                </div><img src="${URL.createObjectURL(file)}" style="width: 95%; height: 360px;">${afterData}`;
             } else if (file.type.startsWith('video/')) {
-                container.innerHTML += `<div id="file-${randomString}" class="media" style="max-width: 100%; max-height: 360px;">
+                container.innerHTML += `<div id="file-${randomString}" class="media" style="width: 95%; height: 360px;">
                                 <div id="file-media-${randomString}" class="loadIndicator">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
-                                </div><video src="${URL.createObjectURL(file)}" style="max-width: 100%; max-height: 360px;" controls autoplay loop playsinline></video>${afterData}`;
+                                </div><video src="${URL.createObjectURL(file)}" style="width: 95%; height: 360px;" controls autoplay loop playsinline></video>${afterData}`;
             } else {
                 return;
             }
@@ -4618,12 +4618,12 @@ function loadSentByUser() {
                 let hasMedia = false
                 postFiles.forEach(async (file) => {
                     hasMedia = true
-                    media += `<div class="media" style="max-width: 100%; max-height: 360px;">
+                    media += `<div class="media" style="width: 95%; height: 360px;">
                                 <div style="display:none" class="loadIndicator">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
                                 </div>
-                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://cdn.evoxs.xyz/jeannedarc/${foundName}/${file.id}/all` : `https://arc.evoxs.xyz/?metode=getFile&emri=${foundName}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}`}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
+                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://cdn.evoxs.xyz/jeannedarc/${foundName}/${file.id}/all` : `https://arc.evoxs.xyz/?metode=getFile&emri=${foundName}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}`}" style="width: 95%; height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
                 })
 
                 const cleaned = cleanText.trim().replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
@@ -4633,7 +4633,7 @@ function loadSentByUser() {
                 const setRand = randomString
                 const ready = `
             <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
-                <div class="post">
+                <div class="post extpost">
                     <div class="profilePicture">
                         <img src="${src}">
                     </div>
@@ -4831,7 +4831,7 @@ function setTag(emri, el) {
     //document.getElementById("selectedPeople").innerHTML = ''
     //selectedPeople.forEach(user => {
     document.getElementById("selectedPeople").innerHTML += `<div id="tag-${emri}-02" class="postContainer fade-in-slide-up">
-                        <div class="post">
+                        <div class="post extpost">
                             <div class="profilePicture">
                                 <img src="${el.querySelector(".post .profilePicture img").src}">
                             </div>
@@ -4858,7 +4858,7 @@ function setTagEXT(el) {
     //selectedPeople.forEach(user => {
     getImage(emri).then(profileSrc => {
         document.getElementById("selectedPeople").innerHTML += `<div id="tag-${emri}-02" class="postContainer fade-in-slide-up">
-                        <div class="post">
+                        <div class="post extpost">
                             <div class="profilePicture">
                                 <img src="${profileSrc.imageData}">
                             </div>
@@ -5208,7 +5208,7 @@ function addMore(el) {
                     <div class="line-x"></div>
                     <img class="small" src="${document.getElementById("profilePicture-small").src}">
                 </div>
-                <div class="input-post">
+                <div class="input-post extpost">
                     <p>${document.getElementById("name-sur").innerText}</p>
                     <div class="text-area-cont" style="position: relative;">
 
@@ -5739,7 +5739,7 @@ function spawnItems(names, loadMore, oringinal) {
 
                     html += `
                     <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
-                        <div class="post">
+                        <div class="post extpost">
                             <div class="profilePicture">
                                 <img src="${src}">
                             </div>
@@ -5855,7 +5855,7 @@ function loadSentToUser(emri, redo) {
     let skel = ''
     for (let i = 0; i < j; i++) {
         skel += `<div class="postContainer skel loading" style="padding-bottom: 10px;padding-top: 10px;">
-                            <div class="post">
+                            <div class="post extpost">
                                 <div style="display: flex;flex-direction: row;">
                                     <div class="profilePicture">
                                         <span style="background-color: #4c4c4c;width: 45px;height: 45px;border-radius: 50%;">
@@ -5905,7 +5905,7 @@ function loadSentToUser(emri, redo) {
 
         // Convert entries into an array of promises using map
         const promises = Object.entries(sentbyuser)
-            .filter(([key]) => key !== "Name" && key !== "length" && key !== "cryptoxed")
+            .filter(([key]) => key !== "Name" && key !== "length" && key !== "cryptoxed" && key !== "likes")
             .map(async ([key, value]) => {
                 const profileSrc = await getImage(key);
                 const pfp = await getEvoxProfile(key);
@@ -5937,19 +5937,26 @@ function loadSentToUser(emri, redo) {
                 let hasMedia = false
                 postFiles.forEach(async (file) => {
                     hasMedia = true
-                    media += `<div class="media" style="max-width: 100%; max-height: 360px;">
+                    media += `<div class="media" style="width: 95%; height: 360px;">
                                 <div style="display:none" class="loadIndicator">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
                                 </div>
-                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://cdn.evoxs.xyz/jeannedarc/${key}/${file.id}/all` : `https://arc.evoxs.xyz/?metode=getFile&emri=${key}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}`}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
+                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://cdn.evoxs.xyz/jeannedarc/${key}/${file.id}/all` : `https://arc.evoxs.xyz/?metode=getFile&emri=${key}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}`}" style="width: 95%; height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
                 })
 
                 const cleaned = cleanText.trim().replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
+                const randomString = [...Array(15)]
+                            .map(() => Math.random().toString(36)[2])
+                            .join('');
 
+                            console.log(sentbyuser, key, foundName)
+                if(sentbyuser.likes && sentbyuser.likes[key] && sentbyuser.likes[key].liked.includes(foundName)) {
+                    focusedIconsDictionary[randomString] = ["none"]
+                }
                 return `
                     <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
-                        <div class="post">
+                        <div class="post extpost">
                             <div class="profilePicture">
                                 <img src="${src}">
                             </div>
@@ -5969,10 +5976,10 @@ function loadSentToUser(emri, redo) {
                                 </div>
                                 ${sentbyuser.cryptoxed && sentbyuser.cryptoxed.includes(key) ? `<vox onclick="showInfoAboutCryptox('${key}', '${pars.name}')" class="cryptox-info">Cryptox Encrypted</vox>` : ''}
                                 <div class="icons">
-                    <div onclick="focusOnIcon(this)" class="iconA">
+                    <div ${sentbyuser.likes[key] && sentbyuser.likes[key].liked.includes(foundName) ? `data-focus-key='${randomString}'`: ""}  onclick="focusOnIcon(this, 'likeBtn', '${key}', '${pars.name}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                            <path ${sentbyuser.likes[key] && sentbyuser.likes[key].liked.includes(foundName) ? "fill='#dedede'" : ""} fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg> ${sentbyuser.likes[key] ? sentbyuser.likes[key].count ? `<p class='pop-text'>${sentbyuser.likes[key].count}</p>` : "<p class='pop-text'></p>" : "<p class='pop-text'></p>"}
                     </div>
                     <div onclick="focusOnIcon(this)" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -6034,11 +6041,11 @@ function loadSentToUser(emri, redo) {
 
     setTimeout(function () {
         try {
-            if (localStorage.getItem(`sentToUser-${emri}`)) {
-                spawnIn(JSON.parse(localStorage.getItem(`sentToUser-${emri}`)), true)
-            } else {
+            //if (localStorage.getItem(`sentToUser-${emri}`) && JSON.parse(localStorage.getItem(`sentToUser-${emri}`)).likes) {
+            //    spawnIn(JSON.parse(localStorage.getItem(`sentToUser-${emri}`)), true)
+            //} else { //Removed due to likes not being saved
                 loadFresh()
-            }
+            //}
         } catch (err) {
             localStorage.removeItem(`sentToUser-${emri}`)
         }
@@ -6112,7 +6119,7 @@ function showProfileInfo(emri) {
         let skel = ''
         for (let i = 0; i < j; i++) {
             skel += `<div class="postContainer skel loading" style="padding-bottom: 10px;padding-top: 10px;">
-                            <div class="post">
+                            <div class="post extpost">
                                 <div style="display: flex;flex-direction: row;">
                                     <div class="profilePicture">
                                         <span style="background-color: #4c4c4c;width: 45px;height: 45px;border-radius: 50%;">
@@ -6203,17 +6210,20 @@ function showProfileInfo(emri) {
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
                                         <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="active-upload"></circle><circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360" class="track-upload"></circle></svg>
                                 </div>
-                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://cdn.evoxs.xyz/jeannedarc/${emri}/${file.id}/all` : `https://arc.evoxs.xyz/?metode=getFile&emri=${emri}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}`}" style="max-width: 100%; max-height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
+                                <${file.type === 'image' ? "img" : file.type === 'video' ? "video" : "img"} src="${file.server.includes("Jeanne") ? `https://cdn.evoxs.xyz/jeannedarc/${emri}/${file.id}/all` : `https://arc.evoxs.xyz/?metode=getFile&emri=${emri}&requestor=${foundName}&pin=${btoa(acc.pin)}&id=${file.id}`}" style="width: 95%; height: 360px;" ${file.type === 'video' ? "controls autoplay muted loop playsinline" : ""}>${file.type === 'video' ? "</video>" : ""}</div>`
                     })
 
                     const cleaned = cleanText.trim().replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
 
 
+                    const randomString = [...Array(15)]
+                            .map(() => Math.random().toString(36)[2])
+                            .join('');
 
-
+                    console.log("ALL", sent)
                     const ready = `
                 <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
-                    <div class="post">
+                    <div class="post extpost">
                         <div class="profilePicture">
                             <img src="${src}">
                         </div>
@@ -6234,10 +6244,10 @@ function showProfileInfo(emri) {
                             </div>
                             ${sent.cryptox ? `<vox>Cryptox Encrypted</vox>` : ''}
                             <div class="icons">
-                    <div onclick="focusOnIcon(this)" class="iconA">
+                    <div ${sent.contents.likes && sent.contents.likes.liked.includes(foundName) ? `data-focus-key='${randomString}'`: ""} onclick="focusOnIcon(this, 'likeBtn', '${emri}', '${sent.marresi}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                            <path ${sent.contents.likes && sent.contents.likes.liked.includes(foundName) ? "fill='#dedede'" : ""} fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>${sent.contents.likes ? sent.contents.likes.count ? `<p class='pop-text'>${sent.contents.likes.count}</p>` : "<p class='pop-text'></p>" : "<p class='pop-text'></p>"}
                     </div>
                     <div onclick="focusOnIcon(this)" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -6257,11 +6267,17 @@ function showProfileInfo(emri) {
                     </div>
                         </div>
                     </div>
-                </div>
-            `;
-                    return ready;
+                </div>`;
+                
+                if(sent.contents.likes && sent.contents.likes.liked.includes(foundName)) {
+                    focusedIconsDictionary[randomString] = ["none"]
+                }
+                
+                    
+                    return ready
                 })
             ).then((htmlArray) => {
+                console.log("HTML Array:", htmlArray);
                 // Join all the HTML strings into one large HTML block.
                 const html = htmlArray.join('');
                 console.log("All user posts have been rendered!");
@@ -7089,7 +7105,7 @@ function showMentioned() {
     let skel = `<p>[EVOX] Not ready yet..</p>`
     for (let i = 0; i < j; i++) {
         skel += `<div class="postContainer skel loading" style="padding-bottom: 10px;padding-top: 10px;">
-                        <div class="post">
+                        <div class="post extpost">
                             <div style="display: flex;flex-direction: row;">
                                 <div class="profilePicture">
                                     <span style="background-color: #4c4c4c;width: 45px;height: 45px;border-radius: 50%;">
@@ -7182,7 +7198,7 @@ function searchByInput() {
 
                             document.getElementById("searchedUsers").innerHTML += `
     <div class="postContainer fade-in-slide-up" style="padding-bottom: 10px;padding-top: 10px;">
-        <div class="post">
+        <div class="post extpost">
             <div class="profilePicture">
                 <img src="${src}">
             </div>

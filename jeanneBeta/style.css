@@ -4960,12 +4960,12 @@ input:-webkit-autofill:active {
     width: 100%;
 }
 
-.input-post.extpost .icons div .pop-text {
+.extpost .icons div .pop-text {
     font-size: 16px;
     font-weight: 200;
 }
 
-.input-post.extpost .icons div svg {
+.extpost .icons div svg {
     width: 20px;
     height: 20px;
     cursor: pointer;
@@ -4973,23 +4973,23 @@ input:-webkit-autofill:active {
     opacity: 1;
 }
 
-.input-post.extpost .icons div svg path {
+.extpost .icons div svg path, .extpost .postInfo .icons div svg path {
     stroke-width: 1;
     stroke: #ffffff;
 }
 
-.input-post.extpost .icons div:nth-child(1) svg {
+.extpost .icons div:nth-child(1) svg, .extpost .postInfo .icons div:nth-child(1) svg {
     width: 21px;
     height: 21px;
 }
 
-.input-post.extpost .icons div:nth-child(2) svg path {
+.extpost .icons div:nth-child(2) svg path, .extpost .postInfo .icons div:nth-child(2) svg path {
     stroke-width: 1;
     stroke: #fff;
     fill: none;
 }
 
-.input-post.extpost .icons div:nth-child(2) svg {
+.extpost .icons div:nth-child(2) svg, .extpost .postInfo .icons div:nth-child(2) svg {
     width: 18px;
     height: 18px;
 }
@@ -5551,7 +5551,7 @@ select:focus {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 0px;
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
