@@ -6771,7 +6771,7 @@ function notificationsStart(ready) {
         const registration = await navigator.serviceWorker.ready;
         const subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: 'BA15u7YIY1VPm9ulrTmaG_dTL1tJj59pso6K46lc2i45u-r1bmdl1t6KOrHxMmzyn8ZDQelik0mGn_blW9gAhg4'
+            applicationServerKey: 'BBoqxxWQqXtAublhzxhuDX5CtQqLFE5OUkGlA9Ezsyae6XYepxyn94FL8y4rR7mF7MH06OBIK9OFX-Z9YDKRtB4'
         });
         console.log("Push Subscription:", JSON.stringify(subscription));
 
