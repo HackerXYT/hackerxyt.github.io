@@ -932,11 +932,11 @@ img {
     overflow: hidden;
     overflow-y: auto;
     transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-    overflow-y: scroll;
+    /*overflow-y: scroll;
     scroll-snap-type: y mandatory;
     scroll-padding-top: 10px;
     scroll-padding-bottom: 10px;
-    overflow-anchor: none;
+    overflow-anchor: none;*/
 }
 
 .appContainer {
