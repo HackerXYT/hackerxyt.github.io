@@ -16,6 +16,12 @@
     <title>Terminal</title>
 </head>
 <style>
+    @font-face {
+        font-family: 'SourceFans-Console';
+        src: url('./fonts/sf-mono/SFMonoMedium.otf') format('opentype');
+    }
+
+
     html,
     body {
         height: 100%;
@@ -23,8 +29,11 @@
         padding: 0;
         background-color: #000;
         color: #fff;
+        /*font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;*/
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        overscroll-behavior: none;
+        /*overscroll-behavior: none;*/
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
 
 
@@ -54,7 +63,7 @@
         width: 100%;
         align-items: center;
         gap: 5px;
-        font-size: 14px;
+
         font-weight: 400;
         color: #fff;
     }
@@ -70,20 +79,46 @@
         border-radius: 10px;
         padding: 10px;
         overflow-y: auto;
-        font-family: monospace;
+        font-family: 'SourceFans-Console', monospace;
         color: #ffffff;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
         gap: 5px;
+        scrollbar-width: auto;
+        -ms-overflow-style: auto;
+        position: relative;
     }
+
+    .terminal-inter.wrapper {
+        padding: 0 !important;
+        gap: 0 !important;
+    }
+
+    .scrollToBottom {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background-color: #ffffff28;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 50%;
+        border: 1px solid #ffffff15;
+    }
+
 
     .terminal-btns {
         width: 100%;
         background-color: #1c1c1e;
         border-radius: 10px;
         padding: 10px;
-        font-family: monospace;
+        font-family: 'SourceFans-Console', monospace;
         color: #ffffff;
         box-sizing: border-box;
         display: flex;
@@ -125,7 +160,8 @@
         display: block;
         white-space: pre-wrap;
         word-break: break-all;
-        font-size: 14px;
+        font-size: 10px !important;
+        font-family: 'SourceFans-Console' !important;
     }
 
     .terminal-status {
@@ -170,6 +206,47 @@
         vertical-align: middle;
         flex-shrink: 0;
     }
+
+    @keyframes macPopIn {
+        0% {
+            opacity: 0;
+            transform: scale(0.96);
+        }
+
+        60% {
+            opacity: 1;
+            transform: scale(1.02);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    @keyframes macPopOut {
+        0% {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        40% {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        100% {
+            opacity: 0;
+            transform: scale(0.96);
+        }
+    }
+
+    .mac-pop {
+        animation: macPopIn 300ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+    }
+
+    .mac-popout {
+        animation: macPopOut 250ms cubic-bezier(0.55, 0.06, 0.68, 0.19) forwards;
+    }
 </style>
 
 <body>
@@ -183,9 +260,19 @@
             </svg>
             LOGS
         </span>
-        <div id="term" class="terminal-inter">
-            <span>[*] Welcome to Evox!</span>
+        <div class="terminal-inter wrapper">
+            <div id="term" class="terminal-inter">
+
+                <span>[*] Welcome to Evox!</span>
+            </div>
+            <div class="scrollToBottom" onclick="scrollToBottom()" id="scrollToBottom"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 20L18 14M12 20L6 14M12 20L12 9.5M12 4V6.5" stroke="#fff" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg></div>
         </div>
+
+
     </div>
 
     <div class="terminal">
@@ -240,6 +327,24 @@
                             fill="rgb(0 0 0 / 0%)" />
                     </svg></xov>
             </vox>
+            <vox id="enableAutoScroll" onclick="enableAutoScroll(this)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M5 15C5 16.8565 5.73754 18.6371 7.05029 19.9498C8.36305 21.2626 10.1435 21.9999 12 21.9999C13.8565 21.9999 15.637 21.2626 16.9498 19.9498C18.2625 18.6371 19 16.8565 19 15V9C19 7.14348 18.2625 5.36305 16.9498 4.05029C15.637 2.73754 13.8565 2 12 2C10.1435 2 8.36305 2.73754 7.05029 4.05029C5.73754 5.36305 5 7.14348 5 9V15Z"
+                        stroke="#72be88" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M12 6V14" stroke="#72be88" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M15 11L12 14L9 11" stroke="#72be88" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                Auto Scroll<xov><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                        fill="none">
+                        <path style="transition: fill 0.3s ease;"
+                            d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+                            stroke="#72be88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            fill="rgb(0 0 0 / 0%)" />
+                    </svg></xov>
+            </vox>
             <vox
                 onclick="this.querySelector('xov svg path').style.fill = '#72be88';setTimeout(function() {window.location.reload();}, 500) ">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
@@ -255,6 +360,8 @@
                             fill="rgb(0 0 0 / 0%)" />
                     </svg></xov>
             </vox>
+
+
 
         </div>
     </div>
@@ -423,6 +530,20 @@
 </body>
 <script>
 
+    function popIn(element) {
+        if (element.classList.contains('mac-pop')) return;
+        element.classList.remove('mac-popout');
+        void element.offsetWidth;
+        element.classList.add('mac-pop');
+    }
+
+    function popOut(element) {
+        if (element.classList.contains('mac-popout')) return;
+        element.classList.remove('mac-pop');
+        void element.offsetWidth;
+        element.classList.add('mac-popout');
+    }
+
     function getPlatformInfo() {
         const ua = navigator.userAgent;
 
@@ -515,6 +636,8 @@
                                 document.getElementById("term").scrollTop = document.getElementById("term").scrollHeight;
 
                             }, 500)
+                        } else if (autoScrollEnabled) {
+                            document.getElementById("term").scrollTop = document.getElementById("term").scrollHeight;
                         }
                         fetched++
 
@@ -579,6 +702,26 @@
         boot()
     }
 
+    function scrollToBottom() {
+        document.getElementById("term").scrollTop = document.getElementById("term").scrollHeight;
+        popOut(document.getElementById("scrollToBottom"))
+    }
+
+    setInterval(function () {
+        const term = document.getElementById("term");
+        const atBottom = Math.abs(term.scrollHeight - term.scrollTop - term.clientHeight) < 1;
+
+        if (atBottom) {
+            popOut(document.getElementById("scrollToBottom"));
+        } else {
+            popIn(document.getElementById("scrollToBottom"));
+        }
+        //document.getElementById("scrollToBottom").style.opacity = atBottom ? "0" : "1";
+
+
+    }, 100);
+
+
     function doFetch(m, el) {
         if (m === 'clear') {
             console.log("Clearing logs...");
@@ -587,10 +730,11 @@
                 .then(response => response.text())
                 .then(data => {
                     console.log("Logs cleared successfully");
-
+                    document.getElementById("term").innerHTML += `<span style="color: lime;">[*] Logs cleared successfully</span>`
                     el.querySelector('xov svg path').style.fill = null;
                 })
                 .catch(error => {
+                    document.getElementById("term").innerHTML += `<span style="color: red;">[ERROR] Failed to clear logs</span>`
                     console.error("Failed to check for updates");
                 });
         } else if (m === 'restart') {
@@ -600,15 +744,33 @@
                 .then(data => {
                     fetched = 0
                     lastLines = []
+                    popOut(document.getElementById("scrollToBottom"));
                     document.getElementById("term").innerHTML = `<span style="color: yellow;">[*] Server restarting..</span>`
                     el.querySelector('xov svg path').style.fill = null;
                 })
                 .catch(error => {
+                    document.getElementById("term").innerHTML += `<span style="color: red;">[ERROR] Failed to restart server</span>`
                     console.error("Failed to check for updates");
                 });
         }
     }
 
+    let autoScrollEnabled = localStorage.getItem('autoScroll') ? localStorage.getItem('autoScroll') === 'true' : false;
+    function enableAutoScroll(el) {
+        autoScrollEnabled = !autoScrollEnabled;
+        localStorage.setItem('autoScroll', autoScrollEnabled);
+        if (autoScrollEnabled) {
+            document.getElementById("term").innerHTML += `<span style="color: lime;">[*] Auto-scroll enabled</span>`
+            el.querySelector('xov svg path').style.fill = '#72be88';
+        } else {
+            document.getElementById("term").innerHTML += `<span style="color: yellow;">[*] Auto-scroll disabled</span>`
+            el.querySelector('xov svg path').style.fill = null;
+        }
+    }
+
+    if (localStorage.getItem('autoScroll') && localStorage.getItem('autoScroll') === 'true') {
+        document.getElementById("enableAutoScroll").querySelector('xov svg path').style.fill = '#72be88';
+    }
 
 
 
