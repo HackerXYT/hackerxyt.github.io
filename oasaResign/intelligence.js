@@ -171,6 +171,11 @@ function closeSearch() {
 
 
     })
+
+    document.getElementById("map-bus-info").style.opacity = "0";
+    setTimeout(() => {
+      document.getElementById("map-bus-info").style.display = "none";
+    }, 400)
   }
 
 
@@ -335,14 +340,78 @@ function spawnBlocks(currentLocation) {
 
   console.log('Initializing map with location:', currentLocation);
 
-  map = new mapboxgl.Map({
-    container: 'map-io', // container ID
-    style: 'mapbox://styles/mapbox/dark-v11', // Mapbox dark theme
-    center: currentLocation, // Use passed location [lng, lat]
-    zoom: 10, // starting zoom
-    pitch: 0, // optional: adjust if you want the map to be more tilted initially
-    bearing: 0 // optional: adjust the initial bearing if needed
+ map = new mapboxgl.Map({
+  container: 'map-io',
+  style: 'mapbox://styles/mapbox/dark-v11',
+  center: currentLocation,
+  zoom: 15,
+  pitch: 60,
+  bearing: -17.6,
+  antialias: true
+});
+
+map.on('style.load', () => {
+  map.addLayer({
+    id: '3d-buildings',
+    source: 'composite',
+    'source-layer': 'building',
+    filter: ['==', 'extrude', 'true'],
+    type: 'fill-extrusion',
+    minzoom: 15,
+    paint: {
+      'fill-extrusion-color': [
+        'interpolate',
+        ['linear'],
+        ['get', 'height'],
+        0, '#2b2b2b',
+        50, '#2b2b2b',
+        100, '#2b2b2b'
+      ],
+      'fill-extrusion-height': ['get', 'height'],
+      'fill-extrusion-opacity': 0.9,
+      'fill-extrusion-base': [
+        'interpolate',
+        ['linear'],
+        ['get', 'min_height'],
+        0, 0.5,
+        10, 1
+      ]
+    }
   });
+
+  map.addLayer({
+    id: 'sky',
+    type: 'sky',
+    paint: {
+      'sky-type': 'atmosphere',
+      'sky-atmosphere-sun': [0.0, 0.0],
+      'sky-atmosphere-sun-intensity': 10
+    }
+  });
+
+  map.setLight({
+    position: [1.5, 90, 80],
+    intensity: 0.5,
+    color: '#ffdca8'
+  });
+
+  map.setFog({
+    range: [0.5, 10],
+    color: '#d8dbe2',
+    'horizon-blend': 0.2,
+    'high-color': '#ffffff',
+    'space-color': '#000000',
+    'star-intensity': 0.3
+  });
+
+  map.setLight({
+    anchor: 'viewport',
+    color: 'white',
+    intensity: 0.6,
+    position: [1.15, 210, 30]
+  });
+});
+
 
   // Resize map after initialization to ensure it fits the container
 
@@ -896,9 +965,18 @@ function loadOasa() {
   favoriteBuses.forEach(bus => {
     loadSection('favorite', bus)
   })
-  famousBuses.forEach(bus => {
-    loadSection('famous', bus)
-  });
+    let inte = setInterval(() => {
+      if(famousBuses.length === 0) {
+        return;
+      } else {
+        clearInterval(inte);
+      }
+      famousBuses.forEach(bus => {
+          loadSection('famous', bus)
+        });
+    }, 100)
+
+  
   if (favoriteBuses.length === 0) {
     document.getElementById('favorite').innerHTML = `<div class="failed">
                                     <img style="width: 40px;" src="discover.svg" class="failed-icon">
@@ -1188,6 +1266,20 @@ function registerPWA() {
       .catch((error) => {
         console.error("Service Worker registration failed:", error);
       });
+
+      if(localStorage.getItem("fullLine") && localStorage.getItem("fullLine") !== "null") {
+        fullLine = JSON.parse(localStorage.getItem("fullLine"));
+      }
+      const allLinesUrl = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetLines&keyOrigin=evoxEpsilon`);
+      fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${allLinesUrl}&vevox=${randomString()}`)
+          .then(response => response.json())
+          .then(data => {
+            fullLine = data;
+            localStorage.setItem("fullLine", JSON.stringify(data));
+          })
+          .catch(error => {
+            console.error("Failed to fetch all lines:", error);
+          })
   });
 }
 
@@ -1613,6 +1705,13 @@ function splitValue(value) {
   };
 }
 
+function handleClick(stopCode, name) {
+  showVerticalStations();
+  setTimeout(function () {
+    showStopDetails(stopCode, name)
+  }, 200);
+}
+
 let activeBusInfo = {
   'go': [],
   'come': []
@@ -1830,8 +1929,8 @@ function processInfo(evoxId, type, addMore, comego) {
         }
 
         let timetableContent = '';
-        const remains = getNextBuses(times, addMore ? addMore : 7)
-        shownTimeTable = shownTimeTable + addMore ? addMore : 7
+        const remains = getNextBuses(times, addMore ? addMore : 21)
+        shownTimeTable = shownTimeTable + addMore ? addMore : 21
         const previous = getPreviousBuses(times)
         if (previous[0]) {
           const value = previous[0].time;
@@ -1942,6 +2041,7 @@ function processInfo(evoxId, type, addMore, comego) {
             console.log("Found stations", stations);
             container.innerHTML = ''
 
+            
             stations.forEach((station, index) => {
               container.innerHTML += `<div class="item" id="global-station-${station.StopCode}">
                                             <div class="stationName">${capitalizeWords(station.StopDescr)}</div>
@@ -2007,7 +2107,7 @@ function processInfo(evoxId, type, addMore, comego) {
                             </path>
                         </svg>
                                                 </div>
-                                                <div class="button-action">
+                                                <div onclick="handleClick('${station.StopCode}', '${capitalizeWords(station.StopDescr)}')" class="button-action">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                                                         <path opacity="0.5" d="M21 15.9983V9.99826C21 7.16983 21 5.75562 20.1213 4.87694C19.3529 4.10856 18.175 4.01211 16 4H8C5.82497 4.01211 4.64706 4.10856 3.87868 4.87694C3 5.75562 3 7.16983 3 9.99826V15.9983C3 18.8267 3 20.2409 3.87868 21.1196C4.75736 21.9983 6.17157 21.9983 9 21.9983H15C17.8284 21.9983 19.2426 21.9983 20.1213 21.1196C21 20.2409 21 18.8267 21 15.9983Z" fill="#fff"/>
                                                         <path d="M8 3.5C8 2.67157 8.67157 2 9.5 2H14.5C15.3284 2 16 2.67157 16 3.5V4.5C16 5.32843 15.3284 6 14.5 6H9.5C8.67157 6 8 5.32843 8 4.5V3.5Z" fill="#fff"/>
@@ -2242,7 +2342,7 @@ function getNextBuses(times, more) {
   if (more) {
     countToLoad = more
   } else {
-    countToLoad = 7
+    countToLoad = 21
   }
   const now = new Date();
   const currentTime = now.getHours() * 60 + now.getMinutes(); // Current time in minutes since midnight
@@ -2832,8 +2932,11 @@ function spawnNearby() {
     });
   }
 }
-function spawnAndShowInfo(bus, remain) {
 
+let liveBuses = []
+function spawnAndShowInfo(bus, remain, verification) {
+
+  
   markers_intel.forEach((marker) => marker.remove());
 
   markers_intel = []; // Clear marker references
@@ -2860,7 +2963,112 @@ function spawnAndShowInfo(bus, remain) {
       map.removeSource(`route-${previouslines}`);
     }
   }
+  const linesSearch = fullLine.filter(item => item.LineID === bus);
+  let go_or_back = 'go';
+  let isFirst = false
+  linesSearch.forEach(line => {
+    if(isFirst) {
+      return;
+    }
+    if(!verification) {
+      isFirst = true;
+    }
+    if(verification && verification !== line.LineDescr) {
+      console.warn("Verification mismatch, skipping:", verification, line.LineDescr);
+      return;
+    }
+    console.log('Line found:', line);
+    const lineCode = line.LineCode;
+    const desc = line.LineDescr;
+    
+    const splitter = splitValue(desc);
+    liveBuses.forEach(timeout => {
+      console.log("Clearing clearInterval for bus:", timeout);
+      clearInterval(timeout)
+    })
+    if(document.getElementById("map-bus-info").style.display === "none") {
+       document.getElementById("map-bus-info").style.display = "flex";
+        setTimeout(() => {
+          document.getElementById("map-bus-info").style.opacity = "1";
+        }, 100)
+    } else {
+      document.getElementById("map-bus-info").style.opacity = "0";
+      setTimeout(() => {
+        document.getElementById("map-bus-info").style.opacity = "1";
+      }, 400)
+    }
+    let timeout = document.getElementById("map-bus-info").style.display === "none" ? 100 : 300
+   
+    setTimeout(() => {
+      document.getElementById("busDirections").innerHTML = ""
+document.getElementById("openFromMap").setAttribute("data-name", desc)
+    document.getElementById("openFromMap").setAttribute("data-bus", bus)
+    document.getElementById("favoriteMap").setAttribute("data-bus", bus)
+    if(favoriteBuses.includes(bus)) {
+      document.getElementById("favoriteMap").innerHTML = `<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path style="transform-origin:center;animation: pulse 5s infinite alternate;transition:transform 5s ease-in-out;"
+                                    d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                                    fill="#fff"></path>
+                            </svg>
+                            Αφαίρεση`
+    } else {
+      document.getElementById("favoriteMap").innerHTML = `<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                                    fill="#fff"></path>
+                            </svg>
+                            Αγαπημένο`
+    }
+    
+    document.getElementById("map-busName").innerText = line.LineID
+    document.getElementById("map-busName-2").innerText = capitalizeWords(desc).replace("(κυκλικη)", "");
+    document.getElementById("map-busName-2").innerHTML += capitalizeWords(desc).includes("(κυκλικη)") ? `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 48 48">
+<path d="M0 0h48v48H0z" fill="none"/>
+<path fill="#fff" d="M10,22v2c0,7.72,6.28,14,14,14s14-6.28,14-14s-6.28-14-14-14h-6.662l3.474-4.298l-3.11-2.515L10.577,12l7.125,8.813   l3.11-2.515L17.338,14H24c5.514,0,10,4.486,10,10s-4.486,10-10,10s-10-4.486-10-10v-2H10z"/>
+</svg>` : "";
+    if(desc.includes("ΚΥΚΛΙΚΗ")) {
+      
+      const result1 = splitter.getFirstPart() // Trim any leading or trailing spa
+      document.getElementById("busDirections").innerHTML += `<div class="Block active" onclick="">
+                                              <svg width="20px" height="20px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M36 7L43 13.4615L36 21" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M40 14H17.0062C10.1232 14 4.27787 19.6204 4.00964 26.5C3.72612 33.7696 9.73291 40 17.0062 40H34.0016" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>Προς ${capitalizeWords(result1)}
+                                          </div>`
+    } else {
+      const result1 = splitter.getFirstPart() // Trim any leading or trailing spa
+      document.getElementById("busDirections").innerHTML += `<div class="Block ${go_or_back === "go" ? " active" : ""}" onclick="">
+                                              <svg width="20px" height="20px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M36 7L43 13.4615L36 21" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M40 14H17.0062C10.1232 14 4.27787 19.6204 4.00964 26.5C3.72612 33.7696 9.73291 40 17.0062 40H34.0016" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>Προς ${capitalizeWords(result1)}
+                                          </div>`                                      
+      const result2 = splitter.getSecondPart() // Trim any leading or trailing spa
+      document.getElementById("busDirections").innerHTML += `<div class="Block${go_or_back === "return" ? " active" : ""}" onclick="">
+                                              <svg width="20px" height="20px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M36 7L43 13.4615L36 21" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M40 14H17.0062C10.1232 14 4.27787 19.6204 4.00964 26.5C3.72612 33.7696 9.73291 40 17.0062 40H34.0016" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>Προς ${capitalizeWords(result2)}
+                                          </div>`
+    }
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getDailySchedule&line_code=${lineCode}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log("Daily Schedule Data new:", data);
+        
+      })
+      .catch(error => {
+        console.log("Error fetching daily schedule data:", error);
+      });
+    }, timeout)
+    
+  })
+
   findBusInfo2(bus).then((returned) => {
+    
+    
     console.log(returned);
 
     const colors = [
@@ -2910,7 +3118,7 @@ function spawnAndShowInfo(bus, remain) {
           dot.className = "station";
           dot.onclick = function () {
             if (dot.getAttribute("data-status") === 'hidden') {
-              this.innerHTML = `<p>${capitalizeWords(coord.StopDescr)}</p><svg onclick="openStation('${coord.StopCode}', '${capitalizeWords(coord.StopDescr)}');" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+              this.innerHTML = `<p>${capitalizeWords(coord.StopDescr)}</p><svg onclick="openStation('${coord.StopCode}', '${capitalizeWords(coord.StopDescr)}', '${bus}', '${verification}');" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
 <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`
               dot.setAttribute("data-status", 'visible')
@@ -2942,7 +3150,7 @@ function spawnAndShowInfo(bus, remain) {
 <path d="M21 9H19.999L20 13L21.6 11.8C21.8518 11.6111 22 11.3148 22 11V10C22 9.44772 21.5522 9 21 9Z" fill="#fff"/>
 </svg>`;
           if (coord === near) {
-            dot.innerHTML = `<p>${capitalizeWords(coord.StopDescr)}</p><svg onclick="openStation('${coord.StopCode}', '${capitalizeWords(coord.StopDescr)}');" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+            dot.innerHTML = `<p>${capitalizeWords(coord.StopDescr)}</p><svg onclick="openStation('${coord.StopCode}', '${capitalizeWords(coord.StopDescr)}', '${bus}', '${verification}');" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
 <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`
             dot.setAttribute("data-status", 'visible')
@@ -2984,7 +3192,9 @@ function spawnAndShowInfo(bus, remain) {
     }
 
     console.log("REACHED LIVE")
-    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${returned}&type=currentLocation&vevox=${randomString()}`)
+    function redoLive() {
+      console.warn("Redoing live fetch");
+fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${returned}&type=currentLocation&vevox=${randomString()}`)
       .then(response => response.json())
       .then(data => {
         console.log("LIVE OK")
@@ -3039,6 +3249,13 @@ function spawnAndShowInfo(bus, remain) {
 
       })
       .catch(error => console.error('Error:', error));
+    }
+    
+    redoLive()
+    let into = setInterval(function () {
+      redoLive()
+    }, 10000);
+    liveBuses.push(into);
 
     const learning = localStorage.getItem("oasa-intelligence");
     if (learning) {
@@ -3109,6 +3326,8 @@ function spawnAndShowInfo(bus, remain) {
       .catch(error => console.error('Error:', error));
 
   })
+
+  
 }
 
 function timeUntil(targetTime) {
@@ -3399,6 +3618,7 @@ function showVerticalStations() {
             //show up at start
             actions.style.display = 'flex'
             activity[1].style.display = 'flex'
+            activity[1].setAttribute("onclick", `addInfinity('${document.getElementById("busInfoID").innerText}', '${stop.StopCode}', 'showUp', this)`)
             activity[1].querySelector("vox").innerText = 'Όταν εμφανιστεί'
           } else if (toSpawn === false) {
             toSpawn = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -3409,12 +3629,14 @@ function showVerticalStations() {
             //show up at count start
             actions.style.display = 'flex'
             activity[1].style.display = 'flex'
+            activity[1].setAttribute("onclick", `addInfinity('${document.getElementById("busInfoID").innerText}', '${stop.StopCode}', 'showUp', this)`)
             activity[1].querySelector("vox").innerText = 'Όταν εμφανιστεί'
           } else if (toSpawn === "OASAERR") {
             toSpawn = `Σφάλμα`;
             //show up at count start
             actions.style.display = 'flex'
             activity[1].style.display = 'flex'
+            activity[1].setAttribute("onclick", `addInfinity('${document.getElementById("busInfoID").innerText}', '${stop.StopCode}', 'showUp', this)`)
             activity[1].querySelector("vox").innerText = 'Όταν εμφανιστεί'
           } else {
             toSpawn += "'";
@@ -3424,6 +3646,7 @@ function showVerticalStations() {
               actions.style.display = 'flex'
               activity[1].style.display = 'flex'
               activity[1].querySelector("vox").innerText = "2' μακριά"
+              activity[1].setAttribute("onclick", `addInfinity('${document.getElementById("busInfoID").innerText}', '${stop.StopCode}', '2min', this)`)
               activity[0].style.display = 'flex'
             } else {
               if (Number(stop.time) === 1 || Number(stop.time) === 0) {
@@ -3837,7 +4060,7 @@ function searchInInput() {
     const delay = index * 0.1;
     if (shortMatches[0] === bus) {
       spawnAndShowInfo(shortMatches[0].LineID, 'deleteAfter')
-      document.getElementById("toSpawnFinds").innerHTML = `<div onclick="spawnAndShowInfo('${bus.LineID}', 'remain')" class="Block simple-fadeIn match" style="opacity:0;">
+      document.getElementById("toSpawnFinds").innerHTML = `<div onclick="spawnAndShowInfo('${bus.LineID}', 'remain', '${bus.LineDescr}')" class="Block simple-fadeIn match" style="opacity:0;">
       <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M14.5 19.9815C16.0728 19.9415 17.1771 19.815 18 19.4151V20.9999C18 21.5522 17.5523 21.9999 17 21.9999H15.5C14.9477 21.9999 14.5 21.5522 14.5 20.9999V19.9815Z" fill="#FFF"></path>
 <path d="M6 19.415C6.82289 19.815 7.9272 19.9415 9.5 19.9815V20.9999C9.5 21.5522 9.05228 21.9999 8.5 21.9999H7C6.44772 21.9999 6 21.5522 6 20.9999V19.415Z" fill="#FFF"></path>
@@ -3852,7 +4075,7 @@ function searchInInput() {
               </svg>
   </div>${document.getElementById("toSpawnFinds").innerHTML}`
     } else {
-      document.getElementById("toSpawnFinds").innerHTML += `<div onclick="spawnAndShowInfo('${bus.LineID}', 'remain')" class="Block simple-fadeIn" style="animation-delay: ${delay}s;opacity:0;">
+      document.getElementById("toSpawnFinds").innerHTML += `<div onclick="spawnAndShowInfo('${bus.LineID}', 'remain', '${bus.LineDescr}')" class="Block simple-fadeIn" style="animation-delay: ${delay}s;opacity:0;">
                             <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M14.5 19.9815C16.0728 19.9415 17.1771 19.815 18 19.4151V20.9999C18 21.5522 17.5523 21.9999 17 21.9999H15.5C14.9477 21.9999 14.5 21.5522 14.5 20.9999V19.9815Z" fill="#FFF"></path>
                   <path d="M6 19.415C6.82289 19.815 7.9272 19.9415 9.5 19.9815V20.9999C9.5 21.5522 9.05228 21.9999 8.5 21.9999H7C6.44772 21.9999 6 21.5522 6 20.9999V19.415Z" fill="#FFF"></path>
@@ -3921,7 +4144,11 @@ function addInfinity(busLineId, stationCode, type, el) {
   const toFindRouteCode = evoxIds[activeEvoxId]
   const linesSearch = fullLine.filter(item => item.LineID === busLineId);
   let routeCode = null
+  if(linesSearch.length === 0) {
+    alert("Δεν βρέθηκε η γραμμή.")
+  }
   linesSearch.forEach(line => {
+    console.warn("Line found:", line);
     const lineCode = line.LineCode;
     fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetRoutes&p1=${lineCode}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`)
       .then(response => response.json())
@@ -3962,10 +4189,16 @@ function addInfinity(busLineId, stationCode, type, el) {
                   .catch(error => {
                     console.error("Failed to check for updates")
                   })
+              } else {
+                alert("Δεν έχετε συνδεθεί με το Florida. Παρακαλώ συνδεθείτε για να ενεργοποιήσετε τις ειδοποιήσεις.")
               }
 
+            } else {
+              alert(`Αγνωστος τύπος ειδοποίησης. ${type}`)
             }
           }
+        } else {
+          alert("Σφάλμα εύρεσης της γραμμής. [Routes]")
         }
       })
       .catch(error => {
@@ -4025,7 +4258,42 @@ function switchRouteTo(el) {
   })
 }
 
-function openStation(code, descr) {
+function openStation(code, descr, busId, busDescr) {
+  console.log("Opening station:", code, descr);
+  console.warn(busId, busDescr)
+  const linesSearch = fullLine.filter(item => item.LineID === busId);
+  let stopNow = false;
+  linesSearch.forEach(line => {
+    console.warn("Line found:", line);
+    //if (typeof busDescr === 'string' && busDescr.trim().length > 0) {
+//
+    //  console.warn("busdesc is here")
+    //  if(line.LineDescr !== busDescr) {
+    //        console.warn("Line description mismatch:", line.LineDescr, "vs", busDescr);
+    //        return;
+    //  }
+    //}
+    if(stopNow === true) {
+      return;
+    }
+    
+    if(!busDescr){
+      stopNow = true
+    }
+    const evoxId = generateRandomId(10);
+    const busDataComplete = {
+      bus: busId, // Use the correct bus data from the sorted array
+      descr: busDescr,
+      nextBusTime: null,
+      timeInM: null, // Show 'Άγνωστη' if time is Infinity
+      type: null,
+      multiple: findBusBlocksByLineId(busId)
+    };
+
+    // Store the bus data with the generated ID
+    evoxIds[evoxId] = busDataComplete;
+    activeEvoxId = evoxId; // Set the active ID to the newly created one
+  })
   document.getElementById("top-navigate").classList.add('hidden')
   //$("#userFeed").fadeOut("fast")
   document.getElementById("userFeed").classList.add('focused')
@@ -4050,9 +4318,10 @@ function openStation(code, descr) {
 
     closeSearch()
     document.getElementById("searchIntelli").classList.add('notLoaded')
+    showStopDetails(code, descr)
   }, 400)
   directBack = true
-  showStopDetails(code, descr)
+ 
 
 }
 
@@ -4242,3 +4511,74 @@ function triggerSave(busId, busLineCode, RouteCode, type, stopCode) {
   }
 
 }
+
+function openFromMap(el) {
+  const busId = el.getAttribute("data-bus");
+  const busDescr = el.getAttribute("data-name");
+  const linesSearch = fullLine.filter(item => item.LineID === busId);
+  linesSearch.forEach(line => {
+    if(line.LineDescr !== busDescr) {
+      console.warn("Line description mismatch:", line.LineDescr, "vs", busDescr);
+      return;
+    }
+    const evoxId = generateRandomId(10);
+    const busDataComplete = {
+      bus: busId, // Use the correct bus data from the sorted array
+      descr: busDescr,
+      nextBusTime: null,
+      timeInM: null, // Show 'Άγνωστη' if time is Infinity
+      type: null,
+      multiple: findBusBlocksByLineId(busId)
+    };
+
+    // Store the bus data with the generated ID
+    evoxIds[evoxId] = busDataComplete;
+    closeSearch()
+    setTimeout(function() {
+processInfo(evoxId, 'getTimes')
+    }, 200)
+    
+  })
+}
+
+function favFromMap(el) {
+  
+  const busId = el.getAttribute("data-bus");
+  if (localStorage.getItem("oasa_favorites")) {
+    console.log("Found favorites")
+    let favoriteBusesTemp = JSON.parse(localStorage.getItem("oasa_favorites"))//.reverse();
+    if(favoriteBusesTemp.includes(busId)) {
+      favoriteBusesTemp = favoriteBusesTemp.filter(item => item !== busId);
+      document.getElementById("favoriteMap").innerHTML = `<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                                    fill="#fff"></path>
+                            </svg>
+                            Αγαπημένο`
+    } else {
+      document.getElementById("favoriteMap").innerHTML = `<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path style="transform-origin:center;animation: pulse 5s infinite alternate;transition:transform 5s ease-in-out;"
+                                    d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                                    fill="#fff"></path>
+                            </svg>
+                            Αφαίρεση`
+      favoriteBusesTemp.push(busId);
+    }
+    localStorage.setItem("oasa_favorites", JSON.stringify(favoriteBusesTemp));
+    favoriteBuses = favoriteBusesTemp
+  } else {
+    localStorage.setItem("oasa_favorites", JSON.stringify([busId]));
+  }
+}
+
+setInterval(function () {
+  if(localStorage.getItem("extVOASA") && !localStorage.getItem("extV")) {
+    console.warn("Fixing extVOASA to extV")
+    localStorage.setItem("extV", localStorage.getItem("extVOASA"))
+  } else if(!localStorage.getItem("extVOASA") && localStorage.getItem("extV")) {
+     console.warn("Fixing extV to extVOASA")
+    localStorage.setItem("extVOASA", localStorage.getItem("extV"))
+  }
+}, 500)
