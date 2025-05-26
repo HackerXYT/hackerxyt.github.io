@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.0.6'
+const currentVersion = '2.1.2'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -189,10 +189,29 @@ let myLoc;
 function getReady() {
   document.getElementById("greeting").textContent = `${greeting()},`;
   document.getElementById("userUsername").textContent = getName();
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
+  if(localStorage.getItem("userImage")) {
+    const base64Image = localStorage.getItem("userImage");
+const phone = document.getElementById('phone');
+    phone.classList.add('image');
+
+    // Inject dynamic CSS to override background-image in ::before
+    let styleTag = document.getElementById('dynamic-style');
+    if (!styleTag) {
+      styleTag = document.createElement('style');
+      styleTag.id = 'dynamic-style';
+      document.head.appendChild(styleTag);
+    }
+
+    styleTag.textContent = `
+      #phone.image::before {
+        background-image: url('${base64Image}');
+      }
+    `;
+  }
+  
+  function boot(lat, long){
+    const latitude = lat;
+      const longitude = long;
       console.log("Latitude: " + latitude + ", Longitude: " + longitude);
       locationReady = true
       const loc = [longitude, latitude]
@@ -254,18 +273,40 @@ function getReady() {
 
 
       }, 400)
+  }
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (position) {
 
+      boot(position.coords.latitude, position.coords.longitude)
     }, function (error) {
       //alert(error.message)
+      boot(37.9838, 23.7275) // Default to Athens if geolocation fails
       //spawnBlocks(myLoc)
-      bypassAny()
+      //bypassAny()
 
       console.log("Error code: " + error.code + " - " + error.message);
     });
   } else {
     //spawnBlocks(myLoc)
-    //alert("Geolocation is not supported by this browser.");
+    alert("Geolocation is not supported by this browser.");
   }
+
+  if (location.protocol !== 'https:') {
+  navigator.geolocation.getCurrentPosition = function (successCallback, errorCallback) {
+    successCallback({
+      coords: {
+        latitude: 37.9838,
+        longitude: 23.7275,
+        accuracy: 100,
+        altitude: null,
+        altitudeAccuracy: null,
+        heading: null,
+        speed: null
+      },
+      timestamp: Date.now()
+    });
+  };
+}
 }
 
 function bypassAny() {
@@ -344,72 +385,10 @@ function spawnBlocks(currentLocation) {
   container: 'map-io',
   style: 'mapbox://styles/mapbox/dark-v11',
   center: currentLocation,
-  zoom: 15,
-  pitch: 60,
-  bearing: -17.6,
+  zoom: 10,
+  pitch: 0,
+  bearing: 0,
   antialias: true
-});
-
-map.on('style.load', () => {
-  map.addLayer({
-    id: '3d-buildings',
-    source: 'composite',
-    'source-layer': 'building',
-    filter: ['==', 'extrude', 'true'],
-    type: 'fill-extrusion',
-    minzoom: 15,
-    paint: {
-      'fill-extrusion-color': [
-        'interpolate',
-        ['linear'],
-        ['get', 'height'],
-        0, '#2b2b2b',
-        50, '#2b2b2b',
-        100, '#2b2b2b'
-      ],
-      'fill-extrusion-height': ['get', 'height'],
-      'fill-extrusion-opacity': 0.9,
-      'fill-extrusion-base': [
-        'interpolate',
-        ['linear'],
-        ['get', 'min_height'],
-        0, 0.5,
-        10, 1
-      ]
-    }
-  });
-
-  map.addLayer({
-    id: 'sky',
-    type: 'sky',
-    paint: {
-      'sky-type': 'atmosphere',
-      'sky-atmosphere-sun': [0.0, 0.0],
-      'sky-atmosphere-sun-intensity': 10
-    }
-  });
-
-  map.setLight({
-    position: [1.5, 90, 80],
-    intensity: 0.5,
-    color: '#ffdca8'
-  });
-
-  map.setFog({
-    range: [0.5, 10],
-    color: '#d8dbe2',
-    'horizon-blend': 0.2,
-    'high-color': '#ffffff',
-    'space-color': '#000000',
-    'star-intensity': 0.3
-  });
-
-  map.setLight({
-    anchor: 'viewport',
-    color: 'white',
-    intensity: 0.6,
-    position: [1.15, 210, 30]
-  });
 });
 
 
@@ -1100,7 +1079,7 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
       // Create the HTML for the bus item
       const tmp = `parallax-${randomString()}`
       const toSpawn = `
-        <div class="item ${highlight} ${isPreload ? 'isPreloaded' : ''}">
+        <div class="item ${highlight}${isPreload ? ' isPreloaded' : ''}${selectedSection.length === 1 ? ' fullWidth': ''}">
           <div class="busName glowUpGlobaltxt_title">${busData.bus}</div>
           <div class="info">
             <div class="text">
@@ -1114,9 +1093,10 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.8321 14.5547C15.5257 15.0142 14.9048 15.1384 14.4453 14.8321L11.8451 13.0986C11.3171 12.7466 11 12.1541 11 11.5196L11 11.5L11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7L13 11.4648L15.5547 13.1679C16.0142 13.4743 16.1384 14.0952 15.8321 14.5547Z" fill="${busData === selectedSection[0] && section !== 'frequent' ? "#3557fd" : "#fff"}" />
               </svg>
             </div>
-            <div onclick="processInfo('${evoxId}', 'showBusInfo')" class="button-action">
-              <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 12H20M20 12L16 8M20 12L16 16" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <div onclick="showOnMap('${evoxId}')" class="button-action">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                  <path opacity="0.5" d="M3 13.0368C3 11.9338 3 11.3823 3.39264 11.0607C3.53204 10.9465 3.70147 10.8551 3.89029 10.7922C4.42213 10.6151 5.12109 10.7895 6.51901 11.1383C7.58626 11.4046 8.11989 11.5377 8.6591 11.5239C8.85714 11.5189 9.05401 11.4991 9.24685 11.465C9.77191 11.3721 10.2399 11.1386 11.176 10.6715L12.5583 9.98161C13.7574 9.38327 14.3569 9.0841 15.0451 9.01511C15.7333 8.94613 16.4168 9.11668 17.7839 9.45779L18.9487 9.74842C19.9387 9.99544 20.4337 10.119 20.7169 10.413C21 10.707 21 11.0976 21 11.8788V17.9632C21 19.0662 21 19.6177 20.6074 19.9393C20.468 20.0535 20.2985 20.1449 20.1097 20.2078C19.5779 20.3849 18.8789 20.2105 17.481 19.8617C16.4137 19.5954 15.8801 19.4623 15.3409 19.4761C15.1429 19.4811 14.946 19.5009 14.7532 19.535C14.2281 19.6279 13.7601 19.8614 12.824 20.3285L11.4417 21.0184C10.2426 21.6167 9.64311 21.9159 8.95493 21.9849C8.26674 22.0539 7.58319 21.8833 6.21609 21.5422L5.05132 21.2516C4.06129 21.0046 3.56627 20.881 3.28314 20.587C3 20.293 3 19.9024 3 19.1212V13.0368Z" fill="#fff"></path>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C8.68629 2 6 4.55211 6 7.70031C6 10.8238 7.91499 14.4687 10.9028 15.7721C11.5993 16.076 12.4007 16.076 13.0972 15.7721C16.085 14.4687 18 10.8238 18 7.70031C18 4.55211 15.3137 2 12 2ZM12 10C13.1046 10 14 9.10457 14 8C14 6.89543 13.1046 6 12 6C10.8954 6 10 6.89543 10 8C10 9.10457 10.8954 10 12 10Z" fill="#fff"></path>
               </svg>
             </div>
           </div>
@@ -1225,6 +1205,31 @@ function registerPWA() {
 
 
   window.addEventListener("load", () => {
+    function checkAndFixStorage() {
+  const extVOASA = localStorage.getItem("extVOASA");
+  const extV = localStorage.getItem("extV");
+
+  console.log("extVOASA:", extVOASA);
+  console.log("extV:", extV);
+
+  if (extVOASA && !extV) {
+    console.warn("Fixing extVOASA to extV");
+    localStorage.setItem("extV", extVOASA);
+  } else if (!extVOASA && extV) {
+    console.warn("Fixing extV to extVOASA");
+    localStorage.setItem("extVOASA", extV);
+  }
+
+  // Continue only if one or both keys are missing
+  if (!extVOASA || !extV) {
+    setTimeout(checkAndFixStorage, 500);
+  } else {
+    console.log("Both keys exist, stopping checks.");
+  }
+}
+
+checkAndFixStorage();
+
     navigator.serviceWorker
       .register("./resign-sw.js")
       .then((registration) => {
@@ -1876,9 +1881,10 @@ function processInfo(evoxId, type, addMore, comego) {
         }
 
         console.log("Success", lineCode);
-        console.log("Selected:", comego, 'with:', data[comego])
+        console.warn("Selected:", comego, 'with:', data[comego])
         let times = data[comego].map(item => {
-          return formatTime(item.sde_start1);
+          console.warn('ITEMVOX:', item.sde_start1, item.sde_start2)
+          return formatTime(item[`${comego === 'go'? "sde_start1" : "sde_start2"}`]);
         });
         console.log("Current times:", times)
         if (times.length === 0) {
@@ -2034,10 +2040,10 @@ function processInfo(evoxId, type, addMore, comego) {
                                         <div class="button-action skeleton-button"></div>
                                     </div>
                                 </div>`
-        findBusInfo2(busInfo.bus).then((routeCode) => {
-
+        findBusInfo2(busInfo.bus, comego).then((routeCode) => {
+          console.log("Route code found", routeCode);
           getRouteStops(routeCode).then((stations) => {
-
+            console.log("Stations found", stations);
             console.log("Found stations", stations);
             container.innerHTML = ''
 
@@ -2263,6 +2269,7 @@ function processInfo(evoxId, type, addMore, comego) {
 
 
 function returnFromBusTimetable() {
+  document.getElementById("bottomSearchParent").style.display = null
   keepForVerticalStations = null;
   shownTimeTable = 0
   currentInfoForSchedo = {}
@@ -2485,19 +2492,59 @@ async function spawnBusOnMap(lineId) {
 
 }
 let activeRouteCode = null
-async function findBusInfo2(id, getJustLineCode = false, getJustRouteCode = true) {
+async function findBusInfo2(id, comego, getJustLineCode = false, getJustRouteCode = true) {
   async function routeOasa(lineCode) {
-    const getStops = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`);
-    const response = await fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${getStops}&vevox=${randomString()}`);
-    const data = await response.json();
-    console.log('Route:', data)
-    activeRouteCode = data[0].route_code
+  const getStops = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`);
+  const response = await fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${getStops}&vevox=${randomString()}`);
+  const data = await response.json();
+
+  console.log('Route:', data, comego, data[`${comego === "go" ? 0 : 1}`]);
+
+  if (comego === 'go' || comego === undefined || comego === null) {
+    activeRouteCode = data[0].route_code;
     if (data && data.length > 0) {
       return data[0].route_code;
     } else {
+      throw new Error("Route Code not found. comego=go");
+    }
+  } else {
+    const vanilaDesc = data[0].route_descr;
+    const match = vanilaDesc.match(/^(.+?) - (.+?)(\s*\[.*\])?$/);
+
+    if (!match) throw new Error("Route Code not found.");
+
+    const from = match[1];
+    const to = match[2];
+    const extra = match[3] || "";
+    const reversed = `${to} - ${from}${extra}`;
+    console.log("Reversed:", reversed);
+
+    let found = false;
+    for (const route of data) {
+      if (route.route_descr === reversed) {
+        console.warn("VOXNEW FOUND:", route, route.route_descr);
+        activeRouteCode = route.route_code;
+        found = true;
+        return route.route_code;
+      }
+    }
+
+    if(found === false) {
+      for (const route of data) {
+        if (route.route_descr.includes(reversed)) {
+          console.warn("VOXNEW FOUND:", route, route.route_descr);
+          activeRouteCode = route.route_code;
+          found = true;
+          return route.route_code;
+        }
+      }
       throw new Error("Route Code not found.");
     }
+
+    
   }
+}
+
 
   async function nextUp() {
     const allLinesUrl = encodeURIComponent(`https://telematics.oasa.gr/api/?act=webGetLines&keyOrigin=evoxEpsilon`);
@@ -2507,6 +2554,7 @@ async function findBusInfo2(id, getJustLineCode = false, getJustRouteCode = true
 
     if (matchingLines.length > 0) {
       const selectedLine = matchingLines[0];
+      console.warn('Selected Lines:', matchingLines);
       const resu = await routeOasa(selectedLine.LineCode)
       triggerSave(id, selectedLine.LineCode, resu)
       return resu;
@@ -2934,9 +2982,7 @@ function spawnNearby() {
 }
 
 let liveBuses = []
-function spawnAndShowInfo(bus, remain, verification) {
-
-  
+function spawnAndShowInfo(bus, remain, verification, comego) {
   markers_intel.forEach((marker) => marker.remove());
 
   markers_intel = []; // Clear marker references
@@ -2964,7 +3010,8 @@ function spawnAndShowInfo(bus, remain, verification) {
     }
   }
   const linesSearch = fullLine.filter(item => item.LineID === bus);
-  let go_or_back = 'go';
+  let go_or_back = comego ? comego: "go";
+  console.warn("MAP:", go_or_back)
   let isFirst = false
   linesSearch.forEach(line => {
     if(isFirst) {
@@ -3019,7 +3066,7 @@ document.getElementById("openFromMap").setAttribute("data-name", desc)
                                     d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
                                     fill="#fff"></path>
                             </svg>
-                            Αγαπημένο`
+                            Προσθήκη`
     }
     
     document.getElementById("map-busName").innerText = line.LineID
@@ -3031,7 +3078,7 @@ document.getElementById("openFromMap").setAttribute("data-name", desc)
     if(desc.includes("ΚΥΚΛΙΚΗ")) {
       
       const result1 = splitter.getFirstPart() // Trim any leading or trailing spa
-      document.getElementById("busDirections").innerHTML += `<div class="Block active" onclick="">
+      document.getElementById("busDirections").innerHTML += `<div class="Block active">
                                               <svg width="20px" height="20px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M36 7L43 13.4615L36 21" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="M40 14H17.0062C10.1232 14 4.27787 19.6204 4.00964 26.5C3.72612 33.7696 9.73291 40 17.0062 40H34.0016" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -3039,14 +3086,14 @@ document.getElementById("openFromMap").setAttribute("data-name", desc)
                                           </div>`
     } else {
       const result1 = splitter.getFirstPart() // Trim any leading or trailing spa
-      document.getElementById("busDirections").innerHTML += `<div class="Block ${go_or_back === "go" ? " active" : ""}" onclick="">
+      document.getElementById("busDirections").innerHTML += `<div class="Block ${go_or_back === "go" ? " active" : ""}" onclick="changeToOpposite('go', '${bus}', '${verification}')">
                                               <svg width="20px" height="20px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M36 7L43 13.4615L36 21" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="M40 14H17.0062C10.1232 14 4.27787 19.6204 4.00964 26.5C3.72612 33.7696 9.73291 40 17.0062 40H34.0016" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>Προς ${capitalizeWords(result1)}
                                           </div>`                                      
       const result2 = splitter.getSecondPart() // Trim any leading or trailing spa
-      document.getElementById("busDirections").innerHTML += `<div class="Block${go_or_back === "return" ? " active" : ""}" onclick="">
+      document.getElementById("busDirections").innerHTML += `<div class="Block${go_or_back === "come" ? " active" : ""}" onclick="changeToOpposite('come', '${bus}', '${verification}')">
                                               <svg width="20px" height="20px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M36 7L43 13.4615L36 21" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="M40 14H17.0062C10.1232 14 4.27787 19.6204 4.00964 26.5C3.72612 33.7696 9.73291 40 17.0062 40H34.0016" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -3066,10 +3113,10 @@ document.getElementById("openFromMap").setAttribute("data-name", desc)
     
   })
 
-  findBusInfo2(bus).then((returned) => {
+  findBusInfo2(bus, comego).then((returned) => {
     
     
-    console.log(returned);
+    console.log("MAPFOUND:",returned);
 
     const colors = [
       "#007f00", "#ff66b3", "#007cbf", "#ff3300",
@@ -3190,7 +3237,7 @@ document.getElementById("openFromMap").setAttribute("data-name", desc)
         },
       });
     }
-
+    let liveBusDivs = []
     console.log("REACHED LIVE")
     function redoLive() {
       console.warn("Redoing live fetch");
@@ -3198,9 +3245,15 @@ fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${returned}&type=currentLoc
       .then(response => response.json())
       .then(data => {
         console.log("LIVE OK")
+        if(liveBusDivs.length > 0) {
+          liveBusDivs.forEach(div => {
+            div.remove();
+          });
+        }
         try {
           data.forEach(location => {
             const dot = document.createElement('div');
+            
             let offset = [0, 0];
 
             dot.className = "busLocation";
@@ -3241,6 +3294,7 @@ fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${returned}&type=currentLoc
               .setLngLat([location.CS_LNG, location.CS_LAT])
               .addTo(map);
             markers_intel.push(marker);
+            liveBusDivs.push(dot);
           })
         } catch (error) {
           console.log("live failed")
@@ -3257,39 +3311,13 @@ fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${returned}&type=currentLoc
     }, 10000);
     liveBuses.push(into);
 
-    const learning = localStorage.getItem("oasa-intelligence");
-    if (learning) {
-      const workOn = JSON.parse(learning);
-      if (workOn[bus]) {
-        if (workOn[bus][0].StopCode) {
-          console.log("inth stops local", workOn[bus])
-          navigator.geolocation.getCurrentPosition(
-            position => {
-              const userLat = position.coords.latitude;
-              const userLng = position.coords.longitude;
-              const nearestStop = findNearestStop(workOn[bus], userLat, userLng);
-              //addIt(workOn[bus]);
-              addIt(workOn[bus], nearestStop);
-              console.log("Nearest Stop:", nearestStop);
-            },
-            error => console.error("Error getting location:", error),
-            { enableHighAccuracy: true }
-          );
-
-
-          return;
-        } else {
-          localStorage.removeItem('oasa-intelligence')
-        }
-
-
-      }
-    }
+    
 
     // Fetch new bus data
     fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=https%3A%2F%2Ftelematics.oasa.gr%2Fapi%2F%3Fact%3DwebGetRoutesDetailsAndStops%26p1%3D${returned}%26keyOrigin%3DevoxEpsilon&vevox=${randomString()}`)
       .then(response => response.json())
       .then(data => {
+        console.warn("webgetroutesandstops:",data)
         const coordinates = data.stops
           .map((stop) => ({
             lat: parseFloat(stop.StopLat),
@@ -3325,6 +3353,34 @@ fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${returned}&type=currentLoc
       })
       .catch(error => console.error('Error:', error));
 
+      const learning = localStorage.getItem("oasa-intelligence");
+    if (learning) {
+      const workOn = JSON.parse(learning);
+      if (workOn[bus]) {
+        if (workOn[bus][0].StopCode) {
+          console.log("inth stops local", workOn[bus])
+          navigator.geolocation.getCurrentPosition(
+            position => {
+              const userLat = position.coords.latitude;
+              const userLng = position.coords.longitude;
+              const nearestStop = findNearestStop(workOn[bus], userLat, userLng);
+              //addIt(workOn[bus]);
+              addIt(workOn[bus], nearestStop);
+              console.log("Nearest Stop:", nearestStop);
+            },
+            error => console.error("Error getting location:", error),
+            { enableHighAccuracy: true }
+          );
+
+
+          return;
+        } else {
+          localStorage.removeItem('oasa-intelligence')
+        }
+
+
+      }
+    }
   })
 
   
@@ -3356,52 +3412,85 @@ function timeUntil(targetTime) {
 let currentInfoForSchedo = {}
 
 function showDetailedTime(time, type, text) {
-  if (type) {
-    currentInfoForSchedo.time = time
-    document.getElementById("at-start-gen").classList.add("disabled")
-    document.getElementById("befo-gen").classList.add("disabled")
-    const checkbox_atStart = document.getElementById('at-start');
-    checkbox_atStart.checked = false;
-    fetch(`https://florida.evoxs.xyz/activeSchedo?username=${localStorage.getItem("t50-username")}&vevox=${randomString()}`)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        data.schedo.forEach(schedo => {
-          if (schedo.bus === document.getElementById("busInfoID").innerText && schedo.time === time && schedo.id === localStorage.getItem("extVOASA")) {
-            // To uncheck the checkbox
-            checkbox_atStart.checked = true;
-          } else {
-            console.log(`None: ${schedo.bus} ${schedo.time} ${schedo.id},\nLocal: ${document.getElementById("busInfoID").innerText} ${time} ${localStorage.getItem("extVOASA")}`)
-          }
-          document.getElementById("at-start-gen").classList.remove("disabled")
-          document.getElementById("befo-gen").classList.remove("disabled")
-        })
-      })
-      .catch(error => {
-        console.error("Failed to check for updates")
-      })
+  if (!type) return;
 
-
-    document.getElementById("timeInfo").innerHTML = time
-    document.getElementById("busLineInfoForDetails").innerText = document.getElementById("busInfoDesc").innerText
-    document.getElementById("timeInfoInText").innerText = 'σε ' + timeUntil(time)
-    if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
-      const element = document.getElementById('main-wrapper');
-      element.scrollTop = 0;
-    }
-    document.getElementById("busTimetable").classList.add('fade-out-slide-down')
-
-    setTimeout(function () { document.getElementById("busTimetable").style.display = 'none'; document.getElementById("busTimetable").classList.remove('fade-out-slide-down'); document.getElementById("busTimetable").classList.remove('shown'); }, 200)
-    document.getElementById("timetableItemView").style.display = 'block'
-    setTimeout(function () { document.getElementById("timetableItemView").classList.add('shown') }, 200)
-    if (type === 'previous') {
-
-    } else if (type === "next") {
-
-    }
+  const extVOASA = localStorage.getItem("extVOASA");
+  if (extVOASA === null) {
+    alert("Florida not enabled!");
+    return;
   }
 
+  currentInfoForSchedo.time = time;
+
+  const atStartGen = document.getElementById("at-start-gen");
+  const befoGen = document.getElementById("befo-gen");
+  const checkbox_atStart = document.getElementById('at-start');
+
+  atStartGen.classList.add("disabled");
+  befoGen.classList.add("disabled");
+
+  checkbox_atStart.checked = false;
+
+  fetch(`https://florida.evoxs.xyz/activeSchedo?username=${localStorage.getItem("t50-username")}&vevox=${randomString()}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      let foundMatch = false;
+
+      data.schedo.forEach(schedo => {
+        if (
+          schedo.bus === document.getElementById("busInfoID").innerText &&
+          schedo.time === time &&
+          schedo.id === extVOASA
+        ) {
+          checkbox_atStart.checked = true;
+          foundMatch = true;
+        } else {
+          console.log(`None: ${schedo.bus} ${schedo.time} ${schedo.id},\nLocal: ${document.getElementById("busInfoID").innerText} ${time} ${extVOASA}`);
+        }
+      });
+
+      // Enable buttons after processing
+      atStartGen.classList.remove("disabled");
+      befoGen.classList.remove("disabled");
+
+      if (!foundMatch) {
+        checkbox_atStart.checked = false;
+      }
+    })
+    .catch(error => {
+      console.error("Failed to check for updates", error);
+      atStartGen.classList.remove("disabled");
+      befoGen.classList.remove("disabled");
+    });
+
+  document.getElementById("timeInfo").innerHTML = time;
+  document.getElementById("busLineInfoForDetails").innerText = document.getElementById("busInfoDesc").innerText;
+  document.getElementById("timeInfoInText").innerText = 'σε ' + timeUntil(time);
+
+  if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
+    document.getElementById('main-wrapper').scrollTop = 0;
+  }
+
+  const busTimetable = document.getElementById("busTimetable");
+  busTimetable.classList.add('fade-out-slide-down');
+
+  setTimeout(() => {
+    busTimetable.style.display = 'none';
+    busTimetable.classList.remove('fade-out-slide-down', 'shown');
+  }, 200);
+
+  const timetableItemView = document.getElementById("timetableItemView");
+  timetableItemView.style.display = 'block';
+  setTimeout(() => {
+    timetableItemView.classList.add('shown');
+  }, 200);
+
+  if (type === 'previous') {
+  } else if (type === "next") {
+  }
 }
+
 
 function returnFromDetailedItemView() {
   currentInfoForSchedo.time = null
@@ -4018,7 +4107,6 @@ document.getElementById('searchInSearch').addEventListener('blur', function () {
 
 document.getElementById('searchInSearch').addEventListener('input', function () {
   searchInInput()
-
 })
 
 function searchInInput() {
@@ -4534,6 +4622,7 @@ function openFromMap(el) {
     // Store the bus data with the generated ID
     evoxIds[evoxId] = busDataComplete;
     closeSearch()
+    document.getElementById("bottomSearchParent").style.display = 'none'
     setTimeout(function() {
 processInfo(evoxId, 'getTimes')
     }, 200)
@@ -4555,7 +4644,7 @@ function favFromMap(el) {
                                     d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
                                     fill="#fff"></path>
                             </svg>
-                            Αγαπημένο`
+                            Προσθήκη`
     } else {
       document.getElementById("favoriteMap").innerHTML = `<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -4573,12 +4662,61 @@ function favFromMap(el) {
   }
 }
 
-setInterval(function () {
-  if(localStorage.getItem("extVOASA") && !localStorage.getItem("extV")) {
-    console.warn("Fixing extVOASA to extV")
-    localStorage.setItem("extV", localStorage.getItem("extVOASA"))
-  } else if(!localStorage.getItem("extVOASA") && localStorage.getItem("extV")) {
-     console.warn("Fixing extV to extVOASA")
-    localStorage.setItem("extVOASA", localStorage.getItem("extV"))
+
+function showOnMap(evoxId) {
+  const working = evoxIds[evoxId];
+  openSearch()
+  document.getElementById("searchInSearch").value = working.bus;
+  searchInInput()
+}
+
+function changeToOpposite(whereto, bus, verify) {
+  console.warn("Changing to opposite direction:", whereto, bus, verify);
+  spawnAndShowInfo(bus, null, verify, whereto)
+}
+
+
+document.getElementById('imageInput').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64Image = e.target.result;
+
+    // Save to localStorage
+    localStorage.setItem('userImage', base64Image);
+
+    // Add class to trigger pseudo-element
+    const phone = document.getElementById('phone');
+    phone.classList.add('image');
+
+    // Inject dynamic CSS to override background-image in ::before
+    let styleTag = document.getElementById('dynamic-style');
+    if (!styleTag) {
+      styleTag = document.createElement('style');
+      styleTag.id = 'dynamic-style';
+      document.head.appendChild(styleTag);
+    }
+
+    styleTag.textContent = `
+      #phone.image::before {
+        background-image: url('${base64Image}');
+      }
+    `;
+  };
+
+  reader.readAsDataURL(file);
+});
+
+function clearUserImage() {
+  localStorage.removeItem('userImage');
+  const phone = document.getElementById('phone');
+  phone.classList.remove('image');
+
+  // Remove dynamic CSS
+  const styleTag = document.getElementById('dynamic-style');
+  if (styleTag) {
+    styleTag.remove();
   }
-}, 500)
+}

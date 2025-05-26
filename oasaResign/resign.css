@@ -544,7 +544,7 @@
 }
 
 #phone {
-    --fade-color: #121216;
+    --fade-color: #0a0a0d; /*121216*/
     /* Slightly lighter shade, still close to OLED black */
     background: linear-gradient(to bottom left,
             rgba(0, 0, 0, 0) 50%,
@@ -608,7 +608,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    filter: blur(5px) brightness(60%);
+    filter: blur(5px) brightness(40%);
     /* Apply the blur effect only to the background image */
     z-index: -1;
     /* Place the pseudo-element behind the content */
@@ -988,6 +988,10 @@
     -webkit-backdrop-filter: blur(5px);
     scroll-snap-align: start;
     /* Snap to the start of each item */
+}
+
+.pinned-favorites .item.fullWidth {
+    width: 100%;
 }
 
 .pinned-favorites .item.favorite {
@@ -1397,7 +1401,7 @@
 }
 
 .timetableSpawn .timeItem.previous {
-    background-color: #f5421f25;
+    background-color: #ff9f9f1d;
 }
 
 #timetableSpawn .timeItem.isNext {
@@ -2818,7 +2822,10 @@ body {
     align-items: center;
     gap: 5px;
 }
-
+.busDirections::-webkit-scrollbar {
+    display: none;
+    /* For Chrome, Safari, and Edge */
+}
 .busDirections {
     width: 100%;
     display: flex;
