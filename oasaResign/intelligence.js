@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.1.2'
+const currentVersion = '2.1.3'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -107,6 +107,9 @@ function openSearch() {
   document.getElementById("recommendSpawn").innerHTML = ''
   document.getElementById("recommendSpawn").innerHTML += `<div onclick="window.location.href = '../'" class="Block"><img src="../evox-epsilon-beta/epsilon-transparent.png" width="20px" height="20px">Evox
                     </div>`
+
+  document.getElementById("recommendSpawn").innerHTML += `<div onclick="window.location.href = '../oasaMobile/'" class="Block"><img src="doodle.png" height="20px">
+                    </div>`
   document.getElementById("recommendSpawn").innerHTML += `<div class="Block"><svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g opacity="0.5">
 <path d="M3 8.70938V16.8377C3 17.8813 3 18.4031 3.28314 18.7959C3.56627 19.1888 4.06129 19.3538 5.05132 19.6838L6.21609 20.072C7.58318 20.5277 8.26674 20.7556 8.95493 20.6634C8.96999 20.6614 8.98501 20.6593 9 20.6569V6.65705C8.88712 6.67391 8.77331 6.68433 8.6591 6.68823C8.11989 6.70664 7.58626 6.52877 6.51901 6.17302C5.12109 5.70705 4.42213 5.47406 3.89029 5.71066C3.70147 5.79466 3.53204 5.91678 3.39264 6.06935C3 6.49907 3 7.23584 3 8.70938Z" fill="#fff"/>
@@ -208,6 +211,27 @@ const phone = document.getElementById('phone');
       }
     `;
   }
+
+  fetch(`https://florida.evoxs.xyz/activeSchedo?username=${localStorage.getItem("t50-username")}&deviceId=${localStorage.getItem("extV") ? localStorage.getItem("extV") : localStorage.getItem("extVOASA")}&vevox=${randomString()}`)
+      .then(response => response.json())
+      .then(data => {
+        
+        let count = 0
+        data.infinite.forEach(item => {
+          count++
+        })
+
+    
+        data.schedo.forEach(item => {
+          count++
+        })
+        
+        document.getElementById("activeNotifs").innerHTML = count;
+
+      })
+      .catch(error => {
+          console.log('Load Florida List Error:', error)
+      });
   
   function boot(lat, long){
     const latitude = lat;
@@ -1746,7 +1770,6 @@ function processInfo(evoxId, type, addMore, comego) {
 
     setTimeout(function () {
       document.getElementById("userFeed").style.display = 'none'
-
     }, 400)
 
     document.getElementById("searchIntelli").classList.add('notLoaded')
@@ -4719,4 +4742,191 @@ function clearUserImage() {
   if (styleTag) {
     styleTag.remove();
   }
+}
+
+function openNotificationsView() {
+  if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
+    const element = document.getElementById('main-wrapper');
+    element.scrollTop = 0;
+  }
+   document.getElementById("top-navigate").classList.add('hidden')
+   document.getElementById("userFeed").classList.add('focused')
+   document.getElementById("notificationsView").style.display = 'block'
+  setTimeout(function () { document.getElementById("notificationsView").classList.add('shown') }, 200)
+  setTimeout(function () {
+    document.getElementById("userFeed").style.display = 'none'
+  }, 400)
+  document.getElementById("searchIntelli").classList.add('notLoaded')
+
+  fetch(`https://florida.evoxs.xyz/devices?username=${localStorage.getItem("t50-username")}&password=${atob(localStorage.getItem("t50pswd"))}&vevox=${randomString()}`)
+      .then(response => response.json())
+      .then(data => {
+        const parseTime = (str) => {
+          const [num, unit] = str.split(' ');
+          const now = new Date();
+        
+          if (unit.startsWith('day')) return now - num * 24 * 60 * 60 * 1000;
+          if (unit.startsWith('month')) return now - num * 30 * 24 * 60 * 60 * 1000;
+          if (unit.startsWith('year')) return now - num * 365 * 24 * 60 * 60 * 1000;
+        
+          return Infinity;
+        };
+
+        let withLastUsed = [];
+        const withoutLastUsed = [];
+
+        for (const item of data) {
+          if ('last_used' in item) {
+            withLastUsed.push(item);
+          } else {
+            withoutLastUsed.push(item);
+          }
+        }
+
+        withLastUsed.sort((a, b) => parseTime(a.last_used) - parseTime(b.last_used));
+        withLastUsed = withLastUsed.reverse()
+        console.log("Sorted with last_used:", withLastUsed);
+        console.log("No last_used:", withoutLastUsed);
+        const devices = document.getElementById("devices");
+        devices.innerHTML = ''; 
+        const apple = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25px" height="25px" viewBox="-1.5 0 20 20" version="1.1">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-102.000000, -7439.000000)" fill="#fff">
+            <g transform="translate(56.000000, 160.000000)">
+                <path d="M57.5708873,7282.19296 C58.2999598,7281.34797 58.7914012,7280.17098 58.6569121,7279 C57.6062792,7279.04 56.3352055,7279.67099 55.5818643,7280.51498 C54.905374,7281.26397 54.3148354,7282.46095 54.4735932,7283.60894 C55.6455696,7283.69593 56.8418148,7283.03894 57.5708873,7282.19296 M60.1989864,7289.62485 C60.2283111,7292.65181 62.9696641,7293.65879 63,7293.67179 C62.9777537,7293.74279 62.562152,7295.10677 61.5560117,7296.51675 C60.6853718,7297.73474 59.7823735,7298.94772 58.3596204,7298.97372 C56.9621472,7298.99872 56.5121648,7298.17973 54.9134635,7298.17973 C53.3157735,7298.17973 52.8162425,7298.94772 51.4935978,7298.99872 C50.1203933,7299.04772 49.0738052,7297.68074 48.197098,7296.46676 C46.4032359,7293.98379 45.0330649,7289.44985 46.8734421,7286.3899 C47.7875635,7284.87092 49.4206455,7283.90793 51.1942837,7283.88393 C52.5422083,7283.85893 53.8153044,7284.75292 54.6394294,7284.75292 C55.4635543,7284.75292 57.0106846,7283.67793 58.6366882,7283.83593 C59.3172232,7283.86293 61.2283842,7284.09893 62.4549652,7285.8199 C62.355868,7285.8789 60.1747177,7287.09489 60.1989864,7289.62485"></path>
+            </g>
+        </g>
+    </g>
+    </svg>`
+        const linux = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25px" height="25px" viewBox="0 0 20 20" version="1.1">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-300.000000, -7519.000000)" fill="#fff">
+            <g transform="translate(56.000000, 160.000000)">
+                <path d="M259.612287,7362.44764 C260.52968,7362.95764 261.702366,7362.65564 262.231631,7361.77164 C262.760897,7360.88764 262.447489,7359.75763 261.530095,7359.24763 C260.612702,7358.73763 259.440017,7359.04063 258.909714,7359.92463 C258.381486,7360.80764 258.695932,7361.93764 259.612287,7362.44764 M255.687422,7374.39866 C254.843711,7374.39866 254.043587,7374.21766 253.327522,7373.89666 L251.993981,7376.19766 C253.107513,7376.72867 254.361146,7377.02867 255.687422,7377.02867 C256.458489,7377.02867 257.204649,7376.92567 257.91345,7376.73667 C258.037983,7375.99366 258.495641,7375.31066 259.224159,7374.90466 C259.953715,7374.49866 260.795351,7374.45966 261.524907,7374.72466 C262.942507,7373.38066 263.865089,7371.55266 264,7369.51765 L261.266501,7369.47865 C261.015359,7372.23666 258.613948,7374.39866 255.687422,7374.39866 M255.687422,7363.60164 C258.613948,7363.60164 261.015359,7365.76364 261.266501,7368.52165 L264,7368.48265 C263.865089,7366.44665 262.942507,7364.61864 261.523869,7363.27464 C260.795351,7363.54064 259.952677,7363.49964 259.224159,7363.09564 C258.495641,7362.68964 258.037983,7362.00564 257.912412,7361.26264 C257.203611,7361.07464 256.458489,7360.97164 255.686384,7360.97164 C254.361146,7360.97164 253.107513,7361.27164 251.993981,7361.80264 L253.327522,7364.10364 C254.043587,7363.78164 254.843711,7363.60164 255.687422,7363.60164 M250.084475,7368.99965 C250.084475,7367.17365 251.026775,7365.55964 252.467206,7364.58264 L251.064134,7362.31964 C249.386052,7363.40064 248.137609,7365.05264 247.618721,7366.98665 C248.224782,7367.46265 248.611872,7368.18765 248.611872,7368.99965 C248.611872,7369.81165 248.224782,7370.53665 247.618721,7371.01265 C248.137609,7372.94766 249.386052,7374.59966 251.064134,7375.68066 L252.467206,7373.41666 C251.026775,7372.43966 250.084475,7370.82665 250.084475,7368.99965 M259.613325,7375.55166 C258.695932,7376.06166 258.381486,7377.19167 258.910751,7378.07567 C259.440017,7378.95967 260.612702,7379.26267 261.530095,7378.75167 C262.447489,7378.24167 262.761934,7377.11167 262.231631,7376.22766 C261.702366,7375.34466 260.52968,7375.04166 259.613325,7375.55166 M245.918846,7367.15165 C244.859278,7367.15165 244,7367.97865 244,7368.99965 C244,7370.02065 244.859278,7370.84765 245.918846,7370.84765 C246.978414,7370.84765 247.836654,7370.02065 247.836654,7368.99965 C247.836654,7367.97865 246.978414,7367.15165 245.918846,7367.15165">
+</path>
+            </g>
+        </g>
+    </g>
+</svg>`
+        withLastUsed.forEach(device => {
+          devices.innerHTML += `<div class="timeItem">
+                                        <p>${device.os === 'macOS' ? apple : linux}</p>
+                                        <span>${device.extV}</span>
+                                        <div class="actions">
+                                            ${device.last_used}
+                                        </div>
+                                    </div>`
+        })
+
+        let f = false;
+        data.forEach(item => {
+          if(f === true) {return;}
+          if(item.extV === localStorage.getItem("extV") || item.extV === localStorage.getItem("extVOASA")) {
+            f = true;
+            document.getElementById("current-device").innerHTML = `<div class="timeItem">
+                                        <p>${item.os === 'macOS' ? apple : linux}</p>
+                                        <span>${item.extV}</span>
+                                    </div>`
+          }
+        })
+
+        if(f === false) {
+           document.getElementById("current-device").innerHTML = `<div class="timeItem">
+                                        <span style="display:flex;flex-direction:row;align-items:center;gap:5px;">Florida OFF<svg fill="#fff" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 24 24" version="1.1" xml:space="preserve">
+
+<style type="text/css">
+	.st0{opacity:0.2;fill:none;stroke:#fff;stroke-width:5.000000e-02;stroke-miterlimit:10;}
+</style>
+
+
+<path d="M20.7,19.3l-1-1c-0.4-0.4-1-0.4-1.4,0s-0.4,1,0,1.4l1,1c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3   C21.1,20.3,21.1,19.7,20.7,19.3z"/>
+
+<path d="M14,22c0,0.6,0.4,1,1,1s1-0.4,1-1v-2c0-0.6-0.4-1-1-1s-1,0.4-1,1V22z"/>
+
+<path d="M22,14h-2c-0.6,0-1,0.4-1,1s0.4,1,1,1h2c0.6,0,1-0.4,1-1S22.6,14,22,14z"/>
+
+<path d="M20.7,8.4c0-1.4-0.5-2.6-1.5-3.6c-1-1-2.2-1.5-3.6-1.5S13,3.8,12,4.8L9.8,7c-0.4,0.4-0.4,1,0,1.4s1,0.4,1.4,0l2.2-2.2   c1.2-1.2,3.2-1.2,4.4,0c0.6,0.6,0.9,1.4,0.9,2.2c0,0.8-0.3,1.6-0.9,2.2l-2.2,2.2c-0.4,0.4-0.4,1,0,1.4c0.2,0.2,0.5,0.3,0.7,0.3   s0.5-0.1,0.7-0.3l2.2-2.2C20.2,11,20.7,9.8,20.7,8.4z"/>
+
+<path d="M3.3,15.6c0,1.4,0.5,2.6,1.5,3.6c1,1,2.2,1.5,3.6,1.5s2.6-0.5,3.6-1.5l2.2-2.2c0.4-0.4,0.4-1,0-1.4s-1-0.4-1.4,0l-2.2,2.2   c-1.2,1.2-3.2,1.2-4.4,0c-0.6-0.6-0.9-1.4-0.9-2.2c0-0.8,0.3-1.6,0.9-2.2l2.2-2.2c0.4-0.4,0.4-1,0-1.4s-1-0.4-1.4,0L4.8,12   C3.8,13,3.3,14.2,3.3,15.6z"/>
+
+<path d="M5.7,4.3l-1-1c-0.4-0.4-1-0.4-1.4,0s-0.4,1,0,1.4l1,1C4.5,5.9,4.7,6,5,6s0.5-0.1,0.7-0.3C6.1,5.3,6.1,4.7,5.7,4.3z"/>
+
+<path d="M10,4V2c0-0.6-0.4-1-1-1S8,1.4,8,2v2c0,0.6,0.4,1,1,1S10,4.6,10,4z"/>
+
+<path d="M4,10c0.6,0,1-0.4,1-1S4.6,8,4,8H2C1.4,8,1,8.4,1,9s0.4,1,1,1H4z"/>
+
+
+</svg></span>
+                                    </div>`
+        } else {
+          //document.getElementById("current-device").innerHTML += `<div class="timeItem">
+          //                              <span>Device</span>
+          //                          </div>`
+        }
+
+         
+
+      })
+      .catch(error => {
+          console.log('Load Florida List Error:', error)
+      });
+
+      fetch(`https://florida.evoxs.xyz/activeSchedo?username=${localStorage.getItem("t50-username")}&deviceId=${localStorage.getItem("extV") ? localStorage.getItem("extV") : localStorage.getItem("extVOASA")}&vevox=${randomString()}`)
+      .then(response => response.json())
+      .then(data => {
+        const notifications = document.getElementById("active-notifications");
+        notifications.innerHTML = ''; 
+
+        const countdown = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path d="M20.75 13.25C20.75 18.08 16.83 22 12 22C7.17 22 3.25 18.08 3.25 13.25C3.25 8.42 7.17 4.5 12 4.5C16.83 4.5 20.75 8.42 20.75 13.25Z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 8V13" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 2H15" stroke="#fff" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`
+        const twomin = `<svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="25px" height="25px" viewBox="-1 0 19 19" class="cf-icon-svg"><path d="M16.417 9.6A7.917 7.917 0 1 1 8.5 1.683 7.917 7.917 0 0 1 16.417 9.6zm-5.431 2.113H8.309l1.519-1.353q.223-.203.43-.412a2.974 2.974 0 0 0 .371-.449 2.105 2.105 0 0 0 .255-.523 2.037 2.037 0 0 0 .093-.635 1.89 1.89 0 0 0-.2-.889 1.853 1.853 0 0 0-.532-.63 2.295 2.295 0 0 0-.76-.37 3.226 3.226 0 0 0-.88-.12 2.854 2.854 0 0 0-.912.144 2.373 2.373 0 0 0-.764.42 2.31 2.31 0 0 0-.55.666 2.34 2.34 0 0 0-.274.89l1.491.204a1.234 1.234 0 0 1 .292-.717.893.893 0 0 1 1.227-.056.76.76 0 0 1 .222.568 1.002 1.002 0 0 1-.148.536 2.42 2.42 0 0 1-.389.472L6.244 11.77v1.295h4.742z"/></svg>`
+        data.infinite.forEach(item => {
+          notifications.innerHTML += `<div class="timeItem">
+                                        <p>${item.bus}</p>
+                                        <span>${item.station}</span>
+                                        <div class="actions">
+                                            ${item.notificationType === "countDownBegin" ? countdown : twomin}
+                                        </div>
+                                    </div>`
+        })
+
+        const clock = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path d="M23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12ZM3.00683 12C3.00683 16.9668 7.03321 20.9932 12 20.9932C16.9668 20.9932 20.9932 16.9668 20.9932 12C20.9932 7.03321 16.9668 3.00683 12 3.00683C7.03321 3.00683 3.00683 7.03321 3.00683 12Z" fill="#fff"/>
+<path d="M12 5C11.4477 5 11 5.44771 11 6V12.4667C11 12.4667 11 12.7274 11.1267 12.9235C11.2115 13.0898 11.3437 13.2343 11.5174 13.3346L16.1372 16.0019C16.6155 16.278 17.2271 16.1141 17.5032 15.6358C17.7793 15.1575 17.6155 14.5459 17.1372 14.2698L13 11.8812V6C13 5.44772 12.5523 5 12 5Z" fill="#fff"/>
+</svg>`
+        data.schedo.forEach(item => {
+          notifications.innerHTML += `<div class="timeItem">
+                                        <p>${item.bus}</p>
+                                        <span>${item.time}</span>
+                                        <div class="actions">
+                                            ${clock}
+                                        </div>
+                                    </div>`
+        })
+        
+
+      })
+      .catch(error => {
+          console.log('Load Florida List Error:', error)
+      });
+}
+
+function returnFromNotifications() {
+  document.getElementById("bottomSearchParent").style.display = null
+  if (document.getElementById("returnTopDefines").classList.contains("scrolled")) {
+    const element = document.getElementById('main-wrapper');
+    element.scrollTop = 0;
+  }
+  document.getElementById("top-navigate").classList.remove('hidden')
+  document.getElementById("userFeed").classList.remove('focused')
+  document.getElementById("notificationsView").style.display = 'none'
+  setTimeout(function () { document.getElementById("notificationsView").classList.remove('shown') }, 200)
+
+  document.getElementById("userFeed").style.display = 'block'
+
+
+  document.getElementById("searchIntelli").classList.remove('notLoaded')
 }
