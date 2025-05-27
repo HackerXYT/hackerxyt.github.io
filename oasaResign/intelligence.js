@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.1.41'
+const currentVersion = '2.1.5'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -108,17 +108,17 @@ function openSearch() {
   document.getElementById("recommendSpawn").innerHTML += `<div onclick="window.location.href = '../'" class="Block"><img src="../evox-epsilon-beta/epsilon-transparent.png" width="20px" height="20px">Evox
                     </div>`
 
-  document.getElementById("recommendSpawn").innerHTML += `<div onclick="window.location.href = '../oasaMobile/'" class="Block"><img src="doodle.png" height="20px">
-                    </div>`
-  document.getElementById("recommendSpawn").innerHTML += `<div class="Block"><svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g opacity="0.5">
-<path d="M3 8.70938V16.8377C3 17.8813 3 18.4031 3.28314 18.7959C3.56627 19.1888 4.06129 19.3538 5.05132 19.6838L6.21609 20.072C7.58318 20.5277 8.26674 20.7556 8.95493 20.6634C8.96999 20.6614 8.98501 20.6593 9 20.6569V6.65705C8.88712 6.67391 8.77331 6.68433 8.6591 6.68823C8.11989 6.70664 7.58626 6.52877 6.51901 6.17302C5.12109 5.70705 4.42213 5.47406 3.89029 5.71066C3.70147 5.79466 3.53204 5.91678 3.39264 6.06935C3 6.49907 3 7.23584 3 8.70938Z" fill="#fff"/>
-<path d="M21 15.2907V7.16229C21 6.11872 21 5.59692 20.7169 5.20409C20.4337 4.81126 19.9387 4.64625 18.9487 4.31624L17.7839 3.92799C16.4168 3.47229 15.7333 3.24444 15.0451 3.3366C15.03 3.33861 15.015 3.34078 15 3.34309V17.343C15.1129 17.3261 15.2267 17.3157 15.3409 17.3118C15.8801 17.2934 16.4137 17.4713 17.481 17.827C18.8789 18.293 19.5779 18.526 20.1097 18.2894C20.2985 18.2054 20.468 18.0833 20.6074 17.9307C21 17.501 21 16.7642 21 15.2907Z" fill="#fff"/>
-</g>
-<path d="M9.24685 6.60921C9.16522 6.6285 9.08286 6.64435 9 6.65673V20.6566C9.66964 20.5533 10.2689 20.1538 11.4416 19.3719L12.824 18.4503C13.7601 17.8263 14.2281 17.5143 14.7532 17.3902C14.8348 17.3709 14.9171 17.355 15 17.3427V3.34277C14.3304 3.44613 13.7311 3.84561 12.5583 4.62747L11.176 5.54905C10.2399 6.17308 9.77191 6.48509 9.24685 6.60921Z" fill="#fff"/>
-<path d="M17.481 17.8267C17.5684 17.8558 17.653 17.884 17.735 17.9113Z" fill="#fff"/>
-</svg>Σπίτι
-                    </div>`
+  //document.getElementById("recommendSpawn").innerHTML += `<div onclick="window.location.href = '../oasaMobile/'" class="Block"><img src="doodle.png" height="20px">
+                    //</div>`
+  //document.getElementById("recommendSpawn").innerHTML += `<div class="Block"><svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+//<g opacity="0.5">
+//<path d="M3 8.70938V16.8377C3 17.8813 3 18.4031 3.28314 18.7959C3.56627 19.1888 4.06129 19.3538 5.05132 19.6838L6.21609 20.072C7.58318 20.5277 8.26674 20.7556 8.95493 20.6634C8.96999 20.6614 8.98501 20.6593 9 20.6569V6.65705C8.88712 6.67391 8.77331 6.68433 8.6591 6.68823C8.11989 6.70664 7.58626 6.52877 6.51901 6.17302C5.12109 5.70705 4.42213 5.47406 3.89029 5.71066C3.70147 5.79466 3.53204 5.91678 3.39264 6.06935C3 6.49907 3 7.23584 3 8.70938Z" fill="#fff"/>
+//<path d="M21 15.2907V7.16229C21 6.11872 21 5.59692 20.7169 5.20409C20.4337 4.81126 19.9387 4.64625 18.9487 4.31624L17.7839 3.92799C16.4168 3.47229 15.7333 3.24444 15.0451 3.3366C15.03 3.33861 15.015 3.34078 15 3.34309V17.343C15.1129 17.3261 15.2267 17.3157 15.3409 17.3118C15.8801 17.2934 16.4137 17.4713 17.481 17.827C18.8789 18.293 19.5779 18.526 20.1097 18.2894C20.2985 18.2054 20.468 18.0833 20.6074 17.9307C21 17.501 21 16.7642 21 15.2907Z" fill="#fff"/>
+//</g>
+//<path d="M9.24685 6.60921C9.16522 6.6285 9.08286 6.64435 9 6.65673V20.6566C9.66964 20.5533 10.2689 20.1538 11.4416 19.3719L12.824 18.4503C13.7601 17.8263 14.2281 17.5143 14.7532 17.3902C14.8348 17.3709 14.9171 17.355 15 17.3427V3.34277C14.3304 3.44613 13.7311 3.84561 12.5583 4.62747L11.176 5.54905C10.2399 6.17308 9.77191 6.48509 9.24685 6.60921Z" fill="#fff"/>
+//<path d="M17.481 17.8267C17.5684 17.8558 17.653 17.884 17.735 17.9113Z" fill="#fff"/>
+//</svg>Σπίτι
+//                    </div>`
   favoriteBuses.forEach(bus => {
     document.getElementById("recommendSpawn").innerHTML += `<div onclick="spawnAndShowInfo('${bus}')" class="Block favorite"><svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M14.5 19.9815C16.0728 19.9415 17.1771 19.815 18 19.4151V20.9999C18 21.5522 17.5523 21.9999 17 21.9999H15.5C14.9477 21.9999 14.5 21.5522 14.5 20.9999V19.9815Z" fill="#FFF"/>
@@ -152,6 +152,7 @@ function openSearch() {
 }
 
 function closeSearch() {
+  triggerNotificationsReload()
   if (document.getElementById("searchContainer").classList.contains("active")) {
     $("#recommendSpawn").fadeIn("fast")
     document.getElementById("searchContainer").classList.remove("active")
@@ -2299,6 +2300,7 @@ function processInfo(evoxId, type, addMore, comego) {
 
 
 function returnFromBusTimetable() {
+  triggerNotificationsReload()
   document.getElementById("bottomSearchParent").style.display = null
   keepForVerticalStations = null;
   shownTimeTable = 0
@@ -5188,4 +5190,115 @@ async function clearStorageAndReload() {
 
   // Reload the page
   location.reload();
+}
+
+
+function spawnOnTop(el) {
+  const rect = el.getBoundingClientRect();
+  const computedStyle = getComputedStyle(el);
+  const X_OFFSET = -7.5; // left
+  const Y_OFFSET = -8; // up
+
+  document.getElementById("menuContainer").style.left = `${X_OFFSET}px`
+  document.getElementById("menuContainer").style.top = `${Y_OFFSET}px`
+  document.getElementById("menuItems").style.left = `${rect.left + X_OFFSET}px`
+  document.getElementById("menuItems").style.top = `${rect.top + Y_OFFSET}px`
+  document.getElementById("menuItems").style.padding = `${computedStyle.padding}`
+
+  document.getElementById("menuContainer").style.display = 'block'
+  setTimeout(function () {
+    const container = document.getElementById("menuContainer");
+    container.style.opacity = '1';
+
+    container.querySelectorAll(".menuItem").forEach((div, index) => {
+      if (index === 0) return;
+      console.log(div)
+      setTimeout(function () {
+        div.style.opacity = '1'
+        div.style.transform = 'translateY(0px)'
+        //div.classList.add('show');
+      }, (index - 1) * 100)
+
+    });
+  }, 100);
+
+}
+
+function closeMenu() {
+  const container = document.getElementById("menuContainer");
+  //container.style.opacity = '1';
+
+  container.querySelectorAll(".menuItem").forEach((div, index) => {
+    if (index === 0) return;
+    setTimeout(function () {
+      container.querySelectorAll(".menuItem")[container.querySelectorAll(".menuItem").length - index].style.transform = 'translateY(50px)'
+      container.querySelectorAll(".menuItem")[container.querySelectorAll(".menuItem").length - index].style.opacity = '0'
+
+    }, (index - 1) * 100)
+
+  });
+  setTimeout(function () {
+    container.style.opacity = "0"
+    setTimeout(function () {
+      container.style.display = 'none'
+    }, 500)
+  }, 400)
+}
+
+let activePage = 1;
+
+function changeScreen(el) {
+  const menuItems = document.querySelectorAll("#menuItems .menuItem");
+  const arrow = document.querySelector(".arrowMenu");
+
+  menuItems.forEach((item, index) => {
+    if (item === el) {
+      const newPage = index;
+      const yOffset = (newPage - 1) * 80;
+      const isMovingDown = newPage > activePage;
+
+      const rotateAngle = isMovingDown ? -45 : 45;
+      arrow.style.transform = `translateY(${(activePage - 1) * 80}px) rotate(${rotateAngle}deg)`;
+
+      setTimeout(() => {
+        arrow.style.transform = `translateY(${yOffset}px) rotate(${rotateAngle}deg)`;
+      }, 50);
+
+      setTimeout(() => {
+        arrow.style.transform = `translateY(${yOffset}px) rotate(0deg)`;
+        nowCheckForFunctions()
+      }, 350);
+
+      activePage = newPage;
+    }
+  });
+
+  function nowCheckForFunctions() {
+    setTimeout(function () {
+      //For complete arrow stop [90%]
+      if (activePage === 4) {
+        window.location.reload();
+      }
+    }, 200)
+    //Immediate action
+  }
+
+}
+
+function triggerNotificationsReload() {
+  fetch(`https://florida.evoxs.xyz/activeSchedo?username=${localStorage.getItem("t50-username")}&deviceId=${localStorage.getItem("extV") ? localStorage.getItem("extV") : localStorage.getItem("extVOASA")}&vevox=${randomString()}`)
+    .then(response => response.json())
+    .then(data => {
+      let count = 0
+      data.infinite.forEach(item => {
+        count++
+      })
+      data.schedo.forEach(item => {
+        count++
+      })
+      document.getElementById("activeNotifs").innerHTML = count;
+    })
+    .catch(error => {
+      console.log('Load Florida List Error:', error)
+    });
 }
