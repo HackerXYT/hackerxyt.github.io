@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.1.4'
+const currentVersion = '2.1.41'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -234,6 +234,7 @@ function getReady() {
     });
 
   function boot(lat, long) {
+
     const latitude = lat;
     const longitude = long;
     console.log("Latitude: " + latitude + ", Longitude: " + longitude);
@@ -407,7 +408,7 @@ function spawnBlocks(currentLocation) {
 
   map = new mapboxgl.Map({
     container: 'map-io',
-    style: 'mapbox://styles/mapbox/satellite-streets-v12',
+    style: localStorage.getItem("map_style") || 'mapbox://styles/mapbox/dark-v11',
     center: currentLocation,
     zoom: 10,
     pitch: 0,
@@ -1216,6 +1217,7 @@ const setLoadingState = (isLoading) => {
   }
 };
 
+
 function registerPWA() {
   if (!hasInternetConnection()) {
     console.log("No internet connection. PWA registration skipped.");
@@ -1230,6 +1232,7 @@ function registerPWA() {
 
 
   window.addEventListener("load", () => {
+
     function checkAndFixStorage() {
       const extVOASA = localStorage.getItem("extVOASA");
       const extV = localStorage.getItem("extV");
@@ -5028,131 +5031,127 @@ function getOSVersion() {
 // Example usage:
 const os = getOS();
 const osVersion = getOSVersion();
-function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
-  const base64 = (base64String + padding)
-    .replace(/-/g, '+')
-    .replace(/_/g, '/');
-
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
-}
 
 function enableNotifications() {
   console.log("Enabling notifications for OS:", os, "Version:", osVersion);
 
-  if ('serviceWorker' in navigator && 'PushManager' in window) {
-    $("#loginStep3").fadeOut(function () {
-      $("#loginStepLast").fadeIn();
-    });
-    document.getElementById("bottomText").innerHTML = `1/4 Προετοιμασία`;
-    document.getElementById("bottomText").style.display = 'flex'
-
-    navigator.serviceWorker.register('./resign-sw.js')
-      .then(function (swReg) {
-        console.log('Service Worker registered:', swReg);
-        return navigator.serviceWorker.ready; // Wait until the SW is active
-      })
-      .then(function (swReady) {
-        document.getElementById("bottomText").classList.add("fade-out-slide-down")
-        setTimeout(() => {
-          document.getElementById("bottomText").innerHTML = `2/4 Τοπική Προετοιμασία`;
-          document.getElementById("bottomText").classList.remove("fade-out-slide-down")
-          console.log('Service Worker is active:', swReady);
-
-          return swReady.pushManager.getSubscription()
-            .then(function (subscription) {
-              if (!subscription) {
-                return swReady.pushManager.subscribe({
-                  userVisibleOnly: true,
-                  applicationServerKey: urlBase64ToUint8Array('BA15u7YIY1VPm9ulrTmaG_dTL1tJj59pso6K46lc2i45u-r1bmdl1t6KOrHxMmzyn8ZDQelik0mGn_blW9gAhg4')
-                });
-              }
-              return subscription;
-            });
-        }, 500)
-
-
-
-      })
-      .then(function (subscription) {
-        console.log('User is subscribed:', subscription);
-        document.getElementById("bottomText").classList.add("fade-out-slide-down")
-        setTimeout(() => {
-
-          document.getElementById("bottomText").innerHTML = `3/4 Τοπική Εγγραφή`;
-          document.getElementById("bottomText").classList.remove("fade-out-slide-down")
-          const evoxJson = {
-            'username': localStorage.getItem("t50-username"),
-            'os1': os,
-            'osVersion': osVersion,
-            'method': "attachOASA",
-            'subscription': subscription
-          };
-
-          fetch('https://florida.evoxs.xyz/oasaAttach', {
-            method: 'POST',
-            body: JSON.stringify(evoxJson),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-            .then(async response => {
-              if (!response.ok) {
-                const errorText = await response.text(); // try to read the error response
-                throw new Error(`HTTP ${response.status}: ${errorText}`);
-              }
-              return response.json();
-            })
-            .then(data => {
-              console.log("Florida Response", data);
-              if (data.message === "Complete") {
-                document.getElementById("bottomText").classList.add("fade-out-slide-down");
-                setTimeout(() => {
-                  document.getElementById("bottomText").innerHTML = `4/4 Επικοινωνία με Evox`;
-                  document.getElementById("bottomText").classList.remove("fade-out-slide-down");
-                  localStorage.setItem("extVOASA", data.id);
-                  localStorage.setItem("extV", data.id);
-                  sessionStorage.setItem("privileges", "florida");
-                  setTimeout(() => {
-                    skipFlorida();
-                  }, 2000);
-                }, 500);
-              }
-            })
-            .catch(error => {
-              alert(`Αποτυχία: ${error.message}\n${subscription}`);
-              console.error('Fetch error:', error);
-              document.getElementById("bottomText").classList.add("fade-out-slide-down");
-              setTimeout(() => {
-                document.getElementById("bottomText").innerHTML = `4/4 Επικοινωνία με Evox απέτυχε`;
-                document.getElementById("bottomText").classList.remove("fade-out-slide-down");
-                setTimeout(() => {
-                  skipFlorida();
-                }, 2000);
-              }, 500);
-            });
-
-        }, 500)
-
-
-
-      })
-      .catch(function (error) {
-        document.getElementById("bottomText").innerHTML = `2/3 Αποτυχία<br>${error.message}`;
-        document.getElementById("bottomText").style.display = 'flex'
-        console.error('Service Worker Error', error);
-      });
-
-  } else {
+  if (!('serviceWorker' in navigator && 'PushManager' in window)) {
     alert("Το πρόγραμμα περιήγησής σας δεν υποστηρίζει ειδοποιήσεις.\nΑλλάξτε σε https:// και δοκιμάστε ξανά.");
+    return;
   }
+
+  $("#loginStep3").fadeOut(() => $("#loginStepLast").fadeIn());
+  const bottomText = document.getElementById("bottomText");
+  bottomText.innerHTML = `1/4 Προετοιμασία`;
+  bottomText.style.display = 'flex';
+
+  navigator.serviceWorker.register('./resign-sw.js')
+    .then(() => navigator.serviceWorker.ready)
+    .then(swReady => {
+      console.log('Service Worker is active:', swReady);
+      bottomText.classList.add("fade-out-slide-down");
+      setTimeout(() => {
+        bottomText.innerHTML = `2/4 Τοπική Προετοιμασία`;
+        bottomText.classList.remove("fade-out-slide-down");
+      }, 500);
+
+      return Notification.requestPermission().then(permission => {
+        console.log("Notification permission:", permission);
+        if (permission !== 'granted') {
+          throw new Error("Ο χρήστης δεν επέτρεψε τις ειδοποιήσεις.");
+        }
+
+        return swReady.pushManager.getSubscription()
+          .then(existingSub => {
+            if (existingSub) {
+              console.log("Using existing subscription:", existingSub);
+              return existingSub;
+            }
+            console.log("Subscribing...");
+            return swReady.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: urlBase64ToUint8Array('BA15u7YIY1VPm9ulrTmaG_dTL1tJj59pso6K46lc2i45u-r1bmdl1t6KOrHxMmzyn8ZDQelik0mGn_blW9gAhg4')
+            });
+          });
+      });
+    })
+    .then(subscription => {
+      if (!subscription) throw new Error("Η εγγραφή είναι κενή.");
+      console.log('User is subscribed:', subscription);
+
+      bottomText.classList.add("fade-out-slide-down");
+      setTimeout(() => {
+        bottomText.innerHTML = `3/4 Τοπική Εγγραφή`;
+        bottomText.classList.remove("fade-out-slide-down");
+      }, 500);
+
+      const evoxJson = {
+        username: localStorage.getItem("t50-username"),
+        os1: os,
+        osVersion: osVersion,
+        method: "attachOASA",
+        subscription
+      };
+
+      return fetch('https://florida.evoxs.xyz/oasaAttach', {
+        method: 'POST',
+        body: JSON.stringify(evoxJson),
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(async response => {
+          if (!response.ok) {
+            const err = await response.text();
+            throw new Error(`HTTP ${response.status}: ${err}`);
+          }
+          return response.json();
+        });
+    })
+    .then(data => {
+      console.log("Florida Response:", data);
+      if (data.message === "Complete") {
+        bottomText.classList.add("fade-out-slide-down");
+        setTimeout(() => {
+          bottomText.innerHTML = `4/4 Επικοινωνία με Evox`;
+          bottomText.classList.remove("fade-out-slide-down");
+          localStorage.setItem("extVOASA", data.id);
+          localStorage.setItem("extV", data.id);
+          sessionStorage.setItem("privileges", "florida");
+          setTimeout(() => skipFlorida(), 2000);
+        }, 500);
+      }
+    })
+    .catch(err => {
+      console.error("Error during notification setup:", err);
+
+      if (err.message === 'Ο χρήστης δεν επέτρεψε τις ειδοποιήσεις.') {
+        setTimeout(() => {
+          bottomText.innerHTML = `4/4 Λειτουργία χωρίς ειδοποιήσεις`;
+          bottomText.classList.remove("fade-out-slide-down");
+          setTimeout(() => skipFlorida(), 3500);
+        }, 500);
+      } else {
+        bottomText.innerHTML = `❌ Αποτυχία<br>${err.message}`;
+        bottomText.style.display = 'flex';
+      }
+    });
 }
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
+}
+
+
+// Helper function to convert base64 URL to Uint8Array
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  return Uint8Array.from([...rawData].map(char => char.charCodeAt(0)));
+}
+
 
 function goBackToLogin() {
   $("#loginStep2").fadeOut("fast", function () {
@@ -5168,4 +5167,25 @@ function goBackToLoginNew() {
 
 function skipFlorida() {
   window.location.reload();
+}
+
+const select = document.getElementById('mySelect');
+
+select.addEventListener('change', () => {
+  const value = select.value;
+  localStorage.setItem("map_style", value)
+});
+
+async function clearStorageAndReload() {
+  // Clear localStorage
+  localStorage.clear();
+
+  // Unregister all service workers
+  if ('serviceWorker' in navigator) {
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    await Promise.all(registrations.map(reg => reg.unregister()));
+  }
+
+  // Reload the page
+  location.reload();
 }

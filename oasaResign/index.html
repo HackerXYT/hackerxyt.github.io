@@ -711,11 +711,13 @@
                                 <p class="page2">Το Evox λειτουργεί με αναγνωριστικά. Ένας λογαριασμός απαιτείται για
                                     τον προσδιορισμό της συσκευής σας, εάν δεν έχετε λογαριασμό Evox δημιουργήστε έναν
                                     λογαριασμό μόνο για το OASA Project.</p>
-                                <div class="search-input-container" style="border-radius: 1rem;margin-top: 20px;width: 85%;">
+                                <div class="search-input-container"
+                                    style="border-radius: 1rem;margin-top: 20px;width: 85%;">
                                     <input id="username0" type="name" autocomplete="off" placeholder="Όνομα Χρήστη" />
 
                                 </div>
-                                <div class="search-input-container" style="border-radius: 1rem;margin-top: 20px;width: 85%;">
+                                <div class="search-input-container"
+                                    style="border-radius: 1rem;margin-top: 20px;width: 85%;">
                                     <input id="password0" type="password" autocomplete="off"
                                         placeholder="Κωδικός Πρόσβασης" />
 
@@ -2106,6 +2108,22 @@
     background-color: #1e1e1e;
     color: #ffffff;" type="file" id="imageInput" accept="image/*">
                                 <button onclick="clearUserImage()">Clear Image</button>
+                            </div>
+                            <div class="add-item">
+                                <select id="mySelect">
+                                    <option>--SELECT--</option>
+                                    <option value="mapbox://styles/mapbox/satellite-streets-v12">satellite</option>
+                                    <option value="mapbox://styles/mapbox/dark-v11">dark</option>
+                                    <option value="mapbox://styles/mapbox/standard">standard</option>
+                                    <option value="mapbox://styles/mapbox/outdoors-v12">outdoors-v12</option>
+                                    <option value="mapbox://styles/mapbox/light-v11">light-v11</option>
+                                    <option value="mapbox://styles/mapbox/navigation-day-v1">navigation-day-v1</option>
+                                    <option value="mapbox://styles/mapbox/navigation-night-v1">navigation-night-v1</option>
+
+                                </select>
+                            </div>
+                            <div class="add-item">
+                                 <button onclick="clearStorageAndReload()">Clear LocalStorage + Service Worker</button>
                             </div>
 
 
