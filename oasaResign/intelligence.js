@@ -4095,28 +4095,39 @@ function showStopDetails(stopCode, stopName) {
       code: stopCode,
       name: stopName
     }
-    let favStations = localStorage.getItem("favorite_stations")
-    if (favStations) {
-      let flag = false;
-      favStations = JSON.parse(favStations)
-      favStations.forEach(stationNode => {
-        if (flag === true) { return; }
-        if (stationNode.busLink === active_station.bus && stationNode.stopCode === active_station.code) {
-          console.log("Node found", stationNode)
-          flag = true;
-          const e = document.getElementById("favStation")
-          e.querySelector("svg path").style.fill = "rgba(248, 54, 54, 0.643)"
-          e.querySelector("svg path").style.transform = "scale(1.10)"
-          setTimeout(function () {
-            e.querySelector("svg path").style.transform = "scale(1)"
-          }, 500)
+    const favStationsJSON = localStorage.getItem("favorite_stations");
+
+if (favStationsJSON) {
+  try {
+    const favStations = JSON.parse(favStationsJSON);
+    const e = document.getElementById("favStation");
+    const path = e?.querySelector("svg path");
+
+    let isFavorite = false;
+
+    if (Array.isArray(favStations) && path) {
+      isFavorite = favStations.some(stationNode => {
+        const match = stationNode.busLink === active_station.bus && stationNode.stopCode === active_station.code;
+        if (match) {
+          console.log("Node found", stationNode);
+          path.style.fill = "rgba(248, 54, 54, 0.643)";
+          path.style.transform = "scale(1.10)";
+          setTimeout(() => {
+            path.style.transform = "scale(1)";
+          }, 500);
         }
-      })
-      if (flag === false) {
-        e.querySelector("svg path").style.fill = "#fff"
-        e.querySelector("svg path").style.transform = "scale(1)"
+        return match;
+      });
+
+      if (!isFavorite) {
+        path.style.fill = "#fff";
+        path.style.transform = "scale(1)";
       }
     }
+  } catch (err) {
+    console.error("Failed to process favorite stations:", err);
+  }
+}
     document.getElementById("stationInfoName").innerText = stopName
 
 
