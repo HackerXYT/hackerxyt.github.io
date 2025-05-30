@@ -1022,10 +1022,70 @@
     width: 100%;
 }
 
+.pinned-favorites .item.favorite.justBorder {
+    background-color: #2c2c2e62;
+    border: 3px solid var(--box-border);
+}
+
 .pinned-favorites .item.favorite {
     background-color: var(--box-bg);
     border: 3px solid var(--box-border);
 }
+
+.pinned-favorites .item.favorite.justBorder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Dark mode colors and gradient */
+    background: #1f42f425;
+    /* Fallback for browsers that don't support gradients */
+    background: linear-gradient(135deg,
+            #293fac2d 25%,
+            #00000042 25%,
+            #00000042 50%,
+            #293fac2d 50%,
+            #293fac2d 75%,
+            #00000042 75%,
+            #00000042);
+    background-size: 40px 40px;
+
+    /* Animation */
+    animation: card-move 4s linear infinite;
+}
+
+@keyframes card-move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 40px;
+  }
+}
+
+/*.pinned-favorites .item.favorite.justBorder::before {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 20px;
+  background: var(--box-border);
+  filter: drop-shadow(0 0 6px var(--box-border));
+  offset-path: path('M 20 0 Q 0 0 0 20 L 0 130 Q 0 150 20 150 L 130 150 Q 150 150 150 130 L 150 20 Q 150 0 130 0 Z');
+  offset-rotate: 0deg;
+  animation: moveAlongPath 3s linear infinite;
+}
+
+@keyframes moveAlongPath {
+  0% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+  }
+}*/
 
 .pinned-favorites .item.isPreloaded {
     background-color: #f5421f25;
@@ -1060,6 +1120,7 @@
     margin-top: auto;
     display: flex;
     justify-content: space-around;
+    width: 100%;
 }
 
 .pinned-favorites .item .fav-actions div {
@@ -3232,30 +3293,30 @@ select:focus {
     padding: 20px;
     margin: 15px 0;
     color: black;
-  }
+}
 
-  .clock {
+.clock {
     background-color: var(--clock-bg);
     padding: 10px;
     width: 100px;
     text-align: center;
     margin-bottom: 20px;
-  }
+}
 
-  .color-picker {
+.color-picker {
     display: flex;
     gap: 20px;
-  }
+}
 
-  .color-circle {
+.color-circle {
     width: 60px;
     height: 60px;
     border-radius: 50%;
     cursor: pointer;
     border: 3px solid transparent;
     transition: border-color 0.3s ease;
-  }
+}
 
-  .color-circle:hover {
+.color-circle:hover {
     border-color: #333;
-  }
+}

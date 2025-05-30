@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.1.6'
+const currentVersion = '2.1.62'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -1082,61 +1082,52 @@ function findBusBlocksByLineId(lineId) {
   return null;
 }
 
+let lastFavStationsParsed = null;
+
 function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
-  function general(section) { //section is the id of the div eg. frequent, favorite, famous
-    // Clear skeleton placeholder if present
-    const Div = document.getElementById(section);
-    if (Div.innerHTML.includes('skeleton')) {
-      Div.innerHTML = '';
-    }
-    const selectedSection = busesMap[section];
+  const section = type;
+  const Div = document.getElementById(section);
+  if (!Div) return;
 
-    // Push bus data to the array
-    selectedSection.push({
-      bus,
-      descr,
-      nextBusTime,
-      timeInM: timeInM === 'Άγνωστη' ? Infinity : parseInt(timeInM, 10), // Treat 'Άγνωστη' as Infinity
-    });
+  if (Div.innerHTML.includes('skeleton')) Div.innerHTML = '';
 
-    // Sort buses based on timeInM
-    selectedSection.sort((a, b) => a.timeInM - b.timeInM);
+  const selectedSection = busesMap[section];
+  if (!Array.isArray(selectedSection)) return;
 
-    // Render sorted buses
-    Div.innerHTML = ''; // Clear current content
-    selectedSection.forEach((busData, index) => {
-      let highlight = '';
-      if (busData === selectedSection[0] && section === 'frequent') {
-        highlight = 'favorite'; // Highlight the first bus as the shortest time remaining
-      }
+  const timeValue = timeInM === 'Άγνωστη' ? Infinity : parseInt(timeInM, 10) || Infinity;
 
-      // Generate unique ID for this bus data
-      const evoxId = generateRandomId(10);
-      const busDataComplete = {
-        bus: busData.bus, // Use the correct bus data from the sorted array
-        descr: busData.descr,
-        nextBusTime: busData.nextBusTime,
-        timeInM: busData.timeInM === Infinity ? 'Άγνωστη' : busData.timeInM, // Show 'Άγνωστη' if time is Infinity
-        type: type,
-        multiple: findBusBlocksByLineId(busData.bus)
-      };
+  const existingIndex = selectedSection.findIndex(item => item.bus === bus);
+  if (existingIndex !== -1) selectedSection.splice(existingIndex, 1);
 
-      // Store the bus data with the generated ID
-      evoxIds[evoxId] = busDataComplete;
+  selectedSection.push({ bus, descr, nextBusTime, timeInM: timeValue });
+  selectedSection.sort((a, b) => a.timeInM - b.timeInM);
 
-      let spawnIn = formatTimeToMin(convertTimeApprox(busData.timeInM))
-      if (busData.timeInM === Infinity) {
-        spawnIn = 'Άγνωστη'
-      }
-      // Create the HTML for the bus item
-      const tmp = `parallax-${randomString()}`
-      const toSpawn = `
-        <div class="item ${highlight}${isPreload ? ' isPreloaded' : ''}${selectedSection.length === 1 ? ' fullWidth' : ''}">
-          <div class="busName glowUpGlobaltxt_title">${busData.bus}</div>
+  const fragment = document.createDocumentFragment();
+
+  selectedSection.forEach((busData, index) => {
+    const highlight = (index === 0 && section === 'frequent') ? 'favorite' : '';
+    const evoxId = generateRandomId(10);
+    const multiple = findBusBlocksByLineId(busData.bus);
+    const displayTime = busData.timeInM === Infinity ? 'Άγνωστη' : formatTimeToMin(convertTimeApprox(busData.timeInM));
+    const tmp = `parallax-${randomString()}`;
+
+    evoxIds[evoxId] = {
+      bus: busData.bus,
+      descr: busData.descr,
+      nextBusTime: busData.nextBusTime,
+      timeInM: busData.timeInM === Infinity ? 'Άγνωστη' : busData.timeInM,
+      type,
+      multiple
+    };
+
+    const item = document.createElement('div');
+    item.className = `item ${highlight}${isPreload ? ' isPreloaded' : ''}${selectedSection.length === 1 ? ' fullWidth' : ''}`;
+    item.innerHTML = `
+    <div class="busName glowUpGlobaltxt_title">${busData.bus}</div>
           <div class="info">
             <div class="text">
               <span>Επόμενη άφιξη</span>
-              <span id="${tmp}">${spawnIn}</span>
+              <span id="${tmp}">${displayTime}</span>
             </div>
           </div>
           <div class="fav-actions">
@@ -1152,19 +1143,109 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
               </svg>
             </div>
           </div>
-        </div>
-      `;
+    `;
+    fragment.appendChild(item);
+    handleFavoriteOverrides(bus, selectedSection, section, isPreload, busData);
+  });
 
+  Div.innerHTML = '';
+  Div.appendChild(fragment);
 
-      Div.innerHTML += toSpawn;
-      //const counterDiv = document.getElementById(tmp);
-      //countUpWithParallax(counterDiv);
-    });
-  }
-  if (type === 'frequent' || type === 'favorite' || type === 'famous') {
-    general(type)
-  }
 }
+
+function handleFavoriteOverrides(bus, selectedSection, section, isPreload, busData) {
+  let favStations = localStorage.getItem("favorite_stations");
+  if (!favStations) return;
+
+  try {
+    favStations = JSON.parse(favStations).reverse();
+    lastFavStationsParsed = favStations;
+  } catch {
+    return;
+  }
+
+  const node = favStations.find(st => st.busLink === bus);
+  if (!node) return;
+
+  const stationArrivals = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${node.stopCode}&keyOrigin=evoxEpsilon`);
+  const evoxId = generateRandomId(10);
+
+  fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${stationArrivals}&vevox=${randomString()}`)
+    .then(r => r.json())
+    .then(data => {
+      const match = data.find(b => b.route_code === node.busRoute);
+      if (!match) { console.warn("No bus coming to:", node.stopName); return; };
+
+      const finalTime = formatTimeToMin(convertTimeApprox(match.btime2));
+      const tmp = `parallax-${randomString()}`;
+      const highlight = (selectedSection[0].bus === bus && section !== 'frequent') ? 'favorite' : '';
+
+      evoxIds[evoxId] = {
+        bus, descr: node.stopName,
+        nextBusTime: finalTime,
+        timeInM: match.btime2,
+        type: section,
+        multiple: findBusBlocksByLineId(bus)
+      };
+
+      const Div = document.getElementById('stations');
+      
+      if (!Div) return;
+      if(Div.innerHTML.includes("skeleton")) {
+        Div.innerHTML = ''
+        document.getElementById("stationsHidden").style.display = null
+      }
+
+      const item = document.createElement('div');
+      item.className = `item favorite justBorder${isPreload ? ' isPreloaded' : ''}${selectedSection.length === 1 ? ' fullWidth' : ''}`;
+      item.innerHTML = `
+      <div class="busName glowUpGlobaltxt_title">${bus}</div>
+          <div class="info">
+            <div class="text">
+              <span>${node.stopName}</span>
+              <span id="${tmp}">${finalTime}</span>
+            </div>
+          </div>
+          <div class="fav-actions">
+            <div onclick="processInfo('${evoxId}', 'getTimes')" class="button-action important">
+              <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.8321 14.5547C15.5257 15.0142 14.9048 15.1384 14.4453 14.8321L11.8451 13.0986C11.3171 12.7466 11 12.1541 11 11.5196L11 11.5L11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7L13 11.4648L15.5547 13.1679C16.0142 13.4743 16.1384 14.0952 15.8321 14.5547Z" 
+                class="${busData === selectedSection[0] && section !== 'frequent' ? "clock-bg on" : "clock-bg"}" />
+              </svg>
+            </div>
+            <div onclick="showOnMap('${evoxId}')" class="button-action">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                  <path opacity="0.5" d="M3 13.0368C3 11.9338 3 11.3823 3.39264 11.0607C3.53204 10.9465 3.70147 10.8551 3.89029 10.7922C4.42213 10.6151 5.12109 10.7895 6.51901 11.1383C7.58626 11.4046 8.11989 11.5377 8.6591 11.5239C8.85714 11.5189 9.05401 11.4991 9.24685 11.465C9.77191 11.3721 10.2399 11.1386 11.176 10.6715L12.5583 9.98161C13.7574 9.38327 14.3569 9.0841 15.0451 9.01511C15.7333 8.94613 16.4168 9.11668 17.7839 9.45779L18.9487 9.74842C19.9387 9.99544 20.4337 10.119 20.7169 10.413C21 10.707 21 11.0976 21 11.8788V17.9632C21 19.0662 21 19.6177 20.6074 19.9393C20.468 20.0535 20.2985 20.1449 20.1097 20.2078C19.5779 20.3849 18.8789 20.2105 17.481 19.8617C16.4137 19.5954 15.8801 19.4623 15.3409 19.4761C15.1429 19.4811 14.946 19.5009 14.7532 19.535C14.2281 19.6279 13.7601 19.8614 12.824 20.3285L11.4417 21.0184C10.2426 21.6167 9.64311 21.9159 8.95493 21.9849C8.26674 22.0539 7.58319 21.8833 6.21609 21.5422L5.05132 21.2516C4.06129 21.0046 3.56627 20.881 3.28314 20.587C3 20.293 3 19.9024 3 19.1212V13.0368Z" fill="#fff"></path>
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C8.68629 2 6 4.55211 6 7.70031C6 10.8238 7.91499 14.4687 10.9028 15.7721C11.5993 16.076 12.4007 16.076 13.0972 15.7721C16.085 14.4687 18 10.8238 18 7.70031C18 4.55211 15.3137 2 12 2ZM12 10C13.1046 10 14 9.10457 14 8C14 6.89543 13.1046 6 12 6C10.8954 6 10 6.89543 10 8C10 9.10457 10.8954 10 12 10Z" fill="#fff"></path>
+              </svg>
+            </div>
+          </div>
+      `;
+      document.getElementById(section).querySelectorAll("div.item").forEach((elem) => {
+        if (elem.querySelector(".busName").innerText === bus) {
+          elem.remove()
+        }
+      })
+      Div.querySelectorAll("div.item").forEach((elem) => {
+        if (elem.querySelector(".busName").innerText === bus) {
+          elem.remove()
+        }
+      })
+      Div.insertBefore(item, Div.firstChild); //Append on top
+      Div.style.scrollSnapType = 'none';
+      Div.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      setTimeout(() => {
+        Div.style.scrollSnapType = 'x mandatory'; // or whatever your original value is
+      }, 100);
+    })
+    .catch((err) => {
+      console.error("Failed to retrieve info from server.", err)
+    });
+}
+
 
 const helloText = "oasa";
 const helloElement = document.getElementById('hello-text');
@@ -4000,9 +4081,42 @@ function convert2Base() {
   }
 }
 
+let favorite_stations = []
+
+let active_station = null
+
 function showStopDetails(stopCode, stopName) {
   try {
     triggerSave(evoxIds[activeEvoxId].bus, null, activeRouteCode, 'station', stopCode)
+    active_station = {
+      bus: evoxIds[activeEvoxId].bus,
+      evoxid: activeEvoxId,
+      route: activeRouteCode,
+      code: stopCode,
+      name: stopName
+    }
+    let favStations = localStorage.getItem("favorite_stations")
+    if (favStations) {
+      let flag = false;
+      favStations = JSON.parse(favStations)
+      favStations.forEach(stationNode => {
+        if (flag === true) { return; }
+        if (stationNode.busLink === active_station.bus && stationNode.stopCode === active_station.code) {
+          console.log("Node found", stationNode)
+          flag = true;
+          const e = document.getElementById("favStation")
+          e.querySelector("svg path").style.fill = "rgba(248, 54, 54, 0.643)"
+          e.querySelector("svg path").style.transform = "scale(1.10)"
+          setTimeout(function () {
+            e.querySelector("svg path").style.transform = "scale(1)"
+          }, 500)
+        }
+      })
+      if (flag === false) {
+        e.querySelector("svg path").style.fill = "#fff"
+        e.querySelector("svg path").style.transform = "scale(1)"
+      }
+    }
     document.getElementById("stationInfoName").innerText = stopName
 
 
@@ -5390,30 +5504,95 @@ function triggerNotificationsReload() {
 }
 
 const themes = [
-    {
-      '--search-bg': '#00960c',
-      '--box-bg': '#51f41f25',
-      '--box-border': '#4eac29',
-      '--clock-bg': '#5dfd35'
-    },
-    {
-      '--search-bg': '#004080',
-      '--box-bg': '#6090c825',
-      '--box-border': '#003366',
-      '--clock-bg': '#3366cc'
-    },
-    {
-      '--search-bg': '#800000',
-      '--box-bg': '#cc666625',
-      '--box-border': '#990000',
-      '--clock-bg': '#cc3333'
-    }
-  ];
-
-  function setTheme(index) {
-    const root = document.documentElement.style;
-    const theme = themes[index];
-    for (const varName in theme) {
-      root.setProperty(varName, theme[varName]);
-    }
+  {
+    '--search-bg': '#00960c',
+    '--box-bg': '#51f41f25',
+    '--box-border': '#4eac29',
+    '--clock-bg': '#5dfd35'
+  },
+  {
+    '--search-bg': '#004080',
+    '--box-bg': '#6090c825',
+    '--box-border': '#003366',
+    '--clock-bg': '#3366cc'
+  },
+  {
+    '--search-bg': '#800000',
+    '--box-bg': '#cc666625',
+    '--box-border': '#990000',
+    '--clock-bg': '#cc3333'
   }
+];
+
+function setTheme(index) {
+  const root = document.documentElement.style;
+  const theme = themes[index];
+  for (const varName in theme) {
+    root.setProperty(varName, theme[varName]);
+  }
+}
+
+function favoriteStation(e) {
+  const dowhat = e.querySelector("svg path").style.fill === "rgba(248, 54, 54, 0.643)" ? 1 : 2 //1-->set to off / 2--> set to on
+  e.querySelector("svg path").style.fill = dowhat === 1 ? "#fff" : "rgba(248, 54, 54, 0.643)"
+  e.querySelector("svg path").style.transform = "scale(1.10)"
+  setTimeout(function () {
+    //e.querySelector("svg path").style.fill = "#fff"
+    e.querySelector("svg path").style.transform = "scale(1)"
+  }, 500)
+
+  if (dowhat === 1) {
+    let local = localStorage.getItem("favorite_stations")
+    let old = local
+    if (local) {
+      local = JSON.parse(local)
+      old = JSON.parse(old)
+      local = local.filter(stationNode => {
+        return !(stationNode.busLink === active_station.bus && stationNode.stopCode === active_station.code);
+      });
+      if (local === old) {
+        alert("No updates!")
+      }
+      localStorage.setItem("favorite_stations", JSON.stringify(local))
+      console.log("Fav is now off")
+    }
+
+  } else {
+    //Read
+    const local = localStorage.getItem("favorite_stations")
+    console.log("Fav is now on")
+    const workOn = {
+      link: evoxIds[active_station.evoxid],
+      busLink: active_station.bus,
+      busRoute: active_station.route,
+      stopCode: active_station.code,
+      stopName: active_station.name
+    }
+
+    let stop = false;
+    //Verification
+    if (local) {
+      const par = JSON.parse(local)
+      par.forEach(stationNode => {
+        if (stationNode.busLink === active_station.bus && stationNode.stopCode === active_station.code) {
+          console.log("Stopping. Reason: node found", stationNode)
+          stop = true
+          return;
+        }
+      })
+    }
+    //Write
+    if (stop === false) {
+      if (local) {
+        const par = JSON.parse(local)
+        par.push(workOn)
+        localStorage.setItem("favorite_stations", JSON.stringify(par))
+      } else {
+        localStorage.setItem("favorite_stations", JSON.stringify([workOn]))
+      }
+    } else {
+      console.warn("Successfully stopped action.")
+    }
+
+  }
+}
