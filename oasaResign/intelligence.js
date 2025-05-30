@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.1.5'
+const currentVersion = '2.1.6'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -15,6 +15,9 @@ document.getElementById('main-wrapper').addEventListener('scroll', () => {
   if (document.getElementById('main-wrapper').scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
     // Add class to shrink and hide icons
     document.getElementById("returnTopDefines").classList.add('scrolled')
+    if (searchIntelli.style.width === '256px') {
+      searchIntelli.style.width = null;
+    }
     bottomSearchParent.classList.add('scrolled');
   } else {
     // Remove class to reset to original state
@@ -22,6 +25,15 @@ document.getElementById('main-wrapper').addEventListener('scroll', () => {
     bottomSearchParent.classList.remove('scrolled');
   }
 });
+
+function capitalizeGreek(text) {
+  return text
+    .normalize('NFD') // Normalize diacritics (accents)
+    .toUpperCase()    // Convert to uppercase
+    .normalize('NFC') // Recompose characters
+    .replace(/Σ(?=\s|$)/g, 'Σ'); // Optional: Ensure final sigma becomes standard sigma
+}
+
 
 // Listen for any uncaught errors in the application
 window.addEventListener('error', (event) => {
@@ -109,16 +121,16 @@ function openSearch() {
                     </div>`
 
   //document.getElementById("recommendSpawn").innerHTML += `<div onclick="window.location.href = '../oasaMobile/'" class="Block"><img src="doodle.png" height="20px">
-                    //</div>`
+  //</div>`
   //document.getElementById("recommendSpawn").innerHTML += `<div class="Block"><svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-//<g opacity="0.5">
-//<path d="M3 8.70938V16.8377C3 17.8813 3 18.4031 3.28314 18.7959C3.56627 19.1888 4.06129 19.3538 5.05132 19.6838L6.21609 20.072C7.58318 20.5277 8.26674 20.7556 8.95493 20.6634C8.96999 20.6614 8.98501 20.6593 9 20.6569V6.65705C8.88712 6.67391 8.77331 6.68433 8.6591 6.68823C8.11989 6.70664 7.58626 6.52877 6.51901 6.17302C5.12109 5.70705 4.42213 5.47406 3.89029 5.71066C3.70147 5.79466 3.53204 5.91678 3.39264 6.06935C3 6.49907 3 7.23584 3 8.70938Z" fill="#fff"/>
-//<path d="M21 15.2907V7.16229C21 6.11872 21 5.59692 20.7169 5.20409C20.4337 4.81126 19.9387 4.64625 18.9487 4.31624L17.7839 3.92799C16.4168 3.47229 15.7333 3.24444 15.0451 3.3366C15.03 3.33861 15.015 3.34078 15 3.34309V17.343C15.1129 17.3261 15.2267 17.3157 15.3409 17.3118C15.8801 17.2934 16.4137 17.4713 17.481 17.827C18.8789 18.293 19.5779 18.526 20.1097 18.2894C20.2985 18.2054 20.468 18.0833 20.6074 17.9307C21 17.501 21 16.7642 21 15.2907Z" fill="#fff"/>
-//</g>
-//<path d="M9.24685 6.60921C9.16522 6.6285 9.08286 6.64435 9 6.65673V20.6566C9.66964 20.5533 10.2689 20.1538 11.4416 19.3719L12.824 18.4503C13.7601 17.8263 14.2281 17.5143 14.7532 17.3902C14.8348 17.3709 14.9171 17.355 15 17.3427V3.34277C14.3304 3.44613 13.7311 3.84561 12.5583 4.62747L11.176 5.54905C10.2399 6.17308 9.77191 6.48509 9.24685 6.60921Z" fill="#fff"/>
-//<path d="M17.481 17.8267C17.5684 17.8558 17.653 17.884 17.735 17.9113Z" fill="#fff"/>
-//</svg>Σπίτι
-//                    </div>`
+  //<g opacity="0.5">
+  //<path d="M3 8.70938V16.8377C3 17.8813 3 18.4031 3.28314 18.7959C3.56627 19.1888 4.06129 19.3538 5.05132 19.6838L6.21609 20.072C7.58318 20.5277 8.26674 20.7556 8.95493 20.6634C8.96999 20.6614 8.98501 20.6593 9 20.6569V6.65705C8.88712 6.67391 8.77331 6.68433 8.6591 6.68823C8.11989 6.70664 7.58626 6.52877 6.51901 6.17302C5.12109 5.70705 4.42213 5.47406 3.89029 5.71066C3.70147 5.79466 3.53204 5.91678 3.39264 6.06935C3 6.49907 3 7.23584 3 8.70938Z" fill="#fff"/>
+  //<path d="M21 15.2907V7.16229C21 6.11872 21 5.59692 20.7169 5.20409C20.4337 4.81126 19.9387 4.64625 18.9487 4.31624L17.7839 3.92799C16.4168 3.47229 15.7333 3.24444 15.0451 3.3366C15.03 3.33861 15.015 3.34078 15 3.34309V17.343C15.1129 17.3261 15.2267 17.3157 15.3409 17.3118C15.8801 17.2934 16.4137 17.4713 17.481 17.827C18.8789 18.293 19.5779 18.526 20.1097 18.2894C20.2985 18.2054 20.468 18.0833 20.6074 17.9307C21 17.501 21 16.7642 21 15.2907Z" fill="#fff"/>
+  //</g>
+  //<path d="M9.24685 6.60921C9.16522 6.6285 9.08286 6.64435 9 6.65673V20.6566C9.66964 20.5533 10.2689 20.1538 11.4416 19.3719L12.824 18.4503C13.7601 17.8263 14.2281 17.5143 14.7532 17.3902C14.8348 17.3709 14.9171 17.355 15 17.3427V3.34277C14.3304 3.44613 13.7311 3.84561 12.5583 4.62747L11.176 5.54905C10.2399 6.17308 9.77191 6.48509 9.24685 6.60921Z" fill="#fff"/>
+  //<path d="M17.481 17.8267C17.5684 17.8558 17.653 17.884 17.735 17.9113Z" fill="#fff"/>
+  //</svg>Σπίτι
+  //                    </div>`
   favoriteBuses.forEach(bus => {
     document.getElementById("recommendSpawn").innerHTML += `<div onclick="spawnAndShowInfo('${bus}')" class="Block favorite"><svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M14.5 19.9815C16.0728 19.9415 17.1771 19.815 18 19.4151V20.9999C18 21.5522 17.5523 21.9999 17 21.9999H15.5C14.9477 21.9999 14.5 21.5522 14.5 20.9999V19.9815Z" fill="#FFF"/>
@@ -226,7 +238,11 @@ function getReady() {
       data.schedo.forEach(item => {
         count++
       })
-
+      if (count === 0) {
+        document.getElementById("activeNotifs").style.display = 'none';
+      } else {
+        document.getElementById("activeNotifs").style.display = 'flex';
+      }
       document.getElementById("activeNotifs").innerHTML = count;
 
     })
@@ -887,7 +903,17 @@ function loadOasa() {
     }
 
     //alert(`loadOasa: ${bus}`)
-    const { LineDescr: descr, LineCode: lineCode } = matchingLines[0];
+    let { LineDescr: descr, LineCode: lineCode } = matchingLines[0];
+    if (personalizedAutoBus[bus]) {
+      console.warn('Attempting intelligence...');
+      const searchLineCode = personalizedAutoBus[bus];
+      const result = matchingLines.filter(item => item.LineCode === searchLineCode);
+      ({ LineDescr: descr, LineCode: lineCode } = result[0]);
+      if (result.length > 1) {
+        alert(`More than one matches found. Will proceed with first. ${JSON.stringify(result, null, 2)}`)
+      }
+    }
+
 
     try {
       function theSchedule(data) {
@@ -1032,7 +1058,7 @@ let personalizedAutoBus = {
 if (localStorage.getItem("personalizedAutoBus")) {
   const temp = JSON.parse(localStorage.getItem("personalizedAutoBus"))
   personalizedAutoBus = temp
-  console.log("set local personalized")
+  console.log("set local personalization skipped.")
 }
 let frequentBuses_Sort = []; // Array to store bus data for sorting
 let favoriteBuses_Sort = [];
@@ -1116,7 +1142,7 @@ function spawnInFeed(bus, descr, nextBusTime, timeInM, type, isPreload) {
           <div class="fav-actions">
             <div onclick="processInfo('${evoxId}', 'getTimes')" class="button-action important">
               <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.8321 14.5547C15.5257 15.0142 14.9048 15.1384 14.4453 14.8321L11.8451 13.0986C11.3171 12.7466 11 12.1541 11 11.5196L11 11.5L11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7L13 11.4648L15.5547 13.1679C16.0142 13.4743 16.1384 14.0952 15.8321 14.5547Z" fill="${busData === selectedSection[0] && section !== 'frequent' ? "#3557fd" : "#fff"}" />
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM15.8321 14.5547C15.5257 15.0142 14.9048 15.1384 14.4453 14.8321L11.8451 13.0986C11.3171 12.7466 11 12.1541 11 11.5196L11 11.5L11 7C11 6.44772 11.4477 6 12 6C12.5523 6 13 6.44772 13 7L13 11.4648L15.5547 13.1679C16.0142 13.4743 16.1384 14.0952 15.8321 14.5547Z" class="${busData === selectedSection[0] && section !== 'frequent' ? "clock-bg on" : "clock-bg"}" />
               </svg>
             </div>
             <div onclick="showOnMap('${evoxId}')" class="button-action">
@@ -1911,10 +1937,10 @@ function processInfo(evoxId, type, addMore, comego) {
           console.log("Come and go for ", busInfo, "\n", data)
         }
 
-        console.log("Success", lineCode);
+        console.log("Success", lineCode, fullLine.filter(line => line.LineCode === lineCode));
         console.warn("Selected:", comego, 'with:', data[comego])
         let times = data[comego].map(item => {
-          console.warn('ITEMVOX:', item.sde_start1, item.sde_start2)
+          //console.warn('ITEMVOX:', item.sde_start1, item.sde_start2)
           return formatTime(item[`${comego === 'go' ? "sde_start1" : "sde_start2"}`]);
         });
         console.log("Current times:", times)
@@ -2071,7 +2097,7 @@ function processInfo(evoxId, type, addMore, comego) {
                                         <div class="button-action skeleton-button"></div>
                                     </div>
                                 </div>`
-        findBusInfo2(busInfo.bus, comego).then((routeCode) => {
+        findBusInfo2(busInfo.bus, comego, busInfo).then((routeCode) => {
           console.log("Route code found", routeCode);
           getRouteStops(routeCode).then((stations) => {
             console.log("Stations found", stations);
@@ -2524,7 +2550,7 @@ async function spawnBusOnMap(lineId) {
 
 }
 let activeRouteCode = null
-async function findBusInfo2(id, comego, getJustLineCode = false, getJustRouteCode = true) {
+async function findBusInfo2(id, comego, completeJson, getJustLineCode = false, getJustRouteCode = true) {
   async function routeOasa(lineCode) {
     const getStops = encodeURIComponent(`https://telematics.oasa.gr/api/?act=getRoutesForLine&p1=${lineCode}&keyOrigin=evoxEpsilon`);
     const response = await fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${getStops}&vevox=${randomString()}`);
@@ -2532,49 +2558,82 @@ async function findBusInfo2(id, comego, getJustLineCode = false, getJustRouteCod
 
     console.log('Route:', data, comego, data[`${comego === "go" ? 0 : 1}`]);
 
-    if (comego === 'go' || comego === undefined || comego === null) {
-      activeRouteCode = data[0].route_code;
-      if (data && data.length > 0) {
-        return data[0].route_code;
-      } else {
-        throw new Error("Route Code not found. comego=go");
-      }
-    } else {
-      const vanilaDesc = data[0].route_descr;
-      const match = vanilaDesc.match(/^(.+?) - (.+?)(\s*\[.*\])?$/);
-
-      if (!match) throw new Error("Route Code not found.");
-
-      const from = match[1];
-      const to = match[2];
-      const extra = match[3] || "";
-      const reversed = `${to} - ${from}${extra}`;
-      console.log("Reversed:", reversed);
-
-      let found = false;
-      for (const route of data) {
-        if (route.route_descr === reversed) {
-          console.warn("VOXNEW FOUND:", route, route.route_descr);
-          activeRouteCode = route.route_code;
-          found = true;
-          return route.route_code;
+    try {
+      if (comego === 'go' || comego === undefined || comego === null) {
+        activeRouteCode = data[0].route_code;
+        if (data && data.length > 0) {
+          return data[0].route_code;
+        } else {
+          throw new Error("Route Code not found. comego=go");
         }
-      }
+      } else {
+        const vanilaDesc = data[0].route_descr;
+        console.warn("Tuning starting for:", data);
 
-      if (found === false) {
+        // Separate extra info like "(μπλα)" or "[μπλα]" if exists
+        const extraMatch = vanilaDesc.match(/^(.*?)(\s*[\(\[].*[\)\]])?$/);
+        if (!extraMatch) throw new Error("Route format not recognized.");
+
+        const coreRoute = extraMatch[1].trim(); // The actual route part
+        const extra = extraMatch[2] || "";      // The suffix like (μπλα), [μπλα], etc.
+
+        // Reverse parts separated by ' - '
+        const reversedCore = coreRoute.split(" - ").reverse().join(" - ");
+        const reversed = `${reversedCore}${extra}`;
+
+        console.log("Reversed:", reversed);
+
+        let found = false;
         for (const route of data) {
-          if (route.route_descr.includes(reversed)) {
+          if (route.route_descr === reversed) {
             console.warn("VOXNEW FOUND:", route, route.route_descr);
             activeRouteCode = route.route_code;
             found = true;
             return route.route_code;
           }
         }
-        throw new Error("Route Code not found.");
+
+        if (!found) {
+          for (const route of data) {
+            if (route.route_descr.includes(reversed)) {
+              console.warn("VOXNEW FOUND:", route, route.route_descr);
+              activeRouteCode = route.route_code;
+              found = true;
+              return route.route_code;
+            }
+          }
+          throw new Error("Route Code not found.");
+        }
+
       }
+    } catch (error) {
+      if (completeJson && completeJson.descr !== data[0].LineDescr) {
+        console.log("Will decide which one is needed on these:", data)
+        let found = false;
+        activeRouteCode = data[0].route_code;
+        if (!data[1]) {
+          return data[0].route_code;
+        }
+        for (const route of data) {
+          if (route.route_descr === completeJson.descr || route.route_descr === capitalizeGreek(document.getElementById("busInfoDesc").innerText)) {
+            console.warn("VOXNEW FOUND:", route, route.route_descr);
+            activeRouteCode = route.route_code;
+            found = true;
+            console.log("FOUND!", route)
+            return route.route_code;
+          }
+        }
 
-
+        if (found === false) {
+          console.error(`Warning! Available lines don't match the requested one. ${data}\nRequested: ${completeJson}`)
+        }
+      } else {
+        alert(`FATAL: ${error}`)
+      }
     }
+
+
+
   }
 
 
@@ -2585,8 +2644,16 @@ async function findBusInfo2(id, comego, getJustLineCode = false, getJustRouteCod
     const matchingLines = fullLine.filter(line => line.LineID === id);
 
     if (matchingLines.length > 0) {
-      const selectedLine = matchingLines[0];
-      console.warn('Selected Lines:', matchingLines);
+      let selectedLine = matchingLines[0]
+      matchingLines.forEach(line => {
+        if (line.LineDescr === capitalizeGreek(document.getElementById("busInfoDesc").innerText)) {
+          selectedLine = line
+          console.warn("Method 2 Used.")
+        } else {
+          console.warn("Check", line.LineDescr, document.getElementById("busInfoDesc").innerText)
+        }
+      })
+      console.warn('Found Lines:', matchingLines, "Selected:", selectedLine);
       const resu = await routeOasa(selectedLine.LineCode)
       triggerSave(id, selectedLine.LineCode, resu)
       return resu;
@@ -4916,6 +4983,10 @@ function openNotificationsView() {
                                     </div>`
       })
 
+      if (notifications.innerHTML === '') {
+        notifications.innerHTML += `<span>Καμία προσεχής ειδοποίηση.</span>`
+      }
+
 
     })
     .catch(error => {
@@ -5193,11 +5264,15 @@ async function clearStorageAndReload() {
 }
 
 
+let isScreenBusy = false
 function spawnOnTop(el) {
+  if (isScreenBusy === true) { return; }
   const rect = el.getBoundingClientRect();
   const computedStyle = getComputedStyle(el);
   const X_OFFSET = -7.5; // left
   const Y_OFFSET = -8; // up
+
+  isScreenBusy = true
 
   document.getElementById("menuContainer").style.left = `${X_OFFSET}px`
   document.getElementById("menuContainer").style.top = `${Y_OFFSET}px`
@@ -5218,16 +5293,19 @@ function spawnOnTop(el) {
         div.style.transform = 'translateY(0px)'
         //div.classList.add('show');
       }, (index - 1) * 100)
-
     });
+    setTimeout(() => {
+      isScreenBusy = false;
+    }, (container.querySelectorAll(".menuItem").length - 2) * 100 + 50); // +50ms buffer
   }, 100);
 
 }
 
 function closeMenu() {
+  if (isScreenBusy === true) { return; }
   const container = document.getElementById("menuContainer");
   //container.style.opacity = '1';
-
+  isScreenBusy = true
   container.querySelectorAll(".menuItem").forEach((div, index) => {
     if (index === 0) return;
     setTimeout(function () {
@@ -5243,6 +5321,9 @@ function closeMenu() {
       container.style.display = 'none'
     }, 500)
   }, 400)
+  setTimeout(() => {
+    isScreenBusy = false;
+  }, (container.querySelectorAll(".menuItem").length - 2) * 100 + 50); // +50ms buffer
 }
 
 let activePage = 1;
@@ -5296,9 +5377,43 @@ function triggerNotificationsReload() {
       data.schedo.forEach(item => {
         count++
       })
+      if (count === 0) {
+        document.getElementById("activeNotifs").style.display = 'none';
+      } else {
+        document.getElementById("activeNotifs").style.display = 'flex';
+      }
       document.getElementById("activeNotifs").innerHTML = count;
     })
     .catch(error => {
       console.log('Load Florida List Error:', error)
     });
 }
+
+const themes = [
+    {
+      '--search-bg': '#00960c',
+      '--box-bg': '#51f41f25',
+      '--box-border': '#4eac29',
+      '--clock-bg': '#5dfd35'
+    },
+    {
+      '--search-bg': '#004080',
+      '--box-bg': '#6090c825',
+      '--box-border': '#003366',
+      '--clock-bg': '#3366cc'
+    },
+    {
+      '--search-bg': '#800000',
+      '--box-bg': '#cc666625',
+      '--box-border': '#990000',
+      '--clock-bg': '#cc3333'
+    }
+  ];
+
+  function setTheme(index) {
+    const root = document.documentElement.style;
+    const theme = themes[index];
+    for (const varName in theme) {
+      root.setProperty(varName, theme[varName]);
+    }
+  }

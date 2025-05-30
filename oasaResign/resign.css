@@ -61,6 +61,22 @@
     font-style: normal;
 }
 
+:root {
+    --search-bg: #1f42f4;
+    --box-bg: #1f42f425;
+    --box-border: #293fac;
+    --clock-bg: #3557fd;
+}
+
+
+.clock-bg.on {
+    fill: var(--clock-bg);
+}
+
+.clock-bg {
+    fill: #fff;
+}
+
 
 .navigate {
     padding: 23px 20px;
@@ -124,7 +140,12 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    border: 10px solid transparent;
+    border-right: none;
+    border-left: none;
+    box-sizing: content-box;
 }
+
 
 .navigate .account {
     display: flex;
@@ -419,7 +440,7 @@
 
 .searchIntelli {
     padding: 18px 20px;
-    background-color: #1f42f4;
+    background-color: var(--search-bg);
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -670,6 +691,9 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    width: 85px;
+    height: 40px;
+    justify-content: center;
 }
 
 .newNotifs {
@@ -999,8 +1023,8 @@
 }
 
 .pinned-favorites .item.favorite {
-    background-color: #1f42f425;
-    border: 3px solid #293fac;
+    background-color: var(--box-bg);
+    border: 3px solid var(--box-border);
 }
 
 .pinned-favorites .item.isPreloaded {
@@ -1302,9 +1326,9 @@
 }
 
 .busInfo .busInfoSelector .Block.active {
-    background-color: #1f42f425;
+    background-color: var(--box-bg);
     /* Highlight color */
-    border: 2px solid #293fac;
+    border: 2px solid var(--box-border);
     /* Border for active state */
     color: #ffffff;
     /* Text color for better contrast */
@@ -1360,8 +1384,8 @@
 }
 
 .timetableSpawn .timeItem.currentLocation {
-    background-color: #1f42f425;
-    border: 2px solid #293fac;
+    background-color: var(--box-bg);
+    border: 2px solid var(--box-border);
 }
 
 
@@ -1975,8 +1999,8 @@ body {
 }
 
 .stationsSpawn .stationsSpawnInner .item.minimum {
-    background-color: #1f42f425;
-    border: 2px solid #293fac;
+    background-color: var(--box-bg);
+    border: 2px solid var(--box-border);
 }
 
 
@@ -2785,7 +2809,7 @@ body {
 .progress-fill {
     width: 40%;
     /* Adjust width for progress */
-    background: linear-gradient(45deg, #2c2c2e62 25%, #293fac 75%);
+    background: linear-gradient(45deg, #2c2c2e62 25%, var(--box-border) 75%);
     height: 100%;
     transition: width 0.5s ease-in-out;
 }
@@ -2799,7 +2823,7 @@ body {
     width: 14px;
     height: 14px;
     background: white;
-    border: 3px solid #293fac;
+    border: 3px solid var(--box-border);
     border-radius: 50%;
     z-index: 1;
     transition: left 0.5s ease-in-out;
@@ -2893,9 +2917,9 @@ body {
 }
 
 .busDirections .Block.active {
-    background-color: #1f42f425;
+    background-color: var(--box-bg);
     /* Highlight color */
-    border: 2px solid #293fac;
+    border: 2px solid var(--box-border);
     /* Border for active state */
     color: #ffffff;
     /* Text color for better contrast */
@@ -3199,5 +3223,39 @@ select:focus {
 }
 
 .arrow-rotate {
-  transform: rotate(90deg);
+    transform: rotate(90deg);
 }
+
+.box {
+    background-color: var(--box-bg);
+    border: 2px solid var(--box-border);
+    padding: 20px;
+    margin: 15px 0;
+    color: black;
+  }
+
+  .clock {
+    background-color: var(--clock-bg);
+    padding: 10px;
+    width: 100px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .color-picker {
+    display: flex;
+    gap: 20px;
+  }
+
+  .color-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: border-color 0.3s ease;
+  }
+
+  .color-circle:hover {
+    border-color: #333;
+  }
