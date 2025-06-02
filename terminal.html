@@ -345,6 +345,27 @@
                             fill="rgb(0 0 0 / 0%)" />
                     </svg></xov>
             </vox>
+            <vox onclick="completeCleanup(this)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path d="M10 11V17" stroke="#72be88" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M14 11V17" stroke="#72be88" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M4 7H20" stroke="#72be88" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M6 7H12H18V18C18 19.6569 16.6569 21 15 21H9C7.34315 21 6 19.6569 6 18V7Z" stroke="#72be88"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#72be88"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Evox Cleanup<xov><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                        fill="none">
+                        <path style="transition: fill 0.3s ease;"
+                            d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
+                            stroke="#72be88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            fill="rgb(0 0 0 / 0%)" />
+                    </svg></xov>
+            </vox>
             <vox
                 onclick="this.querySelector('xov svg path').style.fill = '#72be88';setTimeout(function() {window.location.reload();}, 500) ">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
@@ -721,6 +742,24 @@
 
     }, 100);
 
+
+    function completeCleanup(el) {
+        console.log("Clearing logs...");
+        document.getElementById("term").innerHTML += `<span style="color: yellow;">[WARN] Booting Evox cleanup processes..</span>`
+        el.querySelector('xov svg path').style.fill = '#72be88';
+        fetch(`https://data.evoxs.xyz/house?username=${credentials.username}&email=${credentials.email}&password=${credentials.password}&method=completeCleanup`)
+            .then(response => response.text())
+            .then(data => {
+                console.log("Logs cleared successfully");
+                document.getElementById("term").innerHTML += `<span style="color: lime;">[*] Evox cleanup successful!</span>`
+                document.getElementById("term").innerHTML += `<span style="color: cyan;">[*] ${data}</span>`
+                el.querySelector('xov svg path').style.fill = null;
+            })
+            .catch(error => {
+                document.getElementById("term").innerHTML += `<span style="color: red;">[ERROR] Failed to cleanup</span>`
+                console.error("Failed to check for updates");
+            });
+    }
 
     function doFetch(m, el) {
         if (m === 'clear') {
