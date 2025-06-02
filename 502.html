@@ -11,7 +11,7 @@
     html {
         width: 100%;
         height: 100%;
-        background-color: #e0e0e0;
+        background-color: #121212;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -27,8 +27,20 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background-color: #ffffff;
+        background-color: #1E1E1E;
         border-radius: 30px;
+    }
+
+    .container svg path {
+        fill: #fffb00cb;
+        opacity: 1;
+    }
+
+    .container svg path:nth-child(2) {
+        fill: #1E1E1E;
+    }
+    .container svg path:nth-child(3) {
+        fill: #1E1E1E;
     }
 
     @media (max-width: 768px) {
@@ -46,7 +58,7 @@
     }
 
     h3 {
-
+        color: #fff;
         font-size: 21px;
         font-weight: bold;
         margin: 0;
@@ -58,12 +70,12 @@
         margin: 0;
         margin-top: 5px;
         font-weight: 600;
-        color: #343434;
+        color: #dddddd;
     }
 
     span {
         font-size: 15px;
-        color: #343434;
+        color: #e7e7e7;
     }
 
     button {
@@ -71,13 +83,14 @@
         margin-top: 20px;
         border: none;
         font-size: 14px;
+        font-weight: bold;
         background-color: #295bff;
         border-radius: 10px;
         padding: 15px 20px;
         display: flex;
         justify-content: center;
         align-items: center;
-        color: #e0e0e0;
+        color: #d8d8d8;
         cursor: pointer;
         transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
     }
@@ -102,17 +115,28 @@
         padding: 20px;
         justify-content: center;
         align-items: center;
-        color: #7a7a7a;
+        color: #f1f1f1;
         border-radius: 20px;
-
         gap: 5px;
         cursor: pointer;
-
-        transition: transform 0.2s ease-in-out;
+        transition: transform 0.2s ease-in-out, filter 0.3s ease;
+        
     }
 
     .proj:hover {
         transform: translateY(-2px);
+    }
+
+    .proj:hover:nth-child(1) img {
+        filter: drop-shadow(0 0 1rem rgba(75, 174, 255, 0.432));
+    }
+    
+    .proj:hover:nth-child(2) img {
+        filter: drop-shadow(0 0 1rem rgba(243, 243, 243, 0.274));
+    }
+
+    .proj:hover:nth-child(3) img {
+        filter: drop-shadow(0 0 1rem rgba(112, 99, 24, 0.568));
     }
 
     .proj img {
@@ -124,6 +148,18 @@
         justify-content: center;
         align-items: center;
         object-fit: cover;
+    }
+
+    .proj:nth-child(1) img {
+        filter: drop-shadow(0 0 0.75rem rgba(75, 174, 255, 0.432));
+    }
+
+    .proj:nth-child(2) img {
+        filter: drop-shadow(0 0 0.75rem rgba(243, 243, 243, 0.274));
+    }
+
+    .proj:nth-child(3) img {
+        filter: drop-shadow(0 0 0.75rem rgba(112, 99, 24, 0.568));
     }
 
     .proj p {
@@ -173,6 +209,10 @@
             } else {
                 window.location.href = "https://evoxs.xyz/jeanne"
             }
+        }
+
+        function back() {
+            history.back();
         }
     </script>
 </body>
