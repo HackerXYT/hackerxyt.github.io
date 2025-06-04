@@ -2883,8 +2883,8 @@ body {
     transform: translate(-50%, -50%);
     width: 14px;
     height: 14px;
-    background: white;
-    border: 3px solid var(--box-border);
+    /*background: white;
+    border: 3px solid var(--box-border);*/
     border-radius: 50%;
     z-index: 1;
     transition: left 0.5s ease-in-out;

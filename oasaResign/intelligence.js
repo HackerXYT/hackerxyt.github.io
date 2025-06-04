@@ -3,7 +3,7 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.1.62'
+const currentVersion = '2.1.65'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
@@ -1189,9 +1189,9 @@ function handleFavoriteOverrides(bus, selectedSection, section, isPreload, busDa
       };
 
       const Div = document.getElementById('stations');
-      
+
       if (!Div) return;
-      if(Div.innerHTML.includes("skeleton")) {
+      if (Div.innerHTML.includes("skeleton")) {
         Div.innerHTML = ''
         document.getElementById("stationsHidden").style.display = null
       }
@@ -4097,37 +4097,37 @@ function showStopDetails(stopCode, stopName) {
     }
     const favStationsJSON = localStorage.getItem("favorite_stations");
 
-if (favStationsJSON) {
-  try {
-    const favStations = JSON.parse(favStationsJSON);
-    const e = document.getElementById("favStation");
-    const path = e?.querySelector("svg path");
+    if (favStationsJSON) {
+      try {
+        const favStations = JSON.parse(favStationsJSON);
+        const e = document.getElementById("favStation");
+        const path = e?.querySelector("svg path");
 
-    let isFavorite = false;
+        let isFavorite = false;
 
-    if (Array.isArray(favStations) && path) {
-      isFavorite = favStations.some(stationNode => {
-        const match = stationNode.busLink === active_station.bus && stationNode.stopCode === active_station.code;
-        if (match) {
-          console.log("Node found", stationNode);
-          path.style.fill = "rgba(248, 54, 54, 0.643)";
-          path.style.transform = "scale(1.10)";
-          setTimeout(() => {
+        if (Array.isArray(favStations) && path) {
+          isFavorite = favStations.some(stationNode => {
+            const match = stationNode.busLink === active_station.bus && stationNode.stopCode === active_station.code;
+            if (match) {
+              console.log("Node found", stationNode);
+              path.style.fill = "rgba(248, 54, 54, 0.643)";
+              path.style.transform = "scale(1.10)";
+              setTimeout(() => {
+                path.style.transform = "scale(1)";
+              }, 500);
+            }
+            return match;
+          });
+
+          if (!isFavorite) {
+            path.style.fill = "#fff";
             path.style.transform = "scale(1)";
-          }, 500);
+          }
         }
-        return match;
-      });
-
-      if (!isFavorite) {
-        path.style.fill = "#fff";
-        path.style.transform = "scale(1)";
+      } catch (err) {
+        console.error("Failed to process favorite stations:", err);
       }
     }
-  } catch (err) {
-    console.error("Failed to process favorite stations:", err);
-  }
-}
     document.getElementById("stationInfoName").innerText = stopName
 
 
@@ -4695,21 +4695,23 @@ let startingJson = {}
 
 function handleActivity(startingJson, te) {
   if (startingJson.start_min) {
-    document.getElementById("activity").style.display = 'flex'
 
+    console.warn(startingJson)
 
     // Convert startTime to minutes
-    //const startTimeInMinutes = (new Date() - new Date(startingJson.startTime)) / (1000 * 60); // Difference in minutes
-    //
-    //// Compare startTimeInMinutes with start_min
-    //if (startTimeInMinutes > Number(startingJson.start_min)) {
-    //  console.log("startTimeInMinutes > Number(startingJson.start_min)")
-    //  return; // If true, stop the function early
-    //} else {
-    //  console.log("Running normally")
-    //}
+    const startTimeInMinutes = (new Date() - new Date(startingJson.startTime)) / (1000 * 60); // Difference in minutes
 
-    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${startingJson.station_id}&keyOrigin=evoxEpsilon`)}`)
+    // Compare startTimeInMinutes with start_min
+    if (startTimeInMinutes > Number(startingJson.start_min)) {
+      console.log("startTimeInMinutes > Number(startingJson.start_min)")
+      return; // If true, stop the function early
+    } else {
+      console.log("Running normally")
+      document.getElementById("activity").style.display = 'flex'
+
+    }
+
+    fetch(`https://data.evoxs.xyz/proxy?key=21&targetUrl=${encodeURIComponent(`https://telematics.oasa.gr/api/?act=getStopArrivals&p1=${startingJson.station_id}&keyOrigin=evoxEpsilon`)}&vevox=${randomString()}`)
       .then(response => response.json())
       .then(data => {
         const targetRouteCode = startingJson.route_code; // Replace this with your desired route_code
@@ -4718,19 +4720,32 @@ function handleActivity(startingJson, te) {
         if (filteredData[0]) {
           const min = filteredData[0].btime2;
           if (min > startingJson.start_min) {
-            //document.getElementById("activity").style.display = 'none'
+            document.getElementById("activity").style.display = 'none'
           }
           //const min = te
           //const x = (startingJson.start_min - min / startingJson.start_min) * 100
           let x = 98 - (Number(min) * 100) / Number(startingJson.start_min);
           //console.log("starting x", x);
           x = x < 2 ? x + 4 : x;
-          //console.log("Activity:", min, "x:", x);
+          console.log("Activity:", min, "x:", x);
           document.getElementById("progress-fill").style.width = `${x}%`;
           document.getElementById("progress-indicator").style.left = `${x}%`;
           document.getElementById("to-?").innerText = startingJson.stationName;
           document.getElementById("busidNoReq").innerText = startingJson.busName;
           document.getElementById("howMuchActivity").innerText = `${min} ${min >= 2 || min === 0 ? "λεπτά" : "λεπτό"}`;
+
+          const indicator = document.getElementById("progress-indicator");
+          const bus = document.getElementById("bus3D");
+
+          const rect = indicator.getBoundingClientRect();
+          const busParentRect = bus.offsetParent.getBoundingClientRect();
+
+          // Align horizontally (if not already)
+          bus.style.left = `${rect.left - busParentRect.left}px`;
+
+          // Align vertically
+          bus.style.top = `${rect.top - busParentRect.top - 35}px`;
+          bus.style.opacity = '1'
         }
       })
       .catch(error => {
@@ -4780,7 +4795,6 @@ if (localStorage.getItem("currentActivity")) {
     handleActivity(startingJson);
     setTimeout(loop, 5000);
   }
-
   loop();
 }
 function triggerSave(busId, busLineCode, RouteCode, type, stopCode) {
