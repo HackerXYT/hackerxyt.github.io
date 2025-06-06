@@ -161,6 +161,43 @@
 
         <img class="qr" src="qr.png">
     </div>
+    <div class="warning instagram" id="instagram-warning" style="display: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="60px" height="60px" viewBox="0 0 24 24" fill="none">
+            <path
+                d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z"
+                stroke="#ff481bc5" stroke-width="2" />
+            <path d="M12 8L12 12.5" stroke="#ff481bc5" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            <path
+                d="M13 15.5C13 16.0523 12.5523 16.5 12 16.5C11.4477 16.5 11 16.0523 11 15.5C11 14.9477 11.4477 14.5 12 14.5C12.5523 14.5 13 14.9477 13 15.5Z"
+                fill="#ff481bc5" />
+        </svg>
+        <p>Η εφαρμογή δεν υποστηρίζεται στο Instagram.</p>
+        <span class="spanFlex">1. Πατήστε <svg xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="25px" height="25px" viewBox="0 0 32 32"
+                enable-background="new 0 0 32 32" version="1.1" xml:space="preserve">
+                <path d="M16,13c-1.654,0-3,1.346-3,3s1.346,3,3,3s3-1.346,3-3S17.654,13,16,13z" />
+                <path d="M6,13c-1.654,0-3,1.346-3,3s1.346,3,3,3s3-1.346,3-3S7.654,13,6,13z" />
+                <path d="M26,13c-1.654,0-3,1.346-3,3s1.346,3,3,3s3-1.346,3-3S27.654,13,26,13z" />
+            </svg></span>
+
+        <span class="spanFlex">2. Επιλέξτε<br>
+            <vox style="display: inline-flex;
+  align-items: flex-start; /* aligns SVG to top of text */
+  gap: 6px;
+  color: white;
+  max-width: 300px;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px"
+                    height="20px" viewBox="0 0 17 17" version="1.1">
+                    <path
+                        d="M15 2v7.5h-1v-5.668l-9.334 9.334-0.707-0.707 9.459-9.459h-5.918v-1h7.5zM11 16h-10v-10h6.574v-1h-7.574v12h12v-7.714h-1v6.714z"
+                        fill="#fff" />
+                </svg>«Άνοιγμα σε εξωτερικό πρόγραμμα
+                περιήγησης»</vox>
+        </span>
+
+
+        <img style="width: 50px;height: 50px;transform: rotate(-35deg);" class="qr" src="upRight.svg">
+    </div>
     <div id="loginContainer" class="login">
 
         <div id="topImg" class="topImg">
@@ -187,7 +224,7 @@
             <span>registered under Evox©</span>
             <p>Διεύθυνση IP: <span id="ipIdent"></span></p>
             <p>Συσκευή: <span id="deviceInfo"></span></p>
-            <p>Έκδοση: <span>1.9.92</span></p>
+            <p>Έκδοση: <span>1.9.95</span></p>
             <p>Δοκιμαστική λειτουργία: <span>Ενεργή [BETA]</span></p>
             <p>Επανεκκίνηση: <span onclick="window.location.reload()">Τώρα</span></p>
         </div>
@@ -1281,7 +1318,7 @@
                                     </g>
                                 </g>
                             </svg>
-                            <span>Έκδοση 1.9.92</span>
+                            <span>Έκδοση 1.9.95</span>
                         </div>
                         <div onclick="reset()" class="anInfo">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
@@ -1686,7 +1723,7 @@
                 style="margin-top: auto;display: flex;flex-direction: column;align-items: center;width: 100%;margin-bottom: 10px;display: none;">
                 <span
                     style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;text-align: center;">Jeanne
-                    d'Arc 1.9.92</span></span>
+                    d'Arc 1.9.95</span></span>
                 <span style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;display: flex;">©
                     2025 Evox <span onclick="window.location.href= '../privacy/'"
                         style="color: #ababab8d;font-size: 12px;font-weight: lighter;margin-left:auto;">Privacy</span></span>
@@ -2052,8 +2089,8 @@
                     </div>
                     <div class="generalItem" id="tags-item">
                         <p>Πληροφορίες</p>
-                        <div style="margin-top: 5px; margin-bottom: 5px; width: 100%; justify-content: center; align-items: center; gap: 5px;" class="gridTag"
-                            id="tagsmk"></div>
+                        <div style="margin-top: 5px; margin-bottom: 5px; width: 100%; justify-content: center; align-items: center; gap: 5px;"
+                            class="gridTag" id="tagsmk"></div>
                     </div>
 
                     <div class="generalItem" style="border:none;">
@@ -2080,7 +2117,8 @@
 
                         <span style="display: flex;align-items: center;width: 100%;">
                             PIN Λογαριασμού
-                            <div style="margin-left:auto;width: auto;" onclick="changePinRedo()" class="buttonCarouseli">
+                            <div style="margin-left:auto;width: auto;" onclick="changePinRedo()"
+                                class="buttonCarouseli">
                                 Αλλαγή
                             </div>
                         </span>
@@ -2100,29 +2138,38 @@
         <div class="grabbable"></div>
         <div
             style="display: flex;flex-direction: column;width: 100%;height: 100%;justify-content: space-evenly;align-items: center;padding: 0px 20px;">
-
+            <div id="replacementOfImg" class="replacementOfImg">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload">
+                    <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                        class="active-upload"></circle>
+                    <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                        class="track-upload"></circle>
+                </svg>
+            </div>
             <img id="share-qr" src="logo.png" style="height: 250px;">
 
-            <div
-                style="width: 100%;padding: 20px;background-color: #121212;border-radius: 20px;display: flex;align-items: center;gap: 10px;">
-                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M15.7281 3.88396C17.1624 2.44407 19.2604 2.41383 20.4219 3.57981C21.5856 4.74798 21.5542 6.85922 20.1189 8.30009L17.6951 10.7333C17.4028 11.0268 17.4037 11.5017 17.6971 11.794C17.9906 12.0863 18.4655 12.0854 18.7578 11.7919L21.1816 9.35869C23.0929 7.43998 23.3329 4.37665 21.4846 2.5212C19.6342 0.663551 16.5776 0.905664 14.6653 2.82536L9.81768 7.69182C7.90639 9.61053 7.66643 12.6739 9.5147 14.5293C9.80702 14.8228 10.2819 14.8237 10.5754 14.5314C10.8688 14.2391 10.8697 13.7642 10.5774 13.4707C9.41376 12.3026 9.4451 10.1913 10.8804 8.75042L15.7281 3.88396Z"
-                        fill="#fff" />
-                    <path
-                        d="M14.4846 9.4707C14.1923 9.17724 13.7174 9.17632 13.4239 9.46864C13.1305 9.76097 13.1296 10.2358 13.4219 10.5293C14.5856 11.6975 14.5542 13.8087 13.1189 15.2496L8.27129 20.1161C6.83696 21.556 4.73889 21.5862 3.57742 20.4202C2.41376 19.2521 2.4451 17.1408 3.8804 15.6999L6.30424 13.2666C6.59657 12.9732 6.59565 12.4983 6.30219 12.206C6.00873 11.9137 5.53386 11.9146 5.24153 12.208L2.81769 14.6413C0.906387 16.56 0.666428 19.6234 2.5147 21.4788C4.36518 23.3365 7.42173 23.0944 9.334 21.1747L14.1816 16.3082C16.0929 14.3895 16.3329 11.3262 14.4846 9.4707Z"
-                        fill="#fff" />
-                </svg>
-                <p>Copy Link</p>
-            </div>
-            <div
-                style="width: 100%;padding: 20px;background-color: #121212;border-radius: 20px;display: flex;align-items: center;gap: 10px;">
-                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M9 6L12 3M12 3L15 6M12 3V13M7.00023 10C6.06835 10 5.60241 10 5.23486 10.1522C4.74481 10.3552 4.35523 10.7448 4.15224 11.2349C4 11.6024 4 12.0681 4 13V17.8C4 18.9201 4 19.4798 4.21799 19.9076C4.40973 20.2839 4.71547 20.5905 5.0918 20.7822C5.5192 21 6.07899 21 7.19691 21H16.8036C17.9215 21 18.4805 21 18.9079 20.7822C19.2842 20.5905 19.5905 20.2839 19.7822 19.9076C20 19.4802 20 18.921 20 17.8031V13C20 12.0681 19.9999 11.6024 19.8477 11.2349C19.6447 10.7448 19.2554 10.3552 18.7654 10.1522C18.3978 10 17.9319 10 17 10"
-                        stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                <p>Share</p>
+            <div style="display: flex;flex-direction: column;width: 100%;height: auto;gap: 10px;">
+                <div
+                    style="width: 100%;padding: 20px;background-color: #121212;border-radius: 20px;display: flex;align-items: center;gap: 10px;">
+                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M15.7281 3.88396C17.1624 2.44407 19.2604 2.41383 20.4219 3.57981C21.5856 4.74798 21.5542 6.85922 20.1189 8.30009L17.6951 10.7333C17.4028 11.0268 17.4037 11.5017 17.6971 11.794C17.9906 12.0863 18.4655 12.0854 18.7578 11.7919L21.1816 9.35869C23.0929 7.43998 23.3329 4.37665 21.4846 2.5212C19.6342 0.663551 16.5776 0.905664 14.6653 2.82536L9.81768 7.69182C7.90639 9.61053 7.66643 12.6739 9.5147 14.5293C9.80702 14.8228 10.2819 14.8237 10.5754 14.5314C10.8688 14.2391 10.8697 13.7642 10.5774 13.4707C9.41376 12.3026 9.4451 10.1913 10.8804 8.75042L15.7281 3.88396Z"
+                            fill="#fff" />
+                        <path
+                            d="M14.4846 9.4707C14.1923 9.17724 13.7174 9.17632 13.4239 9.46864C13.1305 9.76097 13.1296 10.2358 13.4219 10.5293C14.5856 11.6975 14.5542 13.8087 13.1189 15.2496L8.27129 20.1161C6.83696 21.556 4.73889 21.5862 3.57742 20.4202C2.41376 19.2521 2.4451 17.1408 3.8804 15.6999L6.30424 13.2666C6.59657 12.9732 6.59565 12.4983 6.30219 12.206C6.00873 11.9137 5.53386 11.9146 5.24153 12.208L2.81769 14.6413C0.906387 16.56 0.666428 19.6234 2.5147 21.4788C4.36518 23.3365 7.42173 23.0944 9.334 21.1747L14.1816 16.3082C16.0929 14.3895 16.3329 11.3262 14.4846 9.4707Z"
+                            fill="#fff" />
+                    </svg>
+                    <p>Αντιγραφή συνδέσμου</p>
+                </div>
+                <div
+                    style="width: 100%;padding: 20px;background-color: #121212;border-radius: 20px;display: flex;align-items: center;gap: 10px;">
+                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M9 6L12 3M12 3L15 6M12 3V13M7.00023 10C6.06835 10 5.60241 10 5.23486 10.1522C4.74481 10.3552 4.35523 10.7448 4.15224 11.2349C4 11.6024 4 12.0681 4 13V17.8C4 18.9201 4 19.4798 4.21799 19.9076C4.40973 20.2839 4.71547 20.5905 5.0918 20.7822C5.5192 21 6.07899 21 7.19691 21H16.8036C17.9215 21 18.4805 21 18.9079 20.7822C19.2842 20.5905 19.5905 20.2839 19.7822 19.9076C20 19.4802 20 18.921 20 17.8031V13C20 12.0681 19.9999 11.6024 19.8477 11.2349C19.6447 10.7448 19.2554 10.3552 18.7654 10.1522C18.3978 10 17.9319 10 17 10"
+                            stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <p>Κοινοποίηση</p>
+                </div>
             </div>
         </div>
 

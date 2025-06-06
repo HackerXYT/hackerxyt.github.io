@@ -104,7 +104,7 @@ function isIOS() {
 
 if (isIOS()) {
     console.log("Device is IOS")
-    document.getElementById("gradColored").style.opacity = '1'
+    //document.getElementById("gradColored").style.opacity = '1'
 }
 
 function getRandomColor() {
@@ -972,8 +972,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
     });
-    //hideElementOnAndroid('gradColored');
-    //hideElementOnAndroid('bgGrd');
+    hideElementOnAndroid('gradColored');
+    hideElementOnAndroid('bgGrd');
+
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const isInstagram = ua.includes('Instagram');
+    if (isInstagram) {
+        $("#loginContainer").fadeOut("fast", function () {
+            $("#instagram-warning").fadeIn("fast")
+            $("#hexa").fadeOut('fast')
+        })
+        return;
+    }
     if (window.innerWidth > 768 && localStorage.getItem("devBypass")) {
         //console.log("This is not a mobile device");
         //$("#tasks").fadeOut("fast", function () {
@@ -3733,7 +3743,7 @@ function help() {
 
 function ipLogin() {
     document.getElementById("loading-text-evox").innerText = 'Συλλογή δεδομένων..'
-    
+
     document.getElementById("topLeftBack").classList.add("active")
     $("#appInfo").fadeOut("fast")
     $("#textDialog").fadeOut("fast", function () {
@@ -3749,16 +3759,16 @@ function ipLogin() {
                 $('#boxUp').children().not('#helpMe, .loginByName, #loginByIp').fadeOut(function () {
                     $("#ipLoginSection").fadeIn("fast")
                 });
-                
+
             }, 10);
 
-            setTimeout(function() {
-                $("#hexa").fadeOut("fast", function() {
+            setTimeout(function () {
+                $("#hexa").fadeOut("fast", function () {
                     $("#boxUp").fadeIn("fast")
 
                 })
             }, 600)
-            
+
         })
 
     })
@@ -4763,11 +4773,15 @@ function openProfile(el) {
         el.classList.remove("dropToBase")
         //el.style.transform = "scale(1)";
     }, 1300);
+    document.getElementById("classIcons").innerHTML = `<img src="completeTransparency.png" class="skeleton-img"><img src="completeTransparency.png" class="skeleton-img"><img src="completeTransparency.png" class="skeleton-img">`;
     getRandomClassmates(foundName).then(usersJson => {
-        document.getElementById("classIcons").innerHTML = '';
+        count = 0
+
         usersJson.forEach(user => {
             getImage(user.name).then(profileSrc => {
-                document.getElementById("classIcons").innerHTML += `<img src="${profileSrc.imageData}" alt="${user.name}">`;
+                count++
+                if (count === 1) { document.getElementById("classIcons").innerHTML = '' }
+                document.getElementById("classIcons").innerHTML += `<img style="animation: popInSeamless 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);" src="${profileSrc.imageData}" alt="${user.name}">`;
             })
 
         })
@@ -4846,6 +4860,40 @@ function setTag(emri, el) {
                         </div>
                     </div>`
     //})
+    const account_data_lc = localStorage.getItem("jeanDarc_accountData")
+    if (!account_data_lc) {
+        console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
+        return;
+    }
+
+    const account_data = JSON.parse(account_data_lc)
+
+    const pars = {
+        pin: account_data.pin, //self pin
+        name: foundName //target user
+    }
+    fetch(`https://arc.evoxs.xyz/?metode=userSent&pin=${pars.pin}&emri=${pars.name}&loggedIn=${foundName}`)
+        .then(response => response.json())
+        .then(sentbyuser => {
+            if (sentbyuser.length !== 0) {
+                const targetMarresi = emri;
+                console.log(sentbyuser)
+                const result = sentbyuser.find(entry => entry.marresi === targetMarresi);
+                if (result) {
+                    console.log("Found:", result);
+                    document.getElementById("input-textarea").value += result.contents.vleresim
+                    const event = new Event('input', { bubbles: true });
+                    document.getElementById("input-textarea").dispatchEvent(event);
+                } else {
+                    console.log("No match found for marresi =", targetMarresi);
+                }
+            }
+            localStorage.setItem(`sentByUser-${emri}`, JSON.stringify(sentbyuser))
+
+        }).catch(error => {
+            
+            console.error(error);
+        });
 }
 
 function setTagEXT(el) {
@@ -5293,8 +5341,6 @@ function addMore(el) {
 window.visualViewport.addEventListener("resize", adjustFooterPosition);
 window.visualViewport.addEventListener("scroll", adjustFooterPosition);
 
-
-
 function createPost(el) {
     document.getElementById("selectedPeople").innerHTML = ''
     selectedPeople = []
@@ -5388,23 +5434,23 @@ function openEditProfile() {
             <div style="margin-left:auto;width: auto;" onclick="changeClass()" class="buttonCarouseli">
                                     Αλλαγή
                                 </div>`
-            
-            getImage(self.emri).then(profileSrc => {
-                            //console.log(profileSrc);
-                            let src;
-                            if (profileSrc) {
-                                src = profileSrc.imageData;
-                            } else {
-                                src = self.foto
-                            }
 
-                            document.getElementById("pfp-edit").src = src;
-                        })
+            getImage(self.emri).then(profileSrc => {
+                //console.log(profileSrc);
+                let src;
+                if (profileSrc) {
+                    src = profileSrc.imageData;
+                } else {
+                    src = self.foto
+                }
+
+                document.getElementById("pfp-edit").src = src;
+            })
         })
     fetch(`https://arc.evoxs.xyz/?metode=tags&emri=${foundName}`)
         .then(response => response.json())
         .then(tagsData => {
-            if(tagsData.length === 0) {
+            if (tagsData.length === 0) {
                 document.getElementById("tags-item").style.display = 'none'
             } else {
                 document.getElementById("tags-item").style.display = null
@@ -5438,7 +5484,7 @@ document.getElementById("home").addEventListener("scroll", function () {
     if (this.scrollTop > 70) {
         document.getElementById("semiCarousel-fy-fixed").style.display = 'flex'
         document.getElementById("status-bar-color-for-semiCarousel").style.display = 'block'
-        
+
     } else {
         document.getElementById("semiCarousel-fy-fixed").style.display = 'none'
         document.getElementById("status-bar-color-for-semiCarousel").style.display = 'none'
@@ -5947,11 +5993,11 @@ function loadSentToUser(emri, redo) {
 
                 const cleaned = cleanText.trim().replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
                 const randomString = [...Array(15)]
-                            .map(() => Math.random().toString(36)[2])
-                            .join('');
+                    .map(() => Math.random().toString(36)[2])
+                    .join('');
 
-                            console.log(sentbyuser, key, foundName)
-                if(sentbyuser.likes && sentbyuser.likes[key] && sentbyuser.likes[key].liked.includes(foundName)) {
+                console.log(sentbyuser, key, foundName)
+                if (sentbyuser.likes && sentbyuser.likes[key] && sentbyuser.likes[key].liked.includes(foundName)) {
                     focusedIconsDictionary[randomString] = ["none"]
                 }
                 return `
@@ -5976,7 +6022,7 @@ function loadSentToUser(emri, redo) {
                                 </div>
                                 ${sentbyuser.cryptoxed && sentbyuser.cryptoxed.includes(key) ? `<vox onclick="showInfoAboutCryptox('${key}', '${pars.name}')" class="cryptox-info">Cryptox Encrypted</vox>` : ''}
                                 <div class="icons">
-                    <div ${sentbyuser.likes[key] && sentbyuser.likes[key].liked.includes(foundName) ? `data-focus-key='${randomString}'`: ""}  onclick="focusOnIcon(this, 'likeBtn', '${key}', '${pars.name}')" class="iconA">
+                    <div ${sentbyuser.likes[key] && sentbyuser.likes[key].liked.includes(foundName) ? `data-focus-key='${randomString}'` : ""}  onclick="focusOnIcon(this, 'likeBtn', '${key}', '${pars.name}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path ${sentbyuser.likes[key] && sentbyuser.likes[key].liked.includes(foundName) ? "fill='#dedede'" : ""} fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg> ${sentbyuser.likes[key] ? sentbyuser.likes[key].count ? `<p class='pop-text'>${sentbyuser.likes[key].count}</p>` : "<p class='pop-text'></p>" : "<p class='pop-text'></p>"}
@@ -6044,7 +6090,7 @@ function loadSentToUser(emri, redo) {
             //if (localStorage.getItem(`sentToUser-${emri}`) && JSON.parse(localStorage.getItem(`sentToUser-${emri}`)).likes) {
             //    spawnIn(JSON.parse(localStorage.getItem(`sentToUser-${emri}`)), true)
             //} else { //Removed due to likes not being saved
-                loadFresh()
+            loadFresh()
             //}
         } catch (err) {
             localStorage.removeItem(`sentToUser-${emri}`)
@@ -6055,7 +6101,33 @@ function loadSentToUser(emri, redo) {
 function activateShare(el) {
     if (el.getAttribute("data-active") !== "null") {
         document.getElementById("share-profile").classList.add("active")
-        document.getElementById("share-qr").src = `https://arc.evoxs.xyz/qr/${el.getAttribute("data-active")}`
+
+        document.querySelector("#share-qr").style.display = 'none'
+        document.getElementById("replacementOfImg").style.display = 'flex'
+        setTimeout(function () {
+            document.getElementById("replacementOfImg").style.opacity = '1'
+        }, 60)
+        const imageUrl = `https://arc.evoxs.xyz/qr/${el.getAttribute("data-active")}`;
+        function loadImage(url) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(url);
+                img.onerror = reject;
+                img.src = url;
+            });
+        }
+
+        loadImage(imageUrl).then((loadedUrl) => {
+
+            document.getElementById("replacementOfImg").style.opacity = '0'
+            setTimeout(function () {
+                document.getElementById("replacementOfImg").style.display = 'none'
+                document.querySelector("#share-qr").style.display = null
+            }, 110)
+            document.querySelector("#share-qr").src = loadedUrl;
+        }).catch((error) => {
+            console.error("Failed to load image:", error);
+        });
     } else {
         console.warn("No active user")
     }
@@ -6067,10 +6139,17 @@ function showProfileInfo(emri) {
 
     document.getElementById("share-start").setAttribute("data-active", `${emri}`)
     document.getElementById("userName-search").innerText = emri
+    document.getElementById("classIcons-search").innerHTML = '';
+    document.getElementById("classIcons-search").innerHTML = `<img src="completeTransparency.png" class="skeleton-img"><img src="completeTransparency.png" class="skeleton-img"><img src="completeTransparency.png" class="skeleton-img">`;
     getRandomClassmates(emri).then(usersJson => {
-        document.getElementById("classIcons-search").innerHTML = '';
+        let count = 0
         usersJson.forEach(user => {
-            document.getElementById("classIcons-search").innerHTML += `<img src="${user.icon}" alt="${user.name}">`;
+            getImage(user.name).then(profileSrc => {
+                count++
+                if (count === 1) { document.getElementById("classIcons-search").innerHTML = ''; }
+                document.getElementById("classIcons-search").innerHTML += `<img style="animation: popInSeamless 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);" src="${profileSrc.imageData}" alt="${user.name}">`;
+            })
+
         })
     });
     container.style.display = 'block'
@@ -6217,8 +6296,8 @@ function showProfileInfo(emri) {
 
 
                     const randomString = [...Array(15)]
-                            .map(() => Math.random().toString(36)[2])
-                            .join('');
+                        .map(() => Math.random().toString(36)[2])
+                        .join('');
 
                     console.log("ALL", sent)
                     const ready = `
@@ -6244,7 +6323,7 @@ function showProfileInfo(emri) {
                             </div>
                             ${sent.cryptox ? `<vox>Cryptox Encrypted</vox>` : ''}
                             <div class="icons">
-                    <div ${sent.contents.likes && sent.contents.likes.liked.includes(foundName) ? `data-focus-key='${randomString}'`: ""} onclick="focusOnIcon(this, 'likeBtn', '${emri}', '${sent.marresi}')" class="iconA">
+                    <div ${sent.contents.likes && sent.contents.likes.liked.includes(foundName) ? `data-focus-key='${randomString}'` : ""} onclick="focusOnIcon(this, 'likeBtn', '${emri}', '${sent.marresi}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path ${sent.contents.likes && sent.contents.likes.liked.includes(foundName) ? "fill='#dedede'" : ""} fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>${sent.contents.likes ? sent.contents.likes.count ? `<p class='pop-text'>${sent.contents.likes.count}</p>` : "<p class='pop-text'></p>" : "<p class='pop-text'></p>"}
@@ -6268,12 +6347,12 @@ function showProfileInfo(emri) {
                         </div>
                     </div>
                 </div>`;
-                
-                if(sent.contents.likes && sent.contents.likes.liked.includes(foundName)) {
-                    focusedIconsDictionary[randomString] = ["none"]
-                }
-                
-                    
+
+                    if (sent.contents.likes && sent.contents.likes.liked.includes(foundName)) {
+                        focusedIconsDictionary[randomString] = ["none"]
+                    }
+
+
                     return ready
                 })
             ).then((htmlArray) => {
@@ -6341,13 +6420,12 @@ let search_loadedUsers = []
 function openSearch(el, inBackground) {
     document.getElementById("search-in").style.display = 'none'
     saveLastPage('search')
-    el.classList.add('active')
-    el.style.transition = "transform 0.3s ease";
-    el.style.transform = "scale(1.2)";
-
-    setTimeout(() => {
-        el.style.transform = "scale(1)";
-    }, 300);
+    //el.classList.add('active')
+    //el.style.transition = "transform 0.3s ease";
+    //el.style.transform = "scale(1.2)";
+    //setTimeout(() => {
+    //    el.style.transform = "scale(1)";
+    //}, 300);
     if (!inBackground) {
         el.classList.add('active');
         document.getElementById("bar").classList.remove("ai")
@@ -6423,12 +6501,12 @@ function openSearch(el, inBackground) {
 function openHome(el) {
     saveLastPage('home')
     el.classList.add('active')
-    el.style.transition = "transform 0.3s ease";
-    el.style.transform = "scale(1.2)";
+    //el.style.transition = "transform 0.3s ease";
+    //el.style.transform = "scale(1.2)";
 
-    setTimeout(() => {
-        el.style.transform = "scale(1)";
-    }, 300);
+    //setTimeout(() => {
+    //    el.style.transform = "scale(1)";
+    //}, 300);
     document.getElementById("bar").classList.remove("ai")
     document.getElementById("discovery-switch").classList.remove("active")
     document.getElementById("profile-switch").classList.remove("active")
@@ -6648,8 +6726,8 @@ function analyzeUser(e, rej) {
                                     //Success
                                     //find = find.replace(/�/g, '<span class="img-replacement"></span>')
                                     const toSpawn = find.replace("**", `<vox style="display: flex;align-items:center;width:100%;justify-content:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M21.007 8.27C22.194 9.125 23 10.45 23 12c0 1.55-.806 2.876-1.993 3.73.24 1.442-.134 2.958-1.227 4.05-1.095 1.095-2.61 1.459-4.046 1.225C14.883 22.196 13.546 23 12 23c-1.55 0-2.878-.807-3.731-1.996-1.438.235-2.954-.128-4.05-1.224-1.095-1.095-1.459-2.611-1.217-4.05C1.816 14.877 1 13.551 1 12s.816-2.878 2.002-3.73c-.242-1.439.122-2.955 1.218-4.05 1.093-1.094 2.61-1.467 4.057-1.227C9.125 1.804 10.453 1 12 1c1.545 0 2.88.803 3.732 1.993 1.442-.24 2.956.135 4.048 1.227 1.093 1.092 1.468 2.608 1.227 4.05Zm-4.426-.084a1 1 0 0 1 .233 1.395l-5 7a1 1 0 0 1-1.521.126l-3-3a1 1 0 0 1 1.414-1.414l2.165 2.165 4.314-6.04a1 1 0 0 1 1.395-.232Z" fill="#179cf0"/></svg><strong>`)
-                                    .replace("**", "</strong></vox>")
-                                    .replace("Ρεαλιστική Περίληψη:", `<vox style="display: flex;align-items:center;width:100%;justify-content:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="m3.517 17 7.058-11.783a1.667 1.667 0 0 1 2.85 0L20.483 17a1.667 1.667 0 0 1-1.425 2.5H4.942A1.666 1.666 0 0 1 3.517 17ZM12 9a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Zm-1 7a1 1 0 0 1 1-1h.008a1 1 0 1 1 0 2H12a1 1 0 0 1-1-1Z" fill="#f2ff00"/></svg><strong>Ρεαλιστική Περίληψη:</strong></vox>`)
+                                        .replace("**", "</strong></vox>")
+                                        .replace("Ρεαλιστική Περίληψη:", `<vox style="display: flex;align-items:center;width:100%;justify-content:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="m3.517 17 7.058-11.783a1.667 1.667 0 0 1 2.85 0L20.483 17a1.667 1.667 0 0 1-1.425 2.5H4.942A1.666 1.666 0 0 1 3.517 17ZM12 9a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Zm-1 7a1 1 0 0 1 1-1h.008a1 1 0 1 1 0 2H12a1 1 0 0 1-1-1Z" fill="#f2ff00"/></svg><strong>Ρεαλιστική Περίληψη:</strong></vox>`)
                                     document.getElementById("summaryTxt").innerHTML = toSpawn
                                     document.getElementById("aitext").innerText = 'Επανάληψη'
                                     localStorage.setItem("Jeanne_lastAit_summary", toSpawn)
@@ -6964,20 +7042,20 @@ function Evalert(message) {
                      <img style="width: 50px;height: 50px;border-radius: 50%;" src="appLogoV2.png">
                 </div>`
             } else {
-                if(cloud === message.clouds_data[0]){
-getImage(cloud).then(profileSrc => {
-                    document.getElementById("cloudingNotice").innerHTML += `<div class="mainIcon">
+                if (cloud === message.clouds_data[0]) {
+                    getImage(cloud).then(profileSrc => {
+                        document.getElementById("cloudingNotice").innerHTML += `<div class="mainIcon">
                     <img src="${profileSrc.imageData}">
                 </div>`
-                })
+                    })
                 } else {
-getImage(cloud).then(profileSrc => {
-                    document.getElementById("cloudingNotice").innerHTML += `<div style="position: absolute;margin-left: 120px;z-index: 998;margin-bottom: 55px;">
+                    getImage(cloud).then(profileSrc => {
+                        document.getElementById("cloudingNotice").innerHTML += `<div style="position: absolute;margin-left: 120px;z-index: 998;margin-bottom: 55px;">
                      <img style="width: 50px;height: 50px;border-radius: 50%;" src="${profileSrc.imageData}">
                 </div>`
-                })
+                    })
                 }
-                
+
             }
 
 
@@ -7283,14 +7361,16 @@ document.addEventListener("DOMContentLoaded", () => {
     move();
 });
 
-function showInfoAboutCryptox(meorother, user ) {
+function showInfoAboutCryptox(meorother, user) {
     EvalertNext({
-            title: "Τι είναι το Cryptox",
-            description: "Το Cryptox κρυπτογραφεί τα δεδομένα σας και σας επιτρέπει να βλέπετε τις καταχωρήσεις σας, μόνο εσείς ή μαζί με άτομα που έχετε επιλέξει ή αναφέρει.",
-            buttons: ["Εντάξει"],
-            buttonAction: [],
-            addons: [],
-            "clouds": true,
-            "clouds_data": [meorother, user]
-        });
+        title: "Τι είναι το Cryptox",
+        description: "Το Cryptox κρυπτογραφεί τα δεδομένα σας και σας επιτρέπει να βλέπετε τις καταχωρήσεις σας, μόνο εσείς ή μαζί με άτομα που έχετε επιλέξει ή αναφέρει.",
+        buttons: ["Εντάξει"],
+        buttonAction: [],
+        addons: [],
+        "clouds": true,
+        "clouds_data": [meorother, user]
+    });
 }
+
+

@@ -190,6 +190,13 @@ body::-webkit-scrollbar {
     text-align: center;
 }
 
+.warning.instagram p {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #ff481bc5;
+    text-align: center;
+}
+
 .warning span {
     text-align: center;
 }
@@ -1587,7 +1594,8 @@ img {
     /* border-radius: 50px; */
     box-sizing: border-box;
     /*background-color: #09090994;*/
-    background-color: #0c0c0c;;
+    background-color: #0c0c0c;
+    ;
 
     /*141414e8*/
     display: flex;
@@ -1642,8 +1650,8 @@ img {
 }
 
 .navigation .bar .item svg {
-    width: 35px;
-    height: 35px;
+    width: 25px;
+    height: 25px;
 }
 
 .navigation .bar .item.create svg {
@@ -1834,6 +1842,33 @@ img {
     object-fit: cover;
     margin-left: -10px;
 }
+
+.classIcons img.skeleton-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-left: -10px;
+    background-color: rgb(16, 16, 16); /* match your site's background */
+    background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 25%,
+        rgba(255, 255, 255, 0.15) 50%,
+        rgba(255, 255, 255, 0) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading-img 1.5s infinite linear;
+}
+
+
+@keyframes skeleton-loading-img {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
 
 .classIcons img:first-child {
     margin-left: 0;
@@ -2571,7 +2606,7 @@ img {
 }
 
 
-  
+
 
 
 
@@ -3573,7 +3608,7 @@ input:-webkit-autofill:active {
     width: 100%;
     padding: 20px;
     border-radius: 15px;
-    background-color: #ffffff1d;
+    background-color: #ffffff17;
     display: flex;
 
     align-items: center;
@@ -4337,7 +4372,8 @@ input:-webkit-autofill:active {
     font-weight: 200;
     line-height: 20px;
     letter-spacing: 0.3px;
-    white-space: pre-wrap; /* respects line breaks and spaces */
+    white-space: pre-wrap;
+    /* respects line breaks and spaces */
     word-wrap: break-word;
 }
 
@@ -4939,7 +4975,7 @@ input:-webkit-autofill:active {
     height: 25px;
     border: none;
     background-color: transparent;
-    color: #fff;
+    color: #ffffffc4; /*or fff*/
     font-size: 14px;
     line-height: 1.5;
     resize: vertical;
@@ -4982,26 +5018,31 @@ input:-webkit-autofill:active {
     opacity: 1;
 }
 
-.extpost .icons div svg path, .extpost .postInfo .icons div svg path {
+.extpost .icons div svg path,
+.extpost .postInfo .icons div svg path {
     stroke-width: 1;
     stroke: #ffffff;
 }
 
-.extpost .icons div:nth-child(1) svg, .extpost .postInfo .icons div:nth-child(1) svg {
+.extpost .icons div:nth-child(1) svg,
+.extpost .postInfo .icons div:nth-child(1) svg {
     width: 21px;
     height: 21px;
 }
 
-.extpost .icons div:nth-child(2) svg path, .extpost .postInfo .icons div:nth-child(2) svg path {
+.extpost .icons div:nth-child(2) svg path,
+.extpost .postInfo .icons div:nth-child(2) svg path {
     stroke-width: 1;
     stroke: #fff;
     fill: none;
 }
 
-.extpost .icons div:nth-child(2) svg, .extpost .postInfo .icons div:nth-child(2) svg {
+.extpost .icons div:nth-child(2) svg,
+.extpost .postInfo .icons div:nth-child(2) svg {
     width: 18px;
     height: 18px;
 }
+
 .line-x {
     width: 2px;
     height: 150%;
@@ -5350,10 +5391,11 @@ select:focus {
 
 /*PC*/
 @media (min-width: 1024px) {
-    
+
     #loadingIndicator-fy {
         padding: 10px 10px 15%;
     }
+
     .notch-hidden {
         display: none;
     }
@@ -5423,8 +5465,8 @@ select:focus {
     }
 
     .navigation .bar .item svg {
-        width: 25px;
-        height: 25px;
+        width: 21px;
+        height: 21px;
     }
 
     .navigation .bar .item.create svg {
@@ -6099,7 +6141,8 @@ select:focus {
     padding: 20px;
     border: 1px solid #767676;
     width: 90%;
-    height: auto; /*60%*/
+    height: auto;
+    /*60%*/
     align-items: center;
     box-sizing: border-box;
     gap: 10px;
@@ -6231,6 +6274,18 @@ select:focus {
     }
 }
 
+@keyframes popInSeamless {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.8;
+    }
+
+    
+    100% {
+        transform: scale(1);
+    }
+}
+
 .pop-text {
     display: inline-block;
     transition: transform 0.2s;
@@ -6263,64 +6318,95 @@ select:focus {
 }
 
 .toggle-switch {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  margin-left: auto;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    margin-left: auto;
 }
 
 .toggle-switch input[type="checkbox"] {
-  display: none;
+    display: none;
 }
 
 .toggle-switch-background {
-  position: relative;
-  width: 45px;
-  height: 25px;
-  border-radius: 20px;
-  box-shadow: inset 0 0 0 2px #ccc;
-  background-color: #121212;
-  transition: background-color 0.3s ease-in-out;
+    position: relative;
+    width: 45px;
+    height: 25px;
+    border-radius: 20px;
+    box-shadow: inset 0 0 0 2px #ccc;
+    background-color: #121212;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .toggle-switch-handle {
-  position: relative;
-  width: 25px;
-  height: 25px;
-  background-color: #fff;
-  border-radius: 50%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease-in-out;
+    position: relative;
+    width: 25px;
+    height: 25px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
 }
 
 .toggle-switch::before {
-  content: "";
-  position: absolute;
-  top: -25px;
-  right: -35px;
-  font-size: 12px;
-  font-weight: bold;
-  color: #aaa;
-  text-shadow: 1px 1px #fff;
-  transition: color 0.3s ease-in-out;
+    content: "";
+    position: absolute;
+    top: -25px;
+    right: -35px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #aaa;
+    text-shadow: 1px 1px #fff;
+    transition: color 0.3s ease-in-out;
 }
 
-.toggle-switch input[type="checkbox"]:checked + .toggle-switch-handle {
-  transform: translateX(20px);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), 0 0 0 3px #05c46b;
+.toggle-switch input[type="checkbox"]:checked+.toggle-switch-handle {
+    transform: translateX(20px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), 0 0 0 3px #05c46b;
 }
 
-.toggle-switch input[type="checkbox"]:checked + .toggle-switch-background {
-  background-color: #05c46b;
-  box-shadow: inset 0 0 0 2px #04b360;
+.toggle-switch input[type="checkbox"]:checked+.toggle-switch-background {
+    background-color: #05c46b;
+    box-shadow: inset 0 0 0 2px #04b360;
 }
 
-.toggle-switch input[type="checkbox"]:checked + .toggle-switch:before {
-  content: "On";
-  color: #05c46b;
-  right: -15px;
+.toggle-switch input[type="checkbox"]:checked+.toggle-switch:before {
+    content: "On";
+    color: #05c46b;
+    right: -15px;
 }
 
-.toggle-switch input[type="checkbox"]:checked + .toggle-switch-background .toggle-switch-handle {
-  transform: translateX(19px);
+.toggle-switch input[type="checkbox"]:checked+.toggle-switch-background .toggle-switch-handle {
+    transform: translateX(19px);
+}
+
+.spanFlex {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    align-items: center;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    background-color: #ffffff0e;
+    backdrop-filter: blur(25px);
+    border-radius: 20px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+
+.replacementOfImg {
+    height: 250px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    opacity: 0;
+    display: none;
+    transition: opacity 0.1s ease;
 }
