@@ -13,8 +13,8 @@ self.addEventListener('notificationclick', function (event) {
   );
 });
 
-const STATIC_CACHE_NAME = 'static-cache-v92';
-const APP_CACHE_NAME = 'app-cache-v92';
+const STATIC_CACHE_NAME = 'static-cache-v93';
+const APP_CACHE_NAME = 'app-cache-v93';
 const CACHE_STATIC = [
   '/oasaResign/',
   '/oasaResign/index.html',

@@ -3,11 +3,16 @@ const bottomSearchParent = document.getElementById('bottomSearchParent');
 const iconInC = document.getElementById('iconInC');
 const triggerSearch = document.getElementById('triggerSearch');
 const searchIntelli = document.getElementById('searchIntelli');
-const currentVersion = '2.1.65'
+const currentVersion = '2.1.651'
 document.getElementById("showUpV").innerText = currentVersion
 localStorage.setItem("currentVersion", currentVersion)
 mapboxgl.accessToken = 'pk.eyJ1IjoicGFwb3N0b2wiLCJhIjoiY2xsZXg0c240MHphNzNrbjE3Z2hteGNwNSJ9.K1O6D38nMeeIzDKqa4Fynw';
 const randomString = () => Math.random().toString(36).substring(2, 10);
+
+var menu_open = new Howl({
+	src: ['./OASAFX/menuSuccess.mp3'],
+	volume: 1
+});
 
 // Listen for the scroll event
 document.getElementById('main-wrapper').addEventListener('scroll', () => {
@@ -3257,7 +3262,7 @@ function spawnAndShowInfo(bus, remain, verification, comego) {
 </svg>` : "";
       if (desc.includes("ΚΥΚΛΙΚΗ")) {
 
-        const result1 = splitter.getFirstPart() // Trim any leading or trailing spa
+        const result1 = splitter.getSecondPart() // Trim any leading or trailing spa
         document.getElementById("busDirections").innerHTML += `<div class="Block active">
                                               <svg width="20px" height="20px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M36 7L43 13.4615L36 21" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -3265,14 +3270,14 @@ function spawnAndShowInfo(bus, remain, verification, comego) {
       </svg>Προς ${capitalizeWords(result1)}
                                           </div>`
       } else {
-        const result1 = splitter.getFirstPart() // Trim any leading or trailing spa
+        const result1 = splitter.getSecondPart() // Trim any leading or trailing spa
         document.getElementById("busDirections").innerHTML += `<div class="Block ${go_or_back === "go" ? " active" : ""}" onclick="changeToOpposite('go', '${bus}', '${verification}')">
                                               <svg width="20px" height="20px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M36 7L43 13.4615L36 21" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
       <path d="M40 14H17.0062C10.1232 14 4.27787 19.6204 4.00964 26.5C3.72612 33.7696 9.73291 40 17.0062 40H34.0016" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>Προς ${capitalizeWords(result1)}
                                           </div>`
-        const result2 = splitter.getSecondPart() // Trim any leading or trailing spa
+        const result2 = splitter.getFirstPart() // Trim any leading or trailing spa
         document.getElementById("busDirections").innerHTML += `<div class="Block${go_or_back === "come" ? " active" : ""}" onclick="changeToOpposite('come', '${bus}', '${verification}')">
                                               <svg width="20px" height="20px" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M36 7L43 13.4615L36 21" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -4638,6 +4643,7 @@ function openStation(code, descr, busId, busDescr) {
 }
 
 function showMenu() {
+  
   $("#account-home").fadeOut("fast");
   $("#notifications-home").fadeOut("fast", function () {
     const navigate = document.getElementById("top-navigate");
@@ -5406,6 +5412,7 @@ async function clearStorageAndReload() {
 let isScreenBusy = false
 function spawnOnTop(el) {
   if (isScreenBusy === true) { return; }
+ 
   const rect = el.getBoundingClientRect();
   const computedStyle = getComputedStyle(el);
   const X_OFFSET = -7.5; // left
@@ -5424,6 +5431,7 @@ function spawnOnTop(el) {
     const container = document.getElementById("menuContainer");
     container.style.opacity = '1';
 
+     menu_open.play()
     container.querySelectorAll(".menuItem").forEach((div, index) => {
       if (index === 0) return;
       console.log(div)
