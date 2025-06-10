@@ -2052,7 +2052,7 @@ async function spawnRandom(redo, frontEndLoading) {
                 document.getElementById("foryou").innerHTML += `<div ${icount === 1 ? `id="scrollToMe"` : ""} class="postInput" style="margin-bottom:10px;padding-bottom: 0;">
             <div class="profilePicture-in">
                 <img src="${src}">
-                <div class="line-x"></div>
+                <div class="line-x foryoupage"></div>
                <div class="morePfps">
                 <img class="small" src="${srcs[0]}" alt="Profile 1">
                 <img class="small" src="${srcs[1]}" alt="Profile 2">
@@ -4829,10 +4829,28 @@ function dismissRecommend() {
         }, 300)
     }
 }
+
+function changeMiniProfiles() {
+    const insideElem = document.getElementById("pfpIn-PFPs")
+    insideElem.querySelector("#profilePicture-small").style.display = 'none'
+    insideElem.innerHTML = ''
+    getImage(foundName).then(profileSrc => {
+        insideElem.innerHTML = `<img style="display:none;animation: popInSeamless 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);" id="profilePicture-small" class="small" src="${profileSrc.imageData}">`
+        if (selectedPeople_ARRAY.length === 0) {
+            insideElem.querySelector("#profilePicture-small").style.display = null
+        }
+    })
+
+    selectedPeople_ARRAY.forEach(user => {
+        getImage(user).then(profileSrc => {
+            insideElem.innerHTML += `<img style="animation: popInSeamless 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);" class="small addedAfterLaunch" src="${profileSrc.imageData}">`
+        })
+    })
+}
 //document.getE
 //input-textarea
 let recommendedPeopleRej = [] //the rejected ones
-let selectedPeople = []
+let selectedPeople_ARRAY = []
 function setTag(emri, el) {
     const textarea = document.getElementById('input-textarea');
     const match = textarea.value.match(/@(\p{L}+)/u);
@@ -4840,10 +4858,12 @@ function setTag(emri, el) {
     textarea.value = textarea.value.replace(`@${result}`, '')
     document.getElementById("floatingDiv").style.display = 'none'
     document.getElementById("floatingDiv").innerHTML = '';
+    if (selectedPeople_ARRAY.includes(emri)) { return; }
 
-    selectedPeople.push(emri)
+    selectedPeople_ARRAY.push(emri)
+    changeMiniProfiles()
     //document.getElementById("selectedPeople").innerHTML = ''
-    //selectedPeople.forEach(user => {
+    //selectedPeople_ARRAY.forEach(user => {
     document.getElementById("selectedPeople").innerHTML += `<div id="tag-${emri}-02" class="postContainer fade-in-slide-up">
                         <div class="post extpost">
                             <div class="profilePicture">
@@ -4853,7 +4873,7 @@ function setTag(emri, el) {
                                 <div class="userInfo">
                                     <p>${el.querySelector(".post .postInfo .userInfo p").innerHTML}</p>
                                     <span onclick="removeTag('${emri}')" style="margin-left: auto"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM8.29289 8.29289C8.68342 7.90237 9.31658 7.90237 9.70711 8.29289L12 10.5858L14.2929 8.29289C14.6834 7.90237 15.3166 7.90237 15.7071 8.29289C16.0976 8.68342 16.0976 9.31658 15.7071 9.70711L13.4142 12L15.7071 14.2929C16.0976 14.6834 16.0976 15.3166 15.7071 15.7071C15.3166 16.0976 14.6834 16.0976 14.2929 15.7071L12 13.4142L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L10.5858 12L8.29289 9.70711C7.90237 9.31658 7.90237 8.68342 8.29289 8.29289Z" fill="#808080"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM8.29289 8.29289C8.68342 7.90237 9.31658 7.90237 9.70711 8.29289L12 10.5858L14.2929 8.29289C14.6834 7.90237 15.3166 7.90237 15.7071 8.29289C16.0976 8.68342 16.0976 9.31658 15.7071 9.70711L13.4142 12L15.7071 14.2929C16.0976 14.6834 16.0976 15.3166 15.7071 15.7071C15.3166 16.0976 14.6834 16.0976 14.2929 15.7071L12 13.4142L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L10.5858 12L8.29289 9.70711C7.90237 9.31658 7.90237 8.68342 8.29289 8.29289Z" fill="#fff"/>
 </svg></span>
                                 </div>
                             </div>
@@ -4891,7 +4911,7 @@ function setTag(emri, el) {
             localStorage.setItem(`sentByUser-${emri}`, JSON.stringify(sentbyuser))
 
         }).catch(error => {
-            
+
             console.error(error);
         });
 }
@@ -4900,26 +4920,32 @@ function setTagEXT(el) {
     const emri = el.getAttribute("data-activate")
     document.getElementById("floatingDiv").style.display = 'none'
     document.getElementById("floatingDiv").innerHTML = '';
+    console.log("Pushing externally:", emri)
+    if (selectedPeople_ARRAY.includes(emri)) { return; }
+    selectedPeople_ARRAY.push(`${emri}`);
+    changeMiniProfiles()
 
-    selectedPeople.push(emri)
-    //document.getElementById("selectedPeople").innerHTML = ''
-    //selectedPeople.forEach(user => {
-    getImage(emri).then(profileSrc => {
-        document.getElementById("selectedPeople").innerHTML += `<div id="tag-${emri}-02" class="postContainer fade-in-slide-up">
+
+    console.log(selectedPeople_ARRAY)
+    document.getElementById("selectedPeople").innerHTML = ''
+    selectedPeople_ARRAY.forEach(user => {
+        getImage(user).then(profileSrc => {
+            document.getElementById("selectedPeople").innerHTML += `<div id="tag-${user}-02" class="postContainer fade-in-slide-up">
                         <div class="post extpost">
                             <div class="profilePicture">
                                 <img src="${profileSrc.imageData}">
                             </div>
                             <div class="postInfo" style="flex-direction: row;">
                                 <div class="userInfo">
-                                    <p>${emri}</p>
-                                    <span onclick="removeTag('${emri}')" style="margin-left: auto"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM8.29289 8.29289C8.68342 7.90237 9.31658 7.90237 9.70711 8.29289L12 10.5858L14.2929 8.29289C14.6834 7.90237 15.3166 7.90237 15.7071 8.29289C16.0976 8.68342 16.0976 9.31658 15.7071 9.70711L13.4142 12L15.7071 14.2929C16.0976 14.6834 16.0976 15.3166 15.7071 15.7071C15.3166 16.0976 14.6834 16.0976 14.2929 15.7071L12 13.4142L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L10.5858 12L8.29289 9.70711C7.90237 9.31658 7.90237 8.68342 8.29289 8.29289Z" fill="#808080"/>
+                                    <p>${user}</p>
+                                    <span onclick="removeTag('${user}')" style="margin-left: auto"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM8.29289 8.29289C8.68342 7.90237 9.31658 7.90237 9.70711 8.29289L12 10.5858L14.2929 8.29289C14.6834 7.90237 15.3166 7.90237 15.7071 8.29289C16.0976 8.68342 16.0976 9.31658 15.7071 9.70711L13.4142 12L15.7071 14.2929C16.0976 14.6834 16.0976 15.3166 15.7071 15.7071C15.3166 16.0976 14.6834 16.0976 14.2929 15.7071L12 13.4142L9.70711 15.7071C9.31658 16.0976 8.68342 16.0976 8.29289 15.7071C7.90237 15.3166 7.90237 14.6834 8.29289 14.2929L10.5858 12L8.29289 9.70711C7.90237 9.31658 7.90237 8.68342 8.29289 8.29289Z" fill="#fff"/>
 </svg></span>
                                 </div>
                             </div>
                         </div>
                     </div>`
+        })
     })
 
     document.getElementById("icons-possible").classList.remove("fade-in-slide-up")
@@ -4929,6 +4955,41 @@ function setTagEXT(el) {
         document.getElementById("icons-possible").classList.remove("fade-out-slide-down")
         document.getElementById("icons-possible").classList.add("fade-in-slide-up")
     }, 300)
+
+    const account_data_lc = localStorage.getItem("jeanDarc_accountData")
+    if (!account_data_lc) {
+        console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
+        return;
+    }
+
+    const account_data = JSON.parse(account_data_lc)
+
+    const pars = {
+        pin: account_data.pin, //self pin
+        name: foundName //target user
+    }
+    fetch(`https://arc.evoxs.xyz/?metode=userSent&pin=${pars.pin}&emri=${pars.name}&loggedIn=${foundName}`)
+        .then(response => response.json())
+        .then(sentbyuser => {
+            if (sentbyuser.length !== 0) {
+                const targetMarresi = emri;
+                console.log(sentbyuser)
+                const result = sentbyuser.find(entry => entry.marresi === targetMarresi);
+                if (result) {
+                    console.log("Found:", result);
+                    document.getElementById("input-textarea").value += result.contents.vleresim
+                    const event = new Event('input', { bubbles: true });
+                    document.getElementById("input-textarea").dispatchEvent(event);
+                } else {
+                    console.log("No match found for marresi =", targetMarresi);
+                }
+            }
+            localStorage.setItem(`sentByUser-${emri}`, JSON.stringify(sentbyuser))
+
+        }).catch(error => {
+
+            console.error(error);
+        });
 
 
     //})
@@ -4944,13 +5005,13 @@ function postNow(el) {
         document.getElementById("icon-spinner").style.display = null;
         document.getElementById("notice-text").innerText = 'Γίνεται μεταφόρτωση..'
         document.getElementById("notice-main").classList.add("active")
-        selectedPeople.forEach(person => {
+        selectedPeople_ARRAY.forEach(person => {
             let files = ''
             uploadedFiles.forEach(file => {
                 files += `%img:server(${file.server}):mediaId(${file.name}):mediaType(${file.type})%`
             })
             let tags = ''
-            selectedPeople.filter(item => item !== person).forEach(tag => {
+            selectedPeople_ARRAY.filter(item => item !== person).forEach(tag => {
                 tags += `@${tag} `
             })
             dataIn[person] = `${tags}${document.getElementById("input-textarea").value}${files}`
@@ -5026,7 +5087,8 @@ function postNow(el) {
 
 function removeTag(emri) {
     document.getElementById(`tag-${emri}-02`).remove()
-    selectedPeople = selectedPeople.filter(item => item !== emri);
+    selectedPeople_ARRAY = selectedPeople_ARRAY.filter(item => item !== emri);
+    changeMiniProfiles()
 }
 document.getElementById('input-textarea').addEventListener('input', function () {
     const textarea = this;
@@ -5043,10 +5105,10 @@ document.getElementById('input-textarea').addEventListener('input', function () 
         }
 
     })
-    possible = possible.filter(name => !selectedPeople.includes(name));
+    possible = possible.filter(name => !selectedPeople_ARRAY.includes(name));
 
     //console.log("Possible:", possible)
-    if (possible[0] && !selectedPeople.includes(possible[0]) && !recommendedPeopleRej.includes(possible[0])) {
+    if (possible[0] && !selectedPeople_ARRAY.includes(possible[0]) && !recommendedPeopleRej.includes(possible[0]) && selectedPeople_ARRAY.length === 0) {
         document.getElementById("icons-possible").style.display = 'flex'
         document.getElementById("tontin-input").innerHTML = getGender(removeTonos(possible[0].split(" ")[0])) === "Male" ? "τον" : "την"
         //document.getElementById("tontin-input-2").innerHTML = getGender(removeTonos((possible[0].split(" ")[0]))) === "Male" ? "τον" : "την"
@@ -5341,9 +5403,13 @@ function addMore(el) {
 window.visualViewport.addEventListener("resize", adjustFooterPosition);
 window.visualViewport.addEventListener("scroll", adjustFooterPosition);
 
-function createPost(el) {
+function createPost(el, dontClear) {
     document.getElementById("selectedPeople").innerHTML = ''
-    selectedPeople = []
+    if (!dontClear) {
+        console.log("Clearing array")
+        selectedPeople_ARRAY = []
+    }
+
 
     function setupPersonalInfo() {
         return new Promise((resolve, reject) => {
@@ -7374,3 +7440,55 @@ function showInfoAboutCryptox(meorother, user) {
 }
 
 
+function selectAndAddTag() {
+    const name = document.getElementById("userName-search").innerText
+    const el = document.createElement("div"); // or "span", "button", etc.
+    el.setAttribute("data-activate", name);
+    setTagEXT(el)
+    createPost(null, 'dontClear');
+    openKeyboard()
+}
+
+let touchStartX = 0;
+let currentX = 0;
+let isSwiping = false;
+const swipeThreshold = 150;
+const panel = document.getElementById('settings-panel');
+
+document.addEventListener('touchstart', function(e) {
+  touchStartX = e.touches[0].clientX;
+  isSwiping = true;
+}, false);
+
+document.addEventListener('touchmove', function(e) {
+  if (!isSwiping) return;
+
+  currentX = e.touches[0].clientX;
+  const deltaX = currentX - touchStartX;
+
+  // Only respond to left-to-right swipes and if the panel is activated
+  if (deltaX > 0 && panel.classList.contains('activated')) {
+    // If under threshold, move the panel
+    if (deltaX < swipeThreshold) {
+      panel.style.transform = `translateX(${deltaX}px)`;
+    } else {
+      // Past threshold – slide out and remove class
+      panel.style.transform = ''; // Reset transform
+      panel.classList.remove('activated');
+      isSwiping = false; // Stop further movement
+    }
+  }
+}, false);
+
+document.addEventListener('touchend', function(e) {
+  if (!isSwiping) return;
+
+  const deltaX = e.changedTouches[0].clientX - touchStartX;
+
+  if (deltaX < swipeThreshold) {
+    // Not enough for full swipe — snap back
+    panel.style.transform = '';
+  }
+
+  isSwiping = false;
+}, false);
