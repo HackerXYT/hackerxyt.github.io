@@ -946,6 +946,48 @@ document.addEventListener("DOMContentLoaded", function () {
     //        $("#lock").fadeIn("fast")
     //    })
     //}) testing
+
+    function patchSafeAreaInsetTop() {
+        const probe = document.getElementById('safe-area-probe');
+
+        // Wait for layout to be ready
+        requestAnimationFrame(() => {
+            const insetTop = probe.offsetHeight;
+            console.log("safe-area-inset-top is:", insetTop + "px");
+            if (insetTop !== 0) return;
+
+            const styleSheets = Array.from(document.styleSheets);
+            styleSheets.forEach(sheet => {
+                try {
+                    if (sheet.href && new URL(sheet.href).origin !== location.origin) return; // Skip cross-origin
+
+                    // Function to process the fetched or inline CSS
+                    function processCSS(cssText) {
+                        if (cssText.includes("env(safe-area-inset-top)")) {
+                            const patched = cssText.replace(/env\(safe-area-inset-top\)/g, "10px");
+                            const newStyle = document.createElement("style");
+                            newStyle.textContent = patched;
+                            document.head.appendChild(newStyle);
+                        }
+                    }
+
+                    // Handle external CSS
+                    if (sheet.href) {
+                        fetch(sheet.href)
+                            .then(res => res.text())
+                            .then(processCSS)
+                            .catch(err => console.warn("Failed to fetch", sheet.href, err));
+                    } else if (sheet.ownerNode && sheet.ownerNode.textContent) {
+                        processCSS(sheet.ownerNode.textContent);
+                    }
+                } catch (err) {
+                    console.warn("Could not access stylesheet:", sheet.href || "[inline]", err);
+                }
+            });
+        });
+    }
+    patchSafeAreaInsetTop()
+
     const safeAreaTop = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-top)') || 0);
 
     if (safeAreaTop === 0) {
@@ -2167,6 +2209,7 @@ function downloadProfiles() {
                             const checkDl = setInterval(function () {
                                 getImage(name, 'DONTMAKENEWAJAX').then(profileSrc => {
                                     if (profileSrc) {
+                                        document.getElementById("proccessing-file").innerText = `${name}.evox`
                                         downloaded++
                                         clearInterval(checkDl)
                                     }
@@ -2184,11 +2227,17 @@ function downloadProfiles() {
                 const all = fullNames.length
                 //current = downloaded
                 const percentage = Number.parseInt((downloaded * 100) / all)
+
+                updateLoadingProgress(percentage); // You can change this to your desired %
+
                 //document.getElementById("downloaded").innerHTML = percentage + "%"
                 //console.log(percentage)
                 if (percentage === 100 && runned === true && !localStorage.getItem("profilesDlOk")) {
                     localStorage.setItem("profilesDlOk", "200")
                     console.warn("All profiles are downloaded")
+                    if (document.getElementById("evox-notice").classList.contains("active")) {
+                        evalertclose()
+                    }
                     EvalertNext({
                         "title": "Η λήψη ολοκληρώθηκε με επιτυχία",
                         "description": "Τα απαιτούμενα δεδομένα έχουν ληφθεί.<br>Οι λειτουργίες της εφαρμογής θα εκτελούνται πλέον πιο γρήγορα.",
@@ -2200,12 +2249,13 @@ function downloadProfiles() {
                 } else if (runned === false && !localStorage.getItem("profilesDlOk")) {
                     EvalertNext({
                         "title": `Γίνεται λήψη δεδομένων.`,
-                        "description": "Η εφαρμογή ίσως είναι πιο αργή όσο γίνεται αυτό. Θα ειδοποιηθείς μόλις όλα είναι έτοιμα.",
-                        "buttons": ["Εντάξει"],
+                        "description": "Γίνεται λήψη των απαραίτητων δεδομένων μαθητών για τη λειτουργία της εφαρμογής. Η διαδικασία αυτή πραγματοποιείται μόνο μία φορά.",
+                        "buttons": ["Συνέχεια στο παρασκήνιο"],
                         "buttonAction": [],
                         "addons": [
                         ]
                     })
+
                     runned = true;
                 }
             }, 200)
@@ -5612,7 +5662,7 @@ function openDiscovery(el) {
         el.style.transform = "scale(1)";
     }, 300);
     el.classList.add('active')
-    document.getElementById("bar").classList.add("ai")
+    //document.getElementById("bar").classList.add("ai")
     document.getElementById("home-switch").classList.remove("active")
     document.getElementById("profile-switch").classList.remove("active")
     document.getElementById("search-switch").classList.remove("active")
@@ -5941,19 +5991,24 @@ function spawnItems(names, loadMore, oringinal) {
 let lastActiveSearchUser = null
 function switchToSentToUser(el) {
     document.getElementById("carouseli01").classList.remove("active")
+    document.getElementById("carouseli03").classList.remove("active")
     el.classList.add("active")
     document.getElementById("kataxoriseis").style.display = 'none'
+    document.getElementById("userMedia").style.display = 'none'
     document.getElementById("touser").style.display = 'flex'
     loadSentToUser(lastActiveSearchUser)
 }
 
 function switchToHome_Search(el, justfront) {
+    document.getElementById("carouseli03").classList.remove("active")
     document.getElementById("carouseli02").classList.remove("active")
     if (!el) {
         document.getElementById("carouseli01").classList.add("active")
     } else {
         el.classList.add("active")
     }
+
+    document.getElementById("userMedia").style.display = 'none'
     document.getElementById("kataxoriseis").style.display = 'flex'
     document.getElementById("touser").style.display = 'none'
     if (!justfront) {
@@ -7041,7 +7096,16 @@ function showNotice() {
 
 
 }
+function updateLoadingProgress(percent) {
+    const circle = document.querySelector('.progressCircle .progress');
+    const text = document.getElementById('progressText');
+    const radius = 45;
+    const circumference = 2 * Math.PI * radius;
 
+    const offset = circumference - (percent / 100) * circumference;
+    circle.style.strokeDashoffset = offset;
+    text.textContent = `${Math.round(percent)}%`;
+}
 function Evalert(message) {
     const exampleMessage = {
         "title": "",
@@ -7056,6 +7120,9 @@ function Evalert(message) {
     el.querySelector(".popnotice").querySelector('p').innerHTML = message.description
     let btnCount = 0
     message.buttons.forEach(button => {
+        if (button === 'Συνέχεια στο παρασκήνιο') {
+            return;
+        }
 
         document.getElementById("buttonsEvalert").innerHTML += `<div
                     onclick="${message.buttonAction[btnCount] ? message.buttonAction[btnCount] + ';evalertclose()' : 'evalertclose()'}">
@@ -7063,6 +7130,20 @@ function Evalert(message) {
                 </div>`
         btnCount++
     })
+    if (message.title === 'Γίνεται λήψη δεδομένων.') {
+        document.getElementById("circleLoading").style.display = 'flex'
+        setTimeout(function () {
+            if (document.getElementById("evox-notice").classList.contains("active")) {
+                document.getElementById("buttonsEvalert").innerHTML += `<div
+                    onclick="${message.buttonAction[btnCount] ? message.buttonAction[btnCount] + ';evalertclose()' : 'evalertclose()'}">
+                    ${message.buttons[0]}
+                </div>`
+                btnCount++
+            }
+        }, 5000)
+    } else {
+        document.getElementById("circleLoading").style.display = 'none'
+    }
     if (message.addons.length !== 0) {
         console.log("triggering 1")
         document.getElementById("cloudEvoxMain").style.gap = "10px"
@@ -7448,47 +7529,169 @@ function selectAndAddTag() {
     createPost(null, 'dontClear');
     openKeyboard()
 }
+function activeSlidingEvents(id) {
+    const swipeThreshold = 150;
+    const panel = document.getElementById(id);
+    if (!panel) return;
 
-let touchStartX = 0;
-let currentX = 0;
-let isSwiping = false;
-const swipeThreshold = 150;
-const panel = document.getElementById('settings-panel');
+    let touchStartX = 0;
+    let currentX = 0;
+    let isSwiping = false;
 
-document.addEventListener('touchstart', function(e) {
-  touchStartX = e.touches[0].clientX;
-  isSwiping = true;
-}, false);
-
-document.addEventListener('touchmove', function(e) {
-  if (!isSwiping) return;
-
-  currentX = e.touches[0].clientX;
-  const deltaX = currentX - touchStartX;
-
-  // Only respond to left-to-right swipes and if the panel is activated
-  if (deltaX > 0 && panel.classList.contains('activated')) {
-    // If under threshold, move the panel
-    if (deltaX < swipeThreshold) {
-      panel.style.transform = `translateX(${deltaX}px)`;
-    } else {
-      // Past threshold – slide out and remove class
-      panel.style.transform = ''; // Reset transform
-      panel.classList.remove('activated');
-      isSwiping = false; // Stop further movement
+    function onTouchStart(e) {
+        touchStartX = e.touches[0].clientX;
+        isSwiping = true;
     }
-  }
-}, false);
 
-document.addEventListener('touchend', function(e) {
-  if (!isSwiping) return;
+    function onTouchMove(e) {
+        if (!isSwiping) return;
 
-  const deltaX = e.changedTouches[0].clientX - touchStartX;
+        currentX = e.touches[0].clientX;
+        const deltaX = currentX - touchStartX;
 
-  if (deltaX < swipeThreshold) {
-    // Not enough for full swipe — snap back
-    panel.style.transform = '';
-  }
+        if (deltaX > 0 && panel.classList.contains('activated')) {
+            if (deltaX < swipeThreshold) {
+                panel.style.transform = `translateX(${deltaX}px)`;
+            } else {
+                panel.style.transform = '';
+                panel.classList.remove('activated');
+                isSwiping = false;
+            }
+        }
+    }
 
-  isSwiping = false;
-}, false);
+    function onTouchEnd(e) {
+        if (!isSwiping) return;
+
+        const deltaX = e.changedTouches[0].clientX - touchStartX;
+
+        if (deltaX < swipeThreshold) {
+            panel.style.transform = '';
+        }
+
+        isSwiping = false;
+    }
+
+    panel.addEventListener('touchstart', onTouchStart, false);
+    panel.addEventListener('touchmove', onTouchMove, false);
+    panel.addEventListener('touchend', onTouchEnd, false);
+}
+
+activeSlidingEvents('settings-panel');
+activeSlidingEvents('image-viewer');
+
+
+
+function showUsersMedia(el) {
+    const selectedUser = document.getElementById("userName-search").innerText
+    document.getElementById("carouseli01").classList.remove("active")
+    document.getElementById("carouseli02").classList.remove("active")
+    el.classList.add("active")
+    document.getElementById("kataxoriseis").style.display = 'none'
+    document.getElementById("userMedia").style.display = 'flex'
+    document.getElementById("touser").style.display = 'none'
+    document.getElementById("userMedia").style.display = 'flex'
+    const account_data = localStorage.getItem("jeanDarc_accountData")
+    if (!account_data) { return; }
+    const pars = JSON.parse(account_data)
+    document.getElementById("userMediaSpawn").classList.add("centerIt")
+    document.getElementById("userMediaSpawn").innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;text-align: center;margin-top:15px;gap: 5px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="width: 25px;--active-upload: #ffffff;
+            --track-upload: #4a4a4a;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg>
+            <p>Γίνεται λήψη των πολυμέσων.</p></div>`
+    fetch(`https://arc.evoxs.xyz/?metode=getMedia&emri=${selectedUser}&pin=${atob(pars.pin)}&requestorType=outsider&requestor=${foundName}`)
+        .then(response => response.json())
+        .then(mediaFiles => {
+            document.getElementById("userMediaSpawn").innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;text-align: center;margin-top:15px;gap: 5px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="width: 25px;--active-upload: #ffffff;
+            --track-upload: #4a4a4a;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg>
+            <p>Γίνεται φόρτωση των πολυμέσων</p></div>`
+
+            const container = document.getElementById("userMediaSpawn");
+            let cn = 0
+
+            mediaFiles.forEach(media => {
+
+                const img = new Image();
+
+                img.className = 'fade-in-slide-up';
+                img.src = `https://cdn.evoxs.xyz/jeannedarc/${selectedUser}/${media}/1`;
+                img.onload = () => {
+
+                    cn++
+
+                    if (cn === 1) {
+                        container.innerHTML = ''
+                        container.classList.remove("centerIt");
+                    }
+                    container.appendChild(img);
+
+                };
+
+                img.onclick = function () {
+                    document.getElementById("image-viewer").classList.add("activated")
+                    document.getElementById("image-viewer-img").src = ""
+                    document.getElementById("image-viewer-img").src = img.src
+                    //window.location.href = `https://cdn.evoxs.xyz/jeannedarc/${selectedUser}/${media}/all`;
+                }
+
+                img.onerror = () => {
+                    img.className = 'broken';
+                    img.src = 'https://cdn.evoxs.xyz/jeannedarc/404/404.png/1'
+                    container.appendChild(img);
+                };
+            });
+
+            if (mediaFiles.length === 0) {
+                document.getElementById("userMediaSpawn").innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;text-align: center;margin-top:15px;gap: 5px;"><svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="40px" height="40px" viewBox="0 0 24 24" data-name="Layer 1"><path d="M19.5,4H10a1,1,0,0,0,0,2H19.5a1,1,0,0,1,1,1v6.76l-1.88-1.88a3,3,0,0,0-1.14-.71,1,1,0,1,0-.64,1.9.82.82,0,0,1,.36.23l3.31,3.29a.66.66,0,0,0,0,.15.83.83,0,0,0,0,.15,1.18,1.18,0,0,0,.13.18.48.48,0,0,0,.09.11.9.9,0,0,0,.2.14.6.6,0,0,0,.11.06.91.91,0,0,0,.37.08,1,1,0,0,0,1-1V7A3,3,0,0,0,19.5,4ZM3.21,2.29A1,1,0,0,0,1.79,3.71L3.18,5.1A3,3,0,0,0,2.5,7V17a3,3,0,0,0,3,3H18.09l1.7,1.71a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42ZM4.5,7a1,1,0,0,1,.12-.46L7.34,9.25a3,3,0,0,0-1,.63L4.5,11.76Zm1,11a1,1,0,0,1-1-1V14.58l3.3-3.29a1,1,0,0,1,1.4,0L15.91,18Z"/></svg>
+            <p>Η συλλογή του/της είναι άδεια.</p></div>`
+            }
+
+
+
+
+
+        }).catch(error => {
+            console.log('Error:', error);
+            document.getElementById("userMediaSpawn").innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;text-align: center;margin-top:15px;gap: 5px;"><svg xmlns="http://www.w3.org/2000/svg" width="45px" height="45px" viewBox="0 0 24 24" fill="none">
+<path d="M5.67139 4.25705L19.7431 18.3287C21.1538 16.6049 22.0001 14.4013 22.0001 12C22.0001 6.47715 17.523 2 12.0001 2C9.59885 2 7.39526 2.84637 5.67139 4.25705Z" fill="#f54248"/>
+<path d="M4.25705 5.67126C2.84637 7.39514 2 9.59873 2 12C2 17.5228 6.47715 22 12 22C14.4013 22 16.6049 21.1536 18.3287 19.7429L4.25705 5.67126Z" fill="#f54248"/>
+</svg><p style="">Σφάλμα Δικαιωμάτων</p></div>`
+        });
+}
+
+function openSettings() {
+    document.getElementById('settings-panel').classList.add('activated')
+    const img = document.getElementById("account-settings-img")
+    const emri = document.getElementById("account-settings-name")
+    const klasa = document.getElementById("account-settings-klasa")
+
+    informacion(foundName)
+        .then(info => {
+            selfClass = `${info.seksioni}${info.klasa}`
+            klasa.innerText = selfClass
+            if (info.has_participated && info.has_participated === 'true') {
+
+            }
+
+        })
+    emri.innerText = foundName
+    getImage(foundName).then(profileSrc => {
+        count++
+        img.src = profileSrc.imageData
+    })
+
+
+}
+
+function closeSettings() {
+    document.getElementById('settings-panel').classList.remove('activated')
+}

@@ -983,7 +983,8 @@
                     <div class="editButton" onclick="openEditProfile()">
                         Επεξεργασία
                     </div>
-                    <div onclick="document.getElementById('settings-panel').classList.add('activated')" class="editButton">
+                    <div onclick="openSettings()"
+                        class="editButton">
                         Ρυθμίσεις
                     </div>
                 </div>
@@ -1605,13 +1606,14 @@
                     <div class="carouselItem" id="carouseli02" onclick="switchToSentToUser(this)">
                         Λήψεις
                     </div>
-                    <div onclick="window.location.reload()" class="carouselItem">
+                    <div id="carouseli03" onclick="showUsersMedia(this)" class="carouselItem">
                         Πολυμέσα
                     </div>
                 </div>
 
 
-                <div class="fromMe_Slider" style="width: 100%;display: flex;flex-direction: column;" id="kataxoriseis">
+                <div class="fromMe_Slider fade-in-slide-up" style="width: 100%;display: flex;flex-direction: column;"
+                    id="kataxoriseis">
                     <div class="sentByUser" id="sentBySelectedUser">
 
                     </div>
@@ -1619,6 +1621,12 @@
                 <div class="fromMe_Slider fade-in-slide-up" style="width: 100%;display: none;flex-direction: column;"
                     id="touser">
                     <div class="sentByUser" id="sentToSelectedUser">
+
+                    </div>
+                </div>
+                <div class="fromMe_Slider fade-in-slide-up" style="width: 100%;display: none;flex-direction: column;"
+                    id="userMedia">
+                    <div style="margin-top: 10px;" class="media-grid" id="userMediaSpawn">
 
                     </div>
                 </div>
@@ -2061,9 +2069,36 @@
     </div>
 
     <div class="PCCONTAINER">
+        <div id="image-viewer" class="slidingPanel">
+            <div class="settings-row" style="justify-content: left;">
+                <svg onclick="document.getElementById('settings-panel').classList.remove('activated')"
+                    xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                        fill="#fff" />
+                </svg>
+                Πίσω
+            </div>
+            <div
+                style="display: flex;flex-direction: column;height: 98%;justify-content: center;align-items: center;width: 100%;">
+                <img style="width: 100%;border-radius: 15px;height: auto;max-height: 95%;margin-top: auto;"
+                    id="image-viewer-img">
+                <div style="margin-top:auto;" class="buttonsPIN">
+                    <div style="display: flex;width: 100%;justify-content: center;align-items: center;color:#b83131">
+                        Διαγραφή
+                    </div>
+                    <div style="display: flex;width: 100%;justify-content: center;align-items: center;">
+                        Λήψη
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="PCCONTAINER">
         <div id="settings-panel" class="slidingPanel">
             <div class="settings-row">
-                <svg onclick="document.getElementById('settings-panel').classList.remove('activated')" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                <svg onclick="closeSettings()"
+                    xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                     <path
                         d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
                         fill="#fff" />
@@ -2071,10 +2106,10 @@
                 <p onclick="window.location.reload()">Αποσύνδεση</p>
             </div>
             <div class="account-preview-settings">
-                <img src="user.gif">
-                <p>Name</p>
-                <span>accountinfo</span>
-                <div style="width: auto;border-radius: 15px;margin-top:5px;" class="buttonCarouseli">
+                <img id="account-settings-img" src="user.gif">
+                <p id="account-settings-name">Name</p>
+                <span id="account-settings-klasa">accountinfo</span>
+                <div onclick="closeSettings();openEditProfile()" style="width: auto;border-radius: 15px;margin-top:5px;" class="buttonCarouseli">
                     Επεξεργασία προφίλ <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg"
                         width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path
@@ -2224,7 +2259,7 @@
                                     </g>
                                 </g>
                             </svg>
-                            
+
                             Έκδοση εφαρμογής
                         </div>
                         <div class="hint-option">v00.21</div>
@@ -2401,6 +2436,7 @@
                 </div>
 
             </div>
+
             <div class="buttonsPIN">
                 <div onclick="setTimeout(function () {changePin(null, null, 'newMetode')}, 300)">
                     Αλλαγή τώρα
@@ -2441,6 +2477,17 @@
                     <img style="width: 40px;height: 40px;border-radius: 50%;"
                         src="../evox-epsilon-beta/evox-logo-apple.png">
                 </div>
+            </div>
+            <div class="circleLoading" id="circleLoading"
+                style="display: none;flex-direction: column;width: 100%;height: auto;justify-content: center;align-items: center;">
+                <div class="loaderContainer">
+                    <svg class="progressCircle" width="100" height="100" viewBox="0 0 100 100">
+                        <circle class="bg" cx="50" cy="50" r="45" />
+                        <circle class="progress" cx="50" cy="50" r="45" />
+                    </svg>
+                    <div class="progressText" id="progressText">0%</div>
+                </div>
+                <p style="margin-top:10px;" id="proccessing-file"></p>
             </div>
             <div class="buttonsPIN" id="buttonsEvalert">
                 <div onclick="evalertclose()">
@@ -3204,6 +3251,13 @@
 
 
     </div>
+    <div id="safe-area-probe" style="
+  position: absolute;
+  top: 0;
+  height: env(safe-area-inset-top);
+  visibility: hidden;
+  pointer-events: none;
+"></div>
 </body>
 <script src="../scripts/jquery-3.7.0.js"></script>
 <script src="database.js"></script>
