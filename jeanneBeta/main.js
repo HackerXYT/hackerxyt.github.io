@@ -954,6 +954,12 @@ document.addEventListener("DOMContentLoaded", function () {
         requestAnimationFrame(() => {
             const insetTop = probe.offsetHeight;
             console.log("safe-area-inset-top is:", insetTop + "px");
+            document.getElementById("icon-checkmark").style.display = 'none'
+            document.getElementById("icon-error").style.display = null
+            document.getElementById("icon-spinner").style.display = "none";
+            document.getElementById("notice-text").innerText = `Debug Active. env top: ${insetTop}px`
+            document.getElementById("notice-main").classList.add("active")
+            setTimeout(function() {document.getElementById("notice-main").classList.remove("active")})
             if (insetTop !== 0) return;
 
             const styleSheets = Array.from(document.styleSheets);
