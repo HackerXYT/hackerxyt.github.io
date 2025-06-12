@@ -959,7 +959,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("icon-spinner").style.display = "none";
             document.getElementById("notice-text").innerText = `Debug Active. env top: ${insetTop}px`
             document.getElementById("notice-main").classList.add("active")
-            setTimeout(function() {document.getElementById("notice-main").classList.remove("active")})
+            setTimeout(function() {document.getElementById("notice-main").classList.remove("active")},6000)
             if (insetTop !== 0) return;
 
             const styleSheets = Array.from(document.styleSheets);
