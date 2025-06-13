@@ -6641,3 +6641,233 @@ select:focus {
         opacity: 1;
     }
 }
+
+.socialReccomendation {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    justify-content: center;
+    padding: 0px 20px;
+}
+
+.socialReccomendation span {
+    color: #777777;
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: auto;
+}
+
+.socialReccomendation .roundedReccomendationBox {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 1px #212121 solid;
+    background-color: #101010;
+    height: auto;
+    border-radius: 15px;
+}
+
+.socialReccomendation .roundedReccomendationBox .cloudsContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.cloudProfile-Horizontal {
+    padding: 40px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.AITPreview {
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.cloudProfile-Horizontal .mainIcon {
+    position: relative;
+    z-index: 10;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    animation: popIn2 0.5s ease forwards;
+}
+
+.cloudBubble {
+    position: absolute;
+    border-radius: 50%;
+    animation: popIn2 0.5s ease forwards;
+}
+
+.cloudBubble img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.cloudBubble:nth-child(2) {
+    top: 15px;
+    left: 95px;
+    animation: float1 13s infinite ease-in-out;
+}
+
+.cloudBubble:nth-child(2) img {
+    width: 45px;
+    height: 45px;
+}
+
+.cloudBubble:nth-child(3) {
+    top: 0;
+    right: 80px;
+    animation: float2 13s infinite ease-in-out;
+}
+
+.cloudBubble:nth-child(3) img {
+    width: 55px;
+    height: 55px;
+}
+
+.cloudBubble:nth-child(4) {
+    bottom: 5px;
+    left: 70px;
+    animation: float3 13s infinite ease-in-out;
+}
+
+.cloudBubble:nth-child(4) img {
+    width: 60px;
+    height: 60px;
+}
+
+.cloudBubble:nth-child(5) {
+    top: 35px;
+    left: 50px;
+    animation: float4 13s infinite ease-in-out;
+}
+
+.cloudBubble:nth-child(5) img {
+    width: 30px;
+    height: 30px;
+}
+
+.cloudBubble:nth-child(6) {
+    bottom: 5px;
+    right: 90px;
+    animation: float1 13s infinite ease-in-out;
+}
+
+.cloudBubble:nth-child(6) img {
+    width: 45px;
+    height: 45px;
+}
+
+.cloudBubble:nth-child(7) {
+    top: 5px;
+    right: 145px;
+    animation: float2 13s infinite ease-in-out;
+}
+
+.cloudBubble:nth-child(7) img {
+    width: 25px;
+    height: 25px;
+}
+
+.cloudBubble:nth-child(8) {
+    top: 60px;
+    right: 75px;
+    animation: float3 13s infinite ease-in-out;
+}
+
+.cloudBubble:nth-child(8) img {
+    width: 25px;
+    height: 25px;
+}
+
+@keyframes float1 {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+@keyframes float2 {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(6px);
+    }
+}
+
+@keyframes float3 {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+@keyframes float4 {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(8px);
+    }
+}
+
+.bottomInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: flex-start;
+    width: 100%;
+    height: auto;
+    background-color: #0a0a0a;
+    gap:10px;
+    padding:15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.bottomInfo p {
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.bottomInfo span {
+    font-size: 16px;
+    color: #777777;
+    font-weight: 200;
+    text-align: left;
+}

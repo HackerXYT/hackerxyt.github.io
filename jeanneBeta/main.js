@@ -1,4 +1,4 @@
-const appVersion = "2.0.1"
+const appVersion = "2.0.2"
 for (let i = 0; i < 3; i++) {
     document.getElementById(`version${i + 1}`).innerText = `${i + 1 !== 2 ? appVersion : `v${appVersion}`}`
 }
@@ -1288,6 +1288,31 @@ function informacion(emri, forceReload) {
 
 }
 
+function isPermissionGranted(emri) {
+
+    return new Promise((resolve, reject) => {
+        fetch(`https://arc.evoxs.xyz/?metode=permissions&emri=${encodeURIComponent(foundName)}&pin=${atob(JSON.parse(localStorage.getItem("jeanDarc_accountData")).pin)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.view && data.view.receivedByUser && data.view.receivedByUser.includes(emri)) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+
+
+}
+
 const loadingHTML = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 50 50" width="25px"
                 height="25px" style="enable-background:new 0 0 50 50;" xml:space="preserve">
@@ -1981,30 +2006,36 @@ function attach() {
     }
     document.body.style.backgroundColor = '#101010'//'rgb(5,2,16)'
     //return;
-    document.getElementById("splashLogo").style.transform = "scale(15)"
+    document.getElementById("splashLogo").style.transform = "scale(50)"
     document.getElementById("splashLogo").style.opacity = "0"
     setTimeout(function () {
-        $("#hexa").fadeOut("fast", function () {
-            $("#tasks").fadeOut("fast")
-            document.getElementById("name-sur-view").innerText = foundName
-            const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
-            const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
-            const f = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
-            //console.log(f.length)
-            if (f.length > 1) {
 
-                document.getElementById("emri").innerText = `${transformGreekName(foundName, 0)}`
+        $("#hexa").fadeOut("fast")
 
-            } else {
-                document.getElementById("emri").innerText = `${transformGreekName(foundName, 0)} ${transformGreekName(foundName, 1)}`
-            }
+        $("#tasks").fadeOut("fast")
+
+        document.getElementById("name-sur-view").innerText = foundName
+        const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
+        const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
+        const f = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
+        //console.log(f.length)
+        if (f.length > 1) {
+
+            document.getElementById("emri").innerText = `${transformGreekName(foundName, 0)}`
+
+        } else {
+            document.getElementById("emri").innerText = `${transformGreekName(foundName, 0)} ${transformGreekName(foundName, 1)}`
+        }
 
 
 
-            $("#app").fadeIn("fast")
-            document.getElementById("navigation").classList.add("active")
 
-        })
+        //document.getElementById("app").style.opacity = "0"
+        //document.getElementById("app").style.display = "flex"
+        //document.getElementById("app").style.opacity = "1"
+        $("#app").fadeIn("fast")
+
+        document.getElementById("navigation").classList.add("active")
 
         if (localStorage.getItem("jeanne_persistance")) {
             const persistance = JSON.parse(localStorage.getItem("jeanne_persistance"));
@@ -2020,6 +2051,8 @@ function attach() {
             }
         }
 
+
+
         spawnRandom()
 
         informacion(foundName)
@@ -2028,6 +2061,7 @@ function attach() {
             })
 
         //seksioni->
+
 
         const url = new URL(window.location.href);
         const params = new URLSearchParams(url.search);
@@ -2061,7 +2095,7 @@ function attach() {
                     console.error(error);
                 });
         }
-    }, 550)
+    }, 250)
 
 }
 
@@ -2134,8 +2168,8 @@ async function spawnRandom(redo, frontEndLoading) {
         const response = await fetch(`https://arc.evoxs.xyz/?metode=forYou&emri=${foundName}&pin=${pin}&id=6`);
         const ranData = await response.text();
 
-        //console.log("randata:", ranData)
-        if (ranData !== 'Denied') {
+        console.log("randata:", ranData)
+        if (ranData !== 'Denied' && ranData !== "[]") {
             const data = JSON.parse(ranData);
             let icount = 0
             for (const post of data) {
@@ -2293,7 +2327,7 @@ async function spawnRandom(redo, frontEndLoading) {
                                 <div class="postContent">
                                     <p>
                                     <vox onclick="extMention('${foundName}')" class="mention ${getGender(removeTonos(foundName.split(" ")[0])) === "Female" ? "female" : "male"}">@${foundName}</vox><br>
-                                    Δεν μπορείς να δεις τις δημόσιες αναρτήσεις ακόμα, δοκίμασε ξανά σε λίγες μέρες ή ζήτα πρόσβαση από τους διαχειριστές.
+                                    Δεν υπάρχουν δημόσιες αναρτήσεις για να δεις, δοκίμασε να ακολουθήσεις διάφορους συμμαθητές σου και ξανά δοκίμασε.
                                     </p>
                                 </div>
                             </div>
@@ -6420,6 +6454,8 @@ function activateShare(el) {
         console.warn("No active user")
     }
 }
+
+
 function showProfileInfo(emri) {
     lastActiveSearchUser = emri
     const container = document.getElementById("search-in");
@@ -6443,6 +6479,7 @@ function showProfileInfo(emri) {
     container.style.display = 'block'
     prevContainer.style.display = 'none'
     document.getElementById("search-cont-3").style.display = 'none'
+
     async function final() {
         const profileSrc = await getImage(emri); //the image of the person reffered
         const pfp = await getEvoxProfile(emri);
@@ -6455,6 +6492,13 @@ function showProfileInfo(emri) {
         }
         document.getElementById("darc-user-search-profile").src = src;
 
+
+        //isPermissionGranted(emri)
+        //    .then(perms => {
+        //        if(perms === false) {
+        //            document.getElementById("socialRecommendation").style.display = 'flex'
+        //        }
+        //    })
 
         informacion(emri)
             .then(info => {
@@ -6471,8 +6515,6 @@ function showProfileInfo(emri) {
                     }
                     console.warn("Classmates class not available")
                 }
-
-
             })
             .catch(error => {
                 console.error("Jeanne D'arc Database is offline.");
@@ -6701,7 +6743,7 @@ function showProfileInfo(emri) {
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25px" height="25px" viewBox="0 -0.5 17 17" version="1.1" class="si-glyph si-glyph-deny"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                         <path d="M9.016,0.06 C4.616,0.06 1.047,3.629 1.047,8.029 C1.047,12.429 4.615,15.998 9.016,15.998 C13.418,15.998 16.985,12.429 16.985,8.029 C16.985,3.629 13.418,0.06 9.016,0.06 L9.016,0.06 Z M3.049,8.028 C3.049,4.739 5.726,2.062 9.016,2.062 C10.37,2.062 11.616,2.52 12.618,3.283 L4.271,11.631 C3.508,10.629 3.049,9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.544,13.583 5.569,12.889 L13.878,4.58 C14.571,5.555 14.982,6.743 14.982,8.028 C14.981,11.317 12.306,13.994 9.016,13.994 L9.016,13.994 Z" fill="#ff481bc5" class="si-glyph-fill">
                         </path></g></svg>
-                        Δεν μπορείς να δεις τις ${document.getElementById("sentBySelectedUser").innerHTML !== ""? "υπόλοιπες " : ""}καταχωρήσεις.<br>Ακολούθησε τον χρήστη για να ξεκλειδώσεις αυτή τη λειτουργία.</div>
+                        Δεν μπορείς να δεις τις ${document.getElementById("sentBySelectedUser").innerHTML !== "" ? "υπόλοιπες " : ""}καταχωρήσεις.<br>Ακολούθησε τον χρήστη για να ξεκλειδώσεις αυτή τη λειτουργία.</div>
                         ` : ""}
                     </div>`
 

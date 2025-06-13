@@ -683,7 +683,8 @@
                 </svg>
                 <p>Τα είδες όλα!</p>
                 <span style="font-size: 14px;
-    color: #888;">Έχεις δει όλες τις καταχωρήσεις που είναι διαθέσιμες σε εσένα.<br>Αν θέλεις να δεις περισσότερες, μπορείς να ζητήσεις πρόσβαση από τους συμμαθητές σου.</span>
+    color: #888;">Έχεις δει όλες τις καταχωρήσεις που είναι διαθέσιμες σε εσένα.<br>Αν θέλεις να δεις περισσότερες,
+                    μπορείς να ζητήσεις πρόσβαση από τους συμμαθητές σου.</span>
             </div>
             <div id="loadingIndicator-fy" style="opacity: 0; text-align: center; padding: 10px;padding-bottom: 15%;">
                 <div class="spinner center">
@@ -1001,7 +1002,6 @@
                         Ρυθμίσεις
                     </div>
                 </div>
-                
                 <div class="semiCarousel large">
                     <div class="carouselItem active" id="carouselItem-1" onclick="showFromMe(this)">
                         Καταχωρήσεις
@@ -1605,14 +1605,42 @@
                     </div>
                 </div>
                 <div class="buttonsEdit">
-                    <div id="share-start" onclick="activateShare(this)" class="showProfileBtn editButton" data-active="null"
-                        style="height: auto;margin-right: 0;padding: 6px 25px;border:none">
+                    <div id="share-start" onclick="activateShare(this)" class="showProfileBtn editButton"
+                        data-active="null" style="height: auto;margin-right: 0;padding: 6px 25px;border:none">
                         Ακολούθησε
                     </div>
-                    <div onclick="selectAndAddTag()"  class="editButton">
+                    <div onclick="selectAndAddTag()" class="editButton">
                         Αναφορά
                     </div>
                 </div>
+                <div class="socialReccomendation fade-in-slide-up" id="socialRecommendation" style="display: none;">
+                    <span>Περισσότερες επιλογές</span>
+                    <div class="roundedReccomendationBox">
+                        <div class="cloudsContainer">
+                            
+                            <div class="cloudProfile-Horizontal" id="recommendationClouds">
+                                <div class="mainIcon"><img style="width:60px;height: 60px;;" src="choiceb.jpg" alt="Google"></div>
+                                <div class="cloudBubble"><img src="choiceb.jpg" alt="Google"></div>
+                                <div class="cloudBubble"><img src="geometric.jpg" alt="Person"></div>
+                                <div class="cloudBubble"><img src="recap-new.png" alt="AT"></div>
+                                <div class="cloudBubble"><img src="recap.png" alt="B"></div>
+                                <div class="cloudBubble"><img src="user.gif" alt="Apple Pay"></div>
+                                <div class="cloudBubble"><img src="image_processing20210917-11582-kv16qe.png"
+                                        alt="Apple"></div>
+                                <div class="cloudBubble"><img src="0.png" alt="Glow"></div>
+                            </div>
+
+                        </div>
+                        <div class="bottomInfo">
+                            <p>Προτάσεις για εσένα</p>
+                            <span>Μπορείς να ζητήσεις από <vox id="tontin-emri"></vox> να δεις τις καταχωρήσεις του.</span>
+                            <div class="showProfileBtn editButton">
+                                Αναφορά
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="semiCarousel">
                     <div class="carouselItem active" id="carouseli01" onclick="switchToHome_Search(this)">
                         Καταχωρήσεις
