@@ -4517,6 +4517,7 @@ input:-webkit-autofill:active {
     border-bottom: 1px solid #565656;
     /* Main border */
     position: relative;
+    transition: border 0.3s ease;
 }
 
 .semiCarousel.large {
@@ -4530,6 +4531,11 @@ input:-webkit-autofill:active {
     cursor: pointer;
     padding-bottom: 10px;
     /* Adjust spacing */
+}
+
+.carouseliItem:has(.buttonCarouseli.done) {
+    order: 999;
+    /* large number so it goes to the end */
 }
 
 .carouselItem.active {
@@ -4840,19 +4846,24 @@ input:-webkit-autofill:active {
     flex-direction: column;
     padding: 30px;
     scroll-behavior: smooth;
-    background: #191919;
+    background: rgb(16, 16, 16);
     z-index: 998;
     box-sizing: border-box;
     color: white;
     transform: translateX(100vw);
     transition: transform 0.35s ease, height 1s ease-in-out;
     overflow-x: hidden;
-    touch-action: none;
+    overflow-y: auto;
+    touch-action: pan-y;
     user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
     gap: 10px;
     border-radius: 20px;
+}
+
+.slidingPanel.noPadding {
+    padding: 5px
 }
 
 .slidingPanel.activated {
@@ -4864,6 +4875,11 @@ input:-webkit-autofill:active {
     align-items: center;
     justify-content: space-between;
     width: 100%;
+}
+
+.settings-row vox {
+    display: flex;
+    align-items: center;
 }
 
 .settings-row p {
@@ -4890,6 +4906,7 @@ input:-webkit-autofill:active {
     justify-content: center;
     align-items: center;
 }
+
 .account-preview-settings p {
     color: #fff;
 }
@@ -4918,7 +4935,10 @@ input:-webkit-autofill:active {
     width: 100%;
     display: flex;
     flex-direction: column;
-    /*gap: 10px;AUTOREMOVE-BACKGROUND*/
+}
+
+.section-buttons.withbg {
+    gap: 10px;
 }
 
 .section-a-button {
@@ -4930,21 +4950,29 @@ input:-webkit-autofill:active {
     padding: 10px;
     padding-left: 0px;
     padding-right: 0px;
-    /*background-color: #121212;AUTOREMOVE-BACKGROUND*/
     border-radius: 15px;
     box-sizing: border-box;
 }
 
-.section-a-button svg:nth-child(2) {
-    /*margin-right: 10px;AUTOREMOVE-BACKGROUND*/
+.section-a-button.withbg {
+    background-color: #212121;
+    transition: border 0.3s ease;
 }
+
+.section-a-button.withbg svg:nth-child(2) {
+    margin-right: 10px;
+}
+
 
 .title-button-section {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 10px;
-    /*margin-left: 10px;AUTOREMOVE-BACKGROUND*/
+}
+
+.section-a-button.withbg .title-button-section {
+    margin-left: 10px;
 }
 
 .title-button-section svg {
@@ -4961,6 +4989,7 @@ input:-webkit-autofill:active {
 .section-buttons.squared .section-a-button .title-button-section svg {
     border-radius: 15px;
 }
+
 .hint-option {
     color: #838383;
     display: flex;
@@ -4969,6 +4998,7 @@ input:-webkit-autofill:active {
     font-weight: 200;
     gap: 5px;
 }
+
 .applePopup {
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -6566,47 +6596,48 @@ select:focus {
 
 /*charts*/
 .loaderContainer {
-  position: relative;
-  width: 100px;
-  height: 100px;
-  margin-top: 20px;
-  animation: fadeIn 0.6s ease forwards;
-  opacity: 0;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-top: 20px;
+    animation: fadeIn 0.6s ease forwards;
+    opacity: 0;
 }
 
 .progressCircle {
-  transform: rotate(-90deg);
+    transform: rotate(-90deg);
 }
 
 .progressCircle .bg {
-  fill: none;
-  stroke: #64542b;
-  stroke-width: 10;
+    fill: none;
+    stroke: #64542b;
+    stroke-width: 10;
 }
 
 .progressCircle .progress {
-  fill: none;
-  stroke: #eadf6b;
-  stroke-width: 10;
-  stroke-linecap: round;
-  stroke-dasharray: 283; /* 2πr ≈ 2*3.14*45 = 283 */
-  stroke-dashoffset: 283;
-  transition: stroke-dashoffset 0.4s ease;
+    fill: none;
+    stroke: #eadf6b;
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 283;
+    /* 2πr ≈ 2*3.14*45 = 283 */
+    stroke-dashoffset: 283;
+    transition: stroke-dashoffset 0.4s ease;
 }
 
 .progressText {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 18px;
-  font-weight: bold;
-  color: #ffffff;
-  font-family: sans-serif;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    font-family: sans-serif;
 }
 
 @keyframes fadeIn {
-  to {
-    opacity: 1;
-  }
+    to {
+        opacity: 1;
+    }
 }

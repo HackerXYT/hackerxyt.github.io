@@ -28,7 +28,7 @@ self.addEventListener('notificationclick', function (event) {
 
 
 
-const CACHE_NAME = 'jeanne-cache-v25';
+const CACHE_NAME = 'jeanne-cache-v26';
 const STATIC_ASSETS = [
     '/jeanneBeta/',
 ];

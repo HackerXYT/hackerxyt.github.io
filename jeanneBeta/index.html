@@ -224,7 +224,7 @@
             <span>registered under Evox©</span>
             <p>Διεύθυνση IP: <span id="ipIdent"></span></p>
             <p>Συσκευή: <span id="deviceInfo"></span></p>
-            <p>Έκδοση: <span>1.9.97</span></p>
+            <p>Έκδοση: <span id="version3">1.9.97</span></p>
             <p>Δοκιμαστική λειτουργία: <span>Ενεργή [BETA]</span></p>
             <p>Επανεκκίνηση: <span onclick="window.location.reload()">Τώρα</span></p>
         </div>
@@ -673,7 +673,7 @@
             <div class="foryou-discovery mentioned" id="mentioned">
 
             </div>
-            <div id="loadingIndicator-fy" style="opacity: 0; text-align: center; padding: 10px;padding-bottom: 30%;">
+            <div id="loadingIndicator-fy" style="opacity: 0; text-align: center; padding: 10px;padding-bottom: 15%;">
                 <div class="spinner center">
                     <div class="spinner-blade"></div>
                     <div class="spinner-blade"></div>
@@ -983,16 +983,15 @@
                     <div class="editButton" onclick="openEditProfile()">
                         Επεξεργασία
                     </div>
-                    <div onclick="openSettings()"
-                        class="editButton">
+                    <div onclick="openSettings()" class="editButton">
                         Ρυθμίσεις
                     </div>
                 </div>
-                <div class="semiCarousel">
+                <div class="semiCarousel large">
                     <div class="carouselItem active" id="carouselItem-1" onclick="showFromMe(this)">
                         Καταχωρήσεις
                     </div>
-                    <div class="carouselItem" id="carouselItem-2"
+                    <div style="display: none;" class="carouselItem" id="carouselItem-2"
                         onclick="document.getElementById('devActions').style.display = 'flex';document.getElementById('settings').style.display = 'flex'">
                         Προς εσένα
                     </div>
@@ -1061,12 +1060,12 @@
                     </div>
                 </div>
                 <div class="fromMe_Slider" style="width: 100%;display: flex;flex-direction: column;" id="fromMe_Slider">
-                    <div class="finishSetup">
+                    <div class="finishSetup" id="finishSetup" style="display: none;">
                         <div class="rowInfo">
                             <p>Ολοκληρώστε το προφίλ σας</p>
                             <span>Απομένουν 2</span>
                         </div>
-                        <div class="carouseli-recommend">
+                        <div class="carouseli-recommend" id="carouseli-recommend">
                             <div class="carouseliItem">
                                 <div class="icon-carouseli">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
@@ -1319,7 +1318,7 @@
                                     </g>
                                 </g>
                             </svg>
-                            <span>Έκδοση 1.9.97</span>
+                            <span>Έκδοση <vox id="version1">...</vox></span>
                         </div>
                         <div onclick="reset()" class="anInfo">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
@@ -2097,19 +2096,20 @@
     <div class="PCCONTAINER">
         <div id="settings-panel" class="slidingPanel">
             <div class="settings-row">
-                <svg onclick="closeSettings()"
-                    xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                <svg onclick="closeSettings()" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                    viewBox="0 0 24 24" fill="none">
                     <path
                         d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
                         fill="#fff" />
                 </svg>
-                <p onclick="window.location.reload()">Αποσύνδεση</p>
+                <p onclick="signOut()">Αποσύνδεση</p>
             </div>
             <div class="account-preview-settings">
                 <img id="account-settings-img" src="user.gif">
                 <p id="account-settings-name">Name</p>
                 <span id="account-settings-klasa">accountinfo</span>
-                <div onclick="closeSettings();openEditProfile()" style="width: auto;border-radius: 15px;margin-top:5px;" class="buttonCarouseli">
+                <div onclick="closeSettings();openEditProfile()" style="width: auto;border-radius: 15px;margin-top:5px;"
+                    class="buttonCarouseli">
                     Επεξεργασία προφίλ <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg"
                         width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path
@@ -2121,7 +2121,7 @@
             <div class="settings-section">
                 <p class="section-title">Περιεχόμενο</p>
                 <div class="section-buttons">
-                    <div class="section-a-button">
+                    <div onclick="showSavedPosts()" class="section-a-button">
                         <div class="title-button-section"><svg xmlns="http://www.w3.org/2000/svg" width="20px"
                                 height="20px" viewBox="0 0 24 24" fill="none">
                                 <path
@@ -2136,7 +2136,7 @@
                         </svg>
                     </div>
 
-                    <div class="section-a-button">
+                    <div onclick="showLikedPosts()" class="section-a-button">
                         <div class="title-button-section">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
                                 fill="none">
@@ -2159,7 +2159,7 @@
                 <p class="section-title">Προτιμήσεις</p>
                 <div class="section-buttons squared">
 
-                    <div class="section-a-button">
+                    <div onclick="openChangeClass()" class="section-a-button">
                         <div class="title-button-section">
                             <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -2173,7 +2173,7 @@
 
                             Αλλαγή τάξης
                         </div>
-                        <div class="hint-option">ΓΟΠ2<svg style="transform: rotate(180deg)"
+                        <div id="selfClassPreview" class="hint-option">{replaceme}<svg style="transform: rotate(180deg)"
                                 xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
                                 fill="none">
                                 <path
@@ -2194,7 +2194,7 @@
                             </svg>
                             PIN Λογαριασμού
                         </div>
-                        <div class="hint-option">Ασφαλές<svg style="transform: rotate(180deg)"
+                        <div class="hint-option"><vox id="pin-preview-strength">?</vox><svg style="transform: rotate(180deg)"
                                 xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
                                 fill="none">
                                 <path
@@ -2203,7 +2203,7 @@
                             </svg></div>
                     </div>
 
-                    <div class="section-a-button">
+                    <div onclick="checkForLocal()" class="section-a-button">
                         <div class="title-button-section">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
                                 fill="none">
@@ -2233,14 +2233,14 @@
                             Ειδοποιήσεις
                         </div>
                         <div class="hint-option"><label class="toggle-switch">
-                                <input type="checkbox">
+                                <input id="florida-main" type="checkbox">
                                 <div class="toggle-switch-background settings-bg">
                                     <div class="toggle-switch-handle"></div>
                                 </div>
                             </label></div>
                     </div>
 
-                    <div class="section-a-button">
+                    <div onclick="window.location.reload()" class="section-a-button">
                         <div class="title-button-section">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 width="20px" height="20px" viewBox="0 0 24 24" version="1.1">
@@ -2262,17 +2262,143 @@
 
                             Έκδοση εφαρμογής
                         </div>
-                        <div class="hint-option">v00.21</div>
+                        <div class="hint-option" id="version2">v00.21</div>
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
+
+    <div class="PCCONTAINER">
+        <div id="likedPosts-panel" class="slidingPanel">
+            <div class="settings-row">
+                <vox onclick="document.getElementById('likedPosts-panel').classList.remove('activated')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                            fill="#fff" />
+                    </svg>
+                    Ρυθμίσεις
+                </vox>
+
+            </div>
+            <div class="settings-section">
+                <p class="section-title">Καταχωρήσεις που σου αρέσουν</p>
+                <div class="section-buttons fade-in-slide-up" id="likedPosts">
+                    <!--Post Spawning-->
+                </div>
+
+                <p id="unabletoshow" class="section-title">Καταχωρήσεις που δεν μπορείς να δεις</p>
+                <div class="section-buttons fade-in-slide-up" id="likedPosts-denied">
+
+                </div>
+                <div id="unabletoshowinfo" class="fade-in-slide-up" style="display: none; align-items: flex-start; width: 100%; gap: 10px;margin-bottom: 35px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none"
+                        style="flex-shrink: 0;">
+                        <path
+                            d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z"
+                            stroke="#838383" stroke-width="2" />
+                        <path d="M12 8L12 12.5" stroke="#838383" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path
+                            d="M13 15.5C13 16.0523 12.5523 16.5 12 16.5C11.4477 16.5 11 16.0523 11 15.5C11 14.9477 11.4477 14.5 12 14.5C12.5523 14.5 13 14.9477 13 15.5Z"
+                            fill="#838383" />
+                    </svg>
+
+                    <p style="font-size: 14px; font-weight: lighter; color: #838383; margin: 0;">
+                        Γιατί δεν μπορείς να δεις μερικές δημοσιεύσεις?<br>
+                        Για να μπορέσεις να δεις και να αλληλεπιδράσεις σε δημοσιεύσεις των συμμαθητών σου χρειάζεται να
+                        έχουν κάνει οι ίδιοι καταχώρηση με το όνομα σου ή να σου έχουν επιτρέψει να βλέπεις τις
+                        δημοσιεύσεις τους.
+                    </p>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="PCCONTAINER">
+        <div id="savedPosts-panel" class="slidingPanel">
+            <div class="settings-row">
+                <vox onclick="document.getElementById('savedPosts-panel').classList.remove('activated')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                            fill="#fff" />
+                    </svg>
+                    Ρυθμίσεις
+                </vox>
+
+            </div>
+            <div class="settings-section">
+                <p class="section-title">Καταχωρήσεις που έχεις αποθηκεύσει</p>
+                <div class="section-buttons fade-in-slide-up" id="savedPosts">
+                    <!--Post Spawning-->
+                </div>
+
+                <p id="unabletoshow-saved" class="section-title">Καταχωρήσεις που δεν μπορείς να δεις</p>
+                <div class="section-buttons fade-in-slide-up" id="savedPosts-denied">
+
+                </div>
+                <div id="unabletoshowinfo-saved" class="fade-in-slide-up" style="display: none; align-items: flex-start; width: 100%; gap: 10px;margin-bottom: 35px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none"
+                        style="flex-shrink: 0;">
+                        <path
+                            d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z"
+                            stroke="#838383" stroke-width="2" />
+                        <path d="M12 8L12 12.5" stroke="#838383" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path
+                            d="M13 15.5C13 16.0523 12.5523 16.5 12 16.5C11.4477 16.5 11 16.0523 11 15.5C11 14.9477 11.4477 14.5 12 14.5C12.5523 14.5 13 14.9477 13 15.5Z"
+                            fill="#838383" />
+                    </svg>
+
+                    <p style="font-size: 14px; font-weight: lighter; color: #838383; margin: 0;">
+                        Γιατί δεν μπορείς να δεις μερικές δημοσιεύσεις?<br>
+                        Για να μπορέσεις να δεις και να αλληλεπιδράσεις σε δημοσιεύσεις των συμμαθητών σου χρειάζεται να
+                        έχουν κάνει οι ίδιοι καταχώρηση με το όνομα σου ή να σου έχουν επιτρέψει να βλέπεις τις
+                        δημοσιεύσεις τους.
+                    </p>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="PCCONTAINER">
+        <div id="changeClass-panel" class="slidingPanel">
+            <div class="settings-row">
+                <vox onclick="document.getElementById('changeClass-panel').classList.remove('activated')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                            fill="#fff" />
+                    </svg>
+                    Ρυθμίσεις
+                </vox>
+
+            </div>
+            <div class="settings-section">
+                <p class="section-title">Διαθέσιμα τμήματα</p>
+                <div class="section-buttons fade-in-slide-up squared withbg" id="klasa-available">
+                    <!--Klasa Spawning-->
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
     <div class="PCCONTAINER">
         <div id="editProfile" class="applePopup" style="padding: 0;">
             <div class="topActionsPopup" style="padding: 10px 20px;">
-                <div onclick="closePostCreate('frontend')" class="cancel">
+                <div onclick="closeEditProfile()" class="cancel">
                     Ακύρωση
                 </div>
                 <div class="title-popup">
@@ -2293,19 +2419,23 @@
                             <p>Όνομα</p>
                             <span id="emri-edit">placeholder</span>
                         </div>
-                        <img class="icon-setting" id="pfp-edit" src="user.gif">
+                        <img onclick="changePfp()" class="icon-setting" id="pfp-edit" src="user.gif">
                     </div>
                     <div class="generalItem">
                         <p>Τάξη</p>
                         <span class="button-option" id="klasa-edit">placeholder</span>
                     </div>
-                    <div class="generalItem" id="tags-item">
+                    <div class="generalItem">
+                        <p>Instagram</p>
+                        <span class="button-option" id="instagram-account-username">placeholder</span>
+                    </div>
+                    <div class="generalItem" id="tags-item" style="border:none">
                         <p>Πληροφορίες</p>
                         <div style="margin-top: 5px; margin-bottom: 5px; width: 100%; justify-content: center; align-items: center; gap: 5px;"
                             class="gridTag" id="tagsmk"></div>
                     </div>
 
-                    <div class="generalItem" style="border:none;">
+                    <div class="generalItem" style="border:none;display: none;">
                         <p>Δικαιώματα</p>
                         <span style="display: flex;align-items: center;width: 100%;">
                             Περίληψη AI
@@ -2688,7 +2818,8 @@
                     align-items: center;">
                         <span id="IOS1" style="display: none;">
                             Για να επιλύσετε το πρόβλημα, πατήστε το εικονίδιο <img src="" width="10px" height="10px"
-                                style="width: 20px;height: 20px;margin:0;margin-bottom:-5px;"> στο κάτω μέρος της οθόνης
+                                style="width: 20px;height: 20px;margin:0;margin-bottom:-5px;"> στο
+                            κάτω μέρος της οθόνης
                             και στη συνέχεια επιλέξτε 'Add to Home Screen'.
                         </span>
                         <span id="IOS2" style="display: none;">
@@ -3114,7 +3245,8 @@
                     </svg>
                 </div>
                 <h1 style="font-weight: bold;">Τελευταίο Βήμα</h1>
-                <p>Το Evox Florida είναι έτοιμο να ξεκινήσει, δημιουργώντας τα απαραίτητα δεδομένα και επιτρέποντάς σας
+                <p>Το Evox Florida είναι έτοιμο να ξεκινήσει, δημιουργώντας τα απαραίτητα δεδομένα και επιτρέποντάς
+                    σας
                     να λαμβάνετε ειδοποιήσεις.<br>Για να ξεκινήσετε, πατήστε το κουμπί 'Εκκίνηση'. </p>
                 <div class="actionBot" style="text-align:center;">
                     <button onclick="start()" class="welcomeButton">Εκκίνηση</button>

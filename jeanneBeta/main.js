@@ -1,3 +1,9 @@
+const appVersion = "2.0.0"
+for (let i = 0; i < 3; i++) {
+    document.getElementById(`version${i+1}`).innerText = `${i+1!==2 ? appVersion : `v${appVersion}`}`
+}
+localStorage.setItem("Jeanne_LastVersion", appVersion)
+
 let hasBeenRateLimited = false
 function handleRateLimit() {
     console.warn("Rate limit hit. Executing fallback logic...");
@@ -566,12 +572,16 @@ function focusOnIcon(el, act, writer, receiver) { //focusOnIcon(this, 'likeBtn',
                 console.log(resultCryptox)
                 //alert(resultCryptox.count)
                 if (resultCryptox.count !== 0) {
+                    if (el.querySelector("p").style.display === 'none') {
+                        el.querySelector("p").style.display = null
+                    }
                     el.querySelector("p").classList.add("pop")
                     setTimeout(function () {
                         el.querySelector("p").classList.remove("pop")
                     }, 450)
                     el.querySelector("p").innerText = resultCryptox.count || '🤯'
                 } else {
+                    el.querySelector("p").style.display = 'none'
                     el.querySelector("p").innerHTML = ''
                 }
 
@@ -581,13 +591,60 @@ function focusOnIcon(el, act, writer, receiver) { //focusOnIcon(this, 'likeBtn',
             });
     } else if (act === 'likedLikeBtn') {
         console.log(el)
+    } else if (act === 'shareButton') {
+        el.style.transition = "transform 0.3s ease";
+        el.style.transform = "scale(1.2)";
+
+        setTimeout(function () {
+            el.style.transform = "scale(1)";
+        }, 250)
+        return;
+    } else if (act === 'savePost') {
+        el.querySelector("vox").style.alignItems = 'center'
+        el.querySelector("vox").style.justifyContent = 'center'
+        el.querySelector("vox").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+            --track-upload: #4a4a4a;width: 15px;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg>`
+
+        el.querySelector("vox").style.display = 'flex'
+        fetch(`https://arc.evoxs.xyz/?metode=savePost&pin=${atob(JSON.parse(localStorage.getItem('jeanDarc_accountData')).pin)}&emri=${foundName}&writer=${receiver}&sender=${writer}`)
+            .then(response => response.json())
+            .then(result => {
+                if (result.message === 'Complete') {
+                    el.style.transition = "transform 0.3s ease";
+                    el.querySelector("svg").style.fill = "#fff"
+                    el.style.transform = "scale(1.2)";
+                    setTimeout(function () {
+                        el.style.transform = "scale(1)";
+                    }, 250)
+                    el.querySelector("vox").innerHTML = ""
+
+                    el.querySelector("vox").style.display = 'none'
+                } else if (result.message === 'Removed') {
+                    el.style.transition = "transform 0.3s ease";
+                    el.querySelector("svg").style.fill = "none"
+                    el.style.transform = "scale(1.2)";
+                    setTimeout(function () {
+                        el.style.transform = "scale(1)";
+                    }, 250)
+                    el.querySelector("vox").innerHTML = ""
+                    el.querySelector("vox").style.display = 'none'
+                }
+
+            }).catch(error => {
+                console.log('Error:', error);
+            });
+
+        return;
     }
+
     if (el.dataset.focusKey) {
         const key = el.dataset.focusKey;
         const savedFills = focusedIconsDictionary[key];
-
-
-
         el.style.transition = "transform 0.3s ease";
         el.style.transform = "scale(1.2)";
 
@@ -607,9 +664,6 @@ function focusOnIcon(el, act, writer, receiver) { //focusOnIcon(this, 'likeBtn',
 
         return;
     }
-
-
-
     // First-time focus: store original fills and highlight
     const originalFills = [];
     const randomString = [...Array(15)].map(() => Math.random().toString(36)[2]).join('');
@@ -953,13 +1007,16 @@ document.addEventListener("DOMContentLoaded", function () {
         // Wait for layout to be ready
         requestAnimationFrame(() => {
             const insetTop = probe.offsetHeight;
+            //const insetBottom = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-bottom)')) || 0;
+
             console.log("safe-area-inset-top is:", insetTop + "px");
+
             document.getElementById("icon-checkmark").style.display = 'none'
             document.getElementById("icon-error").style.display = null
             document.getElementById("icon-spinner").style.display = "none";
             document.getElementById("notice-text").innerText = `Debug Active. env top: ${insetTop}px`
             document.getElementById("notice-main").classList.add("active")
-            setTimeout(function() {document.getElementById("notice-main").classList.remove("active")},6000)
+            setTimeout(function () { document.getElementById("notice-main").classList.remove("active") }, 6000)
             if (insetTop !== 0) return;
 
             const styleSheets = Array.from(document.styleSheets);
@@ -970,7 +1027,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Function to process the fetched or inline CSS
                     function processCSS(cssText) {
                         if (cssText.includes("env(safe-area-inset-top)")) {
-                            const patched = cssText.replace(/env\(safe-area-inset-top\)/g, "10px");
+                            const model = getDeviceInfo().model
+                            const newEnv = model === "iPhone" || model === "iPad" || model === "Mac" ? "5px" : "20px"
+                            document.getElementById("notice-text").innerText += ` -> ${newEnv}`
+                            const patched = cssText.replace(/env\(safe-area-inset-top\)/g, newEnv);
                             const newStyle = document.createElement("style");
                             newStyle.textContent = patched;
                             document.head.appendChild(newStyle);
@@ -1193,15 +1253,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-function informacion(emri) {
-    return new Promise((resolve, reject) => {
-        const info = informacionDictionary[emri];
-        if (info) {
-            resolve(info);
-        } else {
-            reject(new Error("Informacion not found"));
-        }
-    });
+function informacion(emri, forceReload) {
+    if (forceReload) {
+        return new Promise((resolve, reject) => {
+            fetch(`https://arc.evoxs.xyz/?metode=informacion&emri=${encodeURIComponent(emri)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data) {
+                        resolve(data);
+                    } else {
+                        reject(new Error("Informacion not found"));
+                    }
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    } else {
+        return new Promise((resolve, reject) => {
+            const info = informacionDictionary[emri];
+            if (info) {
+                resolve(info);
+            } else {
+                reject(new Error("Informacion not found"));
+            }
+        });
+    }
+
 }
 
 const loadingHTML = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -1607,6 +1690,28 @@ let informacionDictionary = {}
 function autoLogin() {
     const val = localStorage.getItem("jeanDarc_accountData")
     if (val) {
+        if (localStorage.getItem("isJeanneFloridaReady") && localStorage.getItem("floridaEndpoints")) {
+            document.getElementById("florida-main").checked = true //May delete later [PROVIDES STABILITY]
+            const auth = JSON.parse(localStorage.getItem("floridaEndpoints")).keys.auth
+            fetch(`https://arc.evoxs.xyz/?metode=verifyIntegrityFlorida&emri=${JSON.parse(val).name}&pin=${atob(JSON.parse(val).pin)}&id=${auth}`)
+                .then(response => response.json())
+                .then(verification => {
+                    if (verification.message === 'Success') {
+                        document.getElementById("florida-main").checked = true
+                    } else {
+                        document.getElementById("florida-main").checked = false
+                        EvalertNext({
+                            "title": "Αποτυχία Florida",
+                            "description": "Δεν λαμβάνονται ειδοποιήσεις σε αυτή τη συσκευή.<br>Έλεγξε αν έχεις επιλέξει να λαμβάνεις ειδοποιήσεις σε άλλη συσκευή.<br>Για να ενεργοποιήσεις τις ειδοποιήσεις εδώ, επανενεργοποίησέ το Florida από τις ρυθμίσεις.",
+                            "buttons": ["Συνέχεια"],
+                            "buttonAction": [],
+                            "addons": []
+                        })
+                    }
+                }).catch(error => {
+                    console.error("Progress error", error)
+                });
+        }
         document.getElementById("topImg").style.opacity = '0'
         //$("#tasks").fadeOut("fast", function () {
 
@@ -1863,7 +1968,11 @@ function attach() {
         //document.getElementById("app").style.transform = "scale(0.97)"
         //}, 500)
         showNotice()
-
+        document.getElementById("pin-preview-strength").innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M11 13C11 13.5523 11.4477 14 12 14C12.5523 14 13 13.5523 13 13V10C13 9.44772 12.5523 9 12 9C11.4477 9 11 9.44772 11 10V13ZM13 15.9888C13 15.4365 12.5523 14.9888 12 14.9888C11.4477 14.9888 11 15.4365 11 15.9888V16C11 16.5523 11.4477 17 12 17C12.5523 17 13 16.5523 13 16V15.9888ZM9.37735 4.66136C10.5204 2.60393 13.4793 2.60393 14.6223 4.66136L21.2233 16.5431C22.3341 18.5427 20.8882 21 18.6008 21H5.39885C3.11139 21 1.66549 18.5427 2.77637 16.5431L9.37735 4.66136Z" fill="#fffb47"></path>
+            </svg>`
+    } else {
+        document.getElementById("pin-preview-strength").innerHTML = 'Ασφαλές'
     }
     document.body.style.backgroundColor = '#101010'//'rgb(5,2,16)'
     //return;
@@ -2123,22 +2232,18 @@ async function spawnRandom(redo, frontEndLoading) {
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        ${post.likes ? post.likes.count ? `<p class='pop-text'>${post.likes.count}</p>` : "<p class='pop-text'></p>" : "<p class='pop-text'></p>"}
+                        ${post.likes ? post.likes.count ? `<p class='pop-text'>${post.likes.count}</p>` : "<p style='display:none' class='pop-text'></p>" : "<p style='display:none' class='pop-text'></p>"}
                     </div>
-                    <div onclick="focusOnIcon(this)" class="iconA">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.663 3.04094 17.0829 4.73812 18.875L2.72681 21.1705C2.44361 21.4937 2.67314 22 3.10288 22H12Z" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-                    </div>
-                    <div onclick="focusOnIcon(this)" class="iconA">
+                    
+                    <div onclick="focusOnIcon(this, 'shareButton')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <div onclick="focusOnIcon(this)" class="iconA">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <div onclick="focusOnIcon(this, 'savePost', '${post.emri}', '${post.marresi}')//writer:receiver" class="iconA">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="${post.saved ? '#fff' : 'none'}">
 <path d="M5 6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.07989 3 8.2 3H15.8C16.9201 3 17.4802 3 17.908 3.21799C18.2843 3.40973 18.5903 3.71569 18.782 4.09202C19 4.51984 19 5.07989 19 6.2V21L12 16L5 21V6.2Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
-</svg>
+</svg><vox style="display:none"></vox>
                     </div>
                     
                 </div>
@@ -2299,7 +2404,7 @@ foryoudiv.addEventListener("scroll", function () {
             isLoading2 = false;
             loadingIndicatorFy.style.opacity = "0";
             loadingIndicatorFy.classList.remove("scaleUp")
-        }, 1500);
+        }, 2500);
     }
 });
 
@@ -2399,6 +2504,9 @@ function changePin(e, event, newMetode) {
 
 function showProfile(e) {
     document.body.style.overflow = 'hidden'
+    document.getElementById("finishSetup").style.display = 'none'
+    document.getElementById("carouseli-recommend").innerHTML = ''
+    document.getElementById("finishSetup").classList.add("fade-in-slide-up")
     stopPull = true
     let img = 'no'
     if (e) {
@@ -2406,9 +2514,6 @@ function showProfile(e) {
         img.style.transform = "scale(0.9)"
         openProfile(document.getElementById("profile-switch"))
     }
-
-
-
 
     setTimeout(function () {
         if (img !== 'no') {
@@ -2457,6 +2562,61 @@ function showProfile(e) {
         //    document.getElementById("profilePage").classList.add("active")
         //}
     }, 100)
+
+    const account_data = localStorage.getItem("jeanDarc_accountData")
+    if (!account_data) {
+        console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
+        return;
+    }
+    const pars = JSON.parse(account_data)
+
+
+    const html = `<div class="carouseliItem">
+                                <div class="icon-carouseli">
+                                    <img src="{evoxImage}">
+                                </div>
+                                <div class="bottom">
+                                    <p>{evoxGoalTitle}</p>
+                                    <span>{evoxGoalDescr}</span>
+                                </div>
+                                <div onclick="{evoxGoalOnclick}"
+                                    class="buttonCarouseli {isDone}">
+                                    {evoxGoalButton}
+                                </div>
+
+                            </div>`
+    fetch(`https://arc.evoxs.xyz/?metode=getUserProgress&emri=${foundName}&pin=${atob(pars.pin)}`)
+        .then(response => response.json())
+        .then(goalData => {
+            let done = 0
+            console.log(goalData[goalData.length - 1])
+            const completeAssets = {
+                text: goalData[goalData.length - 1]['donetxt'],
+                svg: goalData[goalData.length - 1]['donesvg']
+            }
+            goalData.forEach(goal => {
+                if (goal.name) {
+                    done = done + (goal.done === true ? 1 : 0)
+                    const { iconSrc, name, description, button, buttonAction } = goal
+                    const goalHtml = html
+                        .replace("{evoxImage}", goal.done === true ? `https://arc.evoxs.xyz${completeAssets.svg}` : `https://arc.evoxs.xyz${iconSrc}`)
+                        .replace("{evoxGoalTitle}", name)
+                        .replace("{evoxGoalDescr}", description)
+                        .replace("{evoxGoalOnclick}", buttonAction)
+                        .replace("{evoxGoalButton}", goal.done === true ? completeAssets.text : button)
+                        .replace("{isDone}", goal.done === true ? "done" : "")
+                    document.getElementById("carouseli-recommend").innerHTML += goalHtml
+                }
+            })
+
+            if (done !== goalData.length - 1) {
+                document.getElementById("finishSetup").style.display = null
+            }
+        }).catch(error => {
+            console.error("Jeanne D'arc Database is offline.")
+            console.log('Error:', error);
+        });
+
 
 }
 
@@ -3334,9 +3494,11 @@ async function getEvoxProfile(name) {
 }
 
 
-function openInstagram() {
+function openInstagram(ext) {
     if (isSocialed && socialSection === 'instagram' && socialUsername) {
         window.open(`https://instagram.com/${socialUsername}`, '_blank');
+    } else if (ext) {
+        window.open(`https://instagram.com/${ext}`, '_blank');
     }
 }
 function merrniEmrat() {
@@ -3510,6 +3672,14 @@ function grabberEvents(id) {
     }
 }
 
+function closeEditProfile() {
+    document.getElementById("editProfile").classList.remove("active")
+    document.getElementById("app").style.transform = 'scale(1)'
+    document.getElementById("gradColored").style.borderRadius = null
+    document.getElementById("gradColored").style.transform = 'scale(1)'
+    document.body.style.backgroundColor = null
+}
+
 grabberEvents("share-profile")
 
 grabberEvents("notice")
@@ -3576,65 +3746,43 @@ function reDoPinChange() {
     document.getElementById("profilePage").classList.remove("active")
 }
 
-let stopPull = null;
-let lastScrollY = window.scrollY; // Store the last known scroll position
-const pullThreshold = -120; // Maximum pull distance
-const debugReload = document.getElementById("debugReload");
-
-// Scroll event listener
-window.addEventListener("scroll", (event) => {
-    const currentScrollY = window.scrollY;
-    //if (currentScrollY < 0 && !stopPull || !document.getElementById("notice").classList.contains('active') && currentScrollY < 0) {
-    //    const pullDistance = Math.abs(currentScrollY); // Get pull distance (positive value)
-    //    const lines = document.querySelectorAll('.debugReload svg g g path');
-    //
-    //    if (lines.length > 0) {
-    //        const totalPaths = lines.length;
-    //
-    //        // Calculate the percentage of paths to fill
-    //        const fillPercentage = Math.min(pullDistance / Math.abs(pullThreshold), 1);
-    //        const pathsToFill = Math.floor(fillPercentage * totalPaths);
-    //
-    //        // Fill paths with white progressively
-    //        lines.forEach((line, index) => {
-    //            if (index < pathsToFill) {
-    //                line.setAttribute("fill", "#fff"); // Fill color
-    //            } else {
-    //                line.setAttribute("fill", "none"); // Reset others to default
-    //            }
-    //        });
-    //
-    //        // Optional: Visual feedback for the pull
-    //        debugReload.style.top = `${Math.min(pullDistance, 50)}px`;
-    //    }
-    //}
-
-    //const paths = document.querySelectorAll('.debugReload svg g g path');
-    //
-    //const allWhite = Array.from(paths).every(path => path.getAttribute('fill') === '#fff');
-    //
-    //if (allWhite) {
-    //    //alert('All of them are filled with white');
-    //    window.location.reload()
-    //}
 
 
-    // Update the last known scroll position
-    //lastScrollY = currentScrollY;
+const foryou = document.getElementById("home");
+let lastScrollY = foryou.scrollTop;
+let downThreshold = 100;
+let upThreshold = 100;
+let accumulatedDown = 0;
+let accumulatedUp = 0;
+
+foryou.addEventListener('scroll', () => {
+  const currentScrollY = foryou.scrollTop;
+  const delta = currentScrollY - lastScrollY;
+
+  if (delta > 0) {
+    // Scrolling down
+    accumulatedDown += delta;
+    accumulatedUp = 0;
+    if (accumulatedDown > downThreshold) {
+      document.getElementById("navigation").classList.remove("active");
+      accumulatedDown = 0;
+    }
+  } else if (delta < 0) {
+    // Scrolling up
+    accumulatedUp += -delta;
+    accumulatedDown = 0;
+    if (accumulatedUp > upThreshold) {
+      document.getElementById("navigation").classList.add("active");
+      accumulatedUp = 0;
+    }
+  } else {
+    console.warn(delta)
+  }
+
+  lastScrollY = currentScrollY;
 });
 
-//window.addEventListener('scroll', manageScroll, { passive: false });
-//
-//function manageScroll(event) {
-//    if(stopPull) {
-//        event.preventDefault();
-//        event.stopPropagation();
-//        alert("stopping")
-//        return false;
-//
-//    }
-//
-//}
+
 
 function toggleDev() {
     const current = document.getElementById('devActions').style.display
@@ -4723,22 +4871,18 @@ function loadSentByUser() {
                     <div id="${setRand}" onclick="focusOnIcon(this, 'likeBtn', '${sent.contents.emri}', '${sent.contents.marresi}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>${sent.contents.likes ? sent.contents.likes.count ? `<p class='pop-text'>${sent.contents.likes.count}</p>` : "<p class='pop-text'></p>" : "<p class='pop-text'></p>"}
+                        </svg>${sent.contents.likes ? sent.contents.likes.count ? `<p class='pop-text'>${sent.contents.likes.count}</p>` : "<p style='display:none' class='pop-text'></p>" : "<p style='display:none' class='pop-text'></p>"}
                     </div>
-                    <div onclick="focusOnIcon(this)" class="iconA">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.663 3.04094 17.0829 4.73812 18.875L2.72681 21.1705C2.44361 21.4937 2.67314 22 3.10288 22H12Z" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-                    </div>
-                    <div onclick="focusOnIcon(this)" class="iconA">
+                    
+                    <div onclick="focusOnIcon(this, 'shareButton')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <div onclick="focusOnIcon(this)" class="iconA">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <div onclick="focusOnIcon(this, 'savePost', '${sent.contents.emri}', '${sent.contents.marresi}')" class="iconA">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="${sent.contents.saved ? '#fff' : 'none'}">
 <path d="M5 6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.07989 3 8.2 3H15.8C16.9201 3 17.4802 3 17.908 3.21799C18.2843 3.40973 18.5903 3.71569 18.782 4.09202C19 4.51984 19 5.07989 19 6.2V21L12 16L5 21V6.2Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
-</svg>
+</svg><vox style="display:none"></vox>
                     </div>
                     </div>
                     </div>
@@ -5549,11 +5693,14 @@ function openEditProfile() {
     document.body.style.backgroundColor = '#000'
     informacion(foundName)
         .then(self => {
+            document.getElementById("instagram-account-username").innerHTML = self.foto.replace("https://arc.evoxs.xyz/foto/instagram/", "").replace(".evox", "") + `<div style="margin-left:auto;width: auto;" onclick="openInstagram('${self.foto.replace("https://arc.evoxs.xyz/foto/instagram/", "").replace(".evox", "")}')" class="buttonCarouseli">
+                                    Εμφάνιση
+                                </div>`
             console.log(self)
             document.getElementById("emri-edit").innerText = self.emri
             const key = `${self.seksioni}${self.klasa !== 'none' ? self.klasa : ''}`
             document.getElementById("klasa-edit").innerHTML = `${key === "ΓΥΓ" ? "Υγείας" : key.includes("ΓΑΝΘ1") ? "Θεωρητικών 1" : key === 'ΓΟΠ1' ? "Οικονομικών 1" : key === 'ΓΟΠ2' ? "Οικονομικών 2" : key === "ΓΑΝΘ2" ? "Θεωρητικών 2" : key === "ΓΘΤ" ? "Θετικών" : key}
-            <div style="margin-left:auto;width: auto;" onclick="changeClass()" class="buttonCarouseli">
+            <div style="margin-left:auto;width: auto;" onclick="closeEditProfile();openSettings();openChangeClass()" class="buttonCarouseli">
                                     Αλλαγή
                                 </div>`
 
@@ -5757,7 +5904,7 @@ function openDiscovery(el) {
     const toUser = document.getElementById("toyou")
     toUser.style.display = 'none'
     //document.getElementById("main-block").style.display = 'none'
-    document.getElementById("sum").style.display = 'none'
+    //document.getElementById("sum").style.display = 'none'
     const val = localStorage.getItem("jeanDarc_accountData")
     if (val) {
         const json = JSON.parse(val)
@@ -5815,8 +5962,8 @@ function openDiscovery(el) {
                                 console.error("Progress error", error)
                             });
                     } else {
-                        document.getElementById("sum").style.display = 'none'
-                        document.getElementById("thFY").style.display = 'none'
+                        //document.getElementById("sum").style.display = 'none'
+                        //document.getElementById("thFY").style.display = 'none'
 
                     }
 
@@ -6078,7 +6225,7 @@ function loadSentToUser(emri, redo) {
 
         // Convert entries into an array of promises using map
         const promises = Object.entries(sentbyuser)
-            .filter(([key]) => key !== "Name" && key !== "length" && key !== "cryptoxed" && key !== "likes")
+            .filter(([key]) => key !== "Name" && key !== "length" && key !== "cryptoxed" && key !== "likes" && key !== "saved")
             .map(async ([key, value]) => {
                 const profileSrc = await getImage(key);
                 const pfp = await getEvoxProfile(key);
@@ -6152,22 +6299,18 @@ function loadSentToUser(emri, redo) {
                     <div ${sentbyuser.likes[key] && sentbyuser.likes[key].liked.includes(foundName) ? `data-focus-key='${randomString}'` : ""}  onclick="focusOnIcon(this, 'likeBtn', '${key}', '${pars.name}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path ${sentbyuser.likes[key] && sentbyuser.likes[key].liked.includes(foundName) ? "fill='#dedede'" : ""} fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg> ${sentbyuser.likes[key] ? sentbyuser.likes[key].count ? `<p class='pop-text'>${sentbyuser.likes[key].count}</p>` : "<p class='pop-text'></p>" : "<p class='pop-text'></p>"}
+                        </svg> ${sentbyuser.likes[key] ? sentbyuser.likes[key].count ? `<p class='pop-text'>${sentbyuser.likes[key].count}</p>` : "<p style='display:none' class='pop-text'></p>" : "<p style='display:none' class='pop-text'></p>"}
                     </div>
-                    <div onclick="focusOnIcon(this)" class="iconA">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.663 3.04094 17.0829 4.73812 18.875L2.72681 21.1705C2.44361 21.4937 2.67314 22 3.10288 22H12Z" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-                    </div>
-                    <div onclick="focusOnIcon(this)" class="iconA">
+                    
+                    <div onclick="focusOnIcon(this, 'shareButton')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <div onclick="focusOnIcon(this)" class="iconA">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <div onclick="focusOnIcon(this, 'savePost', '${key}', '${pars.name}')" class="iconA">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="${sentbyuser.saved.includes(`${key}:${pars.name}`) ? '#fff' : 'none'}">
 <path d="M5 6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.07989 3 8.2 3H15.8C16.9201 3 17.4802 3 17.908 3.21799C18.2843 3.40973 18.5903 3.71569 18.782 4.09202C19 4.51984 19 5.07989 19 6.2V21L12 16L5 21V6.2Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
-</svg>
+</svg><vox style="display:none"></vox>
                     </div>
                     </div>
                             </div>
@@ -6453,22 +6596,18 @@ function showProfileInfo(emri) {
                     <div ${sent.contents.likes && sent.contents.likes.liked.includes(foundName) ? `data-focus-key='${randomString}'` : ""} onclick="focusOnIcon(this, 'likeBtn', '${emri}', '${sent.marresi}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path ${sent.contents.likes && sent.contents.likes.liked.includes(foundName) ? "fill='#dedede'" : ""} fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>${sent.contents.likes ? sent.contents.likes.count ? `<p class='pop-text'>${sent.contents.likes.count}</p>` : "<p class='pop-text'></p>" : "<p class='pop-text'></p>"}
+                        </svg>${sent.contents.likes ? sent.contents.likes.count ? `<p class='pop-text'>${sent.contents.likes.count}</p>` : "<p style='display:none' class='pop-text'></p>" : "<p style='display:none' class='pop-text'></p>"}
                     </div>
-                    <div onclick="focusOnIcon(this)" class="iconA">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 14.663 3.04094 17.0829 4.73812 18.875L2.72681 21.1705C2.44361 21.4937 2.67314 22 3.10288 22H12Z" stroke="#fff" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-                    </div>
-                    <div onclick="focusOnIcon(this)" class="iconA">
+                    
+                    <div onclick="focusOnIcon(this, 'shareButton')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <div onclick="focusOnIcon(this)" class="iconA">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <div onclick="focusOnIcon(this, 'savePost', '${sent.contents.emri}', '${sent.contents.marresi}')" class="iconA">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="${sent.contents.saved ? '#fff' : 'none'}">
 <path d="M5 6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.07989 3 8.2 3H15.8C16.9201 3 17.4802 3 17.908 3.21799C18.2843 3.40973 18.5903 3.71569 18.782 4.09202C19 4.51984 19 5.07989 19 6.2V21L12 16L5 21V6.2Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
-</svg>
+</svg><vox style="display:none"></vox>
                     </div>
                     </div>
                         </div>
@@ -6800,7 +6939,7 @@ function timeAgo(isoString) {
 }
 
 function analyzeUser(e, rej) {
-    if (rej) {
+    if (rej && isAllowed("AIT")) {
         Evalert({
             "title": `Να επιτρέπεται στο "AIT" να έχει πρόσβαση στα δεδομένα σας;`,
             "description": "Το AIT θα μπορεί να διαβάσει και να επεξεργαστεί τα δεδομένα σας.",
@@ -6812,6 +6951,7 @@ function analyzeUser(e, rej) {
         })
         return;
     }
+    addToPermissions("AIT", "Allow")
     $("#summaryTxt").fadeOut("fast")
     e.blur()
     setTimeout(function () {
@@ -6829,7 +6969,7 @@ function analyzeUser(e, rej) {
             const json = JSON.parse(val)
             const process = atob(json.pin)
             document.getElementById("aitext").innerText = 'Επεξεργασία..'
-            fetch(`https://arc.evoxs.xyz/?metode=AIT&emri=${foundName}&pin=${process}`)
+            fetch(`https://arc.evoxs.xyz/?metode=AIT&emri=${foundName}&pin=${process}&requestor=application`)
                 .then(response => response.json())
                 .then(complete => {
                     if (complete.error) {
@@ -6967,7 +7107,7 @@ function acceptFlorida() {
 }
 
 function notificationsStart(ready) {
-    if (!ready) {
+    if (!ready && isAllowed("Florida")) {
         acceptFlorida()
         return;
     }
@@ -6989,11 +7129,42 @@ function notificationsStart(ready) {
                 subscription: subscription
             }
             // Send subscription to your server
-            await fetch('https://arc.evoxs.xyz/subscribeFL', {
+            const response = await fetch('https://arc.evoxs.xyz/subscribeFL', {
                 method: 'POST',
                 body: JSON.stringify(payload),
                 headers: { 'Content-Type': 'application/json' }
             });
+
+            if (!response.ok) {
+                console.error('Server responded with an error:', response.status);
+                setTimeout(function () {
+                    document.getElementById("icon-checkmark").style.display = 'none'
+                    document.getElementById("icon-error").style.display = null
+                    document.getElementById("icon-spinner").style.display = "null";
+                    document.getElementById("notice-text").innerText = `Server responded with an error: ${response.status}`
+                    document.getElementById("notice-main").classList.add("active")
+                }, 500)
+                document.getElementById("notice-main").classList.remove("active")
+
+            }
+
+            const data = await response.json();
+            if (data.message.includes("Welcome to Evox Florida")) {
+                setTimeout(function () {
+                    document.getElementById("icon-checkmark").style.display = null
+                    document.getElementById("icon-error").style.display = 'none'
+                    document.getElementById("icon-spinner").style.display = "none";
+                    document.getElementById("notice-text").innerText = `Επιτυχία!`
+                    document.getElementById("notice-main").classList.add("active")
+                    document.getElementById("florida-main").checked = true;
+                    localStorage.setItem("floridaEndpoints", JSON.stringify(subscription))
+                    addToPermissions("Florida", "Allowed")
+                    localStorage.setItem("isJeanneFloridaReady", "true")
+                    setTimeout(function () { document.getElementById("notice-main").classList.remove("active") }, 6000)
+                }, 500)
+                document.getElementById("notice-main").classList.remove("active")
+            }
+
         }
 
     }
@@ -7001,10 +7172,20 @@ function notificationsStart(ready) {
     async function requestNotificationPermission() {
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
-            alert("Notification permission granted.");
+
             subscribeToPush();
+            document.getElementById("icon-checkmark").style.display = 'none'
+            document.getElementById("icon-error").style.display = 'none'
+            document.getElementById("icon-spinner").style.display = null;
+            document.getElementById("notice-text").innerText = `Επικοινωνία με Evox..`
+            document.getElementById("notice-main").classList.add("active")
         } else {
-            alert("Notification permission denied.");
+            document.getElementById("icon-checkmark").style.display = 'none'
+            document.getElementById("icon-error").style.display = null
+            document.getElementById("icon-spinner").style.display = "none";
+            document.getElementById("notice-text").innerText = `Η πρόσβαση στις ειδοποιήσεις απορρίφθηκε`
+            document.getElementById("notice-main").classList.add("active")
+            setTimeout(function () { document.getElementById("notice-main").classList.remove("active") }, 6000)
         }
     }
     if ('serviceWorker' in navigator && 'PushManager' in window) {
@@ -7015,6 +7196,13 @@ function notificationsStart(ready) {
             .catch(error => {
                 console.error('Service Worker registration failed:', error);
             });
+    } else {
+        document.getElementById("icon-checkmark").style.display = 'none'
+        document.getElementById("icon-error").style.display = null
+        document.getElementById("icon-spinner").style.display = "null";
+        document.getElementById("notice-text").innerText = `Η σύνδεση σας δεν υποστηρίζεται.`
+        document.getElementById("notice-main").classList.add("active")
+        setTimeout(function () { document.getElementById("notice-main").classList.remove("active") }, 6000)
     }
 
 
@@ -7536,17 +7724,21 @@ function selectAndAddTag() {
     openKeyboard()
 }
 function activeSlidingEvents(id) {
-    const swipeThreshold = 150;
+    const swipeThreshold = 150;   // Distance required to trigger full action
+    const moveThreshold = 50;     // Distance required before starting to visually move the panel
+
     const panel = document.getElementById(id);
     if (!panel) return;
 
     let touchStartX = 0;
     let currentX = 0;
     let isSwiping = false;
+    let hasMovedEnough = false;
 
     function onTouchStart(e) {
         touchStartX = e.touches[0].clientX;
         isSwiping = true;
+        hasMovedEnough = false;
     }
 
     function onTouchMove(e) {
@@ -7556,12 +7748,18 @@ function activeSlidingEvents(id) {
         const deltaX = currentX - touchStartX;
 
         if (deltaX > 0 && panel.classList.contains('activated')) {
-            if (deltaX < swipeThreshold) {
-                panel.style.transform = `translateX(${deltaX}px)`;
-            } else {
-                panel.style.transform = '';
-                panel.classList.remove('activated');
-                isSwiping = false;
+            if (!hasMovedEnough && Math.abs(deltaX) >= moveThreshold) {
+                hasMovedEnough = true;
+            }
+
+            if (hasMovedEnough) {
+                if (deltaX < swipeThreshold) {
+                    panel.style.transform = `translateX(${deltaX}px)`;
+                } else {
+                    panel.style.transform = '';
+                    panel.classList.remove('activated');
+                    isSwiping = false;
+                }
             }
         }
     }
@@ -7571,11 +7769,12 @@ function activeSlidingEvents(id) {
 
         const deltaX = e.changedTouches[0].clientX - touchStartX;
 
-        if (deltaX < swipeThreshold) {
+        if (hasMovedEnough && deltaX < swipeThreshold) {
             panel.style.transform = '';
         }
 
         isSwiping = false;
+        hasMovedEnough = false;
     }
 
     panel.addEventListener('touchstart', onTouchStart, false);
@@ -7583,9 +7782,12 @@ function activeSlidingEvents(id) {
     panel.addEventListener('touchend', onTouchEnd, false);
 }
 
+
 activeSlidingEvents('settings-panel');
 activeSlidingEvents('image-viewer');
-
+activeSlidingEvents('likedPosts-panel');
+activeSlidingEvents('changeClass-panel');
+activeSlidingEvents('savedPosts-panel');
 
 
 function showUsersMedia(el) {
@@ -7679,11 +7881,13 @@ function openSettings() {
     const img = document.getElementById("account-settings-img")
     const emri = document.getElementById("account-settings-name")
     const klasa = document.getElementById("account-settings-klasa")
-
     informacion(foundName)
         .then(info => {
             selfClass = `${info.seksioni}${info.klasa}`
-            klasa.innerText = selfClass
+            klasa.innerText = selfClass.replace("none", "")
+
+            document.getElementById("selfClassPreview").innerHTML = document.getElementById("selfClassPreview").innerHTML.replace("{replaceme}", selfClass.replace("none", ""))
+
             if (info.has_participated && info.has_participated === 'true') {
 
             }
@@ -7700,4 +7904,395 @@ function openSettings() {
 
 function closeSettings() {
     document.getElementById('settings-panel').classList.remove('activated')
+}
+
+function showLikedPosts() {
+    document.getElementById("likedPosts-panel").classList.add("activated")
+    document.getElementById("unabletoshow").style.display = 'none'
+    document.getElementById("unabletoshowinfo").style.display = 'none'
+    document.getElementById("likedPosts-denied").style.display = 'none'
+    document.getElementById("likedPosts").style.display = 'none'
+    const account_data = localStorage.getItem("jeanDarc_accountData")
+    if (!account_data) {
+        console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
+        document.getElementById("likedPosts").style.display = null
+        document.getElementById("likedPosts").innerHTML = `<div style="display:flex;flex-direction:column;width:100%;align-items:center;gap:5px;justify-content:center;"><p style="text-align:center;color:#b83131;">Δεν υπάρχει λογαριασμός [EVX-OPERATION-BROKE]</p></div>`
+        return;
+    }
+    const pars = JSON.parse(account_data)
+
+    document.getElementById("likedPosts").innerHTML = `<div id="likedPosts_loadingindicator" style="display:flex;flex-direction:column;width:100%;align-items:center;gap:10px;justify-content:center;margin-top: 15px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+            --track-upload: #4a4a4a;width: 25px;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg><p style="text-align:center;">Γίνεται Φόρτωση..</p></div>`
+    document.getElementById("likedPosts").style.display = null
+    fetch(`https://arc.evoxs.xyz/?metode=getLikedPosts&pin=${atob(pars.pin)}&emri=${foundName}`)
+        .then(response => response.json())
+        .then(likedPosts => {
+
+
+            document.getElementById("likedPosts-denied").innerHTML = ''
+
+            likedPosts.forEach((post) => {
+                fetch(`https://arc.evoxs.xyz/?metode=getSpecificPost&emri=${foundName}&pin=${atob(pars.pin)}&writer=${post.creator}&sender=${post.postThatWasLiked}`)
+                    .then(response => response.json())
+                    .then(postData => {
+
+                        if (!postData.message) {
+                            getImage(postData.emri).then(profileSrc => {
+                                document.getElementById("likedPosts").innerHTML += `<div class="postContainer fade-in-slide-up" style="padding-bottom: 10px;padding-top: 10px;">
+                        <div class="post">
+                            <div class="profilePicture">
+                                <img src="${profileSrc.imageData}">
+                            </div>
+                            <div class="postInfo">
+                                <div class="userInfo">
+                                    <p>${postData.emri}</p>
+                                    <span>${timeAgoInGreek(postData.date)}</span>
+                                </div>
+                                <div class="postContent">
+                                    <p>
+                                    <vox onclick="extMention('${postData.emri}')" class="mention ${getGender(removeTonos(postData.emri.split(" ")[0])) === "Female" ? "female" : "male"}">@${postData.marresi}</vox><br>
+                                    ${postData.vleresim}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                            })
+
+                        } else {
+                            getImage(post.postThatWasLiked).then(profileSrc => {
+                                document.getElementById("unabletoshowinfo").style.display = null
+                                document.getElementById("unabletoshow").style.display = null
+                                document.getElementById("likedPosts-denied").style.display = null
+                                document.getElementById("likedPosts-denied").innerHTML += `
+                    <div class="postContainer fade-in-slide-up" style="padding-bottom: 10px;padding-top: 10px;">
+                        <div class="post">
+                            <div class="profilePicture">
+                                <img src="${profileSrc.imageData}">
+                            </div>
+                            <div class="postInfo">
+                                <div class="userInfo">
+                                    <p>${post.postThatWasLiked}</p>
+                                </div>
+                                <div class="postContent">
+                                    <p>
+                                    Δεν μπορείς να δεις αυτή την ανάρτηση, δοκίμασε να ζητήσεις πρόσβαση από ${getGender(post.creator) === "Male" ? "τον" : "την"} <vox style="color: #b83131">${post.creator}</vox>.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                            })
+                        }
+
+
+                    }).catch(error => {
+                        console.log('Error:', error);
+                    });
+                if (post === likedPosts[likedPosts.length - 1]) {
+                    document.getElementById("likedPosts_loadingindicator").remove()
+                }
+
+            })
+        }).catch(error => {
+            console.log('Error:', error);
+        });
+}
+
+function showSavedPosts() {
+    document.getElementById("savedPosts-panel").classList.add("activated")
+    document.getElementById("unabletoshow-saved").style.display = 'none'
+    document.getElementById("unabletoshowinfo-saved").style.display = 'none'
+    document.getElementById("savedPosts-denied").style.display = 'none'
+    document.getElementById("savedPosts").style.display = 'none'
+    const account_data = localStorage.getItem("jeanDarc_accountData")
+    if (!account_data) {
+        console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
+        document.getElementById("savedPosts").style.display = null
+        document.getElementById("savedPosts").innerHTML = `<div style="display:flex;flex-direction:column;width:100%;align-items:center;gap:10px;justify-content:center;"><p style="text-align:center;color:#b83131;">Δεν υπάρχει λογαριασμός [EVX-OPERATION-BROKE]</p></div>`
+        return;
+    }
+    const pars = JSON.parse(account_data)
+
+    document.getElementById("savedPosts").innerHTML = `<div id="savedPosts_loadingindicator" style="display:flex;flex-direction:column;width:100%;align-items:center;gap:5px;justify-content:center;margin-top: 15px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+            --track-upload: #4a4a4a;width: 25px;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg><p style="text-align:center;">Γίνεται Φόρτωση..</p></div>`
+    document.getElementById("savedPosts").style.display = null
+    fetch(`https://arc.evoxs.xyz/?metode=getSavedPosts&pin=${atob(pars.pin)}&emri=${foundName}`)
+        .then(response => response.json())
+        .then(savedPosts => {
+            document.getElementById("savedPosts-denied").innerHTML = ''
+
+            savedPosts.forEach((post) => {
+                fetch(`https://arc.evoxs.xyz/?metode=getSpecificPost&emri=${foundName}&pin=${atob(pars.pin)}&writer=${post.creator}&sender=${post.userThatWrote}`)
+                    .then(response => response.json())
+                    .then(postData => {
+
+                        if (!postData.message) {
+                            getImage(postData.emri).then(profileSrc => {
+                                document.getElementById("savedPosts").innerHTML += `<div class="postContainer fade-in-slide-up" style="padding-bottom: 10px;padding-top: 10px;">
+                        <div class="post">
+                            <div class="profilePicture">
+                                <img src="${profileSrc.imageData}">
+                            </div>
+                            <div class="postInfo">
+                                <div class="userInfo">
+                                    <p>${postData.emri}</p>
+                                    <span>${timeAgoInGreek(postData.date)}</span>
+                                </div>
+                                <div class="postContent">
+                                    <p>
+                                    <vox onclick="extMention('${postData.emri}')" class="mention ${getGender(removeTonos(postData.emri.split(" ")[0])) === "Female" ? "female" : "male"}">@${postData.marresi}</vox><br>
+                                    ${postData.vleresim}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                            })
+
+                        } else {
+
+                            getImage(post.userThatWrote).then(profileSrc => {
+                                console.warn("ACCESS DENIED")
+                                document.getElementById("unabletoshowinfo-saved").style.display = 'flex'
+                                document.getElementById("unabletoshow-saved").style.display = 'flex'
+                                document.getElementById("savedPosts-denied").style.display = 'flex'
+                                document.getElementById("savedPosts-denied").innerHTML += `<div class="postContainer fade-in-slide-up" style="padding-bottom: 10px;padding-top: 10px;">
+                        <div class="post">
+                            <div class="profilePicture">
+                                <img src="${profileSrc.imageData}">
+                            </div>
+                            <div class="postInfo">
+                                <div class="userInfo">
+                                    <p>${post.userThatWrote}</p>
+                                </div>
+                                <div class="postContent">
+                                    <p>
+                                    Δεν μπορείς να δεις αυτή την ανάρτηση, δοκίμασε να ζητήσεις πρόσβαση από ${getGender(post.creator) === "Male" ? "τον" : "την"} <vox style="color: #b83131">${post.creator}</vox>.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                            })
+                        }
+
+
+                    }).catch(error => {
+                        console.log('Error:', error);
+                    });
+                if (post === savedPosts[savedPosts.length - 1]) {
+                    document.getElementById("savedPosts_loadingindicator").remove()
+                }
+
+            })
+        }).catch(error => {
+            console.log('Error:', error);
+        });
+}
+
+function openChangeClass() {
+    document.getElementById("changeClass-panel").classList.add("activated")
+    document.getElementById("klasa-available").innerHTML = `<div style="display:flex;flex-direction:column;width:100%;align-items:center;gap:10px;justify-content:center;margin-top: 15px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+            --track-upload: #4a4a4a;width: 25px;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg><p style="text-align:center;">Γίνεται Φόρτωση..</p></div>`
+    informacion(foundName, 'forceReload')
+        .then(info => {
+
+            const selfClass = `${info.seksioni}${info.klasa}`
+            console.log("User's class", selfClass)
+            fetch('https://arc.evoxs.xyz/?metode=progresin')
+                .then(response => response.json())
+                .then(progress_global => {
+                    const progress_class = progress_global.byclass
+                    let classes = []
+                    Object.entries(progress_class.class_counts).forEach(([key, value]) => {
+                        if (key === 'ΚΑΘ') { return; }
+                        classes.push({ name: key, count: value.total })
+                        console.log(`Class: ${key}, Total: ${value.total}, Participated: ${value.have_participated}`);
+                    });
+                    classes.forEach((klasa, index) => {
+                        if (index === 0) {
+                            document.getElementById("klasa-available").innerHTML = ''
+                        }
+                        console.log(klasa)
+                        const isClass = selfClass.replace("none", "") === klasa.name
+                        const key = klasa.name
+                        document.getElementById("klasa-available").innerHTML += `<div id="klasa-id-${key}" ${!isClass ? `onclick='switchClass_JEANNE2("${klasa.name}", this)'` : ""} class="section-a-button withbg" ${isClass ? "style='border: 1px solid #fff'" : ""}>
+                        <div class="title-button-section">
+                            ${key === 'ΓΥΓ' ? `<svg xmlns="http://www.w3.org/2000/svg" fill="#FFF" width="20px" height="20px" viewBox="0 0 32 32" version="1.1">
+<title>health</title>
+<path d="M29.125 10.375h-7.5v-7.5c0-1.036-0.839-1.875-1.875-1.875h-7.5c-1.036 0-1.875 0.84-1.875 1.875v7.5h-7.5c-1.036 0-1.875 0.84-1.875 1.875v7.5c0 1.036 0.84 1.875 1.875 1.875h7.5v7.5c0 1.036 0.84 1.875 1.875 1.875h7.5c1.036 0 1.875-0.84 1.875-1.875v-7.5h7.5c1.035 0 1.875-0.839 1.875-1.875v-7.5c0-1.036-0.84-1.875-1.875-1.875z"/>
+</svg>`: key.includes('ΓΑΝΘ') ? `<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+<polygon style="fill:#B4B4B4;" points="435.298,32.603 256,32.603 235.102,272.301 256,512 435.298,512 "/>
+<rect x="76.706" y="32.601" style="fill:#E0E0E0;" width="179.294" height="479.399"/>
+<g>
+	<rect x="150.183" y="103.424" style="fill:#707070;" width="211.634" height="31.347"/>
+	<rect x="150.674" y="161.061" style="fill:#707070;" width="31.347" height="308.987"/>
+	<rect x="240.327" y="161.061" style="fill:#707070;" width="31.347" height="308.987"/>
+	<rect x="329.979" y="161.061" style="fill:#707070;" width="31.347" height="308.987"/>
+</g>
+<polygon style="fill:#424242;" points="446.794,0 256,0 235.102,32.603 256,65.206 446.794,65.206 "/>
+<rect x="65.202" style="fill:#707070;" width="190.798" height="65.202"/>
+<path style="fill:#B4B4B4;" d="M65.206,0L44.308,65.206l20.898,65.206c36.012,0,65.206-29.193,65.206-65.206  C130.411,29.193,101.217,0,65.206,0z"/>
+<path style="fill:#E0E0E0;" d="M0,65.206c0,36.012,29.193,65.206,65.206,65.206V0C29.193,0,0,29.193,0,65.206z"/>
+<path style="fill:#424242;" d="M65.206,40.774L54.757,65.206l10.449,24.432c13.493,0,24.432-10.938,24.432-24.432  C89.637,51.712,78.699,40.774,65.206,40.774z"/>
+<path style="fill:#707070;" d="M40.774,65.206c0,13.493,10.938,24.432,24.432,24.432V40.774  C51.712,40.774,40.774,51.712,40.774,65.206z"/>
+<path style="fill:#B4B4B4;" d="M446.794,0l-20.898,65.206l20.898,65.206c36.012,0,65.206-29.193,65.206-65.206S482.807,0,446.794,0z  "/>
+<path style="fill:#E0E0E0;" d="M381.589,65.206c0,36.012,29.193,65.206,65.206,65.206V0C410.783,0,381.589,29.193,381.589,65.206z"/>
+<path style="fill:#424242;" d="M446.794,40.774l-10.449,24.432l10.449,24.432c13.493,0,24.432-10.938,24.432-24.432  S460.288,40.774,446.794,40.774z"/>
+<path style="fill:#707070;" d="M422.363,65.206c0,13.493,10.938,24.432,24.432,24.432V40.774  C433.301,40.774,422.363,51.712,422.363,65.206z"/>
+</svg>`: key.includes("ΓΟΠ") ? `<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12ZM10.6158 9.5C11.0535 8.71823 11.8025 8 12.7498 8C13.284 8 13.819 8.23239 14.2923 8.70646C14.6824 9.09734 15.3156 9.09792 15.7065 8.70775C16.0973 8.31758 16.0979 7.68442 15.7077 7.29354C14.9274 6.51179 13.9042 6 12.7498 6C11.3289 6 10.1189 6.77025 9.29826 7.86449C8.93769 8.34528 8.64329 8.89783 8.42654 9.5H8C7.44772 9.5 7 9.94772 7 10.5C7 10.9581 7.30804 11.3443 7.72828 11.4626C7.82228 11.4891 7.91867 11.5 8.01613 11.5C7.99473 11.8304 7.99473 12.1696 8.01613 12.5C7.91867 12.5 7.82228 12.5109 7.72828 12.5374C7.30804 12.6557 7 13.0419 7 13.5C7 14.0523 7.44772 14.5 8 14.5H8.42654C8.64329 15.1022 8.93769 15.6547 9.29826 16.1355C10.1189 17.2298 11.3289 18 12.7498 18C13.9042 18 14.9274 17.4882 15.7077 16.7065C16.0979 16.3156 16.0973 15.6824 15.7065 15.2923C15.3156 14.9021 14.6824 14.9027 14.2923 15.2935C13.819 15.7676 13.284 16 12.7498 16C11.8025 16 11.0535 15.2818 10.6158 14.5H12C12.5523 14.5 13 14.0523 13 13.5C13 12.9477 12.5523 12.5 12 12.5H10.0217C9.99312 12.1735 9.99312 11.8265 10.0217 11.5H13C13.5523 11.5 14 11.0523 14 10.5C14 9.94772 13.5523 9.5 13 9.5H10.6158Z" fill="#fff"/>
+</svg>` : key.includes("ΓΘΤ") ? `<svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 1024 1024" class="icon" version="1.1"><path d="M857.7 583.1c-6.7-11.8-21.8-15.8-33.5-9-11.8 6.7-15.8 21.8-9.1 33.5 66.6 115.9 83.4 212.6 43.8 252.2-75.7 75.8-311.6-54.5-476-218.9-41.5-41.5-78.8-84.7-111.3-127.9 33.4-45.1 71.3-89.2 111.3-129.2C547.2 219.5 783.1 89.3 858.9 165c30.9 30.9 27.7 97.6-8.9 183-40.1 93.6-114.7 197.7-210 293-22.3 22.3-45.4 43.8-68.7 63.8-10.3 8.8-11.4 24.4-2.6 34.6 8.9 10.3 24.4 11.4 34.6 2.6 24.2-20.8 48.2-43.2 71.4-66.3 99.6-99.6 177.9-209.1 220.4-308.3 45.6-106.3 45-190.5-1.5-237C802 38.8 562.4 135 348.2 349.3c-39.9 39.9-75.7 80.7-107 121.2-28.1-41.7-51.4-83-68.3-122.4-36.6-85.3-39.8-152-8.9-183 39.6-39.6 136.1-22.9 252 43.6 11.7 6.7 26.8 2.7 33.5-9.1 6.7-11.8 2.7-26.8-9.1-33.5-140-80.3-253.4-93.4-311.1-35.7-46.6 46.6-47.1 130.7-1.5 237 20 46.8 48.2 95.8 82.6 145C97.5 674.2 60.7 825.9 129.3 894.5c23.8 23.8 57 35.5 97.6 35.5 58.7 0 132.9-24.6 216.5-73 11.7-6.8 15.7-21.8 8.9-33.6-6.8-11.7-21.8-15.7-33.6-8.9-117.1 68-214.7 85.3-254.7 45.3-51.6-51.6-7.5-177.6 77.8-304.7 31.6 40.9 67.3 81.5 106.3 120.5 99.6 99.6 209.1 177.8 308.4 220.4 52.5 22.5 99.7 33.8 139.6 33.8 40.8 0 73.9-11.8 97.5-35.3 57.7-57.7 44.6-171.2-35.9-311.4zM511.5 430.5c-45.2 0-81.9 36.7-81.9 81.9s36.7 81.9 81.9 81.9 81.9-36.7 81.9-81.9c-0.1-45.2-36.7-81.9-81.9-81.9z" fill="#FFF"/></svg>` : "error"}
+
+                           ${key === "ΓΥΓ" ? "Υγείας" : key.includes("ΓΑΝΘ1") ? "Θεωρητ. 1" : key === 'ΓΟΠ1' ? "Οικον. 1" : key === 'ΓΟΠ2' ? "Οικον. 2" : key === "ΓΑΝΘ2" ? "Θεωρητ. 2" : key === "ΓΘΤ" ? "Θετικών" : key}
+                        </div>
+                        <div style="margin-right: 10px;" class="hint-option">${klasa.count} άτομα<svg style="transform: rotate(180deg)"
+                                xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                                fill="none">
+                                <path
+                                    d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                                    fill="#fff" />
+                            </svg></div>
+                    </div>`
+                    })
+                }).catch(error => {
+                    console.log('Error:', error);
+                });
+        })
+        .catch(error => {
+            console.error("Jeanne D'arc Database is offline.");
+            console.log('Error:', error);
+        });
+}
+
+function switchClass_JEANNE2(to, el) {
+    const val = localStorage.getItem("jeanDarc_accountData")
+    el.querySelector(".hint-option").innerHTML = el.querySelector(".hint-option").innerText + `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+            --track-upload: #4a4a4a;width: 20px;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg>`
+    if (val) {
+        const json = JSON.parse(val)
+        const process = atob(json.pin)
+        fetch(`https://arc.evoxs.xyz/?metode=ndryshimKlasa&emri=${foundName}&pin=${process}&id=${to}`)
+            .then(response => response.text())
+            .then(complete => {
+                console.warn("Server response", complete)
+                document.getElementById("account-settings-klasa").innerHTML = to.replace("none", "")
+                document.getElementById("selfClassPreview").innerHTML = document.getElementById("selfClassPreview").innerHTML.includes("{replaceme}") ? document.getElementById("selfClassPreview").innerHTML.replace("{replaceme}", to.replace("none", "")) : document.getElementById("selfClassPreview").innerHTML.replace(selfClass.replace("none", ""), to.replace("none", ""))
+                selfClass = to
+                openChangeClass()
+                openProfile(document.getElementById("profile-switch"))
+            }).catch(error => {
+                console.error("Progress error", error)
+            });
+    }
+}
+
+const floridaSettingsInput = document.getElementById("florida-main")
+
+floridaSettingsInput.addEventListener('change', (e) => {
+    if (e.target.checked) {
+        console.log("Notifications enabled");
+        notificationsStart()
+        e.target.checked = false;
+    } else {
+        e.target.checked = true;
+        console.log("Notifications disabled");
+        const val = localStorage.getItem("jeanDarc_accountData")
+
+        const json = JSON.parse(val)
+        const process = atob(json.pin)
+        fetch(`https://arc.evoxs.xyz/?metode=disableFlorida&emri=${foundName}&pin=${process}`)
+            .then(response => response.text())
+            .then(complete => {
+                if (complete.message === "Complete") {
+                    e.target.checked = false;
+                }
+            }).catch(error => {
+                console.error("Progress error", error)
+            });
+    }
+});
+
+
+function signOut(direct) {
+    if (!direct) {
+        EvalertNext({
+            title: "Αποσύνδεση",
+            description: `Είσαι σίγουρ${getGender(removeTonos(foundName.split(" ")[0])) === "Male" ? "ος" : "η"} πως θες να αποσυνδεθείς?<br>Τα στοιχεία του λογαριασμού σου στην συσκευή σου θα διαγραφούν.`,
+            buttons: ["Αποσύνδεση", "Ακύρωση"],
+            buttonAction: [
+                `signOut('logoutNow')`
+            ],
+            addons: [],
+            "clouds": true,
+            "clouds_data": ["SELF"]
+        })
+        return;
+    }
+    localStorage.clear();
+    sessionStorage.clear();
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(registrations => {
+            registrations.forEach(reg => reg.unregister());
+        }).finally(() => {
+            location.reload();
+        });
+    } else {
+        location.reload();
+    }
+}
+
+function addToPermissions(service, status) {
+    const locally = localStorage.getItem("permissions")
+    if (locally) {
+        const par = JSON.parse(locally)
+        par[service] = status
+        localStorage.setItem("permissions", JSON.stringify(par))
+    } else {
+        const par = {}
+        par[service] = status
+        localStorage.setItem("permissions", JSON.stringify(par))
+    }
+}
+
+let permissions = null
+setInterval(function () {
+    const local = localStorage.getItem("permissions");
+    if(local) {
+        permissions = JSON.parse(local)
+    }
+}, 500)
+
+function isAllowed(service) {
+    try {
+        const local = permissions;
+        if (!local) return false;
+
+        const localpar = JSON.parse(local);
+        return localpar[service] === "Allowed";
+    } catch {
+        return false;
+    }
 }
