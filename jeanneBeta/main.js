@@ -1,6 +1,6 @@
-const appVersion = "2.0.0"
+const appVersion = "2.0.1"
 for (let i = 0; i < 3; i++) {
-    document.getElementById(`version${i+1}`).innerText = `${i+1!==2 ? appVersion : `v${appVersion}`}`
+    document.getElementById(`version${i + 1}`).innerText = `${i + 1 !== 2 ? appVersion : `v${appVersion}`}`
 }
 localStorage.setItem("Jeanne_LastVersion", appVersion)
 
@@ -1011,12 +1011,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             console.log("safe-area-inset-top is:", insetTop + "px");
 
-            document.getElementById("icon-checkmark").style.display = 'none'
-            document.getElementById("icon-error").style.display = null
-            document.getElementById("icon-spinner").style.display = "none";
-            document.getElementById("notice-text").innerText = `Debug Active. env top: ${insetTop}px`
-            document.getElementById("notice-main").classList.add("active")
-            setTimeout(function () { document.getElementById("notice-main").classList.remove("active") }, 6000)
+            //document.getElementById("icon-checkmark").style.display = 'none'
+            //document.getElementById("icon-error").style.display = null
+            //document.getElementById("icon-spinner").style.display = "none";
+            //document.getElementById("notice-text").innerText = `Debug Active. env top: ${insetTop}px`
+            //document.getElementById("notice-main").classList.add("active")
+            //setTimeout(function () { document.getElementById("notice-main").classList.remove("active") }, 6000)
             if (insetTop !== 0) return;
 
             const styleSheets = Array.from(document.styleSheets);
@@ -1132,6 +1132,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
 
         if (localStorage.getItem("jeanDarc_accountData")) {
+
             autoLogin()
 
         } else {
@@ -1789,7 +1790,11 @@ function autoLogin() {
                                 .then(response => response.json())
                                 .then(dictionary => {
                                     informacionDictionary = dictionary
+
+
+
                                     setTimeout(function () {
+
                                         attach()
                                     }, 1000)
                                 }).catch(error => {
@@ -1976,83 +1981,88 @@ function attach() {
     }
     document.body.style.backgroundColor = '#101010'//'rgb(5,2,16)'
     //return;
-    $("#hexa").fadeOut("fast", function () {
-        $("#tasks").fadeOut("fast")
-        document.getElementById("name-sur-view").innerText = foundName
-        const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
-        const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
-        const f = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
-        //console.log(f.length)
-        if (f.length > 1) {
+    document.getElementById("splashLogo").style.transform = "scale(15)"
+    document.getElementById("splashLogo").style.opacity = "0"
+    setTimeout(function () {
+        $("#hexa").fadeOut("fast", function () {
+            $("#tasks").fadeOut("fast")
+            document.getElementById("name-sur-view").innerText = foundName
+            const a = foundName.split(' ')[0].replace(/[σς]+$/, '')
+            const b = foundName.split(' ')[1].replace(/[σς]+$/, '')
+            const f = `${a.endsWith("ο") ? a.slice(0, -1) + "ε" : a} ${b.endsWith("ο") ? b.slice(0, -1) + "ε" : b}`
+            //console.log(f.length)
+            if (f.length > 1) {
 
-            document.getElementById("emri").innerText = `${transformGreekName(foundName, 0)}`
+                document.getElementById("emri").innerText = `${transformGreekName(foundName, 0)}`
 
-        } else {
-            document.getElementById("emri").innerText = `${transformGreekName(foundName, 0)} ${transformGreekName(foundName, 1)}`
-        }
-
-
-
-        $("#app").fadeIn("fast")
-        document.getElementById("navigation").classList.add("active")
-
-    })
-
-    if (localStorage.getItem("jeanne_persistance")) {
-        const persistance = JSON.parse(localStorage.getItem("jeanne_persistance"));
-        if (persistance) {
-            const open = persistance.lastActive;
-            if (open === 'search') {
-                openSearch(document.getElementById("search-switch"))
-            } else if (open === 'discover') {
-                openDiscovery(document.getElementById("discovery-switch"))
-            } else if (open === 'profile') {
-                openProfile(document.getElementById("profile-switch"))
+            } else {
+                document.getElementById("emri").innerText = `${transformGreekName(foundName, 0)} ${transformGreekName(foundName, 1)}`
             }
-        }
-    }
 
-    spawnRandom()
 
-    informacion(foundName)
-        .then(info => {
-            myInfo = info
+
+            $("#app").fadeIn("fast")
+            document.getElementById("navigation").classList.add("active")
+
         })
 
-    //seksioni->
-
-    const url = new URL(window.location.href);
-    const params = new URLSearchParams(url.search);
-    const showNotification = params.get('showNotification');
-    const metode = params.get('metode');
-    const title = params.get('title');
-    const content = params.get('content');
-
-    if (showNotification) {
-        hasPendingNotification = true
-        console.log('showNotification:', showNotification);
-        console.log('title:', title);
-        console.log('content:', content);
-        document.getElementById("currentNotif").innerText = title
-        document.getElementById("currentNotif-desc").innerText = content
-        let logoUrl = `./appLogoV2.png`
-        if (title.includes("AIT") || title.includes("🪄") || content.includes("AIT")) {
-            logoUrl = `../evox-epsilon-beta/evox-logo-apple.png`
-        }
-        checkUrlAccessibility(logoUrl)
-            .then(not404 => {
-                const el = document.getElementById("iconRow")
-                console.log(not404, "not404 res")
-                if (not404 === true) {
-                    document.getElementById("iconRow").innerHTML = `<img src="${logoUrl}">`
+        if (localStorage.getItem("jeanne_persistance")) {
+            const persistance = JSON.parse(localStorage.getItem("jeanne_persistance"));
+            if (persistance) {
+                const open = persistance.lastActive;
+                if (open === 'search') {
+                    openSearch(document.getElementById("search-switch"))
+                } else if (open === 'discover') {
+                    openDiscovery(document.getElementById("discovery-switch"))
+                } else if (open === 'profile') {
+                    openProfile(document.getElementById("profile-switch"))
                 }
-                document.getElementById("notification-center").classList.add("active")
-                document.getElementById("app").style.opacity = '0.5'
-            }).catch(error => {
-                //setNetworkStatus('off')
-                console.error(error);
-            });
-    }
+            }
+        }
+
+        spawnRandom()
+
+        informacion(foundName)
+            .then(info => {
+                myInfo = info
+            })
+
+        //seksioni->
+
+        const url = new URL(window.location.href);
+        const params = new URLSearchParams(url.search);
+        const showNotification = params.get('showNotification');
+        const metode = params.get('metode');
+        const title = params.get('title');
+        const content = params.get('content');
+
+        if (showNotification) {
+            hasPendingNotification = true
+            console.log('showNotification:', showNotification);
+            console.log('title:', title);
+            console.log('content:', content);
+            document.getElementById("currentNotif").innerText = title
+            document.getElementById("currentNotif-desc").innerText = content
+            let logoUrl = `./appLogoV2.png`
+            if (title.includes("AIT") || title.includes("🪄") || content.includes("AIT")) {
+                logoUrl = `../evox-epsilon-beta/evox-logo-apple.png`
+            }
+            checkUrlAccessibility(logoUrl)
+                .then(not404 => {
+                    const el = document.getElementById("iconRow")
+                    console.log(not404, "not404 res")
+                    if (not404 === true) {
+                        document.getElementById("iconRow").innerHTML = `<img src="${logoUrl}">`
+                    }
+                    document.getElementById("notification-center").classList.add("active")
+                    document.getElementById("app").style.opacity = '0.5'
+                }).catch(error => {
+                    //setNetworkStatus('off')
+                    console.error(error);
+                });
+        }
+    }, 550)
+
 }
 
 function dismissNotification(el) {
@@ -2121,7 +2131,7 @@ async function spawnRandom(redo, frontEndLoading) {
 
 
     try {
-        const response = await fetch(`https://arc.evoxs.xyz/?metode=randomPost&emri=${foundName}&pin=${pin}&id=6`);
+        const response = await fetch(`https://arc.evoxs.xyz/?metode=forYou&emri=${foundName}&pin=${pin}&id=6`);
         const ranData = await response.text();
 
         //console.log("randata:", ranData)
@@ -2382,6 +2392,8 @@ function downloadProfiles() {
 
 let foryoudiv = document.getElementById("home");
 let loadingIndicatorFy = document.getElementById("loadingIndicator-fy");
+let endIndicator = document.getElementById("endIndicator-fy");
+
 let isLoading2 = false; // Prevent multiple triggers
 
 foryoudiv.addEventListener("scroll", function () {
@@ -2393,18 +2405,21 @@ foryoudiv.addEventListener("scroll", function () {
             console.log("Still loading previous data, aborting new load")
             return;
         }
+
         isLoading2 = true;
-        loadingIndicatorFy.classList.add("scaleUp")
-        loadingIndicatorFy.style.opacity = "1";
+        //loadingIndicatorFy.classList.add("scaleUp")
+        //loadingIndicatorFy.style.opacity = "1";
+        endIndicator.classList.add("scaleUp")
+        endIndicator.style.opacity = "1";
 
-        setTimeout(() => {
-            console.log("triggering more load")
-            spawnRandom(true, "loadingActive")
-
-            isLoading2 = false;
-            loadingIndicatorFy.style.opacity = "0";
-            loadingIndicatorFy.classList.remove("scaleUp")
-        }, 2500);
+        //setTimeout(() => {
+        //    console.log("triggering more load")
+        //    spawnRandom(true, "loadingActive")
+        //
+        //    isLoading2 = false;
+        //    loadingIndicatorFy.style.opacity = "0";
+        //    loadingIndicatorFy.classList.remove("scaleUp")
+        //}, 2500);
     }
 });
 
@@ -2513,6 +2528,7 @@ function showProfile(e) {
         img = e.querySelector('img')
         img.style.transform = "scale(0.9)"
         openProfile(document.getElementById("profile-switch"))
+        document.getElementById("navigation").classList.add("active")
     }
 
     setTimeout(function () {
@@ -3536,6 +3552,7 @@ function showSocial() {
 }
 
 function closePostCreate(frontend) {
+    document.getElementById("navigation").classList.add("active")
     document.body.style.overflow = null;
 
     document.getElementById("app").style.transform = null;
@@ -3756,30 +3773,30 @@ let accumulatedDown = 0;
 let accumulatedUp = 0;
 
 foryou.addEventListener('scroll', () => {
-  const currentScrollY = foryou.scrollTop;
-  const delta = currentScrollY - lastScrollY;
+    const currentScrollY = foryou.scrollTop;
+    const delta = currentScrollY - lastScrollY;
 
-  if (delta > 0) {
-    // Scrolling down
-    accumulatedDown += delta;
-    accumulatedUp = 0;
-    if (accumulatedDown > downThreshold) {
-      document.getElementById("navigation").classList.remove("active");
-      accumulatedDown = 0;
+    if (delta > 0) {
+        // Scrolling down
+        accumulatedDown += delta;
+        accumulatedUp = 0;
+        if (accumulatedDown > downThreshold) {
+            document.getElementById("navigation").classList.remove("active");
+            accumulatedDown = 0;
+        }
+    } else if (delta < 0) {
+        // Scrolling up
+        accumulatedUp += -delta;
+        accumulatedDown = 0;
+        if (accumulatedUp > upThreshold) {
+            document.getElementById("navigation").classList.add("active");
+            accumulatedUp = 0;
+        }
+    } else {
+        console.warn(delta)
     }
-  } else if (delta < 0) {
-    // Scrolling up
-    accumulatedUp += -delta;
-    accumulatedDown = 0;
-    if (accumulatedUp > upThreshold) {
-      document.getElementById("navigation").classList.add("active");
-      accumulatedUp = 0;
-    }
-  } else {
-    console.warn(delta)
-  }
 
-  lastScrollY = currentScrollY;
+    lastScrollY = currentScrollY;
 });
 
 
@@ -5806,6 +5823,7 @@ function loadMoreUsers() {
 
 
 function openDiscovery(el) {
+    document.getElementById("navigation").classList.add("active")
     saveLastPage('discover')
     el.classList.add('active')
     el.style.transition = "transform 0.3s ease";
@@ -6524,10 +6542,18 @@ function showProfileInfo(emri) {
                 src = profileSrc.imageData; // If profile image is available, use it.
             }
 
+            let deniedUserProfiles = []
+
+
+
             //fetchAndSaveImage(emri, pfp);
             // Assuming getImage and getEvoxProfile are asynchronous functions that return promises.
             Promise.all(
                 sentbyuser.map(async (sent) => {
+                    if (sent.denied) {
+                        deniedUserProfiles.push(sent.marresi)
+                        return;
+                    }
                     // Wait for both image and profile data to be fetched.
                     //const profileSrc = await getImage(sent.marresi);
                     //const pfp = await getEvoxProfile(sent.marresi);
@@ -6591,7 +6617,7 @@ function showProfileInfo(emri) {
                             <div class="mediaContainer"${hasMedia ? "style='margin-top: 10px;'" : ""}>
                             ${media}
                             </div>
-                            ${sent.cryptox ? `<vox>Cryptox Encrypted</vox>` : ''}
+                            ${sent.cryptox ? `<vox class="cryptox-info">Cryptox Encrypted</vox>` : ''}
                             <div class="icons">
                     <div ${sent.contents.likes && sent.contents.likes.liked.includes(foundName) ? `data-focus-key='${randomString}'` : ""} onclick="focusOnIcon(this, 'likeBtn', '${emri}', '${sent.marresi}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -6632,6 +6658,57 @@ function showProfileInfo(emri) {
                     loadFresh(true);
                 }
                 document.getElementById("sentBySelectedUser").innerHTML = html;
+                console.log(deniedUserProfiles, "deny")
+                deniedUserProfiles.forEach((username, index) => {
+                    getImage(pars.name).then(profileSrc => {
+                        document.getElementById("sentBySelectedUser").innerHTML += `
+                <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
+                    <div class="post extpost" style="filter: blur(5.5px);brightness(0.8)">
+                        <div class="profilePicture">
+                            <img src="${profileSrc.imageData}">
+                        </div>
+                        <div class="postInfo">
+                            <div class="userInfo">
+                                <p onclick="extMention('${username}')">${username}</p>
+                            </div>
+                            <div class="postContent" style="height: auto;">
+                                <p><vox onclick="extMention('${pars.name}')" class="mention ${getGender(removeTonos(pars.name.split(" ")[0])) === "Female" ? "female" : "male"}">@${pars.name}</vox>
+                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                                </p>
+                            </div>
+                            <vox class="cryptox-info">Cryptox Encrypted</vox>
+                            <div class="icons">
+                    <div class="iconA">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="iconA">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                            <path d="M10.3009 13.6949L20.102 3.89742M10.5795 14.1355L12.8019 18.5804C13.339 19.6545 13.6075 20.1916 13.9458 20.3356C14.2394 20.4606 14.575 20.4379 14.8492 20.2747C15.1651 20.0866 15.3591 19.5183 15.7472 18.3818L19.9463 6.08434C20.2845 5.09409 20.4535 4.59896 20.3378 4.27142C20.2371 3.98648 20.013 3.76234 19.7281 3.66167C19.4005 3.54595 18.9054 3.71502 17.9151 4.05315L5.61763 8.2523C4.48114 8.64037 3.91289 8.83441 3.72478 9.15032C3.56153 9.42447 3.53891 9.76007 3.66389 10.0536C3.80791 10.3919 4.34498 10.6605 5.41912 11.1975L9.86397 13.42C10.041 13.5085 10.1295 13.5527 10.2061 13.6118C10.2742 13.6643 10.3352 13.7253 10.3876 13.7933C10.4468 13.87 10.491 13.9585 10.5795 14.1355Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="iconA">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+<path d="M5 6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.07989 3 8.2 3H15.8C16.9201 3 17.4802 3 17.908 3.21799C18.2843 3.40973 18.5903 3.71569 18.782 4.09202C19 4.51984 19 5.07989 19 6.2V21L12 16L5 21V6.2Z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+</svg></vox>
+                    </div>
+                    </div>
+                        </div>
+                    </div>
+                    ${index === 0 ? `<div style='z-index: 9999;position:absolute;width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;gap:10px;color: #cfcfcfa2'>
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25px" height="25px" viewBox="0 -0.5 17 17" version="1.1" class="si-glyph si-glyph-deny"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <path d="M9.016,0.06 C4.616,0.06 1.047,3.629 1.047,8.029 C1.047,12.429 4.615,15.998 9.016,15.998 C13.418,15.998 16.985,12.429 16.985,8.029 C16.985,3.629 13.418,0.06 9.016,0.06 L9.016,0.06 Z M3.049,8.028 C3.049,4.739 5.726,2.062 9.016,2.062 C10.37,2.062 11.616,2.52 12.618,3.283 L4.271,11.631 C3.508,10.629 3.049,9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.544,13.583 5.569,12.889 L13.878,4.58 C14.571,5.555 14.982,6.743 14.982,8.028 C14.981,11.317 12.306,13.994 9.016,13.994 L9.016,13.994 Z" fill="#ff481bc5" class="si-glyph-fill">
+                        </path></g></svg>
+                        Δεν μπορείς να δεις τις ${document.getElementById("sentBySelectedUser").innerHTML !== ""? "υπόλοιπες " : ""}καταχωρήσεις.<br>Ακολούθησε τον χρήστη για να ξεκλειδώσεις αυτή τη λειτουργία.</div>
+                        ` : ""}
+                    </div>`
+
+
+                    })
+
+                })
             });
 
 
@@ -6651,11 +6728,6 @@ function showProfileInfo(emri) {
                     if (!dontSpawn) {
                         spawnIn(sentbyuser)
                     }
-
-
-
-
-
 
                 }).catch(error => {
                     document.getElementById("sentBySelectedUser").innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;text-align: center;margin-top:15px;gap: 5px;"><svg xmlns="http://www.w3.org/2000/svg" width="45px" height="45px" viewBox="0 0 24 24" fill="none">
@@ -6684,6 +6756,7 @@ function showProfileInfo(emri) {
 
 let search_loadedUsers = []
 function openSearch(el, inBackground) {
+    document.getElementById("navigation").classList.add("active")
     document.getElementById("search-in").style.display = 'none'
     saveLastPage('search')
     //el.classList.add('active')
@@ -8280,7 +8353,7 @@ function addToPermissions(service, status) {
 let permissions = null
 setInterval(function () {
     const local = localStorage.getItem("permissions");
-    if(local) {
+    if (local) {
         permissions = JSON.parse(local)
     }
 }, 500)

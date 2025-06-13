@@ -5361,7 +5361,7 @@ select:focus {
 
 @keyframes scaleUp {
     from {
-        transform: scale(-1);
+        transform: scale(0);
         /* Adjust the Y value for how far the element slides up */
     }
 

@@ -448,7 +448,7 @@
     </div>
 
     <div onclick="window.location.reload()" id="hexa" class="tasks">
-        <img src="logo.png" style="z-index: 11;">
+        <img src="logo.png" id="splashLogo" style="z-index: 11;transition: transform 1s ease-in-out, opacity 1s ease;">
         <!--<div class="blasting" style="z-index: 10;position: fixed;"></div>-->
         <div class="native-loading">
             <span id="loading-text-evox" class="fade-in-slide-up">Γίνεται Σύνδεση..</span>
@@ -673,6 +673,18 @@
             <div class="foryou-discovery mentioned" id="mentioned">
 
             </div>
+            <div id="endIndicator-fy"
+                style="opacity: 0; text-align: center; padding: 10px;padding-bottom: 15%;display: flex;flex-direction: column;width: 100%;justify-content: center;align-items: center;gap:10px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                        stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M7.75 12L10.58 14.83L16.25 9.17004" stroke="#fff" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <p>Τα είδες όλα!</p>
+                <span style="font-size: 14px;
+    color: #888;">Έχεις δει όλες τις καταχωρήσεις που είναι διαθέσιμες σε εσένα.<br>Αν θέλεις να δεις περισσότερες, μπορείς να ζητήσεις πρόσβαση από τους συμμαθητές σου.</span>
+            </div>
             <div id="loadingIndicator-fy" style="opacity: 0; text-align: center; padding: 10px;padding-bottom: 15%;">
                 <div class="spinner center">
                     <div class="spinner-blade"></div>
@@ -689,6 +701,8 @@
                     <div class="spinner-blade"></div>
                 </div>
             </div>
+
+
 
             <div class="progress fade-in-slide-up" style="display: none;">
                 <div id="progress-card" class="progress-card"> <!-- onclick="testCard(this)"-->
@@ -987,6 +1001,7 @@
                         Ρυθμίσεις
                     </div>
                 </div>
+                
                 <div class="semiCarousel large">
                     <div class="carouselItem active" id="carouselItem-1" onclick="showFromMe(this)">
                         Καταχωρήσεις
@@ -1590,12 +1605,12 @@
                     </div>
                 </div>
                 <div class="buttonsEdit">
-                    <div onclick="selectAndAddTag()" class="showProfileBtn editButton"
+                    <div id="share-start" onclick="activateShare(this)" class="showProfileBtn editButton" data-active="null"
                         style="height: auto;margin-right: 0;padding: 6px 25px;border:none">
-                        Επιλογή
+                        Ακολούθησε
                     </div>
-                    <div id="share-start" onclick="activateShare(this)" data-active="null" class="editButton">
-                        Κοινοποίηση
+                    <div onclick="selectAndAddTag()"  class="editButton">
+                        Αναφορά
                     </div>
                 </div>
                 <div class="semiCarousel">
@@ -1603,7 +1618,7 @@
                         Καταχωρήσεις
                     </div>
                     <div class="carouselItem" id="carouseli02" onclick="switchToSentToUser(this)">
-                        Λήψεις
+                        Αποδοχές
                     </div>
                     <div id="carouseli03" onclick="showUsersMedia(this)" class="carouselItem">
                         Πολυμέσα
@@ -2194,13 +2209,15 @@
                             </svg>
                             PIN Λογαριασμού
                         </div>
-                        <div class="hint-option"><vox id="pin-preview-strength">?</vox><svg style="transform: rotate(180deg)"
+                        <div class="hint-option">
+                            <vox id="pin-preview-strength">?</vox><svg style="transform: rotate(180deg)"
                                 xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
                                 fill="none">
                                 <path
                                     d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
                                     fill="#fff" />
-                            </svg></div>
+                            </svg>
+                        </div>
                     </div>
 
                     <div onclick="checkForLocal()" class="section-a-button">
@@ -2293,7 +2310,8 @@
                 <div class="section-buttons fade-in-slide-up" id="likedPosts-denied">
 
                 </div>
-                <div id="unabletoshowinfo" class="fade-in-slide-up" style="display: none; align-items: flex-start; width: 100%; gap: 10px;margin-bottom: 35px;">
+                <div id="unabletoshowinfo" class="fade-in-slide-up"
+                    style="display: none; align-items: flex-start; width: 100%; gap: 10px;margin-bottom: 35px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none"
                         style="flex-shrink: 0;">
                         <path
@@ -2343,7 +2361,8 @@
                 <div class="section-buttons fade-in-slide-up" id="savedPosts-denied">
 
                 </div>
-                <div id="unabletoshowinfo-saved" class="fade-in-slide-up" style="display: none; align-items: flex-start; width: 100%; gap: 10px;margin-bottom: 35px;">
+                <div id="unabletoshowinfo-saved" class="fade-in-slide-up"
+                    style="display: none; align-items: flex-start; width: 100%; gap: 10px;margin-bottom: 35px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none"
                         style="flex-shrink: 0;">
                         <path
