@@ -6677,7 +6677,8 @@ select:focus {
 }
 
 .cloudProfile-Horizontal {
-    padding: 40px 0;
+    padding: 15px 0; /*40px*/
+    height: 90px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6853,20 +6854,20 @@ select:focus {
     width: 100%;
     height: auto;
     background-color: #0a0a0a;
-    gap:10px;
+    gap: 5px;
     padding:15px;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
 }
 
 .bottomInfo p {
-    font-size: 16px;
+    font-size: 15px;
     color: #fff;
     font-weight: bold;
 }
 
 .bottomInfo span {
-    font-size: 16px;
+    font-size: 14px;
     color: #777777;
     font-weight: 200;
     text-align: left;

@@ -1605,21 +1605,27 @@
                     </div>
                 </div>
                 <div class="buttonsEdit">
-                    <div id="share-start" onclick="activateShare(this)" class="showProfileBtn editButton"
-                        data-active="null" style="height: auto;margin-right: 0;padding: 6px 25px;border:none">
+                    <div style="display: none;" id="share-start" onclick="activateShare(this)"
+                        class="showProfileBtn editButton" data-active="null"
+                        style="height: auto;margin-right: 0;padding: 6px 25px;border:none">
+                        Κοινοποίηση
+                    </div>
+                    <div id="followUser" onclick="followUser(this)" class="showProfileBtn editButton" data-active="null"
+                        style="height: auto;margin-right: 0;padding: 6px 25px;border:none;white-space: nowrap;">
                         Ακολούθησε
                     </div>
                     <div onclick="selectAndAddTag()" class="editButton">
                         Αναφορά
                     </div>
                 </div>
-                <div class="socialReccomendation fade-in-slide-up" id="socialRecommendation" style="display: none;">
-                    <span>Περισσότερες επιλογές</span>
+                <div class="socialReccomendation fade-in-slide-up" id="socialRecommendation">
+                    <span>Αποδοχή αιτήματος</span>
                     <div class="roundedReccomendationBox">
                         <div class="cloudsContainer">
-                            
-                            <div class="cloudProfile-Horizontal" id="recommendationClouds">
-                                <div class="mainIcon"><img style="width:60px;height: 60px;;" src="choiceb.jpg" alt="Google"></div>
+
+                            <div class="cloudProfile-Horizontal" id="recommendationClouds" style="display: none;">
+                                <div class="mainIcon"><img style="width:60px;height: 60px;;" src="choiceb.jpg"
+                                        alt="Google"></div>
                                 <div class="cloudBubble"><img src="choiceb.jpg" alt="Google"></div>
                                 <div class="cloudBubble"><img src="geometric.jpg" alt="Person"></div>
                                 <div class="cloudBubble"><img src="recap-new.png" alt="AT"></div>
@@ -1630,12 +1636,35 @@
                                 <div class="cloudBubble"><img src="0.png" alt="Glow"></div>
                             </div>
 
+                            <div id="twoUsers" class="cloudProfile-Horizontal">
+                                <div class="mainIcon"><img style="width:60px;height: 60px;;" src="choiceb.jpg"
+                                        alt="Google"></div>
+                                <div style="margin-left: 10px;" class="mainIcon"><img style="width:60px;height: 60px;" src="choiceb.jpg"
+                                        alt="Google"></div>
+
+                            </div>
+
                         </div>
                         <div class="bottomInfo">
-                            <p>Προτάσεις για εσένα</p>
-                            <span>Μπορείς να ζητήσεις από <vox id="tontin-emri"></vox> να δεις τις καταχωρήσεις του.</span>
-                            <div class="showProfileBtn editButton">
-                                Αναφορά
+                            <p>Αίτηση άδειας</p>
+                            <span id="editText-Req">Ο/Η {χρηστης} σου έχει κάνει αίτημα ακολούθησης. Αν το δεχτείς, ο χρήστης θα μπορεί να
+                                δει τις καταχωρήσεις και αποδοχές σου.</span>
+                            <div style="margin-top: 5px;" class="buttonsEdit">
+
+                                <div style="display: none;" id="share-start" onclick="activateShare(this)" class="showProfileBtn editButton"
+                                    data-active="null"
+                                    style="height: auto;margin-right: 0;padding: 6px 25px;border:none">
+                                    Αποδοχή
+                                </div>
+
+                                <div onclick="acceptRequest(this)" class="showProfileBtn editButton"
+                                    style="height: auto;margin-right: 0;padding: 6px 25px;border:none">
+                                    Αποδοχή
+                                </div>
+
+                                <div class="editButton">
+                                    Απόρριψη
+                                </div>
                             </div>
                         </div>
                     </div>

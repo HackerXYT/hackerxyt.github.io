@@ -1,4 +1,4 @@
-const appVersion = "2.0.2"
+const appVersion = "2.0.3"
 for (let i = 0; i < 3; i++) {
     document.getElementById(`version${i + 1}`).innerText = `${i + 1 !== 2 ? appVersion : `v${appVersion}`}`
 }
@@ -6480,6 +6480,28 @@ function showProfileInfo(emri) {
     prevContainer.style.display = 'none'
     document.getElementById("search-cont-3").style.display = 'none'
 
+    const elementFollow = document.getElementById("followUser")
+    elementFollow.style.border = "none";
+    elementFollow.style.padding = "6px 25px"
+    elementFollow.innerHTML = "Ακολούθησε"
+    elementFollow.classList.add("showProfileBtn")
+
+    document.getElementById("twoUsers").innerHTML = ''
+    getImage(foundName).then(profileSrc => {
+        document.getElementById("twoUsers").innerHTML += `<div class="mainIcon"><img style="width:60px;height: 60px;" src="${profileSrc.imageData}"></div><svg id="plugIn-icon" style="transform: rotate(45deg);margin-left: 15px;" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 48 48">
+        <path fill="#fff" d="M25.6,25.6,22.2,29,19,25.8l3.4-3.4a2,2,0,0,0-2.8-2.8L16.2,23l-1.3-1.3a1.9,1.9,0,0,0-2.8,0l-3,3a9.8,9.8,0,0,0-3,7,9.1,9.1,0,0,0,1.8,5.6L4.6,40.6a1.9,1.9,0,0,0,0,2.8,1.9,1.9,0,0,0,2.8,0l3.2-3.2a10.1,10.1,0,0,0,5.9,1.9,10.2,10.2,0,0,0,7.1-2.9l3-3a2,2,0,0,0,.6-1.4,1.7,1.7,0,0,0-.6-1.4L25,31.8l3.4-3.4a2,2,0,0,0-2.8-2.8Z"/>
+        <path fill="#fff" d="M43.4,4.6a1.9,1.9,0,0,0-2.8,0L37.2,8a10,10,0,0,0-13,.9l-3,3a2,2,0,0,0-.6,1.4,1.7,1.7,0,0,0,.6,1.4L32.9,26.4a1.9,1.9,0,0,0,2.8,0l3-2.9a9.9,9.9,0,0,0,2.9-7.1A10.4,10.4,0,0,0,40,10.9l3.4-3.5A1.9,1.9,0,0,0,43.4,4.6Z"/>
+</svg>`
+        getImage(emri).then(profileSrc => {
+            document.getElementById("twoUsers").innerHTML += `<div style="margin-left: 10px;" class="mainIcon"><img style="width:60px;height: 60px;" src="${profileSrc.imageData}"></div>`
+        })
+    })
+
+    document.getElementById("editText-Req").innerHTML = `${getGender(emri) === "Male" ? "Ο" : "Η"} ${emri} σου έχει κάνει αίτημα ακολούθησης. Αν το δεχτείς, εκείν${getGender(emri) === "Male" ? "ος" : "η"} θα μπορεί να
+                                δει τις καταχωρήσεις και αποδοχές σου.`
+
+
+
     async function final() {
         const profileSrc = await getImage(emri); //the image of the person reffered
         const pfp = await getEvoxProfile(emri);
@@ -6565,6 +6587,20 @@ function showProfileInfo(emri) {
         }
 
         const account_data = JSON.parse(account_data_lc)
+
+        fetch(`https://arc.evoxs.xyz/?metode=getSentRequests&emri=${foundName}&pin=${atob(account_data.pin)}`)
+            .then(response => response.json())
+            .then(res => {
+                if (res.includes(emri)) {
+
+                    elementFollow.innerHTML = `Στάλθηκε Αίτημα`
+                    elementFollow.style.border = null;
+                    elementFollow.style.padding = null;
+                    elementFollow.classList.remove("showProfileBtn")
+                }
+            }).catch(error => {
+                console.error("Follow error", error)
+            });
 
         const pars = {
             pin: account_data.pin, //self pin
@@ -8409,5 +8445,81 @@ function isAllowed(service) {
         return localpar[service] === "Allowed";
     } catch {
         return false;
+    }
+}
+
+function followUser(el) {
+    const val = localStorage.getItem("jeanDarc_accountData")
+    const json = JSON.parse(val)
+    const process = atob(json.pin)
+
+    if (el.innerText === "Στάλθηκε Αίτημα") {
+        console.log("is already sent")
+        el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+            --track-upload: #4a4a4a;width: 15px;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg>`
+        fetch(`https://arc.evoxs.xyz/?metode=removeFollowRequest&emri=${foundName}&pin=${process}&id=${document.getElementById("userName-search").innerText}`)
+            .then(response => response.json())
+            .then(res => {
+                if (res.evxCode === 210 || res.evxCode === 205 || res.evxCode === 206) {
+                    el.style.border = "none";
+                    el.style.padding = "6px 25px"
+                    el.innerHTML = "Ακολούθησε"
+                    el.classList.add("showProfileBtn")
+                }
+            }).catch(error => {
+                console.error("Progress error", error)
+            });
+    } else {
+        el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+            --track-upload: #4a4a4a;width: 15px;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg>`
+        fetch(`https://arc.evoxs.xyz/?metode=follow&emri=${foundName}&pin=${process}&id=${document.getElementById("userName-search").innerText}`)
+            .then(response => response.json())
+            .then(res => {
+                if (res.evxCode === 210 || res.evxCode === 205 || res.evxCode === 206) {
+                    el.innerHTML = `Στάλθηκε Αίτημα`
+                    el.style.border = null;
+                    el.style.padding = null;
+                    el.classList.remove("showProfileBtn")
+                }
+            }).catch(error => {
+                console.error("Progress error", error)
+            });
+    }
+}
+
+
+function acceptRequest(el) {
+    const svg = document.getElementById("plugIn-icon")
+    if (svg) {
+        el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+            --track-upload: #4a4a4a;width: 15px;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg>`
+        svg.querySelectorAll("path")[0].style.transition = "transform 0.5s ease"
+        svg.querySelectorAll("path")[0].style.transform = "translate(3.5px, -3.5px)"
+
+        svg.querySelectorAll("path")[1].style.transition = "transform 0.5s ease"
+        svg.querySelectorAll("path")[1].style.transform = "translate(-3.5px, 3.5px)"
+        setTimeout(function () {
+            document.getElementById("socialRecommendation").classList.add("fade-out-slide-down")
+            setTimeout(function () {
+                document.getElementById("socialRecommendation").style.display = 'none'
+            }, 500)
+        }, 1200)
+
+
     }
 }
