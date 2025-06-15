@@ -6495,6 +6495,9 @@ function showProfileInfo(emri) {
         getImage(emri).then(profileSrc => {
             document.getElementById("twoUsers").innerHTML += `<div style="margin-left: 10px;" class="mainIcon"><img style="width:60px;height: 60px;" src="${profileSrc.imageData}"></div>`
         })
+	document.getElementById("socialRecommendation").classList.remove("fade-out-slide-down")
+	document.getElementById("socialRecommendation").style.display = null
+	document.getElementById("socialRecommendation").querySelector(".roundedReccomendationBox").querySelector(".bottomInfo").querySelector(".buttonsEdit").querySelectorAll("div")[1].innerHTML = "Αποδοχή"
     })
 
     document.getElementById("editText-Req").innerHTML = `${getGender(emri) === "Male" ? "Ο" : "Η"} ${emri} σου έχει κάνει αίτημα ακολούθησης. Αν το δεχτείς, εκείν${getGender(emri) === "Male" ? "ος" : "η"} θα μπορεί να
