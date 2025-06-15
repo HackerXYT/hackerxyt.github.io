@@ -4985,9 +4985,6 @@ function loadSentByUser() {
                     spawnIn(sentbyuser)
                 }
 
-
-
-
             }).catch(error => {
                 console.error(error);
             });
@@ -4995,13 +4992,7 @@ function loadSentByUser() {
 
     setTimeout(function () {
         try {
-            if (localStorage.getItem("sentByUser")) {
-                loadFresh()
-                return;
-                spawnIn(JSON.parse(localStorage.getItem("sentByUser")), true)
-            } else {
-                loadFresh()
-            }
+            loadFresh()
         } catch (err) {
             localStorage.removeItem("sentByUser")
         }
@@ -6495,15 +6486,10 @@ function showProfileInfo(emri) {
         getImage(emri).then(profileSrc => {
             document.getElementById("twoUsers").innerHTML += `<div style="margin-left: 10px;" class="mainIcon"><img style="width:60px;height: 60px;" src="${profileSrc.imageData}"></div>`
         })
-	
+
     })
 
-	document.getElementById("socialRecommendation").classList.remove("fade-out-slide-down")
-	document.getElementById("socialRecommendation").style.display = null
-	document.getElementById("socialRecommendation").querySelector(".roundedReccomendationBox").querySelector(".bottomInfo").querySelector(".buttonsEdit").querySelectorAll("div")[1].innerHTML = "Αποδοχή"
 
-    document.getElementById("editText-Req").innerHTML = `${getGender(emri) === "Male" ? "Ο" : "Η"} ${emri} σου έχει κάνει αίτημα ακολούθησης. Αν το δεχτείς, εκείν${getGender(emri) === "Male" ? "ος" : "η"} θα μπορεί να
-                                δει τις καταχωρήσεις και αποδοχές σου.`
 
 
 
@@ -6593,15 +6579,29 @@ function showProfileInfo(emri) {
 
         const account_data = JSON.parse(account_data_lc)
 
-        fetch(`https://arc.evoxs.xyz/?metode=getSentRequests&emri=${foundName}&pin=${atob(account_data.pin)}`)
+        fetch(`https://arc.evoxs.xyz/?metode=getSocialeInfo&emri=${foundName}&pin=${atob(account_data.pin)}`)
             .then(response => response.json())
             .then(res => {
-                if (res.includes(emri)) {
+                if (res.requested.includes(emri)) {
 
                     elementFollow.innerHTML = `Στάλθηκε Αίτημα`
                     elementFollow.style.border = null;
                     elementFollow.style.padding = null;
                     elementFollow.classList.remove("showProfileBtn")
+                } else if (res.following.includes(emri)) {
+                    elementFollow.innerHTML = `Ακολουθείς`
+                    elementFollow.style.border = null;
+                    elementFollow.style.padding = null;
+                    elementFollow.classList.remove("showProfileBtn")
+                }
+
+                if (res.requests.includes(emri)) {
+                    document.getElementById("socialRecommendation").classList.remove("fade-out-slide-down")
+                    document.getElementById("socialRecommendation").style.display = null
+                    document.getElementById("socialRecommendation").querySelector(".roundedReccomendationBox").querySelector(".bottomInfo").querySelector(".buttonsEdit").querySelectorAll("div")[1].innerHTML = "Αποδοχή"
+
+                    document.getElementById("editText-Req").innerHTML = `${getGender(emri) === "Male" ? "Ο" : "Η"} ${emri} σου έχει κάνει αίτημα ακολούθησης. Αν το δεχτείς, εκείν${getGender(emri) === "Male" ? "ος" : "η"} θα μπορεί να
+                                δει τις καταχωρήσεις και αποδοχές σου.`
                 }
             }).catch(error => {
                 console.error("Follow error", error)
@@ -6823,11 +6823,12 @@ function showProfileInfo(emri) {
 
         setTimeout(function () {
             try {
-                if (localStorage.getItem(`sentByUser-${emri}`)) {
-                    spawnIn(JSON.parse(localStorage.getItem(`sentByUser-${emri}`)), true)
-                } else {
-                    loadFresh()
-                }
+                //if (localStorage.getItem(`sentByUser-${emri}`)) {
+                //    spawnIn(JSON.parse(localStorage.getItem(`sentByUser-${emri}`)), true)
+                //} else {
+                //    loadFresh()
+                //}
+                loadFresh()
             } catch (err) {
                 localStorage.removeItem(`sentByUser-${emri}`)
             }
@@ -7524,10 +7525,16 @@ function Evalert(message) {
         document.getElementById("cloudingNotice").innerHTML = ''
 
         message.clouds_data.forEach(cloud => {
-            if (cloud === 'SELF' && foundName) {
+            if (cloud === 'SELF' && foundName && cloud === message.clouds_data[0]) {
                 getImage(foundName).then(profileSrc => {
                     document.getElementById("cloudingNotice").innerHTML += `<div class="mainIcon">
                     <img src="${profileSrc.imageData}">
+                </div>`
+                })
+            } else if (cloud === 'SELF' && foundName) {
+                getImage(foundName).then(profileSrc => {
+                    document.getElementById("cloudingNotice").innerHTML += `<div style="position: absolute;margin-left: 120px;z-index: 998;margin-bottom: 55px;">
+                     <img style="width: 60px;height: 60px;border-radius: 50%;" src="${profileSrc.imageData}">
                 </div>`
                 })
             } else if (cloud === 'EVOX') {
@@ -8479,6 +8486,16 @@ function followUser(el) {
             }).catch(error => {
                 console.error("Progress error", error)
             });
+    } else if (el.innerText === "Ακολουθείς") {
+        Evalert({
+            "title": "Επιβεβαίωση",
+            "description": `Είσαι σίγουρ${getGender(foundName.split(" ")[0]) === "Male" ? "ος" : "η"} πως θες να σταματήσεις να ακουλουθείς τον χρήστη <b>${document.getElementById("userName-search").innerText}</b>?`,
+            "buttons": ["Να μην ακολουθώ", "Ακύρωση"],
+            "buttonAction": [`unfollowUser('${document.getElementById("userName-search").innerText}', this);return;`], //return is used to stop alert from closing
+            "addons": [],
+            "clouds": true,
+            "clouds_data": [document.getElementById("userName-search").innerText, "SELF"]
+        })
     } else {
         el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
             --track-upload: #4a4a4a;width: 15px;">
@@ -8513,18 +8530,72 @@ function acceptRequest(el) {
                 <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
                     class="track-upload"></circle>
             </svg>`
-        svg.querySelectorAll("path")[0].style.transition = "transform 0.5s ease"
-        svg.querySelectorAll("path")[0].style.transform = "translate(3.5px, -3.5px)"
 
-        svg.querySelectorAll("path")[1].style.transition = "transform 0.5s ease"
-        svg.querySelectorAll("path")[1].style.transform = "translate(-3.5px, 3.5px)"
-        setTimeout(function () {
-            document.getElementById("socialRecommendation").classList.add("fade-out-slide-down")
-            setTimeout(function () {
-                document.getElementById("socialRecommendation").style.display = 'none'
-            }, 500)
-        }, 1200)
+        const account_data = localStorage.getItem("jeanDarc_accountData")
+        if (!account_data) {
+            console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
+            return;
+        }
+        const pars = JSON.parse(account_data)
+        fetch(`https://arc.evoxs.xyz/?metode=acceptRequest&emri=${foundName}&pin=${atob(pars.pin)}&id=${document.getElementById("userName-search").innerText}`)
+            .then(response => response.json())
+            .then(res => {
+                if (res.evxCode === 205 || res.evxCode === 210 || res.evxCode === 204) {
+                    svg.querySelectorAll("path")[0].style.transition = "transform 0.5s ease"
+                    svg.querySelectorAll("path")[0].style.transform = "translate(3.5px, -3.5px)"
 
-
+                    svg.querySelectorAll("path")[1].style.transition = "transform 0.5s ease"
+                    svg.querySelectorAll("path")[1].style.transform = "translate(-3.5px, 3.5px)"
+                    setTimeout(function () {
+                        document.getElementById("socialRecommendation").classList.add("fade-out-slide-down")
+                        setTimeout(function () {
+                            document.getElementById("socialRecommendation").style.display = 'none'
+                        }, 500)
+                    }, 1200)
+                }
+            }).catch(error => {
+                console.error("Follow error", error)
+            });
     }
+}
+
+function unfollowUser(userEmri, el) {
+    el.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+            --track-upload: #4a4a4a;width: 15px;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg>`
+    const account_data = localStorage.getItem("jeanDarc_accountData")
+    if (!account_data) {
+        console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
+        return;
+    }
+    const pars = JSON.parse(account_data)
+    fetch(`https://arc.evoxs.xyz/?metode=unfollow&emri=${foundName}&pin=${atob(pars.pin)}&id=${userEmri}`)
+        .then(response => response.json())
+        .then(res => {
+            if (res.evxCode === 205 || res.evxCode === 210 || res.evxCode === 204) {
+                const elementFollow = document.getElementById("followUser")
+                elementFollow.style.border = "none";
+                elementFollow.style.padding = "6px 25px"
+                elementFollow.innerHTML = "Ακολούθησε"
+                elementFollow.classList.add("showProfileBtn")
+                evalertclose()
+                switchToHome_Search(document.getElementById("carouseli01"))
+            } else {
+                evalertclose()
+                EvalertNext({
+                    title: "Κάτι απέτυχε",
+                    description: res.message,
+                    buttons: ["Παράλειψη"],
+                    buttonAction: [],
+                    addons: []
+                });
+            }
+        }).catch(error => {
+            console.error("Unfollow error", error)
+            window.location.reload()
+        });
 }
