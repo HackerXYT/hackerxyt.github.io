@@ -1,4 +1,4 @@
-const appVersion = "2.0.3"
+const appVersion = "2.0.4"
 for (let i = 0; i < 3; i++) {
     document.getElementById(`version${i + 1}`).innerText = `${i + 1 !== 2 ? appVersion : `v${appVersion}`}`
 }
@@ -1414,7 +1414,10 @@ function clickPIN(element) {
                                 fetch('allowedUsers.evox')
                                     .then(response => response.json())
                                     .then(status => {
-                                        if (!status.includes(foundName)) {
+                                        if (!status.includes(foundName) || window.location.protocol !== "http:" &&
+                                            window.location.hostname !== "192.168.1.116" &&
+                                            window.location.port !== "8080" &&
+                                            window.location.pathname !== "/jeanneBeta/") {
                                             window.location.href = "deny.html"
                                         }
                                     }).catch(error => {
@@ -2656,8 +2659,11 @@ function showProfile(e) {
                         .replace("{evoxGoalButton}", goal.done === true ? completeAssets.text : button)
                         .replace("{isDone}", goal.done === true ? "done" : "")
                     document.getElementById("carouseli-recommend").innerHTML += goalHtml
+
                 }
             })
+
+            document.getElementById("howManyLeft").innerHTML = `Απομέν${done !== 1 ? "ουν" : "ει"} ${done}`
 
             if (done !== goalData.length - 1) {
                 document.getElementById("finishSetup").style.display = null
@@ -4625,7 +4631,7 @@ function startEvoxLogin() {
 
 function updateProgress(percentage) {
     const circle = document.querySelector('.circle-fill');
-    const maxStroke = 188; // The full circumference of the circle
+    const maxStroke = 350; // The full circumference of the circle
     const offset = maxStroke - (maxStroke * percentage) / 100;
 
     circle.style.strokeDashoffset = offset;
@@ -6060,7 +6066,7 @@ function openDiscovery(el) {
     }
 
 }
-function spawnItems(names, loadMore, oringinal) {
+function spawnItems(names, loadMore, oringinal, followingList) {
 
     const fullNames = Object.keys(names.names);
     console.warn("FLNAMS:", names)
@@ -6110,7 +6116,7 @@ function spawnItems(names, loadMore, oringinal) {
                                     <p>${info.seksioni}${info.klasa !== 'none' ? info.klasa : ''}</p>
                                 </div>
                             </div>
-                            <div onclick="showProfileInfo('${info.emri}')" class="showProfileBtn">Προβολή</div>
+                            <div onclick="showProfileInfo('${info.emri}')" class="${followingList && followingList.includes(info.emri) ? 'editButton showProfileBtn" style="margin-right: 0px; white-space: nowrap;width:auto;background-color:#10101096;color:#fff;border: 2.5px solid #282828;"' : 'showProfileBtn"'}">${followingList && followingList.includes(info.emri) ? "Ακολουθείς" : "Προβολή"}</div>
                         </div>
                     </div>`;
                     //fetchAndSaveImage(info.emri, info.foto); // Store the image locally
@@ -6447,6 +6453,7 @@ function activateShare(el) {
 }
 
 
+let socialeSelectedInterval;
 function showProfileInfo(emri) {
     lastActiveSearchUser = emri
     const container = document.getElementById("search-in");
@@ -6571,6 +6578,7 @@ function showProfileInfo(emri) {
             document.getElementById("sentBySelectedUser").innerHTML = skel;
         }
 
+
         const account_data_lc = localStorage.getItem("jeanDarc_accountData")
         if (!account_data_lc) {
             console.error("Llogaria nuk eshte ruajtur ne nivel lokal!?")
@@ -6579,33 +6587,57 @@ function showProfileInfo(emri) {
 
         const account_data = JSON.parse(account_data_lc)
 
-        fetch(`https://arc.evoxs.xyz/?metode=getSocialeInfo&emri=${foundName}&pin=${atob(account_data.pin)}`)
-            .then(response => response.json())
-            .then(res => {
-                if (res.requested.includes(emri)) {
+        function runAndReloadSociale(insideInterval) {
 
-                    elementFollow.innerHTML = `Στάλθηκε Αίτημα`
-                    elementFollow.style.border = null;
-                    elementFollow.style.padding = null;
-                    elementFollow.classList.remove("showProfileBtn")
-                } else if (res.following.includes(emri)) {
-                    elementFollow.innerHTML = `Ακολουθείς`
-                    elementFollow.style.border = null;
-                    elementFollow.style.padding = null;
-                    elementFollow.classList.remove("showProfileBtn")
-                }
 
-                if (res.requests.includes(emri)) {
-                    document.getElementById("socialRecommendation").classList.remove("fade-out-slide-down")
-                    document.getElementById("socialRecommendation").style.display = null
-                    document.getElementById("socialRecommendation").querySelector(".roundedReccomendationBox").querySelector(".bottomInfo").querySelector(".buttonsEdit").querySelectorAll("div")[1].innerHTML = "Αποδοχή"
+            fetch(`https://arc.evoxs.xyz/?metode=getSocialeInfo&emri=${foundName}&pin=${atob(account_data.pin)}`)
+                .then(response => response.json())
+                .then(res => {
+                    if (res.requested.includes(emri)) {
+                        console.log("EVXTESET Στάλθηκε")
+                        elementFollow.innerHTML = `Στάλθηκε Αίτημα`
+                        elementFollow.style.border = null;
+                        elementFollow.style.padding = null;
+                        elementFollow.classList.remove("showProfileBtn")
 
-                    document.getElementById("editText-Req").innerHTML = `${getGender(emri) === "Male" ? "Ο" : "Η"} ${emri} σου έχει κάνει αίτημα ακολούθησης. Αν το δεχτείς, εκείν${getGender(emri) === "Male" ? "ος" : "η"} θα μπορεί να
+                    }
+                    if (res.following.includes(emri)) {
+                        console.log("EVXTESET Following")
+                        elementFollow.innerHTML = `Ακολουθείς`
+                        elementFollow.style.border = null;
+                        elementFollow.style.padding = null;
+                        elementFollow.classList.remove("showProfileBtn")
+                        if (document.getElementById("sentBySelectedUser").innerHTML.includes("9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.54")) {
+                            switchToHome_Search(document.getElementById("carouseli01"))
+                        }
+
+                    }
+                    if (res.requests.includes(emri)) {
+                        console.log("EVXTESET Request")
+                        document.getElementById("socialRecommendation").classList.remove("fade-out-slide-down")
+                        document.getElementById("socialRecommendation").style.display = null
+                        document.getElementById("socialRecommendation").querySelector(".roundedReccomendationBox").querySelector(".bottomInfo").querySelector(".buttonsEdit").querySelectorAll("div")[1].innerHTML = "Αποδοχή"
+
+                        document.getElementById("editText-Req").innerHTML = `${getGender(emri) === "Male" ? "Ο" : "Η"} ${emri} σου έχει κάνει αίτημα ακολούθησης. Αν το δεχτείς, εκείν${getGender(emri) === "Male" ? "ος" : "η"} θα μπορεί να
                                 δει τις καταχωρήσεις και αποδοχές σου.`
-                }
-            }).catch(error => {
-                console.error("Follow error", error)
-            });
+                        if (!insideInterval) {
+                        }
+                    } else {
+
+                        document.getElementById("socialRecommendation").classList.add("fade-out-slide-down")
+                        setTimeout(function () {
+                            document.getElementById("socialRecommendation").style.display = 'none'
+                        }, 500)
+
+                    }
+                }).catch(error => {
+                    console.error("Follow error", error)
+                });
+        }
+        socialeSelectedInterval = setInterval(function () {
+            runAndReloadSociale("insideInterval")
+        }, 2000)
+        runAndReloadSociale()
 
         const pars = {
             pin: account_data.pin, //self pin
@@ -6897,25 +6929,36 @@ function openSearch(el, inBackground) {
     if (!ac) { return; }
     search_loadedUsers = []
     const parsed = JSON.parse(ac)
-    fetch(`https://arc.evoxs.xyz/?metode=rekomandimet&emri=${parsed.name}&pin=${atob(parsed.pin)}`)
+    fetch(`https://arc.evoxs.xyz/?metode=getSocialeInfo&emri=${foundName}&pin=${atob(parsed.pin)}`)
         .then(response => response.json())
-        .then(names => {
-            console.log("spawning items")
-            let json = { names: {} }
-            names.forEach(name => {
-                json.names[name] = {}
-            })
+        .then(sociale => {
+            const following = sociale.following
+            fetch(`https://arc.evoxs.xyz/?metode=rekomandimet&emri=${parsed.name}&pin=${atob(parsed.pin)}`)
+                .then(response => response.json())
+                .then(names => {
+                    console.log("spawning items")
+                    let json = { names: {} }
+                    names.forEach(name => {
+                        json.names[name] = {}
+                    })
 
-            spawnItems(json, null, names);
+                    spawnItems(json, null, names, following);
 
 
+                })
+                .catch(error => {
+                    document.getElementById("allUsers").innerHTML = `<p style="text-align:center;">Κάτι απέτυχε.</p>`;
+                    console.error("Jeanne D'arc Database is offline?", error)
+
+                });
         })
-        .catch(error => {
-            document.getElementById("allUsers").innerHTML = `<p style="text-align:center;">Κάτι απέτυχε.</p>`;
-            console.error("Jeanne D'arc Database is offline?", error)
+        .catch(error => console.error("Jeanne D'arc Database is offline? [SOCIALE]", error));
 
-        });
-
+    try {
+        clearInterval(socialeSelectedInterval)
+    } catch (error) {
+        console.log("ClearInterval for sociale failed. skipping.")
+    }
 
     //Stealth meaning -> client will refresh local data without changing the ui
 
@@ -8025,11 +8068,6 @@ function showUsersMedia(el) {
                 document.getElementById("userMediaSpawn").innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;text-align: center;margin-top:15px;gap: 5px;"><svg xmlns="http://www.w3.org/2000/svg" fill="#fff" width="40px" height="40px" viewBox="0 0 24 24" data-name="Layer 1"><path d="M19.5,4H10a1,1,0,0,0,0,2H19.5a1,1,0,0,1,1,1v6.76l-1.88-1.88a3,3,0,0,0-1.14-.71,1,1,0,1,0-.64,1.9.82.82,0,0,1,.36.23l3.31,3.29a.66.66,0,0,0,0,.15.83.83,0,0,0,0,.15,1.18,1.18,0,0,0,.13.18.48.48,0,0,0,.09.11.9.9,0,0,0,.2.14.6.6,0,0,0,.11.06.91.91,0,0,0,.37.08,1,1,0,0,0,1-1V7A3,3,0,0,0,19.5,4ZM3.21,2.29A1,1,0,0,0,1.79,3.71L3.18,5.1A3,3,0,0,0,2.5,7V17a3,3,0,0,0,3,3H18.09l1.7,1.71a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42ZM4.5,7a1,1,0,0,1,.12-.46L7.34,9.25a3,3,0,0,0-1,.63L4.5,11.76Zm1,11a1,1,0,0,1-1-1V14.58l3.3-3.29a1,1,0,0,1,1.4,0L15.91,18Z"/></svg>
             <p>Η συλλογή του/της είναι άδεια.</p></div>`
             }
-
-
-
-
-
         }).catch(error => {
             console.log('Error:', error);
             document.getElementById("userMediaSpawn").innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;text-align: center;margin-top:15px;gap: 5px;"><svg xmlns="http://www.w3.org/2000/svg" width="45px" height="45px" viewBox="0 0 24 24" fill="none">
