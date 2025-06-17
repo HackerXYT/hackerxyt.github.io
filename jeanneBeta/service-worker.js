@@ -10,7 +10,7 @@ self.addEventListener('push', function (event) {
             title: data.title,
             content: data.body  // or another field if you want
         }
-    });
+    }); 
 });
 
 self.addEventListener('notificationclick', function (event) {
@@ -28,7 +28,7 @@ self.addEventListener('notificationclick', function (event) {
 
 
 
-const CACHE_NAME = 'jeanne-cache-v30';
+const CACHE_NAME = 'jeanne-cache-v31';
 const STATIC_ASSETS = [
     '/jeanneBeta/',
 ];

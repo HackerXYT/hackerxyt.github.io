@@ -1,4 +1,4 @@
-const appVersion = "2.0.4"
+const appVersion = "2.0.41"
 for (let i = 0; i < 3; i++) {
     document.getElementById(`version${i + 1}`).innerText = `${i + 1 !== 2 ? appVersion : `v${appVersion}`}`
 }
@@ -259,8 +259,10 @@ function find() {
                         const firstChar = (str) => str.split(' ')[1]?.charAt(0) || null;
                         const ranId = Math.floor(Math.random() * 909999) + 1
                         if (count === 1) {
+                            if (karuseliCont.innerHTML.includes(name)) { return; }
                             karuseliCont.innerHTML = `${karuseliCont.innerHTML}<img onclick="pickasCurrent('${name}')" class="fytyre zgjedhur" src="reloading-pfp.gif" alt="Fytyrë ${count}" id="${ranId}">`
                         } else {
+                            if (karuseliCont.innerHTML.includes(name)) { return; }
                             karuseliCont.innerHTML = `${karuseliCont.innerHTML}<img onclick="pickasCurrent('${name}')" class="fytyre" src="reloading-pfp.gif" alt="Fytyrë ${count}" id="${ranId}">`
                         }
 
@@ -1379,6 +1381,10 @@ let proccessingPIN = false
 function clickPIN(element) {
     let number = element.innerHTML
     console.log(number)
+    element.classList.add("active")
+    setTimeout(function () {
+        element.classList.remove("active")
+    }, 245)
 
     if (pin.length <= 3) {
         if (pin.length == 0) {
@@ -3894,6 +3900,7 @@ function goBackToLogin() {
 
 }
 
+
 function getDeviceInfo() {
     const userAgent = navigator.userAgent;
 
@@ -4345,7 +4352,13 @@ function searchByNameComplete() {
 
         }, 340)
     } else {
-        alert("Δεν βρέθηκαν αντιστοιχίες")
+        const previousHTML = document.getElementById("searchForMatchButton").innerHTML
+        document.getElementById("searchForMatchButton").innerHTML = `Δεν βρέθηκαν αντιστοιχίες <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 -0.5 25 25" fill="none">
+<path d="M6.96967 16.4697C6.67678 16.7626 6.67678 17.2374 6.96967 17.5303C7.26256 17.8232 7.73744 17.8232 8.03033 17.5303L6.96967 16.4697ZM13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697L13.0303 12.5303ZM11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303L11.9697 11.4697ZM18.0303 7.53033C18.3232 7.23744 18.3232 6.76256 18.0303 6.46967C17.7374 6.17678 17.2626 6.17678 16.9697 6.46967L18.0303 7.53033ZM13.0303 11.4697C12.7374 11.1768 12.2626 11.1768 11.9697 11.4697C11.6768 11.7626 11.6768 12.2374 11.9697 12.5303L13.0303 11.4697ZM16.9697 17.5303C17.2626 17.8232 17.7374 17.8232 18.0303 17.5303C18.3232 17.2374 18.3232 16.7626 18.0303 16.4697L16.9697 17.5303ZM11.9697 12.5303C12.2626 12.8232 12.7374 12.8232 13.0303 12.5303C13.3232 12.2374 13.3232 11.7626 13.0303 11.4697L11.9697 12.5303ZM8.03033 6.46967C7.73744 6.17678 7.26256 6.17678 6.96967 6.46967C6.67678 6.76256 6.67678 7.23744 6.96967 7.53033L8.03033 6.46967ZM8.03033 17.5303L13.0303 12.5303L11.9697 11.4697L6.96967 16.4697L8.03033 17.5303ZM13.0303 12.5303L18.0303 7.53033L16.9697 6.46967L11.9697 11.4697L13.0303 12.5303ZM11.9697 12.5303L16.9697 17.5303L18.0303 16.4697L13.0303 11.4697L11.9697 12.5303ZM13.0303 11.4697L8.03033 6.46967L6.96967 7.53033L11.9697 12.5303L13.0303 11.4697Z" fill="#8880eb"/>
+</svg>`
+        setTimeout(function () {
+            document.getElementById("searchForMatchButton").innerHTML = previousHTML
+        }, 4000)
     }
 }
 
@@ -8635,5 +8648,169 @@ function unfollowUser(userEmri, el) {
         }).catch(error => {
             console.error("Unfollow error", error)
             window.location.reload()
+        });
+}
+
+async function fetchImageAsBase64(url) {
+    const response = await fetch(url);
+    const contentType = response.headers.get('Content-Type') || 'image/jpeg'; // fallback
+
+    const blob = await response.blob();
+
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+
+            let base64data = reader.result;
+
+            // Optional: replace wrong mime type in base64 string with correct one
+            base64data = base64data.replace(/^data:.*?;/, `data:${contentType};`);
+
+            resolve(base64data);
+        };
+
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+}
+
+
+function accountRecoveryBegin() {
+    $("#lock").fadeOut("fast", function () {
+        const div = document.getElementById("recoveryPage")
+        div.style.display = "flex"
+        setTimeout(function () {
+            div.style.opacity = 1
+        }, 10)
+        fetch(`https://arc.evoxs.xyz/?metode=startRecovery&emri=${foundName}`)
+            .then(response => response.json())
+            .then(res => {
+                if (!res.message) {
+                    let isEverythingReady = 0;
+                    getImage(foundName).then(profileSrc_0 => {
+                        const checkDl = setInterval(function () {
+                            getImage(foundName, 'DONTMAKENEWAJAX').then(profileSrc => {
+                                if (profileSrc) {
+                                    console.log("EVX ready")
+                                    clearInterval(checkDl)
+                                    isEverythingReady++;
+                                    document.getElementById("userImageEVX").src = profileSrc.imageData
+                                }
+                            });
+                        }, 1500)
+                    });
+
+                    sessionStorage.setItem("insta-recovery", res.code)
+                    sessionStorage.setItem("insta-recovery-username", res.username)
+                    document.getElementById("instaUsername-recovery").innerHTML = res.username
+
+                    fetch(`https://arc.evoxs.xyz/?metode=portLocally:instagrampfp&id=${res.username}`)
+                        .then(response => response.json())
+                        .then(res => {
+                            if (!res.message) {
+                                fetchImageAsBase64(res.profileImageUrl)
+                                    .then(base64 => {
+                                        console.log('Base64 image:', base64);
+                                        document.getElementById("userImageINSTA").src = base64
+                                        console.log("Insta ready")
+                                        isEverythingReady++;
+                                    })
+                                    .catch(err => {
+                                        console.error('Error:', err);
+                                    });
+                            }
+                        }).catch(error => {
+                            console.error("EVX error", error)
+                            isEverythingReady++;
+                        });
+
+
+                    const checkReady = setInterval(function () {
+                        if (isEverythingReady === 2) {
+                            clearInterval(checkReady)
+                            document.getElementById("start-recovery").classList.add("b")
+                            document.getElementById("showAccount-recovery").classList.remove("b")
+                        }
+                    }, 200)
+                } else {
+                    alert(res.message === "ECONNREFUSED" ? "Ο Διακομιστής Επαναφοράς Δεν Είναι Διαθέσιμος." : res.message)
+                }
+            }).catch(error => {
+                console.error("reset error", error)
+            });
+
+    })
+}
+
+function proceedWithAccount() {
+    const key = sessionStorage.getItem("insta-recovery")
+    const username = sessionStorage.getItem("insta-recovery-username")
+    document.getElementById("insta-user-rec").innerHTML = username
+    document.getElementById("vercode").innerHTML = `<vo>${key}</vo><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none"><path d="M4 5.4C4 4.622 4.622 4 5.4 4h7.2c.778 0 1.4.622 1.4 1.4V6a1 1 0 1 0 2 0v-.6C16 3.518 14.482 2 12.6 2H5.4A3.394 3.394 0 0 0 2 5.4v7.2C2 14.482 3.518 16 5.4 16H6a1 1 0 1 0 0-2h-.6c-.778 0-1.4-.622-1.4-1.4V5.4Z" fill="#000"/><path d="M9 11.4A2.4 2.4 0 0 1 11.4 9h7.2a2.4 2.4 0 0 1 2.4 2.4v7.2a2.4 2.4 0 0 1-2.4 2.4h-7.2A2.4 2.4 0 0 1 9 18.6v-7.2Z" fill="#000"/></svg>`
+    document.getElementById("showAccount-recovery").classList.add("b")
+    document.getElementById("editAccount-recovery").classList.remove("b")
+
+}
+function copyText(el) {
+    const text = el.innerText;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+            .then(() => console.log("Copied via Clipboard API"))
+            .catch(err => fallbackCopy(text, el));
+    } else {
+        fallbackCopy(text, el);
+    }
+}
+
+function fallbackCopy(text, el) {
+    const input = document.createElement('textarea');
+    input.value = text;
+    input.setAttribute('readonly', '');
+    input.style.position = 'absolute';
+    input.style.left = '-9999px';
+    document.body.appendChild(input);
+    input.select();
+    try {
+        document.execCommand('copy');
+        console.log("Copied via execCommand fallback");
+    } catch (err) {
+        alert("Copy failed. Please press Ctrl+C manually.");
+    }
+    document.body.removeChild(input);
+}
+
+function verifyIfAccountMatches() {
+    fetch(`https://arc.evoxs.xyz/?metode=verifyRecovery&id=${res.username}`)
+        .then(response => response.json())
+        .then(res => {
+            if (!res.message) {
+                if (res.code === true) {
+                    document.getElementById("icon-checkmark").style.display = null
+                    document.getElementById("icon-error").style.display = "none"
+                    document.getElementById("icon-spinner").style.display = "none";
+                    document.getElementById("notice-text").innerText = `Η Πρόσβαση Εγκρίθηκε!`
+                    document.getElementById("notice-main").classList.add("active")
+                    setTimeout(function () { document.getElementById("notice-main").classList.remove("active") }, 6000)
+                } else {
+                    document.getElementById("icon-checkmark").style.display = "none"
+                    document.getElementById("icon-error").style.display = null
+                    document.getElementById("icon-spinner").style.display = "none";
+                    document.getElementById("notice-text").innerText = `Επιβεβαίωσε ότι έκανες τα βήματα σωστά`
+                    document.getElementById("notice-main").classList.add("active")
+                    setTimeout(function () { document.getElementById("notice-main").classList.remove("active") }, 6000)
+                }
+            } else {
+                document.getElementById("icon-checkmark").style.display = "none"
+                document.getElementById("icon-error").style.display = null
+                document.getElementById("icon-spinner").style.display = "none";
+                document.getElementById("notice-text").innerText = res.message
+                document.getElementById("notice-main").classList.add("active")
+                setTimeout(function () { document.getElementById("notice-main").classList.remove("active") }, 6000)
+            }
+        }).catch(error => {
+            console.error("EVX error", error)
+            alert(error)
         });
 }

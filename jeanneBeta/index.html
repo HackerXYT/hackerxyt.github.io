@@ -205,6 +205,88 @@
 
         <img style="width: 50px;height: 50px;transform: rotate(-35deg);" class="qr" src="upRight.svg">
     </div>
+    <div class="recoveryPage" id="recoveryPage">
+        <div class="insideContainer" id="start-recovery">
+            <span class="fade-in-slide-up">Έναρξη υπηρεσίας ανάκτησης..</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ea6b6b;
+            --track-upload: #642b2b;width:30px;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg>
+        </div>
+        <div class="insideContainer b" id="showAccount-recovery">
+            <span class="fade-in-slide-up">Είναι αυτός ο λογαριασμός σου;</span>
+            <span class="fade-in-slide-up desc">Για να επαναφέρεις το PIN σου, πρέπει να επιβεβαιώσεις ότι είσαι ο ίδιος
+                ο χρήστης που προσπαθεί να συνδεθεί.</span>
+            <div class="preview-recovery">
+                <div class="accountImage">
+                    <img id="userImageEVX" src="user.gif">
+                    <img class="icon" src="assetView-2.png">
+                </div>
+                <div class="accountImage">
+                    <img id="userImageINSTA" src="user.gif">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                        viewBox="0 0 3364.7 3364.7">
+                        <defs>
+                            <radialGradient id="0" cx="217.76" cy="3290.99" r="4271.92" gradientUnits="userSpaceOnUse">
+                                <stop offset=".09" stop-color="#fa8f21" />
+                                <stop offset=".78" stop-color="#d82d7e" />
+                            </radialGradient>
+                            <radialGradient id="1" cx="2330.61" cy="3182.95" r="3759.33" gradientUnits="userSpaceOnUse">
+                                <stop offset=".64" stop-color="#8c3aaa" stop-opacity="0" />
+                                <stop offset="1" stop-color="#8c3aaa" />
+                            </radialGradient>
+                        </defs>
+                        <path
+                            d="M853.2,3352.8c-200.1-9.1-308.8-42.4-381.1-70.6-95.8-37.3-164.1-81.7-236-153.5S119.7,2988.6,82.6,2892.8c-28.2-72.3-61.5-181-70.6-381.1C2,2295.4,0,2230.5,0,1682.5s2.2-612.8,11.9-829.3C21,653.1,54.5,544.6,82.5,472.1,119.8,376.3,164.3,308,236,236c71.8-71.8,140.1-116.4,236-153.5C544.3,54.3,653,21,853.1,11.9,1069.5,2,1134.5,0,1682.3,0c548,0,612.8,2.2,829.3,11.9,200.1,9.1,308.6,42.6,381.1,70.6,95.8,37.1,164.1,81.7,236,153.5s116.2,140.2,153.5,236c28.2,72.3,61.5,181,70.6,381.1,9.9,216.5,11.9,281.3,11.9,829.3,0,547.8-2,612.8-11.9,829.3-9.1,200.1-42.6,308.8-70.6,381.1-37.3,95.8-81.7,164.1-153.5,235.9s-140.2,116.2-236,153.5c-72.3,28.2-181,61.5-381.1,70.6-216.3,9.9-281.3,11.9-829.3,11.9-547.8,0-612.8-1.9-829.1-11.9"
+                            fill="url(#0)" />
+                        <path
+                            d="M853.2,3352.8c-200.1-9.1-308.8-42.4-381.1-70.6-95.8-37.3-164.1-81.7-236-153.5S119.7,2988.6,82.6,2892.8c-28.2-72.3-61.5-181-70.6-381.1C2,2295.4,0,2230.5,0,1682.5s2.2-612.8,11.9-829.3C21,653.1,54.5,544.6,82.5,472.1,119.8,376.3,164.3,308,236,236c71.8-71.8,140.1-116.4,236-153.5C544.3,54.3,653,21,853.1,11.9,1069.5,2,1134.5,0,1682.3,0c548,0,612.8,2.2,829.3,11.9,200.1,9.1,308.6,42.6,381.1,70.6,95.8,37.1,164.1,81.7,236,153.5s116.2,140.2,153.5,236c28.2,72.3,61.5,181,70.6,381.1,9.9,216.5,11.9,281.3,11.9,829.3,0,547.8-2,612.8-11.9,829.3-9.1,200.1-42.6,308.8-70.6,381.1-37.3,95.8-81.7,164.1-153.5,235.9s-140.2,116.2-236,153.5c-72.3,28.2-181,61.5-381.1,70.6-216.3,9.9-281.3,11.9-829.3,11.9-547.8,0-612.8-1.9-829.1-11.9"
+                            fill="url(#1)" />
+                        <path
+                            d="M1269.25,1689.52c0-230.11,186.49-416.7,416.6-416.7s416.7,186.59,416.7,416.7-186.59,416.7-416.7,416.7-416.6-186.59-416.6-416.7m-225.26,0c0,354.5,287.36,641.86,641.86,641.86s641.86-287.36,641.86-641.86-287.36-641.86-641.86-641.86S1044,1335,1044,1689.52m1159.13-667.31a150,150,0,1,0,150.06-149.94h-0.06a150.07,150.07,0,0,0-150,149.94M1180.85,2707c-121.87-5.55-188.11-25.85-232.13-43-58.36-22.72-100-49.78-143.78-93.5s-70.88-85.32-93.5-143.68c-17.16-44-37.46-110.26-43-232.13-6.06-131.76-7.27-171.34-7.27-505.15s1.31-373.28,7.27-505.15c5.55-121.87,26-188,43-232.13,22.72-58.36,49.78-100,93.5-143.78s85.32-70.88,143.78-93.5c44-17.16,110.26-37.46,232.13-43,131.76-6.06,171.34-7.27,505-7.27S2059.13,666,2191,672c121.87,5.55,188,26,232.13,43,58.36,22.62,100,49.78,143.78,93.5s70.78,85.42,93.5,143.78c17.16,44,37.46,110.26,43,232.13,6.06,131.87,7.27,171.34,7.27,505.15s-1.21,373.28-7.27,505.15c-5.55,121.87-25.95,188.11-43,232.13-22.72,58.36-49.78,100-93.5,143.68s-85.42,70.78-143.78,93.5c-44,17.16-110.26,37.46-232.13,43-131.76,6.06-171.34,7.27-505.15,7.27s-373.28-1.21-505-7.27M1170.5,447.09c-133.07,6.06-224,27.16-303.41,58.06-82.19,31.91-151.86,74.72-221.43,144.18S533.39,788.47,501.48,870.76c-30.9,79.46-52,170.34-58.06,303.41-6.16,133.28-7.57,175.89-7.57,515.35s1.41,382.07,7.57,515.35c6.06,133.08,27.16,223.95,58.06,303.41,31.91,82.19,74.62,152,144.18,221.43s139.14,112.18,221.43,144.18c79.56,30.9,170.34,52,303.41,58.06,133.35,6.06,175.89,7.57,515.35,7.57s382.07-1.41,515.35-7.57c133.08-6.06,223.95-27.16,303.41-58.06,82.19-32,151.86-74.72,221.43-144.18s112.18-139.24,144.18-221.43c30.9-79.46,52.1-170.34,58.06-303.41,6.06-133.38,7.47-175.89,7.47-515.35s-1.41-382.07-7.47-515.35c-6.06-133.08-27.16-224-58.06-303.41-32-82.19-74.72-151.86-144.18-221.43S2586.8,537.06,2504.71,505.15c-79.56-30.9-170.44-52.1-303.41-58.06C2068,441,2025.41,439.52,1686,439.52s-382.1,1.41-515.45,7.57"
+                            fill="#ffffff" />
+                    </svg>
+                </div>
+            </div>
+            <span class="fade-in-slide-up">Όνομα χρήστη: <vox id="instaUsername-recovery"></vox></span>
+            <div class="bottom-recovery-actions">
+
+
+                <div onclick="proceedWithAccount()" class="showProfileBtn" style="white-space: nowrap;width:auto;">
+                    Αυτός είναι ο λογαριασμός μου</div>
+                <div class="editButton showProfileBtn"
+                    style="margin-right: 0px; white-space: nowrap;width:auto;background-color:#10101096;color:#fff;border: 2.5px solid #282828;">
+                    Δεν είναι ο λογαριασμός μου</div>
+            </div>
+        </div>
+        <div class="insideContainer b" style="gap:15px;" id="editAccount-recovery">
+            <span class="fade-in-slide-up">Οδηγίες επαναφοράς</span>
+            <div
+                style="display: flex;flex-direction: column;gap: 5px;width: 100%;justify-content: center;align-items: center;">
+                <span style="padding-left: 5%;
+    padding-right: 5%;" class="fade-in-slide-up desc">Πρόσθεσε το παρακάτω κείμενο επιβεβαίωσης στο bio του Instagram
+                    προφίλ σου.&nbsp;(&nbsp;<vox id="insta-user-rec"></vox>&nbsp;)<br>και επέστρεψε εδώ</span>
+                <span style="padding-left: 5%;
+    padding-right: 5%;" class="fade-in-slide-up desc"><i>Δεν είναι απαραίτητο να διαγράψεις οτιδήποτε από το βιογραφικό
+                        του λογαριασμού σου.</i></span>
+            </div>
+
+            <div class="verificationBox-rec fade-in-slide-up" onclick="copyText(this)" id="vercode">
+
+            </div>
+
+            <div class="bottom-recovery-actions">
+
+
+                <div onclick="verifyIfAccountMatches()" class="showProfileBtn" style="white-space: nowrap;width:auto;">
+                    Το έκανα</div>
+                
+            </div>
+        </div>
+    </div>
     <div id="loginContainer" class="login">
 
         <div id="topImg" class="topImg">
@@ -281,7 +363,8 @@
                             <input id="voxName" type="name" placeholder="Όνομα ή επώνυμο" oninput="searchByName()">
                             <vox class="mirror-text"></vox>
                         </div>
-                        <div onclick="searchByNameComplete()" class="optionButton focus svgOnRight">
+                        <div id="searchForMatchButton" onclick="searchByNameComplete()"
+                            class="optionButton focus svgOnRight">
                             Αναζήτηση<svg xmlns="http://www.w3.org/2000/svg" width="17.5px" height="17.5px"
                                 viewBox="0 0 24 24" fill="none">
                                 <path
@@ -540,7 +623,12 @@
                         fill="#dedede" />
                 </svg></button>
         </div>
-        <div onclick="goBackToLogin()" class="version"><img src="logo.png" height="55px"></div>
+        <div class="version">
+            <div onclick="accountRecoveryBegin()" class="editButton showProfileBtn"
+                style="margin-right: 0px; white-space: nowrap;width:auto;background-color:#10101096;color:#fff;border: 2.5px solid #282828;">
+                Ξέχασα το PIN μου</div>
+            <img onclick="goBackToLogin()" src="logo.png" height="55px">
+        </div>
     </div>
     <div id="app" class="appContainer">
         <div class="app" style="display: block;padding: 0px;overscroll-behavior: auto;" id="home">
@@ -1786,13 +1874,14 @@
                 <img src="reloading-pfp.gif" id="navbarpfp">
             </div>
             <div class="item" onclick="openDiscovery(this)" id="discovery-switch">
-                
+
                 <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                     <path
                         d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
                         fill="#efefef93" />
                 </svg>
-                <svg style="display:none" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                <svg style="display:none" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                    viewBox="0 0 24 24" fill="none">
                     <path fill-rule="evenodd" clip-rule="evenodd"
                         d="M14.7898 18.9746C8.49749 21.4915 5.35132 22.75 3.55428 21.5288C3.1282 21.2393 2.76071 20.8718 2.47117 20.4457C1.25001 18.6487 2.50848 15.5025 5.02542 9.21017C5.56228 7.86802 5.8307 7.19695 6.29238 6.67048C6.41002 6.53633 6.53633 6.41002 6.67048 6.29238C7.19695 5.8307 7.86802 5.56228 9.21017 5.02542C15.5025 2.50848 18.6487 1.25001 20.4457 2.47117C20.8718 2.7607 21.2393 3.1282 21.5288 3.55428C22.75 5.35132 21.4915 8.49749 18.9746 14.7898C18.4377 16.132 18.1693 16.8031 17.7076 17.3295C17.59 17.4637 17.4637 17.59 17.3295 17.7076C16.8031 18.1693 16.132 18.4377 14.7898 18.9746Z"
                         fill="#efefef93" />
@@ -2154,335 +2243,325 @@
         </div>
     </div>
 
-    <div class="PCCONTAINER">
-        <div id="image-viewer" class="slidingPanel">
-            <div class="settings-row" style="justify-content: left;">
-                <svg onclick="document.getElementById('settings-panel').classList.remove('activated')"
-                    xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
-                        fill="#fff" />
-                </svg>
-                Πίσω
-            </div>
-            <div
-                style="display: flex;flex-direction: column;height: 98%;justify-content: center;align-items: center;width: 100%;">
-                <img style="width: 100%;border-radius: 15px;height: auto;max-height: 95%;margin-top: auto;"
-                    id="image-viewer-img">
-                <div style="margin-top:auto;" class="buttonsPIN">
-                    <div style="display: flex;width: 100%;justify-content: center;align-items: center;color:#b83131">
-                        Διαγραφή
-                    </div>
-                    <div style="display: flex;width: 100%;justify-content: center;align-items: center;">
-                        Λήψη
-                    </div>
+    <div id="image-viewer" class="slidingPanel">
+        <div class="settings-row" style="justify-content: left;">
+            <svg onclick="document.getElementById('settings-panel').classList.remove('activated')"
+                xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                    fill="#fff" />
+            </svg>
+            Πίσω
+        </div>
+        <div
+            style="display: flex;flex-direction: column;height: 98%;justify-content: center;align-items: center;width: 100%;">
+            <img style="width: 100%;border-radius: 15px;height: auto;max-height: 95%;margin-top: auto;"
+                id="image-viewer-img">
+            <div style="margin-top:auto;" class="buttonsPIN">
+                <div style="display: flex;width: 100%;justify-content: center;align-items: center;color:#b83131">
+                    Διαγραφή
+                </div>
+                <div style="display: flex;width: 100%;justify-content: center;align-items: center;">
+                    Λήψη
                 </div>
             </div>
         </div>
     </div>
-    <div class="PCCONTAINER">
-        <div id="settings-panel" class="slidingPanel">
-            <div class="settings-row">
-                <svg onclick="closeSettings()" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
-                    viewBox="0 0 24 24" fill="none">
+    <div id="settings-panel" class="slidingPanel">
+        <div class="settings-row">
+            <svg onclick="closeSettings()" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
+                viewBox="0 0 24 24" fill="none">
+                <path
+                    d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                    fill="#fff" />
+            </svg>
+            <p onclick="signOut()">Αποσύνδεση</p>
+        </div>
+        <div class="account-preview-settings">
+            <img id="account-settings-img" src="user.gif">
+            <p id="account-settings-name">Name</p>
+            <span id="account-settings-klasa">accountinfo</span>
+            <div onclick="closeSettings();openEditProfile()" style="width: auto;border-radius: 15px;margin-top:5px;"
+                class="buttonCarouseli">
+                Επεξεργασία προφίλ <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg"
+                    width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                     <path
                         d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
-                        fill="#fff" />
+                        fill="#000" />
                 </svg>
-                <p onclick="signOut()">Αποσύνδεση</p>
             </div>
-            <div class="account-preview-settings">
-                <img id="account-settings-img" src="user.gif">
-                <p id="account-settings-name">Name</p>
-                <span id="account-settings-klasa">accountinfo</span>
-                <div onclick="closeSettings();openEditProfile()" style="width: auto;border-radius: 15px;margin-top:5px;"
-                    class="buttonCarouseli">
-                    Επεξεργασία προφίλ <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg"
+        </div>
+        <div class="settings-section">
+            <p class="section-title">Περιεχόμενο</p>
+            <div class="section-buttons">
+                <div onclick="showSavedPosts()" class="section-a-button">
+                    <div class="title-button-section"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M5 6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.07989 3 8.2 3H15.8C16.9201 3 17.4802 3 17.908 3.21799C18.2843 3.40973 18.5903 3.71569 18.782 4.09202C19 4.51984 19 5.07989 19 6.2V21L12 16L5 21V6.2Z"
+                                stroke="#e8e8e8" stroke-width="2" stroke-linejoin="round"></path>
+                        </svg>
+                        Αποθηκευμένα</div> <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg"
                         width="20px" height="20px" viewBox="0 0 24 24" fill="none">
                         <path
                             d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
-                            fill="#000" />
+                            fill="#fff" />
+                    </svg>
+                </div>
+
+                <div onclick="showLikedPosts()" class="section-a-button">
+                    <div class="title-button-section">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z"
+                                stroke="#e8e8e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
+                        </svg>
+                        Μου αρέσει
+                    </div> <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg" width="20px"
+                        height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                            fill="#fff" />
                     </svg>
                 </div>
             </div>
-            <div class="settings-section">
-                <p class="section-title">Περιεχόμενο</p>
-                <div class="section-buttons">
-                    <div onclick="showSavedPosts()" class="section-a-button">
-                        <div class="title-button-section"><svg xmlns="http://www.w3.org/2000/svg" width="20px"
-                                height="20px" viewBox="0 0 24 24" fill="none">
-                                <path
-                                    d="M5 6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.07989 3 8.2 3H15.8C16.9201 3 17.4802 3 17.908 3.21799C18.2843 3.40973 18.5903 3.71569 18.782 4.09202C19 4.51984 19 5.07989 19 6.2V21L12 16L5 21V6.2Z"
-                                    stroke="#e8e8e8" stroke-width="2" stroke-linejoin="round"></path>
-                            </svg>
-                            Αποθηκευμένα</div> <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg"
-                            width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+        </div>
+        <div class="settings-section">
+            <p class="section-title">Προτιμήσεις</p>
+            <div class="section-buttons squared">
+
+                <div onclick="openChangeClass()" class="section-a-button">
+                    <div class="title-button-section">
+                        <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M17.0671 2.27157C17.5 2.09228 17.9639 2 18.4324 2C18.9009 2 19.3648 2.09228 19.7977 2.27157C20.2305 2.45086 20.6238 2.71365 20.9551 3.04493C21.2864 3.37621 21.5492 3.7695 21.7285 4.20235C21.9077 4.63519 22 5.09911 22 5.56761C22 6.03611 21.9077 6.50003 21.7285 6.93288C21.5492 7.36572 21.2864 7.75901 20.9551 8.09029L20.4369 8.60845L15.3916 3.56308L15.9097 3.04493C16.241 2.71365 16.6343 2.45086 17.0671 2.27157Z"
+                                fill="#e8e8e8"></path>
+                            <path
+                                d="M13.9774 4.9773L3.6546 15.3001C3.53154 15.4231 3.44273 15.5762 3.39694 15.7441L2.03526 20.7369C1.94084 21.0831 2.03917 21.4534 2.29292 21.7071C2.54667 21.9609 2.91693 22.0592 3.26314 21.9648L8.25597 20.6031C8.42387 20.5573 8.57691 20.4685 8.69996 20.3454L19.0227 10.0227L13.9774 4.9773Z"
+                                fill="#e8e8e8"></path>
+                        </svg>
+
+                        Αλλαγή τάξης
+                    </div>
+                    <div id="selfClassPreview" class="hint-option">{replaceme}<svg style="transform: rotate(180deg)"
+                            xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                            fill="none">
                             <path
                                 d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
                                 fill="#fff" />
-                        </svg>
-                    </div>
+                        </svg></div>
+                </div>
 
-                    <div onclick="showLikedPosts()" class="section-a-button">
-                        <div class="title-button-section">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                                fill="none">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z"
-                                    stroke="#e8e8e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                </path>
-                            </svg>
-                            Μου αρέσει
-                        </div> <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg" width="20px"
-                            height="20px" viewBox="0 0 24 24" fill="none">
+
+
+                <div class="section-a-button">
+                    <div class="title-button-section">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10.0288"
+                                stroke="#e8e8e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        PIN Λογαριασμού
+                    </div>
+                    <div class="hint-option">
+                        <vox id="pin-preview-strength">?</vox><svg style="transform: rotate(180deg)"
+                            xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                            fill="none">
                             <path
                                 d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
                                 fill="#fff" />
                         </svg>
                     </div>
                 </div>
-            </div>
-            <div class="settings-section">
-                <p class="section-title">Προτιμήσεις</p>
-                <div class="section-buttons squared">
 
-                    <div onclick="openChangeClass()" class="section-a-button">
-                        <div class="title-button-section">
-                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M17.0671 2.27157C17.5 2.09228 17.9639 2 18.4324 2C18.9009 2 19.3648 2.09228 19.7977 2.27157C20.2305 2.45086 20.6238 2.71365 20.9551 3.04493C21.2864 3.37621 21.5492 3.7695 21.7285 4.20235C21.9077 4.63519 22 5.09911 22 5.56761C22 6.03611 21.9077 6.50003 21.7285 6.93288C21.5492 7.36572 21.2864 7.75901 20.9551 8.09029L20.4369 8.60845L15.3916 3.56308L15.9097 3.04493C16.241 2.71365 16.6343 2.45086 17.0671 2.27157Z"
-                                    fill="#e8e8e8"></path>
-                                <path
-                                    d="M13.9774 4.9773L3.6546 15.3001C3.53154 15.4231 3.44273 15.5762 3.39694 15.7441L2.03526 20.7369C1.94084 21.0831 2.03917 21.4534 2.29292 21.7071C2.54667 21.9609 2.91693 22.0592 3.26314 21.9648L8.25597 20.6031C8.42387 20.5573 8.57691 20.4685 8.69996 20.3454L19.0227 10.0227L13.9774 4.9773Z"
-                                    fill="#e8e8e8"></path>
-                            </svg>
-
-                            Αλλαγή τάξης
-                        </div>
-                        <div id="selfClassPreview" class="hint-option">{replaceme}<svg style="transform: rotate(180deg)"
-                                xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                                fill="none">
-                                <path
-                                    d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
-                                    fill="#fff" />
-                            </svg></div>
-                    </div>
-
-
-
-                    <div class="section-a-button">
-                        <div class="title-button-section">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                                fill="none">
-                                <path
-                                    d="M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10.0288"
-                                    stroke="#e8e8e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            PIN Λογαριασμού
-                        </div>
-                        <div class="hint-option">
-                            <vox id="pin-preview-strength">?</vox><svg style="transform: rotate(180deg)"
-                                xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                                fill="none">
-                                <path
-                                    d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
-                                    fill="#fff" />
-                            </svg>
-                        </div>
-                    </div>
-
-                    <div onclick="checkForLocal()" class="section-a-button">
-                        <div class="title-button-section">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                                fill="none">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm-1.5-5.009c0-.867.659-1.491 1.491-1.491.85 0 1.509.624 1.509 1.491 0 .867-.659 1.509-1.509 1.509-.832 0-1.491-.642-1.491-1.509zM11.172 6a.5.5 0 0 0-.499.522l.306 7a.5.5 0 0 0 .5.478h1.043a.5.5 0 0 0 .5-.478l.305-7a.5.5 0 0 0-.5-.522h-1.655z"
-                                    fill="#e8e8e8"></path>
-                            </svg>
-
-                            Επιδιόρθωση σφαλμάτων
-                        </div>
-                        <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg" width="20px"
-                            height="20px" viewBox="0 0 24 24" fill="none">
-                            <path
-                                d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
-                                fill="#fff" />
+                <div onclick="checkForLocal()" class="section-a-button">
+                    <div class="title-button-section">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm-1.5-5.009c0-.867.659-1.491 1.491-1.491.85 0 1.509.624 1.509 1.491 0 .867-.659 1.509-1.509 1.509-.832 0-1.491-.642-1.491-1.509zM11.172 6a.5.5 0 0 0-.499.522l.306 7a.5.5 0 0 0 .5.478h1.043a.5.5 0 0 0 .5-.478l.305-7a.5.5 0 0 0-.5-.522h-1.655z"
+                                fill="#e8e8e8"></path>
                         </svg>
-                    </div>
 
-                    <div class="section-a-button">
-                        <div class="title-button-section">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
-                                fill="none">
-                                <path
-                                    d="M12.0009 5C13.4331 5 14.8066 5.50571 15.8193 6.40589C16.832 7.30606 17.4009 8.52696 17.4009 9.8C17.4009 11.7691 17.846 13.2436 18.4232 14.3279C19.1606 15.7133 19.5293 16.406 19.5088 16.5642C19.4849 16.7489 19.4544 16.7997 19.3026 16.9075C19.1725 17 18.5254 17 17.2311 17H6.77066C5.47638 17 4.82925 17 4.69916 16.9075C4.54741 16.7997 4.51692 16.7489 4.493 16.5642C4.47249 16.406 4.8412 15.7133 5.57863 14.3279C6.1558 13.2436 6.60089 11.7691 6.60089 9.8C6.60089 8.52696 7.16982 7.30606 8.18251 6.40589C9.19521 5.50571 10.5687 5 12.0009 5ZM12.0009 5V3M9.35489 20C10.0611 20.6233 10.9888 21.0016 12.0049 21.0016C13.0209 21.0016 13.9486 20.6233 14.6549 20"
-                                    stroke="#e8e8e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            Ειδοποιήσεις
-                        </div>
-                        <div class="hint-option"><label class="toggle-switch">
-                                <input id="florida-main" type="checkbox">
-                                <div class="toggle-switch-background settings-bg">
-                                    <div class="toggle-switch-handle"></div>
-                                </div>
-                            </label></div>
+                        Επιδιόρθωση σφαλμάτων
                     </div>
+                    <svg style="transform: rotate(180deg)" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px"
+                        viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                            fill="#fff" />
+                    </svg>
+                </div>
 
-                    <div onclick="window.location.reload()" class="section-a-button">
-                        <div class="title-button-section">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="20px" height="20px" viewBox="0 0 24 24" version="1.1">
-                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                    <g transform="translate(-1488.000000, -48.000000)" fill-rule="nonzero">
-                                        <g transform="translate(1488.000000, 48.000000)">
-                                            <path
-                                                d="M24,0 L24,24 L0,24 L0,0 L24,0 Z M12.5934901,23.257841 L12.5819402,23.2595131 L12.5108777,23.2950439 L12.4918791,23.2987469 L12.4918791,23.2987469 L12.4767152,23.2950439 L12.4056548,23.2595131 C12.3958229,23.2563662 12.3870493,23.2590235 12.3821421,23.2649074 L12.3780323,23.275831 L12.360941,23.7031097 L12.3658947,23.7234994 L12.3769048,23.7357139 L12.4804777,23.8096931 L12.4953491,23.8136134 L12.4953491,23.8136134 L12.5071152,23.8096931 L12.6106902,23.7357139 L12.6232938,23.7196733 L12.6232938,23.7196733 L12.6266527,23.7031097 L12.609561,23.275831 C12.6075724,23.2657013 12.6010112,23.2592993 12.5934901,23.257841 L12.5934901,23.257841 Z M12.8583906,23.1452862 L12.8445485,23.1473072 L12.6598443,23.2396597 L12.6498822,23.2499052 L12.6498822,23.2499052 L12.6471943,23.2611114 L12.6650943,23.6906389 L12.6699349,23.7034178 L12.6699349,23.7034178 L12.678386,23.7104931 L12.8793402,23.8032389 C12.8914285,23.8068999 12.9022333,23.8029875 12.9078286,23.7952264 L12.9118235,23.7811639 L12.8776777,23.1665331 C12.8752882,23.1545897 12.8674102,23.1470016 12.8583906,23.1452862 L12.8583906,23.1452862 Z M12.1430473,23.1473072 C12.1332178,23.1423925 12.1221763,23.1452606 12.1156365,23.1525954 L12.1099173,23.1665331 L12.0757714,23.7811639 C12.0751323,23.7926639 12.0828099,23.8018602 12.0926481,23.8045676 L12.108256,23.8032389 L12.3092106,23.7104931 L12.3186497,23.7024347 L12.3186497,23.7024347 L12.3225043,23.6906389 L12.340401,23.2611114 L12.337245,23.2485176 L12.337245,23.2485176 L12.3277531,23.2396597 L12.1430473,23.1473072 Z"
-                                                fill-rule="nonzero">
-                                            </path>
-                                            <path
-                                                d="M20.2451,14.75 C21.18,15.3637 21.1371,16.7868 20.1165,17.3263 L12.9348,21.1225 C12.35,21.4316 11.6503,21.4316 11.0655,21.1225 L3.88381,17.3263 C2.86325,16.7868 2.82034,15.3638 3.75508,14.75 L3.817995,14.7892 L3.817995,14.7892 L11.0654,18.6222 C11.6502,18.9313 12.35,18.9313 12.9347,18.6222 L20.1164,14.826 C20.1612,14.8023 20.2041,14.7769 20.2451,14.75 Z M20.2451,10.75 C21.1393522,11.3370174 21.138982,12.6645822 20.2440771,13.2510586 L20.1165,13.3263 L12.9348,17.1225 C12.4031636,17.4035 11.7765686,17.4290455 11.227667,17.1991364 L11.0655,17.1225 L3.88381,13.3263 C2.86325,12.7868 2.82034,11.3638 3.75508,10.75 L3.817995,10.7892 L3.817995,10.7892 L11.0654,14.6222 C11.5970364,14.9032 12.223714,14.9287455 12.7725555,14.6988364 L12.9347,14.6222 L20.1164,10.826 C20.1612,10.8023 20.2041,10.7769 20.2451,10.75 Z M12.9347,2.87782 L20.1164,6.67404 C21.1818,7.23718 21.1818,8.76316 20.1164,9.32629 L12.9347,13.1225 C12.35,13.4316 11.6502,13.4316 11.0654,13.1225 L3.88373,9.32629 C2.81838,8.76315 2.81838,7.23718 3.88373,6.67404 L11.0654,2.87782 C11.6502,2.56872 12.35,2.56872 12.9347,2.87782 Z"
-                                                fill="#e8e8e8">
-                                            </path>
-                                        </g>
+                <div class="section-a-button">
+                    <div class="title-button-section">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
+                            fill="none">
+                            <path
+                                d="M12.0009 5C13.4331 5 14.8066 5.50571 15.8193 6.40589C16.832 7.30606 17.4009 8.52696 17.4009 9.8C17.4009 11.7691 17.846 13.2436 18.4232 14.3279C19.1606 15.7133 19.5293 16.406 19.5088 16.5642C19.4849 16.7489 19.4544 16.7997 19.3026 16.9075C19.1725 17 18.5254 17 17.2311 17H6.77066C5.47638 17 4.82925 17 4.69916 16.9075C4.54741 16.7997 4.51692 16.7489 4.493 16.5642C4.47249 16.406 4.8412 15.7133 5.57863 14.3279C6.1558 13.2436 6.60089 11.7691 6.60089 9.8C6.60089 8.52696 7.16982 7.30606 8.18251 6.40589C9.19521 5.50571 10.5687 5 12.0009 5ZM12.0009 5V3M9.35489 20C10.0611 20.6233 10.9888 21.0016 12.0049 21.0016C13.0209 21.0016 13.9486 20.6233 14.6549 20"
+                                stroke="#e8e8e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Ειδοποιήσεις
+                    </div>
+                    <div class="hint-option"><label class="toggle-switch">
+                            <input id="florida-main" type="checkbox">
+                            <div class="toggle-switch-background settings-bg">
+                                <div class="toggle-switch-handle"></div>
+                            </div>
+                        </label></div>
+                </div>
+
+                <div onclick="window.location.reload()" class="section-a-button">
+                    <div class="title-button-section">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px"
+                            height="20px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g transform="translate(-1488.000000, -48.000000)" fill-rule="nonzero">
+                                    <g transform="translate(1488.000000, 48.000000)">
+                                        <path
+                                            d="M24,0 L24,24 L0,24 L0,0 L24,0 Z M12.5934901,23.257841 L12.5819402,23.2595131 L12.5108777,23.2950439 L12.4918791,23.2987469 L12.4918791,23.2987469 L12.4767152,23.2950439 L12.4056548,23.2595131 C12.3958229,23.2563662 12.3870493,23.2590235 12.3821421,23.2649074 L12.3780323,23.275831 L12.360941,23.7031097 L12.3658947,23.7234994 L12.3769048,23.7357139 L12.4804777,23.8096931 L12.4953491,23.8136134 L12.4953491,23.8136134 L12.5071152,23.8096931 L12.6106902,23.7357139 L12.6232938,23.7196733 L12.6232938,23.7196733 L12.6266527,23.7031097 L12.609561,23.275831 C12.6075724,23.2657013 12.6010112,23.2592993 12.5934901,23.257841 L12.5934901,23.257841 Z M12.8583906,23.1452862 L12.8445485,23.1473072 L12.6598443,23.2396597 L12.6498822,23.2499052 L12.6498822,23.2499052 L12.6471943,23.2611114 L12.6650943,23.6906389 L12.6699349,23.7034178 L12.6699349,23.7034178 L12.678386,23.7104931 L12.8793402,23.8032389 C12.8914285,23.8068999 12.9022333,23.8029875 12.9078286,23.7952264 L12.9118235,23.7811639 L12.8776777,23.1665331 C12.8752882,23.1545897 12.8674102,23.1470016 12.8583906,23.1452862 L12.8583906,23.1452862 Z M12.1430473,23.1473072 C12.1332178,23.1423925 12.1221763,23.1452606 12.1156365,23.1525954 L12.1099173,23.1665331 L12.0757714,23.7811639 C12.0751323,23.7926639 12.0828099,23.8018602 12.0926481,23.8045676 L12.108256,23.8032389 L12.3092106,23.7104931 L12.3186497,23.7024347 L12.3186497,23.7024347 L12.3225043,23.6906389 L12.340401,23.2611114 L12.337245,23.2485176 L12.337245,23.2485176 L12.3277531,23.2396597 L12.1430473,23.1473072 Z"
+                                            fill-rule="nonzero">
+                                        </path>
+                                        <path
+                                            d="M20.2451,14.75 C21.18,15.3637 21.1371,16.7868 20.1165,17.3263 L12.9348,21.1225 C12.35,21.4316 11.6503,21.4316 11.0655,21.1225 L3.88381,17.3263 C2.86325,16.7868 2.82034,15.3638 3.75508,14.75 L3.817995,14.7892 L3.817995,14.7892 L11.0654,18.6222 C11.6502,18.9313 12.35,18.9313 12.9347,18.6222 L20.1164,14.826 C20.1612,14.8023 20.2041,14.7769 20.2451,14.75 Z M20.2451,10.75 C21.1393522,11.3370174 21.138982,12.6645822 20.2440771,13.2510586 L20.1165,13.3263 L12.9348,17.1225 C12.4031636,17.4035 11.7765686,17.4290455 11.227667,17.1991364 L11.0655,17.1225 L3.88381,13.3263 C2.86325,12.7868 2.82034,11.3638 3.75508,10.75 L3.817995,10.7892 L3.817995,10.7892 L11.0654,14.6222 C11.5970364,14.9032 12.223714,14.9287455 12.7725555,14.6988364 L12.9347,14.6222 L20.1164,10.826 C20.1612,10.8023 20.2041,10.7769 20.2451,10.75 Z M12.9347,2.87782 L20.1164,6.67404 C21.1818,7.23718 21.1818,8.76316 20.1164,9.32629 L12.9347,13.1225 C12.35,13.4316 11.6502,13.4316 11.0654,13.1225 L3.88373,9.32629 C2.81838,8.76315 2.81838,7.23718 3.88373,6.67404 L11.0654,2.87782 C11.6502,2.56872 12.35,2.56872 12.9347,2.87782 Z"
+                                            fill="#e8e8e8">
+                                        </path>
                                     </g>
                                 </g>
-                            </svg>
+                            </g>
+                        </svg>
 
-                            Έκδοση εφαρμογής
-                        </div>
-                        <div class="hint-option" id="version2">v00.21</div>
+                        Έκδοση εφαρμογής
                     </div>
+                    <div class="hint-option" id="version2">v00.21</div>
                 </div>
             </div>
+        </div>
+
+    </div>
+
+    <div id="likedPosts-panel" class="slidingPanel">
+        <div class="settings-row">
+            <vox onclick="document.getElementById('likedPosts-panel').classList.remove('activated')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                        fill="#fff" />
+                </svg>
+                Ρυθμίσεις
+            </vox>
+
+        </div>
+        <div class="settings-section">
+            <p class="section-title">Καταχωρήσεις που σου αρέσουν</p>
+            <div class="section-buttons fade-in-slide-up" id="likedPosts">
+                <!--Post Spawning-->
+            </div>
+
+            <p id="unabletoshow" class="section-title">Καταχωρήσεις που δεν μπορείς να δεις</p>
+            <div class="section-buttons fade-in-slide-up" id="likedPosts-denied">
+
+            </div>
+            <div id="unabletoshowinfo" class="fade-in-slide-up"
+                style="display: none; align-items: flex-start; width: 100%; gap: 10px;margin-bottom: 35px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none"
+                    style="flex-shrink: 0;">
+                    <path
+                        d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z"
+                        stroke="#838383" stroke-width="2" />
+                    <path d="M12 8L12 12.5" stroke="#838383" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path
+                        d="M13 15.5C13 16.0523 12.5523 16.5 12 16.5C11.4477 16.5 11 16.0523 11 15.5C11 14.9477 11.4477 14.5 12 14.5C12.5523 14.5 13 14.9477 13 15.5Z"
+                        fill="#838383" />
+                </svg>
+
+                <p style="font-size: 14px; font-weight: lighter; color: #838383; margin: 0;">
+                    Γιατί δεν μπορείς να δεις μερικές δημοσιεύσεις?<br>
+                    Για να μπορέσεις να δεις και να αλληλεπιδράσεις σε δημοσιεύσεις των συμμαθητών σου χρειάζεται να
+                    έχουν κάνει οι ίδιοι καταχώρηση με το όνομα σου ή να σου έχουν επιτρέψει να βλέπεις τις
+                    δημοσιεύσεις τους.
+                </p>
+            </div>
+
+
 
         </div>
     </div>
 
-    <div class="PCCONTAINER">
-        <div id="likedPosts-panel" class="slidingPanel">
-            <div class="settings-row">
-                <vox onclick="document.getElementById('likedPosts-panel').classList.remove('activated')">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
-                            fill="#fff" />
-                    </svg>
-                    Ρυθμίσεις
-                </vox>
+    <div id="savedPosts-panel" class="slidingPanel">
+        <div class="settings-row">
+            <vox onclick="document.getElementById('savedPosts-panel').classList.remove('activated')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                        fill="#fff" />
+                </svg>
+                Ρυθμίσεις
+            </vox>
+
+        </div>
+        <div class="settings-section">
+            <p class="section-title">Καταχωρήσεις που έχεις αποθηκεύσει</p>
+            <div class="section-buttons fade-in-slide-up" id="savedPosts">
+                <!--Post Spawning-->
+            </div>
+
+            <p id="unabletoshow-saved" class="section-title">Καταχωρήσεις που δεν μπορείς να δεις</p>
+            <div class="section-buttons fade-in-slide-up" id="savedPosts-denied">
 
             </div>
-            <div class="settings-section">
-                <p class="section-title">Καταχωρήσεις που σου αρέσουν</p>
-                <div class="section-buttons fade-in-slide-up" id="likedPosts">
-                    <!--Post Spawning-->
-                </div>
+            <div id="unabletoshowinfo-saved" class="fade-in-slide-up"
+                style="display: none; align-items: flex-start; width: 100%; gap: 10px;margin-bottom: 35px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none"
+                    style="flex-shrink: 0;">
+                    <path
+                        d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z"
+                        stroke="#838383" stroke-width="2" />
+                    <path d="M12 8L12 12.5" stroke="#838383" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path
+                        d="M13 15.5C13 16.0523 12.5523 16.5 12 16.5C11.4477 16.5 11 16.0523 11 15.5C11 14.9477 11.4477 14.5 12 14.5C12.5523 14.5 13 14.9477 13 15.5Z"
+                        fill="#838383" />
+                </svg>
 
-                <p id="unabletoshow" class="section-title">Καταχωρήσεις που δεν μπορείς να δεις</p>
-                <div class="section-buttons fade-in-slide-up" id="likedPosts-denied">
-
-                </div>
-                <div id="unabletoshowinfo" class="fade-in-slide-up"
-                    style="display: none; align-items: flex-start; width: 100%; gap: 10px;margin-bottom: 35px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none"
-                        style="flex-shrink: 0;">
-                        <path
-                            d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z"
-                            stroke="#838383" stroke-width="2" />
-                        <path d="M12 8L12 12.5" stroke="#838383" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path
-                            d="M13 15.5C13 16.0523 12.5523 16.5 12 16.5C11.4477 16.5 11 16.0523 11 15.5C11 14.9477 11.4477 14.5 12 14.5C12.5523 14.5 13 14.9477 13 15.5Z"
-                            fill="#838383" />
-                    </svg>
-
-                    <p style="font-size: 14px; font-weight: lighter; color: #838383; margin: 0;">
-                        Γιατί δεν μπορείς να δεις μερικές δημοσιεύσεις?<br>
-                        Για να μπορέσεις να δεις και να αλληλεπιδράσεις σε δημοσιεύσεις των συμμαθητών σου χρειάζεται να
-                        έχουν κάνει οι ίδιοι καταχώρηση με το όνομα σου ή να σου έχουν επιτρέψει να βλέπεις τις
-                        δημοσιεύσεις τους.
-                    </p>
-                </div>
-
-
-
+                <p style="font-size: 14px; font-weight: lighter; color: #838383; margin: 0;">
+                    Γιατί δεν μπορείς να δεις μερικές δημοσιεύσεις?<br>
+                    Για να μπορέσεις να δεις και να αλληλεπιδράσεις σε δημοσιεύσεις των συμμαθητών σου χρειάζεται να
+                    έχουν κάνει οι ίδιοι καταχώρηση με το όνομα σου ή να σου έχουν επιτρέψει να βλέπεις τις
+                    δημοσιεύσεις τους.
+                </p>
             </div>
+
+
+
         </div>
     </div>
 
-    <div class="PCCONTAINER">
-        <div id="savedPosts-panel" class="slidingPanel">
-            <div class="settings-row">
-                <vox onclick="document.getElementById('savedPosts-panel').classList.remove('activated')">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
-                            fill="#fff" />
-                    </svg>
-                    Ρυθμίσεις
-                </vox>
+    <div id="changeClass-panel" class="slidingPanel">
+        <div class="settings-row">
+            <vox onclick="document.getElementById('changeClass-panel').classList.remove('activated')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                        fill="#fff" />
+                </svg>
+                Ρυθμίσεις
+            </vox>
 
-            </div>
-            <div class="settings-section">
-                <p class="section-title">Καταχωρήσεις που έχεις αποθηκεύσει</p>
-                <div class="section-buttons fade-in-slide-up" id="savedPosts">
-                    <!--Post Spawning-->
-                </div>
-
-                <p id="unabletoshow-saved" class="section-title">Καταχωρήσεις που δεν μπορείς να δεις</p>
-                <div class="section-buttons fade-in-slide-up" id="savedPosts-denied">
-
-                </div>
-                <div id="unabletoshowinfo-saved" class="fade-in-slide-up"
-                    style="display: none; align-items: flex-start; width: 100%; gap: 10px;margin-bottom: 35px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none"
-                        style="flex-shrink: 0;">
-                        <path
-                            d="M20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z"
-                            stroke="#838383" stroke-width="2" />
-                        <path d="M12 8L12 12.5" stroke="#838383" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                        <path
-                            d="M13 15.5C13 16.0523 12.5523 16.5 12 16.5C11.4477 16.5 11 16.0523 11 15.5C11 14.9477 11.4477 14.5 12 14.5C12.5523 14.5 13 14.9477 13 15.5Z"
-                            fill="#838383" />
-                    </svg>
-
-                    <p style="font-size: 14px; font-weight: lighter; color: #838383; margin: 0;">
-                        Γιατί δεν μπορείς να δεις μερικές δημοσιεύσεις?<br>
-                        Για να μπορέσεις να δεις και να αλληλεπιδράσεις σε δημοσιεύσεις των συμμαθητών σου χρειάζεται να
-                        έχουν κάνει οι ίδιοι καταχώρηση με το όνομα σου ή να σου έχουν επιτρέψει να βλέπεις τις
-                        δημοσιεύσεις τους.
-                    </p>
-                </div>
-
-
-
-            </div>
         </div>
-    </div>
-
-    <div class="PCCONTAINER">
-        <div id="changeClass-panel" class="slidingPanel">
-            <div class="settings-row">
-                <vox onclick="document.getElementById('changeClass-panel').classList.remove('activated')">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                        <path
-                            d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
-                            fill="#fff" />
-                    </svg>
-                    Ρυθμίσεις
-                </vox>
-
+        <div class="settings-section">
+            <p class="section-title">Διαθέσιμα τμήματα</p>
+            <div class="section-buttons fade-in-slide-up squared withbg" id="klasa-available">
+                <!--Klasa Spawning-->
             </div>
-            <div class="settings-section">
-                <p class="section-title">Διαθέσιμα τμήματα</p>
-                <div class="section-buttons fade-in-slide-up squared withbg" id="klasa-available">
-                    <!--Klasa Spawning-->
-                </div>
 
 
 
-            </div>
         </div>
     </div>
 
