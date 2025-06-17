@@ -8782,7 +8782,7 @@ function fallbackCopy(text, el) {
 }
 
 function verifyIfAccountMatches() {
-    fetch(`https://arc.evoxs.xyz/?metode=verifyRecovery&id=${res.username}`)
+    fetch(`https://arc.evoxs.xyz/?metode=verifyRecovery&id=${emri.username}`)
         .then(response => response.json())
         .then(res => {
             if (!res.message) {
