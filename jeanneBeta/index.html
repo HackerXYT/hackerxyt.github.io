@@ -257,7 +257,7 @@
 
                 <div onclick="proceedWithAccount()" class="showProfileBtn" style="white-space: nowrap;width:auto;">
                     Αυτός είναι ο λογαριασμός μου</div>
-                <div class="editButton showProfileBtn"
+                <div onclick="alert('Επικοινώνησε με τους διαχειριστές ή καθηγητές άμεσα.');window.location.reload()" class="editButton showProfileBtn"
                     style="margin-right: 0px; white-space: nowrap;width:auto;background-color:#10101096;color:#fff;border: 2.5px solid #282828;">
                     Δεν είναι ο λογαριασμός μου</div>
             </div>
@@ -281,9 +281,13 @@
             <div class="bottom-recovery-actions">
 
 
-                <div onclick="verifyIfAccountMatches()" class="showProfileBtn" style="white-space: nowrap;width:auto;">
+                <div onclick="verifyIfAccountMatches(this)" class="showProfileBtn"
+                    style="white-space: nowrap;width:auto;gap: 5px;">
                     Το έκανα</div>
-                
+                <div onclick="window.location.reload()" class="editButton showProfileBtn"
+                    style="margin-right: 0px; white-space: nowrap;width:auto;background-color:#10101096;color:#fff;border: 2.5px solid #282828;">
+                    Ακύρωση</div>
+
             </div>
         </div>
     </div>
@@ -624,7 +628,7 @@
                 </svg></button>
         </div>
         <div class="version">
-            <div onclick="accountRecoveryBegin()" class="editButton showProfileBtn"
+            <div id="accountRecoveryBegin" onclick="accountRecoveryBegin()" class="editButton showProfileBtn"
                 style="margin-right: 0px; white-space: nowrap;width:auto;background-color:#10101096;color:#fff;border: 2.5px solid #282828;">
                 Ξέχασα το PIN μου</div>
             <img onclick="goBackToLogin()" src="logo.png" height="55px">
@@ -2357,7 +2361,7 @@
 
 
 
-                <div class="section-a-button">
+                <div onclick="document.getElementById('settings-panel').classList.remove('activated');changePin();" class="section-a-button">
                     <div class="title-button-section">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
                             fill="none">

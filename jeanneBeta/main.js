@@ -1,4 +1,4 @@
-const appVersion = "2.0.41"
+const appVersion = "2.0.45"
 for (let i = 0; i < 3; i++) {
     document.getElementById(`version${i + 1}`).innerText = `${i + 1 !== 2 ? appVersion : `v${appVersion}`}`
 }
@@ -1561,7 +1561,7 @@ function clickPIN(element) {
             } else if (pinAction === 'verify') {
                 setTimeout(function () {
                     if (toVerify === pin) {
-                        fetch(`https://arc.evoxs.xyz/?metode=pinChange&pin=${atob(JSON.parse(localStorage.getItem('jeanDarc_accountData')).pin)}&emri=${foundName}&pinNew=${pin}`)
+                        fetch(!sessionStorage.getItem("evx_temp_access") ? `https://arc.evoxs.xyz/?metode=pinChange&pin=${atob(JSON.parse(localStorage.getItem('jeanDarc_accountData')).pin)}&emri=${foundName}&pinNew=${pin}` : `https://arc.evoxs.xyz/?metode=pinChange&id=${sessionStorage.getItem("evx_temp_access")}&emri=${foundName}&pinNew=${pin}`)
                             .then(response => response.text())
                             .then(status => {
                                 if (status === 'Complete') {
@@ -1595,6 +1595,14 @@ function clickPIN(element) {
                                                             $("#app").fadeIn("fast")
                                                             document.getElementById("navigation").classList.add("active")
                                                             document.body.style.overflow = null
+                                                            if (sessionStorage.getItem("evx_temp_access")) {
+                                                                sessionStorage.removeItem("evx_temp_access")
+                                                                sessionStorage.removeItem("insta-recovery")
+                                                                sessionStorage.removeItem("insta-recovery-username")
+                                                                sessionStorage.setItem("notice_remove_bio", 'true')
+                                                                window.location.reload()
+                                                                return;
+                                                            }
                                                             document.getElementById("app").style.transform = ""
                                                             document.getElementById("app").style.opacity = "1"
                                                             setTimeout(function () { document.getElementById("app").style.opacity = "1" }, 500)
@@ -1662,7 +1670,6 @@ function clickPIN(element) {
             } else if (pinAction === 'new') {
                 toVerify = pin
                 setTimeout(function () {
-
                     console.log("Success")
 
                     proccessingPIN = false
@@ -1670,9 +1677,6 @@ function clickPIN(element) {
                         document.getElementById("pinText").innerHTML = 'Επιβεβαιώστε το νέο σας PIN'
                         //pinAction = 'new'
                         pinAction = 'verify'
-
-
-
                         $("#PINdots").fadeIn("fast")
                         $("#lock").fadeIn("fast")
                         setTimeout(function () {
@@ -2012,6 +2016,17 @@ function attach() {
             </svg>`
     } else {
         document.getElementById("pin-preview-strength").innerHTML = 'Ασφαλές'
+    }
+    if (sessionStorage.getItem("notice_remove_bio")) {
+        EvalertNext({
+            "title": "Ο λογαριασμός ανακτήθηκε με επιτυχία",
+            "description": "Έχεις πλέον πρόσβαση στον λογαριασμό σου.<br>Μπορείς να αφαιρέσεις τον κωδικό επιβεβαίωσης από το bio σου.",
+            "buttons": ["Εντάξει"],
+            "buttonAction": ["sessionStorage.removeItem('notice_remove_bio')"],
+            "addons": [],
+            "clouds": true,
+            "clouds_data": ["SELF", "EVOX"]
+        })
     }
     document.body.style.backgroundColor = '#101010'//'rgb(5,2,16)'
     //return;
@@ -2524,11 +2539,13 @@ function changePinRedo() {
 }
 
 let pinAction = null;
-function changePin(e, event, newMetode) {
+function changePin(e, event, newMetode, straightToNew) {
     if (event) {
         event.preventDefault();
         event.stopPropagation();
     }
+
+    document.getElementById("navigation").classList.remove("active")
 
     getEvoxProfile(foundName).then(profileSrc => {
         document.getElementById('userPinPfp').src = profileSrc
@@ -2552,8 +2569,8 @@ function changePin(e, event, newMetode) {
 
         setTimeout(function () {
             document.getElementById("notice").style.transform = 'translateY(100vh)'
-            document.getElementById("pinText").innerHTML = 'Εισάγετε το παλιό σας PIN'
-            pinAction = 'old'
+            document.getElementById("pinText").innerHTML = !straightToNew ? 'Εισάγετε το παλιό σας PIN' : 'Εισάγετε το νέο σας PIN'
+            pinAction = !straightToNew ? 'old' : 'new'
             $("#lock").fadeIn("fast")
         }, 500)
     })
@@ -8678,6 +8695,7 @@ async function fetchImageAsBase64(url) {
 
 function accountRecoveryBegin() {
     $("#lock").fadeOut("fast", function () {
+        document.getElementById("navigation").classList.remove("active")
         const div = document.getElementById("recoveryPage")
         div.style.display = "flex"
         setTimeout(function () {
@@ -8757,7 +8775,7 @@ function copyText(el) {
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text)
-            .then(() => console.log("Copied via Clipboard API"))
+            .then(() => noticeSmall(1, `Έγινε αντιγραφή του κειμένου`, 2000))
             .catch(err => fallbackCopy(text, el));
     } else {
         fallbackCopy(text, el);
@@ -8775,42 +8793,58 @@ function fallbackCopy(text, el) {
     try {
         document.execCommand('copy');
         console.log("Copied via execCommand fallback");
+        noticeSmall(1, `Έγινε αντιγραφή του κειμένου`, 2000)
     } catch (err) {
         alert("Copy failed. Please press Ctrl+C manually.");
     }
     document.body.removeChild(input);
 }
 
-function verifyIfAccountMatches() {
-    fetch(`https://arc.evoxs.xyz/?metode=verifyRecovery&id=${emri.username}`)
+function verifyIfAccountMatches(el) {
+    el.innerHTML = `Περιμένετε.. <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ea6b6b;
+            --track-upload: #642b2b;width:15px;">
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="active-upload"></circle>
+                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                    class="track-upload"></circle>
+            </svg>`
+    fetch(`https://arc.evoxs.xyz/?metode=verifyRecovery&emri=${foundName}`)
         .then(response => response.json())
         .then(res => {
             if (!res.message) {
                 if (res.code === true) {
-                    document.getElementById("icon-checkmark").style.display = null
-                    document.getElementById("icon-error").style.display = "none"
-                    document.getElementById("icon-spinner").style.display = "none";
-                    document.getElementById("notice-text").innerText = `Η Πρόσβαση Εγκρίθηκε!`
-                    document.getElementById("notice-main").classList.add("active")
-                    setTimeout(function () { document.getElementById("notice-main").classList.remove("active") }, 6000)
+                    noticeSmall(1, `Η Πρόσβαση Εγκρίθηκε!`, 2000)
+                    pinAction = 'new'
+                    sessionStorage.setItem("evx_temp_access", res.evx)
+                    const div = document.getElementById("recoveryPage")
+                    div.style.opacity = 0
+                    setTimeout(function () {
+                        div.style.display = "none"
+                        document.getElementById("accountRecoveryBegin").style.display = 'none'
+                        el.innerHTML = "Το έκανα"
+                        changePin(null, null, null, "straightToNew")
+                    }, 250)
+
                 } else {
-                    document.getElementById("icon-checkmark").style.display = "none"
-                    document.getElementById("icon-error").style.display = null
-                    document.getElementById("icon-spinner").style.display = "none";
-                    document.getElementById("notice-text").innerText = `Επιβεβαίωσε ότι έκανες τα βήματα σωστά`
-                    document.getElementById("notice-main").classList.add("active")
-                    setTimeout(function () { document.getElementById("notice-main").classList.remove("active") }, 6000)
+                    noticeSmall(2, `Επιβεβαίωσε ότι έκανες τα βήματα σωστά`, 6000)
+                    el.innerHTML = "Το έκανα"
                 }
             } else {
-                document.getElementById("icon-checkmark").style.display = "none"
-                document.getElementById("icon-error").style.display = null
-                document.getElementById("icon-spinner").style.display = "none";
-                document.getElementById("notice-text").innerText = res.message
-                document.getElementById("notice-main").classList.add("active")
-                setTimeout(function () { document.getElementById("notice-main").classList.remove("active") }, 6000)
+                noticeSmall(2, res.message, 6000)
+                el.innerHTML = "Το έκανα"
             }
         }).catch(error => {
             console.error("EVX error", error)
+            el.innerHTML = "Το έκανα"
             alert(error)
         });
+}
+
+function noticeSmall(icon, text, timeout) {
+    document.getElementById("icon-checkmark").style.display = icon === 1 ? null : "none"
+    document.getElementById("icon-error").style.display = icon === 2 ? null : "none"
+    document.getElementById("icon-spinner").style.display = icon === 3 ? null : "none"
+    document.getElementById("notice-text").innerText = text
+    document.getElementById("notice-main").classList.add("active")
+    setTimeout(function () { document.getElementById("notice-main").classList.remove("active") }, timeout)
 }
