@@ -2269,7 +2269,7 @@ async function spawnRandom(redo, frontEndLoading) {
                     document.getElementById("scrollToMe").id = ""
                 }
 
-                const cleaned = post.vleresim.replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender(removeTonos(name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
+                const cleaned = post.vleresim.replace(/@(\w+\s\w+)/g, (match, name) => `<vox onclick="extMention('${name}')" class="mention ${getGender((name.split(" ")[0])) === "Female" ? "female" : "male"}">@${name}</vox>`);
                 //'Spawning ForYou', post.emri
                 const randomString = [...Array(15)]
                     .map(() => Math.random().toString(36)[2])
@@ -2290,7 +2290,7 @@ async function spawnRandom(redo, frontEndLoading) {
                 
                 <div class="text-area-cont" style="position: relative;">
                     <p style="color: #fff;font-weight: 100;font-size: 14px;margin-top: 5px;">
-                        <vox onclick="extMention('${post.marresi}')" class="mention ${getGender(removeTonos(post.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${post.marresi}</vox>
+                        <vox onclick="extMention('${post.marresi}')" class="mention ${getGender((post.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${post.marresi}</vox>
                         ${cleaned}
                     </p>
                 </div>
@@ -2350,7 +2350,7 @@ async function spawnRandom(redo, frontEndLoading) {
                                 </div>
                                 <div class="postContent">
                                     <p>
-                                    <vox onclick="extMention('${foundName}')" class="mention ${getGender(removeTonos(foundName.split(" ")[0])) === "Female" ? "female" : "male"}">@${foundName}</vox><br>
+                                    <vox onclick="extMention('${foundName}')" class="mention ${getGender((foundName.split(" ")[0])) === "Female" ? "female" : "male"}">@${foundName}</vox><br>
                                     Δεν υπάρχουν δημόσιες αναρτήσεις για να δεις, δοκίμασε να ακολουθήσεις διάφορους συμμαθητές σου και ξανά δοκίμασε.
                                     </p>
                                 </div>
@@ -3058,8 +3058,8 @@ function fixNameCase(name) {
         'ος': 'ο',
         'ά': 'ά',
         'ι': 'ι',
-        'ς': 'η',
-        'ας': 'α'
+        'ας': 'α',
+        'ς': 'η'
     };
 
     if (name === 'Αίαντας') {
@@ -4137,6 +4137,7 @@ function calculateTextWidth(text) {
 }
 
 function removeTonos(str) {
+    return str;
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
