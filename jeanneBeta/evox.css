@@ -1427,6 +1427,13 @@ input {
   -webkit-backdrop-filter: blur(55px);
 }
 
+.notification-center.jeanne {
+  background: #00000034;
+  border-top: solid 1px #1b1b1b;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
 .notification-center.active {
   opacity: 1;
   /* Show the popup */
@@ -1598,4 +1605,71 @@ input {
 .bottomButtonsSline a svg {
   vertical-align: middle;
   transition: transform 0.2s ease-in-out, margin-left 0.7s ease-in-out;
+}
+
+#downloading-icon-big {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  transition: transform 0.2s ease-in-out, margin-left 0.7s ease-in-out;
+}
+
+
+#downloading-icon-big svg #arrowDownload {
+  transition: transform 0.5s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+#downloading-icon-big svg #boxDownload {
+  transition: transform 0.5s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+#downloading-icon-big.active svg #arrowDownload {
+  animation: downloadAnimBig 1.5s infinite
+}
+
+
+#downloading-icon-big.active svg #boxDownload {
+  animation: downloadBoxMove 1.5s infinite
+}
+
+@keyframes downloadBoxMove {
+  0% {
+    transform: scale(1.01);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+
+  100% {
+    transform: scale(1.01);
+    opacity: 1;
+  }
+}
+
+
+@keyframes downloadAnimBig {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(5px);
+    opacity: 0;
+  }
+
+  55% {
+    transform: translateY(-5px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

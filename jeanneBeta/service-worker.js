@@ -1,75 +1,94 @@
-//Jeanne Service Worker.
-
-self.addEventListener('push', function (event) {
-    const data = event.data.json();
-
-    self.registration.showNotification(data.title, {
-        body: data.body,
-        icon: 'appLogoV2.png',
-        data: {
-            title: data.title,
-            content: data.body  // or another field if you want
-        }
-    }); 
-});
-
-self.addEventListener('notificationclick', function (event) {
-    const title = event.notification.data.title;
-    const content = event.notification.data.content;
-
-    const url = `https://evoxs.xyz/jeanneBeta/?showNotification=true&title=${encodeURIComponent(title)}&content=${encodeURIComponent(content)}`;
-
-    event.notification.close();
-
-    event.waitUntil(
-        clients.openWindow(url)
-    );
-});
-
-
-
-const CACHE_NAME = 'jeanne-cache-v32';
+const CACHE_NAME = 'jeanne-cache-v33';
 const STATIC_ASSETS = [
-    '/jeanneBeta/',
+  '/jeanneBeta/',
+  '/jeanneBeta/index.html',
+  '/jeanneBeta/main.js',
+  '/jeanneBeta/style.css',
+  '/jeanneBeta/appLogoV2.png',
 ];
 
 self.addEventListener('install', event => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then(cache => {
-            return cache.addAll(STATIC_ASSETS);
-        })
-    );
-});
-
-self.addEventListener('fetch', event => {
-    const url = new URL(event.request.url);
-
-    // Allow network requests for non-evoxs.xyz and exclude data.evoxs.xyz
-    if (!url.hostname.endsWith('evoxs.xyz') || url.hostname.startsWith('data.') || url.hostname.startsWith('arc.')) {
-        return;
-    }
-
-    // Cache-first strategy for static assets
-    if (event.request.method === 'GET') {
-        event.respondWith(
-            caches.match(event.request).then(cachedResponse => {
-                return cachedResponse || fetch(event.request).then(networkResponse => {
-                    return caches.open(CACHE_NAME).then(cache => {
-                        cache.put(event.request, networkResponse.clone());
-                        return networkResponse;
-                    });
-                });
-            })
-        );
-    }
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(STATIC_ASSETS))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener('activate', event => {
-    event.waitUntil(
-        caches.keys().then(keys => {
-            return Promise.all(
-                keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
-            );
-        })
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    ).then(() =>
+      self.clients.claim().then(() =>
+        self.clients.matchAll().then(clients =>
+          clients.forEach(client =>
+            client.postMessage({ type: 'CACHE_UPDATED' })
+          )
+        )
+      )
+    )
+  );
+});
+
+self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+
+  // Allow network passthrough for non-jeanne domains
+  if (!url.hostname.endsWith('evoxs.xyz') || url.hostname.startsWith('data.') || url.hostname.startsWith('arc.')) {
+    return;
+  }
+
+  // Network-first for main.js to get updates
+  if (url.pathname.endsWith('main.js')) {
+    event.respondWith(
+      fetch(event.request).then(networkResponse => {
+        return caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, networkResponse.clone());
+          return networkResponse;
+        });
+      }).catch(() => caches.match(event.request))
     );
+    return;
+  }
+
+  // Cache-first strategy for other GET requests
+  if (event.request.method === 'GET') {
+    event.respondWith(
+      caches.match(event.request).then(cachedResponse =>
+        cachedResponse || fetch(event.request).then(networkResponse => {
+          return caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
+        })
+      )
+    );
+  }
+});
+
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
+// Push Notifications
+self.addEventListener('push', event => {
+  const data = event.data.json();
+  self.registration.showNotification(data.title, {
+    body: data.body,
+    icon: 'appLogoV2.png',
+    data: {
+      title: data.title,
+      content: data.body
+    }
+  });
+});
+
+self.addEventListener('notificationclick', event => {
+  const { title, content } = event.notification.data;
+  const url = `https://evoxs.xyz/jeanneBeta/?showNotification=true&title=${encodeURIComponent(title)}&content=${encodeURIComponent(content)}`;
+  event.notification.close();
+  event.waitUntil(clients.openWindow(url));
 });

@@ -257,7 +257,8 @@
 
                 <div onclick="proceedWithAccount()" class="showProfileBtn" style="white-space: nowrap;width:auto;">
                     Αυτός είναι ο λογαριασμός μου</div>
-                <div onclick="alert('Επικοινώνησε με τους διαχειριστές ή καθηγητές άμεσα.');window.location.reload()" class="editButton showProfileBtn"
+                <div onclick="alert('Επικοινώνησε με τους διαχειριστές ή καθηγητές άμεσα.');window.location.reload()"
+                    class="editButton showProfileBtn"
                     style="margin-right: 0px; white-space: nowrap;width:auto;background-color:#10101096;color:#fff;border: 2.5px solid #282828;">
                     Δεν είναι ο λογαριασμός μου</div>
             </div>
@@ -1910,10 +1911,10 @@
                 style="margin-top: auto;display: flex;flex-direction: column;align-items: center;width: 100%;margin-bottom: 10px;display: none;">
                 <span
                     style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;text-align: center;">Jeanne
-                    d'Arc 1.9.97</span></span>
+                    d'Arc <advox id="version4">1.9.97</advox></span></span>
                 <span style="color: #ababab8d;font-size: 12px;font-weight: lighter;width: 100%;display: flex;">©
                     2025 Evox <span onclick="window.location.href= '../privacy/'"
-                        style="color: #ababab8d;font-size: 12px;font-weight: lighter;margin-left:auto;">Privacy</span></span>
+                        style="color: #ababab8d;font-size: 12px;font-weight: lighter;margin-left:auto;cursor: pointer;">Privacy</span></span>
             </div>
         </div>
     </div>
@@ -2258,14 +2259,15 @@
             Πίσω
         </div>
         <div
-            style="display: flex;flex-direction: column;height: 98%;justify-content: center;align-items: center;width: 100%;">
-            <img style="width: 100%;border-radius: 15px;height: auto;max-height: 95%;margin-top: auto;"
+            style="display: flex;flex-direction: column;height: 98%;justify-content: center;align-items: center;width: 100%;touch-action: auto;">
+            <img style="width: auto;border-radius: 15px;height: auto;max-height: 95%;margin-top: auto;max-width: 100%;"
                 id="image-viewer-img">
             <div style="margin-top:auto;" class="buttonsPIN">
                 <div style="display: flex;width: 100%;justify-content: center;align-items: center;color:#b83131">
                     Διαγραφή
                 </div>
-                <div style="display: flex;width: 100%;justify-content: center;align-items: center;">
+                <div onclick="window.location.href = document.getElementById('image-viewer-img').src"
+                    style="display: flex;width: 100%;justify-content: center;align-items: center;">
                     Λήψη
                 </div>
             </div>
@@ -2273,12 +2275,13 @@
     </div>
     <div id="settings-panel" class="slidingPanel">
         <div class="settings-row">
-            <svg onclick="closeSettings()" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px"
-                viewBox="0 0 24 24" fill="none">
-                <path
-                    d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
-                    fill="#fff" />
-            </svg>
+            <div onclick="closeSettings()" class="arrowBG">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                    <path
+                        d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                        fill="#fff" />
+                </svg>
+            </div>
             <p onclick="signOut()">Αποσύνδεση</p>
         </div>
         <div class="account-preview-settings">
@@ -2361,7 +2364,8 @@
 
 
 
-                <div onclick="document.getElementById('settings-panel').classList.remove('activated');changePin();" class="section-a-button">
+                <div onclick="document.getElementById('settings-panel').classList.remove('activated');changePin();"
+                    class="section-a-button">
                     <div class="title-button-section">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24"
                             fill="none">
@@ -2450,12 +2454,14 @@
 
     <div id="likedPosts-panel" class="slidingPanel">
         <div class="settings-row">
-            <vox onclick="document.getElementById('likedPosts-panel').classList.remove('activated')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
-                        fill="#fff" />
-                </svg>
+            <vox style="gap: 10px;" onclick="document.getElementById('likedPosts-panel').classList.remove('activated')">
+                <div class="arrowBG">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                            fill="#fff" />
+                    </svg>
+                </div>
                 Ρυθμίσεις
             </vox>
 
@@ -2499,12 +2505,16 @@
 
     <div id="savedPosts-panel" class="slidingPanel">
         <div class="settings-row">
-            <vox onclick="document.getElementById('savedPosts-panel').classList.remove('activated')">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
-                        fill="#fff" />
-                </svg>
+
+
+            <vox style="gap: 10px;" onclick="document.getElementById('savedPosts-panel').classList.remove('activated')">
+                <div class="arrowBG">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M14.2893 5.70708C13.8988 5.31655 13.2657 5.31655 12.8751 5.70708L7.98768 10.5993C7.20729 11.3805 7.2076 12.6463 7.98837 13.427L12.8787 18.3174C13.2693 18.7079 13.9024 18.7079 14.293 18.3174C14.6835 17.9269 14.6835 17.2937 14.293 16.9032L10.1073 12.7175C9.71678 12.327 9.71678 11.6939 10.1073 11.3033L14.2893 7.12129C14.6799 6.73077 14.6799 6.0976 14.2893 5.70708Z"
+                            fill="#fff" />
+                    </svg>
+                </div>
                 Ρυθμίσεις
             </vox>
 
@@ -3557,6 +3567,26 @@
 
 
     </div>
+
+
+    <div class="notification-center jeanne" id="update-center" style="height: 230px;display: flex;flex-direction: column;justify-content: space-between;">
+        <p style="text-align: center;align-items: center;" class="header default">Γίνεται ενημέρωση..</p>
+        <div class="rowCentered">
+            <div id="downloading-icon-big" class="active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="55px" height="55px" viewBox="0 0 24 24" fill="none">
+                    <path id="arrowDownload"
+                        d="M12.5535 16.5061C12.4114 16.6615 12.2106 16.75 12 16.75C11.7894 16.75 11.5886 16.6615 11.4465 16.5061L7.44648 12.1311C7.16698 11.8254 7.18822 11.351 7.49392 11.0715C7.79963 10.792 8.27402 10.8132 8.55352 11.1189L11.25 14.0682V3C11.25 2.58579 11.5858 2.25 12 2.25C12.4142 2.25 12.75 2.58579 12.75 3V14.0682L15.4465 11.1189C15.726 10.8132 16.2004 10.792 16.5061 11.0715C16.8118 11.351 16.833 11.8254 16.5535 12.1311L12.5535 16.5061Z"
+                        fill="#55565f" />
+                    <path id="boxDownload"
+                        d="M3.75 15C3.75 14.5858 3.41422 14.25 3 14.25C2.58579 14.25 2.25 14.5858 2.25 15V15.0549C2.24998 16.4225 2.24996 17.5248 2.36652 18.3918C2.48754 19.2919 2.74643 20.0497 3.34835 20.6516C3.95027 21.2536 4.70814 21.5125 5.60825 21.6335C6.47522 21.75 7.57754 21.75 8.94513 21.75H15.0549C16.4225 21.75 17.5248 21.75 18.3918 21.6335C19.2919 21.5125 20.0497 21.2536 20.6517 20.6516C21.2536 20.0497 21.5125 19.2919 21.6335 18.3918C21.75 17.5248 21.75 16.4225 21.75 15.0549V15C21.75 14.5858 21.4142 14.25 21 14.25C20.5858 14.25 20.25 14.5858 20.25 15C20.25 16.4354 20.2484 17.4365 20.1469 18.1919C20.0482 18.9257 19.8678 19.3142 19.591 19.591C19.3142 19.8678 18.9257 20.0482 18.1919 20.1469C17.4365 20.2484 16.4354 20.25 15 20.25H9C7.56459 20.25 6.56347 20.2484 5.80812 20.1469C5.07435 20.0482 4.68577 19.8678 4.40901 19.591C4.13225 19.3142 3.9518 18.9257 3.85315 18.1919C3.75159 17.4365 3.75 16.4354 3.75 15Z"
+                        fill="#55565f" />
+                </svg>
+            </div>
+        </div>
+        <span style="margin-top: 10px;color:#636363;font-size: 14px;text-align: center;">Κρατήστε την εφαρμογή ανοιχτή μέχρι να ολοκληρωθεί η
+            ενημέρωση.</span>
+    </div>
+
     <div id="safe-area-probe" style="
   position: absolute;
   top: 0;

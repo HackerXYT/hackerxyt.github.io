@@ -1,8 +1,70 @@
-const appVersion = "2.0.45"
-for (let i = 0; i < 3; i++) {
+const appVersion = "2.0.47"
+for (let i = 0; i < 4; i++) {
     document.getElementById(`version${i + 1}`).innerText = `${i + 1 !== 2 ? appVersion : `v${appVersion}`}`
 }
 localStorage.setItem("Jeanne_LastVersion", appVersion)
+// Utility to generate random string
+function generateRandomString(length = 10) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
+
+fetch(`/jeanneBeta/main.js?v=${generateRandomString()}`)
+  .then(response => response.body.getReader())
+  .then(reader => {
+    const decoder = new TextDecoder('utf-8');
+    let partial = '';
+    return reader.read().then(function process({ done, value }) {
+      if (done) return null;
+      partial += decoder.decode(value, { stream: true });
+      const newlineIndex = partial.indexOf('\n');
+      if (newlineIndex !== -1) {
+        return partial.slice(0, newlineIndex);
+      } else {
+        return reader.read().then(process);
+      }
+    });
+  })
+  .then(firstLine => {
+    console.log('First line:', firstLine);
+    const newAppVersion = firstLine.split('"')[1];
+    if (appVersion < newAppVersion) {
+      document.getElementById("update-center")?.classList.add("active");
+      console.log("New update available");
+
+      // Ask SW to update
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistration().then(reg => {
+          if (reg && reg.waiting) {
+            reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+          } else if (reg) {
+            reg.update();
+          }
+        });
+      }
+    }
+  })
+  .catch(error => {
+    console.error('Error checking update:', error);
+  });
+
+// Listen for update completion
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('message', event => {
+    if (event.data?.type === 'CACHE_UPDATED') {
+      console.log('New cache ready, reloading...');
+      document.getElementById("update-center")?.classList.remove("active");
+      location.reload(); // Optional: reload immediately when update is ready
+    }
+  });
+
+  // Register SW
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/jeanneBeta/service-worker.js')
+      .then(reg => console.log('SW registered', reg))
+      .catch(err => console.error('SW registration failed', err));
+  });
+}
 
 let hasBeenRateLimited = false
 function handleRateLimit() {
