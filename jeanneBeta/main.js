@@ -1,69 +1,70 @@
-const appVersion = "2.0.47"
+const appVersion = "2.0.5"
 for (let i = 0; i < 4; i++) {
     document.getElementById(`version${i + 1}`).innerText = `${i + 1 !== 2 ? appVersion : `v${appVersion}`}`
 }
+const loremDummy = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
 localStorage.setItem("Jeanne_LastVersion", appVersion)
 // Utility to generate random string
 function generateRandomString(length = 10) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
 }
 
 fetch(`/jeanneBeta/main.js?v=${generateRandomString()}`)
-  .then(response => response.body.getReader())
-  .then(reader => {
-    const decoder = new TextDecoder('utf-8');
-    let partial = '';
-    return reader.read().then(function process({ done, value }) {
-      if (done) return null;
-      partial += decoder.decode(value, { stream: true });
-      const newlineIndex = partial.indexOf('\n');
-      if (newlineIndex !== -1) {
-        return partial.slice(0, newlineIndex);
-      } else {
-        return reader.read().then(process);
-      }
-    });
-  })
-  .then(firstLine => {
-    console.log('First line:', firstLine);
-    const newAppVersion = firstLine.split('"')[1];
-    if (appVersion < newAppVersion) {
-      document.getElementById("update-center")?.classList.add("active");
-      console.log("New update available");
-
-      // Ask SW to update
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistration().then(reg => {
-          if (reg && reg.waiting) {
-            reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-          } else if (reg) {
-            reg.update();
-          }
+    .then(response => response.body.getReader())
+    .then(reader => {
+        const decoder = new TextDecoder('utf-8');
+        let partial = '';
+        return reader.read().then(function process({ done, value }) {
+            if (done) return null;
+            partial += decoder.decode(value, { stream: true });
+            const newlineIndex = partial.indexOf('\n');
+            if (newlineIndex !== -1) {
+                return partial.slice(0, newlineIndex);
+            } else {
+                return reader.read().then(process);
+            }
         });
-      }
-    }
-  })
-  .catch(error => {
-    console.error('Error checking update:', error);
-  });
+    })
+    .then(firstLine => {
+        console.log('First line:', firstLine);
+        const newAppVersion = firstLine.split('"')[1];
+        if (appVersion < newAppVersion) {
+            document.getElementById("update-center")?.classList.add("active");
+            console.log("New update available");
+
+            // Ask SW to update
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistration().then(reg => {
+                    if (reg && reg.waiting) {
+                        reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+                    } else if (reg) {
+                        reg.update();
+                    }
+                });
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error checking update:', error);
+    });
 
 // Listen for update completion
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.addEventListener('message', event => {
-    if (event.data?.type === 'CACHE_UPDATED') {
-      console.log('New cache ready, reloading...');
-      document.getElementById("update-center")?.classList.remove("active");
-      location.reload(); // Optional: reload immediately when update is ready
-    }
-  });
+    navigator.serviceWorker.addEventListener('message', event => {
+        if (event.data?.type === 'CACHE_UPDATED') {
+            console.log('New cache ready, reloading...');
+            document.getElementById("update-center")?.classList.remove("active");
+            location.reload(); // Optional: reload immediately when update is ready
+        }
+    });
 
-  // Register SW
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/jeanneBeta/service-worker.js')
-      .then(reg => console.log('SW registered', reg))
-      .catch(err => console.error('SW registration failed', err));
-  });
+    // Register SW
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/jeanneBeta/service-worker.js')
+            .then(reg => console.log('SW registered', reg))
+            .catch(err => console.error('SW registration failed', err));
+    });
 }
 
 let hasBeenRateLimited = false
@@ -1482,7 +1483,7 @@ function clickPIN(element) {
                                 fetch('allowedUsers.evox')
                                     .then(response => response.json())
                                     .then(status => {
-                                        if (!status.includes(foundName) || window.location.protocol !== "http:" &&
+                                        if (!status.includes(foundName) && window.location.protocol !== "http:" &&
                                             window.location.hostname !== "192.168.1.116" &&
                                             window.location.port !== "8080" &&
                                             window.location.pathname !== "/jeanneBeta/") {
@@ -1569,7 +1570,10 @@ function clickPIN(element) {
                                 fetch('allowedUsers.evox')
                                     .then(response => response.json())
                                     .then(status => {
-                                        if (!status.includes(foundName)) {
+                                        if (!status.includes(foundName) && window.location.protocol !== "http:" &&
+                                            window.location.hostname !== "192.168.1.116" &&
+                                            window.location.port !== "8080" &&
+                                            window.location.pathname !== "/jeanneBeta/") {
                                             window.location.href = "deny.html"
                                         }
                                     }).catch(error => {
@@ -1861,7 +1865,10 @@ function autoLogin() {
                         fetch('allowedUsers.evox')
                             .then(response => response.json())
                             .then(status => {
-                                if (!status.includes(foundName)) {
+                                if (!status.includes(foundName) && window.location.protocol !== "http:" &&
+                                    window.location.hostname !== "192.168.1.116" &&
+                                    window.location.port !== "8080" &&
+                                    window.location.pathname !== "/jeanneBeta/") {
                                     window.location.href = "deny.html"
                                 }
                             }).catch(error => {
@@ -4816,7 +4823,7 @@ function timeAgoInGreek(isoDate) {
 
     const past = new Date(isoDate);
     const now = new Date();
-    let diff = Math.floor((now - past) / 1000); // Difference in seconds
+    let diff = Math.floor((now - past) / 1000); // seconds
 
     for (const unit of timeUnits) {
         if (diff < unit.value) {
@@ -4826,6 +4833,7 @@ function timeAgoInGreek(isoDate) {
         diff /= unit.value;
     }
 }
+
 
 function loadSentByUser() {
     document.getElementById("sentByUser").innerHTML = `<div class="postContainer skel loading" style="padding-bottom: 10px;padding-top: 10px;">
@@ -6051,6 +6059,58 @@ function openDiscovery(el) {
     if (val) {
         const json = JSON.parse(val)
         const process = atob(json.pin)
+        document.getElementById("notifications-container").innerHTML = `<div id="loading-indicator-notifications"
+                        style="display:flex;flex-direction:column;width:100%;align-items:center;gap:5px;justify-content:center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+            --track-upload: #4a4a4a;width: 25px;">
+                            <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                                class="active-upload"></circle>
+                            <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                                class="track-upload"></circle>
+                        </svg>
+                        <p style="text-align:center;">Γίνεται Φόρτωση..</p>
+                    </div>`
+        fetch(`https://arc.evoxs.xyz/?metode=getNotifications&emri=${foundName}&pin=${process}`)
+            .then(response => response.json())
+            .then(notifications => {
+
+                if (notifications.length !== 0) {
+                    const workOn = notifications.reverse()
+                    workOn.forEach((notification, index) => {
+                        if (notification.notification.mentionedUser) {
+                            getImage(notification.notification.mentionedUser).then(profileSrc => {
+                                document.getElementById("notifications-container").innerHTML += `<div class="notification-div fade-in-slide-up" style="order: ${index}">
+                        <div class="image">
+                            <img src="${profileSrc.imageData}">
+                        </div>
+                        <div class="notification-content">
+                           <p><vox>${notification.notification.title ? notification.notification.title : ""}</vox> ${notification.notification.description ? notification.notification.description : ""}</p>
+                            <span>${timeAgoInGreek(notification.date)}</span>
+                        </div>
+                    </div>`
+                            })
+                        } else {
+                            document.getElementById("notifications-container").innerHTML += `<div class="notification-div fade-in-slide-up" style="order: ${index}">
+                        <div class="image">
+                            <img src="appLogoV2.png">
+                        </div>
+                        <div class="notification-content">
+                            <p><vox>${notification.notification.title ? notification.notification.title : ""}</vox> ${notification.notification.description ? notification.notification.description : ""}</p>
+                            <span>${timeAgoInGreek(notification.date)}</span>
+                        </div>
+                    </div>`
+                        }
+
+                    })
+
+                    document.getElementById("loading-indicator-notifications").remove()
+
+                }
+
+
+            }).catch(error => {
+                console.error("Progress error", error)
+            });
         try {
             //document.getElementById("sum").style = null
             fetch(`https://arc.evoxs.xyz/?metode=AITreload&emri=${foundName}&pin=${process}`)
@@ -6416,8 +6476,13 @@ function loadSentToUser(emri, redo) {
                 if (sentbyuser.likes && sentbyuser.likes[key] && sentbyuser.likes[key].liked.includes(foundName)) {
                     focusedIconsDictionary[randomString] = ["none"]
                 }
+
+                let block = false;
+                if (value === "{evx:access_denied:401}") {
+                    block = true;
+                }
                 return `
-                    <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
+                    <div class="postContainer ${!block ? "pushToTop" : ""}" style="padding-bottom: 10px;padding-top: 10px;${block ? "filter: blur(5.5px);brightness(0.8)" : ""}">
                         <div class="post extpost">
                             <div class="profilePicture">
                                 <img src="${src}">
@@ -6428,7 +6493,7 @@ function loadSentToUser(emri, redo) {
                                 </div>
                                 <div class="postContent" style="height: auto;">
                                     <p><vox onclick="extMention('${pars.name}')" class="mention ${getGender(removeTonos(pars.name.split(" ")[0])) === "Female" ? "female" : "male"}">@${pars.name}</vox>
-                                        ${cleaned.includes("<img")
+                                        ${block ? loremDummy : ""}${cleaned.includes("<img")
                         ? cleaned.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
                         : cleaned}
                                     </p>
@@ -7034,7 +7099,7 @@ function openSearch(el, inBackground) {
                     names.forEach(name => {
                         json.names[name] = {}
                     })
-
+                    latestFollowing = following
                     spawnItems(json, null, names, following);
 
 
@@ -7853,6 +7918,7 @@ function showMentioned() {
     //https://arc.evoxs.xyz/?metode=toMe&emri=${foundName}&pin=${process}
 }
 
+let latestFollowing = null
 
 function searchByInput() {
     const el = document.getElementById("search-box")
@@ -7914,7 +7980,8 @@ function searchByInput() {
                                 src = info.foto
                             }
 
-                            document.getElementById("searchedUsers").innerHTML += `
+                            if (info.emri !== foundName) {
+                                document.getElementById("searchedUsers").innerHTML += `
     <div class="postContainer fade-in-slide-up" style="padding-bottom: 10px;padding-top: 10px;">
         <div class="post extpost">
             <div class="profilePicture">
@@ -7929,9 +7996,11 @@ function searchByInput() {
                     <p>${info.seksioni}${info.klasa !== 'none' ? info.klasa : ''}</p>
                 </div>
             </div>
-            <div onclick="showProfileInfo('${info.emri}')" class="showProfileBtn">Προβολή</div>
+            <div onclick="showProfileInfo('${info.emri}')" class="${latestFollowing && latestFollowing.includes(info.emri) ? 'editButton showProfileBtn" style="margin-right: 0px; white-space: nowrap;width:auto;background-color:#10101096;color:#fff;border: 2.5px solid #282828;"' : 'showProfileBtn"'}">${latestFollowing && latestFollowing.includes(info.emri) ? "Ακολουθείς" : "Προβολή"}</div>
         </div>
     </div>`;
+                            }
+
                             //fetchAndSaveImage(info.emri, info.foto); // Store the image locally
 
                             // Check if count meets target, resolve the promise
@@ -8910,4 +8979,32 @@ function noticeSmall(icon, text, timeout) {
     document.getElementById("notice-text").innerText = text
     document.getElementById("notice-main").classList.add("active")
     setTimeout(function () { document.getElementById("notice-main").classList.remove("active") }, timeout)
+}
+
+function switchToInnerPage(page) {
+    if (page === "1") {
+        //const container = document.getElementById("notifications-container");
+        //const notifications = Array.from(container.querySelectorAll(".notification-div"));
+        //notifications.sort((a, b) => {
+        //    const orderA = parseInt(a.style.order) || 0;
+        //    const orderB = parseInt(b.style.order) || 0;
+        //    return orderA - orderB;
+        //});
+        //notifications.forEach(el => container.appendChild(el));
+        //const elements = document.getElementById("notifications-container").querySelectorAll("div");
+        //elements.forEach((el, index) => {
+        //    console.log(el)
+        //    el.style.animation = "fadeInSlideUp 0.5s ease forwards;"
+        //    el.style.animationDelay = `${index * 100}ms`;
+        //});
+        document.getElementById("discovery-2").classList.remove("active")
+        document.getElementById("discovery-1").classList.add("active")
+        document.getElementById("page-notifications").classList.add("active")
+        document.getElementById("page-discovery").classList.remove("active")
+    } else if (page === '2') {
+        document.getElementById("discovery-2").classList.add("active")
+        document.getElementById("discovery-1").classList.remove("active")
+        document.getElementById("page-notifications").classList.remove("active")
+        document.getElementById("page-discovery").classList.add("active")
+    }
 }

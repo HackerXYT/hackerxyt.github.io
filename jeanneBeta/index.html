@@ -1464,179 +1464,196 @@
 
         <div class="app fade-in-slide-up disable-scroll-snap" id="discover" style="padding-top: 0px;">
             <h2 class="topicHead">Δραστηριότητα</h2>
-            <div class="tracker-card">
-                <div class="part1">
-                    <div class="tracker-title">Επετηρίδα</div>
-                    <div class="tracker-info"><span class="a" id="countDone">?</span> από <vox id="countFull">?</vox>
-                        μαθητές</div>
-                    <div class="remaining-indicator">
-                        <vox id="countLeft">?</vox> απομένουν
-                    </div>
+            <div class="switchInnerPages">
+                <div onclick="switchToInnerPage('1')" id="discovery-1" class="pageBTN active">
+                    Ειδοποιήσεις
                 </div>
-                <div class="part2">
-                    <div class="progress-wrapper">
-                        <div class="progress-circle">
-                            <svg width="80" height="80" viewBox="0 0 64 64">
-                                <circle cx="32" cy="32" r="28" class="circle-bg" />
-                                <circle cx="32" cy="32" r="28" class="circle-fill" />
-                            </svg>
-                            <div id="isDone" class="percentage-label">
-                                <div class="jelly-triangle">
-                                    <div class="jelly-triangle__dot"></div>
-                                    <div class="jelly-triangle__traveler"></div>
-                                </div>
-
-                                <svg width="0" height="0" class="jelly-maker">
-                                    <defs>
-                                        <filter id="uib-jelly-triangle-ooze">
-                                            <feGaussianBlur in="SourceGraphic" stdDeviation="7.3" result="blur">
-                                            </feGaussianBlur>
-                                            <feColorMatrix in="blur" mode="matrix"
-                                                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="ooze">
-                                            </feColorMatrix>
-                                            <feBlend in="SourceGraphic" in2="ooze"></feBlend>
-                                        </filter>
-                                    </defs>
+                <div onclick="switchToInnerPage('2')" id="discovery-2" class="pageBTN">
+                    Επετηρίδα
+                </div>
+            </div>
+            <div class="page-discovery active" id="page-notifications">
+                <div class="notifications-container" id="notifications-container">
+                    
+                </div>
+            </div>
+            <div class="page-discovery fade-in-slide-up" id="page-discovery">
+                <div class="tracker-card">
+                    <div class="part1">
+                        <div class="tracker-title">Επετηρίδα</div>
+                        <div class="tracker-info"><span class="a" id="countDone">?</span> από <vox id="countFull">?
+                            </vox>
+                            μαθητές</div>
+                        <div class="remaining-indicator">
+                            <vox id="countLeft">?</vox> απομένουν
+                        </div>
+                    </div>
+                    <div class="part2">
+                        <div class="progress-wrapper">
+                            <div class="progress-circle">
+                                <svg width="80" height="80" viewBox="0 0 64 64">
+                                    <circle cx="32" cy="32" r="28" class="circle-bg" />
+                                    <circle cx="32" cy="32" r="28" class="circle-fill" />
                                 </svg>
+                                <div id="isDone" class="percentage-label">
+                                    <div class="jelly-triangle">
+                                        <div class="jelly-triangle__dot"></div>
+                                        <div class="jelly-triangle__traveler"></div>
+                                    </div>
+
+                                    <svg width="0" height="0" class="jelly-maker">
+                                        <defs>
+                                            <filter id="uib-jelly-triangle-ooze">
+                                                <feGaussianBlur in="SourceGraphic" stdDeviation="7.3" result="blur">
+                                                </feGaussianBlur>
+                                                <feColorMatrix in="blur" mode="matrix"
+                                                    values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="ooze">
+                                                </feColorMatrix>
+                                                <feBlend in="SourceGraphic" in2="ooze"></feBlend>
+                                            </filter>
+                                        </defs>
+                                    </svg>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-            </div>
-            <div class="classcontainer" id="classes">
-                <div class="aclass skeleton">
-                    <div class="left">&nbsp;<p>&nbsp;<vox class="smallto">&nbsp;</vox>
-                        </p>
-                    </div>
-                    <div class="right">&nbsp;</div>
                 </div>
-                <div class="aclass skeleton">
-                    <div class="left">&nbsp;<p>&nbsp;<vox class="smallto">&nbsp;</vox>
-                        </p>
+                <div class="classcontainer" id="classes">
+                    <div class="aclass skeleton">
+                        <div class="left">&nbsp;<p>&nbsp;<vox class="smallto">&nbsp;</vox>
+                            </p>
+                        </div>
+                        <div class="right">&nbsp;</div>
                     </div>
-                    <div class="right">&nbsp;</div>
-                </div>
-                <div class="aclass skeleton">
-                    <div class="left">&nbsp;<p>&nbsp;<vox class="smallto">&nbsp;</vox>
-                        </p>
+                    <div class="aclass skeleton">
+                        <div class="left">&nbsp;<p>&nbsp;<vox class="smallto">&nbsp;</vox>
+                            </p>
+                        </div>
+                        <div class="right">&nbsp;</div>
                     </div>
-                    <div class="right">&nbsp;</div>
-                </div>
-                <div class="aclass skeleton">
-                    <div class="left">&nbsp;<p>&nbsp;<vox class="smallto">&nbsp;</vox>
-                        </p>
+                    <div class="aclass skeleton">
+                        <div class="left">&nbsp;<p>&nbsp;<vox class="smallto">&nbsp;</vox>
+                            </p>
+                        </div>
+                        <div class="right">&nbsp;</div>
                     </div>
-                    <div class="right">&nbsp;</div>
-                </div>
-                <div class="aclass skeleton">
-                    <div class="left">&nbsp;<p>&nbsp;<vox class="smallto">&nbsp;</vox>
-                        </p>
+                    <div class="aclass skeleton">
+                        <div class="left">&nbsp;<p>&nbsp;<vox class="smallto">&nbsp;</vox>
+                            </p>
+                        </div>
+                        <div class="right">&nbsp;</div>
                     </div>
-                    <div class="right">&nbsp;</div>
-                </div>
-                <div class="aclass skeleton">
-                    <div class="left">&nbsp;<p>&nbsp;<vox class="smallto">&nbsp;</vox>
-                        </p>
+                    <div class="aclass skeleton">
+                        <div class="left">&nbsp;<p>&nbsp;<vox class="smallto">&nbsp;</vox>
+                            </p>
+                        </div>
+                        <div class="right">&nbsp;</div>
                     </div>
-                    <div class="right">&nbsp;</div>
-                </div>
-                <div class="aclass skeleton">
-                    <div class="left">&nbsp;<p>&nbsp;<vox class="smallto">&nbsp;</vox>
-                        </p>
+                    <div class="aclass skeleton">
+                        <div class="left">&nbsp;<p>&nbsp;<vox class="smallto">&nbsp;</vox>
+                            </p>
+                        </div>
+                        <div class="right">&nbsp;</div>
                     </div>
-                    <div class="right">&nbsp;</div>
-                </div>
-
-            </div>
-            <h2 class="topicHead" style="margin-top: 20px;" id="thFY">Για εσένα</h2>
-            <div class="classcontainer" id="done" style="display: none;">
-                <div class="aclass">
-                    <div class="left">
-                        <vo style="width: 100%;">Προς εσένα</vo>
-                        <p id="toMe">?<vox class="smallto">&nbsp;καταχωρήσεις</vox>
-                        </p>
-                    </div>
-                    <div id="rightToMe" class="right" style="display: none;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
-                            fill="none">
-                            <g clip-path="url(#clip0_429_10973)">
-                                <path d="M3 17L9 11L13 15L21 7" stroke="#292929" stroke-width="2.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M17 7H21V11" stroke="#292929" stroke-width="2.5" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_429_10973">
-                                    <rect width="24" height="24" fill="white" />
-                                </clipPath>
-                            </defs>
-                        </svg>
+                    <div class="aclass skeleton">
+                        <div class="left">&nbsp;<p>&nbsp;<vox class="smallto">&nbsp;</vox>
+                            </p>
+                        </div>
+                        <div class="right">&nbsp;</div>
                     </div>
 
                 </div>
-                <div class="aclass">
-                    <div class="left">
-                        <vo style="width: 100%;">Από εσένα</vo>
-                        <p id="fromMe">?<vox class="smallto">&nbsp;καταχωρήσεις</vox>
-                        </p>
+                <h2 class="topicHead" style="margin-top: 20px;" id="thFY">Για εσένα</h2>
+                <div class="classcontainer" id="done" style="display: none;">
+                    <div class="aclass">
+                        <div class="left">
+                            <vo style="width: 100%;">Προς εσένα</vo>
+                            <p id="toMe">?<vox class="smallto">&nbsp;καταχωρήσεις</vox>
+                            </p>
+                        </div>
+                        <div id="rightToMe" class="right" style="display: none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                                fill="none">
+                                <g clip-path="url(#clip0_429_10973)">
+                                    <path d="M3 17L9 11L13 15L21 7" stroke="#292929" stroke-width="2.5"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M17 7H21V11" stroke="#292929" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_429_10973">
+                                        <rect width="24" height="24" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </div>
+
+                    </div>
+                    <div class="aclass">
+                        <div class="left">
+                            <vo style="width: 100%;">Από εσένα</vo>
+                            <p id="fromMe">?<vox class="smallto">&nbsp;καταχωρήσεις</vox>
+                            </p>
+                        </div>
+
                     </div>
 
                 </div>
-
-            </div>
-            <div class="toyou" id="toyou" style="display: none;opacity: 0;">
-                <div class="aclass fade-in-slide-up">
-                    <div class="left">
-                        Προς εσένα
-                    </div>
-                    <div class="right">
-                        0 καταχωρήσεις
+                <div class="toyou" id="toyou" style="display: none;opacity: 0;">
+                    <div class="aclass fade-in-slide-up">
+                        <div class="left">
+                            Προς εσένα
+                        </div>
+                        <div class="right">
+                            0 καταχωρήσεις
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!--<div style="padding:0;width: 100%;margin:0;position:relative;display:none;" id="main-block">
+                <!--<div style="padding:0;width: 100%;margin:0;position:relative;display:none;" id="main-block">
                 <vox
                     style=" position: absolute;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);color:#48cc74;z-index: 999;font-size: 20px;text-shadow: #000 1px 0px 19px;">
                     Σε εξέλιξη..</vox>-->
-            <div id="sum" class="summary">
-                <div class="aclass fade-in-slide-up">
-                    <p>Περίληψη&nbsp;<vo style="color: var(--color-theme-light);"> [AI]</vo>
-                    </p>
-                    <span>Ανακάλυψε τις εντυπώσεις που άφησες στους συμμαθητές σου, χωρίς να καταλάβεις ποιος έγραψε το
-                        κείμενο.</span>
+                <div id="sum" class="summary">
+                    <div class="aclass fade-in-slide-up">
+                        <p>Περίληψη&nbsp;<vo style="color: var(--color-theme-light);"> [AI]</vo>
+                        </p>
+                        <span>Ανακάλυψε τις εντυπώσεις που άφησες στους συμμαθητές σου, χωρίς να καταλάβεις ποιος έγραψε
+                            το
+                            κείμενο.</span>
 
-                    <vox id="summaryTxt"></vox>
+                        <vox id="summaryTxt"></vox>
 
-                    <button onclick="analyzeUser(this, 'reject')" class="aibtn" id="aitbtn">
-                        <svg height="20px" width="20px" fill="#FFFFFF" viewBox="0 0 24 24" data-name="Layer 1"
-                            id="Layer_1" class="sparkle">
-                            <path
-                                d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z">
-                            </path>
-                        </svg>
+                        <button onclick="analyzeUser(this, 'reject')" class="aibtn" id="aitbtn">
+                            <svg height="20px" width="20px" fill="#FFFFFF" viewBox="0 0 24 24" data-name="Layer 1"
+                                id="Layer_1" class="sparkle">
+                                <path
+                                    d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z">
+                                </path>
+                            </svg>
 
-                        <span id="aitext" class="aitext">Ανάλυση</span>
-                    </button>
+                            <span id="aitext" class="aitext">Ανάλυση</span>
+                        </button>
+                    </div>
+
+
                 </div>
 
-
-            </div>
-
-            <h2 class="topicHead" style="margin-top: 20px;">BETA</h2>
-            <div class="toyou" style="margin-bottom: 100px;">
-                <div onclick="revertAlphaBackground()" class="aclass fade-in-slide-up">
-                    <div class="left">
-                        Toggle Alpha Background
+                <h2 class="topicHead" style="margin-top: 20px;">BETA</h2>
+                <div class="toyou" style="margin-bottom: 100px;">
+                    <div onclick="revertAlphaBackground()" class="aclass fade-in-slide-up">
+                        <div class="left">
+                            Toggle Alpha Background
+                        </div>
+                        <div class="right">
+                            >
+                        </div>
                     </div>
-                    <div class="right">
-                        >
-                    </div>
+
                 </div>
-
             </div>
             <!--</div>-->
         </div>
@@ -3569,7 +3586,8 @@
     </div>
 
 
-    <div class="notification-center jeanne" id="update-center" style="height: 230px;display: flex;flex-direction: column;justify-content: space-between;">
+    <div class="notification-center jeanne" id="update-center"
+        style="height: 230px;display: flex;flex-direction: column;justify-content: space-between;">
         <p style="text-align: center;align-items: center;" class="header default">Γίνεται ενημέρωση..</p>
         <div class="rowCentered">
             <div id="downloading-icon-big" class="active">
@@ -3583,7 +3601,8 @@
                 </svg>
             </div>
         </div>
-        <span style="margin-top: 10px;color:#636363;font-size: 14px;text-align: center;">Κρατήστε την εφαρμογή ανοιχτή μέχρι να ολοκληρωθεί η
+        <span style="margin-top: 10px;color:#636363;font-size: 14px;text-align: center;">Κρατήστε την εφαρμογή ανοιχτή
+            μέχρι να ολοκληρωθεί η
             ενημέρωση.</span>
     </div>
 
