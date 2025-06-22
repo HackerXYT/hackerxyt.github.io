@@ -43,42 +43,69 @@ async function saveImage(id, imageData) {
 
 
 async function getImage(id, DONTMAKENEWAJAX) {
-    //console.log(id)
+    if (id === undefined || id === null) {
+        console.warn('No ID specified, fetching new image data directly.');
+        if (!DONTMAKENEWAJAX) {
+            try {
+                const profileSrc = await getEvoxProfile(id);
+                fetchAndSaveImage(id, profileSrc);
+                return { imageData: profileSrc };
+            } catch (err) {
+                console.error('Error fetching profile for undefined ID:', err);
+                return null;
+            }
+        }
+        return null;
+    }
+
     const db = await openDB();
     const tx = db.transaction(STORE_NAME, 'readonly');
     const store = tx.objectStore(STORE_NAME);
-    return new Promise((resolve) => {
+
+    return new Promise((resolve, reject) => {
         const request = store.get(id);
+
         request.onsuccess = () => {
-            //console.log('Image fetched:', request.result);  // Log the result
-            resolve(request.result);
+            const result = request.result;
+            resolve(result);
+
             if (!DONTMAKENEWAJAX) {
-                    fetch(`https://arc.evoxs.xyz/?metode=hasChanged&emri=${id}`)
+                fetch(`https://arc.evoxs.xyz/?metode=hasChanged&emri=${encodeURIComponent(id)}`)
                     .then(response => response.json())
                     .then(part => {
-                        if(request.result && part.part && request.result.imageData.includes(part.part)) {
-                            //console.log("Image is up to date.", id);
+                        if (result && part.part && result.imageData.includes(part.part)) {
+                            // image is current
                         } else {
-                            console.warn("Updating image", id);
+                            console.warn('Updating image for ID:', id);
                             getEvoxProfile(id).then(profileSrc => {
-                                fetchAndSaveImage(id, profileSrc)
+                                fetchAndSaveImage(id, profileSrc);
                             });
                         }
                     })
                     .catch(error => {
-                        console.error("Could not fetch new image:", error);
+                        console.error('Could not check for image update:', error);
                     });
             }
         };
+
         request.onerror = () => {
-            console.error('Error fetching image for ID:', id);  // Log error
-            getEvoxProfile(id).then(profileSrc => {
-                resolve({imageData: profileSrc});
-                fetchAndSaveImage(id, profileSrc)
-            });
+            console.error('Error fetching image for ID:', id, request.error);
+            if (!DONTMAKENEWAJAX) {
+                getEvoxProfile(id)
+                    .then(profileSrc => {
+                        resolve({ imageData: profileSrc });
+                        fetchAndSaveImage(id, profileSrc);
+                    })
+                    .catch(err => {
+                        reject(err);
+                    });
+            } else {
+                resolve(null);
+            }
         };
     });
 }
+
 
 
 async function clearDatabase() {

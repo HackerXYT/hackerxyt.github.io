@@ -3512,7 +3512,7 @@ input:-webkit-autofill:active {
     width: 100%;
     padding: 20px;
     border-radius: 15px;
-    background-color: #ffffff1d;
+    background-color: #1e1e1e;
 
     display: flex;
     overflow: hidden;
@@ -3610,7 +3610,7 @@ input:-webkit-autofill:active {
     width: 100%;
     padding: 20px;
     border-radius: 15px;
-    background-color: #ffffff17;
+    background-color: #1e1e1e;
     display: flex;
 
     align-items: center;
@@ -4319,7 +4319,7 @@ input:-webkit-autofill:active {
     width: 100%;
     padding: 20px;
     border-radius: 15px;
-    background-color: #ffffff1d;
+    background-color: #1e1e1e;
     display: flex;
     overflow: hidden;
     backdrop-filter: blur(5px);
@@ -7090,6 +7090,7 @@ select:focus {
     display: flex;
     flex-direction: row;
     width: 100%;
+    gap: 2.5px;
 }
 
 .notifications-container .notification-div .notification-content p {

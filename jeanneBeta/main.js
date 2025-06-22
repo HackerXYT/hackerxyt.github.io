@@ -1,4 +1,4 @@
-const appVersion = "2.0.5"
+const appVersion = "2.0.55"
 for (let i = 0; i < 4; i++) {
     document.getElementById(`version${i + 1}`).innerText = `${i + 1 !== 2 ? appVersion : `v${appVersion}`}`
 }
@@ -1898,7 +1898,7 @@ function autoLogin() {
                                 .then(dictionary => {
                                     informacionDictionary = dictionary
 
-
+                                    document.getElementById("instausername-SELF").innerText = informacionDictionary[foundName].instagram ? informacionDictionary[foundName].instagram : ""
 
                                     setTimeout(function () {
 
@@ -2429,7 +2429,7 @@ async function spawnRandom(redo, frontEndLoading) {
             hasCurrentSixLoaded = true;
         }
     } catch (error) {
-        console.error("Jeanne D'arc Database is offline.");
+        console.error("For you page failed.");
         console.log('Error:', error);
         setTimeout(function () {
             spawnRandom(true)
@@ -5842,7 +5842,7 @@ function openEditProfile() {
     document.body.style.backgroundColor = '#000'
     informacion(foundName)
         .then(self => {
-            document.getElementById("instagram-account-username").innerHTML = self.foto.replace("https://arc.evoxs.xyz/foto/instagram/", "").replace(".evox", "") + `<div style="margin-left:auto;width: auto;" onclick="openInstagram('${self.foto.replace("https://arc.evoxs.xyz/foto/instagram/", "").replace(".evox", "")}')" class="buttonCarouseli">
+            document.getElementById("instagram-account-username").innerHTML = self.instagram + `<div style="margin-left:auto;width: auto;" onclick="openInstagram('${self.instagram}')" class="buttonCarouseli">
                                     Εμφάνιση
                                 </div>`
             console.log(self)
@@ -6084,7 +6084,7 @@ function openDiscovery(el) {
                             <img src="${profileSrc.imageData}">
                         </div>
                         <div class="notification-content">
-                           <p><vox>${notification.notification.title ? notification.notification.title : ""}</vox> ${notification.notification.description ? notification.notification.description : ""}</p>
+                           <p><vox>${notification.notification.title ? notification.notification.title : ""}</vox><br>${notification.notification.description ? notification.notification.description : ""}</p>
                             <span>${timeAgoInGreek(notification.date)}</span>
                         </div>
                     </div>`
@@ -6095,7 +6095,7 @@ function openDiscovery(el) {
                             <img src="appLogoV2.png">
                         </div>
                         <div class="notification-content">
-                            <p><vox>${notification.notification.title ? notification.notification.title : ""}</vox> ${notification.notification.description ? notification.notification.description : ""}</p>
+                            <p><vox>${notification.notification.title ? notification.notification.title : ""}</vox><br>${notification.notification.description ? notification.notification.description : ""}</p>
                             <span>${timeAgoInGreek(notification.date)}</span>
                         </div>
                     </div>`
@@ -6105,6 +6105,18 @@ function openDiscovery(el) {
 
                     document.getElementById("loading-indicator-notifications").remove()
 
+                } else {
+                    document.getElementById("notifications-container").innerHTML = `<div id="loading-indicator-notifications"
+                        style="display:flex;flex-direction:column;width:100%;align-items:center;gap:5px;justify-content:center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+            --track-upload: #4a4a4a;width: 25px;">
+                            <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                                class="active-upload"></circle>
+                            <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+                                class="track-upload"></circle>
+                        </svg>
+                        <p style="text-align:center;">Δεν έχεις καμία ειδοποίηση</p>
+                    </div>`
                 }
 
 
@@ -7310,7 +7322,6 @@ function analyzeUser(e, rej) {
         return;
     }
     addToPermissions("AIT", "Allow")
-    $("#summaryTxt").fadeOut("fast")
     e.blur()
     setTimeout(function () {
         const btn = e;
@@ -7326,55 +7337,54 @@ function analyzeUser(e, rej) {
         if (val) {
             const json = JSON.parse(val)
             const process = atob(json.pin)
-            document.getElementById("aitext").innerText = 'Επεξεργασία..'
+            document.getElementById("aitext").innerText = 'Επεξεργασία..';
+            const summaryTxt = document.getElementById("summaryTxt");
+            $("#summaryTxt").fadeOut("fast", function () {
+                summaryTxt.innerHTML = ""
+            });
+
+
             fetch(`https://arc.evoxs.xyz/?metode=AIT&emri=${foundName}&pin=${process}&requestor=application`)
-                .then(response => response.json())
-                .then(complete => {
-                    if (complete.error) {
-                        document.getElementById("aitext").classList.remove('btn-shine')
-                        document.getElementById("aitext").innerText = 'Αποτυχία'
-                    } else if (complete.response) {
-                        try {
-                            setTimeout(function () {
-                                let find = complete.response
+                .then(async response => {
+                    $("#summaryTxt").fadeIn("fast");
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+                    let fullText = '';
 
-                                if (find === 'Access Denied') {
-                                    document.getElementById("summaryTxt").innerText = 'Απενεργοποιημένο για τώρα'
-                                    document.getElementById("aitext").innerText = 'Αποτυχία'
-                                } else if (find === 'AIT is currently sleeping') {
-                                    document.getElementById("summaryTxt").innerHTML = 'Το όριο περιλήψεων έχει εξαντληθεί.<br>Δοκιμάστε ξανά αύριο.'
-                                    document.getElementById("aitext").innerText = 'Αποτυχία'
-                                } else if (find === '0 Entries') {
-                                    document.getElementById("summaryTxt").innerText = 'Δεν έχεις καμία καταχώρηση'
-                                    document.getElementById("aitext").innerText = 'Επανάληψη'
-                                } else {
-                                    //Success
-                                    //find = find.replace(/�/g, '<span class="img-replacement"></span>')
-                                    const toSpawn = find.replace("**", `<vox style="display: flex;align-items:center;width:100%;justify-content:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M21.007 8.27C22.194 9.125 23 10.45 23 12c0 1.55-.806 2.876-1.993 3.73.24 1.442-.134 2.958-1.227 4.05-1.095 1.095-2.61 1.459-4.046 1.225C14.883 22.196 13.546 23 12 23c-1.55 0-2.878-.807-3.731-1.996-1.438.235-2.954-.128-4.05-1.224-1.095-1.095-1.459-2.611-1.217-4.05C1.816 14.877 1 13.551 1 12s.816-2.878 2.002-3.73c-.242-1.439.122-2.955 1.218-4.05 1.093-1.094 2.61-1.467 4.057-1.227C9.125 1.804 10.453 1 12 1c1.545 0 2.88.803 3.732 1.993 1.442-.24 2.956.135 4.048 1.227 1.093 1.092 1.468 2.608 1.227 4.05Zm-4.426-.084a1 1 0 0 1 .233 1.395l-5 7a1 1 0 0 1-1.521.126l-3-3a1 1 0 0 1 1.414-1.414l2.165 2.165 4.314-6.04a1 1 0 0 1 1.395-.232Z" fill="#179cf0"/></svg><strong>`)
-                                        .replace("**", "</strong></vox>")
-                                        .replace("Ρεαλιστική Περίληψη:", `<vox style="display: flex;align-items:center;width:100%;justify-content:center;gap:5px;"><svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="m3.517 17 7.058-11.783a1.667 1.667 0 0 1 2.85 0L20.483 17a1.667 1.667 0 0 1-1.425 2.5H4.942A1.666 1.666 0 0 1 3.517 17ZM12 9a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Zm-1 7a1 1 0 0 1 1-1h.008a1 1 0 1 1 0 2H12a1 1 0 0 1-1-1Z" fill="#f2ff00"/></svg><strong>Ρεαλιστική Περίληψη:</strong></vox>`)
-                                    document.getElementById("summaryTxt").innerHTML = toSpawn
-                                    document.getElementById("aitext").innerText = 'Επανάληψη'
-                                    localStorage.setItem("Jeanne_lastAit_summary", toSpawn)
-                                    localStorage.setItem("Jeanne_lastAit_countIn", localStorage.getItem("toMe"))
-                                }
-                                $("#summaryTxt").fadeIn("fast")
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
 
-                                document.getElementById("aitext").classList.remove('btn-shine')
-                            }, 700)
-                        } catch (error) {
-                            console.error(error)
-                            document.getElementById("aitext").classList.remove('btn-shine')
-                            document.getElementById("aitext").innerText = 'Αποτυχία'
-                        }
+                        const chunk = decoder.decode(value, { stream: true });
+                        fullText += chunk;
 
-
+                        summaryTxt.innerHTML += chunk;
                     }
+
+                    if (fullText.includes('Access Denied')) {
+                        summaryTxt.innerText = 'Απενεργοποιημένο για τώρα';
+                        document.getElementById("aitext").innerText = 'Αποτυχία';
+                    } else if (fullText.includes('AIT is currently sleeping')) {
+                        summaryTxt.innerHTML = 'Το όριο περιλήψεων έχει εξαντληθεί.<br>Δοκιμάστε ξανά αύριο.';
+                        document.getElementById("aitext").innerText = 'Αποτυχία';
+                    } else if (fullText.includes('0 Entries')) {
+                        summaryTxt.innerText = 'Δεν έχεις καμία καταχώρηση';
+                        document.getElementById("aitext").innerText = 'Επανάληψη';
+                    } else {
+                        document.getElementById("aitext").innerText = 'Επανάληψη';
+                        localStorage.setItem("Jeanne_lastAit_summary", fullText);
+                        localStorage.setItem("Jeanne_lastAit_countIn", localStorage.getItem("toMe"));
+                    }
+
+
+                    document.getElementById("aitext").classList.remove('btn-shine');
+
                 }).catch(error => {
-                    console.error("Progress error", error)
-                    document.getElementById("aitext").classList.remove('btn-shine')
-                    document.getElementById("aitext").innerText = 'Αποτυχία'
+                    console.error("Progress error", error);
+                    document.getElementById("aitext").classList.remove('btn-shine');
+                    document.getElementById("aitext").innerText = 'Αποτυχία';
                 });
+
         }
     }, 250)
 
