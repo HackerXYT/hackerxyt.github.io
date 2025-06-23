@@ -697,15 +697,15 @@
             </div>
             <div class="status-bar-safe-area" id="status-bar-color-for-semiCarousel"></div>
             <div class="semiCarousel large showTop" id="semiCarousel-fy-fixed">
-                <div class="carouselItem active">
+                <div onclick="showForyou()" class="carouselItem active" id="fixed-foryou">
                     Για εσένα
                 </div>
-                <div class="carouselItem" onclick="showMentioned()">
+                <div class="carouselItem" onclick="showMentioned()" id="fixed-mentioned">
                     Φίλοι
                 </div>
             </div>
             <div class="semiCarousel large" id="semiCarousel-fy">
-                <div id="foryou-carousel" class="carouselItem active">
+                <div id="foryou-carousel" onclick="showForyou()" class="carouselItem active">
                     Για εσένα
                 </div>
                 <div id="mentioned-carousel" class="carouselItem" onclick="showMentioned()">

@@ -1,4 +1,4 @@
-const appVersion = "2.0.55"
+const appVersion = "2.0.56"
 for (let i = 0; i < 4; i++) {
     document.getElementById(`version${i + 1}`).innerText = `${i + 1 !== 2 ? appVersion : `v${appVersion}`}`
 }
@@ -6438,6 +6438,7 @@ function loadSentToUser(emri, redo) {
         let html = '';
 
         // Convert entries into an array of promises using map
+        let semicount = 0
         const promises = Object.entries(sentbyuser)
             .filter(([key]) => key !== "Name" && key !== "length" && key !== "cryptoxed" && key !== "likes" && key !== "saved")
             .map(async ([key, value]) => {
@@ -6491,11 +6492,14 @@ function loadSentToUser(emri, redo) {
 
                 let block = false;
                 if (value === "{evx:access_denied:401}") {
+                    semicount++
                     block = true;
                 }
+
                 return `
-                    <div class="postContainer ${!block ? "pushToTop" : ""}" style="padding-bottom: 10px;padding-top: 10px;${block ? "filter: blur(5.5px);brightness(0.8)" : ""}">
-                        <div class="post extpost">
+                 
+                    <div class="postContainer ${!block ? "pushToTop" : ""}" style="padding-bottom: 10px;padding-top: 10px;">
+                        <div class="post extpost" style="${block ? "filter: blur(5.5px);brightness(0.8)" : ""}">
                             <div class="profilePicture">
                                 <img src="${src}">
                             </div>
@@ -6535,7 +6539,14 @@ function loadSentToUser(emri, redo) {
                             </div>
                             
                         </div>
+                        ${block && semicount === 1 ? `<div style='z-index: 9999;position:absolute;width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;gap:10px;color: #cfcfcfa2'>
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25px" height="25px" viewBox="0 -0.5 17 17" version="1.1" class="si-glyph si-glyph-deny"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <path d="M9.016,0.06 C4.616,0.06 1.047,3.629 1.047,8.029 C1.047,12.429 4.615,15.998 9.016,15.998 C13.418,15.998 16.985,12.429 16.985,8.029 C16.985,3.629 13.418,0.06 9.016,0.06 L9.016,0.06 Z M3.049,8.028 C3.049,4.739 5.726,2.062 9.016,2.062 C10.37,2.062 11.616,2.52 12.618,3.283 L4.271,11.631 C3.508,10.629 3.049,9.381 3.049,8.028 L3.049,8.028 Z M9.016,13.994 C7.731,13.994 6.544,13.583 5.569,12.889 L13.878,4.58 C14.571,5.555 14.982,6.743 14.982,8.028 C14.981,11.317 12.306,13.994 9.016,13.994 L9.016,13.994 Z" fill="#ff481bc5" class="si-glyph-fill">
+                        </path></g></svg>
+                        Δεν μπορείς να δεις τις αποδοχές.<br>Ακολούθησε τον χρήστη για να ξεκλειδώσεις αυτή τη λειτουργία.</div>
+                        ` : ""}
                     </div>
+                   
                 `;
             });
 
@@ -6882,18 +6893,18 @@ function showProfileInfo(emri) {
 
                     console.log("ALL", sent)
                     const ready = `
-                <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
+                <div class="postContainer ${sent.contents.question.includes("AIT-2501") ? "pushToTop" : ""}" style="padding-bottom: 10px;padding-top: 10px;">
                     <div class="post extpost">
                         <div class="profilePicture">
-                            <img src="${src}">
+                            <img src="${sent.marresi !== "AIT" ? src : "AIT.gif"}">
                         </div>
                         <div class="postInfo">
                             <div class="userInfo">
-                                <p onclick="extMention('${emri}')">${emri}</p>
-                                <span>${timeAgoInGreek(sent.contents.date)}</span>
+                                <p onclick="extMention('${emri}')">${sent.marresi !== "AIT" ? emri : "ΑΙΤ"}</p>
+                                <span>${sent.marresi !== "AIT" ? timeAgoInGreek(sent.contents.date) : "τώρα"}</span>
                             </div>
                             <div class="postContent" style="height: auto;">
-                                <p><vox onclick="extMention('${sent.marresi}')" class="mention ${getGender(removeTonos(sent.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${sent.marresi}</vox>
+                                <p><vox ${sent.marresi == "AIT" ? "style='display: none'" : ""} onclick="extMention('${sent.marresi}')" class="mention ${getGender(removeTonos(sent.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${sent.marresi}</vox>
                                     ${cleaned.includes("<img")
                             ? cleaned.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
                             : cleaned}
@@ -7881,9 +7892,20 @@ function showFromMe(el) {
     document.getElementById("media").style.display = 'none'
 }
 
+function showForyou() {
+    document.getElementById("foryou-carousel").classList.add("active")
+    document.getElementById("mentioned-carousel").classList.remove("active")
+    document.getElementById("fixed-foryou").classList.add("active")
+    document.getElementById("fixed-mentioned").classList.remove("active")
+    document.getElementById("foryou").style.display = null
+    document.getElementById("mentioned").classList.add("mentioned")
+}
+
 function showMentioned() {
     document.getElementById("foryou-carousel").classList.remove("active")
     document.getElementById("mentioned-carousel").classList.add("active")
+    document.getElementById("fixed-foryou").classList.remove("active")
+    document.getElementById("fixed-mentioned").classList.add("active")
 
     document.getElementById("foryou").style.display = 'none'
     document.getElementById("mentioned").classList.remove("mentioned")
@@ -7895,7 +7917,7 @@ function showMentioned() {
     const pin = atob(pars.pin);
     hasCurrentSixLoaded = false;
     const j = 6
-    let skel = `<p>[EVOX] Not ready yet..</p>`
+    let skel = ""
     for (let i = 0; i < j; i++) {
         skel += `<div class="postContainer skel loading" style="padding-bottom: 10px;padding-top: 10px;">
                         <div class="post extpost">
@@ -7925,7 +7947,50 @@ function showMentioned() {
                     </div>`
     }
     document.getElementById("mentioned").innerHTML = skel
-    //https://arc.evoxs.xyz/?metode=toMe&emri=${foundName}&pin=${process}
+    if (localStorage.getItem("jeanDarc_accountData")) {
+        fetch(`https://arc.evoxs.xyz/?metode=getFriendsPost&emri=${foundName}&pin=${atob(pars.pin)}`)
+            .then(response => response.json())
+            .then(friendsPosts => {
+                const container = document.getElementById("mentioned");
+                container.innerHTML = ""
+                let complete = {}
+                friendsPosts.forEach(friendIndex => {
+                    complete[friendIndex.Name] = []
+                    Object.entries(friendIndex).forEach(([nameOfPost, postValue]) => {
+                        if (nameOfPost === "Name" || nameOfPost === "likes" || nameOfPost === "cryptoxed" || nameOfPost === "saved" || nameOfPost === "length") {
+                            return;
+                        } else {
+                            complete[friendIndex.Name].push({
+                                "sentBy": nameOfPost,
+                                "contents": postValue,
+                                "isCryptoxed": friendIndex.cryptoxed.includes(nameOfPost),
+                                "likes": friendIndex.likes[nameOfPost] ? friendIndex.likes[nameOfPost] : null,
+                                "saved": friendIndex.saved.includes(nameOfPost)
+                            })
+                        }
+                    });
+                })
+
+                console.log(complete, "Complete")
+                Object.entries(complete).forEach(([nameOfMentioned, post]) => {
+                    post.forEach(post => {
+                        container.innerHTML += `<br>${post.sentBy}->${nameOfMentioned}: ${post.contents}<br>Cryptox: ${post.isCryptoxed}<br>Saved: ${post.saved}<br>Likes: ${JSON.stringify(post.likes, null, 2)}<br>`
+                    })
+
+                })
+
+
+
+
+            }).catch(error => {
+                console.log('Error:', error);
+                document.getElementById("mentioned").innerHTML = `<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;text-align: center;margin-top:15px;gap: 5px;"><svg xmlns="http://www.w3.org/2000/svg" width="45px" height="45px" viewBox="0 0 24 24" fill="none">
+<path d="M5.67139 4.25705L19.7431 18.3287C21.1538 16.6049 22.0001 14.4013 22.0001 12C22.0001 6.47715 17.523 2 12.0001 2C9.59885 2 7.39526 2.84637 5.67139 4.25705Z" fill="#f54248"/>
+<path d="M4.25705 5.67126C2.84637 7.39514 2 9.59873 2 12C2 17.5228 6.47715 22 12 22C14.4013 22 16.6049 21.1536 18.3287 19.7429L4.25705 5.67126Z" fill="#f54248"/>
+</svg><p style="">Σφάλμα Δικαιωμάτων</p></div>`
+            });
+    }
+
 }
 
 let latestFollowing = null
