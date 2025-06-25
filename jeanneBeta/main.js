@@ -7097,13 +7097,31 @@ function openSearch(el, inBackground) {
         //saveNames(true);
     } else {
         console.log("Fresh start");
-        document.getElementById("allUsers").innerHTML = `<div style="display:flex;flex-direction:column;width:100%;align-items:center;gap:5px;justify-content:center;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
-            --track-upload: #4a4a4a;width: 25px;">
-                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
-                    class="active-upload"></circle>
-                <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
-                    class="track-upload"></circle>
-            </svg><p style="text-align:center;">Γίνεται Φόρτωση..</p></div>`;
+        document.getElementById("allUsers").innerHTML = '';
+        for (let i = 0; i < 9; i++) {
+            document.getElementById("allUsers").innerHTML += `<div class="postContainer skel loading" style="padding-bottom: 10px;padding-top: 10px;">
+                        <div class="post extpost" style="flex-direction: row;align-items:center;">
+                            <div class="profilePicture">
+                               <span style="background-color: #4c4c4c;width: 45px;height: 45px;border-radius: 50%;">
+                            </div>
+                            <div class="postInfo" style="width: auto;">
+                                <div style="flex-direction: column;align-items:baseline;" class="userInfo">
+                                    <p class="skeleton"></p>
+                                    <span class="skeleton"></span>
+                                </div>
+                            </div>
+                            <div class="showProfileBtn" style="background-color: transparent;width: 90px;margin-left: auto;border: 0.5px solid #4c4c4c91;display:none;"></div>
+                        </div>
+                    </div>
+                    `;
+        }
+        //document.getElementById("allUsers").innerHTML = `<div style="display:flex;flex-direction:column;width:100%;align-items:center;gap:5px;justify-content:center;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" class="loader-upload" style="--active-upload: #ffffff;
+        //    --track-upload: #4a4a4a;width: 25px;">
+        //        <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+        //            class="active-upload"></circle>
+        //        <circle r="176" cy="192" cx="192" stroke-width="32" fill="transparent" pathLength="360"
+        //            class="track-upload"></circle>
+        //    </svg><p style="text-align:center;">Γίνεται Φόρτωση..</p></div>`;
         //saveNames();
     }
     const ac = localStorage.getItem("jeanDarc_accountData");
