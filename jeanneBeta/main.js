@@ -1041,21 +1041,27 @@ function hideElementOnAndroid(elementId) {
 function connectWithIp() {
     if (ipLog) {
         document.getElementById("loadText").innerText = 'Επεξεργασία..'
-        $("#tasks").fadeIn("fast")
-        goBackToMain()
-        setTimeout(function () {
-            nameLogin()
-            document.getElementById("voxName").value = ipLog
-
+        $("#tasks").fadeIn("fast", function () {
+            goBackToMain()
             setTimeout(function () {
+                nameLogin()
+                document.getElementById("voxName").value = ipLog
                 searchByNameComplete()
-            }, 600)
-        }, 600)
+
+                setTimeout(function () {
+                    document.getElementById("boxUp").style.height = null
+                }, 800)
+            }, 50)
+
+        })
+
+
 
     }
 }
 
 let ipLog;
+let iploginRecent = null
 
 let namesData = null
 let ip = null
@@ -1255,10 +1261,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             try {
                                 if (names.matchedAccounts) {
                                     if (names.matchedAccounts.length > 0) {
+                                        iploginRecent = names
                                         document.getElementById("merrniEmratIP").innerHTML = ''
                                         console.log(names.matchedAccounts)
-                                        names.matchedAccounts.forEach(name => {
-                                            document.getElementById("merrniEmratIP").innerHTML += `<div class="optionButton ${name === names.matchedAccounts[0] ? "focus" : ""} svgOnRight">
+                                        names.matchedAccounts.forEach((name, index) => {
+                                            document.getElementById("merrniEmratIP").innerHTML += `<div onclick="loginByIpSecondary('${index}')" class="optionButton ${name === names.matchedAccounts[0] ? "focus" : ""} svgOnRight">
                             ${name}</div>`
                                         })
                                         document.getElementById("ipLogin").style.display = null
@@ -3643,10 +3650,12 @@ async function getEvoxProfile(name) {
 
 
 function openInstagram(ext) {
-    if (isSocialed && socialSection === 'instagram' && socialUsername) {
-        window.open(`https://instagram.com/${socialUsername}`, '_blank');
-    } else if (ext) {
-        window.open(`https://instagram.com/${ext}`, '_blank');
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    if (isIOS && 'standalone' in window.navigator && window.navigator.standalone) {
+        window.location.href = `https://instagram.com/${isSocialed && socialSection === 'instagram' && socialUsername ? socialUsername : ext}`
+    } else {
+        window.open(`https://instagram.com/${isSocialed && socialSection === 'instagram' && socialUsername ? socialUsername : ext}`, "_blank", "noopener");
     }
 }
 function merrniEmrat() {
@@ -4051,7 +4060,10 @@ function showAppInfo() {
 
 function hideAppInfo() {
     document.getElementById("infoContainer").classList.remove("active")
-    $("#welcome").fadeIn("fast")
+    setTimeout(function () {
+        $("#welcome").fadeIn("fast")
+
+    }, 300)
 }
 
 let boxUpDefaultHeight;
@@ -5842,6 +5854,11 @@ function openEditProfile() {
     document.body.style.backgroundColor = '#000'
     informacion(foundName)
         .then(self => {
+            if (!self.instagram) {
+                document.getElementById("instagramBlock-EditProfile").style.display = "none"
+            } else {
+                document.getElementById("instagramBlock-EditProfile").style.display = null
+            }
             document.getElementById("instagram-account-username").innerHTML = self.instagram + `<div style="margin-left:auto;width: auto;" onclick="openInstagram('${self.instagram}')" class="buttonCarouseli">
                                     Εμφάνιση
                                 </div>`
@@ -7338,19 +7355,19 @@ function timeAgo(isoString) {
 }
 
 function analyzeUser(e, rej) {
-    if (rej && isAllowed("AIT")) {
+    if (rej && isAllowed("AIT") || !localStorage.getItem("permissions")) {
         Evalert({
             "title": `Να επιτρέπεται στο "AIT" να έχει πρόσβαση στα δεδομένα σας;`,
             "description": "Το AIT θα μπορεί να διαβάσει και να επεξεργαστεί τα δεδομένα σας.",
             "buttons": ["Να επιτρέπεται", "Να μην επιτρέπεται"],
-            "buttonAction": ["analyzeUser(document.getElementById('aitbtn'))"],
+            "buttonAction": ["addToPermissions('AIT', 'Allowed');analyzeUser(document.getElementById('aitbtn'))"],
             "addons": [],
             "clouds": true,
             "clouds_data": ["SELF", "EVOX"]
         })
         return;
     }
-    addToPermissions("AIT", "Allow")
+
     e.blur()
     setTimeout(function () {
         const btn = e;
@@ -8388,7 +8405,14 @@ function showLikedPosts() {
     fetch(`https://arc.evoxs.xyz/?metode=getLikedPosts&pin=${atob(pars.pin)}&emri=${foundName}`)
         .then(response => response.json())
         .then(likedPosts => {
-
+            if (likedPosts.length === 0) {
+                document.getElementById("likedPosts").innerHTML = `<div id="likedPosts_loadingindicator" style="display:flex;flex-direction:column;height:100%;width:100%;align-items:center;gap:10px;justify-content:center;margin-top: 15px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24" fill="none">
+<path d="M8.10627 18.2468C5.29819 16.0833 2 13.5422 2 9.1371C2 4.53656 6.9226 1.20176 11.2639 4.81373L9.81064 8.20467C9.6718 8.52862 9.77727 8.90554 10.0641 9.1104L12.8973 11.1341L10.4306 14.012C10.1755 14.3096 10.1926 14.7533 10.4697 15.0304L12.1694 16.7302L11.2594 20.3702C10.5043 20.1169 9.74389 19.5275 8.96173 18.9109C8.68471 18.6925 8.39814 18.4717 8.10627 18.2468Z" fill="#fff"/>
+<path d="M12.8118 20.3453C13.5435 20.0798 14.2807 19.5081 15.0383 18.9109C15.3153 18.6925 15.6019 18.4717 15.8937 18.2468C18.7018 16.0833 22 13.5422 22 9.1371C22 4.62221 17.259 1.32637 12.9792 4.61919L11.4272 8.24067L14.4359 10.3898C14.6072 10.5121 14.7191 10.7007 14.7445 10.9096C14.7699 11.1185 14.7064 11.3284 14.5694 11.4882L12.0214 14.4609L13.5303 15.9698C13.7166 16.1561 13.7915 16.4264 13.7276 16.682L12.8118 20.3453Z" fill="#fff"/>
+</svg><p style="text-align:center;">Δεν έχεις κάνει μου αρέσει<br>σε καμία καταχώρηση.</p></div>`
+                return;
+            }
 
             document.getElementById("likedPosts-denied").innerHTML = ''
 
@@ -8486,6 +8510,14 @@ function showSavedPosts() {
     fetch(`https://arc.evoxs.xyz/?metode=getSavedPosts&pin=${atob(pars.pin)}&emri=${foundName}`)
         .then(response => response.json())
         .then(savedPosts => {
+            if (savedPosts.length === 0) {
+                document.getElementById("savedPosts").innerHTML = `<div id="savedPosts_loadingindicator" style="display:flex;flex-direction:column;width:100%;align-items:center;gap:5px;justify-content:center;margin-top: 15px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="35px" viewBox="0 0 24 24" fill="none">
+<path d="M8.65704 3H16C17.1046 3 18 3.89543 18 5V12.343M6 5.99981V21L12 18L18 21V17.9998" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4.00012 4L20.0001 20" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+</svg><p style="text-align:center;">Δεν έχεις αποθηκεύσει<br>καμία καταχώρηση.</p></div>`
+                return;
+            }
             document.getElementById("savedPosts-denied").innerHTML = ''
 
             savedPosts.forEach((post) => {
@@ -8553,6 +8585,7 @@ function showSavedPosts() {
 
             })
         }).catch(error => {
+
             console.log('Error:', error);
         });
 }
@@ -9100,4 +9133,152 @@ function switchToInnerPage(page) {
         document.getElementById("page-notifications").classList.remove("active")
         document.getElementById("page-discovery").classList.add("active")
     }
+}
+
+function loginByIpSecondary(indexLocation) {
+    if (iploginRecent) {
+        const names = iploginRecent
+        ipLog = names.matchedAccounts[indexLocation]
+        getEvoxProfile(names.matchedAccounts[indexLocation]).then(profileSrc => {
+            document.getElementById('matchedPfp').src = profileSrc
+        });
+        document.getElementById("longAgo").innerText = timeAgo(names.ZeroLastLogin)
+        document.getElementById("nameIp").innerText = names.matchedAccounts[indexLocation]
+        connectWithIp()
+    } else {
+        alert("Cannot access recent IP logins.")
+    }
+}
+
+function loadAiMetrics() {
+    const account = localStorage.getItem("jeanDarc_accountData")
+    if (!account) {
+        alert("Account Not Found")
+        return;
+    }
+    const par = JSON.parse(account)
+    const pin = atob(par.pin)
+    const name = par.name
+    document.getElementById("ai-emotions-slider").innerHTML = "Loading"
+
+    if (localStorage.getItem("latestAI_metrics")) {
+        const json = JSON.parse(localStorage.getItem("latestAI_metrics"));
+        document.getElementById("ai-emotions-slider").innerHTML = "";
+
+        Object.entries(json).forEach(([targetName, aiInfo]) => {
+            let innerEmotions = '';
+            Object.entries(aiInfo.top4_emotions).forEach(([emotion, properties]) => {
+                innerEmotions += `<div style="background-color: ${properties.color}" class="emotion">
+                                    ${emotion}
+                                </div>`;
+            });
+
+            getImage(targetName).then(profileSrc => {
+                document.getElementById("ai-emotions-slider").innerHTML += `
+                                    <div style="order: ${aiInfo.placement}" class="main">
+                                        <div class="rowUp">
+                                            <img src="${profileSrc.imageData}">
+                                            <div class="textIn">
+                                                <p>${targetName.split(" ")[0]}</p>
+                                                <span>${aiInfo.fun_fact}</span>
+                                            </div>
+                                            <div class="iconIn">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                                                    fill="none">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M12.293 7.293a1 1 0 0 1 1.414 0l4 4a1 1 0 0 1 0 1.414l-4 4a1 1 0 0 1-1.414-1.414L15.586 12l-3.293-3.293a1 1 0 0 1 0-1.414Z"
+                                                        fill="#fff" />
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M6.293 7.293a1 1 0 0 1 1.414 0l4 4a1 1 0 0 1 0 1.414l-4 4a1 1 0 0 1-1.414-1.414L9.586 12 6.293 8.707a1 1 0 0 1 0-1.414Z"
+                                                        fill="#fff" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="rowDown">
+                                            ${innerEmotions}
+                                        </div>
+                                    </div>`;
+            });
+        });
+        return;
+    }
+    fetch(`https://arc.evoxs.xyz/?metode=AIT&emri=${name}&pin=${pin}&requestor=application&optionType=placements`)
+        .then(response => {
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let fullText = '';
+
+            function readChunk() {
+                return reader.read().then(({ done, value }) => {
+                    if (done) {
+                        if (!localStorage.getItem("latestAI_metrics")) {
+                            fullText += decoder.decode(); // flush remaining
+                        }
+                        localStorage.setItem("latestAI_metrics", fullText);
+
+                        try {
+                            console.log(fullText)
+                            const json = JSON.parse(`${fullText}`);
+                            document.getElementById("ai-emotions-slider").innerHTML = "";
+
+                            Object.entries(json).forEach(([targetName, aiInfo]) => {
+                                let innerEmotions = '';
+                                Object.entries(aiInfo.top4_emotions).forEach(([emotion, properties]) => {
+                                    innerEmotions += `<div style="background-color: ${properties.color}" class="emotion">
+                                    ${emotion}
+                                </div>`;
+                                });
+
+                                getImage(user.name).then(profileSrc => {
+                                    document.getElementById("ai-emotions-slider").innerHTML += `
+                                    <div class="main">
+                                        <div class="rowUp">
+                                            <img src="${profileSrc.imageData}">
+                                            <div class="textIn">
+                                                <p>${targetName.split(" ")[0]}</p>
+                                                <span>${aiInfo.fun_fact}</span>
+                                            </div>
+                                            <div class="iconIn">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                                                    fill="none">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M12.293 7.293a1 1 0 0 1 1.414 0l4 4a1 1 0 0 1 0 1.414l-4 4a1 1 0 0 1-1.414-1.414L15.586 12l-3.293-3.293a1 1 0 0 1 0-1.414Z"
+                                                        fill="#fff" />
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M6.293 7.293a1 1 0 0 1 1.414 0l4 4a1 1 0 0 1 0 1.414l-4 4a1 1 0 0 1-1.414-1.414L9.586 12 6.293 8.707a1 1 0 0 1 0-1.414Z"
+                                                        fill="#fff" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class="rowDown">
+                                            ${innerEmotions}
+                                        </div>
+                                    </div>`;
+                                });
+                            });
+                        } catch (e) {
+                            console.error("Failed to parse JSON:", fullText);
+                            alert(`Parsing failed\n${fullText}`);
+                        }
+
+                        return; // stream done
+                    }
+
+                    const chunk = decoder.decode(value, { stream: true });
+                    fullText += chunk;
+                    if (localStorage.getItem("latestAI_metrics")) {
+                        done = true
+                        fullText = localStorage.getItem("latestAI_metrics")
+                    }
+                    return readChunk(); // keep reading
+                });
+            }
+
+            return readChunk();
+        })
+        .catch(error => {
+            alert(`Something failed while loading metrics: ${error}`);
+        });
+
+
 }

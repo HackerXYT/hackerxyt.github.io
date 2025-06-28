@@ -449,6 +449,11 @@ var aitSounds = {
         src: ['./ait_assets/performance_off.mp3'],
         loop: false,
         volume: 0.5
+    }),
+    register_off: new Howl({
+        src: ['./ait_assets/account_reg_off.mp3'],
+        loop: false,
+        volume: 0.5
     })
 };
 
@@ -508,7 +513,8 @@ const aitReplay = {
     okay_sorry: true,
     got_it: true,
     performance: true,
-    performance_off: true
+    performance_off: true,
+    register_off: true
 };
 
 
@@ -583,7 +589,7 @@ function loadAit() {
     fetch('https://data.evoxs.xyz/ait')
         .then(response => response.json())
         .then(accepted => {
-            if (accepted.evox_users.includes(username)) {
+            if (accepted.evox_users.includes(username) || accepted.evox_users.includes("EVERYONE")) {
                 localStorage.setItem("aitDev", "accepted")
                 if (aitAttached !== true) {
                     console.warn("Attaching AIT Beta")

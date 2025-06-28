@@ -1474,7 +1474,7 @@
             </div>
             <div class="page-discovery active" id="page-notifications">
                 <div class="notifications-container" id="notifications-container">
-                    
+
                 </div>
             </div>
             <div class="page-discovery fade-in-slide-up" id="page-discovery">
@@ -1638,8 +1638,37 @@
                             <span id="aitext" class="aitext">Ανάλυση</span>
                         </button>
                     </div>
+                </div>
 
+                <h2 class="topicHead" style="margin-top: 20px;font-size: 17px;">Εντυπώσεις που άφησες</h2>
+                <span onclick="loadAiMetrics()" class="aitext">activate test</span>
+                <div id="ai-emotions-slider" class="ai-emotions-slider">
+                    <div class="main">
+                        <div class="rowUp">
+                            <img src="geometric.jpg">
+                            <div class="textIn">
+                                <p>Replicate</p>
+                                <span>Virtual friend and emotional support chatbot</span>
+                            </div>
+                            <div class="iconIn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24"
+                                    fill="none">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M12.293 7.293a1 1 0 0 1 1.414 0l4 4a1 1 0 0 1 0 1.414l-4 4a1 1 0 0 1-1.414-1.414L15.586 12l-3.293-3.293a1 1 0 0 1 0-1.414Z"
+                                        fill="#fff" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M6.293 7.293a1 1 0 0 1 1.414 0l4 4a1 1 0 0 1 0 1.414l-4 4a1 1 0 0 1-1.414-1.414L9.586 12 6.293 8.707a1 1 0 0 1 0-1.414Z"
+                                        fill="#fff" />
+                                </svg>
+                            </div>
+                        </div>
 
+                        <div class="rowDown">
+                            <div class="emotion">
+                                Image
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <h2 class="topicHead" style="margin-top: 20px;">BETA</h2>
@@ -1654,6 +1683,8 @@
                     </div>
 
                 </div>
+
+
             </div>
             <!--</div>-->
         </div>
@@ -2439,6 +2470,24 @@
                             </div>
                         </label></div>
                 </div>
+                <div class="section-a-button">
+                    <div class="title-button-section">
+                        <svg height="20px" width="20px" fill="#e8e8e8" viewBox="0 0 24 24" data-name="Layer 1"
+                            class="sparkle">
+                            <path
+                                d="M10,21.236,6.755,14.745.264,11.5,6.755,8.255,10,1.764l3.245,6.491L19.736,11.5l-6.491,3.245ZM18,21l1.5,3L21,21l3-1.5L21,18l-1.5-3L18,18l-3,1.5ZM19.333,4.667,20.5,7l1.167-2.333L24,3.5,21.667,2.333,20.5,0,19.333,2.333,17,3.5Z">
+                            </path>
+                        </svg>
+                        Τεχνητή Νοημοσύνη
+                    </div>
+                    <div class="hint-option"><label class="toggle-switch">
+                            <input id="ait-main" type="checkbox">
+                            <div class="toggle-switch-background settings-bg">
+                                <div class="toggle-switch-handle"></div>
+                            </div>
+                        </label></div>
+                </div>
+
 
                 <div onclick="window.location.reload()" class="section-a-button">
                     <div class="title-button-section">
@@ -2626,7 +2675,7 @@
                         <p>Τάξη</p>
                         <span class="button-option" id="klasa-edit">placeholder</span>
                     </div>
-                    <div class="generalItem">
+                    <div id="instagramBlock-EditProfile" class="generalItem">
                         <p>Instagram</p>
                         <span class="button-option" id="instagram-account-username">placeholder</span>
                     </div>

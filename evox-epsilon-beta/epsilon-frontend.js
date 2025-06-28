@@ -1903,7 +1903,7 @@ function loadNotificationsAll(targetNotifications) {
                             const username = finalImage
                             loadPFPget(finalImage)
                                 .then(profileImage => {
-                                    
+
                                     finalImage = profileImage
 
                                     fetch(`${srv}/canvas/${username}.evox/has?v=${Math.floor(Math.random() * 100000)}`)
@@ -1929,23 +1929,23 @@ function loadNotificationsAll(targetNotifications) {
                                             nowComplete()
                                         })
 
-                                        
-                                        }).catch(error => {
-                                            //setNetworkStatus('off')
-                                            console.error(error);
-                                            finalImage = 'evox-logo-apple.png'
-                                            nowComplete()
-                                        });
-                                }
+
+                                }).catch(error => {
+                                    //setNetworkStatus('off')
+                                    console.error(error);
+                                    finalImage = 'evox-logo-apple.png'
+                                    nowComplete()
+                                });
+                        }
 
 
                     }
 
-                        function nowComplete(canvas) {
+                    function nowComplete(canvas) {
 
-                            $(load).fadeOut("fast")
-                            $(container).fadeIn("fast")
-                            container.innerHTML += `<div class="user fade-in-slide-up ${canvas ? "bgvid" : ""}">
+                        $(load).fadeOut("fast")
+                        $(container).fadeIn("fast")
+                        container.innerHTML += `<div class="user fade-in-slide-up ${canvas ? "bgvid" : ""}">
                         ${canvas ? `<video autoplay muted loop class="bg-video">
         <source src="${canvas}" type="video/mp4">
     </video>` : ""}
@@ -1959,17 +1959,17 @@ function loadNotificationsAll(targetNotifications) {
                 ${formatTimeDifference(n.timestamp) + " ago"}
         </div>
 </div>`
-                            spawned++
-                        }
+                        spawned++
                     }
-                    Promise.all(
-                        notifications.slice(0, targetSpawn).map(notif => addNotif(notif))
-                    ).then(() => {
-                        console.log("All notifications added");
-                        let tempInt = setInterval(function () {
-                            if (spawned === targetSpawn) {
-                                clearInterval(tempInt)
-                                container.innerHTML += `<div onclick="currentShowingNotifications = currentShowingNotifications + 6;loadNotificationsAll(currentShowingNotifications);" class="user">
+                }
+                Promise.all(
+                    notifications.slice(0, targetSpawn).map(notif => addNotif(notif))
+                ).then(() => {
+                    console.log("All notifications added");
+                    let tempInt = setInterval(function () {
+                        if (spawned === targetSpawn) {
+                            clearInterval(tempInt)
+                            container.innerHTML += `<div onclick="currentShowingNotifications = currentShowingNotifications + 6;loadNotificationsAll(currentShowingNotifications);" class="user">
 
                             <div class="column" style="width: 100%;justify-content:center;align-items:center;display: flex;flex-direction:row;">
                                     <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
@@ -1978,14 +1978,14 @@ function loadNotificationsAll(targetNotifications) {
                             </div>
                             
                             </div>`
-                            }
-                        }, 200)
+                        }
+                    }, 200)
 
-                    });
+                });
 
-                }
+            }
 
-            })
+        })
         .catch(error => {
             console.error('Fetch error:', error);
         });
@@ -3904,3 +3904,16 @@ function deleteMessage() {
 //        console.log('Reached the bottom!');
 //    }
 //});
+
+function beginRegistration(el) {
+    if (el.classList.contains("shake")) { return; }
+    el.classList.add("shake")
+    setTimeout(function () {
+        el.classList.remove("shake")
+    }, 2000)
+    play('error')
+    setTimeout(function () {
+        aitPlay("register_off")
+
+    }, 100)
+}

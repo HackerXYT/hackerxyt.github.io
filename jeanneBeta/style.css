@@ -3302,8 +3302,8 @@ input:-webkit-autofill:active {
 .count-picked {
     margin-top: env(safe-area-inset-top) !important;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: -10px;
+    right: -10px;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -4311,6 +4311,10 @@ input:-webkit-autofill:active {
 
 .summary {
     margin-top: 5px;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .summary .aclass {
@@ -7039,7 +7043,7 @@ select:focus {
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding:0;
+    padding: 0;
     display: none;
     margin-bottom: 100px;
 }
@@ -7099,7 +7103,7 @@ select:focus {
 }
 
 .notifications-container .notification-div .notification-content p vox {
-    color: #cfcfcfce; 
+    color: #cfcfcfce;
 }
 
 .notifications-container .notification-div .notification-content p vox.male {
@@ -7117,4 +7121,96 @@ select:focus {
     color: #cfcfcf67;
     margin-left: auto;
     flex-shrink: 0;
+}
+
+.ai-emotions-slider {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+}
+
+.ai-emotions-slider div.main {
+    display: flex;
+    flex-direction: column;
+    background-color: #1e1e1e;
+    width: 100%;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.ai-emotions-slider div.main div.rowUp {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+}
+
+.ai-emotions-slider div.main div.rowUp img {
+    margin-left: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+.ai-emotions-slider div.main div.rowUp .textIn {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    gap: 5px;
+    padding-right: 20px;
+}
+
+.ai-emotions-slider div.main div.rowUp p {
+    font-size: 20px;
+    color: #fff;
+}
+
+.ai-emotions-slider div.main div.rowUp span {
+    font-size: 14px;
+    color: #636363;
+}
+
+.ai-emotions-slider div.main div.rowUp .iconIn {
+    margin-left: auto;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+
+.ai-emotions-slider div.main div.rowDown {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+    overflow-x: auto;
+    /* Allow horizontal scrolling */
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    border-radius: 25px;
+}
+
+.ai-emotions-slider div.main div.rowDown .emotion {
+    display: flex;
+    flex-direction: row;
+    background-color: #0000003d;
+    padding: 10px 20px;
+    border-radius: 25px;
+    justify-content: center;
+    align-items: center;
 }
