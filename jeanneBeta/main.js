@@ -1100,7 +1100,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     function processCSS(cssText) {
                         if (cssText.includes("env(safe-area-inset-top)")) {
                             const model = getDeviceInfo().model
-                            const newEnv = model === "iPhone" || model === "iPad" || model === "Mac" ? "5px" : "20px"
+                            const newEnv = model === "iPhone" || model === "iPad" || model === "Mac" ? "47px" : "20px"
                             document.getElementById("notice-text").innerText += ` -> ${newEnv}`
                             const patched = cssText.replace(/env\(safe-area-inset-top\)/g, newEnv);
                             const newStyle = document.createElement("style");
