@@ -1,4 +1,4 @@
-const appVersion = "2.0.6"
+const appVersion = "2.0.61"
 for (let i = 0; i < 4; i++) {
     document.getElementById(`version${i + 1}`).innerText = `${i + 1 !== 2 ? appVersion : `v${appVersion}`}`
 }
@@ -9303,59 +9303,64 @@ function loadAiMetrics() {
 const BrandedList = ["Μαρίτα Μηλάτου", "Γρηγόρης Παπαποστόλου"]
 let isBranded = false;
 async function InitializeBranded() {
-    if (isBranded) { return true; }
+    try {
+        if (isBranded) { return true; }
 
-    if(getCookie("disableUnite")) {
-        return true;
-    } else if (getCookie("brandedApp")) {
-        console.warn("Found!")
-    } else if (BrandedList.includes(JSON.parse(localStorage.getItem("jeanDarc_accountData")).name) && !getCookie("brandedApp")) {
-        foundName = JSON.parse(localStorage.getItem("jeanDarc_accountData")).name
+        if (getCookie("disableUnite")) {
+            return true;
+        } else if (getCookie("brandedApp")) {
+            console.warn("Found!")
+        } else if (localStorage.getItem("jeanDarc_accountData") && BrandedList.includes(JSON.parse(localStorage.getItem("jeanDarc_accountData")).name) && !getCookie("brandedApp")) {
+            foundName = JSON.parse(localStorage.getItem("jeanDarc_accountData")).name
 
-        EvalertNext({
-            "title": "Ξεκλειδώθηκε νέα λειτουργία",
-            "description": "Έχεις πλέον πρόσβαση στο Evox Unite.",
-            "buttons": ["Εντάξει"],
-            "buttonAction": ["saveCookie('brandedApp', 'true')"],
-            "addons": [],
-            "clouds": true,
-            "clouds_data": ["SELF", "EVOX"]
-        })
+            EvalertNext({
+                "title": "Ξεκλειδώθηκε νέα λειτουργία",
+                "description": "Έχεις πλέον πρόσβαση στο Evox Unite.",
+                "buttons": ["Εντάξει"],
+                "buttonAction": ["saveCookie('brandedApp', 'true')"],
+                "addons": [],
+                "clouds": true,
+                "clouds_data": ["SELF", "EVOX"]
+            })
 
-    } else if (!getCookie("brandedApp")) {
-        return true
-    } else
+        } else if (!getCookie("brandedApp")) {
+            return true
+        }
 
         changeLoadingText("Γίνεται αλλαγή γραφικών..")
-    isBranded = true;
+        isBranded = true;
 
 
 
-    const targetSrc = ['logo.png', 'appLogoV2.png', 'assetView-2.png'];
-    const branded = ['logo-Branded.png', 'appLogoV2-Branded.png', 'assetView-2-Branded.png'];
+        const targetSrc = ['logo.png', 'appLogoV2.png', 'assetView-2.png'];
+        const branded = ['logo-Branded.png', 'appLogoV2-Branded.png', 'assetView-2-Branded.png'];
 
-    const results = await Promise.all(targetSrc.map((src, i) => {
-        Branded(src, branded[i])
-    }));
-    console.log("All replacements done:", results);
+        const results = await Promise.all(targetSrc.map((src, i) => {
+            Branded(src, branded[i])
+        }));
+        console.log("All replacements done:", results);
 
-    const welcome = document.getElementById("textDialog");
-    welcome.querySelector("p").innerHTML = welcome.querySelector("p").innerHTML.replace("στην", "στο");
-    welcome.querySelector("h2").innerHTML = "Unite";
-    welcome.querySelector("h2").style.background = "linear-gradient(to right, #e4e3e1ed, #f1ecdb, #e9e6e0, #cec6bfad)";
-    welcome.querySelector("h2").style.webkitBackgroundClip = "text";      // for Safari/Chrome
-    welcome.querySelector("h2").style.webkitTextFillColor = "transparent"; // for Safari/Chrome
-    welcome.querySelector("h2").style.backgroundClip = "text";             // for Firefox
-    welcome.querySelector("h2").style.color = "transparent";               // fallback for others
+        const welcome = document.getElementById("textDialog");
+        welcome.querySelector("p").innerHTML = welcome.querySelector("p").innerHTML.replace("στην", "στο");
+        welcome.querySelector("h2").innerHTML = "Unite";
+        welcome.querySelector("h2").style.background = "linear-gradient(to right, #e4e3e1ed, #f1ecdb, #e9e6e0, #cec6bfad)";
+        welcome.querySelector("h2").style.webkitBackgroundClip = "text";      // for Safari/Chrome
+        welcome.querySelector("h2").style.webkitTextFillColor = "transparent"; // for Safari/Chrome
+        welcome.querySelector("h2").style.backgroundClip = "text";             // for Firefox
+        welcome.querySelector("h2").style.color = "transparent";               // fallback for others
+        document.getElementById("infoContainer").querySelectorAll("p")[0].innerHTML = `Unite Project`
 
-    const debugFinal = true//Skip checks.
-    await GraphicsBranded()
-    return debugFinal;
+        const debugFinal = true//Skip checks.
+        await GraphicsBranded()
+        return debugFinal;
+    } catch (err) {
+        alert(`BETA FATAL ${err}`)
+    }
+
 }
 
 
 
-InitializeBranded()
 async function Branded(target, replacement) {
     console.log("[DEBUG] Starting replacement of", target, "with", replacement);
 
@@ -9379,25 +9384,29 @@ async function Branded(target, replacement) {
         }
     });
 }
-
 async function GraphicsBranded() {
-    return new Promise((resolve) => {
-        try {
-            document.title = "Evox Unite";
-            const ogTitle = document.querySelector('meta[property="og:title"]');
-            if (ogTitle) ogTitle.setAttribute('content', 'Evox Unite');
-            const favicon = document.querySelector('link[rel="icon"]');
-            if (favicon) favicon.href = `appLogoV2-Branded.png`;
+  return new Promise((resolve) => {
+    try {
+      document.title = "Evox Unite";
 
-            const appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
-            if (appleIcon) appleIcon.href = "appLogoV2-Branded.png";
-            const splashImages = document.querySelectorAll('link[rel="apple-touch-startup-image"]');
-            splashImages.forEach(link => {
-                link.href = link.href.replace("splashScreens/", "splashScreensBranded/")
-            });
-        } catch (e) {
-            console.error("[ERROR] Replacement failed for", target, e);
-            resolve(true);
-        }
-    });
+      const ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle) ogTitle.setAttribute('content', 'Evox Unite');
+
+      const favicon = document.querySelector('link[rel="icon"]');
+      if (favicon) favicon.href = `appLogoV2-Branded.png`;
+
+      const appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
+      if (appleIcon) appleIcon.href = "appLogoV2-Branded.png";
+
+      const splashImages = document.querySelectorAll('link[rel="apple-touch-startup-image"]');
+      splashImages.forEach(link => {
+        link.href = link.href.replace("splashScreens/", "splashScreensBranded/");
+      });
+
+      resolve(true);  // Resolve when successful
+    } catch (e) {
+      console.error("[ERROR] Replacement failed:", e);
+      resolve(true); // Or resolve(true) if you want to continue anyway
+    }
+  });
 }
