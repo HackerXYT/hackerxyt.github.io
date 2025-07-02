@@ -542,6 +542,7 @@ vo input::placeholder {
     background: linear-gradient(to right, #f1a97ced, #d7ba5d, #be8d35, #ff7d00ad);
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
+    background-clip: text;
 }
 
 .textDialog {
@@ -990,8 +991,20 @@ img {
     width: 100%;
 }
 
-.app .topBar .pfp img {
+@keyframes borderRadiusPulse {
+  0% {
+    border-radius: 0;
+  }
+  50% {
     border-radius: 50%;
+  }
+  100% {
+    border-radius: 0;
+  }
+}
+
+
+.app .topBar .pfp img {
     width: 45px;
     height: 45px;
     display: flex;
@@ -999,7 +1012,8 @@ img {
     object-fit: cover;
     margin-right: 15px;
     cursor: pointer;
-    transition: transform 0.1s ease-in-out;
+    transition: transform 0.1s ease-in-out, border-radius 1s ease-in-out;
+    /*animation: borderRadiusPulse 4s infinite ease-in-out;*/
 }
 
 .app .topBar .pfp .corner-svg {
@@ -7213,4 +7227,16 @@ select:focus {
     border-radius: 25px;
     justify-content: center;
     align-items: center;
+}
+
+.hideNonDev {
+    text-align: center;
+}
+
+
+.hideNonDev vox {
+    filter: blur(5.5px);
+    pointer-events: none;
+    cursor:not-allowed;
+    
 }

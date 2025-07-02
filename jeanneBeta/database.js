@@ -135,3 +135,31 @@ async function fetchAndSaveImage(id, imageUrl) {
         console.error('Error saving image:', error);
     }
 }
+
+function saveCookie(name, value) {
+    const expires = new Date(Date.now() + 21 * 365 * 24 * 60 * 60 * 1000).toUTCString();
+    document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+}
+
+function removeCookie(name) {
+    document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+}
+
+function clearAllCookies() {
+    document.cookie.split(";").forEach(cookie => {
+        const name = cookie.split("=")[0].trim();
+        removeCookie(name);
+    });
+}
+
+function getCookie(name) {
+    const decoded = decodeURIComponent(document.cookie);
+    const cookies = decoded.split('; ');
+    for (const cookie of cookies) {
+        const [key, value] = cookie.split('=');
+        if (key === name) {
+            return value;
+        }
+    }
+    return null;
+}

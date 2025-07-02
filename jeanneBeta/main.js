@@ -1,4 +1,4 @@
-const appVersion = "2.0.56"
+const appVersion = "2.0.6"
 for (let i = 0; i < 4; i++) {
     document.getElementById(`version${i + 1}`).innerText = `${i + 1 !== 2 ? appVersion : `v${appVersion}`}`
 }
@@ -1066,6 +1066,7 @@ let iploginRecent = null
 let namesData = null
 let ip = null
 document.addEventListener("DOMContentLoaded", function () {
+
     //$("#tasks").fadeOut("fast", function () {
     //    $("#loginContainer").fadeOut("fast", function () {
     //        $("#lock").fadeIn("fast")
@@ -1203,122 +1204,128 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
 
         if (localStorage.getItem("jeanDarc_accountData")) {
-
-            autoLogin()
+            InitializeBranded().then(allDone => {
+                if (allDone) autoLogin()
+            });
 
         } else {
             stopPull = true
-            //const video = document.getElementById("video");
-            fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
-                .then(geo => {
-                    console.log("IP:", geo.ip)
-                    ip = geo.ip
-                    document.getElementById("loadText").innerText = 'Αναγνωριστικό έτοιμο'
-                    //changeLoadingText('Αναγνωριστικό έτοιμο')
-
-                    fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
+            InitializeBranded().then(allDone => {
+                if (allDone) {
+                    //const video = document.getElementById("video");
+                    fetch('https://api.ipify.org?format=json')
                         .then(response => response.json())
-                        .then(names => {
-                            namesData = names
+                        .then(geo => {
+                            console.log("IP:", geo.ip)
+                            ip = geo.ip
+                            document.getElementById("loadText").innerText = 'Αναγνωριστικό έτοιμο'
+                            //changeLoadingText('Αναγνωριστικό έτοιμο')
 
-                            setTimeout(function () {
+                            fetch('https://arc.evoxs.xyz/?metode=merrniEmrat')
+                                .then(response => response.json())
+                                .then(names => {
+                                    namesData = names
 
-                                document.getElementById("loadText").innerText = 'Έγινε σύνδεση'
-                                changeLoadingText('Επιτυχία')
-                                setTimeout(function () {
-                                    document.getElementById("setupPage").style.display = ''
-                                    //document.getElementById("topImg").style.opacity = '1'
                                     setTimeout(function () {
-                                        document.getElementById("loginContainer").style.opacity = '1'
-                                        document.getElementById("loginSection").classList.add('active')
-                                        document.getElementById("bgGrd").style.transform = 'scale(0.97)'
-                                        //document.getElementById("evoxContainer").classList.add("active")
-                                        setTimeout(function () {
-                                            //$("#tasks").fadeOut("fast")
-                                        }, 550)
-                                        //video.play()
-                                        setTimeout(function () {
-                                            $("#hexa").fadeOut("fast")
-                                            //let playbackRate = 1.0;
-                                            //
-                                            //const slowDown = setInterval(() => {
-                                            //    playbackRate -= 0.1; // Gradually decrease the speed
-                                            //    if (playbackRate <= 0.1) {
-                                            //        clearInterval(slowDown);
-                                            //        video.pause(); // Pause when playbackRate is near zero
-                                            //        video.playbackRate = 1.0; // Reset speed for next play
-                                            //    } else {
-                                            //        video.playbackRate = playbackRate;
-                                            //    }
-                                            //}, 50);
-                                        }, 350)
-                                    }, 100)
 
-                                }, 500)
-                            }, 500)
+                                        document.getElementById("loadText").innerText = 'Έγινε σύνδεση'
+                                        changeLoadingText('Επιτυχία')
+                                        setTimeout(function () {
+                                            document.getElementById("setupPage").style.display = ''
+                                            //document.getElementById("topImg").style.opacity = '1'
+                                            setTimeout(function () {
+                                                document.getElementById("loginContainer").style.opacity = '1'
+                                                document.getElementById("loginSection").classList.add('active')
+                                                document.getElementById("bgGrd").style.transform = 'scale(0.97)'
+                                                //document.getElementById("evoxContainer").classList.add("active")
+                                                setTimeout(function () {
+                                                    //$("#tasks").fadeOut("fast")
+                                                }, 550)
+                                                //video.play()
+                                                setTimeout(function () {
+                                                    $("#hexa").fadeOut("fast")
+                                                    //let playbackRate = 1.0;
+                                                    //
+                                                    //const slowDown = setInterval(() => {
+                                                    //    playbackRate -= 0.1; // Gradually decrease the speed
+                                                    //    if (playbackRate <= 0.1) {
+                                                    //        clearInterval(slowDown);
+                                                    //        video.pause(); // Pause when playbackRate is near zero
+                                                    //        video.playbackRate = 1.0; // Reset speed for next play
+                                                    //    } else {
+                                                    //        video.playbackRate = playbackRate;
+                                                    //    }
+                                                    //}, 50);
+                                                }, 350)
+                                            }, 100)
 
-                            try {
-                                if (names.matchedAccounts) {
-                                    if (names.matchedAccounts.length > 0) {
-                                        iploginRecent = names
-                                        document.getElementById("merrniEmratIP").innerHTML = ''
-                                        console.log(names.matchedAccounts)
-                                        names.matchedAccounts.forEach((name, index) => {
-                                            document.getElementById("merrniEmratIP").innerHTML += `<div onclick="loginByIpSecondary('${index}')" class="optionButton ${name === names.matchedAccounts[0] ? "focus" : ""} svgOnRight">
+                                        }, 500)
+                                    }, 500)
+
+                                    try {
+                                        if (names.matchedAccounts) {
+                                            if (names.matchedAccounts.length > 0) {
+                                                iploginRecent = names
+                                                document.getElementById("merrniEmratIP").innerHTML = ''
+                                                console.log(names.matchedAccounts)
+                                                names.matchedAccounts.forEach((name, index) => {
+                                                    document.getElementById("merrniEmratIP").innerHTML += `<div onclick="loginByIpSecondary('${index}')" class="optionButton ${name === names.matchedAccounts[0] ? "focus" : ""} svgOnRight">
                             ${name}</div>`
-                                        })
-                                        document.getElementById("ipLogin").style.display = null
-                                        //runIdentifier
-                                        ipLog = names.matchedAccounts[0]
-                                        getEvoxProfile(names.matchedAccounts[0]).then(profileSrc => {
-                                            document.getElementById('matchedPfp').src = profileSrc
-                                        });
-                                        document.getElementById("longAgo").innerText = timeAgo(names.ZeroLastLogin)
-                                        document.getElementById("nameIp").innerText = names.matchedAccounts[0]
+                                                })
+                                                document.getElementById("ipLogin").style.display = null
+                                                //runIdentifier
+                                                ipLog = names.matchedAccounts[0]
+                                                getEvoxProfile(names.matchedAccounts[0]).then(profileSrc => {
+                                                    document.getElementById('matchedPfp').src = profileSrc
+                                                });
+                                                document.getElementById("longAgo").innerText = timeAgo(names.ZeroLastLogin)
+                                                document.getElementById("nameIp").innerText = names.matchedAccounts[0]
 
-                                        $("#appInfo").fadeOut("fast")
-                                        $("#textDialog").fadeOut("fast", function () {
-                                            const boxUp = document.getElementById("boxUp");
-                                            const currentHeight = boxUp.offsetHeight + 'px';
-                                            boxUpDefaultHeight = currentHeight
-                                            boxUp.style.transition = 'height 1s';
-                                            boxUp.style.height = currentHeight;
-                                            setTimeout(() => {
-                                                boxUp.style.height = '300px';
-                                            }, 10);
-                                            $('#boxUp').children().not('#helpMe, .loginByName, #ipLoginSection').fadeOut(function () {
-                                                $("#loginByIp").fadeIn("fast")
-                                            });
+                                                $("#appInfo").fadeOut("fast")
+                                                $("#textDialog").fadeOut("fast", function () {
+                                                    const boxUp = document.getElementById("boxUp");
+                                                    const currentHeight = boxUp.offsetHeight + 'px';
+                                                    boxUpDefaultHeight = currentHeight
+                                                    boxUp.style.transition = 'height 1s';
+                                                    boxUp.style.height = currentHeight;
+                                                    setTimeout(() => {
+                                                        boxUp.style.height = '300px';
+                                                    }, 10);
+                                                    $('#boxUp').children().not('#helpMe, .loginByName, #ipLoginSection').fadeOut(function () {
+                                                        $("#loginByIp").fadeIn("fast")
+                                                    });
 
-                                        })
+                                                })
+                                            }
+                                        }
+                                    } catch (error) {
+                                        console.error("Ip Login Failed")
                                     }
-                                }
-                            } catch (error) {
-                                console.error("Ip Login Failed")
-                            }
 
-                        }).catch(error => {
-                            console.error("Jeanne D'arc Database is offline.")
-                            changeLoadingText(`Η σύνδεση απέτυχε.<br>Περιμένετε..`)
-                            document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Περιμένετε..`
-                            changeLoadingText(`Η σύνδεση απέτυχε.<br>Περιμένετε..`)
+                                }).catch(error => {
+                                    console.error("Jeanne D'arc Database is offline.")
+                                    changeLoadingText(`Η σύνδεση απέτυχε.<br>Περιμένετε..`)
+                                    document.getElementById("loadText").innerHTML = `Η σύνδεση απέτυχε.<br>Περιμένετε..`
+                                    changeLoadingText(`Η σύνδεση απέτυχε.<br>Περιμένετε..`)
 
-                            $("#tasks").fadeIn("fast")
-                            $("#hexa").fadeOut("fast")
-                            document.getElementById("typewriter").style.display = 'none'
-                            document.getElementById("spinnerApple").style.display = null
+                                    $("#tasks").fadeIn("fast")
+                                    $("#hexa").fadeOut("fast")
+                                    document.getElementById("typewriter").style.display = 'none'
+                                    document.getElementById("spinnerApple").style.display = null
+                                    console.log('Error:', error);
+                                });
+
+
+
+
+                        })
+                        .catch(error => {
+                            console.error("IP Api is offline, ignoring")
                             console.log('Error:', error);
                         });
+                }
+            });
 
-
-
-
-                })
-                .catch(error => {
-                    console.error("IP Api is offline, ignoring")
-                    console.log('Error:', error);
-                });
         }
     }
 
@@ -2177,7 +2184,7 @@ function attach() {
             console.log('content:', content);
             document.getElementById("currentNotif").innerText = title
             document.getElementById("currentNotif-desc").innerText = content
-            let logoUrl = `./appLogoV2.png`
+            let logoUrl = !isBranded ? `./appLogoV2.png` : './appLogoV2-Branded.png'
             if (title.includes("AIT") || title.includes("🪄") || content.includes("AIT")) {
                 logoUrl = `../evox-epsilon-beta/evox-logo-apple.png`
             }
@@ -6096,7 +6103,7 @@ function openDiscovery(el) {
                     workOn.forEach((notification, index) => {
                         if (notification.notification.mentionedUser) {
                             getImage(notification.notification.mentionedUser).then(profileSrc => {
-                                document.getElementById("notifications-container").innerHTML += `<div class="notification-div fade-in-slide-up" style="order: ${index}">
+                                document.getElementById("notifications-container").innerHTML += `<div class="notification-div" style="order: ${index}">
                         <div class="image">
                             <img src="${profileSrc.imageData}">
                         </div>
@@ -6107,9 +6114,9 @@ function openDiscovery(el) {
                     </div>`
                             })
                         } else {
-                            document.getElementById("notifications-container").innerHTML += `<div class="notification-div fade-in-slide-up" style="order: ${index}">
+                            document.getElementById("notifications-container").innerHTML += `<div class="notification-div" style="order: ${index}">
                         <div class="image">
-                            <img src="appLogoV2.png">
+                            <img src="${!isBranded ? "appLogoV2.png" : "appLogoV2-Branded.png"}">
                         </div>
                         <div class="notification-content">
                             <p><vox>${notification.notification.title ? notification.notification.title : ""}</vox><br>${notification.notification.description ? notification.notification.description : ""}</p>
@@ -6516,7 +6523,7 @@ function loadSentToUser(emri, redo) {
                 return `
                  
                     <div class="postContainer ${!block ? "pushToTop" : ""}" style="padding-bottom: 10px;padding-top: 10px;">
-                        <div class="post extpost" style="${block ? "filter: blur(5.5px);brightness(0.8)" : ""}">
+                        <div class="post extpost" style="${block ? "filter: blur(5.5px)" : ""}">
                             <div class="profilePicture">
                                 <img src="${src}">
                             </div>
@@ -6913,15 +6920,15 @@ function showProfileInfo(emri) {
                 <div class="postContainer ${sent.contents.question.includes("AIT-2501") ? "pushToTop" : ""}" style="padding-bottom: 10px;padding-top: 10px;">
                     <div class="post extpost">
                         <div class="profilePicture">
-                            <img src="${sent.marresi !== "AIT" ? src : "AIT.gif"}">
+                            <img src="${sent.marresi !== "AIT" ? src : "placeholder.png"}">
                         </div>
                         <div class="postInfo">
                             <div class="userInfo">
                                 <p onclick="extMention('${emri}')">${sent.marresi !== "AIT" ? emri : "ΑΙΤ"}</p>
-                                <span>${sent.marresi !== "AIT" ? timeAgoInGreek(sent.contents.date) : "τώρα"}</span>
+                                <span>${timeAgoInGreek(sent.contents.date)}</span>
                             </div>
                             <div class="postContent" style="height: auto;">
-                                <p><vox ${sent.marresi == "AIT" ? "style='display: none'" : ""} onclick="extMention('${sent.marresi}')" class="mention ${getGender(removeTonos(sent.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${sent.marresi}</vox>
+                                <p><vox ${sent.marresi === "AIT" ? "style='display: none'" : ""} onclick="extMention('${sent.marresi}')" class="mention ${getGender(removeTonos(sent.marresi.split(" ")[0])) === "Female" ? "female" : "male"}">@${sent.marresi}</vox>
                                     ${cleaned.includes("<img")
                             ? cleaned.replace("100px", 'auto').replace("280px", "auto").replace("height:auto;", "height:auto;margin-left: 0;width: 90%;")
                             : cleaned}
@@ -6931,7 +6938,7 @@ function showProfileInfo(emri) {
                             ${media}
                             </div>
                             ${sent.cryptox ? `<vox class="cryptox-info">Cryptox Encrypted</vox>` : ''}
-                            <div class="icons">
+                            <div ${sent.marresi === "AIT" ? "style='display:none'" : ""} class="icons">
                     <div ${sent.contents.likes && sent.contents.likes.liked.includes(foundName) ? `data-focus-key='${randomString}'` : ""} onclick="focusOnIcon(this, 'likeBtn', '${emri}', '${sent.marresi}')" class="iconA">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 0 24 24" fill="none">
                             <path ${sent.contents.likes && sent.contents.likes.liked.includes(foundName) ? "fill='#dedede'" : ""} fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -6976,7 +6983,7 @@ function showProfileInfo(emri) {
                     getImage(pars.name).then(profileSrc => {
                         document.getElementById("sentBySelectedUser").innerHTML += `
                 <div class="postContainer" style="padding-bottom: 10px;padding-top: 10px;">
-                    <div class="post extpost" style="filter: blur(5.5px);brightness(0.8)">
+                    <div class="post extpost" style="filter: blur(5.5px)">
                         <div class="profilePicture">
                             <img src="${profileSrc.imageData}">
                         </div>
@@ -9132,6 +9139,16 @@ function switchToInnerPage(page) {
         document.getElementById("discovery-1").classList.remove("active")
         document.getElementById("page-notifications").classList.remove("active")
         document.getElementById("page-discovery").classList.add("active")
+
+        if (foundName.includes("παποστόλ") && document.getElementById("hideNonDev").querySelectorAll(".temp-select-me")[0]) {
+            document.getElementById("hideNonDev").querySelectorAll(".temp-select-me")[0].innerHTML += loadingHTML
+            setTimeout(function () {
+                document.getElementById("hideNonDev").querySelectorAll(".temp-select-me")[0].remove()
+                document.getElementById("hideNonDev").querySelectorAll("vox")[0].style.filter = "none"
+                document.getElementById("hideNonDev").querySelectorAll("vox")[0].style.pointerEvents = "all"
+                document.getElementById("hideNonDev").querySelectorAll("vox")[0].style.cursor = "auto"
+            }, 2000)
+        }
     }
 }
 
@@ -9281,4 +9298,106 @@ function loadAiMetrics() {
         });
 
 
+}
+
+const BrandedList = ["Μαρίτα Μηλάτου", "Γρηγόρης Παπαποστόλου"]
+let isBranded = false;
+async function InitializeBranded() {
+    if (isBranded) { return true; }
+
+    if(getCookie("disableUnite")) {
+        return true;
+    } else if (getCookie("brandedApp")) {
+        console.warn("Found!")
+    } else if (BrandedList.includes(JSON.parse(localStorage.getItem("jeanDarc_accountData")).name) && !getCookie("brandedApp")) {
+        foundName = JSON.parse(localStorage.getItem("jeanDarc_accountData")).name
+
+        EvalertNext({
+            "title": "Ξεκλειδώθηκε νέα λειτουργία",
+            "description": "Έχεις πλέον πρόσβαση στο Evox Unite.",
+            "buttons": ["Εντάξει"],
+            "buttonAction": ["saveCookie('brandedApp', 'true')"],
+            "addons": [],
+            "clouds": true,
+            "clouds_data": ["SELF", "EVOX"]
+        })
+
+    } else if (!getCookie("brandedApp")) {
+        return true
+    } else
+
+        changeLoadingText("Γίνεται αλλαγή γραφικών..")
+    isBranded = true;
+
+
+
+    const targetSrc = ['logo.png', 'appLogoV2.png', 'assetView-2.png'];
+    const branded = ['logo-Branded.png', 'appLogoV2-Branded.png', 'assetView-2-Branded.png'];
+
+    const results = await Promise.all(targetSrc.map((src, i) => {
+        Branded(src, branded[i])
+    }));
+    console.log("All replacements done:", results);
+
+    const welcome = document.getElementById("textDialog");
+    welcome.querySelector("p").innerHTML = welcome.querySelector("p").innerHTML.replace("στην", "στο");
+    welcome.querySelector("h2").innerHTML = "Unite";
+    welcome.querySelector("h2").style.background = "linear-gradient(to right, #e4e3e1ed, #f1ecdb, #e9e6e0, #cec6bfad)";
+    welcome.querySelector("h2").style.webkitBackgroundClip = "text";      // for Safari/Chrome
+    welcome.querySelector("h2").style.webkitTextFillColor = "transparent"; // for Safari/Chrome
+    welcome.querySelector("h2").style.backgroundClip = "text";             // for Firefox
+    welcome.querySelector("h2").style.color = "transparent";               // fallback for others
+
+    const debugFinal = true//Skip checks.
+    await GraphicsBranded()
+    return debugFinal;
+}
+
+
+
+InitializeBranded()
+async function Branded(target, replacement) {
+    console.log("[DEBUG] Starting replacement of", target, "with", replacement);
+
+    return new Promise((resolve) => {
+        try {
+            document.querySelectorAll("*").forEach(el => {
+                try {
+                    if (el.src && el.src.includes(target)) {
+                        console.log("[HTML] Replacing in:", el.tagName, el);
+                        el.src = replacement;
+                    }
+                } catch (err) {
+                    console.warn("[HTML] Error processing", el.tagName, err);
+                }
+            });
+            console.log("[DEBUG] Replacement complete.");
+            resolve(true);
+        } catch (e) {
+            console.error("[ERROR] Replacement failed for", target, e);
+            resolve(true);
+        }
+    });
+}
+
+async function GraphicsBranded() {
+    return new Promise((resolve) => {
+        try {
+            document.title = "Evox Unite";
+            const ogTitle = document.querySelector('meta[property="og:title"]');
+            if (ogTitle) ogTitle.setAttribute('content', 'Evox Unite');
+            const favicon = document.querySelector('link[rel="icon"]');
+            if (favicon) favicon.href = `appLogoV2-Branded.png`;
+
+            const appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
+            if (appleIcon) appleIcon.href = "appLogoV2-Branded.png";
+            const splashImages = document.querySelectorAll('link[rel="apple-touch-startup-image"]');
+            splashImages.forEach(link => {
+                link.href = link.href.replace("splashScreens/", "splashScreensBranded/")
+            });
+        } catch (e) {
+            console.error("[ERROR] Replacement failed for", target, e);
+            resolve(true);
+        }
+    });
 }
